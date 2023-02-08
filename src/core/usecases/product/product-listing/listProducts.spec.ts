@@ -14,8 +14,9 @@ describe('List products', () => {
     productGateway = new InMemoryProductGateway()
   })
   describe('There is no products', () => {
-    it('should list nothing', () => {
-      expect(productStore.items).toStrictEqual([])
+    it('should list nothing', async () => {
+      await whenListProducts()
+      expectProductStoreToContains()
     })
   })
   describe('There is some products', () => {
@@ -38,9 +39,21 @@ describe('List products', () => {
         percentTaxRate: 10,
         availableStock: 36
       }
-      productGateway.feedWith(dolodent, ultraLevure)
-      await listProducts(productGateway)
-      expect(productStore.items).toStrictEqual([dolodent, ultraLevure])
+      givenExistingProducts(dolodent, ultraLevure)
+      await whenListProducts()
+      expectProductStoreToContains(dolodent, ultraLevure)
     })
   })
+
+  const givenExistingProducts = (...products: Array<Product>) => {
+    productGateway.feedWith(...products)
+  }
+
+  const whenListProducts = async () => {
+    await listProducts(productGateway)
+  }
+
+  const expectProductStoreToContains = (...products: Array<Product>) => {
+    expect(productStore.items).toStrictEqual(products)
+  }
 })
