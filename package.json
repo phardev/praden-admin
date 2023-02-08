@@ -1,0 +1,41 @@
+{
+  "name": "praden-admin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Pharlog/praden-admin.git",
+  "author": "gmevelec <gregory.mevelec@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "vitest",
+    "lint": "eslint --max-warnings 0 --ext .ts,.js,.vue --ignore-path .gitignore .",
+    "stylelint": "stylelint '**/*.{css,vue}'"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": "yarn lint",
+    "*.{css,vue}": "stylelint"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
+    "@vitest/coverage-istanbul": "^0.28.4",
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-nuxt": "^4.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^9.9.0",
+    "eslint-plugin-vue-pug": "^0.5.5",
+    "husky": "^8.0.3",
+    "jsdom": "^21.1.0",
+    "lint-staged": "^13.1.1",
+    "prettier": "^2.8.3",
+    "stylelint": "^14.16.1",
+    "stylelint-config-prettier": "^9.0.4",
+    "stylelint-config-standard": "^29.0.0",
+    "vite-tsconfig-paths": "^4.0.5",
+    "vitest": "^0.28.4"
+  },
+  "dependencies": {
+    "typescript": "^4.9.5"
+  }
+}
