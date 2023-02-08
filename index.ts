@@ -1,3 +1,3 @@
 export const trueFunction = () => {
-  return false
+  return true
 }
