@@ -1,0 +1,9 @@
+@layer utilities {
+  .ring-colored {
+    @apply ring-primary11;
+  }
+
+  .ring-light {
+    @apply ring-primary5;
+  }
+}

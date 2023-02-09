@@ -1,0 +1,13 @@
+@layer utilities {
+  .border-default {
+    @apply border-primary6 hover:border-primary8;
+  }
+
+  .border-light {
+    @apply border-primary5 hover:border-primary6;
+  }
+
+  .border-opposite {
+    @apply border-primary12;
+  }
+}

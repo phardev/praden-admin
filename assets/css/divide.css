@@ -1,0 +1,5 @@
+@layer utilities {
+  .divide-light {
+    @apply ring-primary5;
+  }
+}

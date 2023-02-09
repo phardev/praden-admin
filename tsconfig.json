@@ -1,0 +1,25 @@
+{
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@adapters/*": [
+        "src/adapters/*"
+      ],
+      "@core/*": [
+        "src/core/*"
+      ],
+      "@store/*": [
+        "src/store/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+    },
+    "types": [
+      "jest",
+      "node",
+      "jsdom"
+    ]
+  }
+}

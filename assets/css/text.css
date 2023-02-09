@@ -1,0 +1,33 @@
+@layer utilities {
+  .text-default {
+    @apply text-primary12;
+  }
+
+  .text-opposite {
+    @apply text-primary1;
+  }
+
+  .text-contrast {
+    @apply text-gray11;
+  }
+
+  .text-light {
+    @apply text-primary5;
+  }
+
+  .text-colored {
+    @apply text-primary11;
+  }
+
+  .text-error {
+    @apply text-tomato8
+  }
+
+  .text-success {
+    @apply text-grass8
+  }
+
+  .text-link {
+    @apply text-contrast hover:text-primary12
+  }
+}

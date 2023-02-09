@@ -1,5 +1,5 @@
-import { ProductGateway } from '../../core/gateways/productGateway'
-import { Product } from '../../core/entities/product'
+import { ProductGateway } from '@core/gateways/productGateway'
+import { Product } from '@core/entities/product'
 
 export class InMemoryProductGateway implements ProductGateway {
   private products: Array<Product> = []

@@ -1,0 +1,25 @@
+@layer utilities {
+  .bg-default {
+    @apply bg-primary1;
+  }
+
+  .bg-contrast {
+    @apply bg-primary4;
+  }
+
+  .bg-component {
+    @apply bg-primary3 bg-hover border border-default;
+  }
+
+  .bg-solid {
+    @apply bg-primary9 hover:bg-primary10;
+  }
+
+  .bg-hover {
+    @apply hover:bg-primary4;
+  }
+
+  .bg-backdrop {
+    @apply bg-neutral-500 bg-opacity-50;
+  }
+}

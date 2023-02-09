@@ -1,0 +1,69 @@
+import { getProductsVM } from './getProductsVM'
+import { dolodent, ultraLevure } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
+import { useProductStore } from '@store/productStore'
+import { useCategoryStore } from '@store/categoryStore'
+import { dents, diarrhee } from '@utils/testData/categories'
+
+describe('Get products VM', () => {
+  let productStore: any
+  let categoryStore: any
+
+  const expectedHeaders: Array<string> = [
+    'Image',
+    'Nom',
+    'Référence',
+    'Catégorie',
+    'Prix HT',
+    'Prix TTC',
+    'Stock'
+  ]
+
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    productStore = useProductStore()
+    categoryStore = useCategoryStore()
+  })
+
+  describe('There is no products', () => {
+    it('should list nothing', () => {
+      const vm = getProductsVM()
+      const expectedVM = {
+        headers: expectedHeaders,
+        items: []
+      }
+      expect(vm).toStrictEqual(expectedVM)
+    })
+  })
+  describe('There is some products', () => {
+    it('should list all of them', () => {
+      categoryStore.items = [dents, diarrhee]
+      productStore.items = [dolodent, ultraLevure]
+      const vm = getProductsVM()
+      const expectedVM = {
+        headers: expectedHeaders,
+        items: [
+          {
+            name: dolodent.name,
+            img: dolodent.img,
+            reference: dolodent.cip13,
+            category: 'Dents',
+            priceWithoutTax: '5,00\u00A0€',
+            priceWithTax: '5,50\u00A0€',
+            availableStock: dolodent.availableStock
+          },
+          {
+            name: ultraLevure.name,
+            img: ultraLevure.img,
+            reference: ultraLevure.cip13,
+            category: 'Diarrhée',
+            priceWithoutTax: '4,32\u00A0€',
+            priceWithTax: '4,75\u00A0€',
+            availableStock: ultraLevure.availableStock
+          }
+        ]
+      }
+      expect(vm).toStrictEqual(expectedVM)
+    })
+  })
+})
