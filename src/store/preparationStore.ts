@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Order } from '@core/usecases/order/orders-to-prepare-listing/order'
+import { Order } from '@core/entities/order'
 
 export const usePreparationStore = defineStore('PreparationStore', {
   state: () => {
