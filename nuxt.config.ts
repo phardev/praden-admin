@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      title: 'Praden MarketPlace'
+      title: 'Praden Admin'
     }
   },
   components: {
