@@ -7,7 +7,7 @@ div(class='sm:flex sm:items-center')
   table.min-w-full.divide-y.divide-light
     thead.bg-contrast
       tr
-        th(scope="col" class="relative w-12 px-6 sm:w-16 sm:px-8")
+        th(v-if="selectable" scope="col" class="relative w-12 px-6 sm:w-16 sm:px-8")
           input(type="checkbox" class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-light text-colored focus:ring-colored sm:left-6")
         th.pl-4.pr-3.text-left.text-sm.font-semibold.text-default(
           v-for="(header, headerIndex) in headers"
@@ -17,7 +17,7 @@ div(class='sm:flex sm:items-center')
         ) {{ header.name }}
     tbody
       tr(v-for='(item, index) in items' :key='index')
-        td.border-t.border-light(class="relative w-12 px-6 sm:w-16 sm:px-8")
+        td.border-t.border-light(v-if="selectable" class="relative w-12 px-6 sm:w-16 sm:px-8")
           div(v-if="false" class="absolute inset-y-0 left-0 w-0.5 bg-contrast")
           input(type="checkbox" class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-light text-colored focus:ring-colored sm:left-6")
         td.border-t.border-light.px-3.py-3.text-sm.text-contrast(
@@ -39,6 +39,12 @@ defineProps({
     type: Array,
     default: () => {
       return []
+    }
+  },
+  selectable: {
+    type: Boolean,
+    default: () => {
+      return false
     }
   }
 })

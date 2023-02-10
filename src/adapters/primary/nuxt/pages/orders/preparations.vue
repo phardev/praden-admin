@@ -3,6 +3,7 @@
   fv-table(
     :headers="ordersVM.headers"
     :items="ordersVM.items"
+    :selectable="true"
   )
     template(#reference="{ item }")
       .font-medium.text-default {{ item.reference }}
