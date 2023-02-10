@@ -1,6 +1,7 @@
 import {
   GetOrdersToPrepareVM,
-  getOrdersToPrepareVM
+  getOrdersToPrepareVM,
+  Header
 } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
 import { createPinia, setActivePinia } from 'pinia'
 import { usePreparationStore } from '@store/preparationStore'
@@ -8,6 +9,24 @@ import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
 
 describe('Get orders to prepare VM', () => {
   let preparationStore: any
+  const expectedHeaders: Array<Header> = [
+    {
+      name: 'Référence',
+      value: 'reference'
+    },
+    {
+      name: 'Client',
+      value: 'client'
+    },
+    {
+      name: 'Date',
+      value: 'createdDate'
+    },
+    {
+      name: 'Total TTC',
+      value: 'total'
+    }
+  ]
 
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -16,7 +35,7 @@ describe('Get orders to prepare VM', () => {
   describe('There is no orders to prepare', () => {
     it('should list nothing', () => {
       const expectedVM = {
-        headers: ['Référence', 'Client', 'Date', 'Total TTC'],
+        headers: expectedHeaders,
         items: []
       }
       const vm = getOrdersToPrepareVM()
@@ -27,7 +46,7 @@ describe('Get orders to prepare VM', () => {
     it('should list all of them', () => {
       preparationStore.items = [orderToPrepare1, orderToPrepare2]
       const expectedVM: GetOrdersToPrepareVM = {
-        headers: ['Référence', 'Client', 'Date', 'Total TTC'],
+        headers: expectedHeaders,
         items: [
           {
             reference: orderToPrepare1.uuid,
