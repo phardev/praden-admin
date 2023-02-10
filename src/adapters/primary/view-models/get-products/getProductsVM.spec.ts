@@ -4,19 +4,41 @@ import { createPinia, setActivePinia } from 'pinia'
 import { useProductStore } from '@store/productStore'
 import { useCategoryStore } from '@store/categoryStore'
 import { dents, diarrhee } from '@utils/testData/categories'
+import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
 
 describe('Get products VM', () => {
   let productStore: any
   let categoryStore: any
 
-  const expectedHeaders: Array<string> = [
-    'Image',
-    'Nom',
-    'Référence',
-    'Catégorie',
-    'Prix HT',
-    'Prix TTC',
-    'Stock'
+  const expectedHeaders: Array<Header> = [
+    {
+      name: 'Image',
+      value: 'img'
+    },
+    {
+      name: 'Nom',
+      value: 'name'
+    },
+    {
+      name: 'Référence',
+      value: 'reference'
+    },
+    {
+      name: 'Catégorie',
+      value: 'category'
+    },
+    {
+      name: 'Prix HT',
+      value: 'priceWithoutTax'
+    },
+    {
+      name: 'Prix TTC',
+      value: 'priceWithTax'
+    },
+    {
+      name: 'Stock',
+      value: 'availableStock'
+    }
   ]
 
   beforeEach(() => {

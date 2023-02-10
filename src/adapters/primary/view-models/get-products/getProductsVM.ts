@@ -2,6 +2,7 @@ import { useProductStore } from '@store/productStore'
 import { Product } from '@core/entities/product'
 import { priceFormatter } from '@utils/formatters'
 import { useCategoryStore } from '@store/categoryStore'
+import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
 
 export interface GetProductsItemVM {
   name: string
@@ -14,7 +15,7 @@ export interface GetProductsItemVM {
 }
 
 export interface GetProductsVM {
-  headers: Array<string>
+  headers: Array<Header>
   items: Array<GetProductsItemVM>
 }
 
@@ -23,14 +24,35 @@ export const getProductsVM = (): GetProductsVM => {
   const categoryStore = useCategoryStore()
   const products = productStore.items
   const formatter = priceFormatter('fr-FR', 'EUR')
-  const headers = [
-    'Image',
-    'Nom',
-    'Référence',
-    'Catégorie',
-    'Prix HT',
-    'Prix TTC',
-    'Stock'
+  const headers: Array<Header> = [
+    {
+      name: 'Image',
+      value: 'img'
+    },
+    {
+      name: 'Nom',
+      value: 'name'
+    },
+    {
+      name: 'Référence',
+      value: 'reference'
+    },
+    {
+      name: 'Catégorie',
+      value: 'category'
+    },
+    {
+      name: 'Prix HT',
+      value: 'priceWithoutTax'
+    },
+    {
+      name: 'Prix TTC',
+      value: 'priceWithTax'
+    },
+    {
+      name: 'Stock',
+      value: 'availableStock'
+    }
   ]
   return {
     headers,
