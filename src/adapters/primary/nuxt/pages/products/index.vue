@@ -4,6 +4,7 @@
     :headers="productsVM.headers"
     :items="productsVM.items"
   )
+    template(#title) Produits
     template(#img="{ item }")
       .h-10.w-10
         img.rounded-full.h-10.w-10(:src="item.img")

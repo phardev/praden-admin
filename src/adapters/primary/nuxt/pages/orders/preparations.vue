@@ -5,6 +5,7 @@
     :items="ordersVM.items"
     :selectable="true"
   )
+    template(#title) Commandes à préparer
     template(#reference="{ item }")
       .font-medium.text-default {{ item.reference }}
     template(#createdDate="{ item }")
