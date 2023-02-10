@@ -21,8 +21,18 @@ export interface OrderLine {
   deliveryStatus: DeliveryStatus
 }
 
+export enum PaymentStatus {
+  WaitingForPayment,
+  Payed
+}
+
+export interface Payment {
+  status: PaymentStatus
+}
+
 export interface Order {
   uuid: string
   lines: Array<OrderLine>
   deliveryAddress: Address
+  payment: Payment
 }

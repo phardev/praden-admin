@@ -1,4 +1,4 @@
-import { DeliveryStatus, Order } from '@core/entities/order'
+import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
 import { dolodent, ultraLevure } from '@utils/testData/products'
 
 export const orderToPrepare1: Order = {
@@ -17,6 +17,37 @@ export const orderToPrepare1: Order = {
     address: '10 rue des peupliers',
     city: 'PlopLand',
     zip: '12345'
+  },
+  payment: {
+    status: PaymentStatus.Payed
+  }
+}
+
+export const orderToPrepare2: Order = {
+  uuid: 'FHEIRF',
+  lines: [
+    {
+      name: dolodent.name,
+      cip13: dolodent.cip13,
+      quantity: 1,
+      deliveryStatus: DeliveryStatus.Created
+    },
+    {
+      name: ultraLevure.name,
+      cip13: ultraLevure.cip13,
+      quantity: 2,
+      deliveryStatus: DeliveryStatus.Created
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jeanne',
+    lastname: "D'arc",
+    address: '12 avenue du bois',
+    city: 'Boisville',
+    zip: '54321'
+  },
+  payment: {
+    status: PaymentStatus.Payed
   }
 }
 
@@ -36,6 +67,9 @@ export const orderPrepared1: Order = {
     address: '10 rue des peupliers',
     city: 'PlopLand',
     zip: '12345'
+  },
+  payment: {
+    status: PaymentStatus.Payed
   }
 }
 
@@ -55,6 +89,9 @@ export const orderInPreparation1: Order = {
     address: '10 rue des peupliers',
     city: 'PlopLand',
     zip: '12345'
+  },
+  payment: {
+    status: PaymentStatus.Payed
   }
 }
 
@@ -74,6 +111,9 @@ export const orderDelivered1: Order = {
     address: '10 rue des peupliers',
     city: 'PlopLand',
     zip: '12345'
+  },
+  payment: {
+    status: PaymentStatus.Payed
   }
 }
 
@@ -99,5 +139,30 @@ export const orderWithMissingProduct1: Order = {
     address: '10 rue des peupliers',
     city: 'PlopLand',
     zip: '12345'
+  },
+  payment: {
+    status: PaymentStatus.Payed
+  }
+}
+
+export const orderNotPayed1: Order = {
+  uuid: 'ADKEWR',
+  lines: [
+    {
+      name: dolodent.name,
+      cip13: dolodent.cip13,
+      quantity: 2,
+      deliveryStatus: DeliveryStatus.Created
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    status: PaymentStatus.WaitingForPayment
   }
 }

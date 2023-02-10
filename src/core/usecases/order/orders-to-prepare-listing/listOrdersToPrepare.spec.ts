@@ -5,8 +5,10 @@ import { Order } from '@core/entities/order'
 import {
   orderDelivered1,
   orderInPreparation1,
+  orderNotPayed1,
   orderPrepared1,
   orderToPrepare1,
+  orderToPrepare2,
   orderWithMissingProduct1
 } from '@utils/testData/orders'
 import { InMemoryOrderGateway } from '@adapters/secondary/inMemoryOrderGateway'
@@ -29,33 +31,55 @@ describe('List orders to prepare', () => {
   })
   describe('There is some orders to prepare', () => {
     it('should list all of them', async () => {
-      orderGateway.feedWith(orderToPrepare1)
+      givenExistingOrders(orderToPrepare1, orderToPrepare2)
       await whenListOrdersToPrepare()
-      expectPreparationStoreToContains(orderToPrepare1)
+      expectPreparationStoreToContains(orderToPrepare1, orderToPrepare2)
     })
   })
   describe('There is some orders to not prepare', () => {
     it('should not list orders if all items are shipped', async () => {
-      orderGateway.feedWith(orderPrepared1)
+      givenExistingOrders(orderPrepared1)
       await whenListOrdersToPrepare()
       expectPreparationStoreToContains()
     })
     it('should not list orders if all items are processing', async () => {
-      orderGateway.feedWith(orderInPreparation1)
+      givenExistingOrders(orderInPreparation1)
       await whenListOrdersToPrepare()
       expectPreparationStoreToContains()
     })
     it('should not list orders if all items are delivered', async () => {
-      orderGateway.feedWith(orderDelivered1)
+      givenExistingOrders(orderDelivered1)
       await whenListOrdersToPrepare()
       expectPreparationStoreToContains()
     })
     it('should not list orders if at least one item is not created', async () => {
-      orderGateway.feedWith(orderWithMissingProduct1)
+      givenExistingOrders(orderWithMissingProduct1)
+      await whenListOrdersToPrepare()
+      expectPreparationStoreToContains()
+    })
+    it('should not list orders if they are not payed', async () => {
+      givenExistingOrders(orderNotPayed1)
       await whenListOrdersToPrepare()
       expectPreparationStoreToContains()
     })
   })
+
+  describe('With lot of orders', () => {
+    it('should list only preparable orders', async () => {
+      givenExistingOrders(
+        orderPrepared1,
+        orderToPrepare1,
+        orderInPreparation1,
+        orderToPrepare2
+      )
+      await whenListOrdersToPrepare()
+      expectPreparationStoreToContains(orderToPrepare1, orderToPrepare2)
+    })
+  })
+
+  const givenExistingOrders = (...orders: Array<Order>) => {
+    orderGateway.feedWith(...orders)
+  }
 
   const whenListOrdersToPrepare = async () => {
     await listOrdersToPrepare(orderGateway)
