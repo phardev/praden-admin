@@ -1,3 +1,5 @@
+import { Timestamp } from '@core/types/types'
+
 export interface Address {
   firstname: string
   lastname: string
@@ -17,7 +19,9 @@ export enum DeliveryStatus {
 export interface OrderLine {
   name: string
   cip13: string
+  unitAmount: number
   quantity: number
+  percentTaxRate: number
   deliveryStatus: DeliveryStatus
 }
 
@@ -35,4 +39,5 @@ export interface Order {
   lines: Array<OrderLine>
   deliveryAddress: Address
   payment: Payment
+  createdAt: Timestamp
 }

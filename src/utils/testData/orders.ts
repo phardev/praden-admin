@@ -8,6 +8,8 @@ export const orderToPrepare1: Order = {
       name: dolodent.name,
       cip13: dolodent.cip13,
       quantity: 2,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
       deliveryStatus: DeliveryStatus.Created
     }
   ],
@@ -20,7 +22,8 @@ export const orderToPrepare1: Order = {
   },
   payment: {
     status: PaymentStatus.Payed
-  }
+  },
+  createdAt: 1674273279000
 }
 
 export const orderToPrepare2: Order = {
@@ -30,12 +33,16 @@ export const orderToPrepare2: Order = {
       name: dolodent.name,
       cip13: dolodent.cip13,
       quantity: 1,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
       deliveryStatus: DeliveryStatus.Created
     },
     {
       name: ultraLevure.name,
       cip13: ultraLevure.cip13,
       quantity: 2,
+      unitAmount: ultraLevure.priceWithoutTax,
+      percentTaxRate: ultraLevure.percentTaxRate,
       deliveryStatus: DeliveryStatus.Created
     }
   ],
@@ -48,7 +55,8 @@ export const orderToPrepare2: Order = {
   },
   payment: {
     status: PaymentStatus.Payed
-  }
+  },
+  createdAt: 1675565972527
 }
 
 export const orderPrepared1: Order = {
@@ -58,6 +66,8 @@ export const orderPrepared1: Order = {
       name: dolodent.name,
       cip13: dolodent.cip13,
       quantity: 2,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
       deliveryStatus: DeliveryStatus.Shipped
     }
   ],
@@ -70,7 +80,8 @@ export const orderPrepared1: Order = {
   },
   payment: {
     status: PaymentStatus.Payed
-  }
+  },
+  createdAt: 1675564420539
 }
 
 export const orderInPreparation1: Order = {
@@ -80,6 +91,8 @@ export const orderInPreparation1: Order = {
       name: dolodent.name,
       cip13: dolodent.cip13,
       quantity: 2,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
       deliveryStatus: DeliveryStatus.Processing
     }
   ],
@@ -92,7 +105,8 @@ export const orderInPreparation1: Order = {
   },
   payment: {
     status: PaymentStatus.Payed
-  }
+  },
+  createdAt: 1674273579000
 }
 
 export const orderDelivered1: Order = {
@@ -102,6 +116,8 @@ export const orderDelivered1: Order = {
       name: dolodent.name,
       cip13: dolodent.cip13,
       quantity: 2,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
       deliveryStatus: DeliveryStatus.Delivered
     }
   ],
@@ -114,7 +130,8 @@ export const orderDelivered1: Order = {
   },
   payment: {
     status: PaymentStatus.Payed
-  }
+  },
+  createdAt: 1674273599954
 }
 
 export const orderWithMissingProduct1: Order = {
@@ -124,12 +141,16 @@ export const orderWithMissingProduct1: Order = {
       name: dolodent.name,
       cip13: dolodent.cip13,
       quantity: 2,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
       deliveryStatus: DeliveryStatus.Shipped
     },
     {
       name: ultraLevure.name,
       cip13: ultraLevure.cip13,
       quantity: 4,
+      unitAmount: ultraLevure.priceWithoutTax,
+      percentTaxRate: ultraLevure.percentTaxRate,
       deliveryStatus: DeliveryStatus.Processing
     }
   ],
@@ -142,7 +163,8 @@ export const orderWithMissingProduct1: Order = {
   },
   payment: {
     status: PaymentStatus.Payed
-  }
+  },
+  createdAt: 1674573678456
 }
 
 export const orderNotPayed1: Order = {
@@ -152,6 +174,8 @@ export const orderNotPayed1: Order = {
       name: dolodent.name,
       cip13: dolodent.cip13,
       quantity: 2,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
       deliveryStatus: DeliveryStatus.Created
     }
   ],
@@ -164,5 +188,6 @@ export const orderNotPayed1: Order = {
   },
   payment: {
     status: PaymentStatus.WaitingForPayment
-  }
+  },
+  createdAt: 1674273789000
 }

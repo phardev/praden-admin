@@ -9,3 +9,12 @@ export const priceFormatter = (
     minimumFractionDigits
   })
 }
+
+export const timestampToLocaleString = (
+  timestamp: number,
+  locale: string,
+  options: any = { year: 'numeric', month: 'short', day: 'numeric' }
+) => {
+  const date = new Date(timestamp)
+  return date.toLocaleString(locale, options)
+}
