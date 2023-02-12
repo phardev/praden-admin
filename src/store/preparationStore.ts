@@ -24,6 +24,9 @@ export const usePreparationStore = defineStore('PreparationStore', {
     remove(uuid: UUID) {
       const index = this.items.findIndex((o) => o.uuid === uuid)
       this.items.splice(index, 1)
+    },
+    select(uuids: Array<UUID>) {
+      this.selected.push(...uuids)
     }
   }
 })
