@@ -1,8 +1,8 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { usePreparationStore } from '@store/preparationStore'
-import { selectPreparations } from '@core/usecases/order/select-preparations/selectPreparations'
+import { toggleSelectPreparation } from '@core/usecases/order/toggle-select-preparation/toggleSelectPreparation'
 
-describe('Select preparations', () => {
+describe('Toggle select preparations', () => {
   let preparationStore: any
 
   beforeEach(() => {
@@ -14,12 +14,8 @@ describe('Select preparations', () => {
       expect(preparationStore.selected).toStrictEqual([])
     })
     it('should allow to select one preparation', () => {
-      selectPreparations(['prep1'])
+      toggleSelectPreparation('prep1')
       expect(preparationStore.selected).toStrictEqual(['prep1'])
-    })
-    it('should allow to select multiple preparations', () => {
-      selectPreparations(['prep1', 'prep2'])
-      expect(preparationStore.selected).toStrictEqual(['prep1', 'prep2'])
     })
   })
   describe('There is some preparations selected', () => {
@@ -27,16 +23,12 @@ describe('Select preparations', () => {
       preparationStore.selected = ['selectedPrep']
     })
     it('should allow to add one preparation to selection', () => {
-      selectPreparations(['prep1'])
+      toggleSelectPreparation('prep1')
       expect(preparationStore.selected).toStrictEqual(['selectedPrep', 'prep1'])
     })
-    it('should allow to add multiple preparations to selection', () => {
-      selectPreparations(['prep1', 'prep2'])
-      expect(preparationStore.selected).toStrictEqual([
-        'selectedPrep',
-        'prep1',
-        'prep2'
-      ])
+    it('should remove the preparation if already selected', () => {
+      toggleSelectPreparation('selectedPrep')
+      expect(preparationStore.selected).toStrictEqual([])
     })
   })
 })

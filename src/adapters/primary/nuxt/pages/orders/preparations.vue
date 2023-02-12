@@ -4,6 +4,8 @@
     :headers="ordersVM.headers"
     :items="ordersVM.items"
     :selectable="true"
+    :selection="ordersSelectedVM.items"
+    @item-selected="select"
   )
     template(#title) Commandes à préparer
     template(#reference="{ item }")
@@ -16,6 +18,8 @@
 import { listOrdersToPrepare } from '@core/usecases/order/orders-to-prepare-listing/listOrdersToPrepare'
 import { getOrdersToPrepareVM } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
 import { useOrderGateway } from '../../../../../../gateways/orderGateway'
+import { getSelectedPreparationsVM } from '@adapters/primary/view-models/get-selected-preparations/getSelectedPreparationsVM'
+import { toggleSelectPreparation } from '@core/usecases/order/toggle-select-preparation/toggleSelectPreparation'
 
 onMounted(() => {
   listOrdersToPrepare(useOrderGateway())
@@ -24,4 +28,12 @@ onMounted(() => {
 const ordersVM = computed(() => {
   return getOrdersToPrepareVM()
 })
+
+const ordersSelectedVM = computed(() => {
+  return getSelectedPreparationsVM()
+})
+
+const select = (selected: any) => {
+  toggleSelectPreparation(selected.reference)
+}
 </script>
