@@ -5,7 +5,16 @@ import { UUID } from '@core/types/types'
 export const usePreparationStore = defineStore('PreparationStore', {
   state: () => {
     return {
-      items: [] as Array<Order>
+      items: [] as Array<Order>,
+      selected: [] as Array<UUID>
+    }
+  },
+  getters: {
+    getByUuid: (state) => {
+      return (uuid: UUID): Order => {
+        const order = state.items.find((p) => p.uuid === uuid)
+        return order
+      }
     }
   },
   actions: {
