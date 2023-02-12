@@ -9,7 +9,14 @@ div(class='sm:flex sm:items-center')
     thead.bg-contrast
       tr
         th(v-if="selectable" scope="col" class="relative w-12 px-6 sm:w-16 sm:px-8")
-          input(type="checkbox" class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-light text-colored focus:ring-colored sm:left-6")
+          input(
+            :key="indeterminate || selection.length === items.length"
+            type="checkbox"
+            class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-light text-colored focus:ring-colored sm:left-6"
+            :checked="indeterminate || selection.length === items.length"
+            :indeterminate="indeterminate"
+            @click.prevent="selectAll"
+          )
         th.pl-4.pr-3.text-left.text-sm.font-semibold.text-default(
           v-for="(header, headerIndex) in headers"
           :key="headerIndex"
@@ -35,7 +42,7 @@ div(class='sm:flex sm:items-center')
 </template>
 
 <script lang="ts" setup>
-defineProps({
+const props = defineProps({
   headers: {
     type: Array,
     default: () => {
@@ -64,9 +71,20 @@ defineProps({
 
 const emit = defineEmits<{
   (e: 'item-selected', value: any): void
+  (e: 'select-all'): void
 }>()
+
+const indeterminate = computed(() => {
+  return (
+    props.selection.length > 0 && props.selection.length < props.items.length
+  )
+})
 
 const select = (selected: any) => {
   emit('item-selected', selected)
+}
+
+const selectAll = () => {
+  emit('select-all')
 }
 </script>

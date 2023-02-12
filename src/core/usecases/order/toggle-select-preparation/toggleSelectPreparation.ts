@@ -3,5 +3,5 @@ import { usePreparationStore } from '@store/preparationStore'
 
 export const toggleSelectPreparation = (selection: UUID) => {
   const preparationStore = usePreparationStore()
-  preparationStore.select(selection)
+  preparationStore.toggleSelect(selection)
 }
