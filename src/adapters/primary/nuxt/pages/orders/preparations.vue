@@ -1,6 +1,6 @@
 <template lang="pug">
 .section
-  div.hidden.printme(id="to-print")
+  div.hidden.printme
     p Récapitulatif des commandes
     fv-table(
       :headers="headers"
