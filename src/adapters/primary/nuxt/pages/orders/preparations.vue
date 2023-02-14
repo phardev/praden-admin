@@ -67,11 +67,11 @@ const ordersSelectedVM = computed(() => {
 })
 
 const startVM = computed(() => {
-  let origin = ''
-  if (isBrowser) {
-    origin = location.origin
-  }
-  return startPreparationsVM(origin)
+  // let origin = ''
+  // if (isBrowser) {
+  //   origin = location.origin
+  // }
+  return startPreparationsVM('origin')
 })
 
 const select = (selected: any) => {
