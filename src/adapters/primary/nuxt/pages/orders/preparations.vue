@@ -8,7 +8,8 @@ div.hidden.printme.mx-2
   div.break-before-page(v-for="order in startVM.detail" :key="order.reference")
     div.flex
       h1.text-xl.grow Commande {{ order.reference }}
-      vueQr(:text="order.href")
+      client-only
+        vueQr(:text="order.href")
     fv-table(
       :headers="startVM.headers"
       :items="order.lines"
@@ -70,7 +71,6 @@ const startVM = computed(() => {
   if (isBrowser) {
     origin = location.origin
   }
-  console.log('origin: ', origin)
   return startPreparationsVM(origin)
 })
 
