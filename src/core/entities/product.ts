@@ -7,5 +7,6 @@ export interface Product {
   cip13: string
   priceWithoutTax: number
   percentTaxRate: number
+  location: string
   availableStock: number
 }

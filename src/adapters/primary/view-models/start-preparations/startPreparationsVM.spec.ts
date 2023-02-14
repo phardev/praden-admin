@@ -38,6 +38,7 @@ describe('Start preparations VM', () => {
             {
               reference: dolodent.cip13,
               name: dolodent.name,
+              location: dolodent.location,
               quantity: 2
             }
           ],
@@ -49,6 +50,7 @@ describe('Start preparations VM', () => {
                 {
                   reference: dolodent.cip13,
                   name: dolodent.name,
+                  location: dolodent.location,
                   quantity: 2
                 }
               ]
@@ -57,20 +59,22 @@ describe('Start preparations VM', () => {
         }
         expect(vm).toStrictEqual(expectedVM)
       })
-      it('should list the preparation for another order', () => {
+      it('should list the preparation for another order and sort lines by location', () => {
         preparationsStore.selected = [orderToPrepare2.uuid]
         const vm = startPreparationsVM()
         const expectedVM: StartPreparationsVM = {
           global: [
             {
-              reference: dolodent.cip13,
-              name: dolodent.name,
-              quantity: 1
-            },
-            {
               reference: ultraLevure.cip13,
               name: ultraLevure.name,
+              location: ultraLevure.location,
               quantity: 2
+            },
+            {
+              reference: dolodent.cip13,
+              name: dolodent.name,
+              location: dolodent.location,
+              quantity: 1
             }
           ],
           detail: [
@@ -79,14 +83,16 @@ describe('Start preparations VM', () => {
               reference: orderToPrepare2.uuid,
               lines: [
                 {
-                  reference: dolodent.cip13,
-                  name: dolodent.name,
-                  quantity: 1
-                },
-                {
                   reference: ultraLevure.cip13,
                   name: ultraLevure.name,
+                  location: ultraLevure.location,
                   quantity: 2
+                },
+                {
+                  reference: dolodent.cip13,
+                  name: dolodent.name,
+                  location: dolodent.location,
+                  quantity: 1
                 }
               ]
             }
@@ -105,14 +111,16 @@ describe('Start preparations VM', () => {
         const expectedVM: StartPreparationsVM = {
           global: [
             {
-              reference: dolodent.cip13,
-              name: dolodent.name,
-              quantity: 3
-            },
-            {
               reference: ultraLevure.cip13,
               name: ultraLevure.name,
+              location: ultraLevure.location,
               quantity: 2
+            },
+            {
+              reference: dolodent.cip13,
+              name: dolodent.name,
+              location: dolodent.location,
+              quantity: 3
             }
           ],
           detail: [
@@ -123,6 +131,7 @@ describe('Start preparations VM', () => {
                 {
                   reference: dolodent.cip13,
                   name: dolodent.name,
+                  location: dolodent.location,
                   quantity: 2
                 }
               ]
@@ -132,14 +141,16 @@ describe('Start preparations VM', () => {
               reference: orderToPrepare2.uuid,
               lines: [
                 {
-                  reference: dolodent.cip13,
-                  name: dolodent.name,
-                  quantity: 1
-                },
-                {
                   reference: ultraLevure.cip13,
                   name: ultraLevure.name,
+                  location: ultraLevure.location,
                   quantity: 2
+                },
+                {
+                  reference: dolodent.cip13,
+                  name: dolodent.name,
+                  location: dolodent.location,
+                  quantity: 1
                 }
               ]
             }

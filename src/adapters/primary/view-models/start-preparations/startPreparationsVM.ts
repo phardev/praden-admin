@@ -3,6 +3,7 @@ import { usePreparationStore } from '@store/preparationStore'
 export interface PreparationLineVM {
   reference: string
   name: string
+  location: string
   quantity: number
 }
 
@@ -20,22 +21,25 @@ export interface StartPreparationsVM {
 export const startPreparationsVM = (): StartPreparationsVM => {
   const preparationStore = usePreparationStore()
   const selected = preparationStore.selected
-  const res = {
+  const res: StartPreparationsVM = {
     global: [],
-    detail: [] as Array<any>
+    detail: []
   }
   selected.forEach((uuid) => {
     const order = preparationStore.getByUuid(uuid)
     res.detail.push({
       href: `/orders/${order.uuid}`,
       reference: order.uuid,
-      lines: order.lines.map((line) => {
-        return {
-          reference: line.cip13,
-          name: line.name,
-          quantity: line.quantity
-        }
-      })
+      lines: order.lines
+        .map((line) => {
+          return {
+            reference: line.cip13,
+            name: line.name,
+            location: line.location,
+            quantity: line.quantity
+          }
+        })
+        .sort((a, b) => (a.location < b.location ? -1 : 1))
     })
   })
   res.global = res.detail.reduce((acc, detail) => {
@@ -49,5 +53,6 @@ export const startPreparationsVM = (): StartPreparationsVM => {
     })
     return acc
   }, [])
+  res.global.sort((a, b) => (a.location < b.location ? -1 : 1))
   return res
 }

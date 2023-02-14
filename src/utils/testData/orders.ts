@@ -10,6 +10,7 @@ export const orderToPrepare1: Order = {
       quantity: 2,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
       deliveryStatus: DeliveryStatus.Created
     }
   ],
@@ -35,6 +36,7 @@ export const orderToPrepare2: Order = {
       quantity: 1,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
       deliveryStatus: DeliveryStatus.Created
     },
     {
@@ -43,6 +45,7 @@ export const orderToPrepare2: Order = {
       quantity: 2,
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
+      location: ultraLevure.location,
       deliveryStatus: DeliveryStatus.Created
     }
   ],
@@ -68,6 +71,7 @@ export const orderPrepared1: Order = {
       quantity: 2,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
       deliveryStatus: DeliveryStatus.Shipped
     }
   ],
@@ -93,6 +97,7 @@ export const orderInPreparation1: Order = {
       quantity: 2,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
       deliveryStatus: DeliveryStatus.Processing
     }
   ],
@@ -118,6 +123,7 @@ export const orderDelivered1: Order = {
       quantity: 2,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
       deliveryStatus: DeliveryStatus.Delivered
     }
   ],
@@ -143,6 +149,7 @@ export const orderWithMissingProduct1: Order = {
       quantity: 2,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
       deliveryStatus: DeliveryStatus.Shipped
     },
     {
@@ -151,6 +158,7 @@ export const orderWithMissingProduct1: Order = {
       quantity: 4,
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
+      location: ultraLevure.location,
       deliveryStatus: DeliveryStatus.Processing
     }
   ],
@@ -176,6 +184,7 @@ export const orderNotPayed1: Order = {
       quantity: 2,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
       deliveryStatus: DeliveryStatus.Created
     }
   ],
