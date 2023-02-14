@@ -1,5 +1,5 @@
 <template lang="pug">
-div.hidden.printme
+div.hidden.printme.mx-2
   p Récapitulatif des commandes
   fv-table(
     :headers="headers"
