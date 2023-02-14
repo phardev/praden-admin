@@ -18,6 +18,10 @@ export interface StartPreparationsVM {
   detail: Array<PreparationLineDetailVM>
 }
 
+const sortByLocation = (a: any, b: any): number => {
+  return a.location < b.location ? -1 : 1
+}
+
 export const startPreparationsVM = (): StartPreparationsVM => {
   const preparationStore = usePreparationStore()
   const selected = preparationStore.selected
@@ -39,7 +43,7 @@ export const startPreparationsVM = (): StartPreparationsVM => {
             quantity: line.quantity
           }
         })
-        .sort((a, b) => (a.location < b.location ? -1 : 1))
+        .sort(sortByLocation)
     })
   })
   res.global = res.detail.reduce((acc, detail) => {
@@ -53,6 +57,6 @@ export const startPreparationsVM = (): StartPreparationsVM => {
     })
     return acc
   }, [])
-  res.global.sort((a, b) => (a.location < b.location ? -1 : 1))
+  res.global.sort(sortByLocation)
   return res
 }
