@@ -5,6 +5,7 @@
 @import url("./ring.css");
 @import url("./divide.css");
 @import url("./button.css");
+@import url("./print.css");
 
 @tailwind base;
 @tailwind components;
