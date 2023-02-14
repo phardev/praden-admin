@@ -46,7 +46,7 @@ export const startPreparationsVM = (): StartPreparationsVM => {
         .sort(sortByLocation)
     })
   })
-  res.global = res.detail.reduce((acc, detail) => {
+  res.global = res.detail.reduce((acc: Array<PreparationLineVM>, detail) => {
     detail.lines.forEach((line: any) => {
       const lineInGlobal = acc.find((l: any) => l.reference === line.reference)
       if (lineInGlobal) {
