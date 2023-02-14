@@ -14,7 +14,7 @@
               :key="indeterminate || selection.length === items.length"
               type="checkbox"
               class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-light text-colored focus:ring-colored sm:left-6"
-              :checked="indeterminate || selection.length === items.length"
+              :checked="indeterminate || (selection.length === items.length && items.length > 0)"
               :indeterminate="indeterminate"
               @click.prevent="selectAll"
             )

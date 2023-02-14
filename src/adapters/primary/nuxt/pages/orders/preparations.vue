@@ -30,7 +30,7 @@ div.hidden.printme.mx-2
   div.w-full.flex.flex-row-reverse
     ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
       v-if="ordersSelectedVM.items.length > 0"
-      @click="startPreparations"
+      @click="start"
     ) Commencer les préparations
 </template>
 
@@ -44,6 +44,7 @@ import { toggleSelectAllPreparations } from '@core/usecases/order/toggle-select-
 import FtButton from '@adapters/primary/nuxt/components/FtButton.vue'
 import { startPreparationsVM } from '@adapters/primary/view-models/start-preparations/startPreparationsVM'
 import isBrowser from 'is-browser'
+import { startPreparations } from '@core/usecases/order/start-preparations/startPreparations'
 
 let vueQr
 if (isBrowser) {
@@ -76,7 +77,11 @@ const selectAll = () => {
   toggleSelectAllPreparations()
 }
 
-const startPreparations = () => {
+const router = useRouter()
+
+const start = () => {
   window.print()
+  startPreparations(useOrderGateway())
+  router.push('/orders/preparations')
 }
 </script>

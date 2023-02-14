@@ -38,6 +38,9 @@ describe('Start preparations', () => {
       it('should set each order line to processing', async () => {
         await expectOrdersToEqual(expectedOrder1, expectedOrder2)
       })
+      it('should should remove order from selection', async () => {
+        expectSelectedOrdersToBeEmpty()
+      })
       it('should remove orders from preparations', () => {
         expect(preparationStore.items).toStrictEqual([])
       })
@@ -49,6 +52,9 @@ describe('Start preparations', () => {
       it('should set each order line to processing', async () => {
         await expectOrdersToEqual(expectedOrder1, orderToPrepare2)
       })
+      it('should should remove order from selection', async () => {
+        expectSelectedOrdersToBeEmpty()
+      })
       it('should remove order from preparations', () => {
         expect(preparationStore.items).toStrictEqual([orderToPrepare2])
       })
@@ -59,6 +65,9 @@ describe('Start preparations', () => {
       })
       it('should set each order line to processing', async () => {
         await expectOrdersToEqual(orderToPrepare1, expectedOrder2)
+      })
+      it('should should remove order from selection', async () => {
+        expectSelectedOrdersToBeEmpty()
       })
       it('should remove order from preparations', () => {
         expect(preparationStore.items).toStrictEqual([orderToPrepare1])
@@ -72,11 +81,16 @@ describe('Start preparations', () => {
   }
 
   const whenStartPreparationForOrders = async (...ordersUuids: Array<UUID>) => {
-    await startPreparations(ordersUuids, orderGateway)
+    preparationStore.selected = ordersUuids
+    await startPreparations(orderGateway)
   }
 
   const expectOrdersToEqual = async (...expectedOrders: Array<Order>) => {
     const orders = await orderGateway.list()
     expect(orders).toStrictEqual(expectedOrders)
+  }
+
+  const expectSelectedOrdersToBeEmpty = () => {
+    expect(preparationStore.selected).toStrictEqual([])
   }
 })
