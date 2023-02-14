@@ -72,7 +72,7 @@ const ordersSelectedVM = computed(() => {
 })
 
 const startVM = computed(() => {
-  return startPreparationsVM()
+  return startPreparationsVM(location.origin)
 })
 
 const select = (selected: any) => {

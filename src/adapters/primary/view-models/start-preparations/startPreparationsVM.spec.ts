@@ -10,6 +10,8 @@ import { dolodent, ultraLevure } from '@utils/testData/products'
 describe('Start preparations VM', () => {
   let preparationsStore: any
 
+  const origin = 'https://my-website'
+
   beforeEach(() => {
     setActivePinia(createPinia())
     preparationsStore = usePreparationStore()
@@ -21,7 +23,7 @@ describe('Start preparations VM', () => {
     })
     describe('There is no preparations selected', () => {
       it('should list nothing', () => {
-        const vm = startPreparationsVM()
+        const vm = startPreparationsVM(origin)
         const expectedVM: StartPreparationsVM = {
           global: [],
           detail: []
@@ -32,7 +34,7 @@ describe('Start preparations VM', () => {
     describe('There is one preparation selected', () => {
       it('should list the preparation', () => {
         preparationsStore.selected = [orderToPrepare1.uuid]
-        const vm = startPreparationsVM()
+        const vm = startPreparationsVM(origin)
         const expectedVM: StartPreparationsVM = {
           global: [
             {
@@ -44,7 +46,7 @@ describe('Start preparations VM', () => {
           ],
           detail: [
             {
-              href: `/orders/${orderToPrepare1.uuid}`,
+              href: `${origin}/orders/${orderToPrepare1.uuid}`,
               reference: orderToPrepare1.uuid,
               lines: [
                 {
@@ -61,7 +63,8 @@ describe('Start preparations VM', () => {
       })
       it('should list the preparation for another order and sort lines by location', () => {
         preparationsStore.selected = [orderToPrepare2.uuid]
-        const vm = startPreparationsVM()
+        const anotherOrigin = 'http://another-origin:3000'
+        const vm = startPreparationsVM(anotherOrigin)
         const expectedVM: StartPreparationsVM = {
           global: [
             {
@@ -79,7 +82,7 @@ describe('Start preparations VM', () => {
           ],
           detail: [
             {
-              href: `/orders/${orderToPrepare2.uuid}`,
+              href: `${anotherOrigin}/orders/${orderToPrepare2.uuid}`,
               reference: orderToPrepare2.uuid,
               lines: [
                 {
@@ -107,7 +110,7 @@ describe('Start preparations VM', () => {
           orderToPrepare1.uuid,
           orderToPrepare2.uuid
         ]
-        const vm = startPreparationsVM()
+        const vm = startPreparationsVM(origin)
         const expectedVM: StartPreparationsVM = {
           global: [
             {
@@ -125,7 +128,7 @@ describe('Start preparations VM', () => {
           ],
           detail: [
             {
-              href: `/orders/${orderToPrepare1.uuid}`,
+              href: `${origin}/orders/${orderToPrepare1.uuid}`,
               reference: orderToPrepare1.uuid,
               lines: [
                 {
@@ -137,7 +140,7 @@ describe('Start preparations VM', () => {
               ]
             },
             {
-              href: `/orders/${orderToPrepare2.uuid}`,
+              href: `${origin}/orders/${orderToPrepare2.uuid}`,
               reference: orderToPrepare2.uuid,
               lines: [
                 {

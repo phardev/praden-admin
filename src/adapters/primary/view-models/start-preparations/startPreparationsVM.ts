@@ -22,7 +22,7 @@ const sortByLocation = (a: any, b: any): number => {
   return a.location < b.location ? -1 : 1
 }
 
-export const startPreparationsVM = (): StartPreparationsVM => {
+export const startPreparationsVM = (origin: string): StartPreparationsVM => {
   const preparationStore = usePreparationStore()
   const selected = preparationStore.selected
   const res: StartPreparationsVM = {
@@ -32,7 +32,7 @@ export const startPreparationsVM = (): StartPreparationsVM => {
   selected.forEach((uuid) => {
     const order = preparationStore.getByUuid(uuid)
     res.detail.push({
-      href: `/orders/${order.uuid}`,
+      href: `${origin}/orders/${order.uuid}`,
       reference: order.uuid,
       lines: order.lines
         .map((line) => {
