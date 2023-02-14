@@ -6,11 +6,19 @@ import {
 } from '@adapters/primary/view-models/start-preparations/startPreparationsVM'
 import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
 import { dolodent, ultraLevure } from '@utils/testData/products'
+import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
 
 describe('Start preparations VM', () => {
   let preparationsStore: any
 
   const origin = 'https://my-website'
+
+  const headers: Array<Header> = [
+    { name: 'Référence', value: 'reference' },
+    { name: 'Nom', value: 'name' },
+    { name: 'Zone géo', value: 'location' },
+    { name: 'Quantité', value: 'quantity' }
+  ]
 
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -25,6 +33,7 @@ describe('Start preparations VM', () => {
       it('should list nothing', () => {
         const vm = startPreparationsVM(origin)
         const expectedVM: StartPreparationsVM = {
+          headers,
           global: [],
           detail: []
         }
@@ -36,6 +45,7 @@ describe('Start preparations VM', () => {
         preparationsStore.selected = [orderToPrepare1.uuid]
         const vm = startPreparationsVM(origin)
         const expectedVM: StartPreparationsVM = {
+          headers,
           global: [
             {
               reference: dolodent.cip13,
@@ -66,6 +76,7 @@ describe('Start preparations VM', () => {
         const anotherOrigin = 'http://another-origin:3000'
         const vm = startPreparationsVM(anotherOrigin)
         const expectedVM: StartPreparationsVM = {
+          headers,
           global: [
             {
               reference: ultraLevure.cip13,
@@ -112,6 +123,7 @@ describe('Start preparations VM', () => {
         ]
         const vm = startPreparationsVM(origin)
         const expectedVM: StartPreparationsVM = {
+          headers,
           global: [
             {
               reference: ultraLevure.cip13,

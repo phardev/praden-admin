@@ -1,4 +1,5 @@
 import { usePreparationStore } from '@store/preparationStore'
+import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
 
 export interface PreparationLineVM {
   reference: string
@@ -14,6 +15,7 @@ export interface PreparationLineDetailVM {
 }
 
 export interface StartPreparationsVM {
+  headers: Array<Header>
   global: Array<PreparationLineVM>
   detail: Array<PreparationLineDetailVM>
 }
@@ -25,7 +27,14 @@ const sortByLocation = (a: any, b: any): number => {
 export const startPreparationsVM = (origin: string): StartPreparationsVM => {
   const preparationStore = usePreparationStore()
   const selected = preparationStore.selected
+  const headers: Array<Header> = [
+    { name: 'Référence', value: 'reference' },
+    { name: 'Nom', value: 'name' },
+    { name: 'Zone géo', value: 'location' },
+    { name: 'Quantité', value: 'quantity' }
+  ]
   const res: StartPreparationsVM = {
+    headers,
     global: [],
     detail: []
   }

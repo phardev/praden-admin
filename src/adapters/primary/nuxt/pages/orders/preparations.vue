@@ -2,7 +2,7 @@
 div.hidden.printme.mx-2
   p Récapitulatif des commandes
   fv-table(
-    :headers="headers"
+    :headers="startVM.headers"
     :items="startVM.global"
   )
   div.break-before-page(v-for="order in startVM.detail" :key="order.reference")
@@ -10,7 +10,7 @@ div.hidden.printme.mx-2
       h1.text-xl.grow Commande {{ order.reference }}
       vueQr(:text="order.href")
     fv-table(
-      :headers="headers"
+      :headers="startVM.headers"
       :items="order.lines"
     )
 .section.no-printme
@@ -51,13 +51,6 @@ if (isBrowser) {
     vueQr = module.default
   })
 }
-
-const headers = [
-  { name: 'Référence', value: 'reference' },
-  { name: 'Nom', value: 'name' },
-  { name: 'Zone géo', value: 'location' },
-  { name: 'Quantité', value: 'quantity' }
-]
 
 onMounted(() => {
   listOrdersToPrepare(useOrderGateway())
