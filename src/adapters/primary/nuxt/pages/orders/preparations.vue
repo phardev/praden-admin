@@ -44,11 +44,10 @@ import { toggleSelectPreparation } from '@core/usecases/order/toggle-select-prep
 import { toggleSelectAllPreparations } from '@core/usecases/order/toggle-select-all-preparations/toggleSelectAllPreparations'
 import FtButton from '@adapters/primary/nuxt/components/FtButton.vue'
 import { startPreparationsVM } from '@adapters/primary/view-models/start-preparations/startPreparationsVM'
-import isBrowser from 'is-browser'
 import { startPreparations } from '@core/usecases/order/start-preparations/startPreparations'
 
 let vueQr
-if (isBrowser) {
+if (process.client) {
   import('vue-qr/src/packages/vue-qr.vue').then((module) => {
     vueQr = module.default
   })
@@ -68,7 +67,7 @@ const ordersSelectedVM = computed(() => {
 
 const startVM = computed(() => {
   // let origin = ''
-  // if (isBrowser) {
+  // if (process.client) {
   //   origin = location.origin
   // }
   return startPreparationsVM('origin')
