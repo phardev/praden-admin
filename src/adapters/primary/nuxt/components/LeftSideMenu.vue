@@ -4,8 +4,7 @@ div.flex.min-h-screen
     :is-opened="sidebarOpened"
     @close="sidebarOpened = false"
   )
-  div.hidden.w-64.bg-gray-50.border-r.border-gray-200(class="md:block")
-    navigation-menu
+  desktop-left-side-menu
   div.flex-1
     div.flex.justify-between.items-center.py-3.px-3.space-x-3.bg-gray-50.border-b
       button.flex-shrink-0.flex.items-center.justify-center.w-10.h-10.rounded-full(
@@ -20,6 +19,7 @@ div.flex.min-h-screen
 </template>
 <script lang="ts" setup>
 import MobileLeftSideMenu from '@adapters/primary/nuxt/components/MobileLeftSideMenu.vue'
+import DesktopLeftSideMenu from '@adapters/primary/nuxt/components/DesktopLeftSideMenu.vue'
 
 const sidebarOpened = ref(false)
 </script>
