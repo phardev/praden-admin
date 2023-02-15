@@ -7,6 +7,7 @@ export const dolodent: Product = {
   cip13: '3400921929201',
   priceWithoutTax: 500,
   percentTaxRate: 10,
+  location: 'DD02',
   availableStock: 59
 }
 
@@ -17,5 +18,6 @@ export const ultraLevure: Product = {
   cip13: '3400922096612',
   priceWithoutTax: 432,
   percentTaxRate: 10,
+  location: 'C3',
   availableStock: 36
 }
