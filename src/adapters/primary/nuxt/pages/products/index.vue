@@ -19,6 +19,8 @@ import { getProductsVM } from '@adapters/primary/view-models/get-products/getPro
 import { useCategoryStore } from '@store/categoryStore'
 import { dents, diarrhee } from '@utils/testData/categories'
 
+definePageMeta({ layout: 'main' })
+
 onMounted(() => {
   const categoryStore = useCategoryStore()
   categoryStore.items = [dents, diarrhee]

@@ -11,6 +11,10 @@
     @apply text-gray11;
   }
 
+  .text-light-contrast {
+    @apply text-gray9;
+  }
+
   .text-light {
     @apply text-primary5;
   }
@@ -28,6 +32,6 @@
   }
 
   .text-link {
-    @apply text-contrast hover:text-primary12
+    @apply text-contrast hover:text-primary11
   }
 }

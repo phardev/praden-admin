@@ -53,6 +53,8 @@ if (process.client) {
   })
 }
 
+definePageMeta({ layout: 'main' })
+
 onMounted(() => {
   listOrdersToPrepare(useOrderGateway())
 })
