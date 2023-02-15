@@ -1,3 +1,3 @@
 <template lang="pug">
-left-side-menu.w-full
+div Le header
 </template>

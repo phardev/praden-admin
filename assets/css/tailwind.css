@@ -4,6 +4,7 @@
 @import url("./layout.css");
 @import url("./ring.css");
 @import url("./divide.css");
+@import url("./icons.css");
 
 @tailwind base;
 @tailwind components;
