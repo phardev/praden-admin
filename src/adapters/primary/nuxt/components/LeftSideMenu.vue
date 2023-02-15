@@ -18,8 +18,5 @@ div.flex.min-h-screen
     main coucou
 </template>
 <script lang="ts" setup>
-import MobileLeftSideMenu from '@adapters/primary/nuxt/components/MobileLeftSideMenu.vue'
-import DesktopLeftSideMenu from '@adapters/primary/nuxt/components/DesktopLeftSideMenu.vue'
-
 const sidebarOpened = ref(false)
 </script>
