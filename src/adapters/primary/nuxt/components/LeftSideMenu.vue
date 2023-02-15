@@ -23,20 +23,7 @@ div.flex.min-h-screen
             @click="sidebarOpened = false"
           )
             icon.icon-sm(name="heroicons:x-mark")
-          div.pt-8.pb-4.pr-6
-            nuxt-link.flex.items-center(href="/")
-              img.w-24.h-24(:src="menu.logo")
-              h3 {{ menu.title }}
-          div.overflow-y-auto.flex-1
-            div.mb-10(v-for="(section, sectionIndex) in menu.sections" :key="sectionIndex")
-              h3.mx-6.mb-2.text-xs.tracking-widest.text-gray-400.uppercase {{ section.title }}
-              nuxt-link.flex.items-center.px-6.py-2.text-gray-500.group(
-                v-for="(link, linkIndex) in section.links" :key="linkIndex"
-                class="hover:text-orange-600"
-                :href="link.href"
-              )
-                icon.icon-sm.mr-2(:name="link.icon")
-                div {{ link.name }}
+          navigation-menu.pt-4
       TransitionChild(
         as="template"
         enter="transition-opacity ease-linear duration-200"
@@ -49,6 +36,7 @@ div.flex.min-h-screen
         DialogOverlay.fixed.inset-0.bg-gray-600.bg-opacity-50
 
   div.hidden.w-64.bg-gray-50.border-r.border-gray-200(class="md:block")
+    navigation-menu
   div.flex-1
     div.flex.justify-between.items-center.py-3.px-3.space-x-3.bg-gray-50.border-b
       button.flex-shrink-0.flex.items-center.justify-center.w-10.h-10.rounded-full(
@@ -70,31 +58,4 @@ import {
 } from '@headlessui/vue'
 
 const sidebarOpened = ref(false)
-
-const menu = {
-  logo: 'https://www.pharmabest.com/assets/images/footer/pharmabest-footer.svg',
-  title: 'Pharmacie Agnes Praden',
-  sections: [
-    {
-      title: 'Catalogue',
-      links: [
-        {
-          name: 'Produits',
-          icon: 'fluent-mdl2:product-catalog',
-          href: '/products'
-        }
-      ]
-    },
-    {
-      title: 'Commandes',
-      links: [
-        {
-          name: 'Préparations',
-          icon: 'akar-icons:shipping-box-01',
-          href: '/orders/preparations'
-        }
-      ]
-    }
-  ]
-}
 </script>
