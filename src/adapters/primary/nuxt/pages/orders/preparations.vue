@@ -17,6 +17,8 @@ import { listOrdersToPrepare } from '@core/usecases/order/orders-to-prepare-list
 import { getOrdersToPrepareVM } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
 import { useOrderGateway } from '../../../../../../gateways/orderGateway'
 
+definePageMeta({ layout: 'main' })
+
 onMounted(() => {
   listOrdersToPrepare(useOrderGateway())
 })

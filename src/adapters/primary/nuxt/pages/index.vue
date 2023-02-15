@@ -1,3 +1,7 @@
 <template lang="pug">
-left-side-menu.w-full
+div coucou je suis index
 </template>
+
+<script lang="ts" setup>
+definePageMeta({ layout: 'main' })
+</script>
