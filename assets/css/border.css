@@ -7,6 +7,10 @@
     @apply border-primary5 hover:border-primary6;
   }
 
+  .border-neutral-light {
+    @apply border-gray4
+  }
+
   .border-opposite {
     @apply border-primary12;
   }

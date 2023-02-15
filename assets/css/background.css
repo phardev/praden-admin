@@ -22,4 +22,8 @@
   .bg-backdrop {
     @apply bg-neutral-500 bg-opacity-50;
   }
+
+  .bg-light {
+    @apply bg-gray2
+  }
 }

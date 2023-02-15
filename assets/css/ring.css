@@ -6,4 +6,8 @@
   .ring-light {
     @apply ring-primary5;
   }
+
+  .ring-neutral {
+    @apply ring-gray8
+  }
 }
