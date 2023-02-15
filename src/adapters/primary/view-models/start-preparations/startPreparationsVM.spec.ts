@@ -56,7 +56,7 @@ describe('Start preparations VM', () => {
           ],
           detail: [
             {
-              href: `${origin}/orders/${orderToPrepare1.uuid}`,
+              href: `${origin}/preparations/${orderToPrepare1.uuid}`,
               reference: orderToPrepare1.uuid,
               lines: [
                 {
@@ -93,7 +93,7 @@ describe('Start preparations VM', () => {
           ],
           detail: [
             {
-              href: `${anotherOrigin}/orders/${orderToPrepare2.uuid}`,
+              href: `${anotherOrigin}/preparations/${orderToPrepare2.uuid}`,
               reference: orderToPrepare2.uuid,
               lines: [
                 {
@@ -140,7 +140,7 @@ describe('Start preparations VM', () => {
           ],
           detail: [
             {
-              href: `${origin}/orders/${orderToPrepare1.uuid}`,
+              href: `${origin}/preparations/${orderToPrepare1.uuid}`,
               reference: orderToPrepare1.uuid,
               lines: [
                 {
@@ -152,7 +152,7 @@ describe('Start preparations VM', () => {
               ]
             },
             {
-              href: `${origin}/orders/${orderToPrepare2.uuid}`,
+              href: `${origin}/preparations/${orderToPrepare2.uuid}`,
               reference: orderToPrepare2.uuid,
               lines: [
                 {

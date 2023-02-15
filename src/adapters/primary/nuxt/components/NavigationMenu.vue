@@ -36,7 +36,7 @@ const menu = {
         {
           name: 'Préparations',
           icon: 'akar-icons:shipping-box-01',
-          href: '/orders/preparations'
+          href: '/preparations'
         }
       ]
     }

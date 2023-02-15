@@ -41,7 +41,7 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
   selected.forEach((uuid) => {
     const order = preparationStore.getByUuid(uuid)
     res.detail.push({
-      href: `${origin}/orders/${order.uuid}`,
+      href: `${origin}/preparations/${order.uuid}`,
       reference: order.uuid,
       lines: order.lines
         .map((line) => {
