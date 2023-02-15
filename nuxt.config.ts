@@ -13,6 +13,9 @@ export default defineNuxtConfig({
       title: 'Praden Admin'
     }
   },
+  build: {
+    transpile: ['vue-qr', '@diadal/vue3-qr-code-styling']
+  },
   components: {
     dirs: [
       {

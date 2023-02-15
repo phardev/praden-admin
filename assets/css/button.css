@@ -1,0 +1,13 @@
+@layer utilities {
+  .button-default {
+    @apply bg-component text-colored;
+  }
+
+  .button-solid {
+    @apply bg-solid text-white;
+  }
+
+  .button-hover {
+    @apply hover:bg-primary7 hover:text-colored
+  }
+}
