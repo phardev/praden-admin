@@ -2,6 +2,7 @@
 .section
   h1.text-4xl.font-semibold.text-default Commande \#{{ preparationVM.reference }}
   input.mt-8.w-full.rounded-full.border-opposite(
+    ref="scanner"
     type='text'
     placeholder='Code produit'
     :value="scan"
@@ -32,8 +33,10 @@ const preparationUuid = route.params.uuid
 
 onMounted(() => {
   getPreparation(preparationUuid, useOrderGateway())
+  scanner.value.focus()
 })
 
+const scanner = ref(null)
 const scan = ref('')
 
 const addProduct = (e: any) => {
