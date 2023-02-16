@@ -49,7 +49,7 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
             reference: line.cip13,
             name: line.name,
             location: line.location,
-            quantity: line.quantity
+            quantity: line.expectedQuantity
           }
         })
         .sort(sortByLocation)

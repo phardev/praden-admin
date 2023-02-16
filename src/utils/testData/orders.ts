@@ -7,7 +7,8 @@ export const orderToPrepare1: Order = {
     {
       name: dolodent.name,
       cip13: dolodent.cip13,
-      quantity: 2,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
@@ -33,7 +34,8 @@ export const orderToPrepare2: Order = {
     {
       name: dolodent.name,
       cip13: dolodent.cip13,
-      quantity: 1,
+      expectedQuantity: 1,
+      preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
@@ -42,7 +44,8 @@ export const orderToPrepare2: Order = {
     {
       name: ultraLevure.name,
       cip13: ultraLevure.cip13,
-      quantity: 2,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
       location: ultraLevure.location,
@@ -68,7 +71,8 @@ export const orderPrepared1: Order = {
     {
       name: dolodent.name,
       cip13: dolodent.cip13,
-      quantity: 2,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
@@ -94,7 +98,8 @@ export const orderInPreparation1: Order = {
     {
       name: dolodent.name,
       cip13: dolodent.cip13,
-      quantity: 2,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
@@ -120,7 +125,8 @@ export const orderDelivered1: Order = {
     {
       name: dolodent.name,
       cip13: dolodent.cip13,
-      quantity: 2,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
@@ -146,7 +152,8 @@ export const orderWithMissingProduct1: Order = {
     {
       name: dolodent.name,
       cip13: dolodent.cip13,
-      quantity: 2,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
@@ -155,7 +162,8 @@ export const orderWithMissingProduct1: Order = {
     {
       name: ultraLevure.name,
       cip13: ultraLevure.cip13,
-      quantity: 4,
+      expectedQuantity: 4,
+      preparedQuantity: 0,
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
       location: ultraLevure.location,
@@ -181,7 +189,8 @@ export const orderNotPayed1: Order = {
     {
       name: dolodent.name,
       cip13: dolodent.cip13,
-      quantity: 2,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,

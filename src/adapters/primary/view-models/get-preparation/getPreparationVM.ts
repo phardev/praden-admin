@@ -5,13 +5,18 @@ export interface GetPreparationLineVM {
   reference: string
   name: string
   expectedQuantity: number
-  currentQuantity: number
+  preparedQuantity: number
 }
 
 export interface GetPreparationVM {
   reference: string
   headers: Array<Header>
   lines: Array<GetPreparationLineVM>
+  canValidate: boolean
+}
+
+const isValid = (lines: Array<GetPreparationLineVM>) => {
+  return lines.every((line) => line.expectedQuantity === line.preparedQuantity)
 }
 
 export const getPreparationVM = () => {
@@ -21,7 +26,8 @@ export const getPreparationVM = () => {
     return {
       reference: '',
       headers: [],
-      lines: []
+      lines: [],
+      canValidate: false
     }
   }
   const headers: Array<Header> = [
@@ -39,19 +45,21 @@ export const getPreparationVM = () => {
     },
     {
       name: 'Quantité préparée',
-      value: 'currentQuantity'
+      value: 'preparedQuantity'
     }
   ]
+  const lines: Array<GetPreparationLineVM> = preparation.lines.map((line) => {
+    return {
+      reference: line.cip13,
+      name: line.name,
+      expectedQuantity: line.expectedQuantity,
+      preparedQuantity: line.preparedQuantity
+    }
+  })
   return {
     reference: preparation.uuid,
     headers,
-    lines: preparation.lines.map((line) => {
-      return {
-        reference: line.cip13,
-        name: line.name,
-        expectedQuantity: line.quantity,
-        currentQuantity: 0
-      }
-    })
+    lines,
+    canValidate: isValid(lines)
   }
 }

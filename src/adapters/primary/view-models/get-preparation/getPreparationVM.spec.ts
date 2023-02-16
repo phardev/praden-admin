@@ -26,7 +26,7 @@ describe('Get preparation VM', () => {
     },
     {
       name: 'Quantité préparée',
-      value: 'currentQuantity'
+      value: 'preparedQuantity'
     }
   ]
   beforeEach(() => {
@@ -45,9 +45,10 @@ describe('Get preparation VM', () => {
               reference: dolodent.cip13,
               name: dolodent.name,
               expectedQuantity: 2,
-              currentQuantity: 0
+              preparedQuantity: 0
             }
-          ]
+          ],
+          canValidate: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -61,15 +62,63 @@ describe('Get preparation VM', () => {
               reference: dolodent.cip13,
               name: dolodent.name,
               expectedQuantity: 1,
-              currentQuantity: 0
+              preparedQuantity: 0
             },
             {
               reference: ultraLevure.cip13,
               name: ultraLevure.name,
               expectedQuantity: 2,
-              currentQuantity: 0
+              preparedQuantity: 0
             }
-          ]
+          ],
+          canValidate: false
+        }
+        expect(getPreparationVM()).toStrictEqual(expectedVM)
+      })
+    })
+    describe('Some products were scanned', () => {
+      it('should get the preparation vm', () => {
+        const order = JSON.parse(JSON.stringify(orderToPrepare1))
+        order.lines[0].preparedQuantity = 2
+        givenCurrentPreparationIs(order)
+        const expectedVM: GetPreparationVM = {
+          reference: orderToPrepare1.uuid,
+          headers,
+          lines: [
+            {
+              reference: dolodent.cip13,
+              name: dolodent.name,
+              expectedQuantity: 2,
+              preparedQuantity: 2
+            }
+          ],
+          canValidate: true
+        }
+        expect(getPreparationVM()).toStrictEqual(expectedVM)
+      })
+      it('should get the preparation vm for a partially prepared order', () => {
+        const order = JSON.parse(JSON.stringify(orderToPrepare2))
+        order.lines[0].preparedQuantity = 1
+        order.lines[1].preparedQuantity = 1
+        givenCurrentPreparationIs(order)
+        const expectedVM: GetPreparationVM = {
+          reference: orderToPrepare2.uuid,
+          headers,
+          lines: [
+            {
+              reference: dolodent.cip13,
+              name: dolodent.name,
+              expectedQuantity: 1,
+              preparedQuantity: 1
+            },
+            {
+              reference: ultraLevure.cip13,
+              name: ultraLevure.name,
+              expectedQuantity: 2,
+              preparedQuantity: 1
+            }
+          ],
+          canValidate: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -80,7 +129,8 @@ describe('Get preparation VM', () => {
       const emptyVM: GetPreparationVM = {
         reference: '',
         headers: [],
-        lines: []
+        lines: [],
+        canValidate: false
       }
       expect(getPreparationVM()).toStrictEqual(emptyVM)
     })

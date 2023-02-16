@@ -20,7 +20,8 @@ export interface OrderLine {
   name: string
   cip13: string
   unitAmount: number
-  quantity: number
+  expectedQuantity: number
+  preparedQuantity: number
   location: string
   percentTaxRate: number
   deliveryStatus: DeliveryStatus
