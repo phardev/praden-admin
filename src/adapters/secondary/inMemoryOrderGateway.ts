@@ -1,6 +1,7 @@
 import { OrderGateway } from '@core/gateways/orderGateway'
 import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
 import { UUID } from '@core/types/types'
+import { PreparationDoesNotExistsError } from '@core/errors/preparationDoesNotExistsError'
 
 export class InMemoryOrderGateway implements OrderGateway {
   private orders: Array<Order> = []
@@ -23,6 +24,14 @@ export class InMemoryOrderGateway implements OrderGateway {
     order?.lines.forEach((l) => {
       l.deliveryStatus = DeliveryStatus.Processing
     })
+  }
+
+  getByUuid(uuid: UUID): Promise<Order> {
+    const order = this.orders.find((o) => o.uuid === uuid)
+    if (!order) {
+      throw new PreparationDoesNotExistsError(uuid)
+    }
+    return Promise.resolve(order)
   }
 
   feedWith(...orders: Array<Order>) {
