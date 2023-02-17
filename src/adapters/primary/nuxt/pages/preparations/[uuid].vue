@@ -11,8 +11,11 @@
   fv-table(
     :headers="preparationVM.headers"
     :items="preparationVM.lines"
-    :line-colors="colors"
   )
+    template(#status="{ item }")
+      icon.icon-lg.text-yellow-400(v-if="item.status === PreparationStatus.NotPrepared" name="bx:bxs-error")
+      icon.icon-lg.text-grass9(v-if="item.status === PreparationStatus.Prepared" name="material-symbols:check-circle")
+      icon.icon-lg.text-tomato8(v-if="item.status > PreparationStatus.Prepared" name="fluent-mdl2:status-error-full")
   div.w-full.flex.flex-row-reverse
     ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
       v-if="preparationVM.canValidate"
@@ -42,15 +45,6 @@ onMounted(() => {
 
 const scanner = ref(null)
 const scan = ref('')
-
-const colors = {
-  key: 'status',
-  values: {
-    [PreparationStatus.NotPrepared]: 'bg-yellow-300',
-    [PreparationStatus.Prepared]: 'bg-grass4',
-    [PreparationStatus.ErrorTooMuchQuantity]: 'bg-tomato8'
-  }
-}
 
 const addProduct = (e: any) => {
   addProductToPreparation(e.target.value)

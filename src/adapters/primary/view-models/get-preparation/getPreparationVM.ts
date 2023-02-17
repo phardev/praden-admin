@@ -61,6 +61,10 @@ export const getPreparationVM = () => {
     {
       name: 'Quantité préparée',
       value: 'preparedQuantity'
+    },
+    {
+      name: 'Status',
+      value: 'status'
     }
   ]
   const lines: Array<GetPreparationLineVM> = preparation.lines.map((line) => {

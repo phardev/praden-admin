@@ -28,7 +28,6 @@
         tr(
           v-for='(item, index) in items'
           :key='index'
-          :class="getLineColor(item)"
         )
           td.border-t.border-light(v-if="selectable" class="relative w-12 px-6 sm:w-16 sm:px-8")
             input(
@@ -70,12 +69,6 @@ const props = defineProps({
     default: () => {
       return []
     }
-  },
-  lineColors: {
-    type: Object,
-    default: () => {
-      return {}
-    }
   }
 })
 
@@ -96,11 +89,5 @@ const select = (selected: any) => {
 
 const selectAll = () => {
   emit('select-all')
-}
-
-const getLineColor = (item: any) => {
-  return props.lineColors.values
-    ? props.lineColors.values[item[props.lineColors.key]]
-    : ''
 }
 </script>
