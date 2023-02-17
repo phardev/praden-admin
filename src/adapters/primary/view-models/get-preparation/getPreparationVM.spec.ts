@@ -28,6 +28,10 @@ describe('Get preparation VM', () => {
     {
       name: 'Quantité préparée',
       value: 'preparedQuantity'
+    },
+    {
+      name: 'Status',
+      value: 'status'
     }
   ]
   beforeEach(() => {

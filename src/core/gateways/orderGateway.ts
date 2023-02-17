@@ -6,4 +6,5 @@ export interface OrderGateway {
   listOrdersToPrepare(): Promise<Array<Order>>
   startPreparation(uuid: UUID): void
   getByUuid(uuid: UUID): Promise<Order>
+  update(updated: Order): Promise<Order>
 }

@@ -27,6 +27,9 @@ export const usePreparationStore = defineStore('PreparationStore', {
       this.items.splice(index, 1)
       this.selected = []
     },
+    removeCurrent() {
+      this.current = undefined
+    },
     toggleSelect(uuid: UUID) {
       const index = this.selected.findIndex((s) => s === uuid)
       if (index > -1) {

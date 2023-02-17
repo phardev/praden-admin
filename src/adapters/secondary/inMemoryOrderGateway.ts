@@ -34,6 +34,12 @@ export class InMemoryOrderGateway implements OrderGateway {
     return Promise.resolve(order)
   }
 
+  async update(updated: Order): Promise<Order> {
+    let order = await this.getByUuid(updated.uuid)
+    order = updated
+    return Promise.resolve(order)
+  }
+
   feedWith(...orders: Array<Order>) {
     this.orders = orders
   }

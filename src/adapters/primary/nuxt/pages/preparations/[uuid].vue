@@ -28,7 +28,7 @@
   div.w-full.flex.flex-row-reverse
     ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
       v-if="preparationVM.canValidate"
-      @click="validatePreparation"
+      @click="validate"
     ) Valider la commande
 </template>
 
@@ -41,6 +41,7 @@ import {
   PreparationStatus
 } from '@adapters/primary/view-models/get-preparation/getPreparationVM'
 import { addProductToPreparation } from '@core/usecases/order/add-product-to-preparation/addProductToPreparation'
+import { validatePreparation } from '@core/usecases/order/validate-preparation/validatePreparation'
 
 definePageMeta({ layout: 'main' })
 
@@ -66,8 +67,11 @@ const setQuantity = (e: any, item: any) => {
   addProductToPreparation(item.reference, quantityToAdd)
 }
 
-const validatePreparation = () => {
-  console.log('On valide')
+const router = useRouter()
+
+const validate = async () => {
+  await validatePreparation(useOrderGateway())
+  router.push('/preparations')
 }
 
 const preparationVM = computed(() => {
