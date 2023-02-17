@@ -70,12 +70,23 @@ describe('Add product to preparation', () => {
     })
   })
 
+  describe('Add more than one', () => {
+    it('should add the quantity ', () => {
+      const order = JSON.parse(JSON.stringify(orderToPrepare1))
+      givenCurrentPreparationIs(order)
+      whenAddProductToPreparation(dolodent.cip13, 2)
+      const expectedOrder = JSON.parse(JSON.stringify(order))
+      expectedOrder.lines[0].preparedQuantity = 2
+      expectCurrentPreparationToBe(expectedOrder)
+    })
+  })
+
   const givenCurrentPreparationIs = (order: Order) => {
     preparationStore.current = order
   }
 
-  const whenAddProductToPreparation = (cip13: string) => {
-    addProductToPreparation(cip13)
+  const whenAddProductToPreparation = (cip13: string, quantity = 1) => {
+    addProductToPreparation(cip13, quantity)
   }
 
   const expectCurrentPreparationToBe = (order: Order) => {

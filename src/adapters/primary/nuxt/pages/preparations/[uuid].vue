@@ -12,6 +12,9 @@
     :headers="preparationVM.headers"
     :items="preparationVM.lines"
   )
+    template(#preparedQuantity="{ item }")
+      div(v-if="false" ) {{ item.preparedQuantity }}
+      input.rounded-full(v-else type="number" :value="item.preparedQuantity" @input="setQuantity($event, item)")
     template(#status="{ item }")
       icon.icon-lg.text-yellow-400(v-if="item.status === PreparationStatus.NotPrepared" name="bx:bxs-error")
       icon.icon-lg.text-grass9(v-if="item.status === PreparationStatus.Prepared" name="material-symbols:check-circle")
@@ -49,6 +52,12 @@ const scan = ref('')
 const addProduct = (e: any) => {
   addProductToPreparation(e.target.value)
   scan.value = ''
+}
+
+const setQuantity = (e: any, item: any) => {
+  const newQuantity = +e.target.value
+  const quantityToAdd = newQuantity - item.preparedQuantity
+  addProductToPreparation(item.reference, quantityToAdd)
 }
 
 const validatePreparation = () => {
