@@ -10,7 +10,7 @@ export const addProductToPreparation = (cip13: string) => {
   )
   const line = preparation.lines.find((line: OrderLine) => line.cip13 === cip13)
   if (line) {
-    if (line.preparedQuantity < line.expectedQuantity) line.preparedQuantity++
+    line.preparedQuantity++
   }
   preparationStore.setCurrent(preparation)
 }

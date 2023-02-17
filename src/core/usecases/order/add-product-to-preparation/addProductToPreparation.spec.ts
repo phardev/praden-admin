@@ -64,7 +64,9 @@ describe('Add product to preparation', () => {
       order.lines[0].preparedQuantity = order.lines[0].expectedQuantity
       givenCurrentPreparationIs(order)
       whenAddProductToPreparation(dolodent.cip13)
-      expectCurrentPreparationToBe(order)
+      const expectedOrder = JSON.parse(JSON.stringify(order))
+      expectedOrder.lines[0].preparedQuantity++
+      expectCurrentPreparationToBe(expectedOrder)
     })
   })
 

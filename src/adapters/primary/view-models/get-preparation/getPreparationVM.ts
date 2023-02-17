@@ -1,11 +1,18 @@
 import { usePreparationStore } from '@store/preparationStore'
 import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
 
+export enum PreparationStatus {
+  NotPrepared,
+  Prepared,
+  ErrorTooMuchQuantity
+}
+
 export interface GetPreparationLineVM {
   reference: string
   name: string
   expectedQuantity: number
   preparedQuantity: number
+  status: PreparationStatus
 }
 
 export interface GetPreparationVM {
@@ -17,6 +24,14 @@ export interface GetPreparationVM {
 
 const isValid = (lines: Array<GetPreparationLineVM>) => {
   return lines.every((line) => line.expectedQuantity === line.preparedQuantity)
+}
+
+const getLineStatus = (line: GetPreparationLineVM): PreparationStatus => {
+  if (line.expectedQuantity < line.preparedQuantity)
+    return PreparationStatus.ErrorTooMuchQuantity
+  return line.expectedQuantity === line.preparedQuantity
+    ? PreparationStatus.Prepared
+    : PreparationStatus.NotPrepared
 }
 
 export const getPreparationVM = () => {
@@ -53,7 +68,8 @@ export const getPreparationVM = () => {
       reference: line.cip13,
       name: line.name,
       expectedQuantity: line.expectedQuantity,
-      preparedQuantity: line.preparedQuantity
+      preparedQuantity: line.preparedQuantity,
+      status: getLineStatus(line)
     }
   })
   return {

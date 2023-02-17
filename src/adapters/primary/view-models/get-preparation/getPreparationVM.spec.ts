@@ -4,7 +4,8 @@ import { createPinia, setActivePinia } from 'pinia'
 import { usePreparationStore } from '@store/preparationStore'
 import {
   getPreparationVM,
-  GetPreparationVM
+  GetPreparationVM,
+  PreparationStatus
 } from '@adapters/primary/view-models/get-preparation/getPreparationVM'
 import { dolodent, ultraLevure } from '@utils/testData/products'
 import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
@@ -45,7 +46,8 @@ describe('Get preparation VM', () => {
               reference: dolodent.cip13,
               name: dolodent.name,
               expectedQuantity: 2,
-              preparedQuantity: 0
+              preparedQuantity: 0,
+              status: PreparationStatus.NotPrepared
             }
           ],
           canValidate: false
@@ -62,13 +64,15 @@ describe('Get preparation VM', () => {
               reference: dolodent.cip13,
               name: dolodent.name,
               expectedQuantity: 1,
-              preparedQuantity: 0
+              preparedQuantity: 0,
+              status: PreparationStatus.NotPrepared
             },
             {
               reference: ultraLevure.cip13,
               name: ultraLevure.name,
               expectedQuantity: 2,
-              preparedQuantity: 0
+              preparedQuantity: 0,
+              status: PreparationStatus.NotPrepared
             }
           ],
           canValidate: false
@@ -89,7 +93,8 @@ describe('Get preparation VM', () => {
               reference: dolodent.cip13,
               name: dolodent.name,
               expectedQuantity: 2,
-              preparedQuantity: 2
+              preparedQuantity: 2,
+              status: PreparationStatus.Prepared
             }
           ],
           canValidate: true
@@ -109,13 +114,35 @@ describe('Get preparation VM', () => {
               reference: dolodent.cip13,
               name: dolodent.name,
               expectedQuantity: 1,
-              preparedQuantity: 1
+              preparedQuantity: 1,
+              status: PreparationStatus.Prepared
             },
             {
               reference: ultraLevure.cip13,
               name: ultraLevure.name,
               expectedQuantity: 2,
-              preparedQuantity: 1
+              preparedQuantity: 1,
+              status: PreparationStatus.NotPrepared
+            }
+          ],
+          canValidate: false
+        }
+        expect(getPreparationVM()).toStrictEqual(expectedVM)
+      })
+      it('should get the preparation vm for an preparation with too much prepared quantity', () => {
+        const order = JSON.parse(JSON.stringify(orderToPrepare1))
+        order.lines[0].preparedQuantity = 3
+        givenCurrentPreparationIs(order)
+        const expectedVM: GetPreparationVM = {
+          reference: orderToPrepare1.uuid,
+          headers,
+          lines: [
+            {
+              reference: dolodent.cip13,
+              name: dolodent.name,
+              expectedQuantity: 2,
+              preparedQuantity: 3,
+              status: PreparationStatus.ErrorTooMuchQuantity
             }
           ],
           canValidate: false

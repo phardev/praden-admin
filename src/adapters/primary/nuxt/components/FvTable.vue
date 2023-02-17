@@ -18,16 +18,19 @@
               :indeterminate="indeterminate"
               @click.prevent="selectAll"
             )
-          th.pl-4.pr-3.text-left.text-sm.font-semibold.text-default(
+          th.pl-4.pr-3.text-left.text-sm.font-semibold(
             v-for="(header, headerIndex) in headers"
             :key="headerIndex"
             :class="[headerIndex === 0 ? 'pl-4 pr-3 sm:pl-6' : 'px-3 lg:table-cell', 'text-left text-sm font-semibold text-default py-3.5']"
             scope='col'
           ) {{ header.name }}
       tbody
-        tr(v-for='(item, index) in items' :key='index')
+        tr(
+          v-for='(item, index) in items'
+          :key='index'
+          :class="getLineColor(item)"
+        )
           td.border-t.border-light(v-if="selectable" class="relative w-12 px-6 sm:w-16 sm:px-8")
-            div(v-if="false" class="absolute inset-y-0 left-0 w-0.5 bg-contrast")
             input(
               :key="selection.includes(item.reference)"
               type="checkbox"
@@ -67,6 +70,12 @@ const props = defineProps({
     default: () => {
       return []
     }
+  },
+  lineColors: {
+    type: Object,
+    default: () => {
+      return {}
+    }
   }
 })
 
@@ -87,5 +96,11 @@ const select = (selected: any) => {
 
 const selectAll = () => {
   emit('select-all')
+}
+
+const getLineColor = (item: any) => {
+  return props.lineColors.values
+    ? props.lineColors.values[item[props.lineColors.key]]
+    : ''
 }
 </script>
