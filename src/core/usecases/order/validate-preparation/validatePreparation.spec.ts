@@ -33,9 +33,6 @@ describe('Validate preparation', () => {
       expectedOrder.lines[0].updatedAt = now
       expect(await orderGateway.list()).toStrictEqual([expectedOrder])
     })
-    it('should remove current preparation store', () => {
-      expect(preparationStore.current).toBeUndefined()
-    })
   })
   describe('Another preparation is fully prepared', () => {
     const order: Order = JSON.parse(JSON.stringify(orderToPrepare2))
@@ -54,9 +51,6 @@ describe('Validate preparation', () => {
       expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Shipped
       expectedOrder.lines[1].deliveryStatus = DeliveryStatus.Shipped
       expect(await orderGateway.list()).toStrictEqual([expectedOrder])
-    })
-    it('should remove current preparation store', () => {
-      expect(preparationStore.current).toBeUndefined()
     })
   })
 

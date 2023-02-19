@@ -7,5 +7,4 @@ export const validatePreparation = async (orderGateway: OrderGateway) => {
   const preparation = preparationStore.current
   if (!preparation) throw new NoPreparationSelectedError()
   await orderGateway.validatePreparation(preparation)
-  preparationStore.removeCurrent()
 }
