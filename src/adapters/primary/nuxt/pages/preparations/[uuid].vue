@@ -40,6 +40,7 @@ import {
 } from '@adapters/primary/view-models/get-preparation/getPreparationVM'
 import { addProductToPreparation } from '@core/usecases/order/add-product-to-preparation/addProductToPreparation'
 import { validatePreparation } from '@core/usecases/order/validate-preparation/validatePreparation'
+import { useInvoiceGateway } from '../../../../../../gateways/invoiceGateway'
 
 definePageMeta({ layout: 'main' })
 
@@ -68,7 +69,7 @@ const setQuantity = (e: any, item: any) => {
 const router = useRouter()
 
 const validate = async () => {
-  await validatePreparation(useOrderGateway())
+  await validatePreparation(useOrderGateway(), useInvoiceGateway())
   router.push('/preparations')
 }
 

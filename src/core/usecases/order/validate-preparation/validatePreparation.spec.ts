@@ -6,15 +6,19 @@ import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
 import { DeliveryStatus, Order } from '@core/entities/order'
 import { InMemoryOrderGateway } from '@adapters/secondary/inMemoryOrderGateway'
 import { FakeDateProvider } from '@adapters/secondary/fakeDateProvider'
+import { Invoice } from '@core/entities/invoice'
+import { InMemoryInvoiceGateway } from '@adapters/secondary/inMemoryInvoiceGateway'
 
 describe('Validate preparation', () => {
   let preparationStore: any
   let orderGateway: InMemoryOrderGateway
+  let invoiceGateway: InMemoryInvoiceGateway
   const dateProvider = new FakeDateProvider()
   beforeEach(() => {
     setActivePinia(createPinia())
     preparationStore = usePreparationStore()
     orderGateway = new InMemoryOrderGateway(dateProvider)
+    invoiceGateway = new InMemoryInvoiceGateway()
   })
 
   describe('The preparation is fully prepared', () => {
@@ -32,6 +36,19 @@ describe('Validate preparation', () => {
       expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Shipped
       expectedOrder.lines[0].updatedAt = now
       expect(await orderGateway.list()).toStrictEqual([expectedOrder])
+    })
+    it('should create the invoice', async () => {
+      const expectedInvoiceNumber = order.payment.invoiceNumber
+      const expectedOrder: Order = JSON.parse(JSON.stringify(order))
+      expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Shipped
+      expectedOrder.lines[0].updatedAt = now
+      const expectedInvoice: Invoice = {
+        id: expectedInvoiceNumber,
+        data: expectedOrder
+      }
+      expect(await invoiceGateway.get(expectedInvoiceNumber)).toStrictEqual(
+        expectedInvoice
+      )
     })
   })
   describe('Another preparation is fully prepared', () => {
@@ -52,6 +69,19 @@ describe('Validate preparation', () => {
       expectedOrder.lines[1].deliveryStatus = DeliveryStatus.Shipped
       expect(await orderGateway.list()).toStrictEqual([expectedOrder])
     })
+    it('should create the invoice', async () => {
+      const expectedInvoiceNumber = order.payment.invoiceNumber
+      const expectedOrder: Order = JSON.parse(JSON.stringify(order))
+      expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Shipped
+      expectedOrder.lines[1].deliveryStatus = DeliveryStatus.Shipped
+      const expectedInvoice: Invoice = {
+        id: expectedInvoiceNumber,
+        data: expectedOrder
+      }
+      expect(await invoiceGateway.get(expectedInvoiceNumber)).toStrictEqual(
+        expectedInvoice
+      )
+    })
   })
 
   describe('There is no current preparation', () => {
@@ -71,6 +101,6 @@ describe('Validate preparation', () => {
   }
 
   const whenValidatePreparation = async () => {
-    await validatePreparation(orderGateway)
+    await validatePreparation(orderGateway, invoiceGateway)
   }
 })
