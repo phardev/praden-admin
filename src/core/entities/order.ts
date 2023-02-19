@@ -34,6 +34,7 @@ export enum PaymentStatus {
 }
 
 export interface Payment {
+  invoiceNumber?: string
   status: PaymentStatus
 }
 
