@@ -25,6 +25,7 @@ export interface OrderLine {
   location: string
   percentTaxRate: number
   deliveryStatus: DeliveryStatus
+  updatedAt: Timestamp
 }
 
 export enum PaymentStatus {

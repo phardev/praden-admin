@@ -12,7 +12,8 @@ export const orderToPrepare1: Order = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Created
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1674273279000
     }
   ],
   deliveryAddress: {
@@ -39,7 +40,8 @@ export const orderToPrepare2: Order = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Created
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1675565972527
     },
     {
       name: ultraLevure.name,
@@ -49,7 +51,8 @@ export const orderToPrepare2: Order = {
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
       location: ultraLevure.location,
-      deliveryStatus: DeliveryStatus.Created
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1675565972527
     }
   ],
   deliveryAddress: {
@@ -76,7 +79,8 @@ export const orderPrepared1: Order = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Shipped
+      deliveryStatus: DeliveryStatus.Shipped,
+      updatedAt: 1675577400000
     }
   ],
   deliveryAddress: {
@@ -103,7 +107,8 @@ export const orderInPreparation1: Order = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Processing
+      deliveryStatus: DeliveryStatus.Processing,
+      updatedAt: 1675564520539
     }
   ],
   deliveryAddress: {
@@ -116,7 +121,7 @@ export const orderInPreparation1: Order = {
   payment: {
     status: PaymentStatus.Payed
   },
-  createdAt: 1674273579000
+  createdAt: 1675564420539
 }
 
 export const orderDelivered1: Order = {
@@ -130,7 +135,8 @@ export const orderDelivered1: Order = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Delivered
+      deliveryStatus: DeliveryStatus.Delivered,
+      updatedAt: 1674295599432
     }
   ],
   deliveryAddress: {
@@ -157,7 +163,8 @@ export const orderWithMissingProduct1: Order = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Shipped
+      deliveryStatus: DeliveryStatus.Shipped,
+      updatedAt: 1674573778456
     },
     {
       name: ultraLevure.name,
@@ -167,7 +174,8 @@ export const orderWithMissingProduct1: Order = {
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
       location: ultraLevure.location,
-      deliveryStatus: DeliveryStatus.Processing
+      deliveryStatus: DeliveryStatus.Processing,
+      updatedAt: 1674573698456
     }
   ],
   deliveryAddress: {
@@ -194,7 +202,8 @@ export const orderNotPayed1: Order = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Created
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1674273789000
     }
   ],
   deliveryAddress: {

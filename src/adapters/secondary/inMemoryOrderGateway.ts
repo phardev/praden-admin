@@ -2,9 +2,15 @@ import { OrderGateway } from '@core/gateways/orderGateway'
 import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
 import { UUID } from '@core/types/types'
 import { PreparationDoesNotExistsError } from '@core/errors/preparationDoesNotExistsError'
+import { DateProvider } from '@core/gateways/dateProvider'
 
 export class InMemoryOrderGateway implements OrderGateway {
   private orders: Array<Order> = []
+  private dateProvider: DateProvider
+
+  constructor(dateProvider: DateProvider) {
+    this.dateProvider = dateProvider
+  }
 
   list(): Promise<Array<Order>> {
     return Promise.resolve(this.orders)
@@ -34,9 +40,13 @@ export class InMemoryOrderGateway implements OrderGateway {
     return Promise.resolve(order)
   }
 
-  async update(updated: Order): Promise<Order> {
-    let order = await this.getByUuid(updated.uuid)
-    order = updated
+  async validatePreparation(preparation: Order): Promise<Order> {
+    preparation.lines.forEach((line) => {
+      line.deliveryStatus = DeliveryStatus.Shipped
+      line.updatedAt = this.dateProvider.now()
+    })
+    let order: Order = await this.getByUuid(preparation.uuid)
+    order = preparation
     return Promise.resolve(order)
   }
 
