@@ -13,9 +13,7 @@
     :items="preparationVM.lines"
   )
     template(#preparedQuantity="{ item }")
-      div(v-if="false" ) {{ item.preparedQuantity }}
       input.rounded-full.w-24(
-        v-else
         type="number"
         :value="item.preparedQuantity"
         @input="setQuantity($event, item)"
