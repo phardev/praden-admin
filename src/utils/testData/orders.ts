@@ -1,5 +1,5 @@
 import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import { anaca3Minceur, dolodent, ultraLevure } from '@utils/testData/products'
 
 export const orderToPrepare1: Order = {
   uuid: 'XIKOKI',
@@ -27,7 +27,11 @@ export const orderToPrepare1: Order = {
     invoiceNumber: '2023-00005',
     status: PaymentStatus.Payed
   },
-  createdAt: 1674273279000
+  createdAt: 1674273279000,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  }
 }
 
 export const orderToPrepare2: Order = {
@@ -67,7 +71,11 @@ export const orderToPrepare2: Order = {
     invoiceNumber: '2023-00006',
     status: PaymentStatus.Payed
   },
-  createdAt: 1675565972527
+  createdAt: 1675565972527,
+  contact: {
+    email: 'jeannedarc@email.com',
+    phone: '9876543210'
+  }
 }
 
 export const orderPrepared1: Order = {
@@ -77,7 +85,7 @@ export const orderPrepared1: Order = {
       name: dolodent.name,
       cip13: dolodent.cip13,
       expectedQuantity: 2,
-      preparedQuantity: 0,
+      preparedQuantity: 2,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
@@ -96,7 +104,11 @@ export const orderPrepared1: Order = {
     invoiceNumber: '2023-00003',
     status: PaymentStatus.Payed
   },
-  createdAt: 1675564420539
+  createdAt: 1675564420539,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  }
 }
 
 export const orderInPreparation1: Order = {
@@ -125,17 +137,32 @@ export const orderInPreparation1: Order = {
     invoiceNumber: '2023-00004',
     status: PaymentStatus.Payed
   },
-  createdAt: 1675564420539
+  createdAt: 1675564420539,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  }
 }
 
 export const orderDelivered1: Order = {
   uuid: 'HGFRIW',
   lines: [
     {
+      name: anaca3Minceur.name,
+      cip13: anaca3Minceur.cip13,
+      expectedQuantity: 3,
+      preparedQuantity: 3,
+      unitAmount: anaca3Minceur.priceWithoutTax,
+      percentTaxRate: anaca3Minceur.percentTaxRate,
+      location: anaca3Minceur.location,
+      deliveryStatus: DeliveryStatus.Delivered,
+      updatedAt: 1674295599432
+    },
+    {
       name: dolodent.name,
       cip13: dolodent.cip13,
-      expectedQuantity: 2,
-      preparedQuantity: 0,
+      expectedQuantity: 1,
+      preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
@@ -144,17 +171,21 @@ export const orderDelivered1: Order = {
     }
   ],
   deliveryAddress: {
-    firstname: 'Jean',
-    lastname: 'Bon',
-    address: '10 rue des peupliers',
-    city: 'PlopLand',
-    zip: '12345'
+    firstname: 'Jeanne',
+    lastname: "D'arc",
+    address: '12 avenue du bois',
+    city: 'Boisville',
+    zip: '54321'
   },
   payment: {
     invoiceNumber: '2023-00001',
     status: PaymentStatus.Payed
   },
-  createdAt: 1674273599954
+  createdAt: 1674273599954,
+  contact: {
+    email: 'jeannedarc@email.com',
+    phone: '9876543210'
+  }
 }
 
 export const orderWithMissingProduct1: Order = {
@@ -194,7 +225,11 @@ export const orderWithMissingProduct1: Order = {
     invoiceNumber: '2023-00002',
     status: PaymentStatus.Payed
   },
-  createdAt: 1674573678456
+  createdAt: 1674573678456,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  }
 }
 
 export const orderNotPayed1: Order = {
@@ -222,5 +257,9 @@ export const orderNotPayed1: Order = {
   payment: {
     status: PaymentStatus.WaitingForPayment
   },
-  createdAt: 1674273789000
+  createdAt: 1674273789000,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  }
 }

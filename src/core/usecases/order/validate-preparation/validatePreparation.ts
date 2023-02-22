@@ -2,6 +2,7 @@ import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedEr
 import { usePreparationStore } from '@store/preparationStore'
 import { OrderGateway } from '@core/gateways/orderGateway'
 import { InvoiceGateway } from '@core/gateways/invoiceGateway'
+import { useInvoiceStore } from '@store/invoiceStore'
 
 export const validatePreparation = async (
   orderGateway: OrderGateway,
@@ -11,5 +12,7 @@ export const validatePreparation = async (
   const preparation = preparationStore.current
   if (!preparation) throw new NoPreparationSelectedError()
   await orderGateway.validatePreparation(preparation)
-  await invoiceGateway.create(preparation)
+  const invoice = await invoiceGateway.create(preparation)
+  const invoiceStore = useInvoiceStore()
+  invoiceStore.set(invoice)
 }

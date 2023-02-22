@@ -38,10 +38,16 @@ export interface Payment {
   status: PaymentStatus
 }
 
+export interface Contact {
+  email: string
+  phone: string
+}
+
 export interface Order {
   uuid: string
   lines: Array<OrderLine>
   deliveryAddress: Address
   payment: Payment
   createdAt: Timestamp
+  contact: Contact
 }

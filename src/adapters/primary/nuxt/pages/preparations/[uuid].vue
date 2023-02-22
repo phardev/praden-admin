@@ -1,5 +1,6 @@
 <template lang="pug">
-.section
+invoice.hidden.printme.mx-2
+.section.no-printme
   h1.text-4xl.font-semibold.text-default Commande \#{{ preparationVM.reference }}
   input.mt-8.w-full.rounded-full.border-opposite(
     ref="scanner"
@@ -70,6 +71,7 @@ const router = useRouter()
 
 const validate = async () => {
   await validatePreparation(useOrderGateway(), useInvoiceGateway())
+  window.print()
   router.push('/preparations')
 }
 

@@ -21,3 +21,14 @@ export const ultraLevure: Product = {
   location: 'C3',
   availableStock: 36
 }
+
+export const anaca3Minceur: Product = {
+  name: 'Anaca3 Perte de Poids Infusion 24 Sachets',
+  img: 'https://www.pharmacieagnespraden.com/img/tmp/product_mini_198_1.jpg?time=1675901328',
+  categoryUuid: 'category-minceur',
+  cip13: '3760007337185',
+  priceWithoutTax: 891,
+  percentTaxRate: 5.5,
+  location: '1D450',
+  availableStock: 36
+}
