@@ -24,8 +24,8 @@ const computeTotalWithTaxForOrder = (order: Order) => {
   const total = order.lines.reduce((acc: number, line: OrderLine) => {
     return (
       acc +
-      line.unitAmount * line.quantity +
-      (line.unitAmount * line.quantity * line.percentTaxRate) / 100
+      line.unitAmount * line.expectedQuantity +
+      (line.unitAmount * line.expectedQuantity * line.percentTaxRate) / 100
     )
   }, 0)
   return total

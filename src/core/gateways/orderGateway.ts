@@ -5,4 +5,6 @@ export interface OrderGateway {
   list(): Promise<Array<Order>>
   listOrdersToPrepare(): Promise<Array<Order>>
   startPreparation(uuid: UUID): void
+  getByUuid(uuid: UUID): Promise<Order>
+  validatePreparation(preparation: Order): Promise<Order>
 }

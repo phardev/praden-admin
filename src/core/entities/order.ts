@@ -20,10 +20,12 @@ export interface OrderLine {
   name: string
   cip13: string
   unitAmount: number
-  quantity: number
+  expectedQuantity: number
+  preparedQuantity: number
   location: string
   percentTaxRate: number
   deliveryStatus: DeliveryStatus
+  updatedAt: Timestamp
 }
 
 export enum PaymentStatus {
@@ -32,7 +34,13 @@ export enum PaymentStatus {
 }
 
 export interface Payment {
+  invoiceNumber?: string
   status: PaymentStatus
+}
+
+export interface Contact {
+  email: string
+  phone: string
 }
 
 export interface Order {
@@ -41,4 +49,5 @@ export interface Order {
   deliveryAddress: Address
   payment: Payment
   createdAt: Timestamp
+  contact: Contact
 }

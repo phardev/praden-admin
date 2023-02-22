@@ -12,6 +12,7 @@ import {
   orderWithMissingProduct1
 } from '@utils/testData/orders'
 import { InMemoryOrderGateway } from '@adapters/secondary/inMemoryOrderGateway'
+import { FakeDateProvider } from '@adapters/secondary/fakeDateProvider'
 
 describe('List orders to prepare', () => {
   let preparationStore: any
@@ -20,7 +21,7 @@ describe('List orders to prepare', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     preparationStore = usePreparationStore()
-    orderGateway = new InMemoryOrderGateway()
+    orderGateway = new InMemoryOrderGateway(new FakeDateProvider())
   })
 
   describe('There is no orders to prepare', () => {

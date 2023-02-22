@@ -5,6 +5,7 @@ import { DeliveryStatus, Order, OrderLine } from '@core/entities/order'
 import { UUID } from '@core/types/types'
 import { startPreparations } from '@core/usecases/order/start-preparations/startPreparations'
 import { usePreparationStore } from '@store/preparationStore'
+import { FakeDateProvider } from '@adapters/secondary/fakeDateProvider'
 
 describe('Start preparations', () => {
   let orderGateway: InMemoryOrderGateway
@@ -12,7 +13,7 @@ describe('Start preparations', () => {
 
   beforeEach(() => {
     setActivePinia(createPinia())
-    orderGateway = new InMemoryOrderGateway()
+    orderGateway = new InMemoryOrderGateway(new FakeDateProvider())
     preparationStore = usePreparationStore()
   })
 

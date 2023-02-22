@@ -88,6 +88,6 @@ const router = useRouter()
 const start = () => {
   window.print()
   startPreparations(useOrderGateway())
-  router.push('/orders/preparations')
+  router.push('/preparations')
 }
 </script>

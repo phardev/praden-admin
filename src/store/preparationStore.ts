@@ -6,7 +6,8 @@ export const usePreparationStore = defineStore('PreparationStore', {
   state: () => {
     return {
       items: [] as Array<Order>,
-      selected: [] as Array<UUID>
+      selected: [] as Array<UUID>,
+      current: undefined as Order | undefined
     }
   },
   getters: {
@@ -37,6 +38,9 @@ export const usePreparationStore = defineStore('PreparationStore', {
     toggleSelectAll() {
       if (this.selected.length) this.selected = []
       else this.selected = this.items.map((i) => i.uuid)
+    },
+    setCurrent(order: Order) {
+      this.current = order
     }
   }
 })

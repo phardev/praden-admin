@@ -41,7 +41,7 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
   selected.forEach((uuid) => {
     const order = preparationStore.getByUuid(uuid)
     res.detail.push({
-      href: `${origin}/orders/${order.uuid}`,
+      href: `${origin}/preparations/${order.uuid}`,
       reference: order.uuid,
       lines: order.lines
         .map((line) => {
@@ -49,7 +49,7 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
             reference: line.cip13,
             name: line.name,
             location: line.location,
-            quantity: line.quantity
+            quantity: line.expectedQuantity
           }
         })
         .sort(sortByLocation)

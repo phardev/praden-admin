@@ -1,5 +1,5 @@
 import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import { anaca3Minceur, dolodent, ultraLevure } from '@utils/testData/products'
 
 export const orderToPrepare1: Order = {
   uuid: 'XIKOKI',
@@ -7,11 +7,13 @@ export const orderToPrepare1: Order = {
     {
       name: dolodent.name,
       cip13: dolodent.cip13,
-      quantity: 2,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Created
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1674273279000
     }
   ],
   deliveryAddress: {
@@ -22,9 +24,14 @@ export const orderToPrepare1: Order = {
     zip: '12345'
   },
   payment: {
+    invoiceNumber: '2023-00006',
     status: PaymentStatus.Payed
   },
-  createdAt: 1674273279000
+  createdAt: 1674273279000,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  }
 }
 
 export const orderToPrepare2: Order = {
@@ -33,20 +40,24 @@ export const orderToPrepare2: Order = {
     {
       name: dolodent.name,
       cip13: dolodent.cip13,
-      quantity: 1,
+      expectedQuantity: 1,
+      preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Created
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1675565972527
     },
     {
       name: ultraLevure.name,
       cip13: ultraLevure.cip13,
-      quantity: 2,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
       location: ultraLevure.location,
-      deliveryStatus: DeliveryStatus.Created
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1675565972527
     }
   ],
   deliveryAddress: {
@@ -57,9 +68,14 @@ export const orderToPrepare2: Order = {
     zip: '54321'
   },
   payment: {
+    invoiceNumber: '2023-00007',
     status: PaymentStatus.Payed
   },
-  createdAt: 1675565972527
+  createdAt: 1675565972527,
+  contact: {
+    email: 'jeannedarc@email.com',
+    phone: '9876543210'
+  }
 }
 
 export const orderPrepared1: Order = {
@@ -68,11 +84,13 @@ export const orderPrepared1: Order = {
     {
       name: dolodent.name,
       cip13: dolodent.cip13,
-      quantity: 2,
+      expectedQuantity: 2,
+      preparedQuantity: 2,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Shipped
+      deliveryStatus: DeliveryStatus.Shipped,
+      updatedAt: 1675577400000
     }
   ],
   deliveryAddress: {
@@ -83,9 +101,14 @@ export const orderPrepared1: Order = {
     zip: '12345'
   },
   payment: {
+    invoiceNumber: '2023-00005',
     status: PaymentStatus.Payed
   },
-  createdAt: 1675564420539
+  createdAt: 1675564420539,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  }
 }
 
 export const orderInPreparation1: Order = {
@@ -94,11 +117,13 @@ export const orderInPreparation1: Order = {
     {
       name: dolodent.name,
       cip13: dolodent.cip13,
-      quantity: 2,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Processing
+      deliveryStatus: DeliveryStatus.Processing,
+      updatedAt: 1675564520539
     }
   ],
   deliveryAddress: {
@@ -109,35 +134,102 @@ export const orderInPreparation1: Order = {
     zip: '12345'
   },
   payment: {
+    invoiceNumber: '2023-00004',
     status: PaymentStatus.Payed
   },
-  createdAt: 1674273579000
+  createdAt: 1675564420539,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  }
 }
 
 export const orderDelivered1: Order = {
   uuid: 'HGFRIW',
   lines: [
     {
+      name: anaca3Minceur.name,
+      cip13: anaca3Minceur.cip13,
+      expectedQuantity: 3,
+      preparedQuantity: 3,
+      unitAmount: anaca3Minceur.priceWithoutTax,
+      percentTaxRate: anaca3Minceur.percentTaxRate,
+      location: anaca3Minceur.location,
+      deliveryStatus: DeliveryStatus.Delivered,
+      updatedAt: 1674295599432
+    },
+    {
       name: dolodent.name,
       cip13: dolodent.cip13,
-      quantity: 2,
+      expectedQuantity: 1,
+      preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Delivered
+      deliveryStatus: DeliveryStatus.Delivered,
+      updatedAt: 1674295599432
     }
   ],
   deliveryAddress: {
-    firstname: 'Jean',
-    lastname: 'Bon',
-    address: '10 rue des peupliers',
-    city: 'PlopLand',
-    zip: '12345'
+    firstname: 'Jeanne',
+    lastname: "D'arc",
+    address: '12 avenue du bois',
+    city: 'Boisville',
+    zip: '54321'
   },
   payment: {
+    invoiceNumber: '2023-00001',
     status: PaymentStatus.Payed
   },
-  createdAt: 1674273599954
+  createdAt: 1674273599954,
+  contact: {
+    email: 'jeannedarc@email.com',
+    phone: '9876543210'
+  }
+}
+
+export const orderDelivered2: Order = {
+  uuid: 'GJIRLK',
+  lines: [
+    {
+      name: ultraLevure.name,
+      cip13: ultraLevure.cip13,
+      expectedQuantity: 3,
+      preparedQuantity: 3,
+      unitAmount: ultraLevure.priceWithoutTax,
+      percentTaxRate: ultraLevure.percentTaxRate,
+      location: ultraLevure.location,
+      deliveryStatus: DeliveryStatus.Delivered,
+      updatedAt: 1674295599432
+    },
+    {
+      name: dolodent.name,
+      cip13: dolodent.cip13,
+      expectedQuantity: 1,
+      preparedQuantity: 1,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
+      deliveryStatus: DeliveryStatus.Delivered,
+      updatedAt: 1674295599432
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jeanne',
+    lastname: "D'arc",
+    address: '12 avenue du bois',
+    city: 'Boisville',
+    zip: '54321'
+  },
+  payment: {
+    invoiceNumber: '2023-00001',
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674273599954,
+  contact: {
+    email: 'jeannedarc@email.com',
+    phone: '9876543210'
+  }
 }
 
 export const orderWithMissingProduct1: Order = {
@@ -146,20 +238,24 @@ export const orderWithMissingProduct1: Order = {
     {
       name: dolodent.name,
       cip13: dolodent.cip13,
-      quantity: 2,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Shipped
+      deliveryStatus: DeliveryStatus.Shipped,
+      updatedAt: 1674573778456
     },
     {
       name: ultraLevure.name,
       cip13: ultraLevure.cip13,
-      quantity: 4,
+      expectedQuantity: 4,
+      preparedQuantity: 0,
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
       location: ultraLevure.location,
-      deliveryStatus: DeliveryStatus.Processing
+      deliveryStatus: DeliveryStatus.Processing,
+      updatedAt: 1674573698456
     }
   ],
   deliveryAddress: {
@@ -170,9 +266,14 @@ export const orderWithMissingProduct1: Order = {
     zip: '12345'
   },
   payment: {
+    invoiceNumber: '2023-00002',
     status: PaymentStatus.Payed
   },
-  createdAt: 1674573678456
+  createdAt: 1674573678456,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  }
 }
 
 export const orderNotPayed1: Order = {
@@ -181,11 +282,13 @@ export const orderNotPayed1: Order = {
     {
       name: dolodent.name,
       cip13: dolodent.cip13,
-      quantity: 2,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Created
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1674273789000
     }
   ],
   deliveryAddress: {
@@ -198,5 +301,9 @@ export const orderNotPayed1: Order = {
   payment: {
     status: PaymentStatus.WaitingForPayment
   },
-  createdAt: 1674273789000
+  createdAt: 1674273789000,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  }
 }
