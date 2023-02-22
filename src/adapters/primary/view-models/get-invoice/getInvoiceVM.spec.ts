@@ -87,18 +87,35 @@ describe('Get invoice VM', () => {
     invoiceStore = useInvoiceStore()
   })
   describe('There is a current invoice', () => {
-    it('should give the invoice number', () => {
-      const invoice: Invoice = {
-        id: orderPrepared1.payment.invoiceNumber,
-        data: orderPrepared1,
-        createdAt: 1675564421539
-      }
+    const invoice: Invoice = {
+      id: orderPrepared1.payment.invoiceNumber,
+      data: orderPrepared1,
+      createdAt: 1675564421539
+    }
+    beforeEach(() => {
       invoiceStore.current = invoice
-      const expectedVM: GetInvoiceVM = {
-        logo: 'http://praden-logo.svg',
-        invoiceNumber: orderPrepared1.payment.invoiceNumber,
+    })
+    it('should get supplier logo', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        logo: 'http://praden-logo.svg'
+      }
+      expectVMToMatch(expected)
+    })
+    it('should get invoice number', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        invoiceNumber: orderPrepared1.payment.invoiceNumber
+      }
+      expectVMToMatch(expected)
+    })
+    it('should get created date', () => {
+      const expected: Partial<GetInvoiceVM> = {
         createdDate: '05/02/2023',
-        createdDatetime: new Date(1675564421539),
+        createdDatetime: new Date(1675564421539)
+      }
+      expectVMToMatch(expected)
+    })
+    it('should get supplier address', () => {
+      const expected: Partial<GetInvoiceVM> = {
         supplierAddress: {
           name: 'Pharmacie Agnes Praden',
           address:
@@ -106,21 +123,36 @@ describe('Get invoice VM', () => {
           city: 'ALES',
           zip: '30100',
           phone: '0466303360'
-        },
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should get delivery address', () => {
+      const expected: Partial<GetInvoiceVM> = {
         deliveryAddress: {
           name: 'Jean Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
           zip: '12345',
           phone: '0123456789'
-        },
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should get billing address', () => {
+      const expected: Partial<GetInvoiceVM> = {
         billingAddress: {
           name: 'Jean Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
           zip: '12345',
           phone: '0123456789'
-        },
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should get summary', () => {
+      const expected: Partial<GetInvoiceVM> = {
         summaryTable: {
           headers: summaryHeader,
           items: [
@@ -132,7 +164,12 @@ describe('Get invoice VM', () => {
               taxNumber: 'France'
             }
           ]
-        },
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should get lines details', () => {
+      const expected: Partial<GetInvoiceVM> = {
         orderLinesTable: {
           headers: orderLinesHeaders,
           items: [
@@ -146,7 +183,12 @@ describe('Get invoice VM', () => {
               totalWithTax: '11,00\u00A0€'
             }
           ]
-        },
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should group tax rates', () => {
+      const expected: Partial<GetInvoiceVM> = {
         taxDetailsTable: {
           headers: taxDetailsHeaders,
           items: [
@@ -157,7 +199,12 @@ describe('Get invoice VM', () => {
               taxAmount: '1,00\u00A0€'
             }
           ]
-        },
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should compute total', () => {
+      const expected: Partial<GetInvoiceVM> = {
         totals: {
           linesTotal: '10,00\u00A0€',
           totalWithoutTax: '10,00\u00A0€',
@@ -165,22 +212,39 @@ describe('Get invoice VM', () => {
           totalWithTax: '11,00\u00A0€'
         }
       }
-      expect(getInvoiceVM()).toStrictEqual(expectedVM)
+      expectVMToMatch(expected)
     })
   })
   describe('There is another current invoice', () => {
-    it('should give the invoice number', () => {
-      const invoice: Invoice = {
-        id: orderDelivered1.payment.invoiceNumber,
-        data: orderDelivered1,
-        createdAt: 1674275599954
-      }
+    const invoice: Invoice = {
+      id: orderDelivered1.payment.invoiceNumber,
+      data: orderDelivered1,
+      createdAt: 1674275599954
+    }
+    beforeEach(() => {
       invoiceStore.current = invoice
-      const expectedVM: GetInvoiceVM = {
-        logo: 'http://praden-logo.svg',
-        invoiceNumber: orderDelivered1.payment.invoiceNumber,
+    })
+    it('should get supplier logo', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        logo: 'http://praden-logo.svg'
+      }
+      expectVMToMatch(expected)
+    })
+    it('should get invoice number', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        invoiceNumber: orderDelivered1.payment.invoiceNumber
+      }
+      expectVMToMatch(expected)
+    })
+    it('should get created date', () => {
+      const expected: Partial<GetInvoiceVM> = {
         createdDate: '21/01/2023',
-        createdDatetime: new Date(1674275599954),
+        createdDatetime: new Date(1674275599954)
+      }
+      expectVMToMatch(expected)
+    })
+    it('should get supplier address', () => {
+      const expected: Partial<GetInvoiceVM> = {
         supplierAddress: {
           name: 'Pharmacie Agnes Praden',
           address:
@@ -188,21 +252,36 @@ describe('Get invoice VM', () => {
           city: 'ALES',
           zip: '30100',
           phone: '0466303360'
-        },
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should get delivery address', () => {
+      const expected: Partial<GetInvoiceVM> = {
         deliveryAddress: {
           name: "Jeanne D'arc",
           address: '12 avenue du bois',
           city: 'Boisville',
           zip: '54321',
           phone: '9876543210'
-        },
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should get billing address', () => {
+      const expected: Partial<GetInvoiceVM> = {
         billingAddress: {
           name: "Jeanne D'arc",
           address: '12 avenue du bois',
           city: 'Boisville',
           zip: '54321',
           phone: '9876543210'
-        },
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should get summary', () => {
+      const expected: Partial<GetInvoiceVM> = {
         summaryTable: {
           headers: summaryHeader,
           items: [
@@ -214,7 +293,12 @@ describe('Get invoice VM', () => {
               taxNumber: 'France'
             }
           ]
-        },
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should get lines details', () => {
+      const expected: Partial<GetInvoiceVM> = {
         orderLinesTable: {
           headers: orderLinesHeaders,
           items: [
@@ -237,7 +321,12 @@ describe('Get invoice VM', () => {
               totalWithTax: '5,50\u00A0€'
             }
           ]
-        },
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should group tax rates', () => {
+      const expected: Partial<GetInvoiceVM> = {
         taxDetailsTable: {
           headers: taxDetailsHeaders,
           items: [
@@ -254,7 +343,12 @@ describe('Get invoice VM', () => {
               taxAmount: '0,50\u00A0€'
             }
           ]
-        },
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should compute total', () => {
+      const expected: Partial<GetInvoiceVM> = {
         totals: {
           linesTotal: '31,73\u00A0€',
           totalWithoutTax: '31,73\u00A0€',
@@ -262,7 +356,7 @@ describe('Get invoice VM', () => {
           totalWithTax: '33,70\u00A0€'
         }
       }
-      expect(getInvoiceVM()).toStrictEqual(expectedVM)
+      expectVMToMatch(expected)
     })
   })
 
@@ -316,4 +410,7 @@ describe('Get invoice VM', () => {
       expect(getInvoiceVM()).toStrictEqual(expectedVM)
     })
   })
+  const expectVMToMatch = (expected: Partial<GetInvoiceVM>) => {
+    expect(getInvoiceVM()).toMatchObject(expected)
+  }
 })

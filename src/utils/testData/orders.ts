@@ -188,6 +188,50 @@ export const orderDelivered1: Order = {
   }
 }
 
+export const orderDelivered2: Order = {
+  uuid: 'GJIRLK',
+  lines: [
+    {
+      name: ultraLevure.name,
+      cip13: ultraLevure.cip13,
+      expectedQuantity: 3,
+      preparedQuantity: 3,
+      unitAmount: ultraLevure.priceWithoutTax,
+      percentTaxRate: ultraLevure.percentTaxRate,
+      location: ultraLevure.location,
+      deliveryStatus: DeliveryStatus.Delivered,
+      updatedAt: 1674295599432
+    },
+    {
+      name: dolodent.name,
+      cip13: dolodent.cip13,
+      expectedQuantity: 1,
+      preparedQuantity: 1,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
+      deliveryStatus: DeliveryStatus.Delivered,
+      updatedAt: 1674295599432
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jeanne',
+    lastname: "D'arc",
+    address: '12 avenue du bois',
+    city: 'Boisville',
+    zip: '54321'
+  },
+  payment: {
+    invoiceNumber: '2023-00001',
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674273599954,
+  contact: {
+    email: 'jeannedarc@email.com',
+    phone: '9876543210'
+  }
+}
+
 export const orderWithMissingProduct1: Order = {
   uuid: 'HGFRIW',
   lines: [
