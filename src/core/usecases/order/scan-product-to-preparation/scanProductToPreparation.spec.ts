@@ -1,12 +1,12 @@
 import { dolodent, ultraLevure } from '@utils/testData/products'
-import { addProductToPreparation } from '@core/usecases/order/add-product-to-preparation/addProductToPreparation'
+import { scanProductToPreparation } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
 import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
 import { createPinia, setActivePinia } from 'pinia'
 import { usePreparationStore } from '@store/preparationStore'
 import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
 import { Order } from '@core/entities/order'
 
-describe('Add product to preparation', () => {
+describe('Scan product to preparation', () => {
   let preparationStore: any
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -70,23 +70,12 @@ describe('Add product to preparation', () => {
     })
   })
 
-  describe('Add more than one', () => {
-    it('should add the quantity ', () => {
-      const order = JSON.parse(JSON.stringify(orderToPrepare1))
-      givenCurrentPreparationIs(order)
-      whenAddProductToPreparation(dolodent.cip13, 2)
-      const expectedOrder = JSON.parse(JSON.stringify(order))
-      expectedOrder.lines[0].preparedQuantity = 2
-      expectCurrentPreparationToBe(expectedOrder)
-    })
-  })
-
   const givenCurrentPreparationIs = (order: Order) => {
     preparationStore.current = order
   }
 
-  const whenAddProductToPreparation = (cip13: string, quantity = 1) => {
-    addProductToPreparation(cip13, quantity)
+  const whenAddProductToPreparation = (cip13: string) => {
+    scanProductToPreparation(cip13)
   }
 
   const expectCurrentPreparationToBe = (order: Order) => {

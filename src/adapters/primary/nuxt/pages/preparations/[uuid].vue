@@ -39,9 +39,10 @@ import {
   getPreparationVM,
   PreparationStatus
 } from '@adapters/primary/view-models/get-preparation/getPreparationVM'
-import { addProductToPreparation } from '@core/usecases/order/add-product-to-preparation/addProductToPreparation'
+import { scanProductToPreparation } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
 import { validatePreparation } from '@core/usecases/order/validate-preparation/validatePreparation'
 import { useInvoiceGateway } from '../../../../../../gateways/invoiceGateway'
+import { setProductQuantityForPreparation } from '@core/usecases/order/set-product-quantity-for-preparation/setProductQuantityForPreparation'
 
 definePageMeta({ layout: 'main' })
 
@@ -57,14 +58,13 @@ const scanner = ref(null)
 const scan = ref('')
 
 const addProduct = (e: any) => {
-  addProductToPreparation(e.target.value)
+  scanProductToPreparation(e.target.value)
   scan.value = ''
 }
 
 const setQuantity = (e: any, item: any) => {
   const newQuantity = +e.target.value
-  const quantityToAdd = newQuantity - item.preparedQuantity
-  addProductToPreparation(item.reference, quantityToAdd)
+  setProductQuantityForPreparation(item.reference, newQuantity)
 }
 
 const router = useRouter()
