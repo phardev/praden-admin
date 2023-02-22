@@ -5,7 +5,11 @@ import {
   getInvoiceVM
 } from '@adapters/primary/view-models/get-invoice/getInvoiceVM'
 import { Invoice } from '@core/entities/invoice'
-import { orderDelivered1, orderPrepared1 } from '@utils/testData/orders'
+import {
+  orderDelivered1,
+  orderDelivered2,
+  orderPrepared1
+} from '@utils/testData/orders'
 import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
 import { anaca3Minceur, dolodent } from '@utils/testData/products'
 
@@ -354,6 +358,33 @@ describe('Get invoice VM', () => {
           totalWithoutTax: '31,73\u00A0€',
           totalTax: '1,97\u00A0€',
           totalWithTax: '33,70\u00A0€'
+        }
+      }
+      expectVMToMatch(expected)
+    })
+  })
+
+  describe('There is multiple products with the same tax rate', () => {
+    const invoice: Invoice = {
+      id: orderDelivered2.payment.invoiceNumber,
+      data: orderDelivered2,
+      createdAt: 1675564422539
+    }
+    beforeEach(() => {
+      invoiceStore.current = invoice
+    })
+    it('should group them', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        taxDetailsTable: {
+          headers: taxDetailsHeaders,
+          items: [
+            {
+              name: 'Produits',
+              taxRate: '10 %',
+              amountWithoutTax: '17,96\u00A0€',
+              taxAmount: '1,80\u00A0€'
+            }
+          ]
         }
       }
       expectVMToMatch(expected)

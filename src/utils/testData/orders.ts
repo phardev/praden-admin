@@ -24,7 +24,7 @@ export const orderToPrepare1: Order = {
     zip: '12345'
   },
   payment: {
-    invoiceNumber: '2023-00005',
+    invoiceNumber: '2023-00006',
     status: PaymentStatus.Payed
   },
   createdAt: 1674273279000,
@@ -68,7 +68,7 @@ export const orderToPrepare2: Order = {
     zip: '54321'
   },
   payment: {
-    invoiceNumber: '2023-00006',
+    invoiceNumber: '2023-00007',
     status: PaymentStatus.Payed
   },
   createdAt: 1675565972527,
@@ -101,7 +101,7 @@ export const orderPrepared1: Order = {
     zip: '12345'
   },
   payment: {
-    invoiceNumber: '2023-00003',
+    invoiceNumber: '2023-00005',
     status: PaymentStatus.Payed
   },
   createdAt: 1675564420539,
