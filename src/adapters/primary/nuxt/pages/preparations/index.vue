@@ -15,29 +15,47 @@ div.hidden.printme.mx-2
       :items="order.lines"
     )
 .section.no-printme
-  fv-table(
-    :headers="ordersVM.headers"
-    :items="ordersVM.items"
-    :selectable="true"
-    :selection="ordersSelectedVM.items"
-    @item-selected="select"
-    @select-all="selectAll"
-  )
-    template(#title) Commandes à préparer
-    template(#reference="{ item }")
-      .font-medium.text-default {{ item.reference }}
-    template(#createdDate="{ item }")
-      time(:datetime='item.createdDatetime') {{ item.createdDate }}
-  div.w-full.flex.flex-row-reverse
-    ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
-      v-if="ordersSelectedVM.items.length > 0"
-      @click="start"
-    ) Commencer les préparations
+  tab-group.border-b.border-gray-200(as="div")
+    tab-list.-mb-px.flex.space-x-8
+      tab.w-full.rounded-md.border-neutral-light.py-2.pl-3.pr-10.text-base(
+        v-for="(group, index) in preparationsVM.items"
+        v-slot="{ selected }"
+        :key="index"
+        as="div"
+      )
+        div.whitespace-nowrap.flex.py-4.px-1.border-b-2.font-medium.text-sm(
+          :class="[selected ? 'border-default text-colored' : 'border-transparent text-light-contrast hover:text-contrast hover:border-neutral-light']"
+        )
+          div {{ group.title }}
+            span.hidden.ml-3.rounded-full.text-xs.font-medium(
+              v-if="group.count"
+              :class="[selected ? 'bg-contrast text-colored' : 'bg-light text-contrast', 'py-0.5 px-2.5 md:inline-block']"
+              ) {{ group.count }}
+    tab-panels(v-for="(group, index) in preparationsVM.items" :key="index")
+      tab-panel.mt-4
+        fv-table(
+          :headers="group.table.headers"
+          :items="group.table.items"
+          :selectable="true"
+          :selection="ordersSelectedVM.items"
+          @item-selected="select"
+          @select-all="selectAll"
+        )
+          template(#title) {{ group.title }}
+          template(#reference="{ item }")
+            .font-medium.text-default {{ item.reference }}
+          template(#createdDate="{ item }")
+            time(:datetime='item.createdDatetime') {{ item.createdDate }}
+        div.w-full.flex.flex-row-reverse
+          ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
+            v-if="ordersSelectedVM.items.length > 0"
+            @click="start"
+          ) Commencer les préparations
 </template>
 
 <script lang="ts" setup>
 import { listOrdersToPrepare } from '@core/usecases/order/orders-to-prepare-listing/listOrdersToPrepare'
-import { getOrdersToPrepareVM } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
+import { getPreparationsVM } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
 import { useOrderGateway } from '../../../../../../gateways/orderGateway'
 import { getSelectedPreparationsVM } from '@adapters/primary/view-models/get-selected-preparations/getSelectedPreparationsVM'
 import { toggleSelectPreparation } from '@core/usecases/order/toggle-select-preparation/toggleSelectPreparation'
@@ -45,6 +63,7 @@ import { toggleSelectAllPreparations } from '@core/usecases/order/toggle-select-
 import FtButton from '@adapters/primary/nuxt/components/FtButton.vue'
 import { startPreparationsVM } from '@adapters/primary/view-models/start-preparations/startPreparationsVM'
 import { startPreparations } from '@core/usecases/order/start-preparations/startPreparations'
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
 
 let vueQr
 if (process.client) {
@@ -59,8 +78,8 @@ onMounted(() => {
   listOrdersToPrepare(useOrderGateway())
 })
 
-const ordersVM = computed(() => {
-  return getOrdersToPrepareVM()
+const preparationsVM = computed(() => {
+  return getPreparationsVM()
 })
 
 const ordersSelectedVM = computed(() => {

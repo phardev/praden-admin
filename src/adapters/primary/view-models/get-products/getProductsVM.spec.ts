@@ -4,7 +4,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import { useProductStore } from '@store/productStore'
 import { useCategoryStore } from '@store/categoryStore'
 import { dents, diarrhee } from '@utils/testData/categories'
-import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
+import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
 
 describe('Get products VM', () => {
   let productStore: any

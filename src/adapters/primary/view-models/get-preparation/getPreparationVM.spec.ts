@@ -8,7 +8,7 @@ import {
   PreparationStatus
 } from '@adapters/primary/view-models/get-preparation/getPreparationVM'
 import { dolodent, ultraLevure } from '@utils/testData/products'
-import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
+import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
 
 describe('Get preparation VM', () => {
   let preparationStore: any
