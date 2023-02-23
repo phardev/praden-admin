@@ -2,6 +2,7 @@ import { usePreparationStore } from '@store/preparationStore'
 import { Order, OrderLine } from '@core/entities/order'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import { TableVM } from '@adapters/primary/view-models/get-invoice/getInvoiceVM'
+import { HashTable } from '@core/types/types'
 
 export interface GetPreparationsItemVM {
   reference: string
@@ -17,14 +18,11 @@ export interface Header {
 }
 
 interface GetPreparationsGroupVM {
-  title: string
   count: number
   table: TableVM<GetPreparationsItemVM>
 }
 
-export interface GetPreparationsVM {
-  items: Array<GetPreparationsGroupVM>
-}
+export type GetPreparationsVM = HashTable<GetPreparationsGroupVM>
 
 const computeTotalWithTaxForOrder = (order: Order) => {
   const total = order.lines.reduce((acc: number, line: OrderLine) => {
@@ -60,26 +58,25 @@ export const getPreparationsVM = (): GetPreparationsVM => {
       value: 'total'
     }
   ]
-  return {
-    items: groups.map((group: string, index) => {
-      const items = orders.map((o: Order) => {
-        const total = computeTotalWithTaxForOrder(o)
-        return {
-          reference: o.uuid,
-          client: `${o.deliveryAddress.firstname[0]}. ${o.deliveryAddress.lastname}`,
-          createdDate: timestampToLocaleString(o.createdAt, 'fr-FR'),
-          createdDatetime: new Date(o.createdAt),
-          total: formatter.format(total / 100)
-        }
-      })
+  const res: GetPreparationsVM = {}
+  groups.forEach((group: string, index) => {
+    const items = orders.map((o: Order) => {
+      const total = computeTotalWithTaxForOrder(o)
       return {
-        title: group,
-        count: index === 0 ? items.length : 0,
-        table: {
-          headers,
-          items: index === 0 ? items : []
-        }
+        reference: o.uuid,
+        client: `${o.deliveryAddress.firstname[0]}. ${o.deliveryAddress.lastname}`,
+        createdDate: timestampToLocaleString(o.createdAt, 'fr-FR'),
+        createdDatetime: new Date(o.createdAt),
+        total: formatter.format(total / 100)
       }
     })
-  }
+    res[group] = {
+      count: index === 0 ? items.length : 0,
+      table: {
+        headers,
+        items: index === 0 ? items : []
+      }
+    }
+  })
+  return res
 }

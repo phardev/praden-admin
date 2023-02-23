@@ -35,32 +35,27 @@ describe('Get orders to prepare VM', () => {
   describe('There is no orders to prepare', () => {
     it('should list nothing', () => {
       const expectedVM: GetPreparationsVM = {
-        items: [
-          {
-            title: 'Click & Collect',
-            count: 0,
-            table: {
-              headers: expectedHeaders,
-              items: []
-            }
-          },
-          {
-            title: 'Livraisons',
-            count: 0,
-            table: {
-              headers: expectedHeaders,
-              items: []
-            }
-          },
-          {
-            title: 'À terminer',
-            count: 0,
-            table: {
-              headers: expectedHeaders,
-              items: []
-            }
+        'Click & Collect': {
+          count: 0,
+          table: {
+            headers: expectedHeaders,
+            items: []
           }
-        ]
+        },
+        Livraisons: {
+          count: 0,
+          table: {
+            headers: expectedHeaders,
+            items: []
+          }
+        },
+        'À terminer': {
+          count: 0,
+          table: {
+            headers: expectedHeaders,
+            items: []
+          }
+        }
       }
       const vm = getPreparationsVM()
       expect(vm).toStrictEqual(expectedVM)
@@ -70,47 +65,42 @@ describe('Get orders to prepare VM', () => {
     it('should list all of them', () => {
       preparationStore.items = [orderToPrepare1, orderToPrepare2]
       const expectedVM: GetPreparationsVM = {
-        items: [
-          {
-            title: 'Click & Collect',
-            count: 2,
-            table: {
-              headers: expectedHeaders,
-              items: [
-                {
-                  reference: orderToPrepare1.uuid,
-                  client: 'J. Bon',
-                  createdDate: '21 janv. 2023',
-                  createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
-                  total: '11,00\u00A0€'
-                },
-                {
-                  reference: orderToPrepare2.uuid,
-                  client: "J. D'arc",
-                  createdDate: '5 févr. 2023',
-                  createdDatetime: new Date('2023-02-05T02:59:32.527Z'),
-                  total: '15,00\u00A0€'
-                }
-              ]
-            }
-          },
-          {
-            title: 'Livraisons',
-            count: 0,
-            table: {
-              headers: expectedHeaders,
-              items: []
-            }
-          },
-          {
-            title: 'À terminer',
-            count: 0,
-            table: {
-              headers: expectedHeaders,
-              items: []
-            }
+        'Click & Collect': {
+          count: 2,
+          table: {
+            headers: expectedHeaders,
+            items: [
+              {
+                reference: orderToPrepare1.uuid,
+                client: 'J. Bon',
+                createdDate: '21 janv. 2023',
+                createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
+                total: '11,00\u00A0€'
+              },
+              {
+                reference: orderToPrepare2.uuid,
+                client: "J. D'arc",
+                createdDate: '5 févr. 2023',
+                createdDatetime: new Date('2023-02-05T02:59:32.527Z'),
+                total: '15,00\u00A0€'
+              }
+            ]
           }
-        ]
+        },
+        Livraisons: {
+          count: 0,
+          table: {
+            headers: expectedHeaders,
+            items: []
+          }
+        },
+        'À terminer': {
+          count: 0,
+          table: {
+            headers: expectedHeaders,
+            items: []
+          }
+        }
       }
       const vm = getPreparationsVM()
       expect(vm).toStrictEqual(expectedVM)
