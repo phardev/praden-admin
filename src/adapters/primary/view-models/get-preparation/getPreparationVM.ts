@@ -1,5 +1,5 @@
 import { usePreparationStore } from '@store/preparationStore'
-import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
+import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
 
 export enum PreparationStatus {
   NotPrepared,

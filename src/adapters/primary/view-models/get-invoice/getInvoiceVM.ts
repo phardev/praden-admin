@@ -1,6 +1,6 @@
 import { useInvoiceStore } from '@store/invoiceStore'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
-import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
+import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
 import { Order, OrderLine } from '@core/entities/order'
 import { Invoice } from '@core/entities/invoice'
 import { HashTable } from '@core/types/types'

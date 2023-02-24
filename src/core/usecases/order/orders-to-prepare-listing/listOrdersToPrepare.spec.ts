@@ -4,6 +4,7 @@ import { listOrdersToPrepare } from '@core/usecases/order/orders-to-prepare-list
 import { Order } from '@core/entities/order'
 import {
   orderDelivered1,
+  orderDelivered2,
   orderInPreparation1,
   orderNotPayed1,
   orderPrepared1,
@@ -36,6 +37,16 @@ describe('List orders to prepare', () => {
       await whenListOrdersToPrepare()
       expectPreparationStoreToContains(orderToPrepare1, orderToPrepare2)
     })
+    it('should list orders if all items are processing', async () => {
+      givenExistingOrders(orderInPreparation1)
+      await whenListOrdersToPrepare()
+      expectPreparationStoreToContains(orderInPreparation1)
+    })
+    it('should list orders if at least one item is still processing', async () => {
+      givenExistingOrders(orderWithMissingProduct1)
+      await whenListOrdersToPrepare()
+      expectPreparationStoreToContains(orderWithMissingProduct1)
+    })
   })
   describe('There is some orders to not prepare', () => {
     it('should not list orders if all items are shipped', async () => {
@@ -43,18 +54,8 @@ describe('List orders to prepare', () => {
       await whenListOrdersToPrepare()
       expectPreparationStoreToContains()
     })
-    it('should not list orders if all items are processing', async () => {
-      givenExistingOrders(orderInPreparation1)
-      await whenListOrdersToPrepare()
-      expectPreparationStoreToContains()
-    })
     it('should not list orders if all items are delivered', async () => {
       givenExistingOrders(orderDelivered1)
-      await whenListOrdersToPrepare()
-      expectPreparationStoreToContains()
-    })
-    it('should not list orders if at least one item is not created', async () => {
-      givenExistingOrders(orderWithMissingProduct1)
       await whenListOrdersToPrepare()
       expectPreparationStoreToContains()
     })
@@ -69,12 +70,20 @@ describe('List orders to prepare', () => {
     it('should list only preparable orders', async () => {
       givenExistingOrders(
         orderPrepared1,
+        orderDelivered1,
         orderToPrepare1,
         orderInPreparation1,
-        orderToPrepare2
+        orderToPrepare2,
+        orderWithMissingProduct1,
+        orderDelivered2
       )
       await whenListOrdersToPrepare()
-      expectPreparationStoreToContains(orderToPrepare1, orderToPrepare2)
+      expectPreparationStoreToContains(
+        orderToPrepare1,
+        orderInPreparation1,
+        orderToPrepare2,
+        orderWithMissingProduct1
+      )
     })
   })
 

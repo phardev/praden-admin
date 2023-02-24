@@ -10,7 +10,7 @@ import {
   orderDelivered2,
   orderPrepared1
 } from '@utils/testData/orders'
-import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
+import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
 import { anaca3Minceur, dolodent } from '@utils/testData/products'
 
 describe('Get invoice VM', () => {

@@ -1,5 +1,9 @@
 import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
 import { anaca3Minceur, dolodent, ultraLevure } from '@utils/testData/products'
+import {
+  clickAndCollect,
+  deliveryInRelayPoint
+} from '@utils/testData/deliveryMethods'
 
 export const orderToPrepare1: Order = {
   uuid: 'XIKOKI',
@@ -31,6 +35,9 @@ export const orderToPrepare1: Order = {
   contact: {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
   }
 }
 
@@ -75,6 +82,45 @@ export const orderToPrepare2: Order = {
   contact: {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
+  },
+  delivery: {
+    method: clickAndCollect
+  }
+}
+
+export const orderToPrepare3: Order = {
+  uuid: 'DIJFPE',
+  lines: [
+    {
+      name: dolodent.name,
+      cip13: dolodent.cip13,
+      expectedQuantity: 1,
+      preparedQuantity: 0,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1675565972527
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jeanne',
+    lastname: "D'arc",
+    address: '12 avenue du bois',
+    city: 'Boisville',
+    zip: '54321'
+  },
+  payment: {
+    invoiceNumber: '2023-00008',
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1675565972527,
+  contact: {
+    email: 'jeannedarc@email.com',
+    phone: '9876543210'
+  },
+  delivery: {
+    method: deliveryInRelayPoint
   }
 }
 
@@ -108,6 +154,9 @@ export const orderPrepared1: Order = {
   contact: {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
   }
 }
 
@@ -141,6 +190,9 @@ export const orderInPreparation1: Order = {
   contact: {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
   }
 }
 
@@ -185,6 +237,9 @@ export const orderDelivered1: Order = {
   contact: {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
+  },
+  delivery: {
+    method: clickAndCollect
   }
 }
 
@@ -229,6 +284,9 @@ export const orderDelivered2: Order = {
   contact: {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
+  },
+  delivery: {
+    method: clickAndCollect
   }
 }
 
@@ -239,7 +297,7 @@ export const orderWithMissingProduct1: Order = {
       name: dolodent.name,
       cip13: dolodent.cip13,
       expectedQuantity: 2,
-      preparedQuantity: 0,
+      preparedQuantity: 2,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
@@ -273,6 +331,9 @@ export const orderWithMissingProduct1: Order = {
   contact: {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
+  },
+  delivery: {
+    method: deliveryInRelayPoint
   }
 }
 
@@ -305,5 +366,8 @@ export const orderNotPayed1: Order = {
   contact: {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
   }
 }

@@ -6,7 +6,7 @@ import {
 } from '@adapters/primary/view-models/start-preparations/startPreparationsVM'
 import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
 import { dolodent, ultraLevure } from '@utils/testData/products'
-import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getOrdersToPrepareVM'
+import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
 
 describe('Start preparations VM', () => {
   let preparationsStore: any
