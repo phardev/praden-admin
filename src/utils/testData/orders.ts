@@ -1,5 +1,9 @@
 import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
 import { anaca3Minceur, dolodent, ultraLevure } from '@utils/testData/products'
+import {
+  clickAndCollect,
+  deliveryInRelayPoint
+} from '@utils/testData/deliveryMethods'
 
 export const orderToPrepare1: Order = {
   uuid: 'XIKOKI',
@@ -31,6 +35,9 @@ export const orderToPrepare1: Order = {
   contact: {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
   }
 }
 
@@ -75,6 +82,9 @@ export const orderToPrepare2: Order = {
   contact: {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
+  },
+  delivery: {
+    method: clickAndCollect
   }
 }
 
@@ -108,6 +118,9 @@ export const orderToPrepare3: Order = {
   contact: {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
+  },
+  delivery: {
+    method: deliveryInRelayPoint
   }
 }
 
@@ -141,6 +154,9 @@ export const orderPrepared1: Order = {
   contact: {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
   }
 }
 
@@ -174,6 +190,9 @@ export const orderInPreparation1: Order = {
   contact: {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
   }
 }
 
@@ -218,6 +237,9 @@ export const orderDelivered1: Order = {
   contact: {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
+  },
+  delivery: {
+    method: clickAndCollect
   }
 }
 
@@ -262,6 +284,9 @@ export const orderDelivered2: Order = {
   contact: {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
+  },
+  delivery: {
+    method: clickAndCollect
   }
 }
 
@@ -306,6 +331,9 @@ export const orderWithMissingProduct1: Order = {
   contact: {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
+  },
+  delivery: {
+    method: deliveryInRelayPoint
   }
 }
 
@@ -338,5 +366,8 @@ export const orderNotPayed1: Order = {
   contact: {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
   }
 }

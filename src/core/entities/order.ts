@@ -1,4 +1,4 @@
-import { Timestamp } from '@core/types/types'
+import { Timestamp, UUID } from '@core/types/types'
 
 export interface Address {
   firstname: string
@@ -43,6 +43,23 @@ export interface Contact {
   phone: string
 }
 
+export enum DeliveryType {
+  ClickAndCollect,
+  Delivery
+}
+
+export interface DeliveryMethod {
+  uuid: UUID
+  name: string
+  description: string
+  type: DeliveryType
+  price: number
+}
+
+export interface OrderDelivery {
+  method: DeliveryMethod
+}
+
 export interface Order {
   uuid: string
   lines: Array<OrderLine>
@@ -50,4 +67,5 @@ export interface Order {
   payment: Payment
   createdAt: Timestamp
   contact: Contact
+  delivery: OrderDelivery
 }

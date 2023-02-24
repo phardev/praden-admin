@@ -1,5 +1,10 @@
 import { usePreparationStore } from '@store/preparationStore'
-import { Order, OrderLine } from '@core/entities/order'
+import {
+  DeliveryStatus,
+  DeliveryType,
+  Order,
+  OrderLine
+} from '@core/entities/order'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import { TableVM } from '@adapters/primary/view-models/get-invoice/getInvoiceVM'
 import { HashTable } from '@core/types/types'
@@ -35,11 +40,30 @@ const computeTotalWithTaxForOrder = (order: Order) => {
   return total
 }
 
+const clickAndCollectFilter = (o: Order) => {
+  return (
+    o.delivery.method.type === DeliveryType.ClickAndCollect &&
+    o.lines.every((l: OrderLine) => l.deliveryStatus === DeliveryStatus.Created)
+  )
+}
+
+const deliveryFilter = (o: Order) => {
+  return (
+    o.delivery.method.type === DeliveryType.Delivery &&
+    o.lines.every((l: OrderLine) => l.deliveryStatus === DeliveryStatus.Created)
+  )
+}
+
+const toContinueFilter = (o: Order) => {
+  return o.lines.some(
+    (l: OrderLine) => l.deliveryStatus === DeliveryStatus.Processing
+  )
+}
+
 export const getPreparationsVM = (): GetPreparationsVM => {
   const preparationStore = usePreparationStore()
   const orders = preparationStore.items
   const formatter = priceFormatter('fr-FR', 'EUR')
-  const groups = ['Click & Collect', 'Livraisons', 'À terminer']
   const headers: Array<Header> = [
     {
       name: 'Référence',
@@ -58,9 +82,24 @@ export const getPreparationsVM = (): GetPreparationsVM => {
       value: 'total'
     }
   ]
+  const groups = [
+    {
+      name: 'Click & Collect',
+      filter: clickAndCollectFilter
+    },
+    {
+      name: 'Livraisons',
+      filter: deliveryFilter
+    },
+    {
+      name: 'À terminer',
+      filter: toContinueFilter
+    }
+  ]
   const res: GetPreparationsVM = {}
-  groups.forEach((group: string, index) => {
-    const items = orders.map((o: Order) => {
+  groups.forEach((group: any) => {
+    const filteredItems = orders.filter(group.filter)
+    const items = filteredItems.map((o: Order) => {
       const total = computeTotalWithTaxForOrder(o)
       return {
         reference: o.uuid,
@@ -70,11 +109,11 @@ export const getPreparationsVM = (): GetPreparationsVM => {
         total: formatter.format(total / 100)
       }
     })
-    res[group] = {
-      count: index === 0 ? items.length : 0,
+    res[group.name] = {
+      count: items.length,
       table: {
         headers,
-        items: index === 0 ? items : []
+        items
       }
     }
   })
