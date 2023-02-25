@@ -35,9 +35,12 @@ export const usePreparationStore = defineStore('PreparationStore', {
         this.selected.push(uuid)
       }
     },
-    toggleSelectAll() {
+    toggleSelectAll(selection: Array<UUID>) {
       if (this.selected.length) this.selected = []
-      else this.selected = this.items.map((i) => i.uuid)
+      else this.selected = selection
+    },
+    resetSelection() {
+      this.selected = []
     },
     setCurrent(order: Order) {
       this.current = order

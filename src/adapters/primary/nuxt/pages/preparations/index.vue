@@ -22,6 +22,7 @@ div.hidden.printme.mx-2
         v-slot="{ selected }"
         :key="index"
         as="div"
+        @click="resetSelection"
       )
         div.whitespace-nowrap.flex.py-4.px-1.border-b-2.font-medium.text-sm(
           :class="[selected ? 'border-default text-colored' : 'border-transparent text-light-contrast hover:text-contrast hover:border-neutral-light']"
@@ -39,7 +40,7 @@ div.hidden.printme.mx-2
           :selectable="true"
           :selection="ordersSelectedVM.items"
           @item-selected="select"
-          @select-all="selectAll"
+          @select-all="selectAll(group.table.items)"
         )
           template(#title) {{ group.title }}
           template(#reference="{ item }")
@@ -64,6 +65,7 @@ import FtButton from '@adapters/primary/nuxt/components/FtButton.vue'
 import { startPreparationsVM } from '@adapters/primary/view-models/start-preparations/startPreparationsVM'
 import { startPreparations } from '@core/usecases/order/start-preparations/startPreparations'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
+import { resetPreparationSelection } from '@core/usecases/order/reset-preparation-selection/resetPreparationSelection'
 
 let vueQr
 if (process.client) {
@@ -98,10 +100,13 @@ const select = (selected: any) => {
   toggleSelectPreparation(selected.reference)
 }
 
-const selectAll = () => {
-  toggleSelectAllPreparations()
+const selectAll = (selected: Array<any>) => {
+  toggleSelectAllPreparations(selected.map((s) => s.reference))
 }
 
+const resetSelection = () => {
+  resetPreparationSelection()
+}
 const router = useRouter()
 
 const start = () => {
