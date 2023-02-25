@@ -9,7 +9,7 @@ invoice.hidden.printme.mx-2
     :value="scan"
     @keyup.enter="addProduct"
   )
-  fv-table(
+  ft-table(
     :headers="preparationVM.headers"
     :items="preparationVM.lines"
   )

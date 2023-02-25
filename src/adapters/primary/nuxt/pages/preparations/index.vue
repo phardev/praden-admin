@@ -1,7 +1,7 @@
 <template lang="pug">
 div.hidden.printme.mx-2
   p Récapitulatif des commandes
-  fv-table(
+  ft-table(
     :headers="startVM.headers"
     :items="startVM.global"
   )
@@ -10,7 +10,7 @@ div.hidden.printme.mx-2
       h1.text-xl.grow Commande {{ order.reference }}
       client-only
         vueQr(:text="order.href")
-    fv-table(
+    ft-table(
       :headers="startVM.headers"
       :items="order.lines"
     )
@@ -34,7 +34,7 @@ div.hidden.printme.mx-2
               ) {{ preparationsVM[group].count }}
     tab-panels(v-for="(group, index) in Object.values(preparationsVM)" :key="index")
       tab-panel.mt-4
-        fv-table(
+        ft-table(
           :headers="group.table.headers"
           :items="group.table.items"
           :selectable="true"
