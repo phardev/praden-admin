@@ -25,11 +25,12 @@ export class InMemoryOrderGateway implements OrderGateway {
     return Promise.resolve(toPrepare)
   }
 
-  startPreparation(uuid: UUID): void {
+  startPreparation(uuid: UUID): Promise<Order> {
     const order = this.orders.find((o) => o.uuid === uuid)
     order?.lines.forEach((l) => {
       l.deliveryStatus = DeliveryStatus.Processing
     })
+    return Promise.resolve(order)
   }
 
   getByUuid(uuid: UUID): Promise<Order> {

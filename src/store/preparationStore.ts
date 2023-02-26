@@ -41,6 +41,11 @@ export const usePreparationStore = defineStore('PreparationStore', {
     },
     setCurrent(order: Order) {
       this.current = order
+    },
+    update(order: Order) {
+      this.items = this.items.map((i) => {
+        return i.uuid === order.uuid ? order : i
+      })
     }
   }
 })
