@@ -43,6 +43,9 @@ describe('Validate preparation', () => {
       expectedOrder.lines[0].updatedAt = now
       expect(await orderGateway.list()).toStrictEqual([expectedOrder])
     })
+    it('should remove it from preparation store', async () => {
+      expectPreparationStoreToEqual()
+    })
     describe('Invoice', () => {
       let expectedInvoiceNumber: string
       let expectedInvoice: Invoice
@@ -72,7 +75,7 @@ describe('Validate preparation', () => {
     beforeEach(async () => {
       now = 9876543216549
       dateProvider.feedWith(now)
-      givenThereIsExistingOrders(order)
+      givenThereIsExistingOrders(order, orderToPrepare1)
       givenThereIsAPreparationSelected(order)
       order.lines[0].preparedQuantity = order.lines[0].expectedQuantity
       order.lines[0].updatedAt = now
@@ -84,7 +87,13 @@ describe('Validate preparation', () => {
       const expectedOrder: Order = JSON.parse(JSON.stringify(order))
       expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Shipped
       expectedOrder.lines[1].deliveryStatus = DeliveryStatus.Shipped
-      expect(await orderGateway.list()).toStrictEqual([expectedOrder])
+      expect(await orderGateway.list()).toStrictEqual([
+        expectedOrder,
+        orderToPrepare1
+      ])
+    })
+    it('should remove it from preparation store', async () => {
+      expectPreparationStoreToEqual(orderToPrepare1)
     })
     describe('Invoice', () => {
       let expectedInvoiceNumber: string
@@ -121,6 +130,7 @@ describe('Validate preparation', () => {
 
   const givenThereIsExistingOrders = (...orders: Array<Order>) => {
     orderGateway.feedWith(...orders)
+    preparationStore.items = orders
   }
 
   const givenThereIsAPreparationSelected = (order: Order) => {
@@ -129,5 +139,9 @@ describe('Validate preparation', () => {
 
   const whenValidatePreparation = async () => {
     await validatePreparation(orderGateway, invoiceGateway)
+  }
+
+  const expectPreparationStoreToEqual = (...orders: Array<Order>) => {
+    expect(preparationStore.items).toStrictEqual(orders)
   }
 })
