@@ -11,6 +11,7 @@ import { HashTable } from '@core/types/types'
 
 export interface GetPreparationsItemVM {
   reference: string
+  href: string
   client: string
   createdDate: string
   createdDatetime: Date
@@ -103,6 +104,7 @@ export const getPreparationsVM = (): GetPreparationsVM => {
       const total = computeTotalWithTaxForOrder(o)
       return {
         reference: o.uuid,
+        href: `/preparations/${o.uuid}`,
         client: `${o.deliveryAddress.firstname[0]}. ${o.deliveryAddress.lastname}`,
         createdDate: timestampToLocaleString(o.createdAt, 'fr-FR'),
         createdDatetime: new Date(o.createdAt),

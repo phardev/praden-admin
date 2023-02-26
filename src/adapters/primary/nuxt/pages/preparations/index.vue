@@ -43,7 +43,7 @@ div.hidden.printme.mx-2
         )
           template(#title) {{ group.title }}
           template(#reference="{ item }")
-            .font-medium.text-default {{ item.reference }}
+            nuxt-link.font-medium.text-link(:href="item.href") {{ item.reference }}
           template(#createdDate="{ item }")
             time(:datetime='item.createdDatetime') {{ item.createdDate }}
         div.w-full.flex.flex-row-reverse
