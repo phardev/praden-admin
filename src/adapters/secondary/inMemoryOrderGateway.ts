@@ -51,6 +51,21 @@ export class InMemoryOrderGateway implements OrderGateway {
     return Promise.resolve(order)
   }
 
+  async savePreparation(preparation: Order): Promise<Order> {
+    const index = this.orders.findIndex((o) => o.uuid === preparation.uuid)
+    if (index < 0) {
+      throw new PreparationDoesNotExistsError(preparation.uuid)
+    }
+    preparation.lines.forEach((l, lineIndex) => {
+      const currentLine = this.orders[index].lines[lineIndex]
+      if (l.preparedQuantity !== currentLine.preparedQuantity)
+        l.updatedAt = this.dateProvider.now()
+      l.deliveryStatus = DeliveryStatus.Processing
+    })
+    this.orders.splice(index, 1, preparation)
+    return Promise.resolve(preparation)
+  }
+
   feedWith(...orders: Array<Order>) {
     this.orders = orders
   }

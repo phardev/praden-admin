@@ -24,7 +24,10 @@ invoice.hidden.printme.mx-2
       icon.icon-lg.text-yellow-400(v-if="item.status === PreparationStatus.NotPrepared" name="bx:bxs-error")
       icon.icon-lg.text-grass9(v-if="item.status === PreparationStatus.Prepared" name="material-symbols:check-circle")
       icon.icon-lg.text-tomato8(v-if="item.status > PreparationStatus.Prepared" name="fluent-mdl2:status-error-full")
-  div.w-full.flex.flex-row-reverse
+  div.w-full.flex.justify-between
+    ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
+      @click="save"
+    ) Sauvegarder
     ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
       v-if="preparationVM.canValidate"
       @click="validate"
@@ -43,6 +46,7 @@ import { scanProductToPreparation } from '@core/usecases/order/scan-product-to-p
 import { validatePreparation } from '@core/usecases/order/validate-preparation/validatePreparation'
 import { useInvoiceGateway } from '../../../../../../gateways/invoiceGateway'
 import { setProductQuantityForPreparation } from '@core/usecases/order/set-product-quantity-for-preparation/setProductQuantityForPreparation'
+import { savePreparation } from '@core/usecases/order/save-preparation/savePreparation'
 
 definePageMeta({ layout: 'main' })
 
@@ -72,6 +76,11 @@ const router = useRouter()
 const validate = async () => {
   await validatePreparation(useOrderGateway(), useInvoiceGateway())
   window.print()
+  router.push('/preparations')
+}
+
+const save = async () => {
+  await savePreparation(useOrderGateway())
   router.push('/preparations')
 }
 

@@ -7,4 +7,5 @@ export interface OrderGateway {
   startPreparation(uuid: UUID): Promise<Order>
   getByUuid(uuid: UUID): Promise<Order>
   validatePreparation(preparation: Order): Promise<Order>
+  savePreparation(preparation: Order): Promise<Order>
 }
