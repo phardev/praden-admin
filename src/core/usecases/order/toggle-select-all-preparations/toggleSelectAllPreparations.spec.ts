@@ -11,12 +11,12 @@ describe('Toggle select all preparations', () => {
     preparationStore = usePreparationStore()
   })
   describe('There is some preparations available', () => {
-    beforeEach(() => {
-      preparationStore.items = [orderToPrepare1, orderToPrepare2]
-    })
     describe('There is no preparation selected', () => {
       it('should select all preparations', () => {
-        toggleSelectAllPreparations()
+        toggleSelectAllPreparations([
+          orderToPrepare1.uuid,
+          orderToPrepare2.uuid
+        ])
         expect(preparationStore.selected).toStrictEqual([
           orderToPrepare1.uuid,
           orderToPrepare2.uuid

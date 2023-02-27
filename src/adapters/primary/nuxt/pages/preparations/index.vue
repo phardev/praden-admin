@@ -1,7 +1,7 @@
 <template lang="pug">
 div.hidden.printme.mx-2
   p Récapitulatif des commandes
-  fv-table(
+  ft-table(
     :headers="startVM.headers"
     :items="startVM.global"
   )
@@ -10,7 +10,7 @@ div.hidden.printme.mx-2
       h1.text-xl.grow Commande {{ order.reference }}
       client-only
         vueQr(:text="order.href")
-    fv-table(
+    ft-table(
       :headers="startVM.headers"
       :items="order.lines"
     )
@@ -22,6 +22,7 @@ div.hidden.printme.mx-2
         v-slot="{ selected }"
         :key="index"
         as="div"
+        @click="resetSelection"
       )
         div.whitespace-nowrap.flex.py-4.px-1.border-b-2.font-medium.text-sm(
           :class="[selected ? 'border-default text-colored' : 'border-transparent text-light-contrast hover:text-contrast hover:border-neutral-light']"
@@ -33,13 +34,13 @@ div.hidden.printme.mx-2
               ) {{ preparationsVM[group].count }}
     tab-panels(v-for="(group, index) in Object.values(preparationsVM)" :key="index")
       tab-panel.mt-4
-        fv-table(
+        ft-table(
           :headers="group.table.headers"
           :items="group.table.items"
           :selectable="true"
           :selection="ordersSelectedVM.items"
           @item-selected="select"
-          @select-all="selectAll"
+          @select-all="selectAll(group.table.items)"
         )
           template(#title) {{ group.title }}
           template(#reference="{ item }")
@@ -64,6 +65,7 @@ import FtButton from '@adapters/primary/nuxt/components/FtButton.vue'
 import { startPreparationsVM } from '@adapters/primary/view-models/start-preparations/startPreparationsVM'
 import { startPreparations } from '@core/usecases/order/start-preparations/startPreparations'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
+import { resetPreparationSelection } from '@core/usecases/order/reset-preparation-selection/resetPreparationSelection'
 
 let vueQr
 if (process.client) {
@@ -98,10 +100,13 @@ const select = (selected: any) => {
   toggleSelectPreparation(selected.reference)
 }
 
-const selectAll = () => {
-  toggleSelectAllPreparations()
+const selectAll = (selected: Array<any>) => {
+  toggleSelectAllPreparations(selected.map((s) => s.reference))
 }
 
+const resetSelection = () => {
+  resetPreparationSelection()
+}
 const router = useRouter()
 
 const start = () => {

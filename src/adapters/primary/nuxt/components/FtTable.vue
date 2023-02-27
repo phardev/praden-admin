@@ -1,5 +1,5 @@
 <template lang="pug">
-.fv-table
+.ft-table
   .px-4(class='sm:px-6 lg:px-8')
   div(class='sm:flex sm:items-center')
     div(class='sm:flex-auto')
@@ -11,10 +11,10 @@
         tr
           th(v-if="selectable" scope="col" class="relative w-12 px-6 sm:w-16 sm:px-8")
             input(
-              :key="indeterminate || selection.length === items.length"
+              :key="indeterminate || selectionIntersection.length === items.length"
               type="checkbox"
               class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-light text-colored focus:ring-colored sm:left-6"
-              :checked="indeterminate || (selection.length === items.length && items.length > 0)"
+              :checked="indeterminate || (selectionIntersection.length === items.length && items.length > 0)"
               :indeterminate="indeterminate"
               @click.prevent="selectAll"
             )
@@ -79,7 +79,14 @@ const emit = defineEmits<{
 
 const indeterminate = computed(() => {
   return (
-    props.selection.length > 0 && props.selection.length < props.items.length
+    selectionIntersection.value.length > 0 &&
+    selectionIntersection.value.length < props.items.length
+  )
+})
+
+const selectionIntersection = computed(() => {
+  return props.selection.filter((s: any) =>
+    props.items.find((i: any) => i.reference === s)
   )
 })
 

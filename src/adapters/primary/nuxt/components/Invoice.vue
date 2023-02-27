@@ -26,16 +26,16 @@
       div {{ invoiceVM.billingAddress.zip }}
       div {{ invoiceVM.billingAddress.city }}
       div {{ invoiceVM.billingAddress.phone }}
-  fv-table(
+  ft-table(
     :headers="invoiceVM.summaryTable.headers"
     :items="invoiceVM.summaryTable.items"
   )
-  fv-table(
+  ft-table(
     :headers="invoiceVM.orderLinesTable.headers"
     :items="invoiceVM.orderLinesTable.items"
   )
   div.flex.items-top.justify-between.mt-4
-    fv-table(
+    ft-table(
       class="w-1/2"
       :headers="invoiceVM.taxDetailsTable.headers"
       :items="invoiceVM.taxDetailsTable.items"

@@ -1,6 +1,6 @@
 <template lang="pug">
 .section
-  fv-table(
+  ft-table(
     :headers="productsVM.headers"
     :items="productsVM.items"
   )
