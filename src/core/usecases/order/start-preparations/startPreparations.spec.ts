@@ -39,11 +39,8 @@ describe('Start preparations', () => {
       it('should set each order line to processing', async () => {
         await expectOrdersToEqual(expectedOrder1, expectedOrder2)
       })
-      it('should should remove order from selection', async () => {
-        expectSelectedOrdersToBeEmpty()
-      })
-      it('should remove orders from preparations', () => {
-        expect(preparationStore.items).toStrictEqual([])
+      it('should update preparation store', () => {
+        expectPreparationStoreToEqual(expectedOrder1, expectedOrder2)
       })
     })
     describe('Prepare one order', () => {
@@ -53,11 +50,8 @@ describe('Start preparations', () => {
       it('should set each order line to processing', async () => {
         await expectOrdersToEqual(expectedOrder1, orderToPrepare2)
       })
-      it('should should remove order from selection', async () => {
-        expectSelectedOrdersToBeEmpty()
-      })
       it('should remove order from preparations', () => {
-        expect(preparationStore.items).toStrictEqual([orderToPrepare2])
+        expectPreparationStoreToEqual(expectedOrder1, orderToPrepare2)
       })
     })
     describe('Prepare another one order', () => {
@@ -67,11 +61,8 @@ describe('Start preparations', () => {
       it('should set each order line to processing', async () => {
         await expectOrdersToEqual(orderToPrepare1, expectedOrder2)
       })
-      it('should should remove order from selection', async () => {
-        expectSelectedOrdersToBeEmpty()
-      })
       it('should remove order from preparations', () => {
-        expect(preparationStore.items).toStrictEqual([orderToPrepare1])
+        expectPreparationStoreToEqual(orderToPrepare1, expectedOrder2)
       })
     })
   })
@@ -91,7 +82,7 @@ describe('Start preparations', () => {
     expect(orders).toStrictEqual(expectedOrders)
   }
 
-  const expectSelectedOrdersToBeEmpty = () => {
-    expect(preparationStore.selected).toStrictEqual([])
+  const expectPreparationStoreToEqual = (...preparations: Array<Order>) => {
+    expect(preparationStore.items).toStrictEqual(preparations)
   }
 })

@@ -11,8 +11,9 @@ export const validatePreparation = async (
   const preparationStore = usePreparationStore()
   const preparation = preparationStore.current
   if (!preparation) throw new NoPreparationSelectedError()
-  await orderGateway.validatePreparation(preparation)
-  const invoice = await invoiceGateway.create(preparation)
+  const validated = await orderGateway.validatePreparation(preparation)
+  preparationStore.remove(validated.uuid)
+  const invoice = await invoiceGateway.create(validated)
   const invoiceStore = useInvoiceStore()
   invoiceStore.set(invoice)
 }
