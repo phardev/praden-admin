@@ -9,6 +9,7 @@ export enum PreparationStatus {
 
 export interface GetPreparationLineVM {
   reference: string
+  href: string
   name: string
   expectedQuantity: number
   preparedQuantity: number

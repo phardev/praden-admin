@@ -78,6 +78,7 @@ describe('Get orders to prepare VM', () => {
             items: [
               {
                 reference: orderToPrepare1.uuid,
+                href: `/preparations/${orderToPrepare1.uuid}`,
                 client: 'J. Bon',
                 createdDate: '21 janv. 2023',
                 createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
@@ -85,6 +86,7 @@ describe('Get orders to prepare VM', () => {
               },
               {
                 reference: orderToPrepare2.uuid,
+                href: `/preparations/${orderToPrepare2.uuid}`,
                 client: "J. D'arc",
                 createdDate: '5 févr. 2023',
                 createdDatetime: new Date('2023-02-05T02:59:32.527Z'),
@@ -130,6 +132,7 @@ describe('Get orders to prepare VM', () => {
             items: [
               {
                 reference: orderToPrepare3.uuid,
+                href: `/preparations/${orderToPrepare3.uuid}`,
                 client: "J. D'arc",
                 createdDate: '5 févr. 2023',
                 createdDatetime: new Date('2023-02-05T02:59:32.527Z'),
@@ -175,6 +178,7 @@ describe('Get orders to prepare VM', () => {
             items: [
               {
                 reference: orderInPreparation1.uuid,
+                href: `/preparations/${orderInPreparation1.uuid}`,
                 client: 'J. Bon',
                 createdDate: '5 févr. 2023',
                 createdDatetime: new Date('2023-02-05T02:33:40.539Z'),
@@ -182,6 +186,7 @@ describe('Get orders to prepare VM', () => {
               },
               {
                 reference: orderWithMissingProduct1.uuid,
+                href: `/preparations/${orderWithMissingProduct1.uuid}`,
                 client: 'J. Bon',
                 createdDate: '24 janv. 2023',
                 createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
