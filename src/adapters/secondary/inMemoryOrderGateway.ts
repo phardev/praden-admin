@@ -3,6 +3,7 @@ import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
 import { UUID } from '@core/types/types'
 import { PreparationDoesNotExistsError } from '@core/errors/preparationDoesNotExistsError'
 import { DateProvider } from '@core/gateways/dateProvider'
+import { OrderLineAlreadyProcessedError } from '@core/errors/OrderLineAlreadyProcessedError'
 
 export class InMemoryOrderGateway implements OrderGateway {
   private orders: Array<Order> = []
@@ -58,9 +59,15 @@ export class InMemoryOrderGateway implements OrderGateway {
     }
     preparation.lines.forEach((l, lineIndex) => {
       const currentLine = this.orders[index].lines[lineIndex]
-      if (l.preparedQuantity !== currentLine.preparedQuantity)
+      if (l.preparedQuantity !== currentLine.preparedQuantity) {
+        console.log('line ', lineIndex)
+        console.log('status:', currentLine.deliveryStatus)
+        if (currentLine.deliveryStatus > DeliveryStatus.Processing)
+          throw new OrderLineAlreadyProcessedError()
         l.updatedAt = this.dateProvider.now()
-      l.deliveryStatus = DeliveryStatus.Processing
+      }
+      if (l.deliveryStatus < DeliveryStatus.Processing)
+        l.deliveryStatus = DeliveryStatus.Processing
     })
     this.orders.splice(index, 1, preparation)
     return Promise.resolve(preparation)
