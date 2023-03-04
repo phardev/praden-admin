@@ -1,4 +1,9 @@
-import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
+import {
+  MessageContent,
+  DeliveryStatus,
+  Order,
+  PaymentStatus
+} from '@core/entities/order'
 import { anaca3Minceur, dolodent, ultraLevure } from '@utils/testData/products'
 import {
   clickAndCollect,
@@ -38,7 +43,8 @@ export const orderToPrepare1: Order = {
   },
   delivery: {
     method: clickAndCollect
-  }
+  },
+  messages: []
 }
 
 export const orderToPrepare2: Order = {
@@ -85,7 +91,8 @@ export const orderToPrepare2: Order = {
   },
   delivery: {
     method: clickAndCollect
-  }
+  },
+  messages: []
 }
 
 export const orderToPrepare3: Order = {
@@ -121,7 +128,8 @@ export const orderToPrepare3: Order = {
   },
   delivery: {
     method: deliveryInRelayPoint
-  }
+  },
+  messages: []
 }
 
 export const orderPrepared1: Order = {
@@ -157,7 +165,8 @@ export const orderPrepared1: Order = {
   },
   delivery: {
     method: clickAndCollect
-  }
+  },
+  messages: []
 }
 
 export const orderInPreparation1: Order = {
@@ -193,7 +202,17 @@ export const orderInPreparation1: Order = {
   },
   delivery: {
     method: clickAndCollect
-  }
+  },
+  messages: [
+    {
+      content: MessageContent.AskToClient,
+      sentAt: 1675564430539
+    },
+    {
+      content: MessageContent.WaitForRestock,
+      sentAt: 1675564440539
+    }
+  ]
 }
 
 export const orderDelivered1: Order = {
@@ -240,7 +259,8 @@ export const orderDelivered1: Order = {
   },
   delivery: {
     method: clickAndCollect
-  }
+  },
+  messages: []
 }
 
 export const orderDelivered2: Order = {
@@ -287,11 +307,12 @@ export const orderDelivered2: Order = {
   },
   delivery: {
     method: clickAndCollect
-  }
+  },
+  messages: []
 }
 
 export const orderWithMissingProduct1: Order = {
-  uuid: 'HGFRIW',
+  uuid: 'DKOWDW',
   lines: [
     {
       name: dolodent.name,
@@ -334,7 +355,63 @@ export const orderWithMissingProduct1: Order = {
   },
   delivery: {
     method: deliveryInRelayPoint
-  }
+  },
+  messages: [
+    {
+      content: MessageContent.AskToClient,
+      sentAt: 1674573878456
+    },
+    {
+      content: MessageContent.PartialShip,
+      sentAt: 1674684178456
+    }
+  ]
+}
+
+export const orderCanceled: Order = {
+  uuid: 'JFIJLJ',
+  lines: [
+    {
+      name: dolodent.name,
+      cip13: dolodent.cip13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
+      deliveryStatus: DeliveryStatus.Shipped,
+      updatedAt: 1674573778456
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    invoiceNumber: '2023-00002',
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674573678456,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  delivery: {
+    method: deliveryInRelayPoint
+  },
+  messages: [
+    {
+      content: MessageContent.AskToClient,
+      sentAt: 1674573878456
+    },
+    {
+      content: MessageContent.CancelOrder,
+      sentAt: 1674574178456
+    }
+  ]
 }
 
 export const orderNotPayed1: Order = {
@@ -369,5 +446,6 @@ export const orderNotPayed1: Order = {
   },
   delivery: {
     method: clickAndCollect
-  }
+  },
+  messages: []
 }

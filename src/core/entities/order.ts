@@ -60,6 +60,18 @@ export interface OrderDelivery {
   method: DeliveryMethod
 }
 
+export enum MessageContent {
+  AskToClient,
+  WaitForRestock,
+  PartialShip,
+  CancelOrder
+}
+
+export interface Message {
+  content: MessageContent
+  sentAt: Timestamp
+}
+
 export interface Order {
   uuid: string
   lines: Array<OrderLine>
@@ -68,4 +80,5 @@ export interface Order {
   createdAt: Timestamp
   contact: Contact
   delivery: OrderDelivery
+  messages: Array<Message>
 }

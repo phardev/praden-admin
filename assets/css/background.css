@@ -26,4 +26,8 @@
   .bg-light {
     @apply bg-gray2
   }
+
+  .bg-neutral {
+    @apply bg-gray3
+  }
 }

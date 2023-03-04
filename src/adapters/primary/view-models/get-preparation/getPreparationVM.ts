@@ -1,5 +1,8 @@
 import { usePreparationStore } from '@store/preparationStore'
 import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
+import { Message, MessageContent } from '@core/entities/order'
+import { timestampToLocaleString } from '@utils/formatters'
+import { HashTable } from '@core/types/types'
 
 export enum PreparationStatus {
   NotPrepared,
@@ -9,7 +12,6 @@ export enum PreparationStatus {
 
 export interface GetPreparationLineVM {
   reference: string
-  href: string
   name: string
   expectedQuantity: number
   preparedQuantity: number
@@ -20,6 +22,7 @@ export interface GetPreparationVM {
   reference: string
   headers: Array<Header>
   lines: Array<GetPreparationLineVM>
+  messages: Array<any>
   canValidate: boolean
 }
 
@@ -35,7 +38,35 @@ const getLineStatus = (line: GetPreparationLineVM): PreparationStatus => {
     : PreparationStatus.NotPrepared
 }
 
-export const getPreparationVM = () => {
+interface GetPreparationMessagesVM {
+  content: string
+  sentDate: string
+  sentDatetime: Date
+}
+
+const getMessageContent = (content: MessageContent): string => {
+  const messages: HashTable<string> = {
+    [MessageContent.AskToClient]: 'Demande de choix',
+    [MessageContent.PartialShip]: 'Envoi partiel',
+    [MessageContent.WaitForRestock]: 'Attente de stock',
+    [MessageContent.CancelOrder]: 'Annulation de commande'
+  }
+  return messages[content]
+}
+
+const getMessages = (
+  messages: Array<Message>
+): Array<GetPreparationMessagesVM> => {
+  return messages.map((message) => {
+    return {
+      content: getMessageContent(message.content),
+      sentDate: timestampToLocaleString(message.sentAt, 'fr-FR'),
+      sentDatetime: new Date(message.sentAt)
+    }
+  })
+}
+
+export const getPreparationVM = (): GetPreparationVM => {
   const preparationStore = usePreparationStore()
   const preparation = preparationStore.current
   if (!preparation) {
@@ -43,6 +74,7 @@ export const getPreparationVM = () => {
       reference: '',
       headers: [],
       lines: [],
+      messages: [],
       canValidate: false
     }
   }
@@ -81,6 +113,7 @@ export const getPreparationVM = () => {
     reference: preparation.uuid,
     headers,
     lines,
+    messages: getMessages(preparation.messages),
     canValidate: isValid(lines)
   }
 }
