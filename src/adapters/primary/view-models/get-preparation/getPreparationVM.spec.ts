@@ -1,4 +1,10 @@
-import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
+import {
+  orderCanceled,
+  orderInPreparation1,
+  orderToPrepare1,
+  orderToPrepare2,
+  orderWithMissingProduct1
+} from '@utils/testData/orders'
 import { Order } from '@core/entities/order'
 import { createPinia, setActivePinia } from 'pinia'
 import { usePreparationStore } from '@store/preparationStore'
@@ -54,6 +60,7 @@ describe('Get preparation VM', () => {
               status: PreparationStatus.NotPrepared
             }
           ],
+          messages: [],
           canValidate: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
@@ -79,6 +86,7 @@ describe('Get preparation VM', () => {
               status: PreparationStatus.NotPrepared
             }
           ],
+          messages: [],
           canValidate: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
@@ -101,6 +109,7 @@ describe('Get preparation VM', () => {
               status: PreparationStatus.Prepared
             }
           ],
+          messages: [],
           canValidate: true
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
@@ -129,6 +138,7 @@ describe('Get preparation VM', () => {
               status: PreparationStatus.NotPrepared
             }
           ],
+          messages: [],
           canValidate: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
@@ -149,10 +159,67 @@ describe('Get preparation VM', () => {
               status: PreparationStatus.ErrorTooMuchQuantity
             }
           ],
+          messages: [],
           canValidate: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
+    })
+  })
+  describe('It should get messages', () => {
+    it('should get all messages for a partial ship', () => {
+      givenCurrentPreparationIs(orderWithMissingProduct1)
+      const expectedVM: Partial<GetPreparationVM> = {
+        messages: [
+          {
+            content: 'Demande de choix',
+            sentDate: '24 janv. 2023',
+            sentDatetime: new Date(1674573878456)
+          },
+          {
+            content: 'Envoi partiel',
+            sentDate: '25 janv. 2023',
+            sentDatetime: new Date(1674684178456)
+          }
+        ]
+      }
+      expectVMToMatch(expectedVM)
+    })
+    it('should get all messages for a restock', () => {
+      givenCurrentPreparationIs(orderInPreparation1)
+      const expectedVM: Partial<GetPreparationVM> = {
+        messages: [
+          {
+            content: 'Demande de choix',
+            sentDate: '5 févr. 2023',
+            sentDatetime: new Date(1675564430539)
+          },
+          {
+            content: 'Attente de stock',
+            sentDate: '5 févr. 2023',
+            sentDatetime: new Date(1675564440539)
+          }
+        ]
+      }
+      expectVMToMatch(expectedVM)
+    })
+    it('should get all messages for a cancel', () => {
+      givenCurrentPreparationIs(orderCanceled)
+      const expectedVM: Partial<GetPreparationVM> = {
+        messages: [
+          {
+            content: 'Demande de choix',
+            sentDate: '24 janv. 2023',
+            sentDatetime: new Date(1674573878456)
+          },
+          {
+            content: 'Annulation de commande',
+            sentDate: '24 janv. 2023',
+            sentDatetime: new Date(1674574178456)
+          }
+        ]
+      }
+      expectVMToMatch(expectedVM)
     })
   })
   describe('There is no current preparation', () => {
@@ -161,6 +228,7 @@ describe('Get preparation VM', () => {
         reference: '',
         headers: [],
         lines: [],
+        messages: [],
         canValidate: false
       }
       expect(getPreparationVM()).toStrictEqual(emptyVM)
@@ -169,5 +237,9 @@ describe('Get preparation VM', () => {
 
   const givenCurrentPreparationIs = (order: Order) => {
     preparationStore.current = order
+  }
+
+  const expectVMToMatch = (partialVM: Partial<GetPreparationVM>) => {
+    expect(getPreparationVM()).toMatchObject(partialVM)
   }
 })

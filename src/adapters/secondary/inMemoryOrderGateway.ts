@@ -60,8 +60,6 @@ export class InMemoryOrderGateway implements OrderGateway {
     preparation.lines.forEach((l, lineIndex) => {
       const currentLine = this.orders[index].lines[lineIndex]
       if (l.preparedQuantity !== currentLine.preparedQuantity) {
-        console.log('line ', lineIndex)
-        console.log('status:', currentLine.deliveryStatus)
         if (currentLine.deliveryStatus > DeliveryStatus.Processing)
           throw new OrderLineAlreadyProcessedError()
         l.updatedAt = this.dateProvider.now()

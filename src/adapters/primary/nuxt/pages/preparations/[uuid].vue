@@ -32,6 +32,11 @@ invoice.hidden.printme.mx-2
       v-if="preparationVM.canValidate"
       @click="validate"
     ) Valider la commande
+  .max-w-lg.ml-auto(v-if="preparationVM.messages.length > 0")
+    h1.text-2xl.font-semibold.text-default.mt-8 Messages
+    ft-messages(
+      :messages="preparationVM.messages"
+    )
 </template>
 
 <script lang="ts" setup>
