@@ -1,5 +1,5 @@
 import {
-  orderCanceled,
+  orderToCancel,
   orderInPreparation1,
   orderToPrepare1,
   orderToPrepare2,
@@ -221,7 +221,7 @@ describe('Get preparation VM', () => {
   })
   describe('Cancel order asked', () => {
     beforeEach(() => {
-      givenCurrentPreparationIs(orderCanceled)
+      givenCurrentPreparationIs(orderToCancel)
     })
     it('should get all messages for a cancel', () => {
       const expectedVM: Partial<GetPreparationVM> = {

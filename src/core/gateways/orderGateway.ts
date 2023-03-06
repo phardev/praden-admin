@@ -9,4 +9,5 @@ export interface OrderGateway {
   validatePreparation(preparation: Order): Promise<Order>
   savePreparation(preparation: Order): Promise<Order>
   addMessage(preparation: Order, message: Message): Promise<Order>
+  cancelPreparation(preparation: Order): Promise<Order>
 }

@@ -425,14 +425,14 @@ export const orderWithMissingProduct2: Order = {
   ]
 }
 
-export const orderCanceled: Order = {
+export const orderToCancel: Order = {
   uuid: 'JFIJLJ',
   lines: [
     {
       name: dolodent.name,
       cip13: dolodent.cip13,
       expectedQuantity: 2,
-      preparedQuantity: 0,
+      preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,

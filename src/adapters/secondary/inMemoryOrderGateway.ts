@@ -49,12 +49,25 @@ export class InMemoryOrderGateway implements OrderGateway {
   }
 
   async validatePreparation(preparation: Order): Promise<Order> {
+    this.shipOrCancelLines(preparation.lines)
+    this.createDiffBetweenExpectedAndPrepared(preparation.lines)
+    let order: Order = await this.getByUuid(preparation.uuid)
+    order = preparation
+    return Promise.resolve(order)
+  }
+
+  private shipOrCancelLines(lines: Array<OrderLine>) {
+    lines.forEach((l) => {
+      if (l.preparedQuantity === 0) l.deliveryStatus = DeliveryStatus.Canceled
+      else l.deliveryStatus = DeliveryStatus.Shipped
+      l.updatedAt = this.dateProvider.now()
+    })
+  }
+
+  private createDiffBetweenExpectedAndPrepared(lines: Array<OrderLine>) {
     const diffLines: Array<OrderLine> = []
-    preparation.lines.forEach((line) => {
+    lines.forEach((line) => {
       if (line.preparedQuantity !== line.expectedQuantity) {
-        if (line.preparedQuantity === 0)
-          line.deliveryStatus = DeliveryStatus.Canceled
-        else line.deliveryStatus = DeliveryStatus.Shipped
         diffLines.push({
           ...line,
           preparedQuantity: line.preparedQuantity - line.expectedQuantity,
@@ -62,15 +75,9 @@ export class InMemoryOrderGateway implements OrderGateway {
           deliveryStatus: DeliveryStatus.Canceled,
           updatedAt: this.dateProvider.now()
         })
-      } else {
-        line.deliveryStatus = DeliveryStatus.Shipped
       }
-      line.updatedAt = this.dateProvider.now()
     })
-    preparation.lines.push(...diffLines)
-    let order: Order = await this.getByUuid(preparation.uuid)
-    order = preparation
-    return Promise.resolve(order)
+    lines.push(...diffLines)
   }
 
   async savePreparation(preparation: Order): Promise<Order> {
@@ -97,6 +104,17 @@ export class InMemoryOrderGateway implements OrderGateway {
     const index = this.orders.findIndex((o) => o.uuid === order.uuid)
     if (index < 0) throw new PreparationDoesNotExistsError(order.uuid)
     this.orders.splice(index, 1, order)
+    return Promise.resolve(order)
+  }
+
+  async cancelPreparation(preparation: Order): Promise<Order> {
+    preparation.lines.forEach((l) => {
+      l.preparedQuantity = 0
+    })
+    this.shipOrCancelLines(preparation.lines)
+    this.createDiffBetweenExpectedAndPrepared(preparation.lines)
+    let order: Order = await this.getByUuid(preparation.uuid)
+    order = preparation
     return Promise.resolve(order)
   }
 
