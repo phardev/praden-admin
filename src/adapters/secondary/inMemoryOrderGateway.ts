@@ -57,8 +57,8 @@ export class InMemoryOrderGateway implements OrderGateway {
         else line.deliveryStatus = DeliveryStatus.Shipped
         diffLines.push({
           ...line,
-          preparedQuantity: 0,
-          expectedQuantity: line.preparedQuantity - line.expectedQuantity,
+          preparedQuantity: line.preparedQuantity - line.expectedQuantity,
+          expectedQuantity: 0,
           deliveryStatus: DeliveryStatus.Canceled,
           updatedAt: this.dateProvider.now()
         })
