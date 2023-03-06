@@ -24,10 +24,21 @@ export interface GetPreparationVM {
   lines: Array<GetPreparationLineVM>
   messages: Array<any>
   canValidate: boolean
+  canCancel: boolean
 }
 
-const isValid = (lines: Array<GetPreparationLineVM>) => {
-  return lines.every((line) => line.expectedQuantity === line.preparedQuantity)
+const isValid = (
+  lines: Array<GetPreparationLineVM>,
+  messages: Array<Message>
+) => {
+  const areAllLinesPrepared = lines.every(
+    (line) => line.expectedQuantity === line.preparedQuantity
+  )
+  const canDoPartialShip =
+    messages.length > 0
+      ? messages[messages.length - 1].content === MessageContent.PartialShip
+      : false
+  return areAllLinesPrepared || canDoPartialShip
 }
 
 const getLineStatus = (line: GetPreparationLineVM): PreparationStatus => {
@@ -66,6 +77,12 @@ const getMessages = (
   })
 }
 
+const canCancel = (messages: Array<Message>): boolean => {
+  return messages.length > 0
+    ? messages[messages.length - 1].content === MessageContent.CancelOrder
+    : false
+}
+
 export const getPreparationVM = (): GetPreparationVM => {
   const preparationStore = usePreparationStore()
   const preparation = preparationStore.current
@@ -75,7 +92,8 @@ export const getPreparationVM = (): GetPreparationVM => {
       headers: [],
       lines: [],
       messages: [],
-      canValidate: false
+      canValidate: false,
+      canCancel: false
     }
   }
   const headers: Array<Header> = [
@@ -114,6 +132,7 @@ export const getPreparationVM = (): GetPreparationVM => {
     headers,
     lines,
     messages: getMessages(preparation.messages),
-    canValidate: isValid(lines)
+    canValidate: isValid(lines, preparation.messages),
+    canCancel: canCancel(preparation.messages)
   }
 }

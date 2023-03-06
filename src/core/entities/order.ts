@@ -13,7 +13,8 @@ export enum DeliveryStatus {
   Created,
   Processing,
   Shipped,
-  Delivered
+  Delivered,
+  Canceled
 }
 
 export interface OrderLine {

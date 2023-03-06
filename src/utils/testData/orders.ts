@@ -368,6 +368,63 @@ export const orderWithMissingProduct1: Order = {
   ]
 }
 
+export const orderWithMissingProduct2: Order = {
+  uuid: 'DJEIWLQ',
+  lines: [
+    {
+      name: dolodent.name,
+      cip13: dolodent.cip13,
+      expectedQuantity: 2,
+      preparedQuantity: 1,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
+      deliveryStatus: DeliveryStatus.Shipped,
+      updatedAt: 1674573778456
+    },
+    {
+      name: ultraLevure.name,
+      cip13: ultraLevure.cip13,
+      expectedQuantity: 4,
+      preparedQuantity: 2,
+      unitAmount: ultraLevure.priceWithoutTax,
+      percentTaxRate: ultraLevure.percentTaxRate,
+      location: ultraLevure.location,
+      deliveryStatus: DeliveryStatus.Processing,
+      updatedAt: 1674573698456
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    invoiceNumber: '2023-00002',
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674573678456,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  delivery: {
+    method: deliveryInRelayPoint
+  },
+  messages: [
+    {
+      content: MessageContent.AskToClient,
+      sentAt: 1674573878456
+    },
+    {
+      content: MessageContent.PartialShip,
+      sentAt: 1674684178456
+    }
+  ]
+}
+
 export const orderCanceled: Order = {
   uuid: 'JFIJLJ',
   lines: [
@@ -379,7 +436,7 @@ export const orderCanceled: Order = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Shipped,
+      deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674573778456
     }
   ],

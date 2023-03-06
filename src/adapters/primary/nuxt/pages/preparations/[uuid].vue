@@ -32,6 +32,10 @@ invoice.hidden.printme.mx-2
       v-if="preparationVM.canValidate"
       @click="validate"
     ) Valider la commande
+    ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
+      v-if="preparationVM.canCancel"
+      @click="cancel"
+    ) Annuler la commande
   .max-w-lg.ml-auto(v-if="preparationVM.messages.length > 0")
     h1.text-2xl.font-semibold.text-default.mt-8 Messages
     ft-messages(
@@ -82,6 +86,10 @@ const validate = async () => {
   await validatePreparation(useOrderGateway(), useInvoiceGateway())
   window.print()
   router.push('/preparations')
+}
+
+const cancel = () => {
+  console.log('on cancel')
 }
 
 const save = async () => {

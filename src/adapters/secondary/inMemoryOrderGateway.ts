@@ -1,5 +1,11 @@
 import { OrderGateway } from '@core/gateways/orderGateway'
-import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
+import {
+  DeliveryStatus,
+  Message,
+  Order,
+  OrderLine,
+  PaymentStatus
+} from '@core/entities/order'
 import { UUID } from '@core/types/types'
 import { PreparationDoesNotExistsError } from '@core/errors/preparationDoesNotExistsError'
 import { DateProvider } from '@core/gateways/dateProvider'
@@ -43,10 +49,25 @@ export class InMemoryOrderGateway implements OrderGateway {
   }
 
   async validatePreparation(preparation: Order): Promise<Order> {
+    const diffLines: Array<OrderLine> = []
     preparation.lines.forEach((line) => {
-      line.deliveryStatus = DeliveryStatus.Shipped
+      if (line.preparedQuantity !== line.expectedQuantity) {
+        if (line.preparedQuantity === 0)
+          line.deliveryStatus = DeliveryStatus.Canceled
+        else line.deliveryStatus = DeliveryStatus.Shipped
+        diffLines.push({
+          ...line,
+          preparedQuantity: 0,
+          expectedQuantity: line.preparedQuantity - line.expectedQuantity,
+          deliveryStatus: DeliveryStatus.Canceled,
+          updatedAt: this.dateProvider.now()
+        })
+      } else {
+        line.deliveryStatus = DeliveryStatus.Shipped
+      }
       line.updatedAt = this.dateProvider.now()
     })
+    preparation.lines.push(...diffLines)
     let order: Order = await this.getByUuid(preparation.uuid)
     order = preparation
     return Promise.resolve(order)
@@ -69,6 +90,14 @@ export class InMemoryOrderGateway implements OrderGateway {
     })
     this.orders.splice(index, 1, preparation)
     return Promise.resolve(preparation)
+  }
+
+  async addMessage(order: Order, message: Message): Promise<Order> {
+    order.messages.push(message)
+    const index = this.orders.findIndex((o) => o.uuid === order.uuid)
+    if (index < 0) throw new PreparationDoesNotExistsError(order.uuid)
+    this.orders.splice(index, 1, order)
+    return Promise.resolve(order)
   }
 
   feedWith(...orders: Array<Order>) {
