@@ -62,7 +62,8 @@ describe('Get preparation VM', () => {
           ],
           messages: [],
           canValidate: false,
-          canCancel: false
+          canCancel: false,
+          canAskHowToFinish: true
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -89,7 +90,8 @@ describe('Get preparation VM', () => {
           ],
           messages: [],
           canValidate: false,
-          canCancel: false
+          canCancel: false,
+          canAskHowToFinish: true
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -113,7 +115,8 @@ describe('Get preparation VM', () => {
           ],
           messages: [],
           canValidate: true,
-          canCancel: false
+          canCancel: false,
+          canAskHowToFinish: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -143,7 +146,8 @@ describe('Get preparation VM', () => {
           ],
           messages: [],
           canValidate: false,
-          canCancel: false
+          canCancel: false,
+          canAskHowToFinish: true
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -165,7 +169,8 @@ describe('Get preparation VM', () => {
           ],
           messages: [],
           canValidate: false,
-          canCancel: false
+          canCancel: false,
+          canAskHowToFinish: true
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -198,6 +203,12 @@ describe('Get preparation VM', () => {
       }
       expectVMToMatch(expectedVM)
     })
+    it('should not allow to ask how to finish', () => {
+      const expectedVM: Partial<GetPreparationVM> = {
+        canAskHowToFinish: false
+      }
+      expectVMToMatch(expectedVM)
+    })
   })
   describe('Wait for restock asked', () => {
     it('should get all messages for a restock', () => {
@@ -215,6 +226,12 @@ describe('Get preparation VM', () => {
             sentDatetime: new Date(1675564440539)
           }
         ]
+      }
+      expectVMToMatch(expectedVM)
+    })
+    it('should not allow to ask how to finish', () => {
+      const expectedVM: Partial<GetPreparationVM> = {
+        canAskHowToFinish: false
       }
       expectVMToMatch(expectedVM)
     })
@@ -246,6 +263,12 @@ describe('Get preparation VM', () => {
       }
       expectVMToMatch(expectedVM)
     })
+    it('should not allow to ask how to finish', () => {
+      const expectedVM: Partial<GetPreparationVM> = {
+        canAskHowToFinish: false
+      }
+      expectVMToMatch(expectedVM)
+    })
   })
   describe('There is no current preparation', () => {
     it('should return an empty vm', () => {
@@ -255,7 +278,8 @@ describe('Get preparation VM', () => {
         lines: [],
         messages: [],
         canValidate: false,
-        canCancel: false
+        canCancel: false,
+        canAskHowToFinish: false
       }
       expect(getPreparationVM()).toStrictEqual(emptyVM)
     })

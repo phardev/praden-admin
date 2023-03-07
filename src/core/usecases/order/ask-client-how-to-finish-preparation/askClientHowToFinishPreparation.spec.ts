@@ -5,33 +5,9 @@ import { usePreparationStore } from '@store/preparationStore'
 import { askClientHowToFinishPreparation } from '@core/usecases/order/ask-client-how-to-finish-preparation/askClientHowToFinishPreparation'
 import { InMemoryOrderGateway } from '@adapters/secondary/inMemoryOrderGateway'
 import { FakeDateProvider } from '@adapters/secondary/fakeDateProvider'
-import { DateProvider } from '@core/gateways/dateProvider'
 import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
 import { PreparationDoesNotExistsError } from '@core/errors/preparationDoesNotExistsError'
-
-export interface MessageGateway {
-  list(): Promise<Array<Message>>
-  create(content: MessageContent): Promise<Message>
-}
-
-export class InMemoryMessageGateway implements MessageGateway {
-  private messages: Array<Message> = []
-  private dateProvider: DateProvider
-  constructor(dateProvider: DateProvider) {
-    this.dateProvider = dateProvider
-  }
-  list(): Promise<Array<Message>> {
-    return Promise.resolve(this.messages)
-  }
-  create(content: MessageContent): Promise<Message> {
-    const message = {
-      content,
-      sentAt: this.dateProvider.now()
-    }
-    this.messages.push(message)
-    return Promise.resolve(message)
-  }
-}
+import { InMemoryMessageGateway } from '@adapters/secondary/inMemoryMessageGateway'
 
 describe('Ask client how to finish preparation', () => {
   let preparationStore: any

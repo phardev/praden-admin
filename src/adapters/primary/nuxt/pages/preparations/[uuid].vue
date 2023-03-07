@@ -36,6 +36,10 @@ invoice.hidden.printme.mx-2
       v-if="preparationVM.canCancel"
       @click="cancel"
     ) Annuler la commande
+    ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
+      v-if="preparationVM.canAskHowToFinish"
+      @click="askHowToFinish"
+    ) Envoyer demande au client
   .max-w-lg.ml-auto(v-if="preparationVM.messages.length > 0")
     h1.text-2xl.font-semibold.text-default.mt-8 Messages
     ft-messages(
@@ -57,6 +61,8 @@ import { useInvoiceGateway } from '../../../../../../gateways/invoiceGateway'
 import { setProductQuantityForPreparation } from '@core/usecases/order/set-product-quantity-for-preparation/setProductQuantityForPreparation'
 import { savePreparation } from '@core/usecases/order/save-preparation/savePreparation'
 import { cancelPreparation } from '@core/usecases/order/cancel-preparation/cancelPreparation'
+import { askClientHowToFinishPreparation } from '@core/usecases/order/ask-client-how-to-finish-preparation/askClientHowToFinishPreparation'
+import { useMessageGateway } from '../../../../../../gateways/messageGateway'
 
 definePageMeta({ layout: 'main' })
 
@@ -92,7 +98,12 @@ const validate = async () => {
 const cancel = async () => {
   await cancelPreparation(useOrderGateway(), useInvoiceGateway())
   window.print()
-  // router.push('/preparations')
+  router.push('/preparations')
+}
+
+const askHowToFinish = async () => {
+  await askClientHowToFinishPreparation(useOrderGateway(), useMessageGateway())
+  router.push('/preparations')
 }
 
 const save = async () => {

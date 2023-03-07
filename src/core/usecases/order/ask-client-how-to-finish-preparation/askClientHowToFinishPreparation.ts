@@ -1,8 +1,8 @@
 import { OrderGateway } from '@core/gateways/orderGateway'
 import { usePreparationStore } from '@store/preparationStore'
 import { MessageContent } from '@core/entities/order'
-import { MessageGateway } from '@core/usecases/order/ask-client-how-to-finish-preparation/askClientHowToFinishPreparation.spec'
 import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
+import { MessageGateway } from '@core/gateways/messageGateway'
 
 export const askClientHowToFinishPreparation = async (
   orderGateway: OrderGateway,
