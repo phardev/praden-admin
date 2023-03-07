@@ -70,8 +70,8 @@ export class InMemoryOrderGateway implements OrderGateway {
       if (line.preparedQuantity !== line.expectedQuantity) {
         diffLines.push({
           ...line,
-          preparedQuantity: line.preparedQuantity - line.expectedQuantity,
-          expectedQuantity: 0,
+          preparedQuantity: 0,
+          expectedQuantity: line.preparedQuantity - line.expectedQuantity,
           deliveryStatus: DeliveryStatus.Canceled,
           updatedAt: this.dateProvider.now()
         })

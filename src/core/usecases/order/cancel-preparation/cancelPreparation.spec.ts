@@ -8,6 +8,7 @@ import { usePreparationStore } from '@store/preparationStore'
 import { Invoice } from '@core/entities/invoice'
 import { useInvoiceStore } from '@store/invoiceStore'
 import { InMemoryInvoiceGateway } from '@adapters/secondary/inMemoryInvoiceGateway'
+import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
 
 describe('Cancel preparation', () => {
   let preparationStore: any
@@ -38,8 +39,8 @@ describe('Cancel preparation', () => {
       expectedOrder.lines[0].updatedAt = now
       expectedOrder.lines[1] = {
         ...expectedOrder.lines[0],
-        expectedQuantity: 0,
-        preparedQuantity: -2,
+        expectedQuantity: -2,
+        preparedQuantity: 0,
         deliveryStatus: DeliveryStatus.Canceled,
         updatedAt: now
       }
@@ -70,6 +71,13 @@ describe('Cancel preparation', () => {
       it('should save the invoice in store', async () => {
         expect(invoiceStore.current).toStrictEqual(expectedInvoice)
       })
+    })
+  })
+  describe('There is no current preparation', () => {
+    it('should throw an error', async () => {
+      await expect(whenCancelPreparation()).rejects.toThrow(
+        NoPreparationSelectedError
+      )
     })
   })
 

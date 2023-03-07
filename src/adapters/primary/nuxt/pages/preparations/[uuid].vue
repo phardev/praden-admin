@@ -56,6 +56,7 @@ import { validatePreparation } from '@core/usecases/order/validate-preparation/v
 import { useInvoiceGateway } from '../../../../../../gateways/invoiceGateway'
 import { setProductQuantityForPreparation } from '@core/usecases/order/set-product-quantity-for-preparation/setProductQuantityForPreparation'
 import { savePreparation } from '@core/usecases/order/save-preparation/savePreparation'
+import { cancelPreparation } from '@core/usecases/order/cancel-preparation/cancelPreparation'
 
 definePageMeta({ layout: 'main' })
 
@@ -88,8 +89,10 @@ const validate = async () => {
   router.push('/preparations')
 }
 
-const cancel = () => {
-  console.log('on cancel')
+const cancel = async () => {
+  await cancelPreparation(useOrderGateway(), useInvoiceGateway())
+  window.print()
+  // router.push('/preparations')
 }
 
 const save = async () => {

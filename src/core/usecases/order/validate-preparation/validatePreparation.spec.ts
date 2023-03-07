@@ -144,8 +144,8 @@ describe('Validate preparation', () => {
         expectedOrder.lines[2] = {
           name: ultraLevure.name,
           cip13: ultraLevure.cip13,
-          expectedQuantity: 0,
-          preparedQuantity: -4,
+          expectedQuantity: -4,
+          preparedQuantity: 0,
           unitAmount: ultraLevure.priceWithoutTax,
           percentTaxRate: ultraLevure.percentTaxRate,
           location: ultraLevure.location,
@@ -199,8 +199,8 @@ describe('Validate preparation', () => {
         expectedOrder.lines[2] = {
           name: dolodent.name,
           cip13: dolodent.cip13,
-          expectedQuantity: 0,
-          preparedQuantity: -1,
+          expectedQuantity: -1,
+          preparedQuantity: 0,
           unitAmount: dolodent.priceWithoutTax,
           percentTaxRate: dolodent.percentTaxRate,
           location: dolodent.location,
@@ -210,8 +210,8 @@ describe('Validate preparation', () => {
         expectedOrder.lines[3] = {
           name: ultraLevure.name,
           cip13: ultraLevure.cip13,
-          expectedQuantity: 0,
-          preparedQuantity: -2,
+          expectedQuantity: -2,
+          preparedQuantity: 0,
           unitAmount: ultraLevure.priceWithoutTax,
           percentTaxRate: ultraLevure.percentTaxRate,
           location: ultraLevure.location,
