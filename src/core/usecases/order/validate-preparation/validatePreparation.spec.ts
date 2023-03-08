@@ -39,8 +39,10 @@ describe('Validate preparation', () => {
       now = 1234567891234
       dateProvider.feedWith(now)
       givenThereIsExistingOrders(order)
+      order.lines.forEach((l) => {
+        l.preparedQuantity = l.expectedQuantity
+      })
       givenThereIsAPreparationSelected(order)
-      order.lines[0].preparedQuantity = order.lines[0].expectedQuantity
       await whenValidatePreparation()
     })
     it('should save it', async () => {
@@ -82,11 +84,11 @@ describe('Validate preparation', () => {
       now = 9876543216549
       dateProvider.feedWith(now)
       givenThereIsExistingOrders(order, orderToPrepare1)
-      givenThereIsAPreparationSelected(order)
       order.lines[0].preparedQuantity = order.lines[0].expectedQuantity
       order.lines[0].updatedAt = now
       order.lines[1].preparedQuantity = order.lines[1].expectedQuantity
       order.lines[1].updatedAt = now
+      givenThereIsAPreparationSelected(order)
       await whenValidatePreparation()
     })
     it('should save it', async () => {
@@ -135,7 +137,6 @@ describe('Validate preparation', () => {
         now = 1234567891234
         dateProvider.feedWith(now)
         givenThereIsExistingOrders(order)
-        givenThereIsAPreparationSelected(order)
         expectedOrder = JSON.parse(JSON.stringify(order))
         expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Shipped
         expectedOrder.lines[0].updatedAt = now
@@ -152,6 +153,7 @@ describe('Validate preparation', () => {
           deliveryStatus: DeliveryStatus.Canceled,
           updatedAt: now
         }
+        givenThereIsAPreparationSelected(order)
         await whenValidatePreparation()
       })
       it('should save it and create new lines for missing products', async () => {
@@ -237,7 +239,7 @@ describe('Validate preparation', () => {
   }
 
   const givenThereIsAPreparationSelected = (order: Order) => {
-    preparationStore.current = order
+    preparationStore.current = JSON.parse(JSON.stringify(order))
   }
 
   const whenValidatePreparation = async () => {

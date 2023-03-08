@@ -51,9 +51,9 @@ export class InMemoryOrderGateway implements OrderGateway {
   async validatePreparation(preparation: Order): Promise<Order> {
     this.shipOrCancelLines(preparation.lines)
     this.createDiffBetweenExpectedAndPrepared(preparation.lines)
-    let order: Order = await this.getByUuid(preparation.uuid)
-    order = preparation
-    return Promise.resolve(order)
+    const index = this.orders.findIndex((o) => o.uuid === preparation.uuid)
+    this.orders.splice(index, 1, preparation)
+    return Promise.resolve(preparation)
   }
 
   private shipOrCancelLines(lines: Array<OrderLine>) {
