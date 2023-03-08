@@ -4,7 +4,12 @@ import {
   Order,
   PaymentStatus
 } from '@core/entities/order'
-import { anaca3Minceur, dolodent, ultraLevure } from '@utils/testData/products'
+import {
+  anaca3Minceur,
+  chamomilla,
+  dolodent,
+  ultraLevure
+} from '@utils/testData/products'
 import {
   clickAndCollect,
   deliveryInRelayPoint
@@ -505,4 +510,85 @@ export const orderNotPayed1: Order = {
     method: clickAndCollect
   },
   messages: []
+}
+
+export const orderSaved1: Order = {
+  uuid: 'FKEROFE',
+  lines: [
+    {
+      name: dolodent.name,
+      cip13: dolodent.cip13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
+      deliveryStatus: DeliveryStatus.Processing,
+      updatedAt: 1674273789000
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674273789000,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
+  },
+  messages: []
+}
+
+export const orderWaitingForRestock: Order = {
+  uuid: 'FKEROFE',
+  lines: [
+    {
+      name: chamomilla.name,
+      cip13: chamomilla.cip13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: chamomilla.priceWithoutTax,
+      percentTaxRate: chamomilla.percentTaxRate,
+      location: chamomilla.location,
+      deliveryStatus: DeliveryStatus.Processing,
+      updatedAt: 1674273789000
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674273789000,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
+  },
+  messages: [
+    {
+      content: MessageContent.AskToClient,
+      sentAt: 1675564430539
+    },
+    {
+      content: MessageContent.WaitForRestock,
+      sentAt: 1675564440539
+    }
+  ]
 }

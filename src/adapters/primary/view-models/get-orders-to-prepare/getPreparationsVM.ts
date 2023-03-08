@@ -2,12 +2,14 @@ import { usePreparationStore } from '@store/preparationStore'
 import {
   DeliveryStatus,
   DeliveryType,
+  MessageContent,
   Order,
   OrderLine
 } from '@core/entities/order'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import { TableVM } from '@adapters/primary/view-models/get-invoice/getInvoiceVM'
 import { HashTable } from '@core/types/types'
+import { useProductStore } from '@store/productStore'
 
 export interface GetPreparationsItemVM {
   reference: string
@@ -56,8 +58,39 @@ const deliveryFilter = (o: Order) => {
 }
 
 const toContinueFilter = (o: Order) => {
-  return o.lines.some(
-    (l: OrderLine) => l.deliveryStatus === DeliveryStatus.Processing
+  return (
+    o.lines.some((l) => l.deliveryStatus === DeliveryStatus.Processing) &&
+    !o.messages.length
+  )
+}
+
+const isStockAvailable = (lines: Array<OrderLine>): boolean => {
+  const productStore = useProductStore()
+  const stock = productStore.stock
+  return lines.every(
+    (l) => stock[l.cip13] >= l.expectedQuantity - l.preparedQuantity
+  )
+}
+
+const toCompleteFilter = (o: Order) => {
+  if (!o.messages.length) return false
+  return (
+    o.messages[o.messages.length - 1].content ===
+      MessageContent.WaitForRestock && isStockAvailable(o.lines)
+  )
+}
+
+const toShipFilter = (o: Order) => {
+  if (!o.messages.length) return false
+  return (
+    o.messages[o.messages.length - 1].content === MessageContent.PartialShip
+  )
+}
+
+const toCancelFilter = (o: Order) => {
+  if (!o.messages.length) return false
+  return (
+    o.messages[o.messages.length - 1].content === MessageContent.CancelOrder
   )
 }
 
@@ -95,6 +128,18 @@ export const getPreparationsVM = (): GetPreparationsVM => {
     {
       name: 'À terminer',
       filter: toContinueFilter
+    },
+    {
+      name: 'À completer',
+      filter: toCompleteFilter
+    },
+    {
+      name: 'À expedier',
+      filter: toShipFilter
+    },
+    {
+      name: 'À annuler',
+      filter: toCancelFilter
     }
   ]
   const res: GetPreparationsVM = {}

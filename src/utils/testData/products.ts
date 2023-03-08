@@ -32,3 +32,14 @@ export const anaca3Minceur: Product = {
   location: '1D450',
   availableStock: 36
 }
+
+export const chamomilla: Product = {
+  name: 'Chamomilla vulgaris 9CH suppositoires Boiron (poussée dentaire)',
+  img: 'https://www.pharmacieagnespraden.com/img/tmp/product_mini_198_1.jpg?time=1675901328',
+  categoryUuid: 'category-dents',
+  cip13: '3400921924008',
+  priceWithoutTax: 627,
+  percentTaxRate: 10,
+  location: 'HOMEO-D',
+  availableStock: 1
+}

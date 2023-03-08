@@ -66,6 +66,8 @@ import { startPreparationsVM } from '@adapters/primary/view-models/start-prepara
 import { startPreparations } from '@core/usecases/order/start-preparations/startPreparations'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
 import { resetPreparationSelection } from '@core/usecases/order/reset-preparation-selection/resetPreparationSelection'
+import { listProducts } from '@core/usecases/product/product-listing/listProducts'
+import { useProductGateway } from '../../../../../../gateways/productGateway'
 
 let vueQr
 if (process.client) {
@@ -77,6 +79,7 @@ if (process.client) {
 definePageMeta({ layout: 'main' })
 
 onMounted(() => {
+  listProducts(useProductGateway())
   listOrdersToPrepare(useOrderGateway())
 })
 
