@@ -86,7 +86,7 @@ describe('Cancel preparation', () => {
     preparationStore.items = orders
   }
   const givenCurrentPreparationIs = (order: Order) => {
-    preparationStore.current = order
+    preparationStore.current = JSON.parse(JSON.stringify(order))
   }
 
   const whenCancelPreparation = async () => {
