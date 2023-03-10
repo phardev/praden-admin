@@ -37,6 +37,11 @@ const menu = {
           name: 'Préparations',
           icon: 'akar-icons:shipping-box-01',
           href: '/preparations'
+        },
+        {
+          name: 'Préparations en attente',
+          icon: 'pajamas:status-waiting',
+          href: '/waitingPreparations'
         }
       ]
     }

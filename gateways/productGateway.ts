@@ -1,8 +1,9 @@
 import { InMemoryProductGateway } from '@adapters/secondary/inMemoryProductGateway'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import * as products from '@utils/testData/products'
 
 export const useProductGateway = () => {
   const productGateway = new InMemoryProductGateway()
-  productGateway.feedWith(dolodent, ultraLevure)
+  console.log('feed', ...Object.values(products))
+  productGateway.feedWith(...Object.values(products))
   return productGateway
 }

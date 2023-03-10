@@ -32,7 +32,7 @@ interface GetPreparationsGroupVM {
 
 export type GetPreparationsVM = HashTable<GetPreparationsGroupVM>
 
-const computeTotalWithTaxForOrder = (order: Order) => {
+export const computeTotalWithTaxForOrder = (order: Order) => {
   const total = order.lines.reduce((acc: number, line: OrderLine) => {
     return (
       acc +
@@ -64,7 +64,7 @@ const toContinueFilter = (o: Order) => {
   )
 }
 
-const isStockAvailable = (lines: Array<OrderLine>): boolean => {
+export const isStockAvailable = (lines: Array<OrderLine>): boolean => {
   const productStore = useProductStore()
   const stock = productStore.stock
   return lines.every(

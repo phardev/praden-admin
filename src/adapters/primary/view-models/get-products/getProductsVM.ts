@@ -23,6 +23,7 @@ export const getProductsVM = (): GetProductsVM => {
   const productStore = useProductStore()
   const categoryStore = useCategoryStore()
   const products = productStore.items
+  console.log('products: ', products)
   const formatter = priceFormatter('fr-FR', 'EUR')
   const headers: Array<Header> = [
     {
