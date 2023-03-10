@@ -6,6 +6,8 @@ import { createPinia, setActivePinia } from 'pinia'
 import { usePreparationStore } from '@store/preparationStore'
 import {
   orderInPreparation1,
+  orderPrepared1,
+  orderSaved1,
   orderWaitingForClientAnswer1,
   orderWaitingForClientAnswer2,
   orderWaitingForRestock
@@ -44,6 +46,12 @@ describe('Get orders to prepare VM', () => {
   })
   describe('There is no orders waiting to be prepared', () => {
     it('should list nothing', () => {
+      expectVMToMatch({})
+    })
+  })
+  describe('There is no orders not waiting to be prepared', () => {
+    it('should list nothing', () => {
+      preparationStore.items = [orderPrepared1, orderSaved1]
       expectVMToMatch({})
     })
   })
