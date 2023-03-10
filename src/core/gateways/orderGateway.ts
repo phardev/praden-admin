@@ -1,4 +1,4 @@
-import { Order } from '@core/entities/order'
+import { Message, Order } from '@core/entities/order'
 import { UUID } from '@core/types/types'
 
 export interface OrderGateway {
@@ -8,4 +8,6 @@ export interface OrderGateway {
   getByUuid(uuid: UUID): Promise<Order>
   validatePreparation(preparation: Order): Promise<Order>
   savePreparation(preparation: Order): Promise<Order>
+  addMessage(preparation: Order, message: Message): Promise<Order>
+  cancelPreparation(preparation: Order): Promise<Order>
 }

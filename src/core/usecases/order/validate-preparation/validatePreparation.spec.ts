@@ -2,7 +2,12 @@ import { createPinia, setActivePinia } from 'pinia'
 import { usePreparationStore } from '@store/preparationStore'
 import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
 import { validatePreparation } from '@core/usecases/order/validate-preparation/validatePreparation'
-import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
+import {
+  orderToPrepare1,
+  orderToPrepare2,
+  orderWithMissingProduct1,
+  orderWithMissingProduct2
+} from '@utils/testData/orders'
 import { DeliveryStatus, Order } from '@core/entities/order'
 import { InMemoryOrderGateway } from '@adapters/secondary/inMemoryOrderGateway'
 import { FakeDateProvider } from '@adapters/secondary/fakeDateProvider'
@@ -10,6 +15,7 @@ import { Invoice } from '@core/entities/invoice'
 import { InMemoryInvoiceGateway } from '@adapters/secondary/inMemoryInvoiceGateway'
 import { useInvoiceStore } from '@store/invoiceStore'
 import { Timestamp } from '@core/types/types'
+import { dolodent, ultraLevure } from '@utils/testData/products'
 
 describe('Validate preparation', () => {
   let preparationStore: any
@@ -33,8 +39,10 @@ describe('Validate preparation', () => {
       now = 1234567891234
       dateProvider.feedWith(now)
       givenThereIsExistingOrders(order)
+      order.lines.forEach((l) => {
+        l.preparedQuantity = l.expectedQuantity
+      })
       givenThereIsAPreparationSelected(order)
-      order.lines[0].preparedQuantity = order.lines[0].expectedQuantity
       await whenValidatePreparation()
     })
     it('should save it', async () => {
@@ -76,11 +84,11 @@ describe('Validate preparation', () => {
       now = 9876543216549
       dateProvider.feedWith(now)
       givenThereIsExistingOrders(order, orderToPrepare1)
-      givenThereIsAPreparationSelected(order)
       order.lines[0].preparedQuantity = order.lines[0].expectedQuantity
       order.lines[0].updatedAt = now
       order.lines[1].preparedQuantity = order.lines[1].expectedQuantity
       order.lines[1].updatedAt = now
+      givenThereIsAPreparationSelected(order)
       await whenValidatePreparation()
     })
     it('should save it', async () => {
@@ -120,6 +128,103 @@ describe('Validate preparation', () => {
     })
   })
 
+  describe('Preparation is partially validated', () => {
+    describe('A line cannot be prepared at all', () => {
+      let order: Order
+      let expectedOrder: Order
+      beforeEach(async () => {
+        order = JSON.parse(JSON.stringify(orderWithMissingProduct1))
+        now = 1234567891234
+        dateProvider.feedWith(now)
+        givenThereIsExistingOrders(order)
+        expectedOrder = JSON.parse(JSON.stringify(order))
+        expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Shipped
+        expectedOrder.lines[0].updatedAt = now
+        expectedOrder.lines[1].deliveryStatus = DeliveryStatus.Canceled
+        expectedOrder.lines[1].updatedAt = now
+        expectedOrder.lines[2] = {
+          name: ultraLevure.name,
+          cip13: ultraLevure.cip13,
+          expectedQuantity: -4,
+          preparedQuantity: 0,
+          unitAmount: ultraLevure.priceWithoutTax,
+          percentTaxRate: ultraLevure.percentTaxRate,
+          location: ultraLevure.location,
+          deliveryStatus: DeliveryStatus.Canceled,
+          updatedAt: now
+        }
+        givenThereIsAPreparationSelected(order)
+        await whenValidatePreparation()
+      })
+      it('should save it and create new lines for missing products', async () => {
+        expect(await orderGateway.list()).toStrictEqual([expectedOrder])
+      })
+      it('should remove it from preparation store', async () => {
+        expectPreparationStoreToEqual()
+      })
+      describe('Invoice', () => {
+        let expectedInvoiceNumber: string
+        let expectedInvoice: Invoice
+        beforeEach(() => {
+          expectedInvoiceNumber = order.payment.invoiceNumber
+          expectedInvoice = {
+            id: expectedInvoiceNumber,
+            data: expectedOrder,
+            createdAt: now
+          }
+        })
+        it('should create the invoice', async () => {
+          expect(await invoiceGateway.get(expectedInvoiceNumber)).toStrictEqual(
+            expectedInvoice
+          )
+        })
+        it('should save the invoice in store', async () => {
+          expect(invoiceStore.current).toStrictEqual(expectedInvoice)
+        })
+      })
+    })
+    describe('Multiple lines cannot be fully prepared', () => {
+      const order: Order = JSON.parse(JSON.stringify(orderWithMissingProduct2))
+      beforeEach(async () => {
+        now = 1234567894321
+        dateProvider.feedWith(now)
+        givenThereIsExistingOrders(order)
+        givenThereIsAPreparationSelected(order)
+        await whenValidatePreparation()
+      })
+      it('should save it and create new lines for missing products', async () => {
+        const expectedOrder: Order = JSON.parse(JSON.stringify(order))
+        expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Shipped
+        expectedOrder.lines[0].updatedAt = now
+        expectedOrder.lines[1].deliveryStatus = DeliveryStatus.Shipped
+        expectedOrder.lines[1].updatedAt = now
+        expectedOrder.lines[2] = {
+          name: dolodent.name,
+          cip13: dolodent.cip13,
+          expectedQuantity: -1,
+          preparedQuantity: 0,
+          unitAmount: dolodent.priceWithoutTax,
+          percentTaxRate: dolodent.percentTaxRate,
+          location: dolodent.location,
+          deliveryStatus: DeliveryStatus.Canceled,
+          updatedAt: now
+        }
+        expectedOrder.lines[3] = {
+          name: ultraLevure.name,
+          cip13: ultraLevure.cip13,
+          expectedQuantity: -2,
+          preparedQuantity: 0,
+          unitAmount: ultraLevure.priceWithoutTax,
+          percentTaxRate: ultraLevure.percentTaxRate,
+          location: ultraLevure.location,
+          deliveryStatus: DeliveryStatus.Canceled,
+          updatedAt: now
+        }
+        expect(await orderGateway.list()).toStrictEqual([expectedOrder])
+      })
+    })
+  })
+
   describe('There is no current preparation', () => {
     it('should throw an error', async () => {
       await expect(whenValidatePreparation()).rejects.toThrow(
@@ -134,7 +239,7 @@ describe('Validate preparation', () => {
   }
 
   const givenThereIsAPreparationSelected = (order: Order) => {
-    preparationStore.current = order
+    preparationStore.current = JSON.parse(JSON.stringify(order))
   }
 
   const whenValidatePreparation = async () => {

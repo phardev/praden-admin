@@ -1,5 +1,11 @@
 import { OrderGateway } from '@core/gateways/orderGateway'
-import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
+import {
+  DeliveryStatus,
+  Message,
+  Order,
+  OrderLine,
+  PaymentStatus
+} from '@core/entities/order'
 import { UUID } from '@core/types/types'
 import { PreparationDoesNotExistsError } from '@core/errors/preparationDoesNotExistsError'
 import { DateProvider } from '@core/gateways/dateProvider'
@@ -43,13 +49,35 @@ export class InMemoryOrderGateway implements OrderGateway {
   }
 
   async validatePreparation(preparation: Order): Promise<Order> {
-    preparation.lines.forEach((line) => {
-      line.deliveryStatus = DeliveryStatus.Shipped
-      line.updatedAt = this.dateProvider.now()
+    this.shipOrCancelLines(preparation.lines)
+    this.createDiffBetweenExpectedAndPrepared(preparation.lines)
+    const index = this.orders.findIndex((o) => o.uuid === preparation.uuid)
+    this.orders.splice(index, 1, preparation)
+    return Promise.resolve(preparation)
+  }
+
+  private shipOrCancelLines(lines: Array<OrderLine>) {
+    lines.forEach((l) => {
+      if (l.preparedQuantity === 0) l.deliveryStatus = DeliveryStatus.Canceled
+      else l.deliveryStatus = DeliveryStatus.Shipped
+      l.updatedAt = this.dateProvider.now()
     })
-    let order: Order = await this.getByUuid(preparation.uuid)
-    order = preparation
-    return Promise.resolve(order)
+  }
+
+  private createDiffBetweenExpectedAndPrepared(lines: Array<OrderLine>) {
+    const diffLines: Array<OrderLine> = []
+    lines.forEach((line) => {
+      if (line.preparedQuantity !== line.expectedQuantity) {
+        diffLines.push({
+          ...line,
+          preparedQuantity: 0,
+          expectedQuantity: line.preparedQuantity - line.expectedQuantity,
+          deliveryStatus: DeliveryStatus.Canceled,
+          updatedAt: this.dateProvider.now()
+        })
+      }
+    })
+    lines.push(...diffLines)
   }
 
   async savePreparation(preparation: Order): Promise<Order> {
@@ -67,6 +95,25 @@ export class InMemoryOrderGateway implements OrderGateway {
       if (l.deliveryStatus < DeliveryStatus.Processing)
         l.deliveryStatus = DeliveryStatus.Processing
     })
+    this.orders.splice(index, 1, preparation)
+    return Promise.resolve(preparation)
+  }
+
+  async addMessage(order: Order, message: Message): Promise<Order> {
+    order.messages.push(message)
+    const index = this.orders.findIndex((o) => o.uuid === order.uuid)
+    if (index < 0) throw new PreparationDoesNotExistsError(order.uuid)
+    this.orders.splice(index, 1, order)
+    return Promise.resolve(order)
+  }
+
+  async cancelPreparation(preparation: Order): Promise<Order> {
+    preparation.lines.forEach((l) => {
+      l.preparedQuantity = 0
+    })
+    this.shipOrCancelLines(preparation.lines)
+    this.createDiffBetweenExpectedAndPrepared(preparation.lines)
+    const index = this.orders.findIndex((o) => o.uuid === preparation.uuid)
     this.orders.splice(index, 1, preparation)
     return Promise.resolve(preparation)
   }

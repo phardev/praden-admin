@@ -18,9 +18,9 @@ div.hidden.printme.mx-2
   tab-group.border-b.border-gray-200(as="div")
     tab-list.-mb-px.flex.space-x-8
       tab.w-full.rounded-md.border-neutral-light.py-2.pl-3.pr-10.text-base(
-        v-for="(group, index) in Object.keys(preparationsVM)"
+        v-for="(group, tabIndex) in Object.keys(preparationsVM)"
         v-slot="{ selected }"
-        :key="index"
+        :key="tabIndex"
         as="div"
         @click="resetSelection"
       )

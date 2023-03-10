@@ -1,5 +1,5 @@
 import {
-  orderCanceled,
+  orderToCancel,
   orderInPreparation1,
   orderToPrepare1,
   orderToPrepare2,
@@ -61,7 +61,9 @@ describe('Get preparation VM', () => {
             }
           ],
           messages: [],
-          canValidate: false
+          canValidate: false,
+          canCancel: false,
+          canAskHowToFinish: true
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -87,7 +89,9 @@ describe('Get preparation VM', () => {
             }
           ],
           messages: [],
-          canValidate: false
+          canValidate: false,
+          canCancel: false,
+          canAskHowToFinish: true
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -110,7 +114,9 @@ describe('Get preparation VM', () => {
             }
           ],
           messages: [],
-          canValidate: true
+          canValidate: true,
+          canCancel: false,
+          canAskHowToFinish: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -139,7 +145,9 @@ describe('Get preparation VM', () => {
             }
           ],
           messages: [],
-          canValidate: false
+          canValidate: false,
+          canCancel: false,
+          canAskHowToFinish: true
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -160,15 +168,19 @@ describe('Get preparation VM', () => {
             }
           ],
           messages: [],
-          canValidate: false
+          canValidate: false,
+          canCancel: false,
+          canAskHowToFinish: true
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
     })
   })
-  describe('It should get messages', () => {
-    it('should get all messages for a partial ship', () => {
+  describe('Partial ship asked', () => {
+    beforeEach(() => {
       givenCurrentPreparationIs(orderWithMissingProduct1)
+    })
+    it('should get all messages', () => {
       const expectedVM: Partial<GetPreparationVM> = {
         messages: [
           {
@@ -185,6 +197,20 @@ describe('Get preparation VM', () => {
       }
       expectVMToMatch(expectedVM)
     })
+    it('should allow to validate', () => {
+      const expectedVM: Partial<GetPreparationVM> = {
+        canValidate: true
+      }
+      expectVMToMatch(expectedVM)
+    })
+    it('should not allow to ask how to finish', () => {
+      const expectedVM: Partial<GetPreparationVM> = {
+        canAskHowToFinish: false
+      }
+      expectVMToMatch(expectedVM)
+    })
+  })
+  describe('Wait for restock asked', () => {
     it('should get all messages for a restock', () => {
       givenCurrentPreparationIs(orderInPreparation1)
       const expectedVM: Partial<GetPreparationVM> = {
@@ -203,8 +229,18 @@ describe('Get preparation VM', () => {
       }
       expectVMToMatch(expectedVM)
     })
+    it('should not allow to ask how to finish', () => {
+      const expectedVM: Partial<GetPreparationVM> = {
+        canAskHowToFinish: false
+      }
+      expectVMToMatch(expectedVM)
+    })
+  })
+  describe('Cancel order asked', () => {
+    beforeEach(() => {
+      givenCurrentPreparationIs(orderToCancel)
+    })
     it('should get all messages for a cancel', () => {
-      givenCurrentPreparationIs(orderCanceled)
       const expectedVM: Partial<GetPreparationVM> = {
         messages: [
           {
@@ -221,6 +257,18 @@ describe('Get preparation VM', () => {
       }
       expectVMToMatch(expectedVM)
     })
+    it('should allow to cancel', () => {
+      const expectedVM: Partial<GetPreparationVM> = {
+        canCancel: true
+      }
+      expectVMToMatch(expectedVM)
+    })
+    it('should not allow to ask how to finish', () => {
+      const expectedVM: Partial<GetPreparationVM> = {
+        canAskHowToFinish: false
+      }
+      expectVMToMatch(expectedVM)
+    })
   })
   describe('There is no current preparation', () => {
     it('should return an empty vm', () => {
@@ -229,7 +277,9 @@ describe('Get preparation VM', () => {
         headers: [],
         lines: [],
         messages: [],
-        canValidate: false
+        canValidate: false,
+        canCancel: false,
+        canAskHowToFinish: false
       }
       expect(getPreparationVM()).toStrictEqual(emptyVM)
     })
