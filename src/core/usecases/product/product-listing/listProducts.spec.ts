@@ -2,7 +2,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import { useProductStore } from '@store/productStore'
 import { InMemoryProductGateway } from '@adapters/secondary/inMemoryProductGateway'
 import { listProducts } from './listProducts'
-import { Product } from '@core/entities/product'
+import { Product, Stock } from '@core/entities/product'
 import { dolodent, ultraLevure } from '@utils/testData/products'
 
 describe('List products', () => {
@@ -28,7 +28,7 @@ describe('List products', () => {
     it('should list all of them', () => {
       expectProductStoreToContains(dolodent, ultraLevure)
     })
-    it('should retreive available stock', async () => {
+    it('should retrieve available stock', async () => {
       const expectedStock: Stock = {
         [dolodent.cip13]: dolodent.availableStock,
         [ultraLevure.cip13]: ultraLevure.availableStock
