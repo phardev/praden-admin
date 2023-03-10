@@ -8,4 +8,5 @@ export const startPreparations = async (orderGateway: OrderGateway) => {
     const order = await orderGateway.startPreparation(uuid)
     preparationStore.update(order)
   }
+  preparationStore.clearSelection()
 }
