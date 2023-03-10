@@ -32,7 +32,7 @@ interface GetPreparationsGroupVM {
 
 export type GetPreparationsVM = HashTable<GetPreparationsGroupVM>
 
-export const computeTotalWithTaxForOrder = (order: Order) => {
+const computeTotalWithTaxForOrder = (order: Order) => {
   const total = order.lines.reduce((acc: number, line: OrderLine) => {
     return (
       acc +
@@ -94,28 +94,56 @@ const toCancelFilter = (o: Order) => {
   )
 }
 
-export const getPreparationsVM = (): GetPreparationsVM => {
+export const getPreparationsVMHeaders: Array<Header> = [
+  {
+    name: 'Référence',
+    value: 'reference'
+  },
+  {
+    name: 'Client',
+    value: 'client'
+  },
+  {
+    name: 'Date',
+    value: 'createdDate'
+  },
+  {
+    name: 'Total TTC',
+    value: 'total'
+  }
+]
+
+export const filterPreparationsByGroup = (groups: any): GetPreparationsVM => {
   const preparationStore = usePreparationStore()
   const orders = preparationStore.items
+  const headers = getPreparationsVMHeaders
   const formatter = priceFormatter('fr-FR', 'EUR')
-  const headers: Array<Header> = [
-    {
-      name: 'Référence',
-      value: 'reference'
-    },
-    {
-      name: 'Client',
-      value: 'client'
-    },
-    {
-      name: 'Date',
-      value: 'createdDate'
-    },
-    {
-      name: 'Total TTC',
-      value: 'total'
+  const res: GetPreparationsVM = {}
+  groups.forEach((group: any) => {
+    const filteredItems = orders.filter(group.filter)
+    const items = filteredItems.map((o: Order) => {
+      const total = computeTotalWithTaxForOrder(o)
+      return {
+        reference: o.uuid,
+        href: `/preparations/${o.uuid}`,
+        client: `${o.deliveryAddress.firstname[0]}. ${o.deliveryAddress.lastname}`,
+        createdDate: timestampToLocaleString(o.createdAt, 'fr-FR'),
+        createdDatetime: new Date(o.createdAt),
+        total: formatter.format(total / 100)
+      }
+    })
+    res[group.name] = {
+      count: items.length,
+      table: {
+        headers,
+        items
+      }
     }
-  ]
+  })
+  return res
+}
+
+export const getPreparationsVM = (): GetPreparationsVM => {
   const groups = [
     {
       name: 'Click & Collect',
@@ -142,27 +170,5 @@ export const getPreparationsVM = (): GetPreparationsVM => {
       filter: toCancelFilter
     }
   ]
-  const res: GetPreparationsVM = {}
-  groups.forEach((group: any) => {
-    const filteredItems = orders.filter(group.filter)
-    const items = filteredItems.map((o: Order) => {
-      const total = computeTotalWithTaxForOrder(o)
-      return {
-        reference: o.uuid,
-        href: `/preparations/${o.uuid}`,
-        client: `${o.deliveryAddress.firstname[0]}. ${o.deliveryAddress.lastname}`,
-        createdDate: timestampToLocaleString(o.createdAt, 'fr-FR'),
-        createdDatetime: new Date(o.createdAt),
-        total: formatter.format(total / 100)
-      }
-    })
-    res[group.name] = {
-      count: items.length,
-      table: {
-        headers,
-        items
-      }
-    }
-  })
-  return res
+  return filterPreparationsByGroup(groups)
 }
