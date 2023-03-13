@@ -66,7 +66,7 @@ export const getProductsVM = (): GetProductsVM => {
         name: p.name,
         img: p.img,
         reference: p.cip13,
-        category: category.name,
+        category: category?.name || '',
         priceWithoutTax: formatter.format(p.priceWithoutTax / 100),
         priceWithTax: formatter.format(priceWithTax / 100),
         availableStock: p.availableStock

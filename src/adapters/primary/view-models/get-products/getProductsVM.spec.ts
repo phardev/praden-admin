@@ -58,34 +58,68 @@ describe('Get products VM', () => {
     })
   })
   describe('There is some products', () => {
-    it('should list all of them', () => {
-      categoryStore.items = [dents, diarrhee]
+    beforeEach(() => {
       productStore.items = [dolodent, ultraLevure]
-      const vm = getProductsVM()
-      const expectedVM = {
-        headers: expectedHeaders,
-        items: [
-          {
-            name: dolodent.name,
-            img: dolodent.img,
-            reference: dolodent.cip13,
-            category: 'Dents',
-            priceWithoutTax: '5,00\u00A0€',
-            priceWithTax: '5,50\u00A0€',
-            availableStock: dolodent.availableStock
-          },
-          {
-            name: ultraLevure.name,
-            img: ultraLevure.img,
-            reference: ultraLevure.cip13,
-            category: 'Diarrhée',
-            priceWithoutTax: '4,32\u00A0€',
-            priceWithTax: '4,75\u00A0€',
-            availableStock: ultraLevure.availableStock
-          }
-        ]
-      }
-      expect(vm).toStrictEqual(expectedVM)
+    })
+    describe('Categories are not loaded', () => {
+      it('should list all of them', () => {
+        categoryStore.items = []
+        const vm = getProductsVM()
+        const expectedVM = {
+          headers: expectedHeaders,
+          items: [
+            {
+              name: dolodent.name,
+              img: dolodent.img,
+              reference: dolodent.cip13,
+              category: '',
+              priceWithoutTax: '5,00\u00A0€',
+              priceWithTax: '5,50\u00A0€',
+              availableStock: dolodent.availableStock
+            },
+            {
+              name: ultraLevure.name,
+              img: ultraLevure.img,
+              reference: ultraLevure.cip13,
+              category: '',
+              priceWithoutTax: '4,32\u00A0€',
+              priceWithTax: '4,75\u00A0€',
+              availableStock: ultraLevure.availableStock
+            }
+          ]
+        }
+        expect(vm).toStrictEqual(expectedVM)
+      })
+    })
+    describe('Categories are loaded', () => {
+      it('should list all of them', () => {
+        categoryStore.items = [dents, diarrhee]
+        const vm = getProductsVM()
+        const expectedVM = {
+          headers: expectedHeaders,
+          items: [
+            {
+              name: dolodent.name,
+              img: dolodent.img,
+              reference: dolodent.cip13,
+              category: 'Dents',
+              priceWithoutTax: '5,00\u00A0€',
+              priceWithTax: '5,50\u00A0€',
+              availableStock: dolodent.availableStock
+            },
+            {
+              name: ultraLevure.name,
+              img: ultraLevure.img,
+              reference: ultraLevure.cip13,
+              category: 'Diarrhée',
+              priceWithoutTax: '4,32\u00A0€',
+              priceWithTax: '4,75\u00A0€',
+              availableStock: ultraLevure.availableStock
+            }
+          ]
+        }
+        expect(vm).toStrictEqual(expectedVM)
+      })
     })
   })
 })
