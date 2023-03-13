@@ -42,6 +42,9 @@ describe('Start preparations', () => {
       it('should update preparation store', () => {
         expectPreparationStoreToEqual(expectedOrder1, expectedOrder2)
       })
+      it('should clear selection', () => {
+        expectSelectionToBeEmpty()
+      })
     })
     describe('Prepare one order', () => {
       beforeEach(async () => {
@@ -84,5 +87,9 @@ describe('Start preparations', () => {
 
   const expectPreparationStoreToEqual = (...preparations: Array<Order>) => {
     expect(preparationStore.items).toStrictEqual(preparations)
+  }
+
+  const expectSelectionToBeEmpty = () => {
+    expect(preparationStore.selected).toStrictEqual([])
   }
 })

@@ -49,6 +49,9 @@ export const usePreparationStore = defineStore('PreparationStore', {
       this.items = this.items.map((i) => {
         return i.uuid === order.uuid ? order : i
       })
+    },
+    clearSelection() {
+      this.selected = []
     }
   }
 })

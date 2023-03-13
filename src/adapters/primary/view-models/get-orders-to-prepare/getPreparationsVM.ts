@@ -2,12 +2,14 @@ import { usePreparationStore } from '@store/preparationStore'
 import {
   DeliveryStatus,
   DeliveryType,
+  MessageContent,
   Order,
   OrderLine
 } from '@core/entities/order'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import { TableVM } from '@adapters/primary/view-models/get-invoice/getInvoiceVM'
 import { HashTable } from '@core/types/types'
+import { useProductStore } from '@store/productStore'
 
 export interface GetPreparationsItemVM {
   reference: string
@@ -56,47 +58,66 @@ const deliveryFilter = (o: Order) => {
 }
 
 const toContinueFilter = (o: Order) => {
-  return o.lines.some(
-    (l: OrderLine) => l.deliveryStatus === DeliveryStatus.Processing
+  return (
+    o.lines.some((l) => l.deliveryStatus === DeliveryStatus.Processing) &&
+    !o.messages.length
   )
 }
 
-export const getPreparationsVM = (): GetPreparationsVM => {
+export const isStockAvailable = (lines: Array<OrderLine>): boolean => {
+  const productStore = useProductStore()
+  const stock = productStore.stock
+  return lines.every(
+    (l) => stock[l.cip13] >= l.expectedQuantity - l.preparedQuantity
+  )
+}
+
+const toCompleteFilter = (o: Order) => {
+  if (!o.messages.length) return false
+  return (
+    o.messages[o.messages.length - 1].content ===
+      MessageContent.WaitForRestock && isStockAvailable(o.lines)
+  )
+}
+
+const toShipFilter = (o: Order) => {
+  if (!o.messages.length) return false
+  return (
+    o.messages[o.messages.length - 1].content === MessageContent.PartialShip
+  )
+}
+
+const toCancelFilter = (o: Order) => {
+  if (!o.messages.length) return false
+  return (
+    o.messages[o.messages.length - 1].content === MessageContent.CancelOrder
+  )
+}
+
+export const getPreparationsVMHeaders: Array<Header> = [
+  {
+    name: 'Référence',
+    value: 'reference'
+  },
+  {
+    name: 'Client',
+    value: 'client'
+  },
+  {
+    name: 'Date',
+    value: 'createdDate'
+  },
+  {
+    name: 'Total TTC',
+    value: 'total'
+  }
+]
+
+export const filterPreparationsByGroup = (groups: any): GetPreparationsVM => {
   const preparationStore = usePreparationStore()
   const orders = preparationStore.items
+  const headers = getPreparationsVMHeaders
   const formatter = priceFormatter('fr-FR', 'EUR')
-  const headers: Array<Header> = [
-    {
-      name: 'Référence',
-      value: 'reference'
-    },
-    {
-      name: 'Client',
-      value: 'client'
-    },
-    {
-      name: 'Date',
-      value: 'createdDate'
-    },
-    {
-      name: 'Total TTC',
-      value: 'total'
-    }
-  ]
-  const groups = [
-    {
-      name: 'Click & Collect',
-      filter: clickAndCollectFilter
-    },
-    {
-      name: 'Livraisons',
-      filter: deliveryFilter
-    },
-    {
-      name: 'À terminer',
-      filter: toContinueFilter
-    }
-  ]
   const res: GetPreparationsVM = {}
   groups.forEach((group: any) => {
     const filteredItems = orders.filter(group.filter)
@@ -120,4 +141,34 @@ export const getPreparationsVM = (): GetPreparationsVM => {
     }
   })
   return res
+}
+
+export const getPreparationsVM = (): GetPreparationsVM => {
+  const groups = [
+    {
+      name: 'Click & Collect',
+      filter: clickAndCollectFilter
+    },
+    {
+      name: 'Livraisons',
+      filter: deliveryFilter
+    },
+    {
+      name: 'À terminer',
+      filter: toContinueFilter
+    },
+    {
+      name: 'À completer',
+      filter: toCompleteFilter
+    },
+    {
+      name: 'À expedier',
+      filter: toShipFilter
+    },
+    {
+      name: 'À annuler',
+      filter: toCancelFilter
+    }
+  ]
+  return filterPreparationsByGroup(groups)
 }

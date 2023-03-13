@@ -5,12 +5,11 @@ preparations-printing
 </template>
 
 <script lang="ts" setup>
-import { getPreparationsVM } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
-import PreparationsList from '@adapters/primary/nuxt/components/PreparationsList.vue'
+import { getWaitingPreparationsVM } from '@adapters/primary/view-models/get-waiting-preparations/getWaitingPreparationsVM'
 
 definePageMeta({ layout: 'main' })
 
 const preparationsVM = computed(() => {
-  return getPreparationsVM()
+  return getWaitingPreparationsVM()
 })
 </script>

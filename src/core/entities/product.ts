@@ -1,4 +1,6 @@
-import { UUID } from '../types/types'
+import { HashTable, UUID } from '../types/types'
+
+export type Stock = HashTable<number>
 
 export interface Product {
   name: string

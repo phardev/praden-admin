@@ -1,10 +1,15 @@
 import {
-  MessageContent,
   DeliveryStatus,
+  MessageContent,
   Order,
   PaymentStatus
 } from '@core/entities/order'
-import { anaca3Minceur, dolodent, ultraLevure } from '@utils/testData/products'
+import {
+  anaca3Minceur,
+  chamomilla,
+  dolodent,
+  ultraLevure
+} from '@utils/testData/products'
 import {
   clickAndCollect,
   deliveryInRelayPoint
@@ -505,4 +510,179 @@ export const orderNotPayed1: Order = {
     method: clickAndCollect
   },
   messages: []
+}
+
+export const orderSaved1: Order = {
+  uuid: 'FKEROFE',
+  lines: [
+    {
+      name: dolodent.name,
+      cip13: dolodent.cip13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
+      deliveryStatus: DeliveryStatus.Processing,
+      updatedAt: 1674273789000
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674273789000,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
+  },
+  messages: []
+}
+
+export const orderWaitingForClientAnswer1: Order = {
+  uuid: 'ZJOFRW',
+  lines: [
+    {
+      name: dolodent.name,
+      cip13: dolodent.cip13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
+      deliveryStatus: DeliveryStatus.Processing,
+      updatedAt: 1674273789000
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674273789000,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
+  },
+  messages: [
+    {
+      content: MessageContent.AskToClient,
+      sentAt: 1674293789000
+    }
+  ]
+}
+
+export const orderWaitingForClientAnswer2: Order = {
+  uuid: 'LOPFRE',
+  lines: [
+    {
+      name: ultraLevure.name,
+      cip13: ultraLevure.cip13,
+      expectedQuantity: 3,
+      preparedQuantity: 2,
+      unitAmount: ultraLevure.priceWithoutTax,
+      percentTaxRate: ultraLevure.percentTaxRate,
+      location: ultraLevure.location,
+      deliveryStatus: DeliveryStatus.Processing,
+      updatedAt: 1674295599432
+    },
+    {
+      name: dolodent.name,
+      cip13: dolodent.cip13,
+      expectedQuantity: 1,
+      preparedQuantity: 1,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
+      deliveryStatus: DeliveryStatus.Processing,
+      updatedAt: 1674295599432
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jeanne',
+    lastname: "D'arc",
+    address: '12 avenue du bois',
+    city: 'Boisville',
+    zip: '54321'
+  },
+  payment: {
+    invoiceNumber: '2023-00001',
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674273599954,
+  contact: {
+    email: 'jeannedarc@email.com',
+    phone: '9876543210'
+  },
+  delivery: {
+    method: clickAndCollect
+  },
+  messages: [
+    {
+      content: MessageContent.AskToClient,
+      sentAt: 1674293509954
+    }
+  ]
+}
+
+export const orderWaitingForRestock: Order = {
+  uuid: 'EUIWQK',
+  lines: [
+    {
+      name: chamomilla.name,
+      cip13: chamomilla.cip13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: chamomilla.priceWithoutTax,
+      percentTaxRate: chamomilla.percentTaxRate,
+      location: chamomilla.location,
+      deliveryStatus: DeliveryStatus.Processing,
+      updatedAt: 1674273789000
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674273789000,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
+  },
+  messages: [
+    {
+      content: MessageContent.AskToClient,
+      sentAt: 1675564430539
+    },
+    {
+      content: MessageContent.WaitForRestock,
+      sentAt: 1675564440539
+    }
+  ]
 }
