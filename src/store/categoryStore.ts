@@ -6,5 +6,10 @@ export const useCategoryStore = defineStore('CategoryStore', {
     return {
       items: [] as Array<Category>
     }
+  },
+  actions: {
+    list(categories: Array<Category>) {
+      this.items = categories
+    }
   }
 })

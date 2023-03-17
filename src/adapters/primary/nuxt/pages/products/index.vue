@@ -18,12 +18,15 @@ import { useProductGateway } from '../../../../../../gateways/productGateway'
 import { getProductsVM } from '@adapters/primary/view-models/get-products/getProductsVM'
 import { useCategoryStore } from '@store/categoryStore'
 import { dents, diarrhee } from '@utils/testData/categories'
+import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
+import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
 
 definePageMeta({ layout: 'main' })
 
 onMounted(() => {
   const categoryStore = useCategoryStore()
   categoryStore.items = [dents, diarrhee]
+  listCategories(useCategoryGateway())
   listProducts(useProductGateway())
 })
 
