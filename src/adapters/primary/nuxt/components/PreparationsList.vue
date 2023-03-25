@@ -1,7 +1,7 @@
 <template lang="pug">
-tab-group.border-b.border-gray-200(as="div")
-  tab-list.-mb-px.flex.space-x-8
-    tab.w-full.rounded-md.border-neutral-light.py-2.pl-3.pr-10.text-base(
+tab-group(as="div")
+  tab-list.-mb-px.flex.space-x-4
+    tab.w-full.rounded-md.border-neutral-light.py-2.pl-3.pr-10.text-base.cursor-pointer.outline-0(
       v-for="(group, tabIndex) in Object.keys(preparationsVm)"
       v-slot="{ selected }"
       :key="tabIndex"
@@ -66,6 +66,7 @@ defineProps({
     }
   }
 })
+
 
 const ordersSelectedVM = computed(() => {
   return getSelectedPreparationsVM()

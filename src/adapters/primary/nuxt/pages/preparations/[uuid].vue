@@ -14,12 +14,6 @@ invoice.hidden.printme.mx-2
     :items="preparationVM.lines"
   )
     template(#preparedQuantity="{ item }")
-      input.rounded-full.w-24(
-        type="number"
-        :value="item.preparedQuantity"
-        @input="setQuantity($event, item)"
-        @keyup.enter="scanner.focus()"
-      )
     template(#status="{ item }")
       icon.icon-lg.text-yellow-400(v-if="item.status === PreparationStatus.NotPrepared" name="bx:bxs-error")
       icon.icon-lg.text-grass9(v-if="item.status === PreparationStatus.Prepared" name="material-symbols:check-circle")
