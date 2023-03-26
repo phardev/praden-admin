@@ -13,13 +13,6 @@ invoice.hidden.printme.mx-2
     :headers="preparationVM.headers"
     :items="preparationVM.lines"
   )
-    template(#preparedQuantity="{ item }")
-      input.rounded-full.w-24(
-        type="number"
-        :value="item.preparedQuantity"
-        @input="setQuantity($event, item)"
-        @keyup.enter="scanner.focus()"
-      )
     template(#status="{ item }")
       icon.icon-lg.text-yellow-400(v-if="item.status === PreparationStatus.NotPrepared" name="bx:bxs-error")
       icon.icon-lg.text-grass9(v-if="item.status === PreparationStatus.Prepared" name="material-symbols:check-circle")
@@ -58,7 +51,6 @@ import {
 import { scanProductToPreparation } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
 import { validatePreparation } from '@core/usecases/order/validate-preparation/validatePreparation'
 import { useInvoiceGateway } from '../../../../../../gateways/invoiceGateway'
-import { setProductQuantityForPreparation } from '@core/usecases/order/set-product-quantity-for-preparation/setProductQuantityForPreparation'
 import { savePreparation } from '@core/usecases/order/save-preparation/savePreparation'
 import { cancelPreparation } from '@core/usecases/order/cancel-preparation/cancelPreparation'
 import { askClientHowToFinishPreparation } from '@core/usecases/order/ask-client-how-to-finish-preparation/askClientHowToFinishPreparation'
@@ -80,11 +72,6 @@ const scan = ref('')
 const addProduct = (e: any) => {
   scanProductToPreparation(e.target.value)
   scan.value = ''
-}
-
-const setQuantity = (e: any, item: any) => {
-  const newQuantity = +e.target.value
-  setProductQuantityForPreparation(item.reference, newQuantity)
 }
 
 const router = useRouter()
