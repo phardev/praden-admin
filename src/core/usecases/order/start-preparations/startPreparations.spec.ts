@@ -6,14 +6,18 @@ import { UUID } from '@core/types/types'
 import { startPreparations } from '@core/usecases/order/start-preparations/startPreparations'
 import { usePreparationStore } from '@store/preparationStore'
 import { FakeDateProvider } from '@adapters/secondary/fakeDateProvider'
+import { EmailMessage } from '@core/entities/emailMessage'
+import { FakeEmailGateway } from '@adapters/secondary/fakeEmailGateway'
 
 describe('Start preparations', () => {
   let orderGateway: InMemoryOrderGateway
+  let emailGateway: FakeEmailGateway
   let preparationStore: any
 
   beforeEach(() => {
     setActivePinia(createPinia())
     orderGateway = new InMemoryOrderGateway(new FakeDateProvider())
+    emailGateway = new FakeEmailGateway()
     preparationStore = usePreparationStore()
   })
 
@@ -44,6 +48,25 @@ describe('Start preparations', () => {
       })
       it('should clear selection', () => {
         expectSelectionToBeEmpty()
+      })
+      it('shoud send an email to each customer', () => {
+        const expectedEmails: Array<EmailMessage> = [
+          {
+            to: orderToPrepare1.contact.email,
+            data: {
+              orderUuid: orderToPrepare1.uuid,
+              date: 'samedi 21 janvier 2023'
+            }
+          },
+          {
+            to: orderToPrepare2.contact.email,
+            data: {
+              orderUuid: orderToPrepare2.uuid,
+              date: 'dimanche 5 février 2023'
+            }
+          }
+        ]
+        expectEmailsToHaveBeenSent(...expectedEmails)
       })
     })
     describe('Prepare one order', () => {
@@ -77,7 +100,7 @@ describe('Start preparations', () => {
 
   const whenStartPreparationForOrders = async (...ordersUuids: Array<UUID>) => {
     preparationStore.selected = ordersUuids
-    await startPreparations(orderGateway)
+    await startPreparations(orderGateway, emailGateway)
   }
 
   const expectOrdersToEqual = async (...expectedOrders: Array<Order>) => {
@@ -91,5 +114,11 @@ describe('Start preparations', () => {
 
   const expectSelectionToBeEmpty = () => {
     expect(preparationStore.selected).toStrictEqual([])
+  }
+
+  const expectEmailsToHaveBeenSent = (
+    ...expectedEmails: Array<EmailMessage>
+  ) => {
+    expect(emailGateway.list()).toStrictEqual(expectedEmails)
   }
 })
