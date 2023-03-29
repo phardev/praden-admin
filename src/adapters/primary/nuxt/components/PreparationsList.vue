@@ -50,6 +50,7 @@ import { resetPreparationSelection } from '@core/usecases/order/reset-preparatio
 import { listProducts } from '@core/usecases/product/product-listing/listProducts'
 import { useProductGateway } from '../../../../../gateways/productGateway'
 import { useOrderGateway } from '../../../../../gateways/orderGateway'
+import { useEmailGateway } from '../../../../../gateways/emailGateway'
 
 definePageMeta({ layout: 'main' })
 
@@ -87,7 +88,7 @@ const router = useRouter()
 
 const start = () => {
   window.print()
-  startPreparations(useOrderGateway())
+  startPreparations(useOrderGateway(), useEmailGateway())
   router.push('/preparations')
 }
 </script>
