@@ -3,6 +3,10 @@
     @apply bg-component text-colored;
   }
 
+  .button-error {
+    @apply bg-error text-opposite;
+  }
+
   .button-solid {
     @apply bg-solid text-white;
   }
