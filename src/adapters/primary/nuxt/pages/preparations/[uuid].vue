@@ -24,7 +24,7 @@ invoice.hidden.printme.mx-2
     ) Sauvegarder
     div.centered
       ft-button.button-error.mt-4.mr-0.py-4.px-4.text-xl(
-        @click="() => errorDialog.open()"
+        @click="errorDialog.open()"
       ) Erreur
     ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
       v-if="preparationVM.canValidate"
@@ -77,10 +77,10 @@ invoice.hidden.printme.mx-2
         leave-to="opacity-0"
       )
         DialogOverlay.fixed.inset-0.bg-backdrop
-  TransitionRoot(:show="isRemoveProductOpen")
+  TransitionRoot(:show="removeProductDialog.isOpened()")
     Dialog.fixed.inset-0.z-40(
       as="div"
-      @close="closeRemoveProduct"
+      @close="removeProductDialog.close()"
     )
       TransitionChild(
         as="template"
@@ -96,7 +96,7 @@ invoice.hidden.printme.mx-2
             type="button"
             value="closeSidebar"
             class="focus:outline-none focus:ring-2 focus:ring-neutral"
-            @click="closeRemoveProduct"
+            @click="removeProductDialog.close()"
           )
             icon.icon-sm(name="heroicons:x-mark")
           div.centered.w-full.px-10
@@ -166,17 +166,14 @@ const removeAProduct = () => {
   openRemoveProduct()
 }
 
-const isRemoveProductOpen = ref(false)
+const removeProductDialog = useDialog()
 
 const openRemoveProduct = async () => {
-  isRemoveProductOpen.value = true
+  removeProductDialog.open()
   await nextTick()
   removeScanner.value.focus()
 }
 
-const closeRemoveProduct = () => {
-  isRemoveProductOpen.value = false
-}
 const addProduct = (e: any) => {
   scanProductToPreparation(e.target.value)
   scan.value = ''
