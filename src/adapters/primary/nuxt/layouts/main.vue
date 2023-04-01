@@ -1,14 +1,16 @@
 <template lang="pug">
 div.flex.min-h-screen
   left-side-menu.no-printme(
-    :is-opened="sidebarOpened"
-    @close="sidebarOpened = false"
+    :is-opened="sidebarDialog.isOpened()"
+    @close="sidebarDialog.close()"
   )
   div.flex-1
-    ft-header.no-printme(@open-sidebar="sidebarOpened = true")
+    ft-header.no-printme(@open-sidebar="sidebarDialog.open()")
     main
       slot
 </template>
 <script lang="ts" setup>
-const sidebarOpened = ref(false)
+import { useDialog } from '@adapters/primary/nuxt/composables/useDialog'
+
+const sidebarDialog = useDialog()
 </script>
