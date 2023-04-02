@@ -1,14 +1,11 @@
 <template lang="pug">
 invoice.hidden.printme.mx-2
 .section.no-printme
-  pre {{ test }}
   h1.text-4xl.font-semibold.text-default Commande \#{{ preparationVM.reference }}
-  input.mt-8.w-full.rounded-full.border-opposite(
-    ref="scanner"
-    type='text'
-    placeholder='Code produit'
-    :value="scan"
-    @keyup.enter="addProduct"
+  ft-scanner(
+    placeholder="Code produit"
+    @scanned="scanProductToPreparation"
+    @scanner-mounted="mainScannerMounted"
   )
   ft-table(
     :headers="preparationVM.headers"
@@ -43,81 +40,22 @@ invoice.hidden.printme.mx-2
     ft-messages(
       :messages="preparationVM.messages"
     )
-  TransitionRoot(:show="errorDialog.isOpened()")
-    Dialog.fixed.inset-0.z-40(
-      as="div"
-      @close="errorDialog.close()"
-    )
-      TransitionChild(
-        as="template"
-        enter="transition ease-in-out duration-200 transform"
-        enter-from="-translate-x-full"
-        enter-to="translate-x-0"
-        leave="transition ease-in-out duration-200 transform"
-        leave-from="translate-x-0"
-        leave-to="-translate-x-full"
+  ft-dialog(
+    :is-opened="errorDialog.isOpened()"
+    @close="closeErrorDialog"
+  )
+    div.grid.grid-cols-1.gap-4.mx-10.my-10(class="md:grid-cols-2")
+      ft-button.button-solid.h-24.col-span-2(@click="removeAProduct") Retirer un produit
+  ft-dialog(
+    :is-opened="removeProductDialog.isOpened()"
+    @close="closeRemoveProductDialog"
+  )
+    div.centered.w-full.px-10
+      ft-scanner(
+        placeholder="Code produit à retirer"
+        @scanned="removeProduct"
+        @scanner-mounted="removeScannerMounted"
       )
-        div.flex.flex-col.relative.z-10.bg-light.border-r.border-neutral-light.centered(class="w-1/2 h-1/2")
-          button.absolute.top-2.right-2.flex.items-center.justify-center.w-10.h-10.rounded-full(
-            type="button"
-            value="closeSidebar"
-            class="focus:outline-none focus:ring-2 focus:ring-neutral"
-            @click="errorDialog.close()"
-          )
-            icon.icon-sm(name="heroicons:x-mark")
-          div.grid.grid-cols-1.gap-4.mx-10.my-10(class="md:grid-cols-2")
-            ft-button.button-default.h-24.col-span-2(@click="removeAProduct") Retirer un produit
-      TransitionChild(
-        as="template"
-        enter="transition-opacity ease-linear duration-200"
-        enter-from="opacity-0"
-        enter-to="opacity-100"
-        leave="transition-opacity ease-linear duration-200"
-        leave-from="opacity-100"
-        leave-to="opacity-0"
-      )
-        DialogOverlay.fixed.inset-0.bg-backdrop
-  TransitionRoot(:show="removeProductDialog.isOpened()")
-    Dialog.fixed.inset-0.z-40(
-      as="div"
-      @close="removeProductDialog.close()"
-    )
-      TransitionChild(
-        as="template"
-        enter="transition ease-in-out duration-200 transform"
-        enter-from="-translate-x-full"
-        enter-to="translate-x-0"
-        leave="transition ease-in-out duration-200 transform"
-        leave-from="translate-x-0"
-        leave-to="-translate-x-full"
-      )
-        div.flex.flex-col.relative.z-10.bg-light.border-r.border-neutral-light.centered(class="w-1/2 h-1/2")
-          button.absolute.top-2.right-2.flex.items-center.justify-center.w-10.h-10.rounded-full(
-            type="button"
-            value="closeSidebar"
-            class="focus:outline-none focus:ring-2 focus:ring-neutral"
-            @click="removeProductDialog.close()"
-          )
-            icon.icon-sm(name="heroicons:x-mark")
-          div.centered.w-full.px-10
-            input.w-full.rounded-full.border-opposite(
-              ref="removeScanner"
-              type='text'
-              placeholder='Code produit à retirer'
-              :value="removeScan"
-              @keyup.enter="removeProduct"
-            )
-      TransitionChild(
-        as="template"
-        enter="transition-opacity ease-linear duration-200"
-        enter-from="opacity-0"
-        enter-to="opacity-100"
-        leave="transition-opacity ease-linear duration-200"
-        leave-from="opacity-100"
-        leave-to="opacity-0"
-      )
-        DialogOverlay.fixed.inset-0.bg-backdrop
-
 </template>
 
 <script lang="ts" setup>
@@ -135,14 +73,9 @@ import { savePreparation } from '@core/usecases/order/save-preparation/savePrepa
 import { cancelPreparation } from '@core/usecases/order/cancel-preparation/cancelPreparation'
 import { askClientHowToFinishPreparation } from '@core/usecases/order/ask-client-how-to-finish-preparation/askClientHowToFinishPreparation'
 import { useMessageGateway } from '../../../../../../gateways/messageGateway'
-import {
-  Dialog,
-  DialogOverlay,
-  TransitionChild,
-  TransitionRoot
-} from '@headlessui/vue'
 import { removeProductFromPreparation } from '@core/usecases/order/scan-product-to-remove-fom-preparation/scanProductToRemoveFromPreparation'
 import { useDialog } from '@adapters/primary/nuxt/composables/useDialog'
+import FtScanner from '@adapters/primary/nuxt/components/FtScanner.vue'
 
 definePageMeta({ layout: 'main' })
 
@@ -151,38 +84,55 @@ const preparationUuid = route.params.uuid
 
 onMounted(() => {
   getPreparation(preparationUuid, useOrderGateway())
-  scanner.value.focus()
 })
 
-const scanner = ref(null)
-const removeScanner = ref(null)
-const scan = ref('')
-const removeScan = ref('')
-
 const errorDialog = useDialog()
+const removeProductDialog = useDialog()
+
+const mainScanner = ref(null)
+
+const closeErrorDialog = () => {
+  errorDialog.close()
+  setFocusOnMainScanner()
+}
+
+const closeRemoveProductDialog = () => {
+  removeProductDialog.close()
+  setFocusOnMainScanner()
+}
+
+const setFocusOnMainScanner = () => {
+  setFocus(mainScanner.value)
+}
+
+const removeScannerMounted = (input: any) => {
+  setFocus(input)
+}
+
+const setFocus = (el: any) => {
+  setTimeout(() => {
+    el.focus()
+  }, 300)
+}
+
+const mainScannerMounted = (input: any) => {
+  input.focus()
+  mainScanner.value = input
+}
 
 const removeAProduct = () => {
-  errorDialog.close()
   openRemoveProduct()
 }
 
-const removeProductDialog = useDialog()
-
 const openRemoveProduct = async () => {
+  errorDialog.close()
   removeProductDialog.open()
-  await nextTick()
-  removeScanner.value.focus()
 }
 
-const addProduct = (e: any) => {
-  scanProductToPreparation(e.target.value)
-  scan.value = ''
-}
-
-const removeProduct = (e: any) => {
-  removeProductFromPreparation(e.target.value)
-  removeScan.value = ''
-  closeRemoveProduct()
+const removeProduct = (cip13: string) => {
+  removeProductFromPreparation(cip13)
+  closeRemoveProductDialog()
+  closeErrorDialog()
 }
 
 const router = useRouter()
