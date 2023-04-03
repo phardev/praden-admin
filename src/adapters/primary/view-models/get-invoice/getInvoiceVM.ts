@@ -213,23 +213,21 @@ const getOrderLinesTable = (
   const formatter = priceFormatter('fr-FR', 'EUR')
   return {
     headers: orderLinesHeaders,
-    items: orderLines
-      .filter((line) => line.preparedQuantity > 0)
-      .map((line) => {
-        const unitAmountWithTax =
-          line.unitAmount + (line.unitAmount * line.percentTaxRate) / 100
-        return {
-          reference: line.cip13,
-          name: line.name,
-          taxRate: `${line.percentTaxRate} %`,
-          unitAmountWithoutTax: formatter.format(line.unitAmount / 100),
-          unitAmountWithTax: formatter.format(unitAmountWithTax / 100),
-          quantity: line.preparedQuantity,
-          totalWithTax: formatter.format(
-            (unitAmountWithTax * line.preparedQuantity) / 100
-          )
-        }
-      })
+    items: orderLines.filter(preparedLinesFilter).map((line) => {
+      const unitAmountWithTax =
+        line.unitAmount + (line.unitAmount * line.percentTaxRate) / 100
+      return {
+        reference: line.cip13,
+        name: line.name,
+        taxRate: `${line.percentTaxRate} %`,
+        unitAmountWithoutTax: formatter.format(line.unitAmount / 100),
+        unitAmountWithTax: formatter.format(unitAmountWithTax / 100),
+        quantity: line.preparedQuantity,
+        totalWithTax: formatter.format(
+          (unitAmountWithTax * line.preparedQuantity) / 100
+        )
+      }
+    })
   }
 }
 
@@ -269,23 +267,21 @@ const getRefundOrderLinesTable = (
   const formatter = priceFormatter('fr-FR', 'EUR')
   return {
     headers: orderLinesHeaders,
-    items: orderLines
-      .filter((line) => line.expectedQuantity < 0)
-      .map((line) => {
-        const unitAmountWithTax =
-          line.unitAmount + (line.unitAmount * line.percentTaxRate) / 100
-        return {
-          reference: line.cip13,
-          name: line.name,
-          taxRate: `${line.percentTaxRate} %`,
-          unitAmountWithoutTax: formatter.format(-line.unitAmount / 100),
-          unitAmountWithTax: formatter.format(-unitAmountWithTax / 100),
-          quantity: line.expectedQuantity,
-          totalWithTax: formatter.format(
-            (unitAmountWithTax * line.expectedQuantity) / 100
-          )
-        }
-      })
+    items: orderLines.filter(refundLinesFilter).map((line) => {
+      const unitAmountWithTax =
+        line.unitAmount + (line.unitAmount * line.percentTaxRate) / 100
+      return {
+        reference: line.cip13,
+        name: line.name,
+        taxRate: `${line.percentTaxRate} %`,
+        unitAmountWithoutTax: formatter.format(-line.unitAmount / 100),
+        unitAmountWithTax: formatter.format(-unitAmountWithTax / 100),
+        quantity: line.expectedQuantity,
+        totalWithTax: formatter.format(
+          (unitAmountWithTax * line.expectedQuantity) / 100
+        )
+      }
+    })
   }
 }
 
@@ -353,13 +349,21 @@ const getTaxDetailsTable = (
   }
 }
 
+const preparedLinesFilter = (line: OrderLine) => {
+  return line.preparedQuantity > 0
+}
+
+const refundLinesFilter = (line: OrderLine) => {
+  return line.expectedQuantity < 0
+}
+
 const getTotals = (orderLines: Array<OrderLine>) => {
   const formatter = priceFormatter('fr-FR', 'EUR')
-  const linesPrepared = orderLines.filter((line) => line.preparedQuantity > 0)
+  const linesPrepared = orderLines.filter(preparedLinesFilter)
   const linesTotal = linesPrepared.reduce((acc: number, line: OrderLine) => {
     return acc + line.preparedQuantity * line.unitAmount
   }, 0)
-  const refundLines = orderLines.filter((line) => line.expectedQuantity < 0)
+  const refundLines = orderLines.filter(refundLinesFilter)
   const totalRefund = refundLines.reduce((acc: number, line: OrderLine) => {
     return (
       acc +
