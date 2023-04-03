@@ -34,6 +34,11 @@
     :headers="invoiceVM.orderLinesTable.headers"
     :items="invoiceVM.orderLinesTable.items"
   )
+  ft-table(
+    v-if="invoiceVM.refundOrderLinesTable.items.length"
+    :headers="invoiceVM.refundOrderLinesTable.headers"
+    :items="invoiceVM.refundOrderLinesTable.items"
+  )
   div.flex.items-top.justify-between.mt-4
     ft-table(
       class="w-1/2"
@@ -50,6 +55,9 @@
       div.flex.items-center.justify-around.p-2.border-t.border-light
         div(class="w-1/2") Total taxes
         div.text-right(class="w-1/2") {{ invoiceVM.totals.totalTax }}
+      div.flex.items-center.justify-around.p-2.border-t.border-light(v-if="invoiceVM.refundOrderLinesTable.items.length")
+        div(class="w-1/2") Total remboursé (TTC)
+        div.text-right(class="w-1/2") {{ invoiceVM.totals.totalRefund }}
       div.flex.items-center.justify-around.p-2.border-t.border-light
         div(class="w-1/2") Total (TTC)
         div.text-right(class="w-1/2") {{ invoiceVM.totals.totalWithTax }}

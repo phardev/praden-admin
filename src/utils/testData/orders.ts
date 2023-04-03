@@ -686,3 +686,60 @@ export const orderWaitingForRestock: Order = {
     }
   ]
 }
+
+export const orderPartiallyShipped1: Order = {
+  uuid: 'PIDWJK',
+  lines: [
+    {
+      name: dolodent.name,
+      cip13: dolodent.cip13,
+      expectedQuantity: 2,
+      preparedQuantity: 1,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
+      deliveryStatus: DeliveryStatus.Shipped,
+      updatedAt: 1674573778456
+    },
+    {
+      name: dolodent.name,
+      cip13: dolodent.cip13,
+      expectedQuantity: -1,
+      preparedQuantity: 0,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      location: dolodent.location,
+      deliveryStatus: DeliveryStatus.Shipped,
+      updatedAt: 1674573778456
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    invoiceNumber: '2023-00009',
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674573678456,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  delivery: {
+    method: deliveryInRelayPoint
+  },
+  messages: [
+    {
+      content: MessageContent.AskToClient,
+      sentAt: 1674573878456
+    },
+    {
+      content: MessageContent.PartialShip,
+      sentAt: 1674684178456
+    }
+  ]
+}
