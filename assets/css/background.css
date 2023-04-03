@@ -30,4 +30,8 @@
   .bg-neutral {
     @apply bg-gray3
   }
+
+  .bg-error {
+    @apply bg-tomato9
+  }
 }
