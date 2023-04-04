@@ -8,6 +8,7 @@ import { Invoice } from '@core/entities/invoice'
 import {
   orderDelivered1,
   orderDelivered2,
+  orderPartiallyShipped1,
   orderPrepared1
 } from '@utils/testData/orders'
 import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
@@ -357,6 +358,7 @@ describe('Get invoice VM', () => {
           linesTotal: '31,73\u00A0€',
           totalWithoutTax: '31,73\u00A0€',
           totalTax: '1,97\u00A0€',
+          totalRefund: '0,00\u00A0€',
           totalWithTax: '33,70\u00A0€'
         }
       }
@@ -427,6 +429,10 @@ describe('Get invoice VM', () => {
           headers: [],
           items: []
         },
+        refundOrderLinesTable: {
+          headers: [],
+          items: []
+        },
         taxDetailsTable: {
           headers: [],
           items: []
@@ -435,12 +441,75 @@ describe('Get invoice VM', () => {
           linesTotal: '',
           totalWithoutTax: '',
           totalTax: '',
+          totalRefund: '',
           totalWithTax: ''
         }
       }
       expect(getInvoiceVM()).toStrictEqual(expectedVM)
     })
   })
+
+  describe('The order is partially prepared', () => {
+    const invoice: Invoice = {
+      id: orderPartiallyShipped1.payment.invoiceNumber,
+      data: orderPartiallyShipped1,
+      createdAt: 1675564421539
+    }
+    beforeEach(() => {
+      invoiceStore.current = invoice
+    })
+    it('should display only prepared quantity', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        orderLinesTable: {
+          headers: orderLinesHeaders,
+          items: [
+            {
+              reference: dolodent.cip13,
+              name: dolodent.name,
+              taxRate: '10 %',
+              unitAmountWithoutTax: '5,00\u00A0€',
+              unitAmountWithTax: '5,50\u00A0€',
+              quantity: 1,
+              totalWithTax: '5,50\u00A0€'
+            }
+          ]
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should display refund lines', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        refundOrderLinesTable: {
+          headers: orderLinesHeaders,
+          items: [
+            {
+              reference: dolodent.cip13,
+              name: dolodent.name,
+              taxRate: '10 %',
+              unitAmountWithoutTax: '-5,00\u00A0€',
+              unitAmountWithTax: '-5,50\u00A0€',
+              quantity: -1,
+              totalWithTax: '-5,50\u00A0€'
+            }
+          ]
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should compute total with refund', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        totals: {
+          linesTotal: '5,00\u00A0€',
+          totalWithoutTax: '5,00\u00A0€',
+          totalTax: '0,50\u00A0€',
+          totalRefund: '-5,50\u00A0€',
+          totalWithTax: '5,50\u00A0€'
+        }
+      }
+      expectVMToMatch(expected)
+    })
+  })
+
   const expectVMToMatch = (expected: Partial<GetInvoiceVM>) => {
     expect(getInvoiceVM()).toMatchObject(expected)
   }
