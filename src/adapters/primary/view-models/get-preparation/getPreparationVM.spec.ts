@@ -63,7 +63,7 @@ describe('Get preparation VM', () => {
           messages: [],
           canValidate: false,
           canCancel: false,
-          canAskHowToFinish: true
+          canAskHowToFinish: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -91,7 +91,7 @@ describe('Get preparation VM', () => {
           messages: [],
           canValidate: false,
           canCancel: false,
-          canAskHowToFinish: true
+          canAskHowToFinish: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -147,7 +147,7 @@ describe('Get preparation VM', () => {
           messages: [],
           canValidate: false,
           canCancel: false,
-          canAskHowToFinish: true
+          canAskHowToFinish: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -170,7 +170,7 @@ describe('Get preparation VM', () => {
           messages: [],
           canValidate: false,
           canCancel: false,
-          canAskHowToFinish: true
+          canAskHowToFinish: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })

@@ -1,6 +1,11 @@
 import { usePreparationStore } from '@store/preparationStore'
 import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
-import { Message, MessageContent } from '@core/entities/order'
+import {
+  DeliveryStatus,
+  Message,
+  MessageContent,
+  Order
+} from '@core/entities/order'
 import { timestampToLocaleString } from '@utils/formatters'
 import { HashTable } from '@core/types/types'
 
@@ -86,8 +91,15 @@ const canCancel = (messages: Array<Message>): boolean => {
 
 const canAskHowToFinish = (
   lines: Array<GetPreparationLineVM>,
-  messages: Array<Message>
+  preparation: Order
 ): boolean => {
+  if (
+    preparation.lines.every(
+      (line) => line.deliveryStatus === DeliveryStatus.Created
+    )
+  )
+    return false
+  const messages = preparation.messages
   return messages.length === 0 && !canValidate(lines, messages)
 }
 
@@ -143,6 +155,6 @@ export const getPreparationVM = (): GetPreparationVM => {
     messages: getMessages(preparation.messages),
     canValidate: canValidate(lines, preparation.messages),
     canCancel: canCancel(preparation.messages),
-    canAskHowToFinish: canAskHowToFinish(lines, preparation.messages)
+    canAskHowToFinish: canAskHowToFinish(lines, preparation)
   }
 }
