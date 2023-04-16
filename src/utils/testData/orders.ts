@@ -52,43 +52,6 @@ export const orderToPrepare1: Order = {
   messages: []
 }
 
-export const orderTestMail1: Order = {
-  uuid: 'MAILING',
-  lines: [
-    {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
-      expectedQuantity: 2,
-      preparedQuantity: 0,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
-      deliveryStatus: DeliveryStatus.Created,
-      updatedAt: 1674273279000
-    }
-  ],
-  deliveryAddress: {
-    firstname: 'Jean',
-    lastname: 'Bon',
-    address: '10 rue des peupliers',
-    city: 'PlopLand',
-    zip: '12345'
-  },
-  payment: {
-    invoiceNumber: '2023-00006',
-    status: PaymentStatus.Payed
-  },
-  createdAt: 1674273279000,
-  contact: {
-    email: 'gregory.mevelec@gmail.com',
-    phone: '0123456789'
-  },
-  delivery: {
-    method: clickAndCollect
-  },
-  messages: []
-}
-
 export const orderToPrepare2: Order = {
   uuid: 'FHEIRF',
   lines: [
