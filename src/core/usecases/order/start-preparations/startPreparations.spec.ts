@@ -6,19 +6,30 @@ import { UUID } from '@core/types/types'
 import { startPreparations } from '@core/usecases/order/start-preparations/startPreparations'
 import { usePreparationStore } from '@store/preparationStore'
 import { FakeDateProvider } from '@adapters/secondary/fakeDateProvider'
-import { EmailMessage } from '@core/entities/emailMessage'
+import {
+  EmailMessage,
+  PreparationStartedMessage
+} from '@core/entities/emailMessage'
 import { FakeEmailGateway } from '@adapters/secondary/fakeEmailGateway'
+import { dolodent, ultraLevure } from '@utils/testData/products'
+import { Product } from '@core/entities/product'
+import { InMemoryProductGateway } from '@adapters/secondary/inMemoryProductGateway'
+import { useProductStore } from '@store/productStore'
 
 describe('Start preparations', () => {
   let orderGateway: InMemoryOrderGateway
+  let productGateway: InMemoryProductGateway
   let emailGateway: FakeEmailGateway
   let preparationStore: any
+  let productStore: any
 
   beforeEach(() => {
     setActivePinia(createPinia())
     orderGateway = new InMemoryOrderGateway(new FakeDateProvider())
+    productGateway = new InMemoryProductGateway()
     emailGateway = new FakeEmailGateway()
     preparationStore = usePreparationStore()
+    productStore = useProductStore()
   })
 
   describe('Existing orders', () => {
@@ -32,6 +43,7 @@ describe('Start preparations', () => {
     )
     beforeEach(() => {
       givenThereIsOrdersToPrepare(orderToPrepare1, orderToPrepare2)
+      givenThereIsExistingProducts(dolodent, ultraLevure)
     })
     describe('Prepare all orders', () => {
       beforeEach(async () => {
@@ -49,20 +61,73 @@ describe('Start preparations', () => {
       it('should clear selection', () => {
         expectSelectionToBeEmpty()
       })
-      it('shoud send an email to each customer', () => {
-        const expectedEmails: Array<EmailMessage> = [
+      it('should send an email to each customer', () => {
+        const expectedEmails: Array<PreparationStartedMessage> = [
           {
-            to: orderToPrepare1.contact.email,
-            data: {
-              orderUuid: orderToPrepare1.uuid,
-              date: 'samedi 21 janvier 2023'
+            to: 'jeanbon@anotheremail.com',
+            shippingAddress: {
+              firstname: 'Jean',
+              lastname: 'Bon',
+              address: '10 rue des peupliers, 12345, PlopLand',
+              phone: '0123456789',
+              link: ''
+            },
+            billingAddress: {
+              firstname: 'Jean',
+              lastname: 'Bon',
+              address: '10 rue des peupliers, 12345, PlopLand',
+              phone: '0123456789'
+            },
+            lines: [
+              {
+                img: dolodent.img,
+                name: dolodent.name,
+                unitPrice: '5,50\u00A0€',
+                quantity: 2,
+                total: '11,00\u00A0€'
+              }
+            ],
+            totals: {
+              productPrice: '11,00\u00A0€',
+              shippingPrice: 'Gratuit',
+              price: '11,00\u00A0€'
             }
           },
           {
-            to: orderToPrepare2.contact.email,
-            data: {
-              orderUuid: orderToPrepare2.uuid,
-              date: 'dimanche 5 février 2023'
+            to: 'jeannedarc@email.com',
+            shippingAddress: {
+              firstname: 'Jeanne',
+              lastname: "D'arc",
+              address: '12 avenue du bois, 54321, Boisville',
+              phone: '9876543210',
+              link: ''
+            },
+            billingAddress: {
+              firstname: 'Jeanne',
+              lastname: "D'arc",
+              address: '12 avenue du bois, 54321, Boisville',
+              phone: '9876543210'
+            },
+            lines: [
+              {
+                img: dolodent.img,
+                name: dolodent.name,
+                unitPrice: '5,50\u00A0€',
+                quantity: 1,
+                total: '5,50\u00A0€'
+              },
+              {
+                img: ultraLevure.img,
+                name: ultraLevure.name,
+                unitPrice: '4,75\u00A0€',
+                quantity: 2,
+                total: '9,50\u00A0€'
+              }
+            ],
+            totals: {
+              productPrice: '15,00\u00A0€',
+              shippingPrice: 'Gratuit',
+              price: '15,00\u00A0€'
             }
           }
         ]
@@ -96,6 +161,11 @@ describe('Start preparations', () => {
   const givenThereIsOrdersToPrepare = (...orders: Array<Order>) => {
     orderGateway.feedWith(...orders)
     preparationStore.items = orders
+  }
+
+  const givenThereIsExistingProducts = (...products: Array<Product>) => {
+    productGateway.feedWith(...products)
+    productStore.items = products
   }
 
   const whenStartPreparationForOrders = async (...ordersUuids: Array<UUID>) => {

@@ -64,7 +64,7 @@ export const getProductsVM = (): GetProductsVM => {
         p.priceWithoutTax + (p.priceWithoutTax * p.percentTaxRate) / 100
       return {
         name: p.name,
-        img: p.img,
+        img: p.miniature,
         reference: p.cip13,
         category: category?.name || '',
         priceWithoutTax: formatter.format(p.priceWithoutTax / 100),

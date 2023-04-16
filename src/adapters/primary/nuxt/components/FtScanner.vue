@@ -29,7 +29,6 @@ const emit = defineEmits<{
 }>()
 
 onMounted(() => {
-  console.log('on mount')
   emit('scanner-mounted', scanner.value)
 })
 

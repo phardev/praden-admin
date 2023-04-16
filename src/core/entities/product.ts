@@ -4,6 +4,7 @@ export type Stock = HashTable<number>
 
 export interface Product {
   name: string
+  miniature: string
   img: string
   categoryUuid: UUID
   cip13: string

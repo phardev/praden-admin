@@ -2,6 +2,13 @@
 import { fileURLToPath } from 'url'
 
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      PREPARATION_STARTED_TEMPLATE_ID:
+        process.env.PREPARATION_STARTED_TEMPLATE_ID,
+      SEND_EMAIL_URL: process.env.SEND_EMAIL_URL
+    }
+  },
   alias: {
     '@adapters': fileURLToPath(new URL('./src/adapters/', import.meta.url)),
     '@core': fileURLToPath(new URL('./src/core/', import.meta.url)),
