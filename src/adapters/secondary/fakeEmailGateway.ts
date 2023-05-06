@@ -8,7 +8,7 @@ export class FakeEmailGateway implements EmailGateway {
     return this.emails
   }
 
-  send(emailMessage: EmailMessage): Promise<void> {
+  sendPreparationStartedMessage(emailMessage: EmailMessage): Promise<void> {
     this.emails.push(emailMessage)
     return Promise.resolve()
   }

@@ -100,7 +100,7 @@ const canAskHowToFinish = (
   )
     return false
   const messages = preparation.messages
-  return messages.length === 0 && !canValidate(lines, messages)
+  return messages.length === 0
 }
 
 export const getPreparationVM = (): GetPreparationVM => {
