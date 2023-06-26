@@ -1,5 +1,5 @@
 <template lang="pug">
-div coucou je suis index
+div
 </template>
 
 <script lang="ts" setup>
