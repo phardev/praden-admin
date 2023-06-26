@@ -2,6 +2,7 @@ import { OrderGateway } from '@core/gateways/orderGateway'
 import {
   DeliveryStatus,
   Message,
+  MessageContent,
   Order,
   OrderLine,
   PaymentStatus
@@ -99,7 +100,11 @@ export class InMemoryOrderGateway implements OrderGateway {
     return Promise.resolve(preparation)
   }
 
-  async addMessage(order: Order, message: Message): Promise<Order> {
+  async askHowToFinish(order: Order): Promise<Order> {
+    const message: Message = {
+      content: MessageContent.AskToClient,
+      sentAt: this.dateProvider.now()
+    }
     order.messages.push(message)
     const index = this.orders.findIndex((o) => o.uuid === order.uuid)
     if (index < 0) throw new PreparationDoesNotExistsError(order.uuid)

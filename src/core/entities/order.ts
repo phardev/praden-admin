@@ -62,10 +62,10 @@ export interface OrderDelivery {
 }
 
 export enum MessageContent {
-  AskToClient,
-  WaitForRestock,
-  PartialShip,
-  CancelOrder
+  AskToClient = 'ASK_TO_CLIENT',
+  WaitForRestock = 'WAIT_FOR_RESTOCK',
+  PartialShip = 'PARTIAL_SHIP',
+  CancelOrder = 'CANCEL_ORDER'
 }
 
 export interface Message {

@@ -72,7 +72,6 @@ import { useInvoiceGateway } from '../../../../../../gateways/invoiceGateway'
 import { savePreparation } from '@core/usecases/order/save-preparation/savePreparation'
 import { cancelPreparation } from '@core/usecases/order/cancel-preparation/cancelPreparation'
 import { askClientHowToFinishPreparation } from '@core/usecases/order/ask-client-how-to-finish-preparation/askClientHowToFinishPreparation'
-import { useMessageGateway } from '../../../../../../gateways/messageGateway'
 import { removeProductFromPreparation } from '@core/usecases/order/scan-product-to-remove-fom-preparation/scanProductToRemoveFromPreparation'
 import { useDialog } from '@adapters/primary/nuxt/composables/useDialog'
 import FtScanner from '@adapters/primary/nuxt/components/FtScanner.vue'
@@ -150,7 +149,8 @@ const cancel = async () => {
 }
 
 const askHowToFinish = async () => {
-  await askClientHowToFinishPreparation(useOrderGateway(), useMessageGateway())
+  await savePreparation(useOrderGateway())
+  await askClientHowToFinishPreparation(useOrderGateway())
   router.push('/preparations')
 }
 
