@@ -32,10 +32,6 @@ describe('Get invoice VM', () => {
     {
       name: 'Date de commande',
       value: 'orderDate'
-    },
-    {
-      name: 'Numéro de TVA',
-      value: 'taxNumber'
     }
   ]
   const orderLinesHeaders: Array<Header> = [
@@ -165,8 +161,7 @@ describe('Get invoice VM', () => {
               invoiceNumber: orderPrepared1.payment.invoiceNumber,
               invoiceDate: '05/02/2023',
               orderReference: orderPrepared1.uuid,
-              orderDate: '05/02/2023',
-              taxNumber: 'France'
+              orderDate: '05/02/2023'
             }
           ]
         }
@@ -294,8 +289,7 @@ describe('Get invoice VM', () => {
               invoiceNumber: orderDelivered1.payment.invoiceNumber,
               invoiceDate: '21/01/2023',
               orderReference: orderDelivered1.uuid,
-              orderDate: '21/01/2023',
-              taxNumber: 'France'
+              orderDate: '21/01/2023'
             }
           ]
         }
