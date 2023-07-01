@@ -72,7 +72,6 @@ export class RealOrderGateway implements OrderGateway {
 
   private convertToOrder(data: any): Order {
     const copy = JSON.parse(JSON.stringify(data))
-    console.log('copy: ', copy)
     delete copy.payment.sessionUrl
     copy.lines.forEach((l: any) => {
       delete l.img
