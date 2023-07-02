@@ -3,7 +3,8 @@ import {
   orderInPreparation1,
   orderToPrepare1,
   orderToPrepare2,
-  orderWithMissingProduct1
+  orderWithMissingProduct1,
+  orderSaved1
 } from '@utils/testData/orders'
 import { Order } from '@core/entities/order'
 import { createPinia, setActivePinia } from 'pinia'
@@ -169,6 +170,31 @@ describe('Get preparation VM', () => {
           ],
           messages: [],
           canValidate: false,
+          canCancel: false,
+          canAskHowToFinish: false
+        }
+        expect(getPreparationVM()).toStrictEqual(expectedVM)
+      })
+    })
+    describe('All products were scanned', () => {
+      it('should not allow to ask to client', () => {
+        const order = JSON.parse(JSON.stringify(orderSaved1))
+        order.lines[0].preparedQuantity = order.lines[0].expectedQuantity
+        givenCurrentPreparationIs(order)
+        const expectedVM: GetPreparationVM = {
+          reference: orderSaved1.uuid,
+          headers,
+          lines: [
+            {
+              reference: dolodent.cip13,
+              name: dolodent.name,
+              expectedQuantity: 2,
+              preparedQuantity: 2,
+              status: PreparationStatus.Prepared
+            }
+          ],
+          messages: [],
+          canValidate: true,
           canCancel: false,
           canAskHowToFinish: false
         }

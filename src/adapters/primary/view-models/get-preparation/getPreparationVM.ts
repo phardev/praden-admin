@@ -93,6 +93,9 @@ const canAskHowToFinish = (
   lines: Array<GetPreparationLineVM>,
   preparation: Order
 ): boolean => {
+  if (canValidate(lines, preparation.messages)) {
+    return false
+  }
   if (
     preparation.lines.every(
       (line) => line.deliveryStatus === DeliveryStatus.Created
