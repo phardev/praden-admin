@@ -23,7 +23,6 @@ interface SummaryValueVM {
   invoiceDate: string
   orderReference: string
   orderDate: string
-  taxNumber: string
 }
 
 interface OrderLineVM {
@@ -144,10 +143,6 @@ const getSummaryTable = (invoice: Invoice): TableVM<SummaryValueVM> => {
     {
       name: 'Date de commande',
       value: 'orderDate'
-    },
-    {
-      name: 'Numéro de TVA',
-      value: 'taxNumber'
     }
   ]
   const dateFormatOptions = {
@@ -170,8 +165,7 @@ const getSummaryTable = (invoice: Invoice): TableVM<SummaryValueVM> => {
           invoice.data.createdAt,
           'fr-FR',
           dateFormatOptions
-        ),
-        taxNumber: 'France'
+        )
       }
     ]
   }
