@@ -70,7 +70,7 @@ describe('Get products VM', () => {
           items: [
             {
               name: dolodent.name,
-              img: dolodent.img,
+              img: dolodent.miniature,
               reference: dolodent.cip13,
               category: '',
               priceWithoutTax: '5,00\u00A0€',
@@ -79,7 +79,7 @@ describe('Get products VM', () => {
             },
             {
               name: ultraLevure.name,
-              img: ultraLevure.img,
+              img: ultraLevure.miniature,
               reference: ultraLevure.cip13,
               category: '',
               priceWithoutTax: '4,32\u00A0€',
@@ -100,7 +100,7 @@ describe('Get products VM', () => {
           items: [
             {
               name: dolodent.name,
-              img: dolodent.img,
+              img: dolodent.miniature,
               reference: dolodent.cip13,
               category: 'Dents',
               priceWithoutTax: '5,00\u00A0€',
@@ -109,7 +109,7 @@ describe('Get products VM', () => {
             },
             {
               name: ultraLevure.name,
-              img: ultraLevure.img,
+              img: ultraLevure.miniature,
               reference: ultraLevure.cip13,
               category: 'Diarrhée',
               priceWithoutTax: '4,32\u00A0€',

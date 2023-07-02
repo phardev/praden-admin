@@ -93,6 +93,9 @@ const canAskHowToFinish = (
   lines: Array<GetPreparationLineVM>,
   preparation: Order
 ): boolean => {
+  if (canValidate(lines, preparation.messages)) {
+    return false
+  }
   if (
     preparation.lines.every(
       (line) => line.deliveryStatus === DeliveryStatus.Created
@@ -100,7 +103,7 @@ const canAskHowToFinish = (
   )
     return false
   const messages = preparation.messages
-  return messages.length === 0 && !canValidate(lines, messages)
+  return messages.length === 0
 }
 
 export const getPreparationVM = (): GetPreparationVM => {

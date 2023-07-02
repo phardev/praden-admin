@@ -1,5 +1,7 @@
-import { EmailMessage } from '@core/entities/emailMessage'
+import { PreparationStartedMessage } from '@core/entities/emailMessage'
 
 export interface EmailGateway {
-  send(email: EmailMessage): Promise<void>
+  sendPreparationStartedMessage(
+    preparationStartedMessageDTO: PreparationStartedMessage
+  ): Promise<void>
 }
