@@ -4,6 +4,7 @@ import { RealInvoiceGateway } from '@adapters/secondary/realInvoiceGateway'
 
 export const useInvoiceGateway = () => {
   const invoiceGateway = new InMemoryInvoiceGateway(new RealDateProvider())
-  return new RealInvoiceGateway('http://localhost:8787')
+  const { BACKEND_URL } = useRuntimeConfig()
+  return new RealInvoiceGateway(BACKEND_URL)
   return invoiceGateway
 }

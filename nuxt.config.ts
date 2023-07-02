@@ -6,7 +6,8 @@ export default defineNuxtConfig({
     public: {
       PREPARATION_STARTED_TEMPLATE_ID:
         process.env.PREPARATION_STARTED_TEMPLATE_ID,
-      SEND_EMAIL_URL: process.env.SEND_EMAIL_URL
+      SEND_EMAIL_URL: process.env.SEND_EMAIL_URL,
+      BACKEND_URL: process.env.BACKEND_URL
     }
   },
   alias: {

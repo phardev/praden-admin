@@ -7,6 +7,7 @@ const orderGateway = new InMemoryOrderGateway(new RealDateProvider())
 orderGateway.feedWith(...Object.values(orders))
 
 export const useOrderGateway = () => {
-  return new RealOrderGateway('http://localhost:8787')
+  const { BACKEND_URL } = useRuntimeConfig()
+  return new RealOrderGateway(BACKEND_URL)
   return orderGateway
 }
