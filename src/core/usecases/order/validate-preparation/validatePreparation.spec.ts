@@ -15,7 +15,7 @@ import { Invoice } from '@core/entities/invoice'
 import { InMemoryInvoiceGateway } from '@adapters/secondary/inMemoryInvoiceGateway'
 import { useInvoiceStore } from '@store/invoiceStore'
 import { Timestamp } from '@core/types/types'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import { atoderm, eauThermale } from '@utils/testData/products'
 
 describe('Validate preparation', () => {
   let preparationStore: any
@@ -143,13 +143,13 @@ describe('Validate preparation', () => {
         expectedOrder.lines[1].deliveryStatus = DeliveryStatus.Canceled
         expectedOrder.lines[1].updatedAt = now
         expectedOrder.lines[2] = {
-          name: ultraLevure.name,
-          cip13: ultraLevure.cip13,
+          name: eauThermale.name,
+          cip13: eauThermale.cip13,
           expectedQuantity: -4,
           preparedQuantity: 0,
-          unitAmount: ultraLevure.priceWithoutTax,
-          percentTaxRate: ultraLevure.percentTaxRate,
-          location: ultraLevure.location,
+          unitAmount: eauThermale.priceWithoutTax,
+          percentTaxRate: eauThermale.percentTaxRate,
+          location: eauThermale.location,
           deliveryStatus: DeliveryStatus.Canceled,
           updatedAt: now
         }
@@ -199,24 +199,24 @@ describe('Validate preparation', () => {
         expectedOrder.lines[1].deliveryStatus = DeliveryStatus.Shipped
         expectedOrder.lines[1].updatedAt = now
         expectedOrder.lines[2] = {
-          name: dolodent.name,
-          cip13: dolodent.cip13,
+          name: atoderm.name,
+          cip13: atoderm.cip13,
           expectedQuantity: -1,
           preparedQuantity: 0,
-          unitAmount: dolodent.priceWithoutTax,
-          percentTaxRate: dolodent.percentTaxRate,
-          location: dolodent.location,
+          unitAmount: atoderm.priceWithoutTax,
+          percentTaxRate: atoderm.percentTaxRate,
+          location: atoderm.location,
           deliveryStatus: DeliveryStatus.Canceled,
           updatedAt: now
         }
         expectedOrder.lines[3] = {
-          name: ultraLevure.name,
-          cip13: ultraLevure.cip13,
+          name: eauThermale.name,
+          cip13: eauThermale.cip13,
           expectedQuantity: -2,
           preparedQuantity: 0,
-          unitAmount: ultraLevure.priceWithoutTax,
-          percentTaxRate: ultraLevure.percentTaxRate,
-          location: ultraLevure.location,
+          unitAmount: eauThermale.priceWithoutTax,
+          percentTaxRate: eauThermale.percentTaxRate,
+          location: eauThermale.location,
           deliveryStatus: DeliveryStatus.Canceled,
           updatedAt: now
         }

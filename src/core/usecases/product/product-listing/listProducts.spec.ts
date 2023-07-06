@@ -3,7 +3,7 @@ import { useProductStore } from '@store/productStore'
 import { InMemoryProductGateway } from '@adapters/secondary/inMemoryProductGateway'
 import { listProducts } from './listProducts'
 import { Product, Stock } from '@core/entities/product'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import { atoderm, eauThermale } from '@utils/testData/products'
 
 describe('List products', () => {
   let productStore: any
@@ -22,16 +22,16 @@ describe('List products', () => {
   })
   describe('There is some products', () => {
     beforeEach(async () => {
-      givenExistingProducts(dolodent, ultraLevure)
+      givenExistingProducts(atoderm, eauThermale)
       await whenListProducts()
     })
     it('should list all of them', () => {
-      expectProductStoreToContains(dolodent, ultraLevure)
+      expectProductStoreToContains(atoderm, eauThermale)
     })
     it('should retrieve available stock', async () => {
       const expectedStock: Stock = {
-        [dolodent.cip13]: dolodent.availableStock,
-        [ultraLevure.cip13]: ultraLevure.availableStock
+        [atoderm.cip13]: atoderm.availableStock,
+        [eauThermale.cip13]: eauThermale.availableStock
       }
       expectStockToEqual(expectedStock)
     })

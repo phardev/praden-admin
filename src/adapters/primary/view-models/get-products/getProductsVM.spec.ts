@@ -1,5 +1,5 @@
 import { getProductsVM } from './getProductsVM'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import { atoderm, eauThermale } from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
 import { useProductStore } from '@store/productStore'
 import { useCategoryStore } from '@store/categoryStore'
@@ -59,7 +59,7 @@ describe('Get products VM', () => {
   })
   describe('There is some products', () => {
     beforeEach(() => {
-      productStore.items = [dolodent, ultraLevure]
+      productStore.items = [atoderm, eauThermale]
     })
     describe('Categories are not loaded', () => {
       it('should list all of them', () => {
@@ -69,22 +69,22 @@ describe('Get products VM', () => {
           headers: expectedHeaders,
           items: [
             {
-              name: dolodent.name,
-              img: dolodent.miniature,
-              reference: dolodent.cip13,
+              name: atoderm.name,
+              img: atoderm.miniature,
+              reference: atoderm.cip13,
               category: '',
               priceWithoutTax: '5,00\u00A0€',
               priceWithTax: '5,50\u00A0€',
-              availableStock: dolodent.availableStock
+              availableStock: atoderm.availableStock
             },
             {
-              name: ultraLevure.name,
-              img: ultraLevure.miniature,
-              reference: ultraLevure.cip13,
+              name: eauThermale.name,
+              img: eauThermale.miniature,
+              reference: eauThermale.cip13,
               category: '',
               priceWithoutTax: '4,32\u00A0€',
               priceWithTax: '4,75\u00A0€',
-              availableStock: ultraLevure.availableStock
+              availableStock: eauThermale.availableStock
             }
           ]
         }
@@ -99,22 +99,22 @@ describe('Get products VM', () => {
           headers: expectedHeaders,
           items: [
             {
-              name: dolodent.name,
-              img: dolodent.miniature,
-              reference: dolodent.cip13,
+              name: atoderm.name,
+              img: atoderm.miniature,
+              reference: atoderm.cip13,
               category: 'Dents',
               priceWithoutTax: '5,00\u00A0€',
               priceWithTax: '5,50\u00A0€',
-              availableStock: dolodent.availableStock
+              availableStock: atoderm.availableStock
             },
             {
-              name: ultraLevure.name,
-              img: ultraLevure.miniature,
-              reference: ultraLevure.cip13,
+              name: eauThermale.name,
+              img: eauThermale.miniature,
+              reference: eauThermale.cip13,
               category: 'Diarrhée',
               priceWithoutTax: '4,32\u00A0€',
               priceWithTax: '4,75\u00A0€',
-              availableStock: ultraLevure.availableStock
+              availableStock: eauThermale.availableStock
             }
           ]
         }

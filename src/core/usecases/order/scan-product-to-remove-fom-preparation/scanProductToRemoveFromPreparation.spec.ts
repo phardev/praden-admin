@@ -1,6 +1,6 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { usePreparationStore } from '@store/preparationStore'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import { atoderm, eauThermale } from '@utils/testData/products'
 import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
 import { removeProductFromPreparation } from '@core/usecases/order/scan-product-to-remove-fom-preparation/scanProductToRemoveFromPreparation'
 import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
@@ -14,7 +14,7 @@ describe('Scan product to remove from preparation', () => {
   })
   describe('There is no current preparation', () => {
     it('should throw an error', () => {
-      expect(() => whenRemoveProductFromPreparation(dolodent.cip13)).toThrow(
+      expect(() => whenRemoveProductFromPreparation(atoderm.cip13)).toThrow(
         NoPreparationSelectedError
       )
     })
@@ -27,7 +27,7 @@ describe('Scan product to remove from preparation', () => {
         givenCurrentPreparationIs(order)
         const expectedOrder = JSON.parse(JSON.stringify(orderToPrepare1))
         expectedOrder.lines[0].preparedQuantity = 0
-        whenRemoveProductFromPreparation(dolodent.cip13)
+        whenRemoveProductFromPreparation(atoderm.cip13)
         expectCurrentPreparationToBe(expectedOrder)
       })
       it('should remove 1 to the prepared quantity if the quantity is > 1', () => {
@@ -36,7 +36,7 @@ describe('Scan product to remove from preparation', () => {
         givenCurrentPreparationIs(order)
         const expectedOrder = JSON.parse(JSON.stringify(order))
         expectedOrder.lines[0].preparedQuantity = 1
-        whenRemoveProductFromPreparation(dolodent.cip13)
+        whenRemoveProductFromPreparation(atoderm.cip13)
         expectCurrentPreparationToBe(expectedOrder)
       })
       it('should remove from another preparation', () => {
@@ -45,21 +45,21 @@ describe('Scan product to remove from preparation', () => {
         givenCurrentPreparationIs(order)
         const expectedOrder = JSON.parse(JSON.stringify(order))
         expectedOrder.lines[1].preparedQuantity = 1
-        whenRemoveProductFromPreparation(ultraLevure.cip13)
+        whenRemoveProductFromPreparation(eauThermale.cip13)
         expectCurrentPreparationToBe(expectedOrder)
       })
     })
     describe('There is no prepared quantity', () => {
       it('should do nothing', () => {
         givenCurrentPreparationIs(orderToPrepare1)
-        whenRemoveProductFromPreparation(dolodent.cip13)
+        whenRemoveProductFromPreparation(atoderm.cip13)
         expectCurrentPreparationToBe(orderToPrepare1)
       })
     })
     describe('The product is not in the preparation', () => {
       it('should do nothing', () => {
         givenCurrentPreparationIs(orderToPrepare1)
-        whenRemoveProductFromPreparation(ultraLevure.cip13)
+        whenRemoveProductFromPreparation(eauThermale.cip13)
         expectCurrentPreparationToBe(orderToPrepare1)
       })
     })

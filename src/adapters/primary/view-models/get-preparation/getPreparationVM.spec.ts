@@ -13,7 +13,7 @@ import {
   GetPreparationVM,
   PreparationStatus
 } from '@adapters/primary/view-models/get-preparation/getPreparationVM'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import { atoderm, eauThermale } from '@utils/testData/products'
 import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
 
 describe('Get preparation VM', () => {
@@ -53,8 +53,8 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
-              name: dolodent.name,
+              reference: atoderm.cip13,
+              name: atoderm.name,
               expectedQuantity: 2,
               preparedQuantity: 0,
               status: PreparationStatus.NotPrepared
@@ -74,15 +74,15 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
-              name: dolodent.name,
+              reference: atoderm.cip13,
+              name: atoderm.name,
               expectedQuantity: 1,
               preparedQuantity: 0,
               status: PreparationStatus.NotPrepared
             },
             {
-              reference: ultraLevure.cip13,
-              name: ultraLevure.name,
+              reference: eauThermale.cip13,
+              name: eauThermale.name,
               expectedQuantity: 2,
               preparedQuantity: 0,
               status: PreparationStatus.NotPrepared
@@ -106,8 +106,8 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
-              name: dolodent.name,
+              reference: atoderm.cip13,
+              name: atoderm.name,
               expectedQuantity: 2,
               preparedQuantity: 2,
               status: PreparationStatus.Prepared
@@ -130,15 +130,15 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
-              name: dolodent.name,
+              reference: atoderm.cip13,
+              name: atoderm.name,
               expectedQuantity: 1,
               preparedQuantity: 1,
               status: PreparationStatus.Prepared
             },
             {
-              reference: ultraLevure.cip13,
-              name: ultraLevure.name,
+              reference: eauThermale.cip13,
+              name: eauThermale.name,
               expectedQuantity: 2,
               preparedQuantity: 1,
               status: PreparationStatus.NotPrepared
@@ -160,8 +160,8 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
-              name: dolodent.name,
+              reference: atoderm.cip13,
+              name: atoderm.name,
               expectedQuantity: 2,
               preparedQuantity: 3,
               status: PreparationStatus.ErrorTooMuchQuantity

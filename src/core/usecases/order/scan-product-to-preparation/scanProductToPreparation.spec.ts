@@ -1,4 +1,4 @@
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import { atoderm, eauThermale } from '@utils/testData/products'
 import { scanProductToPreparation } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
 import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
 import { createPinia, setActivePinia } from 'pinia'
@@ -14,7 +14,7 @@ describe('Scan product to preparation', () => {
   })
   describe('There is no current preparation', () => {
     it('should throw an error', () => {
-      expect(() => whenAddProductToPreparation(dolodent.cip13)).toThrow(
+      expect(() => whenAddProductToPreparation(atoderm.cip13)).toThrow(
         NoPreparationSelectedError
       )
     })
@@ -25,7 +25,7 @@ describe('Scan product to preparation', () => {
         givenCurrentPreparationIs(orderToPrepare1)
         const expectedOrder = JSON.parse(JSON.stringify(orderToPrepare1))
         expectedOrder.lines[0].preparedQuantity = 1
-        whenAddProductToPreparation(dolodent.cip13)
+        whenAddProductToPreparation(atoderm.cip13)
         expectCurrentPreparationToBe(expectedOrder)
       })
       it('should add 1 to the prepared quantity if the quantity is > 0', () => {
@@ -34,7 +34,7 @@ describe('Scan product to preparation', () => {
         givenCurrentPreparationIs(order)
         const expectedOrder = JSON.parse(JSON.stringify(order))
         expectedOrder.lines[0].preparedQuantity = 2
-        whenAddProductToPreparation(dolodent.cip13)
+        whenAddProductToPreparation(atoderm.cip13)
         expectCurrentPreparationToBe(expectedOrder)
       })
     })
@@ -45,7 +45,7 @@ describe('Scan product to preparation', () => {
       givenCurrentPreparationIs(orderToPrepare2)
       const expectedOrder = JSON.parse(JSON.stringify(orderToPrepare2))
       expectedOrder.lines[1].preparedQuantity = 1
-      whenAddProductToPreparation(ultraLevure.cip13)
+      whenAddProductToPreparation(eauThermale.cip13)
       expectCurrentPreparationToBe(expectedOrder)
     })
   })
@@ -53,7 +53,7 @@ describe('Scan product to preparation', () => {
   describe('The product is not in the preparation', () => {
     it('should do nothing', () => {
       givenCurrentPreparationIs(orderToPrepare1)
-      whenAddProductToPreparation(ultraLevure.cip13)
+      whenAddProductToPreparation(eauThermale.cip13)
       expectCurrentPreparationToBe(orderToPrepare1)
     })
   })
@@ -63,7 +63,7 @@ describe('Scan product to preparation', () => {
       const order = JSON.parse(JSON.stringify(orderToPrepare1))
       order.lines[0].preparedQuantity = order.lines[0].expectedQuantity
       givenCurrentPreparationIs(order)
-      whenAddProductToPreparation(dolodent.cip13)
+      whenAddProductToPreparation(atoderm.cip13)
       const expectedOrder = JSON.parse(JSON.stringify(order))
       expectedOrder.lines[0].preparedQuantity++
       expectCurrentPreparationToBe(expectedOrder)

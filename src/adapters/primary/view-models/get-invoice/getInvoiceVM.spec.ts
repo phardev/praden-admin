@@ -12,7 +12,7 @@ import {
   orderPrepared1
 } from '@utils/testData/orders'
 import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
-import { anaca3Minceur, dolodent } from '@utils/testData/products'
+import { physiolac, atoderm } from '@utils/testData/products'
 
 describe('Get invoice VM', () => {
   let invoiceStore: any
@@ -179,8 +179,8 @@ describe('Get invoice VM', () => {
           headers: orderLinesHeaders,
           items: [
             {
-              reference: dolodent.cip13,
-              name: dolodent.name,
+              reference: atoderm.cip13,
+              name: atoderm.name,
               taxRate: '10 %',
               unitAmountWithoutTax: '5,00\u00A0€',
               unitAmountWithTax: '5,50\u00A0€',
@@ -308,8 +308,8 @@ describe('Get invoice VM', () => {
           headers: orderLinesHeaders,
           items: [
             {
-              reference: anaca3Minceur.cip13,
-              name: anaca3Minceur.name,
+              reference: physiolac.cip13,
+              name: physiolac.name,
               taxRate: '5.5 %',
               unitAmountWithoutTax: '8,91\u00A0€',
               unitAmountWithTax: '9,40\u00A0€',
@@ -317,8 +317,8 @@ describe('Get invoice VM', () => {
               totalWithTax: '28,20\u00A0€'
             },
             {
-              reference: dolodent.cip13,
-              name: dolodent.name,
+              reference: atoderm.cip13,
+              name: atoderm.name,
               taxRate: '10 %',
               unitAmountWithoutTax: '5,00\u00A0€',
               unitAmountWithTax: '5,50\u00A0€',
@@ -464,8 +464,8 @@ describe('Get invoice VM', () => {
           headers: orderLinesHeaders,
           items: [
             {
-              reference: dolodent.cip13,
-              name: dolodent.name,
+              reference: atoderm.cip13,
+              name: atoderm.name,
               taxRate: '10 %',
               unitAmountWithoutTax: '5,00\u00A0€',
               unitAmountWithTax: '5,50\u00A0€',
@@ -483,8 +483,8 @@ describe('Get invoice VM', () => {
           headers: orderLinesHeaders,
           items: [
             {
-              reference: dolodent.cip13,
-              name: dolodent.name,
+              reference: atoderm.cip13,
+              name: atoderm.name,
               taxRate: '10 %',
               unitAmountWithoutTax: '-5,00\u00A0€',
               unitAmountWithTax: '-5,50\u00A0€',

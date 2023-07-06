@@ -17,7 +17,7 @@ import {
   orderWithMissingProduct2
 } from '@utils/testData/orders'
 import { Stock } from '@core/entities/product'
-import { chamomilla, dolodent } from '@utils/testData/products'
+import { uriage, atoderm } from '@utils/testData/products'
 import { useProductStore } from '@store/productStore'
 
 describe('Get orders to prepare VM', () => {
@@ -135,7 +135,7 @@ describe('Get orders to prepare VM', () => {
   describe('There is some preparations to complete', () => {
     it('should list all of them if stock is available', () => {
       const stock: Stock = {
-        [dolodent.cip13]: 50
+        [atoderm.cip13]: 50
       }
       givenStockIs(stock)
       preparationStore.items = [orderInPreparation1]
@@ -161,7 +161,7 @@ describe('Get orders to prepare VM', () => {
     })
     it('should not list if stock is not available', () => {
       const stock: Stock = {
-        [chamomilla.cip13]: 1
+        [uriage.cip13]: 1
       }
       givenStockIs(stock)
       preparationStore.items = [orderWaitingForRestock]
@@ -172,7 +172,7 @@ describe('Get orders to prepare VM', () => {
       order.lines[0].preparedQuantity = 1
       order.lines[0].expectedQuantity = 2
       const stock: Stock = {
-        [chamomilla.cip13]: 1
+        [uriage.cip13]: 1
       }
       givenStockIs(stock)
       preparationStore.items = [order]

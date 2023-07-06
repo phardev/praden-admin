@@ -5,10 +5,10 @@ import {
   PaymentStatus
 } from '@core/entities/order'
 import {
-  anaca3Minceur,
-  chamomilla,
-  dolodent,
-  ultraLevure
+  physiolac,
+  uriage,
+  atoderm,
+  eauThermale
 } from '@utils/testData/products'
 import {
   clickAndCollect,
@@ -19,13 +19,13 @@ export const orderToPrepare1: Order = {
   uuid: 'XIKOKI',
   lines: [
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: 2,
       preparedQuantity: 0,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Created,
       updatedAt: 1674273279000
     }
@@ -56,24 +56,24 @@ export const orderToPrepare2: Order = {
   uuid: 'FHEIRF',
   lines: [
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: 1,
       preparedQuantity: 0,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Created,
       updatedAt: 1675565972527
     },
     {
-      name: ultraLevure.name,
-      cip13: ultraLevure.cip13,
+      name: eauThermale.name,
+      cip13: eauThermale.cip13,
       expectedQuantity: 2,
       preparedQuantity: 0,
-      unitAmount: ultraLevure.priceWithoutTax,
-      percentTaxRate: ultraLevure.percentTaxRate,
-      location: ultraLevure.location,
+      unitAmount: eauThermale.priceWithoutTax,
+      percentTaxRate: eauThermale.percentTaxRate,
+      location: eauThermale.location,
       deliveryStatus: DeliveryStatus.Created,
       updatedAt: 1675565972527
     }
@@ -104,13 +104,13 @@ export const orderToPrepare3: Order = {
   uuid: 'DIJFPE',
   lines: [
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: 1,
       preparedQuantity: 0,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Created,
       updatedAt: 1675565972527
     }
@@ -141,13 +141,13 @@ export const orderPrepared1: Order = {
   uuid: 'JOURJL',
   lines: [
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: 2,
       preparedQuantity: 2,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Shipped,
       updatedAt: 1675577400000
     }
@@ -178,13 +178,13 @@ export const orderInPreparation1: Order = {
   uuid: 'UTRIEL',
   lines: [
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: 2,
       preparedQuantity: 0,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1675564520539
     }
@@ -224,24 +224,24 @@ export const orderDelivered1: Order = {
   uuid: 'HGFRIW',
   lines: [
     {
-      name: anaca3Minceur.name,
-      cip13: anaca3Minceur.cip13,
+      name: physiolac.name,
+      cip13: physiolac.cip13,
       expectedQuantity: 3,
       preparedQuantity: 3,
-      unitAmount: anaca3Minceur.priceWithoutTax,
-      percentTaxRate: anaca3Minceur.percentTaxRate,
-      location: anaca3Minceur.location,
+      unitAmount: physiolac.priceWithoutTax,
+      percentTaxRate: physiolac.percentTaxRate,
+      location: physiolac.location,
       deliveryStatus: DeliveryStatus.Delivered,
       updatedAt: 1674295599432
     },
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: 1,
       preparedQuantity: 1,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Delivered,
       updatedAt: 1674295599432
     }
@@ -272,24 +272,24 @@ export const orderDelivered2: Order = {
   uuid: 'GJIRLK',
   lines: [
     {
-      name: ultraLevure.name,
-      cip13: ultraLevure.cip13,
+      name: eauThermale.name,
+      cip13: eauThermale.cip13,
       expectedQuantity: 3,
       preparedQuantity: 3,
-      unitAmount: ultraLevure.priceWithoutTax,
-      percentTaxRate: ultraLevure.percentTaxRate,
-      location: ultraLevure.location,
+      unitAmount: eauThermale.priceWithoutTax,
+      percentTaxRate: eauThermale.percentTaxRate,
+      location: eauThermale.location,
       deliveryStatus: DeliveryStatus.Delivered,
       updatedAt: 1674295599432
     },
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: 1,
       preparedQuantity: 1,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Delivered,
       updatedAt: 1674295599432
     }
@@ -320,24 +320,24 @@ export const orderWithMissingProduct1: Order = {
   uuid: 'DKOWDW',
   lines: [
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: 2,
       preparedQuantity: 2,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Shipped,
       updatedAt: 1674573778456
     },
     {
-      name: ultraLevure.name,
-      cip13: ultraLevure.cip13,
+      name: eauThermale.name,
+      cip13: eauThermale.cip13,
       expectedQuantity: 4,
       preparedQuantity: 0,
-      unitAmount: ultraLevure.priceWithoutTax,
-      percentTaxRate: ultraLevure.percentTaxRate,
-      location: ultraLevure.location,
+      unitAmount: eauThermale.priceWithoutTax,
+      percentTaxRate: eauThermale.percentTaxRate,
+      location: eauThermale.location,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674573698456
     }
@@ -377,24 +377,24 @@ export const orderWithMissingProduct2: Order = {
   uuid: 'DJEIWLQ',
   lines: [
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: 2,
       preparedQuantity: 1,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Shipped,
       updatedAt: 1674573778456
     },
     {
-      name: ultraLevure.name,
-      cip13: ultraLevure.cip13,
+      name: eauThermale.name,
+      cip13: eauThermale.cip13,
       expectedQuantity: 4,
       preparedQuantity: 2,
-      unitAmount: ultraLevure.priceWithoutTax,
-      percentTaxRate: ultraLevure.percentTaxRate,
-      location: ultraLevure.location,
+      unitAmount: eauThermale.priceWithoutTax,
+      percentTaxRate: eauThermale.percentTaxRate,
+      location: eauThermale.location,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674573698456
     }
@@ -434,13 +434,13 @@ export const orderToCancel: Order = {
   uuid: 'JFIJLJ',
   lines: [
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: 2,
       preparedQuantity: 1,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674573778456
     }
@@ -480,13 +480,13 @@ export const orderNotPayed1: Order = {
   uuid: 'ADKEWR',
   lines: [
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: 2,
       preparedQuantity: 0,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Created,
       updatedAt: 1674273789000
     }
@@ -516,13 +516,13 @@ export const orderSaved1: Order = {
   uuid: 'FKEROFE',
   lines: [
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: 2,
       preparedQuantity: 0,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674273789000
     }
@@ -552,13 +552,13 @@ export const orderWaitingForClientAnswer1: Order = {
   uuid: 'ZJOFRW',
   lines: [
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: 2,
       preparedQuantity: 0,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674273789000
     }
@@ -593,24 +593,24 @@ export const orderWaitingForClientAnswer2: Order = {
   uuid: 'LOPFRE',
   lines: [
     {
-      name: ultraLevure.name,
-      cip13: ultraLevure.cip13,
+      name: eauThermale.name,
+      cip13: eauThermale.cip13,
       expectedQuantity: 3,
       preparedQuantity: 2,
-      unitAmount: ultraLevure.priceWithoutTax,
-      percentTaxRate: ultraLevure.percentTaxRate,
-      location: ultraLevure.location,
+      unitAmount: eauThermale.priceWithoutTax,
+      percentTaxRate: eauThermale.percentTaxRate,
+      location: eauThermale.location,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674295599432
     },
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: 1,
       preparedQuantity: 1,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674295599432
     }
@@ -646,13 +646,13 @@ export const orderWaitingForRestock: Order = {
   uuid: 'EUIWQK',
   lines: [
     {
-      name: chamomilla.name,
-      cip13: chamomilla.cip13,
+      name: uriage.name,
+      cip13: uriage.cip13,
       expectedQuantity: 2,
       preparedQuantity: 0,
-      unitAmount: chamomilla.priceWithoutTax,
-      percentTaxRate: chamomilla.percentTaxRate,
-      location: chamomilla.location,
+      unitAmount: uriage.priceWithoutTax,
+      percentTaxRate: uriage.percentTaxRate,
+      location: uriage.location,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674273789000
     }
@@ -691,24 +691,24 @@ export const orderPartiallyShipped1: Order = {
   uuid: 'PIDWJK',
   lines: [
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: 2,
       preparedQuantity: 1,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Shipped,
       updatedAt: 1674573778456
     },
     {
-      name: dolodent.name,
-      cip13: dolodent.cip13,
+      name: atoderm.name,
+      cip13: atoderm.cip13,
       expectedQuantity: -1,
       preparedQuantity: 0,
-      unitAmount: dolodent.priceWithoutTax,
-      percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      unitAmount: atoderm.priceWithoutTax,
+      percentTaxRate: atoderm.percentTaxRate,
+      location: atoderm.location,
       deliveryStatus: DeliveryStatus.Shipped,
       updatedAt: 1674573778456
     }

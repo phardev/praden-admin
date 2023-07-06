@@ -11,7 +11,7 @@ import {
   PreparationStartedMessage
 } from '@core/entities/emailMessage'
 import { FakeEmailGateway } from '@adapters/secondary/fakeEmailGateway'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import { atoderm, eauThermale } from '@utils/testData/products'
 import { Product } from '@core/entities/product'
 import { InMemoryProductGateway } from '@adapters/secondary/inMemoryProductGateway'
 import { useProductStore } from '@store/productStore'
@@ -43,7 +43,7 @@ describe('Start preparations', () => {
     )
     beforeEach(() => {
       givenThereIsOrdersToPrepare(orderToPrepare1, orderToPrepare2)
-      givenThereIsExistingProducts(dolodent, ultraLevure)
+      givenThereIsExistingProducts(atoderm, eauThermale)
     })
     describe('Prepare all orders', () => {
       beforeEach(async () => {
@@ -80,8 +80,8 @@ describe('Start preparations', () => {
             },
             lines: [
               {
-                img: dolodent.img,
-                name: dolodent.name,
+                img: atoderm.img,
+                name: atoderm.name,
                 unitPrice: '5,50\u00A0€',
                 quantity: 2,
                 total: '11,00\u00A0€'
@@ -110,15 +110,15 @@ describe('Start preparations', () => {
             },
             lines: [
               {
-                img: dolodent.img,
-                name: dolodent.name,
+                img: atoderm.img,
+                name: atoderm.name,
                 unitPrice: '5,50\u00A0€',
                 quantity: 1,
                 total: '5,50\u00A0€'
               },
               {
-                img: ultraLevure.img,
-                name: ultraLevure.name,
+                img: eauThermale.img,
+                name: eauThermale.name,
                 unitPrice: '4,75\u00A0€',
                 quantity: 2,
                 total: '9,50\u00A0€'

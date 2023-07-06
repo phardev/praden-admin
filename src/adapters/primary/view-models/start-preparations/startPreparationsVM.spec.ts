@@ -5,7 +5,7 @@ import {
   startPreparationsVM
 } from '@adapters/primary/view-models/start-preparations/startPreparationsVM'
 import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import { atoderm, eauThermale } from '@utils/testData/products'
 import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
 
 describe('Start preparations VM', () => {
@@ -48,9 +48,9 @@ describe('Start preparations VM', () => {
           headers,
           global: [
             {
-              reference: dolodent.cip13,
-              name: dolodent.name,
-              location: dolodent.location,
+              reference: atoderm.cip13,
+              name: atoderm.name,
+              location: atoderm.location,
               quantity: 2
             }
           ],
@@ -60,9 +60,9 @@ describe('Start preparations VM', () => {
               reference: orderToPrepare1.uuid,
               lines: [
                 {
-                  reference: dolodent.cip13,
-                  name: dolodent.name,
-                  location: dolodent.location,
+                  reference: atoderm.cip13,
+                  name: atoderm.name,
+                  location: atoderm.location,
                   quantity: 2
                 }
               ]
@@ -79,15 +79,15 @@ describe('Start preparations VM', () => {
           headers,
           global: [
             {
-              reference: ultraLevure.cip13,
-              name: ultraLevure.name,
-              location: ultraLevure.location,
+              reference: eauThermale.cip13,
+              name: eauThermale.name,
+              location: eauThermale.location,
               quantity: 2
             },
             {
-              reference: dolodent.cip13,
-              name: dolodent.name,
-              location: dolodent.location,
+              reference: atoderm.cip13,
+              name: atoderm.name,
+              location: atoderm.location,
               quantity: 1
             }
           ],
@@ -97,15 +97,15 @@ describe('Start preparations VM', () => {
               reference: orderToPrepare2.uuid,
               lines: [
                 {
-                  reference: ultraLevure.cip13,
-                  name: ultraLevure.name,
-                  location: ultraLevure.location,
+                  reference: eauThermale.cip13,
+                  name: eauThermale.name,
+                  location: eauThermale.location,
                   quantity: 2
                 },
                 {
-                  reference: dolodent.cip13,
-                  name: dolodent.name,
-                  location: dolodent.location,
+                  reference: atoderm.cip13,
+                  name: atoderm.name,
+                  location: atoderm.location,
                   quantity: 1
                 }
               ]
@@ -126,15 +126,15 @@ describe('Start preparations VM', () => {
           headers,
           global: [
             {
-              reference: ultraLevure.cip13,
-              name: ultraLevure.name,
-              location: ultraLevure.location,
+              reference: eauThermale.cip13,
+              name: eauThermale.name,
+              location: eauThermale.location,
               quantity: 2
             },
             {
-              reference: dolodent.cip13,
-              name: dolodent.name,
-              location: dolodent.location,
+              reference: atoderm.cip13,
+              name: atoderm.name,
+              location: atoderm.location,
               quantity: 3
             }
           ],
@@ -144,9 +144,9 @@ describe('Start preparations VM', () => {
               reference: orderToPrepare1.uuid,
               lines: [
                 {
-                  reference: dolodent.cip13,
-                  name: dolodent.name,
-                  location: dolodent.location,
+                  reference: atoderm.cip13,
+                  name: atoderm.name,
+                  location: atoderm.location,
                   quantity: 2
                 }
               ]
@@ -156,15 +156,15 @@ describe('Start preparations VM', () => {
               reference: orderToPrepare2.uuid,
               lines: [
                 {
-                  reference: ultraLevure.cip13,
-                  name: ultraLevure.name,
-                  location: ultraLevure.location,
+                  reference: eauThermale.cip13,
+                  name: eauThermale.name,
+                  location: eauThermale.location,
                   quantity: 2
                 },
                 {
-                  reference: dolodent.cip13,
-                  name: dolodent.name,
-                  location: dolodent.location,
+                  reference: atoderm.cip13,
+                  name: atoderm.name,
+                  location: atoderm.location,
                   quantity: 1
                 }
               ]
