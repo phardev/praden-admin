@@ -104,41 +104,190 @@ export const dolodent: Product = {
   availableStock: 59
 }
 
-export const ultraLevure: Product = {
-  name: 'Ultra levure 200 mg 10 gélules',
-  miniature:
-    'https://www.pharmacieagnespraden.com/img/tmp/product_mini_198_1.jpg?time=1675901328',
-  img: 'https://www.pharmacieagnespraden.com/54697-large_default/ultra-levure-200-mg.jpg',
-  categoryUuid: 'category-diarrhee',
-  cip13: '3400922096612',
-  priceWithoutTax: 432,
+export const aspro: Product = {
+  categoryUuid: 'category-pharma',
+  name: 'Aspro 500 Effervescent 20 comprimés effervescents',
+  priceWithoutTax: 445,
   percentTaxRate: 10,
-  location: 'C3',
-  availableStock: 36
+  miniature:
+    'https://www.pharmacieagnespraden.com/62953-large_default/aspro-500-effervescent-20-comprims-effervescents.jpg',
+  img: 'https://www.pharmacieagnespraden.com/62953-large_default/aspro-500-effervescent-20-comprims-effervescents.jpg',
+  location: 'M15E2T4',
+  cip13: '3400932062454',
+  availableStock: 3
 }
 
-export const anaca3Minceur: Product = {
-  name: 'Anaca3 Perte de Poids Infusion 24 Sachets',
+export const hemoclar: Product = {
+  categoryUuid: 'category-pharma',
+  name: 'Hemoclar 0,5% crème 30g',
+  priceWithoutTax: 468,
+  percentTaxRate: 10,
   miniature:
-    'https://www.pharmacieagnespraden.com/img/tmp/product_mini_198_1.jpg?time=1675901328',
-  img: 'https://www.pharmacieagnespraden.com/72000-large_default/anaca-3-minc-infus-perte-poids-24sach.jpg',
-  categoryUuid: 'category-minceur',
-  cip13: '3760007337185',
-  priceWithoutTax: 891,
-  percentTaxRate: 5.5,
-  location: '1D450',
-  availableStock: 36
+    'https://www.pharmacieagnespraden.com/66060-large_default/hemoclar-05-pour-cent-crme.jpg',
+  img: 'https://www.pharmacieagnespraden.com/66060-large_default/hemoclar-05-pour-cent-crme.jpg',
+  location: 'M15E57T',
+  cip13: '3400930479308',
+  availableStock: 131
 }
 
-export const chamomilla: Product = {
-  name: 'Chamomilla vulgaris 9CH suppositoires Boiron (poussée dentaire)',
-  miniature:
-    'https://www.pharmacieagnespraden.com/img/tmp/product_mini_198_1.jpg?time=1675901328',
-  img: 'https://www.pharmacieagnespraden.com/55-large_default/chamomilla-vulgaris-9-ch-boiron-12-suppositoires.jpg',
-  categoryUuid: 'category-dents',
-  cip13: '3400921924008',
-  priceWithoutTax: 627,
+export const nurofenComprime: Product = {
+  categoryUuid: 'category-pharma',
+  name: 'Nurofen 200mg 20 comprimés enrobés',
+  priceWithoutTax: 286,
   percentTaxRate: 10,
-  location: 'HOMEO-D',
-  availableStock: 1
+  miniature:
+    'https://www.pharmacieagnespraden.com/42183-large_default/nurofen-200-mg.jpg',
+  img: 'https://www.pharmacieagnespraden.com/42183-large_default/nurofen-200-mg.jpg',
+  location: 'M267ET',
+  cip13: '3400933964351',
+  availableStock: 60
 }
+
+export const spedifen: Product = {
+  categoryUuid: 'category-pharma',
+  name: 'SPEDIFEN 400 mg cp pellic',
+  priceWithoutTax: 295,
+  percentTaxRate: 10,
+  miniature:
+  'https://www.pharmacieagnespraden.com/45320-large_default/spedifen-400-mg-12-comprims-pelliculs.jpg',
+  img: 'https://www.pharmacieagnespraden.com/45320-large_default/spedifen-400-mg-12-comprims-pelliculs.jpg',
+  location: 'M764ET2',
+  cip13: '3400936251892',
+  availableStock: 142
+}
+
+export const apresShampooingGinbembre: Product = {
+  categoryUuid: 'category-pharma',
+  name: 'Desert Essence Après Shampooing à la Pomme Verte et au Gingembre 237ml',
+  priceWithoutTax: 625,
+  percentTaxRate: 20,
+  miniature:
+  'https://www.pharmacieagnespraden.com/51568-large_default/desert-essence-apres-shampooing-a-la-pomme-verte-et-au-gingembre-237ml.jpg',
+  img: 'https://www.pharmacieagnespraden.com/51568-large_default/desert-essence-apres-shampooing-a-la-pomme-verte-et-au-gingembre-237ml.jpg',
+  location: 'PALET 09',
+  cip13: '0718334337029',
+  availableStock: 6
+}
+
+export const hydralin: Product = {
+  categoryUuid: 'category-pharma',
+  name: 'Hydralin Gyn 100 ml',
+  priceWithoutTax: 479,
+  percentTaxRate: 20,
+  img: 'https://www.pharmacieagnespraden.com/64178-large_default/hydralin-gyn-100ml.jpg',
+  miniature: 'https://www.pharmacieagnespraden.com/64178-large_default/hydralin-gyn-100ml.jpg',
+  location: 'PALET 05',
+  cip13: '3401320215322',
+  availableStock: 48
+}
+
+export const galenic: Product = {
+  categoryUuid: 'category-pharma',
+  name: 'Galénic Pur Lotion Yeux Waterproof 125 ml',
+  priceWithoutTax: 825,
+  percentTaxRate: 20,
+  img: 'https://www.pharmacieagnespraden.com/67833-large_default/galenic-pur-lot-biph-douc-fl125ml1.jpg',
+  miniature: 'https://www.pharmacieagnespraden.com/67833-large_default/galenic-pur-lot-biph-douc-fl125ml1.jpg',
+  location: 'PALET 02',
+  cip13: '3282770107944',
+  availableStock: 9
+}
+
+export const cremeRasage: Product = {
+  categoryUuid: 'category-pharma',
+  name: 'Weleda Homme Crème à Raser 75ml',
+  priceWithoutTax: 525,
+  percentTaxRate: 20,
+  img: 'https://www.pharmacieagnespraden.com/42494-large_default/weleda-homme-crme-raser-75ml.jpg',
+  miniature: 'https://www.pharmacieagnespraden.com/42494-large_default/weleda-homme-crme-raser-75ml.jpg',
+  location: 'PALET 06',
+  cip13: '3596206289112',
+  availableStock: 20
+}
+
+
+export const physiodose: Product = {
+  categoryUuid: 'category-pharma',
+  name: 'Gilbert Physiodose sérum physiologique 40 doses 5ml',
+  priceWithoutTax: 166,
+  percentTaxRate: 20,
+  img: 'https://i.ibb.co/MRN8Q52/physiologique.jpg',
+  miniature: 'https://i.ibb.co/MRN8Q52/physiologique.jpg',
+  location: 'PALET 05',
+  cip13: '3518646266638',
+  availableStock: 348
+}
+
+export const sucette: Product = {
+  categoryUuid: 'category-pharma',
+  priceWithoutTax: 325,
+  percentTaxRate: 20,
+  location: 'PALET 02',
+  cip13: '3700763535302',
+  availableStock: 5,
+  name: 'Dodie Sucette Anatomique Garçon 0-2 mois',
+  img: 'https://www.pharmacieagnespraden.com/60923-large_default/dodie-sucet-garcon-0-2-mois-a26.jpg',
+  miniature: 'https://www.pharmacieagnespraden.com/60923-large_default/dodie-sucet-garcon-0-2-mois-a26.jpg',
+}
+
+
+export const parodontax: Product = {
+  categoryUuid: 'category-pharma',
+  name: 'Parodontax dentifrice original lot 2 x 75ml',
+  priceWithoutTax: 583,
+  percentTaxRate: 20,
+  location: 'PALET 01',
+  cip13: '3401347938594',
+  availableStock: 79,
+  miniature: 'https://www.pharmacieagnespraden.com/64488-large_default/parodontax-dentifrice-original-duo-75ml.jpg',
+  img: 'https://www.pharmacieagnespraden.com/64488-large_default/parodontax-dentifrice-original-duo-75ml.jpg',
+}
+
+export const dissolvurol: Product = {
+  categoryUuid: 'category-pharma',
+  priceWithoutTax: 700,
+  percentTaxRate: 20,
+  location: 'PALET 04',
+  cip13: '3401343812003',
+  availableStock: 25,
+  name: "Dissolvurol Gel au Silicium 100ml",
+  img: 'https://www.pharmacieagnespraden.com/47619-large_default/3401343812003.jpg',
+  miniature: 'https://www.pharmacieagnespraden.com/47619-large_default/3401343812003.jpg',
+ }
+
+ export const cinqCinq: Product = {
+  name: "CINQ SUR CINQ Roll-on Apaisant 7 ml",
+  img: 'https://www.pharmacieagnespraden.com/50032-large_default/n-cinq-sur-cinq-roll-on-ap7ml1.jpg',
+  miniature: 'https://www.pharmacieagnespraden.com/50032-large_default/n-cinq-sur-cinq-roll-on-ap7ml1.jpg',
+  categoryUuid: 'category-pharma',
+  priceWithoutTax: 462.5,
+  percentTaxRate: 20,
+  location: 'PALET 08',
+  cip13: '3401563131540',
+  availableStock: 459,
+ }
+
+ export const quies: Product = {
+  name: "Quies Cure Oreille",
+  img: 'https://www.pharmacieagnespraden.com/69781-large_default/quies-cure-oreille.jpg',
+  miniature: 'https://www.pharmacieagnespraden.com/69781-large_default/quies-cure-oreille.jpg',
+  categoryUuid: 'category-pharma',
+  priceWithoutTax: 582.5,
+  percentTaxRate: 20,
+  location: 'PALET 08',
+  cip13: '3435171461003',
+  availableStock: 36,
+ }
+
+
+ export const somatolineBandages: Product = {
+  name: 'Somatoline Bandages Remodelant & Drainant',
+  img: 'https://www.pharmacieagnespraden.com/69018-large_default/somatoline-bandages-kit-1ere-utilisat-2.jpg',
+  miniature: 'https://www.pharmacieagnespraden.com/69018-large_default/somatoline-bandages-kit-1ere-utilisat-2.jpg',
+  categoryUuid: 'category-pharma',
+  priceWithoutTax: 1742,
+  percentTaxRate: 20,
+  location: 'PALET 08',
+  cip13: '8002410067637',
+  availableStock: 2,
+ }
