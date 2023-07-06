@@ -22,7 +22,7 @@ invoice.hidden.printme.mx-2
     div.centered
       ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
         @click="errorDialog.open()"
-      ) Modifier
+      ) Problème
     ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
       v-if="preparationVM.canValidate"
       @click="validate"
