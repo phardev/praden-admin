@@ -19,7 +19,7 @@ invoice.hidden.printme.mx-2
     ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
       @click="save"
     ) Sauvegarder
-    div.centered(v-if="preparationVM.isThereAProblem || true")
+    div.centered(v-if="preparationVM.isThereAProblem")
       ft-button.button-warning.mt-4.mr-0.py-4.px-4.text-xl(
         @click="problemDialog.open()"
       ) Problème
