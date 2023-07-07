@@ -3,6 +3,10 @@
     @apply bg-component text-colored;
   }
 
+  .button-warning {
+    @apply bg-warning text-warning border-solid border-2 border-orange6;
+  }
+
   .button-error {
     @apply bg-error text-opposite;
   }

@@ -19,9 +19,9 @@ invoice.hidden.printme.mx-2
     ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
       @click="save"
     ) Sauvegarder
-    div.centered
-      ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
-        @click="errorDialog.open()"
+    div.centered(v-if="preparationVM.isThereAProblem || true")
+      ft-button.button-warning.mt-4.mr-0.py-4.px-4.text-xl(
+        @click="problemDialog.open()"
       ) Problème
     ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
       v-if="preparationVM.canValidate"
@@ -41,12 +41,11 @@ invoice.hidden.printme.mx-2
       :messages="preparationVM.messages"
     )
   ft-dialog(
-    :is-opened="errorDialog.isOpened()"
-    @close="closeErrorDialog"
+    :is-opened="problemDialog.isOpened()"
+    @close="closeProblemDialog"
   )
     div.grid.grid-cols-1.gap-4.mx-10.my-10(class="md:grid-cols-2")
       ft-button.button-solid.h-24.col-span-2(@click="removeAProduct") Retirer un produit
-      ft-button.button-solid.h-24.col-span-2 Inserer un produit
   ft-dialog(
     :is-opened="removeProductDialog.isOpened()"
     @close="closeRemoveProductDialog"
@@ -86,13 +85,13 @@ onMounted(() => {
   getPreparation(preparationUuid, useOrderGateway())
 })
 
-const errorDialog = useDialog()
+const problemDialog = useDialog()
 const removeProductDialog = useDialog()
 
 const mainScanner = ref(null)
 
-const closeErrorDialog = () => {
-  errorDialog.close()
+const closeProblemDialog = () => {
+  problemDialog.close()
   setFocusOnMainScanner()
 }
 
@@ -125,14 +124,14 @@ const removeAProduct = () => {
 }
 
 const openRemoveProduct = async () => {
-  errorDialog.close()
+  problemDialog.close()
   removeProductDialog.open()
 }
 
 const removeProduct = (cip13: string) => {
   removeProductFromPreparation(cip13)
   closeRemoveProductDialog()
-  closeErrorDialog()
+  closeProblemDialog()
 }
 
 const router = useRouter()
