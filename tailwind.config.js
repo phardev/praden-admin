@@ -68,7 +68,20 @@ module.exports = {
         grass9: '#46a758',
         grass10: '#3d9a50',
         grass11: '#297c3b',
-        grass12: '#1b311e'
+        grass12: '#1b311e',
+
+        orange1: '#fefcfb',
+        orange2: '#fef8f4',
+        orange3: '#fff1e7',
+        orange4: '#ffe8d7',
+        orange5: '#ffdcc3',
+        orange6: '#ffcca7',
+        orange7: '#ffb381',
+        orange8: '#fa934e',
+        orange9: '#f76808',
+        orange10: '#ed5f00',
+        orange11: '#bd4b00',
+        orange12: '#451e11'
       }
     }
   }

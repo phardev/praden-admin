@@ -27,6 +27,10 @@
     @apply text-tomato8
   }
 
+  .text-warning {
+    @apply text-orange9
+  }
+
   .text-success {
     @apply text-grass8
   }
