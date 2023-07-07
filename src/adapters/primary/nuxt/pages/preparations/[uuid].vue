@@ -20,9 +20,9 @@ invoice.hidden.printme.mx-2
       @click="save"
     ) Sauvegarder
     div.centered
-      ft-button.button-error.mt-4.mr-0.py-4.px-4.text-xl(
+      ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
         @click="errorDialog.open()"
-      ) Erreur
+      ) Problème
     ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
       v-if="preparationVM.canValidate"
       @click="validate"
@@ -46,6 +46,7 @@ invoice.hidden.printme.mx-2
   )
     div.grid.grid-cols-1.gap-4.mx-10.my-10(class="md:grid-cols-2")
       ft-button.button-solid.h-24.col-span-2(@click="removeAProduct") Retirer un produit
+      ft-button.button-solid.h-24.col-span-2 Inserer un produit
   ft-dialog(
     :is-opened="removeProductDialog.isOpened()"
     @close="closeRemoveProductDialog"
