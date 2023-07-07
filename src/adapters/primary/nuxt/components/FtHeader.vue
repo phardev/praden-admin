@@ -41,7 +41,7 @@ const menu = {
         {
           name: 'Ma boutique',
           icon: 'ion:cart-outline',
-          href: 'https://edf74c5c.praden-marketplace.pages.dev/'
+          href: 'https://praden-demo-23-07.praden-marketplace.pages.dev/'
         }
       ]
     }
