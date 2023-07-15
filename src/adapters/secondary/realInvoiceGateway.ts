@@ -10,6 +10,7 @@ export class RealInvoiceGateway implements InvoiceGateway {
     this.baseUrl = `${baseUrl}`
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   get(invoiceNumber: string): Promise<Invoice> {
     throw Error('Not Implemented')
   }

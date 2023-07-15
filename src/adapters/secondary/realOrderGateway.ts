@@ -21,6 +21,7 @@ export class RealOrderGateway implements OrderGateway {
     return this.convertToOrder(res.data)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   cancelPreparation(preparation: Order): Promise<Order> {
     throw Error('Not implemented')
   }
