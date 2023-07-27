@@ -7,18 +7,16 @@ import { InMemoryOrderGateway } from '@adapters/secondary/inMemoryOrderGateway'
 import { FakeDateProvider } from '@adapters/secondary/fakeDateProvider'
 import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
 import { PreparationDoesNotExistsError } from '@core/errors/preparationDoesNotExistsError'
-import { InMemoryMessageGateway } from '@adapters/secondary/inMemoryMessageGateway'
 
 describe('Ask client how to finish preparation', () => {
   let preparationStore: any
   let orderGateway: InMemoryOrderGateway
-  let messageGateway: InMemoryMessageGateway
   const dateProvider = new FakeDateProvider()
 
   beforeEach(() => {
     setActivePinia(createPinia())
     preparationStore = usePreparationStore()
-    orderGateway = new InMemoryOrderGateway(new FakeDateProvider())
+    orderGateway = new InMemoryOrderGateway(dateProvider)
   })
   describe('For an existing order', () => {
     const expectedOrder = JSON.parse(JSON.stringify(orderToPrepare1))
@@ -31,7 +29,6 @@ describe('Ask client how to finish preparation', () => {
       givenThereIsExistingOrders(orderToPrepare1)
       givenThereIsACurrentPreparation(orderToPrepare1)
       dateProvider.feedWith(123456789)
-      messageGateway = new InMemoryMessageGateway(dateProvider)
       await whenAskClientHowToFinishPreparation()
     })
     it('should save the message in the order gateway', async () => {
@@ -42,9 +39,6 @@ describe('Ask client how to finish preparation', () => {
     })
     it('should save the message in the current preparation', () => {
       expect(preparationStore.current).toStrictEqual(expectedOrder)
-    })
-    it('should save the message in the message gateway', async () => {
-      expect(await messageGateway.list()).toStrictEqual([message])
     })
   })
   describe('For another existing order', () => {
@@ -58,7 +52,6 @@ describe('Ask client how to finish preparation', () => {
       givenThereIsExistingOrders(orderToPrepare2)
       givenThereIsACurrentPreparation(orderToPrepare2)
       dateProvider.feedWith(987654321)
-      messageGateway = new InMemoryMessageGateway(dateProvider)
       await whenAskClientHowToFinishPreparation()
     })
     it('should save the message in the order gateway', async () => {
@@ -69,9 +62,6 @@ describe('Ask client how to finish preparation', () => {
     })
     it('should save the message in the current preparation', () => {
       expect(preparationStore.current).toStrictEqual(expectedOrder)
-    })
-    it('should save the message in the message gateway', async () => {
-      expect(await messageGateway.list()).toStrictEqual([message])
     })
   })
 
@@ -100,6 +90,6 @@ describe('Ask client how to finish preparation', () => {
   }
 
   const whenAskClientHowToFinishPreparation = async () => {
-    await askClientHowToFinishPreparation(orderGateway, messageGateway)
+    await askClientHowToFinishPreparation(orderGateway)
   }
 })

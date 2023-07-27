@@ -15,3 +15,11 @@ export const deliveryInRelayPoint: DeliveryMethod = {
   price: 599,
   type: DeliveryType.Delivery
 }
+
+export const express: DeliveryMethod = {
+  uuid: 'express-uuid',
+  name: 'Express',
+  description: '2-5 jours ouvrés',
+  price: 1600,
+  type: DeliveryType.Delivery
+}

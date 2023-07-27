@@ -6,8 +6,10 @@ import {
 } from '@core/entities/order'
 import {
   anaca3Minceur,
+  calmosine,
   chamomilla,
   dolodent,
+  hemoclar,
   ultraLevure
 } from '@utils/testData/products'
 import {
@@ -742,4 +744,89 @@ export const orderPartiallyShipped1: Order = {
       sentAt: 1674684178456
     }
   ]
+}
+
+export const orderVFASF: Order = {
+  uuid: 'VFASF',
+  lines: [
+    {
+      name: calmosine.name,
+      cip13: calmosine.cip13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: calmosine.priceWithoutTax,
+      percentTaxRate: calmosine.percentTaxRate,
+      location: calmosine.location,
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1674273279000
+    },
+    {
+      name: hemoclar.name,
+      cip13: hemoclar.cip13,
+      expectedQuantity: 3,
+      preparedQuantity: 0,
+      unitAmount: hemoclar.priceWithoutTax,
+      percentTaxRate: hemoclar.percentTaxRate,
+      location: hemoclar.location,
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1674273279000
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    invoiceNumber: '2023-00006',
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674273279000,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
+  },
+  messages: []
+}
+
+export const orderXUKIJ: Order = {
+  uuid: 'XUKIJ',
+  lines: [
+    {
+      name: calmosine.name,
+      cip13: calmosine.cip13,
+      expectedQuantity: 1,
+      preparedQuantity: 0,
+      unitAmount: calmosine.priceWithoutTax,
+      percentTaxRate: calmosine.percentTaxRate,
+      location: calmosine.location,
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1674273279000
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    invoiceNumber: '2023-00006',
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674273279000,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
+  },
+  messages: []
 }

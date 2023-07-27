@@ -51,3 +51,25 @@ export const chamomilla: Product = {
   location: 'HOMEO-D',
   availableStock: 1
 }
+
+export const calmosine: Product = {
+  name: 'Calmosine 100 ml',
+  img: '',
+  categoryUuid: '',
+  cip13: '1234567890123',
+  priceWithoutTax: 810,
+  percentTaxRate: 10,
+  location: 'E2',
+  availableStock: 10
+}
+
+export const hemoclar: Product = {
+  name: 'Hemoclar 0,5% crème 30g',
+  img: '',
+  categoryUuid: '',
+  cip13: '098765432123',
+  priceWithoutTax: 590,
+  percentTaxRate: 10,
+  location: 'D2',
+  availableStock: 23
+}

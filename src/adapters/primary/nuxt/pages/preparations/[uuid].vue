@@ -19,10 +19,10 @@ invoice.hidden.printme.mx-2
     ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
       @click="save"
     ) Sauvegarder
-    div.centered
-      ft-button.button-error.mt-4.mr-0.py-4.px-4.text-xl(
-        @click="errorDialog.open()"
-      ) Erreur
+    div.centered(v-if="preparationVM.isThereAProblem")
+      ft-button.button-warning.mt-4.mr-0.py-4.px-4.text-xl(
+        @click="problemDialog.open()"
+      ) Problème
     ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
       v-if="preparationVM.canValidate"
       @click="validate"
@@ -41,8 +41,8 @@ invoice.hidden.printme.mx-2
       :messages="preparationVM.messages"
     )
   ft-dialog(
-    :is-opened="errorDialog.isOpened()"
-    @close="closeErrorDialog"
+    :is-opened="problemDialog.isOpened()"
+    @close="closeProblemDialog"
   )
     div.grid.grid-cols-1.gap-4.mx-10.my-10(class="md:grid-cols-2")
       ft-button.button-solid.h-24.col-span-2(@click="removeAProduct") Retirer un produit
@@ -72,7 +72,6 @@ import { useInvoiceGateway } from '../../../../../../gateways/invoiceGateway'
 import { savePreparation } from '@core/usecases/order/save-preparation/savePreparation'
 import { cancelPreparation } from '@core/usecases/order/cancel-preparation/cancelPreparation'
 import { askClientHowToFinishPreparation } from '@core/usecases/order/ask-client-how-to-finish-preparation/askClientHowToFinishPreparation'
-import { useMessageGateway } from '../../../../../../gateways/messageGateway'
 import { removeProductFromPreparation } from '@core/usecases/order/scan-product-to-remove-fom-preparation/scanProductToRemoveFromPreparation'
 import { useDialog } from '@adapters/primary/nuxt/composables/useDialog'
 import FtScanner from '@adapters/primary/nuxt/components/FtScanner.vue'
@@ -86,13 +85,13 @@ onMounted(() => {
   getPreparation(preparationUuid, useOrderGateway())
 })
 
-const errorDialog = useDialog()
+const problemDialog = useDialog()
 const removeProductDialog = useDialog()
 
 const mainScanner = ref(null)
 
-const closeErrorDialog = () => {
-  errorDialog.close()
+const closeProblemDialog = () => {
+  problemDialog.close()
   setFocusOnMainScanner()
 }
 
@@ -125,14 +124,14 @@ const removeAProduct = () => {
 }
 
 const openRemoveProduct = async () => {
-  errorDialog.close()
+  problemDialog.close()
   removeProductDialog.open()
 }
 
 const removeProduct = (cip13: string) => {
   removeProductFromPreparation(cip13)
   closeRemoveProductDialog()
-  closeErrorDialog()
+  closeProblemDialog()
 }
 
 const router = useRouter()
@@ -150,7 +149,8 @@ const cancel = async () => {
 }
 
 const askHowToFinish = async () => {
-  await askClientHowToFinishPreparation(useOrderGateway(), useMessageGateway())
+  await savePreparation(useOrderGateway())
+  await askClientHowToFinishPreparation(useOrderGateway())
   router.push('/preparations')
 }
 

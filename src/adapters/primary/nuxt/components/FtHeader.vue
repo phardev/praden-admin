@@ -7,9 +7,61 @@ div.flex.justify-between.items-center.py-3.px-3.space-x-3.bg-light.border-b
     @click="openSidebar"
   )
     icon.icon-md(name="heroicons:bars-3")
-  div La nav
+  div.w-full.flex.flex-row.justify-between
+    div.flex.flex-row(v-for="(section, sectionIndex) in menu.sections" :key="sectionIndex")
+      nuxt-link.flex.items-center.px-6.py-2.text-link.group(
+        v-for="(link, linkIndex) in section.links" :key="linkIndex"
+        :href="link.href"
+      )
+        icon.icon-sm.mr-2(:name="link.icon")
+        div {{ link.name }}
+    div.flex.flex-row(v-for="(section, sectionIndex) in menu2.sections" :key="sectionIndex")
+      nuxt-link.flex.items-center.px-6.py-2.text-link.group(
+        v-for="(link, linkIndex) in section.links" :key="linkIndex"
+        :href="link.href"
+      )
+        icon.icon-sm.mr-2(:name="link.icon")
+        div {{ link.name }}
 </template>
 <script lang="ts" setup>
+const menu = {
+  sections: [
+    {
+      links: [
+        {
+          name: 'Messages',
+          icon: 'tabler:message',
+          href: '/'
+        },
+        {
+          name: 'Inscriptions',
+          icon: 'fluent:people-16-regular',
+          href: '/'
+        },
+        {
+          name: 'Ma boutique',
+          icon: 'ion:cart-outline',
+          href: 'https://demo-praden-marketplace.phardev.fr/'
+        }
+      ]
+    }
+  ]
+}
+
+const menu2 = {
+  sections: [
+    {
+      links: [
+        {
+          name: 'Profil',
+          icon: 'gg:profile',
+          href: '/'
+        }
+      ]
+    }
+  ]
+}
+
 const emit = defineEmits<{
   (e: 'open-sidebar'): void
 }>()

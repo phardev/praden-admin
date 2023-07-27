@@ -34,4 +34,8 @@
   .bg-error {
     @apply bg-tomato9
   }
+
+  .bg-warning {
+    @apply bg-orange5
+  }
 }
