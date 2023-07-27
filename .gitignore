@@ -6,4 +6,4 @@ yarn-error.log
 coverage
 .output
 dist
-.DS_Store
+.env
