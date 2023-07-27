@@ -1,4 +1,4 @@
-import * as categories from '@utils/testData/categoriesDemoPraden'
+import * as categories from '@utils/testData/categories'
 import { InMemoryCategoryGateway } from '@adapters/secondary/inMemoryCategoryGateway'
 
 export const useCategoryGateway = () => {
