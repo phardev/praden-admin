@@ -18,3 +18,11 @@ export const timestampToLocaleString = (
   const date = new Date(timestamp)
   return date.toLocaleString(locale, options)
 }
+
+export const percentFormatter = (n: number) => {
+  return new Intl.NumberFormat('default', {
+    style: 'percent',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2
+  }).format(n / 100)
+}

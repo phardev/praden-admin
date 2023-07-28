@@ -34,7 +34,6 @@ module.exports = {
     ],
     'no-multi-spaces': ['error'],
     'eol-last': ['error'],
-    indent: ['error', 2],
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single', { avoidEscape: true }],
     semi: ['error', 'never'],

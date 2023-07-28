@@ -18,8 +18,8 @@ export const promotionFixedMultipleProducts: Promotion = {
   uuid: 'promotion-multiple-products',
   name: 'Promotion fixe sur de multiples produits',
   products: [ultraLevure.cip13, anaca3Minceur.cip13],
-  type: ReductionType.Percentage,
-  amount: 10,
+  type: ReductionType.Fixed,
+  amount: 100,
   startDate: 1690416000000,
   endDate: 1693094400000
 }

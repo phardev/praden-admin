@@ -14,3 +14,18 @@ export interface Promotion {
   startDate?: Timestamp
   endDate?: Timestamp
 }
+
+export const isPromotionStarted = (p: Promotion, now: Timestamp): boolean => {
+  return !p.startDate ? true : p.startDate < now
+}
+
+export const isPromotionEnded = (p: Promotion, now: Timestamp): boolean => {
+  return !p.endDate ? false : now > p.endDate
+}
+
+export const isPromotionInProgress = (
+  p: Promotion,
+  now: Timestamp
+): boolean => {
+  return isPromotionStarted(p, now) && !isPromotionEnded(p, now)
+}
