@@ -20,7 +20,9 @@ export interface GetPromotionItemVM {
   name: string
   amount: string
   startDate: string
+  startDatetime: Date
   endDate: string
+  endDatetime: Date
   numberOfProducts: number
 }
 
@@ -35,6 +37,10 @@ const getPromotionsVMHeaders: Array<Header> = [
   {
     name: 'Nom',
     value: 'name'
+  },
+  {
+    name: 'Montant',
+    value: 'amount'
   },
   {
     name: 'Date de début',
@@ -93,7 +99,9 @@ const filterPromotionsByGroup = (
           startDate: p.startDate
             ? timestampToLocaleString(p.startDate, 'fr-FR')
             : '',
+          startDatetime: new Date(p.startDate || ''),
           endDate: p.endDate ? timestampToLocaleString(p.endDate, 'fr-FR') : '',
+          endDatetime: new Date(p.endDate || ''),
           numberOfProducts: p.products.length
         }
       }

@@ -27,6 +27,11 @@ const menu = {
           name: 'Produits',
           icon: 'fluent-mdl2:product-catalog',
           href: '/products'
+        },
+        {
+          name: 'Promotions',
+          icon: 'uil:euro-circle',
+          href: '/promotions'
         }
       ]
     },

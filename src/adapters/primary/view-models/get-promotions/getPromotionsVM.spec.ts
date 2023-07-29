@@ -18,6 +18,10 @@ describe('Get products VM', () => {
       value: 'name'
     },
     {
+      name: 'Montant',
+      value: 'amount'
+    },
+    {
       name: 'Date de début',
       value: 'startDate'
     },
@@ -61,14 +65,18 @@ describe('Get products VM', () => {
                   name: promotionFixedMultipleProducts.name,
                   amount: '1,00\u00A0€',
                   startDate: '27 juil. 2023',
+                  startDatetime: new Date('2023-07-27T00:00:00.000Z'),
                   endDate: '27 août 2023',
+                  endDatetime: new Date('2023-08-27T00:00:00.000Z'),
                   numberOfProducts: 2
                 },
                 {
                   name: promotionPercentageDolodent.name,
                   amount: '10%',
                   startDate: '27 juil. 2023',
+                  startDatetime: new Date('2023-07-27T00:00:00.000Z'),
                   endDate: '27 août 2023',
+                  endDatetime: new Date('2023-08-27T00:00:00.000Z'),
                   numberOfProducts: 1
                 }
               ]
@@ -96,7 +104,9 @@ describe('Get products VM', () => {
                   name: withoutDatePromo.name,
                   amount: '2,99\u00A0€',
                   startDate: '',
+                  startDatetime: new Date(''),
                   endDate: '',
+                  endDatetime: new Date(''),
                   numberOfProducts: 2
                 }
               ]
@@ -124,7 +134,9 @@ describe('Get products VM', () => {
                   name: promotionPercentageDolodent.name,
                   amount: '25%',
                   startDate: '',
+                  startDatetime: new Date(''),
                   endDate: '30 sept. 2023',
+                  endDatetime: new Date('2023-09-30T20:06:40.000Z'),
                   numberOfProducts: 1
                 }
               ]
@@ -151,7 +163,9 @@ describe('Get products VM', () => {
                   name: promotionPercentageDolodent.name,
                   amount: '10%',
                   startDate: '30 sept. 2023',
+                  startDatetime: new Date('2023-09-30T20:06:40.000Z'),
                   endDate: '',
+                  endDatetime: new Date(''),
                   numberOfProducts: 1
                 }
               ]
@@ -174,14 +188,18 @@ describe('Get products VM', () => {
                   name: promotionFixedMultipleProducts.name,
                   amount: '1,00\u00A0€',
                   startDate: '27 juil. 2023',
+                  startDatetime: new Date('2023-07-27T00:00:00.000Z'),
                   endDate: '27 août 2023',
+                  endDatetime: new Date('2023-08-27T00:00:00.000Z'),
                   numberOfProducts: 2
                 },
                 {
                   name: promotionPercentageDolodent.name,
                   amount: '10%',
                   startDate: '27 juil. 2023',
+                  startDatetime: new Date('2023-07-27T00:00:00.000Z'),
                   endDate: '27 août 2023',
+                  endDatetime: new Date('2023-08-27T00:00:00.000Z'),
                   numberOfProducts: 1
                 }
               ]
@@ -204,14 +222,18 @@ describe('Get products VM', () => {
                   name: promotionFixedMultipleProducts.name,
                   amount: '1,00\u00A0€',
                   startDate: '27 juil. 2023',
+                  startDatetime: new Date('2023-07-27T00:00:00.000Z'),
                   endDate: '27 août 2023',
+                  endDatetime: new Date('2023-08-27T00:00:00.000Z'),
                   numberOfProducts: 2
                 },
                 {
                   name: promotionPercentageDolodent.name,
                   amount: '10%',
                   startDate: '27 juil. 2023',
+                  startDatetime: new Date('2023-07-27T00:00:00.000Z'),
                   endDate: '27 août 2023',
+                  endDatetime: new Date('2023-08-27T00:00:00.000Z'),
                   numberOfProducts: 1
                 }
               ]
