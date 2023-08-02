@@ -15,22 +15,19 @@ import {
 } from '@utils/testData/orders'
 import { MessageContent, Message, Order } from '@core/entities/order'
 
-vi.mock('axios')
-
 describe('Real order gateway', () => {
   const url = 'http://localhost:8787'
   let orderGateway: RealOrderGateway
   let res: any
   beforeEach(() => {
-    axios.get.mockReset()
-    axios.post.mockReset()
+    vi.clearAllMocks()
     orderGateway = new RealOrderGateway(url)
   })
 
   describe('List orders to prepare', () => {
     describe('There is no orders to prepare', () => {
       beforeEach(async () => {
-        axios.get.mockResolvedValue({
+        vi.spyOn(axios, 'get').mockResolvedValue({
           data: []
         })
         res = await orderGateway.listOrdersToPrepare()
@@ -66,7 +63,7 @@ describe('Real order gateway', () => {
       const uuid = orderXUKIJ.uuid
 
       beforeEach(async () => {
-        axios.get.mockResolvedValue({
+        vi.spyOn(axios, 'get').mockResolvedValue({
           data: mockOrderXUKIJ
         })
         res = await orderGateway.getByUuid(uuid)
@@ -137,7 +134,7 @@ describe('Real order gateway', () => {
       const uuid = orderXUKIJ.uuid
 
       beforeEach(async () => {
-        axios.post.mockResolvedValue({
+        vi.spyOn(axios, 'post').mockResolvedValue({
           data: mockOrderXUKIJ
         })
         res = await orderGateway.startPreparation(uuid)
@@ -157,7 +154,7 @@ describe('Real order gateway', () => {
 
       beforeEach(async () => {
         const data = mockOrderVFASF
-        axios.post.mockResolvedValue({
+        vi.spyOn(axios, 'post').mockResolvedValue({
           data
         })
         res = await orderGateway.startPreparation(uuid)
@@ -176,7 +173,7 @@ describe('Real order gateway', () => {
   describe('Validate preparation', () => {
     beforeEach(async () => {
       const data = mockOrderVFASF
-      axios.post.mockResolvedValue({
+      vi.spyOn(axios, 'post').mockResolvedValue({
         data
       })
       res = await orderGateway.validatePreparation(orderVFASF)
@@ -197,7 +194,7 @@ describe('Real order gateway', () => {
   describe('Save preparation', () => {
     beforeEach(async () => {
       const data = mockOrderVFASF
-      axios.post.mockResolvedValue({
+      vi.spyOn(axios, 'post').mockResolvedValue({
         data
       })
       res = await orderGateway.savePreparation(orderVFASF)
@@ -231,7 +228,7 @@ describe('Real order gateway', () => {
         },
         sentAt: 1234562366
       })
-      axios.post.mockResolvedValue({
+      vi.spyOn(axios, 'post').mockResolvedValue({
         data
       })
       expectedRes = JSON.parse(JSON.stringify(orderVFASF))
