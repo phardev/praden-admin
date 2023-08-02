@@ -11,6 +11,9 @@ export const usePromotionStore = defineStore('PromotionStore', {
   actions: {
     list(promotions: Array<Promotion>) {
       this.items = promotions
+    },
+    add(promotion: Promotion) {
+      this.items.push(promotion)
     }
   }
 })

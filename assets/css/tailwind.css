@@ -13,6 +13,21 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-primary1: #fffcfe;
+    --color-primary2: #fff7fc;
+    --color-primary3: #feeef8;
+    --color-primary4: #fce5f3;
+    --color-primary5: #f9d8ec;
+    --color-primary6: #f3c6e2;
+    --color-primary7: #ecadd4;
+    --color-primary8: #e38ec3;
+    --color-primary9: #d6409f;
+    --color-primary10: #d23197;
+    --color-primary11: #cd1d8d;
+    --color-primary12: #3b0a2a;
+  }
+
   html {
     @apply h-full;
   }

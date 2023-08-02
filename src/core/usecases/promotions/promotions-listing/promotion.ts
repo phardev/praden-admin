@@ -15,6 +15,8 @@ export interface Promotion {
   endDate?: Timestamp
 }
 
+export type CreatePromotionDTO = Omit<Promotion, 'uuid'>
+
 export const isPromotionStarted = (p: Promotion, now: Timestamp): boolean => {
   return !p.startDate ? true : p.startDate < now
 }

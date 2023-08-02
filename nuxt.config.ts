@@ -22,7 +22,11 @@ export default defineNuxtConfig({
     }
   },
   build: {
-    transpile: ['vue-qr', '@diadal/vue3-qr-code-styling']
+    transpile: [
+      'vue-qr',
+      '@diadal/vue3-qr-code-styling',
+      '@vuepic/vue-datepicker'
+    ]
   },
   components: {
     dirs: [

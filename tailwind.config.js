@@ -8,28 +8,28 @@ module.exports = {
     './src/adapters/primary/nuxt/plugins/**/*.{js,ts}',
     './nuxt.config.{js,ts}'
   ],
-  plugins: [
-    // ...
-    require('@tailwindcss/forms')
-  ],
+  plugins: [require('@tailwindcss/forms')],
+  corePlugins: {
+    container: false
+  },
   variants: {
     extend: {}
   },
   theme: {
     extend: {
       colors: {
-        primary1: '#fffcfe',
-        primary2: '#fff7fc',
-        primary3: '#feeef8',
-        primary4: '#fce5f3',
-        primary5: '#f9d8ec',
-        primary6: '#f3c6e2',
-        primary7: '#ecadd4',
-        primary8: '#e38ec3',
-        primary9: '#d6409f',
-        primary10: '#d23197',
-        primary11: '#cd1d8d',
-        primary12: '#3b0a2a',
+        primary1: 'var(--color-primary1)',
+        primary2: 'var(--color-primary2)',
+        primary3: 'var(--color-primary3)',
+        primary4: 'var(--color-primary4)',
+        primary5: 'var(--color-primary5)',
+        primary6: 'var(--color-primary6)',
+        primary7: 'var(--color-primary7)',
+        primary8: 'var(--color-primary8)',
+        primary9: 'var(--color-primary9)',
+        primary10: 'var(--color-primary10)',
+        primary11: 'var(--color-primary11)',
+        primary12: 'var(--color-primary12)',
 
         gray1: '#fbfdfc',
         gray2: '#f8faf9',
