@@ -44,7 +44,7 @@ describe('Real order gateway', () => {
       const ordersMock = [mockOrderVFASF, mockOrderXUKIJ]
 
       beforeEach(async () => {
-        axios.get.mockResolvedValue({
+        vi.spyOn(axios, 'get').mockResolvedValue({
           data: ordersMock
         })
         orderGateway = new RealOrderGateway(anotherUrl)
@@ -80,7 +80,7 @@ describe('Real order gateway', () => {
 
       beforeEach(async () => {
         const data = mockOrderVFASF
-        axios.get.mockResolvedValue({
+        vi.spyOn(axios, 'get').mockResolvedValue({
           data
         })
         res = await orderGateway.getByUuid(uuid)
@@ -98,7 +98,7 @@ describe('Real order gateway', () => {
 
         beforeEach(async () => {
           const data = mockOrderWaitingForClientAnswer1
-          axios.get.mockResolvedValue({
+          vi.spyOn(axios, 'get').mockResolvedValue({
             data
           })
           res = await orderGateway.getByUuid(uuid)
@@ -115,7 +115,7 @@ describe('Real order gateway', () => {
 
         beforeEach(async () => {
           const data = mockOrderPartiallyShipped1
-          axios.get.mockResolvedValue({
+          vi.spyOn(axios, 'get').mockResolvedValue({
             data
           })
           res = await orderGateway.getByUuid(uuid)
@@ -233,7 +233,7 @@ describe('Real order gateway', () => {
       })
       expectedRes = JSON.parse(JSON.stringify(orderVFASF))
       expectedRes.messages.push(expectedMessage)
-      res = await orderGateway.askHowToFinish(orderVFASF, expectedMessage)
+      res = await orderGateway.askHowToFinish(orderVFASF)
     })
     it('should return the preparation', () => {
       expect(res).toStrictEqual(expectedRes)
