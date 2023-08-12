@@ -69,12 +69,18 @@ const props = defineProps({
     default: () => {
       return []
     }
+  },
+  itemKey: {
+    type: String,
+    default: () => {
+      return 'uuid'
+    }
   }
 })
 
 const emit = defineEmits<{
   (e: 'item-selected', value: any): void
-  (e: 'select-all'): void
+  (e: 'select-all', value: Array<any>): void
 }>()
 
 const indeterminate = computed(() => {
@@ -91,10 +97,13 @@ const selectionIntersection = computed(() => {
 })
 
 const select = (selected: any) => {
-  emit('item-selected', selected)
+  emit('item-selected', selected[props.itemKey])
 }
 
 const selectAll = () => {
-  emit('select-all')
+  emit(
+    'select-all',
+    props.items?.map((i: any) => i[props.itemKey])
+  )
 }
 </script>

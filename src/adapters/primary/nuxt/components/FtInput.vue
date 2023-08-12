@@ -5,11 +5,22 @@
     span(v-if="required") *
   .mt-1
     slot.block.w-full.rounded-md.border-light.shadow-sm(name="inputField")
-      input.block.w-full.rounded-md.border-light.shadow-sm(v-bind="$attrs" class='focus:border-default focus:ring-colored sm:text-sm')
+      input.block.w-full.rounded-md.border-light.shadow-sm(
+        :value="modelValue"
+        v-bind="$attrs"
+        class='focus:border-default focus:ring-colored sm:text-sm'
+        @input="input"
+      )
 </template>
 
 <script lang="ts" setup>
 defineProps({
+  modelValue: {
+    type: String,
+    default() {
+      return ''
+    }
+  },
   for: {
     type: String,
     default() {
@@ -23,4 +34,12 @@ defineProps({
     }
   }
 })
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', input: any): void
+}>()
+
+const input = (e: any) => {
+  emit('update:modelValue', e.target.value)
+}
 </script>

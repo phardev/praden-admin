@@ -40,7 +40,7 @@ export default defineNuxtConfig({
   typescript: {
     strict: true
   },
-  modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', 'nuxt-icon'],
+  modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', 'nuxt-icon', '@vueuse/nuxt'],
   dir: {
     // assets: 'custom-assets',
     layouts: './src/adapters/primary/nuxt/layouts',

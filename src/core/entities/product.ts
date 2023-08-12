@@ -12,4 +12,5 @@ export interface Product {
   percentTaxRate: number
   location: string
   availableStock: number
+  laboratory: string
 }
