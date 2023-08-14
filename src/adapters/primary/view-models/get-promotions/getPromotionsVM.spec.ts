@@ -6,7 +6,7 @@ import {
   promotionFixedMultipleProducts,
   promotionPercentageDolodent
 } from '@utils/testData/promotions'
-import { FakeDateProvider } from '@adapters/secondary/fakeDateProvider'
+import { FakeDateProvider } from '@adapters/secondary/FakeDateProvider'
 
 describe('Get products VM', () => {
   let promotionStore: any

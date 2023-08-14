@@ -1,4 +1,4 @@
-import { FakeEmailGateway } from '@adapters/secondary/fakeEmailGateway'
+import { FakeEmailGateway } from '@adapters/secondary/FakeEmailGateway'
 
 export const useEmailGateway = () => {
   // const { PREPARATION_STARTED_TEMPLATE_ID, SEND_EMAIL_URL } = useRuntimeConfig()

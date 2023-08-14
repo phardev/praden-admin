@@ -5,8 +5,8 @@ import {
   orderToPrepare2,
   orderWithMissingProduct1
 } from '@utils/testData/orders'
-import { InMemoryOrderGateway } from '@adapters/secondary/inMemoryOrderGateway'
-import { FakeDateProvider } from '@adapters/secondary/fakeDateProvider'
+import { InMemoryOrderGateway } from '@adapters/secondary/InMemoryOrderGateway'
+import { FakeDateProvider } from '@adapters/secondary/FakeDateProvider'
 import { DeliveryStatus, Order, OrderLine } from '@core/entities/order'
 import { savePreparation } from '@core/usecases/order/save-preparation/savePreparation'
 import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'

@@ -1,5 +1,5 @@
-import { InMemoryInvoiceGateway } from '@adapters/secondary/inMemoryInvoiceGateway'
-import { RealDateProvider } from '@adapters/secondary/realDateProvider'
+import { InMemoryInvoiceGateway } from '@adapters/secondary/InMemoryInvoiceGateway'
+import { RealDateProvider } from '@adapters/secondary/RealDateProvider'
 
 export const useInvoiceGateway = () => {
   const invoiceGateway = new InMemoryInvoiceGateway(new RealDateProvider())

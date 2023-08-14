@@ -1,6 +1,6 @@
 import * as products from '@utils/testData/products'
 
-import { FakeSearchGateway } from '@adapters/secondary/fakeSearchGateway'
+import { FakeSearchGateway } from '@adapters/secondary/FakeSearchGateway'
 
 export const useSearchGateway = () => {
   const searchGateway = new FakeSearchGateway()

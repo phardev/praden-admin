@@ -1,5 +1,5 @@
 import { usePromotionStore } from '@store/promotionStore'
-import { InMemoryPromotionGateway } from '@adapters/secondary/inMemoryPromotionGateway'
+import { InMemoryPromotionGateway } from '@adapters/secondary/InMemoryPromotionGateway'
 import { createPromotion } from '@core/usecases/promotions/promotion-creation/createPromotion'
 import {
   CreatePromotionDTO,
@@ -14,7 +14,7 @@ import {
 } from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
 import { promotionPercentageDolodent } from '@utils/testData/promotions'
-import { FakeUuidGenerator } from '@adapters/secondary/fakeUuidGenerator'
+import { FakeUuidGenerator } from '@adapters/secondary/FakeUuidGenerator'
 import {
   PromotionNeedsProductError,
   PromotionReductionCannotExceed100Error

@@ -1,19 +1,19 @@
 import { createPinia, setActivePinia } from 'pinia'
-import { InMemoryOrderGateway } from '@adapters/secondary/inMemoryOrderGateway'
+import { InMemoryOrderGateway } from '@adapters/secondary/InMemoryOrderGateway'
 import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
 import { DeliveryStatus, Order, OrderLine } from '@core/entities/order'
 import { UUID } from '@core/types/types'
 import { startPreparations } from '@core/usecases/order/start-preparations/startPreparations'
 import { usePreparationStore } from '@store/preparationStore'
-import { FakeDateProvider } from '@adapters/secondary/fakeDateProvider'
+import { FakeDateProvider } from '@adapters/secondary/FakeDateProvider'
 import {
   EmailMessage,
   PreparationStartedMessage
 } from '@core/entities/emailMessage'
-import { FakeEmailGateway } from '@adapters/secondary/fakeEmailGateway'
+import { FakeEmailGateway } from '@adapters/secondary/FakeEmailGateway'
 import { dolodent, ultraLevure } from '@utils/testData/products'
 import { Product } from '@core/entities/product'
-import { InMemoryProductGateway } from '@adapters/secondary/inMemoryProductGateway'
+import { InMemoryProductGateway } from '@adapters/secondary/InMemoryProductGateway'
 import { useProductStore } from '@store/productStore'
 
 describe('Start preparations', () => {

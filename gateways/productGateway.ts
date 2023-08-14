@@ -1,4 +1,4 @@
-import { InMemoryProductGateway } from '@adapters/secondary/inMemoryProductGateway'
+import { InMemoryProductGateway } from '@adapters/secondary/InMemoryProductGateway'
 import * as products from '@utils/testData/products'
 
 export const useProductGateway = () => {

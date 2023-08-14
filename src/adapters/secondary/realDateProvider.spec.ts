@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { RealDateProvider } from '@adapters/secondary/realDateProvider'
+import { RealDateProvider } from '@adapters/secondary/RealDateProvider'
 
 describe('Real date provider', () => {
   it('should provide now date', () => {
