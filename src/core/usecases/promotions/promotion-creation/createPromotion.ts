@@ -1,13 +1,10 @@
-import {
-  CreatePromotionDTO,
-  ReductionType
-} from '@core/usecases/promotions/promotions-listing/promotion'
-import { PromotionGateway } from '@core/usecases/promotions/promotions-listing/promotionGateway'
+import { CreatePromotionDTO, ReductionType } from '@core/entities/promotion'
+import { PromotionGateway } from '@core/gateways/promotionGateway'
 import { usePromotionStore } from '@store/promotionStore'
 import {
   PromotionNeedsProductError,
   PromotionReductionCannotExceed100Error
-} from '@core/usecases/promotions/promotion-creation/promotionNeedProductError'
+} from '@core/errors/promotionNeedProductError'
 
 export const createPromotion = async (
   promotion: CreatePromotionDTO,

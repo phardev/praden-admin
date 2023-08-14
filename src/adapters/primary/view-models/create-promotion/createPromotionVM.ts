@@ -1,7 +1,4 @@
-import {
-  CreatePromotionDTO,
-  ReductionType
-} from '@core/usecases/promotions/promotions-listing/promotion'
+import { CreatePromotionDTO, ReductionType } from '@core/entities/promotion'
 import { Product } from '@core/entities/product'
 import { Timestamp } from '@core/types/types'
 import { useProductStore } from '@store/productStore'

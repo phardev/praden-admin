@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import { Promotion } from '@core/usecases/promotions/promotions-listing/promotion'
+import { Promotion } from '@core/entities/promotion'
 
 export const usePromotionStore = defineStore('PromotionStore', {
   state: () => {

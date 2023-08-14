@@ -1,11 +1,11 @@
 import { usePromotionStore } from '@store/promotionStore'
-import { InMemoryPromotionGateway } from '@core/usecases/promotions/promotions-listing/inMemoryPromotionGateway'
+import { InMemoryPromotionGateway } from '@adapters/secondary/inMemoryPromotionGateway'
 import { createPromotion } from '@core/usecases/promotions/promotion-creation/createPromotion'
 import {
   CreatePromotionDTO,
   Promotion,
   ReductionType
-} from '@core/usecases/promotions/promotions-listing/promotion'
+} from '@core/entities/promotion'
 import {
   anaca3Minceur,
   calmosine,
@@ -18,7 +18,7 @@ import { FakeUuidGenerator } from '@adapters/secondary/fakeUuidGenerator'
 import {
   PromotionNeedsProductError,
   PromotionReductionCannotExceed100Error
-} from '@core/usecases/promotions/promotion-creation/promotionNeedProductError'
+} from '@core/errors/promotionNeedProductError'
 
 describe('Create promotion', () => {
   let promotionStore: any

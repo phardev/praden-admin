@@ -1,8 +1,5 @@
 import { anaca3Minceur, dolodent, ultraLevure } from '@utils/testData/products'
-import {
-  Promotion,
-  ReductionType
-} from '@core/usecases/promotions/promotions-listing/promotion'
+import { Promotion, ReductionType } from '@core/entities/promotion'
 
 export const promotionPercentageDolodent: Promotion = {
   uuid: 'promotion-dolodent',

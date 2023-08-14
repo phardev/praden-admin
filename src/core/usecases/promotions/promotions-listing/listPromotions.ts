@@ -1,4 +1,4 @@
-import { PromotionGateway } from '@core/usecases/promotions/promotions-listing/promotionGateway'
+import { PromotionGateway } from '@core/gateways/promotionGateway'
 import { usePromotionStore } from '@store/promotionStore'
 
 export const listPromotions = async (

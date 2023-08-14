@@ -8,7 +8,7 @@ import {
   isPromotionStarted,
   Promotion,
   ReductionType
-} from '@core/usecases/promotions/promotions-listing/promotion'
+} from '@core/entities/promotion'
 import { DateProvider } from '@core/gateways/dateProvider'
 import {
   percentFormatter,

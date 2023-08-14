@@ -1,9 +1,10 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { usePromotionStore } from '@store/promotionStore'
 import { listPromotions } from '@core/usecases/promotions/promotions-listing/listPromotions'
-import { Promotion } from '@core/usecases/promotions/promotions-listing/promotion'
-import { InMemoryPromotionGateway } from '@core/usecases/promotions/promotions-listing/inMemoryPromotionGateway'
+import { Promotion } from '@core/entities/promotion'
+import { InMemoryPromotionGateway } from '@adapters/secondary/inMemoryPromotionGateway'
 import { promotionPercentageDolodent } from '@utils/testData/promotions'
+import { FakeUuidGenerator } from '@adapters/secondary/fakeUuidGenerator'
 
 describe('List promotions', () => {
   let promotionStore: any
@@ -12,7 +13,7 @@ describe('List promotions', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     promotionStore = usePromotionStore()
-    promotionGateway = new InMemoryPromotionGateway()
+    promotionGateway = new InMemoryPromotionGateway(new FakeUuidGenerator())
   })
 
   describe('There is no promotion', () => {

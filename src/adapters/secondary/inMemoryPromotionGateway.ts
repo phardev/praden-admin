@@ -1,8 +1,5 @@
-import { PromotionGateway } from '@core/usecases/promotions/promotions-listing/promotionGateway'
-import {
-  CreatePromotionDTO,
-  Promotion
-} from '@core/usecases/promotions/promotions-listing/promotion'
+import { PromotionGateway } from '@core/gateways/promotionGateway'
+import { CreatePromotionDTO, Promotion } from '@core/entities/promotion'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
 
 export class InMemoryPromotionGateway implements PromotionGateway {

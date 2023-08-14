@@ -1,5 +1,5 @@
 import * as promotions from '@utils/testData/promotions'
-import { InMemoryPromotionGateway } from '@core/usecases/promotions/promotions-listing/inMemoryPromotionGateway'
+import { InMemoryPromotionGateway } from '@adapters/secondary/inMemoryPromotionGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/fakeUuidGenerator'
 
 const uuidGenerator = new FakeUuidGenerator()
