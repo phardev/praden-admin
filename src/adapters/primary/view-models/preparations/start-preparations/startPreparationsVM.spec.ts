@@ -3,10 +3,10 @@ import { usePreparationStore } from '@store/preparationStore'
 import {
   StartPreparationsVM,
   startPreparationsVM
-} from '@adapters/primary/view-models/start-preparations/startPreparationsVM'
+} from '@adapters/primary/view-models/preparations/start-preparations/startPreparationsVM'
 import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
 import { dolodent, ultraLevure } from '@utils/testData/products'
-import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 
 describe('Start preparations VM', () => {
   let preparationsStore: any

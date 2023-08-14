@@ -13,9 +13,9 @@ import {
   getPreparationVM,
   GetPreparationVM,
   PreparationStatus
-} from '@adapters/primary/view-models/get-preparation/getPreparationVM'
+} from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
 import { dolodent, ultraLevure } from '@utils/testData/products'
-import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 
 describe('Get preparation VM', () => {
   let preparationStore: any

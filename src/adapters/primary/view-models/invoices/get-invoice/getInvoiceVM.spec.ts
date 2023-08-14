@@ -3,7 +3,7 @@ import { useInvoiceStore } from '@store/invoiceStore'
 import {
   GetInvoiceVM,
   getInvoiceVM
-} from '@adapters/primary/view-models/get-invoice/getInvoiceVM'
+} from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 import { Invoice } from '@core/entities/invoice'
 import {
   orderDelivered1,
@@ -11,7 +11,7 @@ import {
   orderPartiallyShipped1,
   orderPrepared1
 } from '@utils/testData/orders'
-import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { anaca3Minceur, dolodent } from '@utils/testData/products'
 
 describe('Get invoice VM', () => {

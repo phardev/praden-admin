@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-import { getPromotionsVM } from '@adapters/primary/view-models/get-promotions/getPromotionsVM'
+import { getPromotionsVM } from '@adapters/primary/view-models/promotions/get-promotions/getPromotionsVM'
 import { useDateProvider } from '../../../../../../gateways/dateProvider'
 import { listPromotions } from '@core/usecases/promotions/promotions-listing/listPromotions'
 import { usePromotionGateway } from '../../../../../../gateways/promotionGateway'

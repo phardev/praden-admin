@@ -1,7 +1,7 @@
 import {
   GetPreparationsVM,
   Header
-} from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
+} from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { createPinia, setActivePinia } from 'pinia'
 import { usePreparationStore } from '@store/preparationStore'
 import {
@@ -15,7 +15,7 @@ import {
 import { Stock } from '@core/entities/product'
 import { chamomilla, dolodent } from '@utils/testData/products'
 import { useProductStore } from '@store/productStore'
-import { getWaitingPreparationsVM } from '@adapters/primary/view-models/get-waiting-preparations/getWaitingPreparationsVM'
+import { getWaitingPreparationsVM } from '@adapters/primary/view-models/preparations/get-waiting-preparations/getWaitingPreparationsVM'
 
 describe('Get orders to prepare VM', () => {
   let preparationStore: any

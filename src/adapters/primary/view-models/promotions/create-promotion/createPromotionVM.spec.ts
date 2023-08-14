@@ -6,11 +6,11 @@ import {
   Field,
   PromotionProductItemVM,
   TypeChoiceVM
-} from '@adapters/primary/view-models/create-promotion/createPromotionVM'
+} from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
 import { anaca3Minceur, calmosine, dolodent } from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
 import { Product } from '@core/entities/product'
-import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { useSearchStore } from '@store/searchStore'
 import { useFormStore } from '@store/formStore'
 import { Timestamp } from '@core/types/types'

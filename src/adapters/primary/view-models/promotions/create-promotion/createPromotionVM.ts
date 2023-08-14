@@ -2,7 +2,7 @@ import { CreatePromotionDTO, ReductionType } from '@core/entities/promotion'
 import { Product } from '@core/entities/product'
 import { Timestamp } from '@core/types/types'
 import { useProductStore } from '@store/productStore'
-import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { useSearchStore } from '@store/searchStore'
 import { useFormStore } from '@store/formStore'
 

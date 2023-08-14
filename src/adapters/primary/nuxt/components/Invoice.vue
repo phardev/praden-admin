@@ -64,7 +64,7 @@
 </template>
 
 <script lang="ts" setup>
-import { getInvoiceVM } from '@adapters/primary/view-models/get-invoice/getInvoiceVM'
+import { getInvoiceVM } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 
 const invoiceVM = computed(() => {
   return getInvoiceVM()

@@ -1,6 +1,6 @@
-import { TableVM } from '@adapters/primary/view-models/get-invoice/getInvoiceVM'
+import { TableVM } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 import { HashTable, Timestamp } from '@core/types/types'
-import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { usePromotionStore } from '@store/promotionStore'
 import {
   isPromotionEnded,

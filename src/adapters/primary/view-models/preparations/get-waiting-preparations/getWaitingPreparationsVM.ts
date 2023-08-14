@@ -2,7 +2,7 @@ import {
   filterPreparationsByGroup,
   GetPreparationsVM,
   isStockAvailable
-} from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
+} from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { MessageContent, Order } from '@core/entities/order'
 
 const waitingClientAnswerFilter = (o: Order) => {

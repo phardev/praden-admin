@@ -5,7 +5,7 @@ preparations-printing
 </template>
 
 <script lang="ts" setup>
-import { getWaitingPreparationsVM } from '@adapters/primary/view-models/get-waiting-preparations/getWaitingPreparationsVM'
+import { getWaitingPreparationsVM } from '@adapters/primary/view-models/preparations/get-waiting-preparations/getWaitingPreparationsVM'
 
 definePageMeta({ layout: 'main' })
 

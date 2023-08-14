@@ -7,7 +7,7 @@ import {
   OrderLine
 } from '@core/entities/order'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
-import { TableVM } from '@adapters/primary/view-models/get-invoice/getInvoiceVM'
+import { TableVM } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 import { HashTable } from '@core/types/types'
 import { useProductStore } from '@store/productStore'
 

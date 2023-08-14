@@ -91,7 +91,7 @@
 </template>
 
 <script lang="ts" setup>
-import { createPromotionVM } from '@adapters/primary/view-models/create-promotion/createPromotionVM'
+import { createPromotionVM } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
 import FtInput from '@adapters/primary/nuxt/components/FtInput.vue'
 import FtDatePickerInput from '@adapters/primary/nuxt/components/FtDatePickerInput.vue'
 import { ReductionType } from '@core/entities/promotion'

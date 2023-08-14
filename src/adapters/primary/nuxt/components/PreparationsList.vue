@@ -40,7 +40,7 @@ tab-group.border-b.border-gray-200(as="div")
 
 <script lang="ts" setup>
 import { listOrdersToPrepare } from '@core/usecases/order/orders-to-prepare-listing/listOrdersToPrepare'
-import { getSelectedPreparationsVM } from '@adapters/primary/view-models/get-selected-preparations/getSelectedPreparationsVM'
+import { getSelectedPreparationsVM } from '@adapters/primary/view-models/preparations/get-selected-preparations/getSelectedPreparationsVM'
 import { toggleSelectPreparation } from '@core/usecases/order/toggle-select-preparation/toggleSelectPreparation'
 import { toggleSelectAllPreparations } from '@core/usecases/order/toggle-select-all-preparations/toggleSelectAllPreparations'
 import FtButton from '@adapters/primary/nuxt/components/FtButton.vue'

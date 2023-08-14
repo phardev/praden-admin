@@ -2,7 +2,7 @@ import { useProductStore } from '@store/productStore'
 import { Product } from '@core/entities/product'
 import { priceFormatter } from '@utils/formatters'
 import { useCategoryStore } from '@store/categoryStore'
-import { Header } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 
 export interface GetProductsItemVM {
   name: string
