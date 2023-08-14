@@ -8,7 +8,7 @@ import {
   PaymentStatus
 } from '@core/entities/order'
 import { UUID } from '@core/types/types'
-import { PreparationDoesNotExistsError } from '@core/errors/preparationDoesNotExistsError'
+import { PreparationDoesNotExistsError } from '@core/errors/PreparationDoesNotExistsError'
 import { DateProvider } from '@core/gateways/dateProvider'
 import { OrderLineAlreadyProcessedError } from '@core/errors/OrderLineAlreadyProcessedError'
 

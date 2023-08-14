@@ -1,6 +1,6 @@
 import { dolodent, ultraLevure } from '@utils/testData/products'
 import { scanProductToPreparation } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
-import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
+import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
 import { createPinia, setActivePinia } from 'pinia'
 import { usePreparationStore } from '@store/preparationStore'
 import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'

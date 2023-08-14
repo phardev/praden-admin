@@ -18,7 +18,7 @@ import { FakeUuidGenerator } from '@adapters/secondary/fakeUuidGenerator'
 import {
   PromotionNeedsProductError,
   PromotionReductionCannotExceed100Error
-} from '@core/errors/promotionNeedProductError'
+} from '@core/errors/PromotionNeedProductError'
 
 describe('Create promotion', () => {
   let promotionStore: any

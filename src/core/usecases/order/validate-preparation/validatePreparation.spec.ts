@@ -1,6 +1,6 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { usePreparationStore } from '@store/preparationStore'
-import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
+import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
 import { validatePreparation } from '@core/usecases/order/validate-preparation/validatePreparation'
 import {
   orderToPrepare1,

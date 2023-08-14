@@ -9,8 +9,8 @@ import { InMemoryOrderGateway } from '@adapters/secondary/inMemoryOrderGateway'
 import { FakeDateProvider } from '@adapters/secondary/fakeDateProvider'
 import { DeliveryStatus, Order, OrderLine } from '@core/entities/order'
 import { savePreparation } from '@core/usecases/order/save-preparation/savePreparation'
-import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
-import { PreparationDoesNotExistsError } from '@core/errors/preparationDoesNotExistsError'
+import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
+import { PreparationDoesNotExistsError } from '@core/errors/PreparationDoesNotExistsError'
 import { OrderLineAlreadyProcessedError } from '@core/errors/OrderLineAlreadyProcessedError'
 
 describe('Save preparation', () => {

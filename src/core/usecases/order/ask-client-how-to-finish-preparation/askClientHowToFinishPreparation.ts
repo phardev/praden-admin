@@ -1,6 +1,6 @@
 import { OrderGateway } from '@core/gateways/orderGateway'
 import { usePreparationStore } from '@store/preparationStore'
-import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
+import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
 
 export const askClientHowToFinishPreparation = async (
   orderGateway: OrderGateway

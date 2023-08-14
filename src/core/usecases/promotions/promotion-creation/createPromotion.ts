@@ -4,7 +4,7 @@ import { usePromotionStore } from '@store/promotionStore'
 import {
   PromotionNeedsProductError,
   PromotionReductionCannotExceed100Error
-} from '@core/errors/promotionNeedProductError'
+} from '@core/errors/PromotionNeedProductError'
 
 export const createPromotion = async (
   promotion: CreatePromotionDTO,

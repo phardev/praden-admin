@@ -1,4 +1,4 @@
-import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
+import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
 import { usePreparationStore } from '@store/preparationStore'
 import { Order, OrderLine } from '@core/entities/order'
 

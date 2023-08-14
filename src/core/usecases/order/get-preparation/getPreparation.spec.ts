@@ -5,7 +5,7 @@ import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
 import { Order } from '@core/entities/order'
 import { UUID } from '@core/types/types'
 import { getPreparation } from '@core/usecases/order/get-preparation/getPreparation'
-import { PreparationDoesNotExistsError } from '@core/errors/preparationDoesNotExistsError'
+import { PreparationDoesNotExistsError } from '@core/errors/PreparationDoesNotExistsError'
 import { FakeDateProvider } from '@adapters/secondary/fakeDateProvider'
 
 describe('Get preparation', () => {

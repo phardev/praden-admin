@@ -8,7 +8,7 @@ import { usePreparationStore } from '@store/preparationStore'
 import { Invoice } from '@core/entities/invoice'
 import { useInvoiceStore } from '@store/invoiceStore'
 import { InMemoryInvoiceGateway } from '@adapters/secondary/inMemoryInvoiceGateway'
-import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
+import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
 
 describe('Cancel preparation', () => {
   let preparationStore: any
