@@ -9,7 +9,7 @@ div
       h3.mx-6.mb-2.text-xs.tracking-widest.text-light-contrast.uppercase {{ section.title }}
       nuxt-link.flex.items-center.px-6.py-2.text-link.group(
         v-for="(link, linkIndex) in section.links" :key="linkIndex"
-        :href="link.href"
+        :to="link.href"
       )
         icon.icon-sm.mr-2(:name="link.icon")
         div {{ link.name }}

@@ -29,14 +29,8 @@ tab-group.border-b.border-gray-200(as="div")
 
 <script lang="ts" setup>
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
-import { listPromotions } from '@core/usecases/promotions/promotions-listing/listPromotions'
-import { usePromotionGateway } from '../../../../../gateways/promotionGateway'
 
 definePageMeta({ layout: 'main' })
-
-onMounted(() => {
-  listPromotions(usePromotionGateway())
-})
 
 defineProps({
   promotionsVm: {

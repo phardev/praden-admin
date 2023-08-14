@@ -1,4 +1,7 @@
-import { ReductionType } from '@core/usecases/promotions/promotions-listing/promotion'
+import {
+  CreatePromotionDTO,
+  ReductionType
+} from '@core/usecases/promotions/promotions-listing/promotion'
 import { useProductStore } from '@store/productStore'
 import {
   CreatePromotionVM,
@@ -184,7 +187,7 @@ describe('Create promotion VM', () => {
       expect(vm.type).toStrictEqual(expectedField)
     })
     it('should reset amount field', () => {
-      vm.setAmount(7)
+      vm.setAmount('7')
       vm.setType(ReductionType.Percentage)
       const expectedField: Field<number | undefined> = {
         value: undefined,
@@ -209,13 +212,13 @@ describe('Create promotion VM', () => {
   })
   describe('Update amount', () => {
     it('should update amount value in form store', () => {
-      vm.setAmount(12)
-      expect(formStore.get(key).amount).toStrictEqual(12)
+      vm.setAmount('12')
+      expect(formStore.get(key).amount).toBe('12')
     })
     it('should update amount field', () => {
-      vm.setAmount(12)
-      const expectedField: Field<number | undefined> = {
-        value: 12,
+      vm.setAmount('12')
+      const expectedField: Field<string | undefined> = {
+        value: '12',
         canEdit: true
       }
       expect(vm.amount).toStrictEqual(expectedField)
@@ -333,7 +336,7 @@ describe('Create promotion VM', () => {
   describe('Validation', () => {
     beforeEach(() => {
       vm.setName('Test')
-      vm.setAmount(12)
+      vm.setAmount('12')
       vm.addProducts([dolodent.cip13])
     })
     describe('Can validate', () => {
@@ -354,6 +357,37 @@ describe('Create promotion VM', () => {
         vm.removeProducts([dolodent.cip13])
         expect(vm.canValidate).toBeFalsy()
       })
+    })
+  })
+  describe('Dto', () => {
+    it('should prepare the promotion dto', () => {
+      vm.setName('Test')
+      vm.setAmount('1,50')
+      vm.addProducts([dolodent.cip13])
+      const expectedDto: CreatePromotionDTO = {
+        name: 'Test',
+        products: [dolodent.cip13],
+        type: ReductionType.Fixed,
+        amount: 150
+      }
+      expect(vm.dto).toStrictEqual(expectedDto)
+    })
+    it('should prepare another promotion dto', () => {
+      vm.setType(ReductionType.Percentage)
+      vm.setName('AnotherTest')
+      vm.setAmount('5.5')
+      vm.setStartDate(123456789)
+      vm.setEndDate(987654321)
+      vm.addProducts([dolodent.cip13, calmosine.cip13])
+      const expectedDto: CreatePromotionDTO = {
+        name: 'AnotherTest',
+        products: [dolodent.cip13, calmosine.cip13],
+        type: ReductionType.Percentage,
+        amount: 5.5,
+        startDate: 123456789,
+        endDate: 987654321
+      }
+      expect(vm.dto).toStrictEqual(expectedDto)
     })
   })
 })

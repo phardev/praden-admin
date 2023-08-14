@@ -1,4 +1,7 @@
-import { ReductionType } from '@core/usecases/promotions/promotions-listing/promotion'
+import {
+  CreatePromotionDTO,
+  ReductionType
+} from '@core/usecases/promotions/promotions-listing/promotion'
 import { Product } from '@core/entities/product'
 import { Timestamp } from '@core/types/types'
 import { useProductStore } from '@store/productStore'
@@ -80,7 +83,7 @@ export class CreatePromotionVM {
       canEdit: true
     }
   }
-  setAmount(amount: number | undefined): void {
+  setAmount(amount: string | undefined): void {
     this.formStore.set(this.key, { amount })
   }
 
@@ -174,6 +177,28 @@ export class CreatePromotionVM {
     if (!this.formStore.get(this.key).amount) return false
     if (!this.formStore.get(this.key).products.length) return false
     return true
+  }
+
+  get dto(): CreatePromotionDTO {
+    const formValue = this.formStore.get(this.key)
+    let amount = parseFloat(formValue.amount.replace(',', '.'))
+    const type = formValue.type
+    if (formValue.type === ReductionType.Fixed) {
+      amount *= 100
+    }
+    const res: CreatePromotionDTO = {
+      name: formValue.name,
+      products: formValue.products,
+      type,
+      amount
+    }
+    if (formValue.startDate) {
+      res.startDate = formValue.startDate
+    }
+    if (formValue.endDate) {
+      res.endDate = formValue.endDate
+    }
+    return res
   }
 }
 

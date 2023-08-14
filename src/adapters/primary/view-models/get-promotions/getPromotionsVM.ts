@@ -17,6 +17,7 @@ import {
 } from '@utils/formatters'
 
 export interface GetPromotionItemVM {
+  uuid: string
   name: string
   amount: string
   startDate: string
@@ -94,6 +95,7 @@ const filterPromotionsByGroup = (
           amount = formatter.format(p.amount / 100)
         }
         return {
+          uuid: p.uuid,
           name: p.name,
           amount,
           startDate: p.startDate

@@ -62,6 +62,7 @@ describe('Get products VM', () => {
               headers: expectedHeaders,
               items: [
                 {
+                  uuid: promotionFixedMultipleProducts.uuid,
                   name: promotionFixedMultipleProducts.name,
                   amount: '1,00\u00A0€',
                   startDate: '27 juil. 2023',
@@ -71,6 +72,7 @@ describe('Get products VM', () => {
                   numberOfProducts: 2
                 },
                 {
+                  uuid: promotionPercentageDolodent.uuid,
                   name: promotionPercentageDolodent.name,
                   amount: '10%',
                   startDate: '27 juil. 2023',

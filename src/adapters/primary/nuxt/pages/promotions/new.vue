@@ -1,5 +1,6 @@
 <template lang="pug">
-.section()
+.section
+  h1.text-title Créer nouvelle promotion
   div.flex.gap-6
     ft-button.text-2xl.flex-1.h-24(
       v-for="(typeChoice, index) in vm.availableTypeChoices"
@@ -21,11 +22,13 @@
   ft-currency-input(
     v-if="vm.type.value === ReductionType.Fixed"
     :value="vm.amount.value"
+    required
     @input="amountChanged"
   ) Valeur de la réduction
   ft-percentage-input(
     v-if="vm.type.value === ReductionType.Percentage"
     :value="vm.amount.value"
+    required
     @input="amountChanged"
   ) Valeur de la réduction
   div.flex.mb-4
@@ -80,9 +83,11 @@
         @select-all="addedProductSelector.toggleSelectAll"
       )
         template(#title) Produits de la promotion
-  ft-button.button-solid(
-    v-if="vm.canValidate"
-  ) Valider
+  div.flex.flex-row-reverse.mt-4
+    ft-button.button-solid.px-6.text-xl(
+      :disabled="!vm.canValidate"
+      @click.prevent="validate"
+    ) Valider
 </template>
 
 <script lang="ts" setup>
@@ -95,6 +100,8 @@ import { useProductGateway } from '../../../../../../gateways/productGateway'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
 import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'
+import { createPromotion } from '@core/usecases/promotions/promotion-creation/createPromotion'
+import { usePromotionGateway } from '../../../../../../gateways/promotionGateway'
 
 definePageMeta({ layout: 'main' })
 
@@ -102,8 +109,8 @@ onMounted(() => {
   listProducts(useProductGateway())
 })
 
-const { currentRoute } = useRouter()
-const routeName = currentRoute.value.name
+const router = useRouter()
+const routeName = router.currentRoute.value.name
 const vm = ref(createPromotionVM(routeName))
 const availableProductSelector = useSelection()
 const addedProductSelector = useSelection()
@@ -143,6 +150,11 @@ const addProducts = () => {
 const removeProducts = () => {
   vm.value.removeProducts(addedProductSelector.get())
   addedProductSelector.clear()
+}
+
+const validate = async () => {
+  await createPromotion(vm.value.dto, usePromotionGateway())
+  router.push('/promotions/')
 }
 </script>
 

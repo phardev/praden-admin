@@ -14,7 +14,7 @@ export class InMemoryPromotionGateway implements PromotionGateway {
   }
 
   list(): Promise<Array<Promotion>> {
-    return Promise.resolve(this.promotions)
+    return Promise.resolve(JSON.parse(JSON.stringify(this.promotions)))
   }
 
   create(promotion: CreatePromotionDTO): Promise<Promotion> {
