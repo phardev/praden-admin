@@ -1,6 +1,9 @@
 import { PromotionGateway } from '@core/gateways/promotionGateway'
-import { CreatePromotionDTO, Promotion } from '@core/entities/promotion'
+import { EditPromotionDTO, Promotion } from '@core/entities/promotion'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
+import { UUID } from '@core/types/types'
+
+import { PromotionDoesNotExistsError } from '@core/errors/PromotionDoesNotExistsError'
 
 export class InMemoryPromotionGateway implements PromotionGateway {
   private promotions: Array<Promotion> = []
@@ -21,6 +24,13 @@ export class InMemoryPromotionGateway implements PromotionGateway {
     }
     this.promotions.push(p)
     return Promise.resolve(p)
+  }
+
+  edit(uuid: UUID, promotion: Partial<EditPromotionDTO>): Promise<Promotion> {
+    const index = this.promotions.findIndex((p) => p.uuid === uuid)
+    if (index < 0) throw new PromotionDoesNotExistsError(uuid)
+    this.promotions[index] = Object.assign(this.promotions[index], promotion)
+    return Promise.resolve(this.promotions[index])
   }
 
   feedWith(...promotions: Array<Promotion>) {

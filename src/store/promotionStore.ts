@@ -14,6 +14,11 @@ export const usePromotionStore = defineStore('PromotionStore', {
     },
     add(promotion: Promotion) {
       this.items.push(promotion)
+    },
+    edit(promotion: Promotion) {
+      this.items = this.items.map((p) => {
+        return p.uuid === promotion.uuid ? promotion : p
+      })
     }
   }
 })
