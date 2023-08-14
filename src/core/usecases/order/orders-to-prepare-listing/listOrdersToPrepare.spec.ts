@@ -12,8 +12,8 @@ import {
   orderToPrepare2,
   orderWithMissingProduct1
 } from '@utils/testData/orders'
-import { InMemoryOrderGateway } from '@adapters/secondary/InMemoryOrderGateway'
-import { FakeDateProvider } from '@adapters/secondary/FakeDateProvider'
+import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 
 describe('List orders to prepare', () => {
   let preparationStore: any

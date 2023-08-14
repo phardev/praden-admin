@@ -2,9 +2,9 @@ import { createPinia, setActivePinia } from 'pinia'
 import { usePromotionStore } from '@store/promotionStore'
 import { listPromotions } from '@core/usecases/promotions/promotions-listing/listPromotions'
 import { Promotion } from '@core/entities/promotion'
-import { InMemoryPromotionGateway } from '@adapters/secondary/InMemoryPromotionGateway'
+import { InMemoryPromotionGateway } from '@adapters/secondary/promotion-gateways/InMemoryPromotionGateway'
 import { promotionPercentageDolodent } from '@utils/testData/promotions'
-import { FakeUuidGenerator } from '@adapters/secondary/FakeUuidGenerator'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 
 describe('List promotions', () => {
   let promotionStore: any

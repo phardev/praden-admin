@@ -1,4 +1,4 @@
-import { RealEmailGateway } from '@adapters/secondary/realEmailGateway'
+import { RealEmailGateway } from '@adapters/secondary/email-gateways/RealEmailGateway'
 import { vi } from 'vitest'
 import axios from 'axios'
 import { PreparationStartedMessage } from '@core/entities/emailMessage'

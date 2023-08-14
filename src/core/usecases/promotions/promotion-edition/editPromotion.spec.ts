@@ -1,7 +1,7 @@
 import { usePromotionStore } from '@store/promotionStore'
 import { createPinia, setActivePinia } from 'pinia'
-import { InMemoryPromotionGateway } from '@adapters/secondary/InMemoryPromotionGateway'
-import { FakeUuidGenerator } from '@adapters/secondary/FakeUuidGenerator'
+import { InMemoryPromotionGateway } from '@adapters/secondary/promotion-gateways/InMemoryPromotionGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import {
   EditPromotionDTO,
   Promotion,

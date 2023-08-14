@@ -1,6 +1,6 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { useProductStore } from '@store/productStore'
-import { InMemoryProductGateway } from '@adapters/secondary/InMemoryProductGateway'
+import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { listProducts } from './listProducts'
 import { Product, Stock } from '@core/entities/product'
 import { dolodent, ultraLevure } from '@utils/testData/products'

@@ -1,6 +1,6 @@
-import { InMemoryOrderGateway } from '@adapters/secondary/InMemoryOrderGateway'
+import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
 import * as orders from '@utils/testData/orders'
-import { RealDateProvider } from '@adapters/secondary/RealDateProvider'
+import { RealDateProvider } from '@adapters/secondary/date-providers/RealDateProvider'
 
 export const useOrderGateway = () => {
   // const { BACKEND_URL } = useRuntimeConfig()

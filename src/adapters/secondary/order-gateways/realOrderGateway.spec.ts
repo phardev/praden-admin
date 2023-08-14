@@ -1,6 +1,6 @@
 import { vi } from 'vitest'
 import axios from 'axios'
-import { RealOrderGateway } from '@adapters/secondary/RealOrderGateway'
+import { RealOrderGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
 import {
   mockOrderPartiallyShipped1,
   mockOrderVFASF,

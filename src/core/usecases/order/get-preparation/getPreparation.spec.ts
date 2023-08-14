@@ -1,12 +1,12 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { usePreparationStore } from '@store/preparationStore'
-import { InMemoryOrderGateway } from '@adapters/secondary/InMemoryOrderGateway'
+import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
 import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
 import { Order } from '@core/entities/order'
 import { UUID } from '@core/types/types'
 import { getPreparation } from '@core/usecases/order/get-preparation/getPreparation'
 import { PreparationDoesNotExistsError } from '@core/errors/PreparationDoesNotExistsError'
-import { FakeDateProvider } from '@adapters/secondary/FakeDateProvider'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 
 describe('Get preparation', () => {
   let preparationStore: any

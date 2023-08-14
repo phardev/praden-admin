@@ -7,7 +7,7 @@ import {
   dolodent,
   hemoclar
 } from '@utils/testData/products'
-import { FakeSearchGateway } from '@adapters/secondary/FakeSearchGateway'
+import { FakeSearchGateway } from '@adapters/secondary/search-gateways/FakeSearchGateway'
 
 describe('Search products', () => {
   let searchStore: any

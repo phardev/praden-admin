@@ -9,10 +9,10 @@ import {
   orderWithMissingProduct2
 } from '@utils/testData/orders'
 import { DeliveryStatus, Order } from '@core/entities/order'
-import { InMemoryOrderGateway } from '@adapters/secondary/InMemoryOrderGateway'
-import { FakeDateProvider } from '@adapters/secondary/FakeDateProvider'
+import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { Invoice } from '@core/entities/invoice'
-import { InMemoryInvoiceGateway } from '@adapters/secondary/InMemoryInvoiceGateway'
+import { InMemoryInvoiceGateway } from '@adapters/secondary/invoice-gateways/InMemoryInvoiceGateway'
 import { useInvoiceStore } from '@store/invoiceStore'
 import { Timestamp } from '@core/types/types'
 import { dolodent, ultraLevure } from '@utils/testData/products'

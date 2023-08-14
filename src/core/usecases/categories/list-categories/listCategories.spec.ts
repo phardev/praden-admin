@@ -2,7 +2,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import { useCategoryStore } from '@store/categoryStore'
 import { dents, diarrhee } from '@utils/testData/categories'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
-import { InMemoryCategoryGateway } from '@adapters/secondary/InMemoryCategoryGateway'
+import { InMemoryCategoryGateway } from '@adapters/secondary/category-gateways/InMemoryCategoryGateway'
 
 describe('List categories', () => {
   let categoryStore: any
