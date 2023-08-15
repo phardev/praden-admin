@@ -24,8 +24,8 @@ export interface Field<T> {
 }
 
 export class CreatePromotionVM {
-  private readonly key: string
-  private formStore: any
+  protected readonly key: string
+  protected formStore: any
   constructor(key: string) {
     this.key = key
     this.formStore = useFormStore()

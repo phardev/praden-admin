@@ -33,6 +33,12 @@ export class InMemoryPromotionGateway implements PromotionGateway {
     return Promise.resolve(this.promotions[index])
   }
 
+  getByUuid(uuid: UUID): Promise<Promotion> {
+    const res = this.promotions.find((p) => p.uuid === uuid)
+    if (!res) throw new PromotionDoesNotExistsError(uuid)
+    return Promise.resolve(JSON.parse(JSON.stringify(res)))
+  }
+
   feedWith(...promotions: Array<Promotion>) {
     this.promotions = promotions
   }

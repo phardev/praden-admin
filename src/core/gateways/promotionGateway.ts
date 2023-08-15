@@ -9,4 +9,5 @@ export interface PromotionGateway {
   list(): Promise<Array<Promotion>>
   create(promotion: CreatePromotionDTO): Promise<Promotion>
   edit(uuid: UUID, promotion: EditPromotionDTO): Promise<Promotion>
+  getByUuid(uuid: UUID): Promise<Promotion>
 }
