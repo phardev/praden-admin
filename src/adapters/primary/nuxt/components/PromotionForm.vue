@@ -4,6 +4,7 @@ div(v-if="currentVM")
     ft-button.text-2xl.flex-1.h-24(
       v-for="(typeChoice, index) in currentVM.availableTypeChoices"
       :key="index"
+      :disabled="!currentVM.type.canEdit"
       :class="typeChoice.type === currentVM.type.value ? 'selectedChoice' : 'unSelectedChoice'"
       @click="currentVM.setType(typeChoice.type)"
     )
@@ -14,6 +15,7 @@ div(v-if="currentVM")
     :value="currentVM.name.value"
     for="name"
     required
+    :disabled="!currentVM.name.canEdit"
     type='text'
     name='name'
     @input="nameChanged"
@@ -21,12 +23,14 @@ div(v-if="currentVM")
   ft-currency-input(
     v-if="currentVM.type.value === ReductionType.Fixed"
     :value="currentVM.amount.value"
+    :disabled="!currentVM.amount.canEdit"
     required
     @input="amountChanged"
   ) Valeur de la réduction
   ft-percentage-input(
     v-if="currentVM.type.value === ReductionType.Percentage"
     :value="currentVM.amount.value"
+    :disabled="!currentVM.amount.canEdit"
     required
     @input="amountChanged"
   ) Valeur de la réduction
@@ -34,16 +38,19 @@ div(v-if="currentVM")
     ft-date-picker-input.flex-1(
       :model-value="currentVM.startDate.value"
       :start-time="startTime"
+      :disabled="!currentVM.startDate.canEdit"
       for="startDate"
       @date-changed="startDateChanged"
     ) Date de début
     ft-date-picker-input.flex-1(
       :model-value="currentVM.endDate.value"
+      :disabled="!currentVM.endDate.canEdit"
       :start-time="endTime"
       for="endDate"
       @date-changed="endDateChanged"
     ) Date de fin
   ft-input(
+    v-if="currentVM.products.canEdit"
     v-model="search"
     for="search"
     type='text'
@@ -51,10 +58,12 @@ div(v-if="currentVM")
     @input="searchChanged"
   ) Rechercher un produit
   div.flex.gap-12.mt-4
-    div.flex-1
+    div.flex-1(
+      v-if="currentVM.products.canEdit"
+    )
       ft-table(
         :headers="currentVM.productsHeaders"
-        :items="currentVM.availableProducts"
+        :items="currentVM.availableProducts.value"
         :selectable="true"
         :selection="availableProductSelector.get()"
         item-key="reference"
@@ -62,7 +71,9 @@ div(v-if="currentVM")
         @select-all="availableProductSelector.toggleSelectAll"
       )
         template(#title) Tous les produits
-    div.flex.flex-col.justify-center.items-center.gap-6
+    div.flex.flex-col.justify-center.items-center.gap-6(
+      v-if="currentVM.products.canEdit"
+    )
       ft-button.button-solid(
         @click="addProducts"
       )
@@ -74,8 +85,8 @@ div(v-if="currentVM")
     div.flex-1
       ft-table(
         :headers="currentVM.productsHeaders"
-        :items="currentVM.products"
-        :selectable="true"
+        :items="currentVM.products.value"
+        :selectable="currentVM.products.canEdit"
         :selection="addedProductSelector.get()"
         item-key="reference"
         @item-selected="addedProductSelector.toggleSelect"
@@ -84,6 +95,7 @@ div(v-if="currentVM")
         template(#title) Produits de la promotion
   div.flex.flex-row-reverse.mt-4
     ft-button.button-solid.px-6.text-xl(
+      v-if="currentVM.displayValidate"
       :disabled="!currentVM.canValidate"
       @click.prevent="validate"
     ) Valider
@@ -108,17 +120,7 @@ const props = defineProps({
   }
 })
 
-const currentVM = ref()
-
-watch(
-  () => props.vm,
-  () => {
-    const { vm } = props
-    currentVM.value = vm
-  },
-  { deep: true }
-)
-
+const currentVM = toRef(props, 'vm')
 const router = useRouter()
 const routeName = router.currentRoute.value.name
 const availableProductSelector = useSelection()

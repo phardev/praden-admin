@@ -9,6 +9,7 @@ ft-input(
       class="focus:ring-colored"
       :model-value="modelValue"
       :enable-time-picker="false"
+      :disabled="disabled"
       model-type="timestamp"
       :start-time="startTime"
       enable-seconds
@@ -29,6 +30,12 @@ defineProps({
     type: Number,
     default: () => {
       return undefined
+    }
+  },
+  disabled: {
+    type: Boolean,
+    default: () => {
+      return false
     }
   },
   startTime: {

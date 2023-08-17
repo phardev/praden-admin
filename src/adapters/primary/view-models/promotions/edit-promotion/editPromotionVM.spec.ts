@@ -22,12 +22,6 @@ import {
   promotionPercentageDolodent
 } from '@utils/testData/promotions'
 
-export class NoPromotionSelectedError extends Error {
-  constructor() {
-    super('No promotion selected')
-  }
-}
-
 const availableTypeChoices: Array<TypeChoiceVM> = [
   {
     type: ReductionType.Fixed,
@@ -177,16 +171,28 @@ describe('Edit promotion VM', () => {
         expect(vm.productsHeaders).toStrictEqual(expectedProductsHeader)
       })
       it('should have all products available for selection without promotion products', () => {
-        expect(vm.availableProducts).toStrictEqual([anaca3VM, calmosineVM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [anaca3VM, calmosineVM],
+          canEdit: true
+        }
+        expect(vm.availableProducts).toStrictEqual(expectedField)
       })
       it('should use filter result if there is one', () => {
         searchStore.set(key, [dolodent, calmosine])
-        expect(vm.availableProducts).toStrictEqual([calmosineVM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [calmosineVM],
+          canEdit: true
+        }
+        expect(vm.availableProducts).toStrictEqual(expectedField)
       })
     })
     describe('Products added', () => {
       it('should have previously added products', () => {
-        expect(vm.products).toStrictEqual([dolodentVM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [dolodentVM],
+          canEdit: true
+        }
+        expect(vm.products).toStrictEqual(expectedField)
       })
       it('should save the value in the form store', () => {
         expect(formStore.get(key).products).toStrictEqual([dolodent.cip13])
@@ -296,10 +302,18 @@ describe('Edit promotion VM', () => {
         ])
       })
       it('should get all products vm', () => {
-        expect(vm.products).toStrictEqual([dolodentVM, anaca3VM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [dolodentVM, anaca3VM],
+          canEdit: true
+        }
+        expect(vm.products).toStrictEqual(expectedField)
       })
       it('should remove products from available selection', () => {
-        expect(vm.availableProducts).toStrictEqual([calmosineVM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [calmosineVM],
+          canEdit: true
+        }
+        expect(vm.availableProducts).toStrictEqual(expectedField)
       })
     })
     describe('In multiple steps', () => {
@@ -315,7 +329,11 @@ describe('Edit promotion VM', () => {
         ])
       })
       it('should get all products vm', () => {
-        expect(vm.products).toStrictEqual([dolodentVM, calmosineVM, anaca3VM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [dolodentVM, calmosineVM, anaca3VM],
+          canEdit: true
+        }
+        expect(vm.products).toStrictEqual(expectedField)
       })
     })
   })
@@ -336,10 +354,18 @@ describe('Edit promotion VM', () => {
         ])
       })
       it('should get all products vm', () => {
-        expect(vm.products).toStrictEqual([anaca3VM, calmosineVM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [anaca3VM, calmosineVM],
+          canEdit: true
+        }
+        expect(vm.products).toStrictEqual(expectedField)
       })
       it('should remove products from available selection', () => {
-        expect(vm.availableProducts).toStrictEqual([dolodentVM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [dolodentVM],
+          canEdit: true
+        }
+        expect(vm.availableProducts).toStrictEqual(expectedField)
       })
     })
     describe('In multiple steps', () => {
@@ -351,7 +377,11 @@ describe('Edit promotion VM', () => {
         expect(formStore.get(key).products).toStrictEqual([calmosine.cip13])
       })
       it('should get all products vm', () => {
-        expect(vm.products).toStrictEqual([calmosineVM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [calmosineVM],
+          canEdit: true
+        }
+        expect(vm.products).toStrictEqual(expectedField)
       })
     })
   })
@@ -380,6 +410,9 @@ describe('Edit promotion VM', () => {
         expect(vm.canValidate).toBeFalsy()
       })
     })
+    it('should display validate button any time', () => {
+      expect(vm.displayValidate).toBeTruthy()
+    })
   })
   describe('Dto', () => {
     it('should prepare the promotion dto', () => {
@@ -395,9 +428,51 @@ describe('Edit promotion VM', () => {
     })
   })
   describe('There is no current promotion', () => {
-    it('should throw an error', () => {
+    beforeEach(() => {
       promotionStore.current = undefined
-      expect(() => editPromotionVM('test')).toThrow(NoPromotionSelectedError)
+      vm = editPromotionVM('test')
+    })
+    it('should initialize fixed type', () => {
+      const expectedField: Field<ReductionType> = {
+        value: ReductionType.Fixed,
+        canEdit: true
+      }
+      expect(vm.type).toStrictEqual(expectedField)
+    })
+    it('should initialize empty name', () => {
+      const expectedField: Field<string> = {
+        value: '',
+        canEdit: true
+      }
+      expect(vm.name).toStrictEqual(expectedField)
+    })
+    it('should initialize undefined amount', () => {
+      const expectedField: Field<string | undefined> = {
+        value: undefined,
+        canEdit: true
+      }
+      expect(vm.amount).toStrictEqual(expectedField)
+    })
+    it('should initialize undefined start date', () => {
+      const expectedField: Field<Timestamp | undefined> = {
+        value: undefined,
+        canEdit: true
+      }
+      expect(vm.startDate).toStrictEqual(expectedField)
+    })
+    it('should initialize undefined end date', () => {
+      const expectedField: Field<Timestamp | undefined> = {
+        value: undefined,
+        canEdit: true
+      }
+      expect(vm.endDate).toStrictEqual(expectedField)
+    })
+    it('should initialize no products', () => {
+      const expectedField: Field<Array<PromotionProductItemVM>> = {
+        value: [],
+        canEdit: true
+      }
+      expect(vm.products).toStrictEqual(expectedField)
     })
   })
 })

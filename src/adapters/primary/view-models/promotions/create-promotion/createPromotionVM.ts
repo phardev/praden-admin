@@ -2,9 +2,9 @@ import { CreatePromotionDTO, ReductionType } from '@core/entities/promotion'
 import { Product } from '@core/entities/product'
 import { Timestamp } from '@core/types/types'
 import { useProductStore } from '@store/productStore'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { useSearchStore } from '@store/searchStore'
 import { useFormStore } from '@store/formStore'
+import { GetPromotionVM } from '@adapters/primary/view-models/promotions/get-promotion/getPromotionVM'
 
 export interface TypeChoiceVM {
   type: ReductionType
@@ -23,39 +23,18 @@ export interface Field<T> {
   canEdit: boolean
 }
 
-export class CreatePromotionVM {
+export class CreatePromotionVM extends GetPromotionVM {
   protected readonly key: string
   protected formStore: any
   constructor(key: string) {
+    super(key)
     this.key = key
     this.formStore = useFormStore()
-    this.formStore.set(this.key, {
-      name: '',
-      type: ReductionType.Fixed,
-      products: []
-    })
-  }
-
-  get availableTypeChoices(): Array<TypeChoiceVM> {
-    return Object.values(ReductionType).map((type) => {
-      const text = this.getTypeText(type)
-      return {
-        type,
-        text
-      }
-    })
-  }
-
-  private getTypeText(type: ReductionType): string {
-    if (type === ReductionType.Percentage) {
-      return 'Pourcentage'
-    }
-    return 'Euros'
   }
 
   get type(): Field<ReductionType> {
     return {
-      value: this.formStore.get(this.key).type,
+      ...super.type,
       canEdit: true
     }
   }
@@ -66,7 +45,7 @@ export class CreatePromotionVM {
 
   get name(): Field<string> {
     return {
-      value: this.formStore.get(this.key).name,
+      ...super.name,
       canEdit: true
     }
   }
@@ -76,7 +55,7 @@ export class CreatePromotionVM {
 
   get amount(): Field<string | undefined> {
     return {
-      value: this.formStore.get(this.key).amount,
+      ...super.amount,
       canEdit: true
     }
   }
@@ -86,7 +65,7 @@ export class CreatePromotionVM {
 
   get startDate(): Field<Timestamp | undefined> {
     return {
-      value: this.formStore.get(this.key).startDate,
+      ...super.startDate,
       canEdit: true
     }
   }
@@ -95,7 +74,7 @@ export class CreatePromotionVM {
   }
   get endDate(): Field<Timestamp | undefined> {
     return {
-      value: this.formStore.get(this.key).endDate,
+      ...super.endDate,
       canEdit: true
     }
   }
@@ -103,26 +82,6 @@ export class CreatePromotionVM {
     this.formStore.set(this.key, { endDate })
   }
 
-  get productsHeaders(): Array<Header> {
-    return [
-      {
-        name: 'Nom',
-        value: 'name'
-      },
-      {
-        name: 'Référence',
-        value: 'reference'
-      },
-      {
-        name: 'Catégorie',
-        value: 'category'
-      },
-      {
-        name: 'Laboratoire',
-        value: 'laboratory'
-      }
-    ]
-  }
   get availableProducts() {
     const productStore = useProductStore()
     const allProducts: Array<Product> = productStore.items
@@ -132,29 +91,24 @@ export class CreatePromotionVM {
     const res = (filteredProducts || allProducts).filter(
       (p) => !addedProducts.includes(p.cip13)
     )
-    return res.map((p: Product) => {
-      return {
-        name: p.name,
-        reference: p.cip13,
-        category: '',
-        laboratory: p.laboratory
-      }
-    })
+    return {
+      value: res.map((p: Product) => {
+        return {
+          name: p.name,
+          reference: p.cip13,
+          category: '',
+          laboratory: p.laboratory
+        }
+      }),
+      canEdit: true
+    }
   }
 
-  get products(): Array<PromotionProductItemVM> {
-    const addedProducts = this.formStore.get(this.key).products
-    const productStore = useProductStore()
-    const allProducts: Array<Product> = productStore.items
-    return addedProducts.map((cip13: string) => {
-      const p: Product = allProducts.find((p) => p.cip13 === cip13)
-      return {
-        name: p.name,
-        reference: p.cip13,
-        category: '',
-        laboratory: p.laboratory
-      }
-    })
+  get products(): Field<Array<PromotionProductItemVM>> {
+    return {
+      ...super.products,
+      canEdit: true
+    }
   }
 
   addProducts(cip13: Array<string>) {
@@ -196,6 +150,10 @@ export class CreatePromotionVM {
       res.endDate = formValue.endDate
     }
     return res
+  }
+
+  get displayValidate(): boolean {
+    return true
   }
 }
 

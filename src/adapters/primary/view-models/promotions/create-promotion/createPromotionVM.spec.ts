@@ -149,21 +149,29 @@ describe('Create promotion VM', () => {
       })
       it('should have all products available for selection', () => {
         productStore.items = [dolodent, anaca3Minceur, calmosine]
-        expect(vm.availableProducts).toStrictEqual([
-          dolodentVM,
-          anaca3VM,
-          calmosineVM
-        ])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [dolodentVM, anaca3VM, calmosineVM],
+          canEdit: true
+        }
+        expect(vm.availableProducts).toStrictEqual(expectedField)
       })
       it('should use filter result if there is one', () => {
         productStore.items = [dolodent, anaca3Minceur, calmosine]
         searchStore.set(key, [dolodent, calmosine])
-        expect(vm.availableProducts).toStrictEqual([dolodentVM, calmosineVM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [dolodentVM, calmosineVM],
+          canEdit: true
+        }
+        expect(vm.availableProducts).toStrictEqual(expectedField)
       })
     })
     describe('Products added', () => {
       it('should not have any product added', () => {
-        expect(vm.products).toStrictEqual([])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [],
+          canEdit: true
+        }
+        expect(vm.products).toStrictEqual(expectedField)
       })
       it('should save the value in the form store', () => {
         expect(formStore.get(key).products).toStrictEqual([])
@@ -272,10 +280,18 @@ describe('Create promotion VM', () => {
         expect(formStore.get(key).products).toStrictEqual(selectedProducts)
       })
       it('should get all products vm', () => {
-        expect(vm.products).toStrictEqual([dolodentVM, anaca3VM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [dolodentVM, anaca3VM],
+          canEdit: true
+        }
+        expect(vm.products).toStrictEqual(expectedField)
       })
       it('should remove products from available selection', () => {
-        expect(vm.availableProducts).toStrictEqual([calmosineVM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [calmosineVM],
+          canEdit: true
+        }
+        expect(vm.availableProducts).toStrictEqual(expectedField)
       })
     })
     describe('In multiple steps', () => {
@@ -289,7 +305,11 @@ describe('Create promotion VM', () => {
         expect(formStore.get(key).products).toStrictEqual(selectedProducts)
       })
       it('should get all products vm', () => {
-        expect(vm.products).toStrictEqual([dolodentVM, anaca3VM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [dolodentVM, anaca3VM],
+          canEdit: true
+        }
+        expect(vm.products).toStrictEqual(expectedField)
       })
     })
   })
@@ -311,10 +331,18 @@ describe('Create promotion VM', () => {
         ])
       })
       it('should get all products vm', () => {
-        expect(vm.products).toStrictEqual([anaca3VM, calmosineVM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [anaca3VM, calmosineVM],
+          canEdit: true
+        }
+        expect(vm.products).toStrictEqual(expectedField)
       })
       it('should remove products from available selection', () => {
-        expect(vm.availableProducts).toStrictEqual([dolodentVM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [dolodentVM],
+          canEdit: true
+        }
+        expect(vm.availableProducts).toStrictEqual(expectedField)
       })
     })
     describe('In multiple steps', () => {
@@ -326,7 +354,11 @@ describe('Create promotion VM', () => {
         expect(formStore.get(key).products).toStrictEqual([calmosine.cip13])
       })
       it('should get all products vm', () => {
-        expect(vm.products).toStrictEqual([calmosineVM])
+        const expectedField: Field<Array<PromotionProductItemVM>> = {
+          value: [calmosineVM],
+          canEdit: true
+        }
+        expect(vm.products).toStrictEqual(expectedField)
       })
     })
   })
@@ -354,6 +386,9 @@ describe('Create promotion VM', () => {
         vm.removeProducts([dolodent.cip13])
         expect(vm.canValidate).toBeFalsy()
       })
+    })
+    it('should display validate button any time', () => {
+      expect(vm.displayValidate).toBeTruthy()
     })
   })
   describe('Dto', () => {
