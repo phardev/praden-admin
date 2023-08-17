@@ -1,5 +1,7 @@
 <template lang="pug">
 .section(v-if="vm")
+  .flex.flex-row-reverse
+    ft-button.button-solid.text-xl.px-6(@click="edit") Editer promotion
   h1.text-title Voir promotion
   promotion-form(
     :vm="vm"
@@ -26,4 +28,8 @@ onMounted(async () => {
   await getPromotion(promotionUuid, usePromotionGateway())
   vm.value = getPromotionVM(routeName)
 })
+
+const edit = () => {
+  router.push(`/promotions/edit/${promotionUuid}`)
+}
 </script>

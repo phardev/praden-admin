@@ -25,9 +25,10 @@
             scope='col'
           ) {{ header.name }}
       tbody
-        tr(
+        tr.line(
           v-for='(item, index) in items'
           :key='index'
+          @click="clicked(item)"
         )
           td.border-t.border-light(v-if="selectable" class="relative w-12 px-6 sm:w-16 sm:px-8")
             input(
@@ -79,6 +80,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits<{
+  (e: 'clicked', value: any): void
   (e: 'item-selected', value: any): void
   (e: 'select-all', value: Array<any>): void
 }>()
@@ -96,6 +98,10 @@ const selectionIntersection = computed(() => {
   )
 })
 
+const clicked = (item: any) => {
+  emit('clicked', item[props.itemKey])
+}
+
 const select = (selected: any) => {
   emit('item-selected', selected[props.itemKey])
 }
@@ -107,3 +113,9 @@ const selectAll = () => {
   )
 }
 </script>
+
+<style lang="scss">
+.line {
+  @apply hover:bg-contrast;
+}
+</style>

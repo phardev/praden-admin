@@ -20,6 +20,7 @@ tab-group.border-b.border-gray-200(as="div")
       ft-table(
         :headers="group.table.headers"
         :items="group.table.items"
+        @clicked="clicked"
       )
         template(#startDate="{ item }")
           time(:datetime='item.startDatetime') {{ item.startDate }}
@@ -40,4 +41,9 @@ defineProps({
     }
   }
 })
+
+const clicked = (uuid: string) => {
+  const router = useRouter()
+  router.push(`/promotions/get/${uuid}`)
+}
 </script>
