@@ -5,7 +5,7 @@ div(v-if="currentVM")
       v-for="(typeChoice, index) in currentVM.availableTypeChoices"
       :key="index"
       :disabled="!currentVM.type.canEdit"
-      :class="typeChoice.type === currentVM.type.value ? 'selectedChoice' : 'unSelectedChoice'"
+      :class="typeChoice.type === currentVM.type.value ? 'button-solid' : 'button-default'"
       @click="currentVM.setType(typeChoice.type)"
     )
       div.flex.flex-col.items-center.justify-center
@@ -171,13 +171,3 @@ const validate = async () => {
   emit('validate')
 }
 </script>
-
-<style lang="scss">
-.selectedChoice {
-  @apply button-solid;
-}
-
-.unSelectedChoice {
-  @apply button-default;
-}
-</style>

@@ -50,5 +50,5 @@ export default defineNuxtConfig({
     // store: 'custom-store'
   },
   css: ['~/assets/css/tailwind.css'],
-  ssr: true
+  ssr: false
 })

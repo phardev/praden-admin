@@ -25,7 +25,7 @@
             scope='col'
           ) {{ header.name }}
       tbody
-        tr.line(
+        tr.table-line(
           v-for='(item, index) in items'
           :key='index'
           @click="clicked(item)"
@@ -113,9 +113,3 @@ const selectAll = () => {
   )
 }
 </script>
-
-<style lang="scss">
-.line {
-  @apply hover:bg-contrast;
-}
-</style>

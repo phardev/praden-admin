@@ -57,7 +57,7 @@ const handleDateChange = (date: number) => {
 
 <style lang="scss">
 .dp__theme_light {
-  --dp-background-color: #ffffff;
+  --dp-background-color: #fff;
   --dp-text-color: #212121;
   --dp-hover-color: #f3f3f3;
   --dp-hover-text-color: #212121;
@@ -75,6 +75,6 @@ const handleDateChange = (date: number) => {
   --dp-success-color-disabled: #a3d9b1;
   --dp-icon-color: #959595;
   --dp-danger-color: #ff6f60;
-  --dp-highlight-color: rgba(25, 118, 210, 0.1);
+  --dp-highlight-color: rgba(25 118 210 / 10%);
 }
 </style>

@@ -164,7 +164,7 @@ const preparationVM = computed(() => {
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .centered {
   position: absolute;
   left: 50%;
