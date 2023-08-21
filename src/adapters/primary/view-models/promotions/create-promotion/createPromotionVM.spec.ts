@@ -14,6 +14,8 @@ import { Header } from '@adapters/primary/view-models/preparations/get-orders-to
 import { useSearchStore } from '@store/searchStore'
 import { useFormStore } from '@store/formStore'
 import { Timestamp } from '@core/types/types'
+import { baby, dents, minceur } from '@utils/testData/categories'
+import { useCategoryStore } from '@store/categoryStore'
 
 export const availableTypeChoices: Array<TypeChoiceVM> = [
   {
@@ -29,21 +31,21 @@ export const availableTypeChoices: Array<TypeChoiceVM> = [
 export const anaca3VM: PromotionProductItemVM = {
   name: anaca3Minceur.name,
   reference: anaca3Minceur.cip13,
-  category: '',
+  category: minceur.name,
   laboratory: anaca3Minceur.laboratory
 }
 
 export const calmosineVM: PromotionProductItemVM = {
   name: calmosine.name,
   reference: calmosine.cip13,
-  category: '',
+  category: baby.name,
   laboratory: calmosine.laboratory
 }
 
 export const dolodentVM: PromotionProductItemVM = {
   name: dolodent.name,
   reference: dolodent.cip13,
-  category: '',
+  category: dents.name,
   laboratory: dolodent.laboratory
 }
 
@@ -51,6 +53,7 @@ describe('Create promotion VM', () => {
   let formStore: any
   let productStore: any
   let searchStore: any
+  let categoryStore: any
   const key = 'testRoute'
   let vm: CreatePromotionVM
 
@@ -60,6 +63,8 @@ describe('Create promotion VM', () => {
     productStore = useProductStore()
     searchStore = useSearchStore()
     vm = createPromotionVM(key)
+    categoryStore = useCategoryStore()
+    categoryStore.items = [dents, baby, minceur]
   })
   describe('Initial VM', () => {
     describe('Type choices', () => {

@@ -10,6 +10,8 @@ import { Timestamp } from '@core/types/types'
 import { useProductStore } from '@store/productStore'
 import { Product } from '@core/entities/product'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { Category } from '@core/entities/category'
+import { useCategoryStore } from '@store/categoryStore'
 
 export class GetPromotionVM {
   protected readonly key: string
@@ -115,12 +117,15 @@ export class GetPromotionVM {
     const addedProducts = this.formStore.get(this.key).products
     const productStore = useProductStore()
     const allProducts: Array<Product> = productStore.items
+    const categoryStore = useCategoryStore()
+    const categories: Array<Category> = categoryStore.items
     const value = addedProducts.map((cip13: string) => {
       const p: Product = allProducts.find((p) => p.cip13 === cip13)
+      const c: Category = categories.find((c) => c.uuid === p.categoryUuid)
       return {
         name: p.name,
         reference: p.cip13,
-        category: '',
+        category: c.name,
         laboratory: p.laboratory
       }
     })

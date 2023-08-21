@@ -1,4 +1,5 @@
 import { Product } from '@core/entities/product'
+import { baby } from '@utils/testData/categories'
 
 export const dolodent: Product = {
   name: 'Dolodent solution 27g',
@@ -59,7 +60,8 @@ export const chamomilla: Product = {
 export const calmosine: Product = {
   name: 'Calmosine 100 ml',
   img: '',
-  categoryUuid: '',
+  miniature: '',
+  categoryUuid: baby.uuid,
   cip13: '1234567890123',
   priceWithoutTax: 810,
   percentTaxRate: 10,
@@ -71,7 +73,8 @@ export const calmosine: Product = {
 export const hemoclar: Product = {
   name: 'Hemoclar 0,5% crème 30g',
   img: '',
-  categoryUuid: '',
+  miniature: '',
+  categoryUuid: baby.uuid,
   cip13: '098765432123',
   priceWithoutTax: 590,
   percentTaxRate: 10,

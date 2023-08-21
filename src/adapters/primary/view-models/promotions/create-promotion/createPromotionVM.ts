@@ -5,6 +5,8 @@ import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
 import { useFormStore } from '@store/formStore'
 import { GetPromotionVM } from '@adapters/primary/view-models/promotions/get-promotion/getPromotionVM'
+import { useCategoryStore } from '@store/categoryStore'
+import { Category } from '@core/entities/category'
 
 export interface TypeChoiceVM {
   type: ReductionType
@@ -91,12 +93,15 @@ export class CreatePromotionVM extends GetPromotionVM {
     const res = (filteredProducts || allProducts).filter(
       (p) => !addedProducts.includes(p.cip13)
     )
+    const categoryStore = useCategoryStore()
+    const categories: Array<Category> = categoryStore.items
     return {
       value: res.map((p: Product) => {
+        const c: Category = categories.find((c) => c.uuid === p.categoryUuid)
         return {
           name: p.name,
           reference: p.cip13,
-          category: '',
+          category: c.name,
           laboratory: p.laboratory
         }
       }),

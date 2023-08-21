@@ -14,6 +14,8 @@ import { getPromotion } from '@core/usecases/promotions/promotion-get/getPromoti
 import { getPromotionVM } from '@adapters/primary/view-models/promotions/get-promotion/getPromotionVM'
 import { useProductGateway } from '../../../../../../../gateways/productGateway'
 import { usePromotionGateway } from '../../../../../../../gateways/promotionGateway'
+import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
+import { useCategoryGateway } from '../../../../../../../gateways/categoryGateway'
 
 definePageMeta({ layout: 'main' })
 
@@ -25,6 +27,7 @@ const routeName = router.currentRoute.value.name
 
 onMounted(async () => {
   listProducts(useProductGateway())
+  listCategories(useCategoryGateway())
   await getPromotion(promotionUuid, usePromotionGateway())
   vm.value = getPromotionVM(routeName)
 })

@@ -22,11 +22,14 @@ import {
   dolodentVM,
   availableTypeChoices
 } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM.spec'
+import { baby, dents, minceur } from '@utils/testData/categories'
+import { useCategoryStore } from '@store/categoryStore'
 
 describe('Get promotion VM', () => {
   let formStore: any
   let promotionStore: any
   let productStore: any
+  let categoryStore: any
   const key = 'testRoute'
   let vm: GetPromotionVM
 
@@ -41,6 +44,8 @@ describe('Get promotion VM', () => {
     productStore = useProductStore()
     productStore.items = [dolodent, anaca3Minceur, calmosine]
     promotionStore.current = promotionPercentageDolodent
+    categoryStore = useCategoryStore()
+    categoryStore.items = [dents, baby, minceur]
     vm = getPromotionVM(key)
   })
   describe('Initial VM', () => {
