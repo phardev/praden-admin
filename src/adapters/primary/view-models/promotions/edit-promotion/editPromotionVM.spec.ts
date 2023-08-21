@@ -2,8 +2,7 @@ import { CreatePromotionDTO, ReductionType } from '@core/entities/promotion'
 import { useProductStore } from '@store/productStore'
 import {
   Field,
-  PromotionProductItemVM,
-  TypeChoiceVM
+  PromotionProductItemVM
 } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
 import { anaca3Minceur, calmosine, dolodent } from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
@@ -21,36 +20,12 @@ import {
   promotionFixedMultipleProducts,
   promotionPercentageDolodent
 } from '@utils/testData/promotions'
-
-const availableTypeChoices: Array<TypeChoiceVM> = [
-  {
-    type: ReductionType.Fixed,
-    text: 'Euros'
-  },
-  {
-    type: ReductionType.Percentage,
-    text: 'Pourcentage'
-  }
-]
-
-const anaca3VM: PromotionProductItemVM = {
-  name: anaca3Minceur.name,
-  reference: anaca3Minceur.cip13,
-  category: '',
-  laboratory: anaca3Minceur.laboratory
-}
-const calmosineVM: PromotionProductItemVM = {
-  name: calmosine.name,
-  reference: calmosine.cip13,
-  category: '',
-  laboratory: calmosine.laboratory
-}
-const dolodentVM: PromotionProductItemVM = {
-  name: dolodent.name,
-  reference: dolodent.cip13,
-  category: '',
-  laboratory: dolodent.laboratory
-}
+import {
+  calmosineVM,
+  anaca3VM,
+  dolodentVM,
+  availableTypeChoices
+} from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM.spec'
 
 describe('Edit promotion VM', () => {
   let formStore: any

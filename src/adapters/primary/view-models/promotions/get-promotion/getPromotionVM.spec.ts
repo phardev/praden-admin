@@ -2,8 +2,7 @@ import { ReductionType } from '@core/entities/promotion'
 import { useProductStore } from '@store/productStore'
 import {
   Field,
-  PromotionProductItemVM,
-  TypeChoiceVM
+  PromotionProductItemVM
 } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
 import { anaca3Minceur, calmosine, dolodent } from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
@@ -19,24 +18,10 @@ import {
   GetPromotionVM,
   getPromotionVM
 } from '@adapters/primary/view-models/promotions/get-promotion/getPromotionVM'
-
-const dolodentVM: PromotionProductItemVM = {
-  name: dolodent.name,
-  reference: dolodent.cip13,
-  category: '',
-  laboratory: dolodent.laboratory
-}
-
-const availableTypeChoices: Array<TypeChoiceVM> = [
-  {
-    type: ReductionType.Fixed,
-    text: 'Euros'
-  },
-  {
-    type: ReductionType.Percentage,
-    text: 'Pourcentage'
-  }
-]
+import {
+  dolodentVM,
+  availableTypeChoices
+} from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM.spec'
 
 describe('Get promotion VM', () => {
   let formStore: any

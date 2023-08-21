@@ -15,7 +15,7 @@ import { useSearchStore } from '@store/searchStore'
 import { useFormStore } from '@store/formStore'
 import { Timestamp } from '@core/types/types'
 
-const availableTypeChoices: Array<TypeChoiceVM> = [
+export const availableTypeChoices: Array<TypeChoiceVM> = [
   {
     type: ReductionType.Fixed,
     text: 'Euros'
@@ -26,19 +26,21 @@ const availableTypeChoices: Array<TypeChoiceVM> = [
   }
 ]
 
-const anaca3VM: PromotionProductItemVM = {
+export const anaca3VM: PromotionProductItemVM = {
   name: anaca3Minceur.name,
   reference: anaca3Minceur.cip13,
   category: '',
   laboratory: anaca3Minceur.laboratory
 }
-const calmosineVM: PromotionProductItemVM = {
+
+export const calmosineVM: PromotionProductItemVM = {
   name: calmosine.name,
   reference: calmosine.cip13,
   category: '',
   laboratory: calmosine.laboratory
 }
-const dolodentVM: PromotionProductItemVM = {
+
+export const dolodentVM: PromotionProductItemVM = {
   name: dolodent.name,
   reference: dolodent.cip13,
   category: '',
