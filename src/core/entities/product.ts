@@ -14,3 +14,7 @@ export interface Product {
   availableStock: number
   laboratory: string
 }
+
+export const isProduct = (object: any): object is Product => {
+  return 'cip13' in object
+}
