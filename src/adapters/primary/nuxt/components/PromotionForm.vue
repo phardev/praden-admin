@@ -52,6 +52,7 @@ div(v-if="currentVM")
   ft-input(
     v-if="currentVM.products.canEdit"
     v-model="search"
+    placeholder="Rechercher par nom, référence, catégorie, laboratoire"
     for="search"
     type='text'
     name='search'
@@ -71,7 +72,7 @@ div(v-if="currentVM")
         @select-all="availableProductSelector.toggleSelectAll"
       )
         template(#title) Tous les produits
-    div.flex.flex-col.justify-center.items-center.gap-6(
+    div.flex.flex-col.justify-center.gap-6.mt-20(
       v-if="currentVM.products.canEdit"
     )
       ft-button.button-solid(

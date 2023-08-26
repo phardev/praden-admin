@@ -83,13 +83,33 @@ describe('Search products', () => {
       beforeEach(() => {
         searchGateway.feedWith(dolodent, hemoclar, calmosine, dents, baby)
       })
-      it('should get one product with laboratory containing the query', async () => {
+      it('should get one product with category name containing the query', async () => {
         const query = 'dents'
         await whenSearchForProducts(query)
         expectSearchResultToEqual(dolodent)
       })
       it('should get multiple products with category name containing the query', async () => {
         const query = 'béb'
+        await whenSearchForProducts(query)
+        expectSearchResultToEqual(hemoclar, calmosine)
+      })
+      it('should get nothing with category name not containing the query', async () => {
+        const query = 'querywithoutresult'
+        await whenSearchForProducts(query)
+        expectSearchResultToEqual()
+      })
+    })
+    describe('Filter on cip13', () => {
+      beforeEach(() => {
+        searchGateway.feedWith(dolodent, hemoclar, calmosine, dents, baby)
+      })
+      it('should get one product with cip13 containing the query', async () => {
+        const query = dolodent.cip13
+        await whenSearchForProducts(query)
+        expectSearchResultToEqual(dolodent)
+      })
+      it('should get multiple products with category name containing the query', async () => {
+        const query = '123'
         await whenSearchForProducts(query)
         expectSearchResultToEqual(hemoclar, calmosine)
       })

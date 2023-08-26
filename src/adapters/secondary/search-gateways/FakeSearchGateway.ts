@@ -16,7 +16,13 @@ export class FakeSearchGateway implements SearchGateway {
         : false
       const isNameMatching = i.name.includesWithoutCase(query)
       const isLaboratoryMatching = i.laboratory.includesWithoutCase(query)
-      return isNameMatching || isLaboratoryMatching || isCategoryNameMatching
+      const isCip13Matching = i.cip13.includes(query)
+      return (
+        isNameMatching ||
+        isLaboratoryMatching ||
+        isCategoryNameMatching ||
+        isCip13Matching
+      )
     })
     return Promise.resolve(res)
   }
