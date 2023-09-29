@@ -1,4 +1,5 @@
 import { Product } from '@core/entities/product'
+import { baby } from '@utils/testData/categories'
 
 export const dolodent: Product = {
   name: 'Dolodent solution 27g',
@@ -10,7 +11,8 @@ export const dolodent: Product = {
   priceWithoutTax: 500,
   percentTaxRate: 10,
   location: 'DD02',
-  availableStock: 59
+  availableStock: 59,
+  laboratory: 'Gilbert'
 }
 
 export const ultraLevure: Product = {
@@ -23,7 +25,8 @@ export const ultraLevure: Product = {
   priceWithoutTax: 432,
   percentTaxRate: 10,
   location: 'C3',
-  availableStock: 36
+  availableStock: 36,
+  laboratory: 'BIOCODEX'
 }
 
 export const anaca3Minceur: Product = {
@@ -36,7 +39,8 @@ export const anaca3Minceur: Product = {
   priceWithoutTax: 891,
   percentTaxRate: 5.5,
   location: '1D450',
-  availableStock: 36
+  availableStock: 36,
+  laboratory: 'ANACA 3'
 }
 
 export const chamomilla: Product = {
@@ -49,27 +53,32 @@ export const chamomilla: Product = {
   priceWithoutTax: 627,
   percentTaxRate: 10,
   location: 'HOMEO-D',
-  availableStock: 1
+  availableStock: 1,
+  laboratory: 'BOIRON'
 }
 
 export const calmosine: Product = {
   name: 'Calmosine 100 ml',
   img: '',
-  categoryUuid: '',
+  miniature: '',
+  categoryUuid: baby.uuid,
   cip13: '1234567890123',
   priceWithoutTax: 810,
   percentTaxRate: 10,
   location: 'E2',
-  availableStock: 10
+  availableStock: 10,
+  laboratory: 'NUTRISANTE'
 }
 
 export const hemoclar: Product = {
   name: 'Hemoclar 0,5% crème 30g',
   img: '',
-  categoryUuid: '',
+  miniature: '',
+  categoryUuid: baby.uuid,
   cip13: '098765432123',
   priceWithoutTax: 590,
   percentTaxRate: 10,
   location: 'D2',
-  availableStock: 23
+  availableStock: 23,
+  laboratory: 'SANOFI-AVENTIS'
 }

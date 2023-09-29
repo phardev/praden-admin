@@ -17,7 +17,7 @@ div.hidden.printme.mx-2
 </template>
 
 <script lang="ts" setup>
-import { startPreparationsVM } from '@adapters/primary/view-models/start-preparations/startPreparationsVM'
+import { startPreparationsVM } from '@adapters/primary/view-models/preparations/start-preparations/startPreparationsVM'
 
 let vueQr
 if (process.client) {

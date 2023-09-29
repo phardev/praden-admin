@@ -4,7 +4,7 @@ import { priceFormatter } from '@utils/formatters'
 import { PreparationStartedMessage } from '@core/entities/emailMessage'
 import { EmailGateway } from '@core/gateways/emailGateway'
 import { Order } from '@core/entities/order'
-import { computeTotalWithTaxForOrder } from '@adapters/primary/view-models/get-orders-to-prepare/getPreparationsVM'
+import { computeTotalWithTaxForOrder } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { useProductStore } from '@store/productStore'
 
 export const startPreparations = async (

@@ -12,4 +12,9 @@ export interface Product {
   percentTaxRate: number
   location: string
   availableStock: number
+  laboratory: string
+}
+
+export const isProduct = (object: any): object is Product => {
+  return 'cip13' in object
 }

@@ -5,6 +5,11 @@ export const dents: Category = {
   name: 'Dents'
 }
 
+export const baby: Category = {
+  uuid: 'category-baby',
+  name: 'Bébé'
+}
+
 export const diarrhee: Category = {
   uuid: 'category-diarrhee',
   name: 'Diarrhée'

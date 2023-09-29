@@ -2,7 +2,7 @@ import { OrderGateway } from '@core/gateways/orderGateway'
 import { usePreparationStore } from '@store/preparationStore'
 import { InvoiceGateway } from '@core/gateways/invoiceGateway'
 import { useInvoiceStore } from '@store/invoiceStore'
-import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
+import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
 
 export const cancelPreparation = async (
   orderGateway: OrderGateway,

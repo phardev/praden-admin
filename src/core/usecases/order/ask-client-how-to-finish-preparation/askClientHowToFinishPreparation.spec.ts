@@ -3,10 +3,10 @@ import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
 import { Message, MessageContent, Order } from '@core/entities/order'
 import { usePreparationStore } from '@store/preparationStore'
 import { askClientHowToFinishPreparation } from '@core/usecases/order/ask-client-how-to-finish-preparation/askClientHowToFinishPreparation'
-import { InMemoryOrderGateway } from '@adapters/secondary/inMemoryOrderGateway'
-import { FakeDateProvider } from '@adapters/secondary/fakeDateProvider'
-import { NoPreparationSelectedError } from '@core/errors/noPreparationSelectedError'
-import { PreparationDoesNotExistsError } from '@core/errors/preparationDoesNotExistsError'
+import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
+import { PreparationDoesNotExistsError } from '@core/errors/PreparationDoesNotExistsError'
 
 describe('Ask client how to finish preparation', () => {
   let preparationStore: any

@@ -65,7 +65,7 @@ import { getPreparation } from '@core/usecases/order/get-preparation/getPreparat
 import {
   getPreparationVM,
   PreparationStatus
-} from '@adapters/primary/view-models/get-preparation/getPreparationVM'
+} from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
 import { scanProductToPreparation } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
 import { validatePreparation } from '@core/usecases/order/validate-preparation/validatePreparation'
 import { useInvoiceGateway } from '../../../../../../gateways/invoiceGateway'
@@ -164,7 +164,7 @@ const preparationVM = computed(() => {
 })
 </script>
 
-<style lang="css">
+<style lang="scss" scoped>
 .centered {
   position: absolute;
   left: 50%;

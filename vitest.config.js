@@ -1,5 +1,7 @@
 import path from 'path'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import Vue from '@vitejs/plugin-vue'
+import AutoImport from 'unplugin-auto-import/vite'
 
 export default {
   test: {
@@ -9,7 +11,7 @@ export default {
       provider: 'istanbul' // or 'c8'
     }
   },
-  plugins: [tsconfigPaths()],
+  plugins: [tsconfigPaths(), Vue(), AutoImport({ imports: ['vue'] })],
   resolve: {
     alias: {
       '~': path.resolve(__dirname, '.')

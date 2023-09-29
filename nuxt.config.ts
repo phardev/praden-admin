@@ -22,7 +22,11 @@ export default defineNuxtConfig({
     }
   },
   build: {
-    transpile: ['vue-qr', '@diadal/vue3-qr-code-styling']
+    transpile: [
+      'vue-qr',
+      '@diadal/vue3-qr-code-styling',
+      '@vuepic/vue-datepicker'
+    ]
   },
   components: {
     dirs: [
@@ -36,7 +40,7 @@ export default defineNuxtConfig({
   typescript: {
     strict: true
   },
-  modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', 'nuxt-icon'],
+  modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', 'nuxt-icon', '@vueuse/nuxt'],
   dir: {
     // assets: 'custom-assets',
     layouts: './src/adapters/primary/nuxt/layouts',
@@ -46,5 +50,5 @@ export default defineNuxtConfig({
     // store: 'custom-store'
   },
   css: ['~/assets/css/tailwind.css'],
-  ssr: true
+  ssr: false
 })

@@ -15,7 +15,7 @@
 <script lang="ts" setup>
 import { listProducts } from '@core/usecases/product/product-listing/listProducts'
 import { useProductGateway } from '../../../../../../gateways/productGateway'
-import { getProductsVM } from '@adapters/primary/view-models/get-products/getProductsVM'
+import { getProductsVM } from '@adapters/primary/view-models/products/get-products/getProductsVM'
 import { useCategoryStore } from '@store/categoryStore'
 import { dents, diarrhee } from '@utils/testData/categories'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
