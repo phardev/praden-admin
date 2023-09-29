@@ -1,12 +1,10 @@
-import * as promotions from '@utils/testData/promotions'
-import { InMemoryPromotionGateway } from '@adapters/secondary/promotion-gateways/InMemoryPromotionGateway'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-
-const uuidGenerator = new FakeUuidGenerator()
-uuidGenerator.setNext('abc123')
-const promotionGateway = new InMemoryPromotionGateway(uuidGenerator)
-promotionGateway.feedWith(...Object.values(promotions))
+import { RealPromotionGateway } from '@adapters/secondary/promotion-gateways/RealPromotionGateway'
 
 export const usePromotionGateway = () => {
-  return promotionGateway
+  // const uuidGenerator = new FakeUuidGenerator()
+  // uuidGenerator.setNext('abc123')
+  // const promotionGateway = new InMemoryPromotionGateway(uuidGenerator)
+  // promotionGateway.feedWith(...Object.values(promotions))
+  const { BACKEND_URL } = useRuntimeConfig().public
+  return new RealPromotionGateway(BACKEND_URL)
 }

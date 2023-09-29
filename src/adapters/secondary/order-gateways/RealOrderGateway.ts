@@ -3,11 +3,17 @@ import { Order } from '@core/entities/order'
 import { UUID } from '@core/types/types'
 import axios from 'axios'
 
-export class RealOrderGateway implements OrderGateway {
-  private readonly baseUrl: string
+export abstract class RealGateway {
+  protected readonly baseUrl: string
 
   constructor(baseUrl: string) {
     this.baseUrl = `${baseUrl}`
+  }
+}
+
+export class RealOrderGateway extends RealGateway implements OrderGateway {
+  constructor(baseUrl: string) {
+    super(baseUrl)
   }
 
   async askHowToFinish(preparation: Order): Promise<Order> {
