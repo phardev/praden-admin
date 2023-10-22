@@ -1,5 +1,6 @@
 <template lang="pug">
 div(v-if="currentVM")
+  pre {{ currentVM.formStore.items }}
   ft-input(
     :value="currentVM.name.value"
     for="name"
@@ -39,6 +40,14 @@ div(v-if="currentVM")
     required
     @input="percentTaxRateChanged"
   ) Taxe (%)
+  fv-autocomplete(
+    label="Catégorie"
+    :items="currentVM.availableCategories"
+    item-title="name"
+    item-value="uuid"
+    :clearable="true"
+    @update:model-value="categoryChanged"
+  )
   ft-input(
     :value="currentVM.location.value"
     for="location"
@@ -88,6 +97,10 @@ const percentTaxRateChanged = (e: any) => {
 
 const laboratoryChanged = (e: any) => {
   currentVM.value.setLaboratory(e.target.value)
+}
+
+const categoryChanged = (uuid: string) => {
+  currentVM.value.setCategoryUuid(uuid)
 }
 
 const locationChanged = (e: any) => {

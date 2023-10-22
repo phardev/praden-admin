@@ -42,6 +42,7 @@ export class CreateProductVM {
       canEdit: true
     }
   }
+
   setCategoryUuid(categoryUuid: UUID | undefined): void {
     this.formStore.set(this.key, { categoryUuid })
   }
