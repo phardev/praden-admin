@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Product, Stock } from '../core/entities/product'
+import { Product, Stock } from '@core/entities/product'
 
 export const useProductStore = defineStore('ProductStore', {
   state: () => {
@@ -14,6 +14,9 @@ export const useProductStore = defineStore('ProductStore', {
       this.items.forEach((i) => {
         this.stock[i.cip13] = i.availableStock
       })
+    },
+    add(product: Product) {
+      this.items.push(product)
     }
   }
 })
