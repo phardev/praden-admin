@@ -25,7 +25,8 @@ export default defineNuxtConfig({
     transpile: [
       'vue-qr',
       '@diadal/vue3-qr-code-styling',
-      '@vuepic/vue-datepicker'
+      '@vuepic/vue-datepicker',
+      'vuetify'
     ]
   },
   components: {
@@ -45,10 +46,20 @@ export default defineNuxtConfig({
     // assets: 'custom-assets',
     layouts: './src/adapters/primary/nuxt/layouts',
     // middleware: 'custom-middleware',
-    pages: './src/adapters/primary/nuxt/pages/'
+    pages: './src/adapters/primary/nuxt/pages/',
+    plugins: './src/adapters/primary/nuxt/plugins/'
     // static: 'custom-static',
     // store: 'custom-store'
   },
-  css: ['~/assets/css/tailwind.css'],
-  ssr: false
+  css: [
+    '~/assets/css/tailwind.css',
+    'vuetify/lib/styles/main.sass',
+    '@mdi/font/css/materialdesignicons.min.css'
+  ],
+  ssr: false,
+  vite: {
+    define: {
+      'process.env.DEBUG': false
+    }
+  }
 })
