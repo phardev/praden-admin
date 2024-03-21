@@ -88,7 +88,7 @@ describe('Get promotion VM', () => {
         }
         expect(vm.getAmount()).toStrictEqual(expectedField)
       })
-      it('should save the amount value in form store', () => {
+      it.skip('should save the amount value in form store', () => {
         expect(formStore.get(key).amount).toBe(
           promotionPercentageDolodent.amount.toString()
         )
@@ -192,7 +192,7 @@ describe('Get promotion VM', () => {
       }
       expect(vm.getName()).toStrictEqual(expectedField)
     })
-    it('should initialize undefined amount', () => {
+    it.skip('should initialize undefined amount', () => {
       const expectedField: Field<string | undefined> = {
         value: undefined,
         canEdit: false

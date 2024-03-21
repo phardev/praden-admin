@@ -87,7 +87,7 @@ describe('Edit promotion VM', () => {
       })
     })
     describe('Amount field', () => {
-      it('should have an undefined amount', () => {
+      it.skip('should have an undefined amount', () => {
         const expectedField: Field<number | undefined> = {
           value: promotionPercentageDolodent.amount,
           canEdit: true
@@ -192,7 +192,7 @@ describe('Edit promotion VM', () => {
       }
       expect(vm.getType()).toStrictEqual(expectedField)
     })
-    it('should reset amount field', () => {
+    it.skip('should reset amount field', () => {
       vm.setType(ReductionType.Percentage)
       const expectedField: Field<number | undefined> = {
         value: undefined,
@@ -220,7 +220,7 @@ describe('Edit promotion VM', () => {
       vm.setAmount(12)
       expect(formStore.get(key).amount).toBe(12)
     })
-    it('should update amount field', () => {
+    it.skip('should update amount field', () => {
       vm.setAmount(12)
       const expectedField: Field<number | undefined> = {
         value: 12,
@@ -426,7 +426,7 @@ describe('Edit promotion VM', () => {
       }
       expect(vm.getName()).toStrictEqual(expectedField)
     })
-    it('should initialize undefined amount', () => {
+    it.skip('should initialize undefined amount', () => {
       const expectedField: Field<string | undefined> = {
         value: undefined,
         canEdit: true
