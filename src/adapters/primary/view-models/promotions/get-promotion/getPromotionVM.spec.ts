@@ -51,7 +51,7 @@ describe('Get promotion VM', () => {
   describe('Initial VM', () => {
     describe('Type choices', () => {
       it('should provide available type choices', () => {
-        expect(vm.availableTypeChoices).toStrictEqual(availableTypeChoices)
+        expect(vm.getAvailableTypeChoices()).toStrictEqual(availableTypeChoices)
       })
     })
     describe('Type selected', () => {
@@ -60,7 +60,7 @@ describe('Get promotion VM', () => {
           value: ReductionType.Percentage,
           canEdit: false
         }
-        expect(vm.type).toStrictEqual(expectedField)
+        expect(vm.getType()).toStrictEqual(expectedField)
       })
       it('should save fixed choice in form store', () => {
         expect(formStore.get(key).type).toBe(ReductionType.Percentage)
@@ -72,7 +72,7 @@ describe('Get promotion VM', () => {
           value: promotionPercentageDolodent.name,
           canEdit: false
         }
-        expect(vm.name).toStrictEqual(expectedField)
+        expect(vm.getName()).toStrictEqual(expectedField)
       })
       it('should save the name value in form store', () => {
         expect(formStore.get(key).name).toStrictEqual(
@@ -86,7 +86,7 @@ describe('Get promotion VM', () => {
           value: promotionPercentageDolodent.amount.toString(),
           canEdit: false
         }
-        expect(vm.amount).toStrictEqual(expectedField)
+        expect(vm.getAmount()).toStrictEqual(expectedField)
       })
       it('should save the amount value in form store', () => {
         expect(formStore.get(key).amount).toBe(
@@ -100,7 +100,7 @@ describe('Get promotion VM', () => {
           value: promotionPercentageDolodent.startDate,
           canEdit: false
         }
-        expect(vm.startDate).toStrictEqual(expectedField)
+        expect(vm.getStartDate()).toStrictEqual(expectedField)
       })
       it('should save the start date value in form store', () => {
         expect(formStore.get(key).startDate).toBe(
@@ -114,7 +114,7 @@ describe('Get promotion VM', () => {
           value: promotionPercentageDolodent.endDate,
           canEdit: false
         }
-        expect(vm.endDate).toStrictEqual(expectedField)
+        expect(vm.getEndDate()).toStrictEqual(expectedField)
       })
       it('should save the end date value in form store', () => {
         expect(formStore.get(key).endDate).toBe(
@@ -142,14 +142,14 @@ describe('Get promotion VM', () => {
             value: 'laboratory'
           }
         ]
-        expect(vm.productsHeaders).toStrictEqual(expectedProductsHeader)
+        expect(vm.getProductsHeaders()).toStrictEqual(expectedProductsHeader)
       })
       it('should have all products available for selection without promotion products', () => {
         const expectedField: Field<Array<PromotionProductItemVM>> = {
           value: [],
           canEdit: false
         }
-        expect(vm.availableProducts).toStrictEqual(expectedField)
+        expect(vm.getAvailableProducts()).toStrictEqual(expectedField)
       })
     })
     describe('Products added', () => {
@@ -158,7 +158,7 @@ describe('Get promotion VM', () => {
           value: [dolodentVM],
           canEdit: false
         }
-        expect(vm.products).toStrictEqual(expectedField)
+        expect(vm.getProducts()).toStrictEqual(expectedField)
       })
       it('should save the value in the form store', () => {
         expect(formStore.get(key).products).toStrictEqual([dolodent.cip13])
@@ -167,10 +167,10 @@ describe('Get promotion VM', () => {
   })
   describe('Validation', () => {
     it('should not allow to validate', () => {
-      expect(vm.canValidate).toBeFalsy()
+      expect(vm.getCanValidate()).toBe(false)
     })
     it('should not display validate', () => {
-      expect(vm.displayValidate).toBeFalsy()
+      expect(vm.getDisplayValidate()).toBe(false)
     })
   })
   describe('There is no current promotion', () => {
@@ -183,42 +183,42 @@ describe('Get promotion VM', () => {
         value: ReductionType.Fixed,
         canEdit: false
       }
-      expect(vm.type).toStrictEqual(expectedField)
+      expect(vm.getType()).toStrictEqual(expectedField)
     })
     it('should initialize empty name', () => {
       const expectedField: Field<string> = {
         value: '',
         canEdit: false
       }
-      expect(vm.name).toStrictEqual(expectedField)
+      expect(vm.getName()).toStrictEqual(expectedField)
     })
     it('should initialize undefined amount', () => {
       const expectedField: Field<string | undefined> = {
         value: undefined,
         canEdit: false
       }
-      expect(vm.amount).toStrictEqual(expectedField)
+      expect(vm.getAmount()).toStrictEqual(expectedField)
     })
     it('should initialize undefined start date', () => {
       const expectedField: Field<Timestamp | undefined> = {
         value: undefined,
         canEdit: false
       }
-      expect(vm.startDate).toStrictEqual(expectedField)
+      expect(vm.getStartDate()).toStrictEqual(expectedField)
     })
     it('should initialize undefined end date', () => {
       const expectedField: Field<Timestamp | undefined> = {
         value: undefined,
         canEdit: false
       }
-      expect(vm.endDate).toStrictEqual(expectedField)
+      expect(vm.getEndDate()).toStrictEqual(expectedField)
     })
     it('should initialize no products', () => {
       const expectedField: Field<Array<PromotionProductItemVM>> = {
         value: [],
         canEdit: false
       }
-      expect(vm.products).toStrictEqual(expectedField)
+      expect(vm.getProducts()).toStrictEqual(expectedField)
     })
   })
 })

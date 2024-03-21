@@ -7,8 +7,9 @@ import {
   createProductVM,
   CreateProductVM
 } from '@adapters/primary/view-models/products/create-product/createProductVM'
-import { Field } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
-import { UUID } from '@core/types/types'
+import { type Field } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
+import { type UUID } from '@core/types/types'
+import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 
 describe('Create product VM', () => {
   let formStore: any
@@ -31,7 +32,7 @@ describe('Create product VM', () => {
           value: '',
           canEdit: true
         }
-        expect(vm.name).toStrictEqual(expectedField)
+        expect(vm.getName()).toStrictEqual(expectedField)
       })
       it('should save the name value in form store', () => {
         expect(formStore.get(key).name).toStrictEqual('')
@@ -39,7 +40,7 @@ describe('Create product VM', () => {
     })
     describe('Category choices', () => {
       it('should provide all categories', () => {
-        expect(vm.availableCategories).toStrictEqual([
+        expect(vm.getAvailableCategories()).toStrictEqual([
           {
             uuid: medicaments.uuid,
             name: medicaments.name
@@ -61,7 +62,7 @@ describe('Create product VM', () => {
           value: undefined,
           canEdit: true
         }
-        expect(vm.categoryUuid).toStrictEqual(expectedField)
+        expect(vm.getCategoryUuid()).toStrictEqual(expectedField)
       })
       it('should not have any category selected in form store', () => {
         expect(formStore.get(key).categoryUuid).toBe(undefined)
@@ -73,7 +74,7 @@ describe('Create product VM', () => {
           value: '',
           canEdit: true
         }
-        expect(vm.cip13).toStrictEqual(expectedField)
+        expect(vm.getCip13()).toStrictEqual(expectedField)
       })
       it('should save the cip13 value in form store', () => {
         expect(formStore.get(key).cip13).toStrictEqual('')
@@ -85,7 +86,7 @@ describe('Create product VM', () => {
           value: undefined,
           canEdit: true
         }
-        expect(vm.priceWithoutTax).toStrictEqual(expectedField)
+        expect(vm.getPriceWithoutTax()).toStrictEqual(expectedField)
       })
       it('should not have any price without tax in form store', () => {
         expect(formStore.get(key).priceWithoutTax).toBe(undefined)
@@ -97,7 +98,7 @@ describe('Create product VM', () => {
           value: undefined,
           canEdit: true
         }
-        expect(vm.percentTaxRate).toStrictEqual(expectedField)
+        expect(vm.getPercentTaxRate()).toStrictEqual(expectedField)
       })
       it('should not have any percent tax rate in form store', () => {
         expect(formStore.get(key).priceWithoutTax).toBe(undefined)
@@ -109,7 +110,7 @@ describe('Create product VM', () => {
           value: '',
           canEdit: true
         }
-        expect(vm.laboratory).toStrictEqual(expectedField)
+        expect(vm.getLaboratory()).toStrictEqual(expectedField)
       })
       it('should save the laboratory in form store', () => {
         expect(formStore.get(key).laboratory).toBe('')
@@ -121,10 +122,34 @@ describe('Create product VM', () => {
           value: '',
           canEdit: true
         }
-        expect(vm.location).toStrictEqual(expectedField)
+        expect(vm.getLocation()).toStrictEqual(expectedField)
       })
       it('should save the location in form store', () => {
         expect(formStore.get(key).location).toBe('')
+      })
+    })
+    describe('Available stock field', () => {
+      it('should have an empty available stock', () => {
+        const expectedField: Field<string> = {
+          value: '',
+          canEdit: true
+        }
+        expect(vm.getAvailableStock()).toStrictEqual(expectedField)
+      })
+      it('should save the available stock in form store', () => {
+        expect(formStore.get(key).availableStock).toBe('')
+      })
+    })
+    describe('New images', () => {
+      it('should have an empty array', () => {
+        const expectedField: Field<Array<File>> = {
+          value: [],
+          canEdit: true
+        }
+        expect(vm.getNewImages()).toStrictEqual(expectedField)
+      })
+      it('should save the new images in form store', () => {
+        expect(formStore.get(key).newImages).toStrictEqual([])
       })
     })
   })
@@ -139,7 +164,7 @@ describe('Create product VM', () => {
         value: 'test',
         canEdit: true
       }
-      expect(vm.name).toStrictEqual(expectedField)
+      expect(vm.getName()).toStrictEqual(expectedField)
     })
   })
   describe('Update category uuid', () => {
@@ -153,7 +178,7 @@ describe('Create product VM', () => {
         value: 'test',
         canEdit: true
       }
-      expect(vm.categoryUuid).toStrictEqual(expectedField)
+      expect(vm.getCategoryUuid()).toStrictEqual(expectedField)
     })
   })
 
@@ -168,7 +193,7 @@ describe('Create product VM', () => {
         value: 'test',
         canEdit: true
       }
-      expect(vm.cip13).toStrictEqual(expectedField)
+      expect(vm.getCip13()).toStrictEqual(expectedField)
     })
   })
 
@@ -183,7 +208,7 @@ describe('Create product VM', () => {
         value: '12',
         canEdit: true
       }
-      expect(vm.priceWithoutTax).toStrictEqual(expectedField)
+      expect(vm.getPriceWithoutTax()).toStrictEqual(expectedField)
     })
   })
 
@@ -198,7 +223,7 @@ describe('Create product VM', () => {
         value: '5',
         canEdit: true
       }
-      expect(vm.percentTaxRate).toStrictEqual(expectedField)
+      expect(vm.getPercentTaxRate()).toStrictEqual(expectedField)
     })
   })
 
@@ -213,7 +238,7 @@ describe('Create product VM', () => {
         value: 'laboratory',
         canEdit: true
       }
-      expect(vm.laboratory).toStrictEqual(expectedField)
+      expect(vm.getLaboratory()).toStrictEqual(expectedField)
     })
   })
 
@@ -228,7 +253,83 @@ describe('Create product VM', () => {
         value: 'location',
         canEdit: true
       }
-      expect(vm.location).toStrictEqual(expectedField)
+      expect(vm.getLocation()).toStrictEqual(expectedField)
+    })
+  })
+  describe('Update available stock', () => {
+    const stock = '12'
+    beforeEach(() => {
+      vm.setAvailableStock(stock)
+    })
+    it('should update available stock value in form store', () => {
+      expect(formStore.get(key).availableStock).toStrictEqual(stock)
+    })
+    it('should update available stock field', () => {
+      const expectedField: Field<string> = {
+        value: stock,
+        canEdit: true
+      }
+      expect(vm.getAvailableStock()).toStrictEqual(expectedField)
+    })
+  })
+  describe('Update new images', () => {
+    const newImages: Array<File> = [
+      new File(['data1'], 'File 1', { type: 'image/png' }),
+      new File(['data2'], 'File 2', { type: 'image/jpeg' }),
+      new File(['data3'], 'File 3', { type: 'image/gif' })
+    ]
+    beforeEach(async () => {
+      await vm.setNewImages(newImages)
+    })
+    it('should update new images value in form store', () => {
+      expect(formStore.get(key).newImages).toStrictEqual(newImages)
+    })
+    it('should update new images field', () => {
+      const expectedField: Field<Array<File>> = {
+        value: newImages,
+        canEdit: true
+      }
+      expect(vm.getNewImages()).toStrictEqual(expectedField)
+    })
+    it('should extract new images content', () => {
+      const expectedImages: Array<string> = [
+        'data:image/png;base64,ZGF0YTE=',
+        'data:image/jpeg;base64,ZGF0YTI=',
+        'data:image/gif;base64,ZGF0YTM='
+      ]
+      expect(vm.getImages()).toStrictEqual(expectedImages)
+    })
+  })
+  describe('DTO', () => {
+    describe('For a dto', () => {
+      it('should prepare the dto', () => {
+        const newImages = [
+          new File(['data1'], 'File 1', { type: 'image/png' }),
+          new File(['data2'], 'File 2', { type: 'image/jpeg' }),
+          new File(['data3'], 'File 3', { type: 'image/gif' })
+        ]
+        const expectedDTO: CreateProductDTO = {
+          name: 'test',
+          cip13: '1234567890123',
+          categoryUuid: 'abc123',
+          laboratory: 'laboratory',
+          images: newImages,
+          priceWithoutTax: '12',
+          percentTaxRate: '5',
+          location: 'G2',
+          availableStock: '21'
+        }
+        vm.setName(expectedDTO.name)
+        vm.setCip13(expectedDTO.cip13)
+        vm.setNewImages(newImages)
+        vm.setCategoryUuid(expectedDTO.categoryUuid)
+        vm.setLaboratory(expectedDTO.laboratory)
+        vm.setPriceWithoutTax(expectedDTO.priceWithoutTax)
+        vm.setPercentTaxRate(expectedDTO.percentTaxRate)
+        vm.setLocation(expectedDTO.location)
+        vm.setAvailableStock(expectedDTO.availableStock)
+        expect(vm.getDto()).toStrictEqual(expectedDTO)
+      })
     })
   })
 })

@@ -13,7 +13,6 @@ import {
 } from '@utils/testData/promotions'
 import { calmosine } from '@utils/testData/products'
 import { editPromotion } from '@core/usecases/promotions/promotion-edition/editPromotion'
-import { UUID } from '@core/types/types'
 import { PromotionDoesNotExistsError } from '@core/errors/PromotionDoesNotExistsError'
 
 describe('Edit promotion', () => {
@@ -94,7 +93,7 @@ describe('Edit promotion', () => {
     promotionGateway.feedWith(...JSON.parse(JSON.stringify(promotions)))
     promotionStore.items = JSON.parse(JSON.stringify(promotions))
   }
-  const whenEditPromotion = async (uuid: UUID, dto: EditPromotionDTO) => {
+  const whenEditPromotion = async (uuid: string, dto: EditPromotionDTO) => {
     await editPromotion(uuid, dto, promotionGateway)
   }
 })

@@ -42,4 +42,8 @@
   .text-title {
     @apply text-default text-3xl font-semibold mb-8
   }
+
+  .text-subtitle {
+    @apply text-default text-xl font-semibold
+  }
 }

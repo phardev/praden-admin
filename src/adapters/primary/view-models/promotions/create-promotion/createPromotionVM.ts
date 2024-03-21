@@ -34,9 +34,9 @@ export class CreatePromotionVM extends GetPromotionVM {
     this.formStore = useFormStore()
   }
 
-  get type(): Field<ReductionType> {
+  getType(): Field<ReductionType> {
     return {
-      ...super.type,
+      ...super.getType(),
       canEdit: true
     }
   }
@@ -45,9 +45,9 @@ export class CreatePromotionVM extends GetPromotionVM {
     this.formStore.set(this.key, { type, amount: undefined })
   }
 
-  get name(): Field<string> {
+  getName(): Field<string> {
     return {
-      ...super.name,
+      ...super.getName(),
       canEdit: true
     }
   }
@@ -55,28 +55,28 @@ export class CreatePromotionVM extends GetPromotionVM {
     this.formStore.set(this.key, { name })
   }
 
-  get amount(): Field<string | undefined> {
+  getAmount(): Field<number | undefined> {
     return {
-      ...super.amount,
+      ...super.getAmount(),
       canEdit: true
     }
   }
-  setAmount(amount: string | undefined): void {
+  setAmount(amount: number | undefined): void {
     this.formStore.set(this.key, { amount })
   }
 
-  get startDate(): Field<Timestamp | undefined> {
+  getStartDate(): Field<Timestamp | undefined> {
     return {
-      ...super.startDate,
+      ...super.getStartDate(),
       canEdit: true
     }
   }
   setStartDate(startDate: Timestamp): void {
     this.formStore.set(this.key, { startDate })
   }
-  get endDate(): Field<Timestamp | undefined> {
+  getEndDate(): Field<Timestamp | undefined> {
     return {
-      ...super.endDate,
+      ...super.getEndDate(),
       canEdit: true
     }
   }
@@ -84,7 +84,7 @@ export class CreatePromotionVM extends GetPromotionVM {
     this.formStore.set(this.key, { endDate })
   }
 
-  get availableProducts() {
+  getAvailableProducts() {
     const productStore = useProductStore()
     const allProducts: Array<Product> = productStore.items
     const searchStore = useSearchStore()
@@ -109,9 +109,9 @@ export class CreatePromotionVM extends GetPromotionVM {
     }
   }
 
-  get products(): Field<Array<PromotionProductItemVM>> {
+  getProducts(): Field<Array<PromotionProductItemVM>> {
     return {
-      ...super.products,
+      ...super.getProducts(),
       canEdit: true
     }
   }
@@ -128,16 +128,17 @@ export class CreatePromotionVM extends GetPromotionVM {
     this.formStore.set(this.key, { products })
   }
 
-  get canValidate(): boolean {
+  getCanValidate(): boolean {
     if (!this.formStore.get(this.key).name.length) return false
     if (!this.formStore.get(this.key).amount) return false
     if (!this.formStore.get(this.key).products.length) return false
     return true
   }
 
-  get dto(): CreatePromotionDTO {
+  getDto(): CreatePromotionDTO {
     const formValue = this.formStore.get(this.key)
-    let amount = parseFloat(formValue.amount.replace(',', '.'))
+    console.log('formValue: ', formValue)
+    let amount = formValue.amount
     const type = formValue.type
     if (formValue.type === ReductionType.Fixed) {
       amount *= 100
@@ -157,7 +158,7 @@ export class CreatePromotionVM extends GetPromotionVM {
     return res
   }
 
-  get displayValidate(): boolean {
+  getDisplayValidate(): boolean {
     return true
   }
 }

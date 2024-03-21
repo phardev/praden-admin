@@ -18,7 +18,7 @@ div.flex.justify-between.items-center.py-3.px-3.space-x-3.bg-light.border-b
     div.flex.flex-row(v-for="(section, sectionIndex) in menu2.sections" :key="sectionIndex")
       nuxt-link.flex.items-center.px-6.py-2.text-link.group(
         v-for="(link, linkIndex) in section.links" :key="linkIndex"
-        :href="link.href"
+        @click="logout"
       )
         icon.icon-sm.mr-2(:name="link.icon")
         div {{ link.name }}
@@ -53,9 +53,8 @@ const menu2 = {
     {
       links: [
         {
-          name: 'Profil',
-          icon: 'gg:profile',
-          href: '/'
+          name: 'Se déconnecter',
+          icon: 'solar:logout-2-outline'
         }
       ]
     }
@@ -68,5 +67,12 @@ const emit = defineEmits<{
 
 const openSidebar = () => {
   emit('open-sidebar')
+}
+
+const logout = () => {
+  const { $keycloak } = useNuxtApp()
+  if ($keycloak) {
+    $keycloak.logout({ redirectUri: window.location.origin })
+  }
 }
 </script>

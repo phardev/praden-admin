@@ -1,4 +1,4 @@
-import { Mail } from '@core/types/types'
+import type { Mail } from '@core/types/types'
 
 export interface PreparationStartedShippingAddress
   extends PreparationStartedBillingAddress {

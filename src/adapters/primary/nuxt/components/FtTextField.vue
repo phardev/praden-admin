@@ -1,5 +1,6 @@
 <template lang="pug">
-v-autocomplete.autocomplete(
+v-text-field.text-field(
+  v-bind="$attrs"
   variant="outlined"
   :base-color="color"
   :color="color"
@@ -13,7 +14,7 @@ const { color } = useCssVariables({ color: '--color-primary11' })
 </script>
 
 <style lang="scss">
-.autocomplete .v-field--variant-outlined .v-field__input input {
+.text-field .v-field--variant-outlined .v-field__field input {
   box-shadow: none !important;
 }
 </style>

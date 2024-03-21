@@ -11,6 +11,8 @@
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
 import { createProductVM } from '@adapters/primary/view-models/products/create-product/createProductVM'
+import { useProductGateway } from '../../../../../../gateways/productGateway'
+import { createProduct } from '@core/usecases/product/product-creation/createProduct'
 
 definePageMeta({ layout: 'main' })
 
@@ -23,7 +25,8 @@ const routeName = router.currentRoute.value.name
 const vm = ref(createProductVM(routeName))
 
 const validate = async () => {
-  // await createPromotion(vm.value.dto, usePromotionGateway())
+  console.log('on cree le produit: ', vm.value.getDto())
+  await createProduct(vm.value.getDto(), useProductGateway())
   router.push('/products/')
 }
 </script>

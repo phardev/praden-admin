@@ -1,0 +1,5 @@
+@layer utilities {
+  .form-input {
+    @apply text-primary8;
+  }
+}
