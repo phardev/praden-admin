@@ -1,5 +1,7 @@
 <template lang="pug">
 .section
+  nuxt-link.flex.flex-row-reverse(to="/products/new")
+    ft-button.button-solid.text-xl.px-6 Créer produit
   ft-table(
     :headers="productsVM.headers"
     :items="productsVM.items"

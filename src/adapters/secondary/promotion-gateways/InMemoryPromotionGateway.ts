@@ -1,5 +1,9 @@
 import { PromotionGateway } from '@core/gateways/promotionGateway'
-import { EditPromotionDTO, Promotion } from '@core/entities/promotion'
+import {
+  CreatePromotionDTO,
+  EditPromotionDTO,
+  Promotion
+} from '@core/entities/promotion'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { UUID } from '@core/types/types'
 

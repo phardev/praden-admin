@@ -31,10 +31,10 @@ export class GetPromotionVM {
       products: promotion ? promotion.products : [],
       startDate: promotion ? promotion.startDate : undefined,
       endDate: promotion ? promotion.endDate : undefined,
-      amount: promotion ? promotion.amount.toString() : undefined
+      amount: promotion ? promotion.amount : undefined
     })
   }
-  get availableTypeChoices(): Array<TypeChoiceVM> {
+  getAvailableTypeChoices(): Array<TypeChoiceVM> {
     return Object.values(ReductionType).map((type) => {
       const text = this.getTypeText(type)
       return {
@@ -50,42 +50,42 @@ export class GetPromotionVM {
     return 'Euros'
   }
 
-  get type(): Field<ReductionType> {
+  getType(): Field<ReductionType> {
     return {
       value: this.formStore.get(this.key).type,
       canEdit: false
     }
   }
 
-  get name(): Field<string> {
+  getName(): Field<string> {
     return {
       value: this.formStore.get(this.key).name,
       canEdit: false
     }
   }
 
-  get amount(): Field<string | undefined> {
+  getAmount(): Field<number | undefined> {
     return {
-      value: this.formStore.get(this.key).amount,
+      value: this.formStore.get(this.key).amount.toString(),
       canEdit: false
     }
   }
 
-  get startDate(): Field<Timestamp | undefined> {
+  getStartDate(): Field<Timestamp | undefined> {
     return {
       value: this.formStore.get(this.key).startDate,
       canEdit: false
     }
   }
 
-  get endDate(): Field<Timestamp | undefined> {
+  getEndDate(): Field<Timestamp | undefined> {
     return {
       value: this.formStore.get(this.key).endDate,
       canEdit: false
     }
   }
 
-  get productsHeaders(): Array<Header> {
+  getProductsHeaders(): Array<Header> {
     return [
       {
         name: 'Nom',
@@ -106,14 +106,14 @@ export class GetPromotionVM {
     ]
   }
 
-  get availableProducts(): Field<Array<PromotionProductItemVM>> {
+  getAvailableProducts(): Field<Array<PromotionProductItemVM>> {
     return {
       value: [],
       canEdit: false
     }
   }
 
-  get products(): Field<Array<PromotionProductItemVM>> {
+  getProducts(): Field<Array<PromotionProductItemVM>> {
     const addedProducts = this.formStore.get(this.key).products
     const productStore = useProductStore()
     const allProducts: Array<Product> = productStore.items
@@ -135,11 +135,11 @@ export class GetPromotionVM {
     }
   }
 
-  get canValidate(): boolean {
+  getCanValidate(): boolean {
     return false
   }
 
-  get displayValidate(): boolean {
+  getDisplayValidate(): boolean {
     return false
   }
 }

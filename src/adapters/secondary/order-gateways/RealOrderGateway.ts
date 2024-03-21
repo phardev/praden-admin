@@ -1,6 +1,6 @@
 import { OrderGateway } from '@core/gateways/orderGateway'
 import { Order } from '@core/entities/order'
-import { UUID } from '@core/types/types'
+import type { UUID } from '@core/types/types'
 import axios from 'axios'
 
 export abstract class RealGateway {
@@ -27,9 +27,15 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
     return this.convertToOrder(res.data)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  cancelPreparation(preparation: Order): Promise<Order> {
-    throw Error('Not implemented')
+  async cancelPreparation(preparation: Order): Promise<Order> {
+    const body: any = {
+      orderUuid: preparation.uuid
+    }
+    const res = await axios.post(
+      `${this.baseUrl}/cancel-preparation/`,
+      JSON.stringify(body)
+    )
+    return this.convertToOrder(res.data)
   }
 
   async getByUuid(uuid: UUID): Promise<Order> {

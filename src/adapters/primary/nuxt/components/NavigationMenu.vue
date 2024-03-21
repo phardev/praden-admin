@@ -17,7 +17,7 @@ div
 
 <script lang="ts" setup>
 const menu = {
-  logo: 'https://www.pharmabest.com/assets/images/footer/pharmabest-footer.svg',
+  logo: 'https://www.pharmabest.com/images/header/pharmabest-header.svg',
   title: 'Pharmacie Agnes Praden',
   sections: [
     {

@@ -1,36 +1,51 @@
 <template lang="pug">
-ft-input(
-  :value="formattedValue"
-  type='text'
+pre props: {{ props }}
+pre Formatted: {{ formattedValue }}
+ft-text-field(
+  v-model="formattedValue"
   v-bind="$attrs"
-  @input="valueChanged"
+  @update:model-value="valueChanged"
   @focus="focus=true"
   @focusout="focus=false"
 )
-  slot
 </template>
 
 <script lang="ts" setup>
 import { percentFormatter } from '@utils/formatters'
 
-defineProps({
+const focus = ref(false)
+const rawValue = ref()
+
+const props = defineProps({
   modelValue: {
     type: Number,
     default: () => {
-      return undefined
+      return null
     }
   }
 })
 
-const focus = ref(false)
-const rawValue = ref()
+watch(
+  () => props.modelValue,
+  (value) => {
+    console.log('plop')
+    rawValue.value = value
+  }
+)
 
-const valueChanged = (e: any) => {
-  rawValue.value = e.target.value.replace(',', '.')
+const emit = defineEmits<{
+  (e: 'update:model-value', value: string | undefined): void
+}>()
+
+const valueChanged = (value: string) => {
+  rawValue.value = value.replace(',', '.')
+  emit('update:model-value', rawValue.value)
 }
 
 const formattedValue = computed(() => {
   const f = focus.value
+  console.log('f: ', f)
+  console.log('rawValue: ', rawValue.value)
   if (!rawValue.value) return ''
   if (f) return rawValue.value
   return percentFormatter(rawValue.value)

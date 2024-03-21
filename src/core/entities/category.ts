@@ -1,4 +1,4 @@
-import { UUID } from '../types/types'
+import type { UUID } from '@core/types/types'
 
 export interface Category {
   uuid: UUID

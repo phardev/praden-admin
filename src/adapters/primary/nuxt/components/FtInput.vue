@@ -8,7 +8,7 @@
       input.block.w-full.rounded-md.border-light.shadow-sm(
         :value="modelValue"
         v-bind="$attrs"
-        class='focus:border-default focus:ring-colored sm:text-sm'
+        class='focus:border-default focus:ring-colored sm:text-sm disabled:disabled'
         @input="input"
       )
 </template>
@@ -43,3 +43,9 @@ const input = (e: any) => {
   emit('update:modelValue', e.target.value)
 }
 </script>
+
+<style>
+.disabled {
+  @apply bg-gray3;
+}
+</style>

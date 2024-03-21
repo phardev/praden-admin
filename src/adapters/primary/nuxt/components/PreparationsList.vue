@@ -23,6 +23,7 @@ tab-group.border-b.border-gray-200(as="div")
         :items="group.table.items"
         :selectable="true"
         :selection="ordersSelectedVM.items"
+        item-key="reference"
         @item-selected="select"
         @select-all="selectAll(group.table.items)"
       )
@@ -73,7 +74,7 @@ const ordersSelectedVM = computed(() => {
 })
 
 const select = (selected: any) => {
-  toggleSelectPreparation(selected.reference)
+  toggleSelectPreparation(selected)
 }
 
 const selectAll = (selected: Array<any>) => {

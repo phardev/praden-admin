@@ -1,56 +1,55 @@
 <template lang="pug">
 div(v-if="currentVM")
-  div.flex.gap-6
+  pre {{ currentVM }}
+  div.flex.gap-6.mb-4
     ft-button.text-2xl.flex-1.h-24(
-      v-for="(typeChoice, index) in currentVM.availableTypeChoices"
+      v-for="(typeChoice, index) in currentVM.getAvailableTypeChoices()"
       :key="index"
-      :disabled="!currentVM.type.canEdit"
-      :class="typeChoice.type === currentVM.type.value ? 'button-solid' : 'button-default'"
+      :disabled="!currentVM.getType().canEdit"
+      :class="typeChoice.type === currentVM.getType().value ? 'button-solid' : 'button-default'"
       @click="currentVM.setType(typeChoice.type)"
     )
       div.flex.flex-col.items-center.justify-center
         icon.icon-xl.mr-2(:name="getIcon(typeChoice.type)")
         span {{ typeChoice.text }}
-  ft-input(
-    :value="currentVM.name.value"
-    for="name"
-    required
-    :disabled="!currentVM.name.canEdit"
-    type='text'
-    name='name'
-    @input="nameChanged"
-  ) Nom
+  ft-text-field(
+    :model-value="currentVM.getName().value"
+    :disabled="!currentVM.getName().canEdit"
+    label="Nom"
+    @update:model-value="nameChanged"
+  )
   ft-currency-input(
-    v-if="currentVM.type.value === ReductionType.Fixed"
-    :value="currentVM.amount.value"
-    :disabled="!currentVM.amount.canEdit"
-    required
-    @input="amountChanged"
-  ) Valeur de la réduction
+    v-if="currentVM.getType().value === ReductionType.Fixed"
+    v-model="currentVM.getAmount().value"
+    label="Valeur de la réduction (€)"
+    :disabled="!currentVM.getAmount().canEdit"
+    @update:model-value="amountChanged"
+  )
+  pre {{ currentVM.getAmount() }}
   ft-percentage-input(
-    v-if="currentVM.type.value === ReductionType.Percentage"
-    :value="currentVM.amount.value"
-    :disabled="!currentVM.amount.canEdit"
-    required
-    @input="amountChanged"
-  ) Valeur de la réduction
+    v-if="currentVM.getType().value === ReductionType.Percentage"
+    v-model="currentVM.getAmount().value"
+    label="Valeur de la réduction (%)"
+    :disabled="!currentVM.getAmount().canEdit"
+    @update:model-value="amountChanged"
+  )
   div.flex.mb-4
     ft-date-picker-input.flex-1(
-      :model-value="currentVM.startDate.value"
+      :model-value="currentVM.getStartDate().value"
       :start-time="startTime"
-      :disabled="!currentVM.startDate.canEdit"
+      :disabled="!currentVM.getStartDate().canEdit"
       for="startDate"
       @date-changed="startDateChanged"
     ) Date de début
     ft-date-picker-input.flex-1(
-      :model-value="currentVM.endDate.value"
-      :disabled="!currentVM.endDate.canEdit"
+      :model-value="currentVM.getEndDate().value"
+      :disabled="!currentVM.getEndDate().canEdit"
       :start-time="endTime"
       for="endDate"
       @date-changed="endDateChanged"
     ) Date de fin
   ft-input(
-    v-if="currentVM.products.canEdit"
+    v-if="currentVM.getProducts().canEdit"
     v-model="search"
     placeholder="Rechercher par nom, référence, catégorie, laboratoire"
     for="search"
@@ -60,11 +59,11 @@ div(v-if="currentVM")
   ) Rechercher un produit
   div.flex.gap-12.mt-4
     div.flex-1(
-      v-if="currentVM.products.canEdit"
+      v-if="currentVM.getProducts().canEdit"
     )
       ft-table(
-        :headers="currentVM.productsHeaders"
-        :items="currentVM.availableProducts.value"
+        :headers="currentVM.getProductsHeaders()"
+        :items="currentVM.getAvailableProducts().value"
         :selectable="true"
         :selection="availableProductSelector.get()"
         item-key="reference"
@@ -73,7 +72,7 @@ div(v-if="currentVM")
       )
         template(#title) Tous les produits
     div.flex.flex-col.justify-center.gap-6.mt-20(
-      v-if="currentVM.products.canEdit"
+      v-if="currentVM.getProducts().canEdit"
     )
       ft-button.button-solid(
         @click="addProducts"
@@ -85,9 +84,9 @@ div(v-if="currentVM")
         icon.icon-lg.rotate-180(name="ic:baseline-keyboard-arrow-right")
     div.flex-1
       ft-table(
-        :headers="currentVM.productsHeaders"
-        :items="currentVM.products.value"
-        :selectable="currentVM.products.canEdit"
+        :headers="currentVM.getProductsHeaders()"
+        :items="currentVM.getProducts().value"
+        :selectable="currentVM.getProducts().canEdit"
         :selection="addedProductSelector.get()"
         item-key="reference"
         @item-selected="addedProductSelector.toggleSelect"
@@ -96,8 +95,8 @@ div(v-if="currentVM")
         template(#title) Produits de la promotion
   div.flex.flex-row-reverse.mt-4
     ft-button.button-solid.px-6.text-xl(
-      v-if="currentVM.displayValidate"
-      :disabled="!currentVM.canValidate"
+      v-if="currentVM.getDisplayValidate()"
+      :disabled="!currentVM.getCanValidate()"
       @click.prevent="validate"
     ) Valider
 </template>
@@ -130,12 +129,13 @@ const search = ref('')
 const startTime = ref({ hours: 0, minutes: 0 })
 const endTime = ref({ hours: 23, minutes: 59, seconds: 59 })
 
-const nameChanged = (e: any) => {
-  currentVM.value.setName(e.target.value)
+const nameChanged = (name: string) => {
+  currentVM.value.setName(name)
 }
 
-const amountChanged = (e: any) => {
-  currentVM.value.setAmount(e.target.value)
+const amountChanged = (amount: string) => {
+  console.log('amount: ', amount)
+  currentVM.value.setAmount(amount)
 }
 
 const searchChanged = (e: any) => {
