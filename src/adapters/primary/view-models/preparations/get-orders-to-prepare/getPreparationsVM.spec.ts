@@ -58,6 +58,7 @@ describe('Get orders to prepare VM', () => {
       const expectedVM: GetPreparationsVM = {
         'Click & Collect': {
           count: 2,
+          canSelect: true,
           table: {
             headers: expectedHeaders,
             items: [
@@ -90,6 +91,7 @@ describe('Get orders to prepare VM', () => {
       const expectedVM: GetPreparationsVM = {
         Livraisons: {
           count: 1,
+          canSelect: true,
           table: {
             headers: expectedHeaders,
             items: [
@@ -114,6 +116,7 @@ describe('Get orders to prepare VM', () => {
       const expectedVM: GetPreparationsVM = {
         'À terminer': {
           count: 1,
+          canSelect: false,
           table: {
             headers: expectedHeaders,
             items: [
@@ -142,6 +145,7 @@ describe('Get orders to prepare VM', () => {
       const expectedVM: GetPreparationsVM = {
         'À completer': {
           count: 1,
+          canSelect: false,
           table: {
             headers: expectedHeaders,
             items: [
@@ -179,6 +183,7 @@ describe('Get orders to prepare VM', () => {
       const expectedVM: GetPreparationsVM = {
         'À completer': {
           count: 1,
+          canSelect: false,
           table: {
             headers: expectedHeaders,
             items: [
@@ -206,6 +211,7 @@ describe('Get orders to prepare VM', () => {
       const expectedVM: GetPreparationsVM = {
         'À expedier': {
           count: 2,
+          canSelect: false,
           table: {
             headers: expectedHeaders,
             items: [
@@ -238,6 +244,7 @@ describe('Get orders to prepare VM', () => {
       const expectedVM: GetPreparationsVM = {
         'À annuler': {
           count: 1,
+          canSelect: false,
           table: {
             headers: expectedHeaders,
             items: [
@@ -265,6 +272,7 @@ describe('Get orders to prepare VM', () => {
     const emptyVM: GetPreparationsVM = {
       'Click & Collect': {
         count: 0,
+        canSelect: true,
         table: {
           headers: expectedHeaders,
           items: []
@@ -272,6 +280,7 @@ describe('Get orders to prepare VM', () => {
       },
       Livraisons: {
         count: 0,
+        canSelect: true,
         table: {
           headers: expectedHeaders,
           items: []
@@ -279,6 +288,7 @@ describe('Get orders to prepare VM', () => {
       },
       'À terminer': {
         count: 0,
+        canSelect: false,
         table: {
           headers: expectedHeaders,
           items: []
@@ -286,6 +296,7 @@ describe('Get orders to prepare VM', () => {
       },
       'À completer': {
         count: 0,
+        canSelect: false,
         table: {
           headers: expectedHeaders,
           items: []
@@ -293,6 +304,7 @@ describe('Get orders to prepare VM', () => {
       },
       'À expedier': {
         count: 0,
+        canSelect: false,
         table: {
           headers: expectedHeaders,
           items: []
@@ -300,6 +312,7 @@ describe('Get orders to prepare VM', () => {
       },
       'À annuler': {
         count: 0,
+        canSelect: false,
         table: {
           headers: expectedHeaders,
           items: []

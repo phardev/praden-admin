@@ -27,6 +27,7 @@ export interface Header {
 
 interface GetPreparationsGroupVM {
   count: number
+  canSelect: boolean
   table: TableVM<GetPreparationsItemVM>
 }
 
@@ -134,6 +135,7 @@ export const filterPreparationsByGroup = (groups: any): GetPreparationsVM => {
     })
     res[group.name] = {
       count: items.length,
+      canSelect: group.canSelect,
       table: {
         headers,
         items
@@ -147,27 +149,33 @@ export const getPreparationsVM = (): GetPreparationsVM => {
   const groups = [
     {
       name: 'Click & Collect',
-      filter: clickAndCollectFilter
+      filter: clickAndCollectFilter,
+      canSelect: true
     },
     {
       name: 'Livraisons',
-      filter: deliveryFilter
+      filter: deliveryFilter,
+      canSelect: true
     },
     {
       name: 'À terminer',
-      filter: toContinueFilter
+      filter: toContinueFilter,
+      canSelect: false
     },
     {
       name: 'À completer',
-      filter: toCompleteFilter
+      filter: toCompleteFilter,
+      canSelect: false
     },
     {
       name: 'À expedier',
-      filter: toShipFilter
+      filter: toShipFilter,
+      canSelect: false
     },
     {
       name: 'À annuler',
-      filter: toCancelFilter
+      filter: toCancelFilter,
+      canSelect: false
     }
   ]
   return filterPreparationsByGroup(groups)

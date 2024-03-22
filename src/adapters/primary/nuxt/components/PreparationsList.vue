@@ -21,7 +21,7 @@ tab-group.border-b.border-gray-200(as="div")
       ft-table(
         :headers="group.table.headers"
         :items="group.table.items"
-        :selectable="true"
+        :selectable="group.canSelect"
         :selection="ordersSelectedVM.items"
         item-key="reference"
         @item-selected="select"
