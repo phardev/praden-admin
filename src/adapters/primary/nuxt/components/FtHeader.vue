@@ -18,6 +18,7 @@ div.flex.justify-between.items-center.py-3.px-3.space-x-3.bg-light.border-b
     div.flex.flex-row(v-for="(section, sectionIndex) in menu2.sections" :key="sectionIndex")
       nuxt-link.flex.items-center.px-6.py-2.text-link.group(
         v-for="(link, linkIndex) in section.links" :key="linkIndex"
+        href="#"
         @click="logout"
       )
         icon.icon-sm.mr-2(:name="link.icon")
