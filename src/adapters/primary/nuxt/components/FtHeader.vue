@@ -30,19 +30,9 @@ const menu = {
     {
       links: [
         {
-          name: 'Messages',
-          icon: 'tabler:message',
-          href: '/'
-        },
-        {
-          name: 'Inscriptions',
-          icon: 'fluent:people-16-regular',
-          href: '/'
-        },
-        {
           name: 'Ma boutique',
           icon: 'ion:cart-outline',
-          href: 'https://demo-praden-marketplace.phardev.fr/'
+          href: 'https://www.pharmacieagnespraden.com/'
         }
       ]
     }
