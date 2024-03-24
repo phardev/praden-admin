@@ -90,3 +90,16 @@ export const hemoclar: Product = {
   availableStock: 23,
   laboratory: 'SANOFI-AVENTIS'
 }
+
+export const productWithoutLocation: Product = {
+  name: 'Product without location',
+  images: [''],
+  miniature: '',
+  categoryUuid: baby.uuid,
+  cip13: '0637218312823',
+  priceWithoutTax: 590,
+  percentTaxRate: 10,
+  location: '',
+  availableStock: 23,
+  laboratory: 'SANOFI-AVENTIS'
+}

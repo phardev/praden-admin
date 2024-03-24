@@ -21,6 +21,8 @@ export interface StartPreparationsVM {
 }
 
 const sortByLocation = (a: any, b: any): number => {
+  if (a.location === '') return 1
+  if (b.location === '') return -1
   return a.location < b.location ? -1 : 1
 }
 

@@ -10,6 +10,7 @@ import {
   chamomilla,
   dolodent,
   hemoclar,
+  productWithoutLocation,
   ultraLevure
 } from '@utils/testData/products'
 import {
@@ -801,6 +802,54 @@ export const orderXUKIJ: Order = {
       name: calmosine.name,
       cip13: calmosine.cip13,
       expectedQuantity: 1,
+      preparedQuantity: 0,
+      unitAmount: calmosine.priceWithoutTax,
+      percentTaxRate: calmosine.percentTaxRate,
+      location: calmosine.location,
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1674273279000
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    invoiceNumber: '2023-00006',
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674273279000,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  delivery: {
+    method: clickAndCollect
+  },
+  messages: []
+}
+
+export const orderWithProductWithoutLocation: Order = {
+  uuid: 'WITHOUTLOCATION',
+  lines: [
+    {
+      name: productWithoutLocation.name,
+      cip13: productWithoutLocation.cip13,
+      expectedQuantity: 3,
+      preparedQuantity: 0,
+      unitAmount: productWithoutLocation.priceWithoutTax,
+      percentTaxRate: productWithoutLocation.percentTaxRate,
+      location: productWithoutLocation.location,
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1674273279000
+    },
+    {
+      name: calmosine.name,
+      cip13: calmosine.cip13,
+      expectedQuantity: 2,
       preparedQuantity: 0,
       unitAmount: calmosine.priceWithoutTax,
       percentTaxRate: calmosine.percentTaxRate,

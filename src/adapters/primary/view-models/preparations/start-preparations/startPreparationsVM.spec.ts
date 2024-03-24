@@ -4,8 +4,17 @@ import {
   StartPreparationsVM,
   startPreparationsVM
 } from '@adapters/primary/view-models/preparations/start-preparations/startPreparationsVM'
-import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import {
+  orderToPrepare1,
+  orderToPrepare2,
+  orderWithProductWithoutLocation
+} from '@utils/testData/orders'
+import {
+  calmosine,
+  dolodent,
+  productWithoutLocation,
+  ultraLevure
+} from '@utils/testData/products'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 
 describe('Start preparations VM', () => {
@@ -27,7 +36,11 @@ describe('Start preparations VM', () => {
 
   describe('There is some existing preparations', () => {
     beforeEach(() => {
-      preparationsStore.items = [orderToPrepare1, orderToPrepare2]
+      preparationsStore.items = [
+        orderToPrepare1,
+        orderToPrepare2,
+        orderWithProductWithoutLocation
+      ]
     })
     describe('There is no preparations selected', () => {
       it('should list nothing', () => {
@@ -107,6 +120,49 @@ describe('Start preparations VM', () => {
                   name: dolodent.name,
                   location: dolodent.location,
                   quantity: 1
+                }
+              ]
+            }
+          ]
+        }
+        expect(vm).toStrictEqual(expectedVM)
+      })
+      it('should list put lines without locations at the end', () => {
+        preparationsStore.selected = [orderWithProductWithoutLocation.uuid]
+        const anotherOrigin = 'http://another-origin:3000'
+        const vm = startPreparationsVM(anotherOrigin)
+        const expectedVM: StartPreparationsVM = {
+          headers,
+          global: [
+            {
+              reference: calmosine.cip13,
+              name: calmosine.name,
+              location: calmosine.location,
+              quantity: 2
+            },
+            {
+              reference: productWithoutLocation.cip13,
+              name: productWithoutLocation.name,
+              location: productWithoutLocation.location,
+              quantity: 3
+            }
+          ],
+          detail: [
+            {
+              href: `${anotherOrigin}/preparations/${orderWithProductWithoutLocation.uuid}`,
+              reference: orderWithProductWithoutLocation.uuid,
+              lines: [
+                {
+                  reference: calmosine.cip13,
+                  name: calmosine.name,
+                  location: calmosine.location,
+                  quantity: 2
+                },
+                {
+                  reference: productWithoutLocation.cip13,
+                  name: productWithoutLocation.name,
+                  location: productWithoutLocation.location,
+                  quantity: 3
                 }
               ]
             }
