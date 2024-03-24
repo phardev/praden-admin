@@ -1,5 +1,5 @@
 <template lang="pug">
-v-app
+div
 </template>
 
 <script lang="ts" setup>

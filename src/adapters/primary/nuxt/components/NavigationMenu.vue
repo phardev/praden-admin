@@ -1,7 +1,7 @@
 <template lang="pug">
 div
-  div.pt-4.pb-4.pr-6
-    nuxt-link.flex.items-center(href="/")
+  div.pt-4.pb-4.pr-6.cursor-pointer
+    nuxt-link.flex.items-center.text-link.group(href="/")
       img.w-24.h-24(:src="menu.logo")
       h3 {{ menu.title }}
   div.overflow-y-auto.flex-1
@@ -20,21 +20,21 @@ const menu = {
   logo: 'https://www.pharmabest.com/images/header/pharmabest-header.svg',
   title: 'Pharmacie Agnes Praden',
   sections: [
-    {
-      title: 'Catalogue',
-      links: [
-        {
-          name: 'Produits',
-          icon: 'fluent-mdl2:product-catalog',
-          href: '/products'
-        },
-        {
-          name: 'Promotions',
-          icon: 'uil:euro-circle',
-          href: '/promotions'
-        }
-      ]
-    },
+    // {
+    //   title: 'Catalogue',
+    //   links: [
+    //     {
+    //       name: 'Produits',
+    //       icon: 'fluent-mdl2:product-catalog',
+    //       href: '/products'
+    //     },
+    //     {
+    //       name: 'Promotions',
+    //       icon: 'uil:euro-circle',
+    //       href: '/promotions'
+    //     }
+    //   ]
+    // },
     {
       title: 'Commandes',
       links: [
