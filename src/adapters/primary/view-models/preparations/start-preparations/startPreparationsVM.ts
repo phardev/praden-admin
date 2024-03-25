@@ -93,7 +93,7 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
           lineInGlobal.quantity += line.quantity
         } else {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { _unitPrice, taxRate, totalPrice, ...restOfLine } = line
+          const { unitPrice, taxRate, totalPrice, ...restOfLine } = line
           acc.push(JSON.parse(JSON.stringify(restOfLine)))
         }
       })

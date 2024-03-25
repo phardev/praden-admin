@@ -89,7 +89,7 @@ describe('Get orders to prepare VM', () => {
     it('should list all of them', () => {
       preparationStore.items = [orderToPrepare3]
       const expectedVM: GetPreparationsVM = {
-        Livraisons: {
+        Colissimo: {
           count: 1,
           canSelect: true,
           table: {
@@ -278,7 +278,7 @@ describe('Get orders to prepare VM', () => {
           items: []
         }
       },
-      Livraisons: {
+      Colissimo: {
         count: 0,
         canSelect: true,
         table: {
