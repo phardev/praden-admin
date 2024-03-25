@@ -2,7 +2,7 @@
 div.hidden.printme.mx-2
   p Récapitulatif des commandes
   ft-table(
-    :headers="startVM.headers"
+    :headers="startVM.globalHeaders"
     :items="startVM.global"
   )
   div.break-before-page(v-for="order in startVM.detail" :key="order.reference")
@@ -11,7 +11,7 @@ div.hidden.printme.mx-2
       client-only
         vueQr(:text="order.href")
     ft-table(
-      :headers="startVM.headers"
+      :headers="startVM.detailHeaders"
       :items="order.lines"
     )
 </template>

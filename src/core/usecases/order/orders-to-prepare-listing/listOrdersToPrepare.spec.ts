@@ -14,28 +14,52 @@ import {
 } from '@utils/testData/orders'
 import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
+import { useProductStore } from '@store/productStore'
+import { Product, Stock } from '@core/entities/product'
+import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
 
 describe('List orders to prepare', () => {
   let preparationStore: any
+  let productStore: any
   let orderGateway: InMemoryOrderGateway
+  let productGateway: InMemoryProductGateway
 
   beforeEach(() => {
     setActivePinia(createPinia())
     preparationStore = usePreparationStore()
+    productStore = useProductStore()
     orderGateway = new InMemoryOrderGateway(new FakeDateProvider())
+    productGateway = new InMemoryProductGateway()
   })
 
   describe('There is no orders to prepare', () => {
-    it('should list nothing', async () => {
+    beforeEach(async () => {
       await whenListOrdersToPrepare()
+    })
+    it('should list nothing', async () => {
       expectPreparationStoreToContains()
+    })
+    it('should not list products', () => {
+      expectProductStoreToContains()
+    })
+    it('should not have stock', () => {
+      expectStockToContains({})
     })
   })
   describe('There is some orders to prepare', () => {
-    it('should list all of them', async () => {
-      givenExistingOrders(orderToPrepare1, orderToPrepare2)
-      await whenListOrdersToPrepare()
-      expectPreparationStoreToContains(orderToPrepare1, orderToPrepare2)
+    describe('All orders need to be prepared', () => {
+      beforeEach(async () => {
+        givenExistingOrders(orderToPrepare1, orderToPrepare2)
+        givenExistingProducts(dolodent, chamomilla, ultraLevure)
+        await whenListOrdersToPrepare()
+      })
+      it('should list all of them', () => {
+        expectPreparationStoreToContains(orderToPrepare1, orderToPrepare2)
+      })
+      it('should list all products', async () => {
+        expectProductStoreToContains(dolodent, ultraLevure)
+      })
     })
     it('should list orders if all items are processing', async () => {
       givenExistingOrders(orderInPreparation1)
@@ -91,13 +115,27 @@ describe('List orders to prepare', () => {
     orderGateway.feedWith(...orders)
   }
 
+  const givenExistingProducts = (...products: Array<Product>) => {
+    productGateway.feedWith(...products)
+  }
+
   const whenListOrdersToPrepare = async () => {
-    await listOrdersToPrepare(orderGateway)
+    await listOrdersToPrepare(orderGateway, productGateway)
   }
 
   const expectPreparationStoreToContains = (
     ...expectedOrders: Array<Order>
   ) => {
     expect(preparationStore.items).toStrictEqual(expectedOrders)
+  }
+
+  const expectProductStoreToContains = (
+    ...expectedProducts: Array<Product>
+  ) => {
+    expect(productStore.items).toStrictEqual(expectedProducts)
+  }
+
+  const expectStockToContains = (expectedStock: Stock) => {
+    expect(productStore.stock).toStrictEqual(expectedStock)
   }
 })

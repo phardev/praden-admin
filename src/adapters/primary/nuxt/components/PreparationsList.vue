@@ -44,11 +44,9 @@ import { listOrdersToPrepare } from '@core/usecases/order/orders-to-prepare-list
 import { getSelectedPreparationsVM } from '@adapters/primary/view-models/preparations/get-selected-preparations/getSelectedPreparationsVM'
 import { toggleSelectPreparation } from '@core/usecases/order/toggle-select-preparation/toggleSelectPreparation'
 import { toggleSelectAllPreparations } from '@core/usecases/order/toggle-select-all-preparations/toggleSelectAllPreparations'
-import FtButton from '@adapters/primary/nuxt/components/FtButton.vue'
 import { startPreparations } from '@core/usecases/order/start-preparations/startPreparations'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
 import { resetPreparationSelection } from '@core/usecases/order/reset-preparation-selection/resetPreparationSelection'
-import { listProducts } from '@core/usecases/product/product-listing/listProducts'
 import { useProductGateway } from '../../../../../gateways/productGateway'
 import { useOrderGateway } from '../../../../../gateways/orderGateway'
 import { useEmailGateway } from '../../../../../gateways/emailGateway'
@@ -56,8 +54,7 @@ import { useEmailGateway } from '../../../../../gateways/emailGateway'
 definePageMeta({ layout: 'main' })
 
 onMounted(() => {
-  listProducts(useProductGateway())
-  listOrdersToPrepare(useOrderGateway())
+  listOrdersToPrepare(useOrderGateway(), useProductGateway())
 })
 
 defineProps({

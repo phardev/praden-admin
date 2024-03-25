@@ -153,7 +153,7 @@ export const getPreparationsVM = (): GetPreparationsVM => {
       canSelect: true
     },
     {
-      name: 'Livraisons',
+      name: 'Colissimo',
       filter: deliveryFilter,
       canSelect: true
     },

@@ -10,6 +10,11 @@ export class InMemoryProductGateway implements ProductGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(this.products)))
   }
 
+  async batch(cip13s: Array<string>): Promise<Array<Product>> {
+    const res = this.products.filter((p) => cip13s.includes(p.cip13))
+    return Promise.resolve(JSON.parse(JSON.stringify(res)))
+  }
+
   async create(dto: CreateProductDTO): Promise<Product> {
     const images: Array<string> = []
     for (const image of dto.images) {

@@ -22,7 +22,17 @@ describe('Start preparations VM', () => {
 
   const origin = 'https://my-website'
 
-  const headers: Array<Header> = [
+  const detailHeaders: Array<Header> = [
+    { name: 'Référence', value: 'reference' },
+    { name: 'Nom', value: 'name' },
+    { name: 'Zone géo', value: 'location' },
+    { name: 'Prix unitaire', value: 'unitPrice' },
+    { name: 'Quantité', value: 'quantity' },
+    { name: 'TVA', value: 'taxRate' },
+    { name: 'Total', value: 'totalPrice' }
+  ]
+
+  const globalHeaders: Array<Header> = [
     { name: 'Référence', value: 'reference' },
     { name: 'Nom', value: 'name' },
     { name: 'Zone géo', value: 'location' },
@@ -46,7 +56,8 @@ describe('Start preparations VM', () => {
       it('should list nothing', () => {
         const vm = startPreparationsVM(origin)
         const expectedVM: StartPreparationsVM = {
-          headers,
+          globalHeaders,
+          detailHeaders,
           global: [],
           detail: []
         }
@@ -58,7 +69,8 @@ describe('Start preparations VM', () => {
         preparationsStore.selected = [orderToPrepare1.uuid]
         const vm = startPreparationsVM(origin)
         const expectedVM: StartPreparationsVM = {
-          headers,
+          globalHeaders,
+          detailHeaders,
           global: [
             {
               reference: dolodent.cip13,
@@ -76,7 +88,10 @@ describe('Start preparations VM', () => {
                   reference: dolodent.cip13,
                   name: dolodent.name,
                   location: dolodent.location,
-                  quantity: 2
+                  quantity: 2,
+                  unitPrice: '5,50\u00A0€',
+                  taxRate: '10 %',
+                  totalPrice: '11,00\u00A0€'
                 }
               ]
             }
@@ -89,7 +104,8 @@ describe('Start preparations VM', () => {
         const anotherOrigin = 'http://another-origin:3000'
         const vm = startPreparationsVM(anotherOrigin)
         const expectedVM: StartPreparationsVM = {
-          headers,
+          globalHeaders,
+          detailHeaders,
           global: [
             {
               reference: ultraLevure.cip13,
@@ -113,13 +129,19 @@ describe('Start preparations VM', () => {
                   reference: ultraLevure.cip13,
                   name: ultraLevure.name,
                   location: ultraLevure.location,
-                  quantity: 2
+                  quantity: 2,
+                  unitPrice: '4,75\u00A0€',
+                  taxRate: '10 %',
+                  totalPrice: '9,50\u00A0€'
                 },
                 {
                   reference: dolodent.cip13,
                   name: dolodent.name,
                   location: dolodent.location,
-                  quantity: 1
+                  quantity: 1,
+                  unitPrice: '5,50\u00A0€',
+                  taxRate: '10 %',
+                  totalPrice: '5,50\u00A0€'
                 }
               ]
             }
@@ -132,7 +154,8 @@ describe('Start preparations VM', () => {
         const anotherOrigin = 'http://another-origin:3000'
         const vm = startPreparationsVM(anotherOrigin)
         const expectedVM: StartPreparationsVM = {
-          headers,
+          globalHeaders,
+          detailHeaders,
           global: [
             {
               reference: calmosine.cip13,
@@ -156,13 +179,19 @@ describe('Start preparations VM', () => {
                   reference: calmosine.cip13,
                   name: calmosine.name,
                   location: calmosine.location,
-                  quantity: 2
+                  quantity: 2,
+                  unitPrice: '8,91\u00A0€',
+                  taxRate: '10 %',
+                  totalPrice: '17,82\u00A0€'
                 },
                 {
                   reference: productWithoutLocation.cip13,
                   name: productWithoutLocation.name,
                   location: productWithoutLocation.location,
-                  quantity: 3
+                  quantity: 3,
+                  unitPrice: '6,49\u00A0€',
+                  taxRate: '10 %',
+                  totalPrice: '19,47\u00A0€'
                 }
               ]
             }
@@ -179,7 +208,8 @@ describe('Start preparations VM', () => {
         ]
         const vm = startPreparationsVM(origin)
         const expectedVM: StartPreparationsVM = {
-          headers,
+          globalHeaders,
+          detailHeaders,
           global: [
             {
               reference: ultraLevure.cip13,
@@ -203,7 +233,10 @@ describe('Start preparations VM', () => {
                   reference: dolodent.cip13,
                   name: dolodent.name,
                   location: dolodent.location,
-                  quantity: 2
+                  quantity: 2,
+                  unitPrice: '5,50\u00A0€',
+                  taxRate: '10 %',
+                  totalPrice: '11,00\u00A0€'
                 }
               ]
             },
@@ -215,13 +248,19 @@ describe('Start preparations VM', () => {
                   reference: ultraLevure.cip13,
                   name: ultraLevure.name,
                   location: ultraLevure.location,
-                  quantity: 2
+                  quantity: 2,
+                  unitPrice: '4,75\u00A0€',
+                  taxRate: '10 %',
+                  totalPrice: '9,50\u00A0€'
                 },
                 {
                   reference: dolodent.cip13,
                   name: dolodent.name,
                   location: dolodent.location,
-                  quantity: 1
+                  quantity: 1,
+                  unitPrice: '5,50\u00A0€',
+                  taxRate: '10 %',
+                  totalPrice: '5,50\u00A0€'
                 }
               ]
             }
