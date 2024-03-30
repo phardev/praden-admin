@@ -137,7 +137,6 @@ export class CreatePromotionVM extends GetPromotionVM {
 
   getDto(): CreatePromotionDTO {
     const formValue = this.formStore.get(this.key)
-    console.log('formValue: ', formValue)
     let amount = formValue.amount
     const type = formValue.type
     if (formValue.type === ReductionType.Fixed) {

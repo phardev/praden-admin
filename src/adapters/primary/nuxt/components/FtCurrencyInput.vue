@@ -39,7 +39,6 @@ watch(
   }
 )
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 // TODO: Why this is needed to make it works ?
 defineEmits<{
   (e: 'update:model-value', value: string | undefined): void

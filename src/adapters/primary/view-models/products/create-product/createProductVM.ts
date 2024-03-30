@@ -78,7 +78,7 @@ export class CreateProductVM {
       canEdit: true
     }
   }
-  setPriceWithoutTax(priceWithoutTax: number | undefined): void {
+  setPriceWithoutTax(priceWithoutTax: string | undefined): void {
     this.formStore.set(this.key, { priceWithoutTax })
   }
 

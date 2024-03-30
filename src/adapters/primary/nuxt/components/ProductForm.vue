@@ -1,87 +1,73 @@
 <template lang="pug">
 div(v-if="currentVM")
-  v-expansion-panels(
-    v-model="panels"
-    multiple
-    variant="popout"
-    :color="color"
-  )
-    v-expansion-panel
-      template(#title)
-        ft-form-section-subtitle(
-          id="1"
-          subtitle="Informations produit"
-        )
-      template(#text)
-        ft-text-field(
-          :model-value="currentVM.getName().value"
-          label="Nom"
-          @update:model-value="nameChanged"
-        )
-        fv-autocomplete(
-          label="Catégorie"
-          :model-value="currentVM.getCategoryUuid().value"
-          :items="currentVM.getAvailableCategories()"
-          item-title="name"
-          item-value="uuid"
-          :clearable="true"
-          @update:model-value="categoryChanged"
-        )
-        ft-text-field(
-          :model-value="currentVM.getCip13().value"
-          label="Référence"
-          @update:model-value="cip13Changed"
-        )
-        ft-text-field(
-          :model-value="currentVM.getLaboratory().value"
-          label="Laboratoire"
-          @update:model-value="laboratoryChanged"
-        )
-        div(v-for="(image, index) in images" :key="index")
-          img.mb-4(:src="image" height=200 width=200 alt="Selected Image")
-        ft-file-input(
-          :model-value="images"
-          accept="image/*"
-          multiple
-          label="Images"
-          prepend-icon="mdi-camera"
-          @update:model-value="imagesChanged"
-        )
-    v-expansion-panel
-      template(#title)
-        ft-form-section-subtitle(
-          id="2"
-          subtitle="Prix"
-        )
-      template(#text)
-        ft-currency-input(
-          v-model="currentVM.getPriceWithoutTax().value"
-          label="Prix (HT)"
-          @update:model-value="priceWithoutTaxChanged"
-        )
-        ft-percentage-input(
-          :model-value="currentVM.getPercentTaxRate().value"
-          label="Taxe (%)"
-          @update:model-value="percentTaxRateChanged"
-        )
-    v-expansion-panel
-      template(#title)
-        ft-form-section-subtitle(
-          id="3"
-          subtitle="Stock"
-        )
-      template(#text)
-        ft-text-field(
-          :model-value="currentVM.getLocation().value"
-          label="Code Géographique"
-          @update:model-value="locationChanged"
-        )
-        ft-text-field(
-          :model-value="currentVM.getAvailableStock().value"
-          label="Stock disponible"
-          type="number"
-          @update:model-value="availableStockChanged"
-        )
+  UForm
+    UAccordion(
+      multiple
+      size="xl"
+      :items="items"
+    )
+      template(#informations)
+        UFormGroup.pb-4(label="Nom" name="name")
+          ft-text-field(
+            :model-value="currentVM.getName().value"
+            @update:model-value="nameChanged"
+          )
+        UFormGroup.pb-4(label="Catégorie" name="category")
+          ft-autocomplete(
+            :model-value="currentVM.getCategoryUuid().value"
+            :options="currentVM.getAvailableCategories()"
+            placeholder="Rechercher une catégorie"
+            by="id"
+            option-attribute="name"
+            value-attribute="uuid"
+            @update:model-value="categoryChanged"
+          )
+            template(#option="{ option: category }")
+              span {{ category.name }}
+        UFormGroup.pb-4(label="CIP13" name="cip13")
+          ft-text-field(
+            :model-value="currentVM.getCip13().value"
+            @update:model-value="cip13Changed"
+          )
+        UFormGroup.pb-4(label="Laboratoire" name="laboratory")
+          ft-text-field(
+            :model-value="currentVM.getLaboratory().value"
+            label="Laboratoire"
+            @update:model-value="laboratoryChanged"
+          )
+        UFormGroup.pb-4(label="Images" name="images")
+          div(v-for="(image, index) in images" :key="index")
+            img.mb-4(:src="image" height=200 width=200 alt="Selected Image")
+          ft-file-input(
+            accept="image/*"
+            multiple
+            @input="imagesChanged"
+          )
+      template(#price)
+        UFormGroup.pb-4(label="Prix (HT)" name="priceWithoutTax")
+          ft-currency-input(
+              v-model="currentVM.getPriceWithoutTax().value"
+              label="Prix (HT)"
+              @update:model-value="priceWithoutTaxChanged"
+            )
+        UFormGroup.pb-4(label="Taxe (%)" name="percentTaxRate")
+          ft-percentage-input(
+            :model-value="currentVM.getPercentTaxRate().value"
+            label="Taxe (%)"
+            @update:model-value="percentTaxRateChanged"
+          )
+      template(#stock)
+        UFormGroup.pb-4(label="Code Géographique" name="location")
+          ft-text-field(
+            :model-value="currentVM.getLocation().value"
+            @update:model-value="locationChanged"
+          )
+        UFormGroup.pb-4(label="Stock disponible" name="availableStock")
+          ft-text-field(
+            :model-value="currentVM.getAvailableStock().value"
+            type="number"
+            @update:model-value="availableStockChanged"
+          )
   div.flex.flex-row-reverse.mt-4
     ft-button.button-solid.px-6.text-xl(
       v-if="currentVM.getDisplayValidate()"
@@ -91,13 +77,25 @@ div(v-if="currentVM")
 </template>
 
 <script lang="ts" setup>
-import FtFormSectionSubtitle from '@adapters/primary/nuxt/components/FtFormSectionSubtitle.vue'
-import { useCssVariables } from 'vue-composable'
-
 definePageMeta({ layout: 'main' })
 
-const panels = ref([0, 1, 2])
-const { color } = useCssVariables({ color: '--color-primary8' })
+const items = [
+  {
+    label: '1. Informations produit',
+    defaultOpen: true,
+    slot: 'informations'
+  },
+  {
+    label: '2. Prix',
+    defaultOpen: true,
+    slot: 'price'
+  },
+  {
+    label: '3. Stock',
+    defaultOpen: true,
+    slot: 'stock'
+  }
+]
 
 const props = defineProps({
   vm: {
@@ -119,6 +117,7 @@ const cip13Changed = (cip13: string) => {
 }
 
 const priceWithoutTaxChanged = (priceWithoutTax: number) => {
+  console.log('coucou: ', priceWithoutTax)
   currentVM?.value?.setPriceWithoutTax(priceWithoutTax)
 }
 

@@ -1,5 +1,5 @@
 <template lang="pug">
-UInput(
+UInputMenu(
   v-bind="$attrs"
   size="lg"
 )

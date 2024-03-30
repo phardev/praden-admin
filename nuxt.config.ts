@@ -43,7 +43,7 @@ export default defineNuxtConfig({
   typescript: {
     strict: true
   },
-  modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', 'nuxt-icon', '@vueuse/nuxt'],
+  modules: ['@pinia/nuxt', 'nuxt-icon', '@vueuse/nuxt', '@nuxt/ui'],
   dir: {
     // assets: 'custom-assets',
     layouts: './src/adapters/primary/nuxt/layouts',
@@ -63,5 +63,8 @@ export default defineNuxtConfig({
       'process.env.DEBUG': false
     },
     optimizeDeps: { exclude: ['fsevents'] }
+  },
+  colorMode: {
+    preference: 'light'
   }
 })

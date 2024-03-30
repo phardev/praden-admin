@@ -1,6 +1,4 @@
 <template lang="pug">
-pre props: {{ props }}
-pre Formatted: {{ formattedValue }}
 ft-text-field(
   v-model="formattedValue"
   v-bind="$attrs"

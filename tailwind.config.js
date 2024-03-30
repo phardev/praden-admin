@@ -18,6 +18,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        customPrimary: {
+          50: '#fcf3fa',
+          100: '#fbe8f7',
+          200: '#f9d1f0',
+          300: '#f5ace2',
+          400: '#ee78cc',
+          500: '#e450b5',
+          600: '#d6409f',
+          700: '#b6207a',
+          800: '#971d65',
+          900: '#7e1d56',
+          950: '#4d0a32'
+        },
         primary1: 'var(--color-primary1)',
         primary2: 'var(--color-primary2)',
         primary3: 'var(--color-primary3)',
