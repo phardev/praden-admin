@@ -11,7 +11,6 @@ export const listOrdersToPrepare = async (
   const orders = await orderGateway.listOrdersToPrepare()
   const productsCip13 = getUniqueProductsCip13(orders)
   const products = await productGateway.batch(productsCip13)
-  console.log('products: ', products)
   const productStore = useProductStore()
   productStore.list(products)
   const preparationStore = usePreparationStore()

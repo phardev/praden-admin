@@ -41,7 +41,8 @@ export const computeTotalWithTaxForOrder = (order: Order) => {
       (line.unitAmount * line.expectedQuantity * line.percentTaxRate) / 100
     )
   }, 0)
-  return total
+  const delivery = order.delivery.method.price
+  return total + delivery
 }
 
 const clickAndCollectFilter = (o: Order) => {
