@@ -12,9 +12,10 @@ div.hidden.printme.mx-2
         h1.text-xl Commande {{ order.reference }}
         h1.text-xl {{ order.createdDate }}
         ft-barcode.w-10(
-          :code="order.clientName"
+          :code="order.clientLastname"
           :width="1"
           :height="50"
+          :text="order.clientFullname"
         )
       client-only
         vueQr(:text="order.href")

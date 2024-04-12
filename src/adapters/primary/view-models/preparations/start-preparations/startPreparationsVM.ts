@@ -19,7 +19,8 @@ export interface PreparationLineDetailVM {
   href: string
   reference: string
   deliveryMethodName: string
-  clientName: string
+  clientLastname: string
+  clientFullname: string
   createdDate: string
   lines: Array<DetailPreparationLineVM>
 }
@@ -68,7 +69,8 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
       href: `${origin}/preparations/${order.uuid}`,
       reference: order.uuid,
       deliveryMethodName: order.delivery.method.name,
-      clientName: order.deliveryAddress.lastname,
+      clientLastname: order.deliveryAddress.lastname,
+      clientFullname: `${order.deliveryAddress.firstname} ${order.deliveryAddress.lastname}`,
       createdDate: timestampToLocaleString(order.createdAt, 'fr-FR'),
       lines: order.lines
         .map((line): DetailPreparationLineVM => {

@@ -23,6 +23,12 @@ const props = defineProps({
     default: () => {
       return 100
     }
+  },
+  text: {
+    type: String,
+    default: () => {
+      return undefined
+    }
   }
 })
 
@@ -33,7 +39,8 @@ onMounted(() => {
     format: 'CODE128',
     background: 'transparent',
     width: props.width,
-    height: props.height
+    height: props.height,
+    text: props.text
   })
 })
 </script>
