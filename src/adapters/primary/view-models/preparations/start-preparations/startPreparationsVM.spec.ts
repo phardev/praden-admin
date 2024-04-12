@@ -83,6 +83,7 @@ describe('Start preparations VM', () => {
             {
               href: `${origin}/preparations/${orderToPrepare1.uuid}`,
               reference: orderToPrepare1.uuid,
+              deliveryMethodName: orderToPrepare1.delivery.method.name,
               lines: [
                 {
                   reference: dolodent.cip13,
@@ -124,6 +125,7 @@ describe('Start preparations VM', () => {
             {
               href: `${anotherOrigin}/preparations/${orderToPrepare2.uuid}`,
               reference: orderToPrepare2.uuid,
+              deliveryMethodName: orderToPrepare2.delivery.method.name,
               lines: [
                 {
                   reference: ultraLevure.cip13,
@@ -174,6 +176,8 @@ describe('Start preparations VM', () => {
             {
               href: `${anotherOrigin}/preparations/${orderWithProductWithoutLocation.uuid}`,
               reference: orderWithProductWithoutLocation.uuid,
+              deliveryMethodName:
+                orderWithProductWithoutLocation.delivery.method.name,
               lines: [
                 {
                   reference: calmosine.cip13,
@@ -228,6 +232,7 @@ describe('Start preparations VM', () => {
             {
               href: `${origin}/preparations/${orderToPrepare1.uuid}`,
               reference: orderToPrepare1.uuid,
+              deliveryMethodName: orderToPrepare1.delivery.method.name,
               lines: [
                 {
                   reference: dolodent.cip13,
@@ -243,6 +248,7 @@ describe('Start preparations VM', () => {
             {
               href: `${origin}/preparations/${orderToPrepare2.uuid}`,
               reference: orderToPrepare2.uuid,
+              deliveryMethodName: orderToPrepare2.delivery.method.name,
               lines: [
                 {
                   reference: ultraLevure.cip13,

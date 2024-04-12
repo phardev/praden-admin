@@ -7,7 +7,9 @@ div.hidden.printme.mx-2
   )
   div.break-before-page(v-for="order in startVM.detail" :key="order.reference")
     div.flex
-      h1.text-xl.grow Commande {{ order.reference }}
+      div.grow
+        h1.text-xl {{ order.deliveryMethodName }}
+        h1.text-xl.grow Commande {{ order.reference }}
       client-only
         vueQr(:text="order.href")
     ft-table(

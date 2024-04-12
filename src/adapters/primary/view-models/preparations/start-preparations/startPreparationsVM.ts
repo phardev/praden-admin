@@ -18,6 +18,7 @@ export interface DetailPreparationLineVM extends GlobalPreparationLineVM {
 export interface PreparationLineDetailVM {
   href: string
   reference: string
+  deliveryMethodName: string
   lines: Array<DetailPreparationLineVM>
 }
 
@@ -64,6 +65,7 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
     res.detail.push({
       href: `${origin}/preparations/${order.uuid}`,
       reference: order.uuid,
+      deliveryMethodName: order.delivery.method.name,
       lines: order.lines
         .map((line): DetailPreparationLineVM => {
           const unitPrice =
