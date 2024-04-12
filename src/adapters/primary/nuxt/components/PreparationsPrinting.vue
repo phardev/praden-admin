@@ -9,7 +9,12 @@ div.hidden.printme.mx-2
     div.flex
       div.grow
         h1.text-xl {{ order.deliveryMethodName }}
-        h1.text-xl.grow Commande {{ order.reference }}
+        h1.text-xl Commande {{ order.reference }}
+        ft-barcode.w-10(
+          :code="order.clientName"
+          :width="1"
+          :height="50"
+        )
       client-only
         vueQr(:text="order.href")
     ft-table(

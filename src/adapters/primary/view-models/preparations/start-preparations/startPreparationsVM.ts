@@ -19,6 +19,7 @@ export interface PreparationLineDetailVM {
   href: string
   reference: string
   deliveryMethodName: string
+  clientName: string
   lines: Array<DetailPreparationLineVM>
 }
 
@@ -66,6 +67,7 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
       href: `${origin}/preparations/${order.uuid}`,
       reference: order.uuid,
       deliveryMethodName: order.delivery.method.name,
+      clientName: `${order.deliveryAddress.firstname} ${order.deliveryAddress.lastname}`,
       lines: order.lines
         .map((line): DetailPreparationLineVM => {
           const unitPrice =
