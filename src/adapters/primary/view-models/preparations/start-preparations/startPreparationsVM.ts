@@ -1,6 +1,6 @@
 import { usePreparationStore } from '@store/preparationStore'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { priceFormatter } from '@utils/formatters'
+import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 
 export interface GlobalPreparationLineVM {
   reference: string
@@ -20,6 +20,7 @@ export interface PreparationLineDetailVM {
   reference: string
   deliveryMethodName: string
   clientName: string
+  createdDate: string
   lines: Array<DetailPreparationLineVM>
 }
 
@@ -68,6 +69,7 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
       reference: order.uuid,
       deliveryMethodName: order.delivery.method.name,
       clientName: order.deliveryAddress.lastname,
+      createdDate: timestampToLocaleString(order.createdAt, 'fr-FR'),
       lines: order.lines
         .map((line): DetailPreparationLineVM => {
           const unitPrice =

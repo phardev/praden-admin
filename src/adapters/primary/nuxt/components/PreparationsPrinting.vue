@@ -10,6 +10,7 @@ div.hidden.printme.mx-2
       div.grow
         h1.text-xl {{ order.deliveryMethodName }}
         h1.text-xl Commande {{ order.reference }}
+        h1.text-xl {{ order.createdDate }}
         ft-barcode.w-10(
           :code="order.clientName"
           :width="1"

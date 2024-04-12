@@ -85,6 +85,7 @@ describe('Start preparations VM', () => {
               reference: orderToPrepare1.uuid,
               deliveryMethodName: orderToPrepare1.delivery.method.name,
               clientName: orderToPrepare1.deliveryAddress.lastname,
+              createdDate: '21 janv. 2023',
               lines: [
                 {
                   reference: dolodent.cip13,
@@ -128,6 +129,7 @@ describe('Start preparations VM', () => {
               reference: orderToPrepare2.uuid,
               deliveryMethodName: orderToPrepare2.delivery.method.name,
               clientName: orderToPrepare2.deliveryAddress.lastname,
+              createdDate: '5 févr. 2023',
               lines: [
                 {
                   reference: ultraLevure.cip13,
@@ -182,6 +184,7 @@ describe('Start preparations VM', () => {
                 orderWithProductWithoutLocation.delivery.method.name,
               clientName:
                 orderWithProductWithoutLocation.deliveryAddress.lastname,
+              createdDate: '21 janv. 2023',
               lines: [
                 {
                   reference: calmosine.cip13,
@@ -238,6 +241,7 @@ describe('Start preparations VM', () => {
               reference: orderToPrepare1.uuid,
               deliveryMethodName: orderToPrepare1.delivery.method.name,
               clientName: orderToPrepare1.deliveryAddress.lastname,
+              createdDate: '21 janv. 2023',
               lines: [
                 {
                   reference: dolodent.cip13,
@@ -255,6 +259,7 @@ describe('Start preparations VM', () => {
               reference: orderToPrepare2.uuid,
               deliveryMethodName: orderToPrepare2.delivery.method.name,
               clientName: orderToPrepare2.deliveryAddress.lastname,
+              createdDate: '5 févr. 2023',
               lines: [
                 {
                   reference: ultraLevure.cip13,
