@@ -22,6 +22,7 @@ export interface PreparationLineDetailVM {
   clientLastname: string
   clientFullname: string
   createdDate: string
+  deliveryPrice: string
   lines: Array<DetailPreparationLineVM>
 }
 
@@ -72,6 +73,10 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
       clientLastname: order.deliveryAddress.lastname,
       clientFullname: `${order.deliveryAddress.firstname} ${order.deliveryAddress.lastname}`,
       createdDate: timestampToLocaleString(order.createdAt, 'fr-FR'),
+      deliveryPrice:
+        order.delivery.method.price > 0
+          ? formatter.format(order.delivery.method.price / 100)
+          : 'Gratuit',
       lines: order.lines
         .map((line): DetailPreparationLineVM => {
           const unitPrice =

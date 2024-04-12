@@ -7,6 +7,7 @@ import {
 import {
   orderToPrepare1,
   orderToPrepare2,
+  orderToPrepare3,
   orderWithProductWithoutLocation
 } from '@utils/testData/orders'
 import {
@@ -49,7 +50,8 @@ describe('Start preparations VM', () => {
       preparationsStore.items = [
         orderToPrepare1,
         orderToPrepare2,
-        orderWithProductWithoutLocation
+        orderWithProductWithoutLocation,
+        orderToPrepare3
       ]
     })
     describe('There is no preparations selected', () => {
@@ -87,6 +89,7 @@ describe('Start preparations VM', () => {
               clientLastname: orderToPrepare1.deliveryAddress.lastname,
               clientFullname: `${orderToPrepare1.deliveryAddress.firstname} ${orderToPrepare1.deliveryAddress.lastname}`,
               createdDate: '21 janv. 2023',
+              deliveryPrice: 'Gratuit',
               lines: [
                 {
                   reference: dolodent.cip13,
@@ -132,6 +135,7 @@ describe('Start preparations VM', () => {
               clientLastname: orderToPrepare2.deliveryAddress.lastname,
               clientFullname: `${orderToPrepare2.deliveryAddress.firstname} ${orderToPrepare2.deliveryAddress.lastname}`,
               createdDate: '5 févr. 2023',
+              deliveryPrice: 'Gratuit',
               lines: [
                 {
                   reference: ultraLevure.cip13,
@@ -188,6 +192,7 @@ describe('Start preparations VM', () => {
                 orderWithProductWithoutLocation.deliveryAddress.lastname,
               clientFullname: `${orderWithProductWithoutLocation.deliveryAddress.firstname} ${orderWithProductWithoutLocation.deliveryAddress.lastname}`,
               createdDate: '21 janv. 2023',
+              deliveryPrice: 'Gratuit',
               lines: [
                 {
                   reference: calmosine.cip13,
@@ -206,6 +211,46 @@ describe('Start preparations VM', () => {
                   unitPrice: '6,49\u00A0€',
                   taxRate: '10 %',
                   totalPrice: '19,47\u00A0€'
+                }
+              ]
+            }
+          ]
+        }
+        expect(vm).toStrictEqual(expectedVM)
+      })
+      it('should display the delivery price', () => {
+        preparationsStore.selected = [orderToPrepare3.uuid]
+        const anotherOrigin = 'http://another-origin:3000'
+        const vm = startPreparationsVM(anotherOrigin)
+        const expectedVM: StartPreparationsVM = {
+          globalHeaders,
+          detailHeaders,
+          global: [
+            {
+              reference: dolodent.cip13,
+              name: dolodent.name,
+              location: dolodent.location,
+              quantity: 1
+            }
+          ],
+          detail: [
+            {
+              href: `${anotherOrigin}/preparations/${orderToPrepare3.uuid}`,
+              reference: orderToPrepare3.uuid,
+              deliveryMethodName: orderToPrepare3.delivery.method.name,
+              clientLastname: orderToPrepare3.deliveryAddress.lastname,
+              clientFullname: `${orderToPrepare3.deliveryAddress.firstname} ${orderToPrepare3.deliveryAddress.lastname}`,
+              createdDate: '5 févr. 2023',
+              deliveryPrice: '5,99\u00A0€',
+              lines: [
+                {
+                  reference: dolodent.cip13,
+                  name: dolodent.name,
+                  location: dolodent.location,
+                  quantity: 1,
+                  unitPrice: '5,50\u00A0€',
+                  taxRate: '10 %',
+                  totalPrice: '5,50\u00A0€'
                 }
               ]
             }
@@ -246,6 +291,7 @@ describe('Start preparations VM', () => {
               clientLastname: orderToPrepare1.deliveryAddress.lastname,
               clientFullname: `${orderToPrepare1.deliveryAddress.firstname} ${orderToPrepare1.deliveryAddress.lastname}`,
               createdDate: '21 janv. 2023',
+              deliveryPrice: 'Gratuit',
               lines: [
                 {
                   reference: dolodent.cip13,
@@ -265,6 +311,7 @@ describe('Start preparations VM', () => {
               clientLastname: orderToPrepare2.deliveryAddress.lastname,
               clientFullname: `${orderToPrepare2.deliveryAddress.firstname} ${orderToPrepare2.deliveryAddress.lastname}`,
               createdDate: '5 févr. 2023',
+              deliveryPrice: 'Gratuit',
               lines: [
                 {
                   reference: ultraLevure.cip13,
