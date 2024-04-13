@@ -116,7 +116,7 @@ const getSupplierAddress = (): AddressVM => {
   }
 }
 
-const getDeliveryAddress = (order: Order): AddressVM => {
+export const getDeliveryAddressVM = (order: Order): AddressVM => {
   return {
     name: `${order.deliveryAddress.firstname} ${order.deliveryAddress.lastname}`,
     address: order.deliveryAddress.address,
@@ -404,7 +404,7 @@ export const getInvoiceVM = (): GetInvoiceVM => {
     ),
     createdDatetime: new Date(invoice.createdAt),
     supplierAddress: getSupplierAddress(),
-    deliveryAddress: getDeliveryAddress(invoice.data),
+    deliveryAddress: getDeliveryAddressVM(invoice.data),
     billingAddress: {
       name: `${invoice.data.deliveryAddress.firstname} ${invoice.data.deliveryAddress.lastname}`,
       address: invoice.data.deliveryAddress.address,

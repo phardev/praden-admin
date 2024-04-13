@@ -1,6 +1,10 @@
 import { usePreparationStore } from '@store/preparationStore'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
+import {
+  AddressVM,
+  getDeliveryAddressVM
+} from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 
 export interface GlobalPreparationLineVM {
   reference: string
@@ -23,6 +27,7 @@ export interface PreparationLineDetailVM {
   clientFullname: string
   createdDate: string
   deliveryPrice: string
+  deliveryAddress: AddressVM
   lines: Array<DetailPreparationLineVM>
 }
 
@@ -77,6 +82,7 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
         order.delivery.method.price > 0
           ? formatter.format(order.delivery.method.price / 100)
           : 'Gratuit',
+      deliveryAddress: getDeliveryAddressVM(order),
       lines: order.lines
         .map((line): DetailPreparationLineVM => {
           const unitPrice =

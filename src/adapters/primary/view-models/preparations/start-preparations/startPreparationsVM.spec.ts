@@ -90,6 +90,13 @@ describe('Start preparations VM', () => {
               clientFullname: `${orderToPrepare1.deliveryAddress.firstname} ${orderToPrepare1.deliveryAddress.lastname}`,
               createdDate: '21 janv. 2023',
               deliveryPrice: 'Gratuit',
+              deliveryAddress: {
+                name: 'Jean Bon',
+                address: '10 rue des peupliers',
+                city: 'PlopLand',
+                zip: '12345',
+                phone: '0123456789'
+              },
               lines: [
                 {
                   reference: dolodent.cip13,
@@ -136,6 +143,13 @@ describe('Start preparations VM', () => {
               clientFullname: `${orderToPrepare2.deliveryAddress.firstname} ${orderToPrepare2.deliveryAddress.lastname}`,
               createdDate: '5 févr. 2023',
               deliveryPrice: 'Gratuit',
+              deliveryAddress: {
+                name: "Jeanne D'arc",
+                address: '12 avenue du bois',
+                city: 'Boisville',
+                zip: '54321',
+                phone: '9876543210'
+              },
               lines: [
                 {
                   reference: ultraLevure.cip13,
@@ -193,6 +207,13 @@ describe('Start preparations VM', () => {
               clientFullname: `${orderWithProductWithoutLocation.deliveryAddress.firstname} ${orderWithProductWithoutLocation.deliveryAddress.lastname}`,
               createdDate: '21 janv. 2023',
               deliveryPrice: 'Gratuit',
+              deliveryAddress: {
+                name: 'Jean Bon',
+                address: '10 rue des peupliers',
+                city: 'PlopLand',
+                zip: '12345',
+                phone: '0123456789'
+              },
               lines: [
                 {
                   reference: calmosine.cip13,
@@ -242,6 +263,13 @@ describe('Start preparations VM', () => {
               clientFullname: `${orderToPrepare3.deliveryAddress.firstname} ${orderToPrepare3.deliveryAddress.lastname}`,
               createdDate: '5 févr. 2023',
               deliveryPrice: '5,99\u00A0€',
+              deliveryAddress: {
+                name: "Jeanne D'arc",
+                address: '12 avenue du bois',
+                city: 'Boisville',
+                zip: '54321',
+                phone: '9876543210'
+              },
               lines: [
                 {
                   reference: dolodent.cip13,
@@ -292,6 +320,13 @@ describe('Start preparations VM', () => {
               clientFullname: `${orderToPrepare1.deliveryAddress.firstname} ${orderToPrepare1.deliveryAddress.lastname}`,
               createdDate: '21 janv. 2023',
               deliveryPrice: 'Gratuit',
+              deliveryAddress: {
+                name: 'Jean Bon',
+                address: '10 rue des peupliers',
+                city: 'PlopLand',
+                zip: '12345',
+                phone: '0123456789'
+              },
               lines: [
                 {
                   reference: dolodent.cip13,
@@ -312,6 +347,13 @@ describe('Start preparations VM', () => {
               clientFullname: `${orderToPrepare2.deliveryAddress.firstname} ${orderToPrepare2.deliveryAddress.lastname}`,
               createdDate: '5 févr. 2023',
               deliveryPrice: 'Gratuit',
+              deliveryAddress: {
+                name: "Jeanne D'arc",
+                address: '12 avenue du bois',
+                city: 'Boisville',
+                zip: '54321',
+                phone: '9876543210'
+              },
               lines: [
                 {
                   reference: ultraLevure.cip13,

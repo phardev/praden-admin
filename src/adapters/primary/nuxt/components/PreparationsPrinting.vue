@@ -19,6 +19,13 @@ div.hidden.printme.mx-2
         )
       client-only
         vueQr(:text="order.href")
+    div
+      div.text-lg.mb-2 Adresse de livraison
+      div {{ order.deliveryAddress.name }}
+      div {{ order.deliveryAddress.address }}
+      div {{ order.deliveryAddress.zip }}
+      div {{ order.deliveryAddress.city }}
+      div {{ order.deliveryAddress.phone }}
     ft-table(
       :headers="startVM.detailHeaders"
       :items="order.lines"
