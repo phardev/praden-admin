@@ -31,7 +31,6 @@ export interface GetPreparationVM {
   canValidate: boolean
   canCancel: boolean
   canAskHowToFinish: boolean
-  isThereAProblem: boolean
 }
 
 const canValidate = (
@@ -107,12 +106,6 @@ const canAskHowToFinish = (
   return messages.length === 0
 }
 
-export const isThereAProblem = (
-  lines: Array<GetPreparationLineVM>
-): boolean => {
-  return lines.some((l) => l.preparedQuantity > l.expectedQuantity)
-}
-
 export const getPreparationVM = (): GetPreparationVM => {
   const preparationStore = usePreparationStore()
   const preparation = preparationStore.current
@@ -124,8 +117,7 @@ export const getPreparationVM = (): GetPreparationVM => {
       messages: [],
       canValidate: false,
       canCancel: false,
-      canAskHowToFinish: false,
-      isThereAProblem: false
+      canAskHowToFinish: false
     }
   }
   const headers: Array<Header> = [
@@ -166,7 +158,6 @@ export const getPreparationVM = (): GetPreparationVM => {
     messages: getMessages(preparation.messages),
     canValidate: canValidate(lines, preparation.messages),
     canCancel: canCancel(preparation.messages),
-    canAskHowToFinish: canAskHowToFinish(lines, preparation),
-    isThereAProblem: isThereAProblem(lines)
+    canAskHowToFinish: canAskHowToFinish(lines, preparation)
   }
 }

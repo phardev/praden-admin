@@ -64,8 +64,7 @@ describe('Get preparation VM', () => {
           messages: [],
           canValidate: false,
           canCancel: false,
-          canAskHowToFinish: false,
-          isThereAProblem: false
+          canAskHowToFinish: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -93,8 +92,7 @@ describe('Get preparation VM', () => {
           messages: [],
           canValidate: false,
           canCancel: false,
-          canAskHowToFinish: false,
-          isThereAProblem: false
+          canAskHowToFinish: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -119,8 +117,7 @@ describe('Get preparation VM', () => {
           messages: [],
           canValidate: true,
           canCancel: false,
-          canAskHowToFinish: false,
-          isThereAProblem: false
+          canAskHowToFinish: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -151,8 +148,7 @@ describe('Get preparation VM', () => {
           messages: [],
           canValidate: false,
           canCancel: false,
-          canAskHowToFinish: false,
-          isThereAProblem: false
+          canAskHowToFinish: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -175,8 +171,7 @@ describe('Get preparation VM', () => {
           messages: [],
           canValidate: false,
           canCancel: false,
-          canAskHowToFinish: false,
-          isThereAProblem: true
+          canAskHowToFinish: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -201,8 +196,7 @@ describe('Get preparation VM', () => {
           messages: [],
           canValidate: true,
           canCancel: false,
-          canAskHowToFinish: false,
-          isThereAProblem: false
+          canAskHowToFinish: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -311,8 +305,7 @@ describe('Get preparation VM', () => {
         messages: [],
         canValidate: false,
         canCancel: false,
-        canAskHowToFinish: false,
-        isThereAProblem: false
+        canAskHowToFinish: false
       }
       expect(getPreparationVM()).toStrictEqual(emptyVM)
     })

@@ -16,5 +16,6 @@ module.exports = {
     'declaration-block-trailing-semicolon': null,
     'no-descending-specificity': null,
     'no-missing-end-of-source-newline': true
-  }
+  },
+  ignoreFiles: ['coverage/*']
 }

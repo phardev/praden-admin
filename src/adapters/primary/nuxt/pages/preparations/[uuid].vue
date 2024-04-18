@@ -16,13 +16,13 @@ invoice.hidden.printme.mx-2
       icon.icon-lg.text-grass9(v-if="item.status === PreparationStatus.Prepared" name="material-symbols:check-circle")
       icon.icon-lg.text-tomato8(v-if="item.status > PreparationStatus.Prepared" name="fluent-mdl2:status-error-full")
   div.w-full.flex.justify-between.items-center.relative
-    ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
-      @click="save"
-    ) Sauvegarder
-    div.centered(v-if="preparationVM.isThereAProblem")
-      ft-button.button-warning.mt-4.mr-0.py-4.px-4.text-xl(
-        @click="problemDialog.open()"
-      ) Problème
+    div.flex.justify-center.items-center.gap-4
+      ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
+        @click="save"
+      ) Sauvegarder
+      ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
+        @click="openActionDialog"
+      ) Actions particulières
     ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
       v-if="preparationVM.canValidate"
       @click="validate"
@@ -40,22 +40,11 @@ invoice.hidden.printme.mx-2
     ft-messages(
       :messages="preparationVM.messages"
     )
-  ft-dialog(
-    :is-opened="problemDialog.isOpened()"
-    @close="closeProblemDialog"
+  ft-preparation-actions-modal(
+    v-model="isActionModalOpened"
+    @close="closeActionsModal"
+    @remove-product="removeProduct"
   )
-    div.grid.grid-cols-1.gap-4.mx-10.my-10(class="md:grid-cols-2")
-      ft-button.button-solid.h-24.col-span-2(@click="removeAProduct") Retirer un produit
-  ft-dialog(
-    :is-opened="removeProductDialog.isOpened()"
-    @close="closeRemoveProductDialog"
-  )
-    div.centered.w-full.px-10
-      ft-scanner(
-        placeholder="Code produit à retirer"
-        @scanned="removeProduct"
-        @scanner-mounted="removeScannerMounted"
-      )
 </template>
 
 <script lang="ts" setup>
@@ -73,8 +62,6 @@ import { savePreparation } from '@core/usecases/order/save-preparation/savePrepa
 import { cancelPreparation } from '@core/usecases/order/cancel-preparation/cancelPreparation'
 import { askClientHowToFinishPreparation } from '@core/usecases/order/ask-client-how-to-finish-preparation/askClientHowToFinishPreparation'
 import { removeProductFromPreparation } from '@core/usecases/order/scan-product-to-remove-fom-preparation/scanProductToRemoveFromPreparation'
-import { useDialog } from '@adapters/primary/nuxt/composables/useDialog'
-import FtScanner from '@adapters/primary/nuxt/components/FtScanner.vue'
 
 definePageMeta({ layout: 'main' })
 
@@ -85,27 +72,14 @@ onMounted(() => {
   getPreparation(preparationUuid, useOrderGateway())
 })
 
-const problemDialog = useDialog()
-const removeProductDialog = useDialog()
-
 const mainScanner = ref(null)
 
-const closeProblemDialog = () => {
-  problemDialog.close()
-  setFocusOnMainScanner()
-}
-
-const closeRemoveProductDialog = () => {
-  removeProductDialog.close()
+const closeActionsModal = () => {
   setFocusOnMainScanner()
 }
 
 const setFocusOnMainScanner = () => {
   setFocus(mainScanner.value)
-}
-
-const removeScannerMounted = (input: any) => {
-  setFocus(input)
 }
 
 const setFocus = (el: any) => {
@@ -119,32 +93,26 @@ const mainScannerMounted = (input: any) => {
   mainScanner.value = input
 }
 
-const removeAProduct = () => {
-  openRemoveProduct()
-}
-
-const openRemoveProduct = async () => {
-  problemDialog.close()
-  removeProductDialog.open()
+const isActionModalOpened = ref(false)
+const openActionDialog = () => {
+  isActionModalOpened.value = true
 }
 
 const removeProduct = (cip13: string) => {
   removeProductFromPreparation(cip13)
-  closeRemoveProductDialog()
-  closeProblemDialog()
+  closeActionsModal()
 }
 
 const router = useRouter()
 
 const validate = async () => {
   await validatePreparation(useOrderGateway(), useInvoiceGateway())
-  // window.print()
+  window.print()
   router.push('/preparations')
 }
 
 const cancel = async () => {
   await cancelPreparation(useOrderGateway(), useInvoiceGateway())
-  // window.print()
   router.push('/preparations')
 }
 

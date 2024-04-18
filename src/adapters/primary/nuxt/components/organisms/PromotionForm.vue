@@ -102,12 +102,12 @@ div(v-if="currentVM")
 </template>
 
 <script lang="ts" setup>
-import FtInput from '@adapters/primary/nuxt/components/FtInput.vue'
-import FtDatePickerInput from '@adapters/primary/nuxt/components/FtDatePickerInput.vue'
+import FtInput from '@adapters/primary/nuxt/components/atoms/FtInput.vue'
+import FtDatePickerInput from '@adapters/primary/nuxt/components/atoms/FtDatePickerInput.vue'
 import { ReductionType } from '@core/entities/promotion'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
 import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'
-import { useSearchGateway } from '../../../../../gateways/searchGateway'
+import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 
 definePageMeta({ layout: 'main' })
 

@@ -47,9 +47,9 @@ import { toggleSelectAllPreparations } from '@core/usecases/order/toggle-select-
 import { startPreparations } from '@core/usecases/order/start-preparations/startPreparations'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
 import { resetPreparationSelection } from '@core/usecases/order/reset-preparation-selection/resetPreparationSelection'
-import { useProductGateway } from '../../../../../gateways/productGateway'
-import { useOrderGateway } from '../../../../../gateways/orderGateway'
-import { useEmailGateway } from '../../../../../gateways/emailGateway'
+import { useProductGateway } from '../../../../../../gateways/productGateway'
+import { useOrderGateway } from '../../../../../../gateways/orderGateway'
+import { useEmailGateway } from '../../../../../../gateways/emailGateway'
 
 definePageMeta({ layout: 'main' })
 

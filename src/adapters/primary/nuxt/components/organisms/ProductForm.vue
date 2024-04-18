@@ -68,6 +68,15 @@ div(v-if="currentVM")
             type="number"
             @update:model-value="availableStockChanged"
           )
+      template(#details)
+        UFormGroup.pb-4(label="Description" name="description")
+          FtRichTextInput
+        UFormGroup.pb-4(label="Stock disponible" name="availableStock")
+          ft-text-field(
+            :model-value="currentVM.getAvailableStock().value"
+            type="number"
+            @update:model-value="availableStockChanged"
+          )
   div.flex.flex-row-reverse.mt-4
     ft-button.button-solid.px-6.text-xl(
       v-if="currentVM.getDisplayValidate()"
@@ -77,6 +86,8 @@ div(v-if="currentVM")
 </template>
 
 <script lang="ts" setup>
+import FtRichTextInput from '@adapters/primary/nuxt/components/molecules/FtRichTextInput.client.vue'
+
 definePageMeta({ layout: 'main' })
 
 const items = [
@@ -94,6 +105,11 @@ const items = [
     label: '3. Stock',
     defaultOpen: true,
     slot: 'stock'
+  },
+  {
+    label: '4. Détails',
+    defaultOpen: true,
+    slot: 'details'
   }
 ]
 
