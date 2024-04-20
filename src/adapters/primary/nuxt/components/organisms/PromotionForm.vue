@@ -48,15 +48,15 @@ div(v-if="currentVM")
       for="endDate"
       @date-changed="endDateChanged"
     ) Date de fin
-  ft-input(
-    v-if="currentVM.getProducts().canEdit"
-    v-model="search"
-    placeholder="Rechercher par nom, référence, catégorie, laboratoire"
-    for="search"
-    type='text'
-    name='search'
-    @input="searchChanged"
-  ) Rechercher un produit
+  //ft-input(
+  //  v-if="currentVM.getProducts().canEdit"
+  //  v-model="search"
+  //  placeholder="Rechercher par nom, référence, catégorie, laboratoire"
+  //  for="search"
+  //  type='text'
+  //  name='search'
+  //  @input="searchChanged"
+  //) Rechercher un produit
   div.flex.gap-12.mt-4
     div.flex-1(
       v-if="currentVM.getProducts().canEdit"
@@ -102,8 +102,6 @@ div(v-if="currentVM")
 </template>
 
 <script lang="ts" setup>
-import FtInput from '@adapters/primary/nuxt/components/atoms/FtInput.vue'
-import FtDatePickerInput from '@adapters/primary/nuxt/components/atoms/FtDatePickerInput.vue'
 import { ReductionType } from '@core/entities/promotion'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
 import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'

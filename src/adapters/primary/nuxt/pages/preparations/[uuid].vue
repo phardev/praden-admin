@@ -42,8 +42,10 @@ invoice.hidden.printme.mx-2
     )
   ft-preparation-actions-modal(
     v-model="isActionModalOpened"
+    :products-references="productsReferences"
     @close="closeActionsModal"
     @remove-product="removeProduct"
+    @change-quantity="changeProductQuantity"
   )
 </template>
 
@@ -62,6 +64,7 @@ import { savePreparation } from '@core/usecases/order/save-preparation/savePrepa
 import { cancelPreparation } from '@core/usecases/order/cancel-preparation/cancelPreparation'
 import { askClientHowToFinishPreparation } from '@core/usecases/order/ask-client-how-to-finish-preparation/askClientHowToFinishPreparation'
 import { removeProductFromPreparation } from '@core/usecases/order/scan-product-to-remove-fom-preparation/scanProductToRemoveFromPreparation'
+import { setProductQuantityForPreparation } from '@core/usecases/order/set-product-quantity-for-preparation/setProductQuantityForPreparation'
 
 definePageMeta({ layout: 'main' })
 
@@ -75,6 +78,7 @@ onMounted(() => {
 const mainScanner = ref(null)
 
 const closeActionsModal = () => {
+  isActionModalOpened.value = false
   setFocusOnMainScanner()
 }
 
@@ -93,6 +97,10 @@ const mainScannerMounted = (input: any) => {
   mainScanner.value = input
 }
 
+const productsReferences = computed(() => {
+  return preparationVM.value.lines.map((l) => l.reference)
+})
+
 const isActionModalOpened = ref(false)
 const openActionDialog = () => {
   isActionModalOpened.value = true
@@ -100,6 +108,11 @@ const openActionDialog = () => {
 
 const removeProduct = (cip13: string) => {
   removeProductFromPreparation(cip13)
+  closeActionsModal()
+}
+
+const changeProductQuantity = (cip13: string, quantity: number) => {
+  setProductQuantityForPreparation(cip13, quantity)
   closeActionsModal()
 }
 
