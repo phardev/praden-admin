@@ -42,10 +42,11 @@ invoice.hidden.printme.mx-2
     )
   ft-preparation-actions-modal(
     v-model="isActionModalOpened"
-    :products-references="productsReferences"
+    :products="products"
     @close="closeActionsModal"
     @remove-product="removeProduct"
     @change-quantity="changeProductQuantity"
+    @change-reference="changeProductReference"
   )
 </template>
 
@@ -65,6 +66,7 @@ import { cancelPreparation } from '@core/usecases/order/cancel-preparation/cance
 import { askClientHowToFinishPreparation } from '@core/usecases/order/ask-client-how-to-finish-preparation/askClientHowToFinishPreparation'
 import { removeProductFromPreparation } from '@core/usecases/order/scan-product-to-remove-fom-preparation/scanProductToRemoveFromPreparation'
 import { setProductQuantityForPreparation } from '@core/usecases/order/set-product-quantity-for-preparation/setProductQuantityForPreparation'
+import { changeProductCip13ForPreparation } from '@core/usecases/order/change-product-cip13-for-preparation/changeProductCip13ForPreparation'
 
 definePageMeta({ layout: 'main' })
 
@@ -97,8 +99,8 @@ const mainScannerMounted = (input: any) => {
   mainScanner.value = input
 }
 
-const productsReferences = computed(() => {
-  return preparationVM.value.lines.map((l) => l.reference)
+const products = computed(() => {
+  return preparationVM.value.lines.map((l) => l)
 })
 
 const isActionModalOpened = ref(false)
@@ -113,6 +115,12 @@ const removeProduct = (cip13: string) => {
 
 const changeProductQuantity = (cip13: string, quantity: number) => {
   setProductQuantityForPreparation(cip13, quantity)
+  closeActionsModal()
+}
+
+const changeProductReference = (oldReference: string, newReference: string) => {
+  console.log(oldReference, ' => ', newReference)
+  changeProductCip13ForPreparation(oldReference, newReference)
   closeActionsModal()
 }
 
