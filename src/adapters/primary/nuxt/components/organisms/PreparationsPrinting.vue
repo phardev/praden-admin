@@ -38,6 +38,12 @@ div.hidden.printme.mx-2
 
 <script lang="ts" setup>
 import { startPreparationsVM } from '@adapters/primary/view-models/preparations/start-preparations/startPreparationsVM'
+import { getSettings } from '@core/usecases/settings/get-settings/getSettings'
+import { useSettingsGateway } from '../../../../../../gateways/settingGateways'
+
+onMounted(() => {
+  getSettings(useSettingsGateway())
+})
 
 let vueQr
 if (process.client) {

@@ -5,6 +5,7 @@ import {
   AddressVM,
   getDeliveryAddressVM
 } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
+import { useSettingStore } from '@store/settingStore'
 
 export interface GlobalPreparationLineVM {
   reference: string
@@ -44,8 +45,20 @@ const sortByLocation = (a: any, b: any): number => {
   return a.location < b.location ? -1 : 1
 }
 
+const sortByProductName = (a: any, b: any): number => {
+  if (a.name === '') return 1
+  if (b.name === '') return -1
+  return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1
+}
+
+export enum PickingSortType {
+  Location,
+  Name
+}
+
 export const startPreparationsVM = (origin: string): StartPreparationsVM => {
   const preparationStore = usePreparationStore()
+  const settingStore = useSettingStore()
   const selected = preparationStore.selected
   const globalHeaders: Array<Header> = [
     { name: 'Référence', value: 'reference' },
@@ -68,6 +81,11 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
     global: [],
     detail: []
   }
+  const pickingSortType = settingStore.get('picking-sort')
+  const pickingSort =
+    pickingSortType === PickingSortType.Location
+      ? sortByLocation
+      : sortByProductName
   const formatter = priceFormatter('fr-FR', 'EUR')
   selected.forEach((uuid) => {
     const order = preparationStore.getByUuid(uuid)
@@ -99,7 +117,7 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
             totalPrice: formatter.format(unitPrice * quantity)
           }
         })
-        .sort(sortByLocation)
+        .sort(pickingSort)
     })
   })
   res.global = res.detail.reduce(
@@ -120,6 +138,6 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
     },
     []
   )
-  res.global.sort(sortByLocation)
+  res.global.sort(pickingSort)
   return res
 }
