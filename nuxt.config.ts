@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url'
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
+      ENV: process.env.ENV,
       PREPARATION_STARTED_TEMPLATE_ID:
         process.env.PREPARATION_STARTED_TEMPLATE_ID,
       SEND_EMAIL_URL: process.env.SEND_EMAIL_URL,
