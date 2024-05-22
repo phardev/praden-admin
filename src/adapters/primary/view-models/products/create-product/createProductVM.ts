@@ -27,7 +27,10 @@ export class CreateProductVM {
       laboratory: '',
       location: '',
       availableStock: '',
-      newImages: []
+      newImages: [],
+      description: '',
+      instructionsForUse: '',
+      composition: ''
     })
   }
 
@@ -140,6 +143,39 @@ export class CreateProductVM {
     }
   }
 
+  getDescription(): Field<string> {
+    return {
+      value: this.formStore.get(this.key).description,
+      canEdit: true
+    }
+  }
+
+  setDescription(description: string): void {
+    this.formStore.set(this.key, { description })
+  }
+
+  getInstructionsForUse(): Field<string> {
+    return {
+      value: this.formStore.get(this.key).instructionsForUse,
+      canEdit: true
+    }
+  }
+
+  setInstructionsForUse(instructionsForUse: string): void {
+    this.formStore.set(this.key, { instructionsForUse })
+  }
+
+  getComposition(): Field<string> {
+    return {
+      value: this.formStore.get(this.key).composition,
+      canEdit: true
+    }
+  }
+
+  setComposition(composition: string): void {
+    this.formStore.set(this.key, { composition })
+  }
+
   getDto(): CreateProductDTO {
     const formValue = this.formStore.get(this.key)
     return {
@@ -151,7 +187,10 @@ export class CreateProductVM {
       priceWithoutTax: formValue.priceWithoutTax,
       percentTaxRate: formValue.percentTaxRate,
       location: formValue.location,
-      availableStock: formValue.availableStock
+      availableStock: formValue.availableStock,
+      description: formValue.description,
+      instructionsForUse: formValue.instructionsForUse,
+      composition: formValue.composition
     }
   }
 

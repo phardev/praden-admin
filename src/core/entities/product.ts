@@ -13,6 +13,9 @@ export interface Product {
   location: string
   availableStock: number
   laboratory: string
+  description: string
+  instructionsForUse: string
+  composition: string
 }
 
 export const isProduct = (object: any): object is Product => {

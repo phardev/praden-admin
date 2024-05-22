@@ -3,10 +3,11 @@ import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InM
 import * as products from '@utils/testData/products'
 import { isLocalEnv } from '@utils/env'
 
+const inMemoryGateway = new InMemoryProductGateway()
+inMemoryGateway.feedWith(...Object.values(products))
+
 export const useProductGateway = () => {
   if (isLocalEnv()) {
-    const inMemoryGateway = new InMemoryProductGateway()
-    inMemoryGateway.feedWith(...Object.values(products))
     return inMemoryGateway
   }
   const { BACKEND_URL } = useRuntimeConfig().public

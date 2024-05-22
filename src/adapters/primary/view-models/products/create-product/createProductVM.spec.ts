@@ -152,6 +152,42 @@ describe('Create product VM', () => {
         expect(formStore.get(key).newImages).toStrictEqual([])
       })
     })
+    describe('Description field', () => {
+      it('should have an empty description', () => {
+        const expectedField: Field<string> = {
+          value: '',
+          canEdit: true
+        }
+        expect(vm.getDescription()).toStrictEqual(expectedField)
+      })
+      it('should save the description in form store', () => {
+        expect(formStore.get(key).description).toBe('')
+      })
+    })
+    describe('Instruction for use field', () => {
+      it('should have an empty instructions', () => {
+        const expectedField: Field<string> = {
+          value: '',
+          canEdit: true
+        }
+        expect(vm.getInstructionsForUse()).toStrictEqual(expectedField)
+      })
+      it('should save the instructions in form store', () => {
+        expect(formStore.get(key).instructionsForUse).toBe('')
+      })
+    })
+    describe('Composition field', () => {
+      it('should have an empty composition', () => {
+        const expectedField: Field<string> = {
+          value: '',
+          canEdit: true
+        }
+        expect(vm.getComposition()).toStrictEqual(expectedField)
+      })
+      it('should save the composition in form store', () => {
+        expect(formStore.get(key).composition).toBe('')
+      })
+    })
   })
   describe('Update name', () => {
     it('should update name value in form store', () => {
@@ -300,6 +336,51 @@ describe('Create product VM', () => {
       expect(vm.getImages()).toStrictEqual(expectedImages)
     })
   })
+  describe('Update description', () => {
+    it('should update description value in form store', () => {
+      vm.setDescription('<p>description</p>')
+      expect(formStore.get(key).description).toStrictEqual('<p>description</p>')
+    })
+    it('should update description field', () => {
+      vm.setDescription('<h1>description</h1>')
+      const expectedField: Field<string> = {
+        value: '<h1>description</h1>',
+        canEdit: true
+      }
+      expect(vm.getDescription()).toStrictEqual(expectedField)
+    })
+  })
+  describe('Update instructions for use', () => {
+    it('should update instructions for use value in form store', () => {
+      vm.setInstructionsForUse('<p>this is the instructions</p>')
+      expect(formStore.get(key).instructionsForUse).toStrictEqual(
+        '<p>this is the instructions</p>'
+      )
+    })
+    it('should update instructions for use field', () => {
+      vm.setInstructionsForUse('<h1>this is the new instructions</h1>')
+      const expectedField: Field<string> = {
+        value: '<h1>this is the new instructions</h1>',
+        canEdit: true
+      }
+      expect(vm.getInstructionsForUse()).toStrictEqual(expectedField)
+    })
+  })
+  describe('Update composition', () => {
+    it('should update composition value in form store', () => {
+      vm.setComposition('<p>composition</p>')
+      expect(formStore.get(key).composition).toStrictEqual('<p>composition</p>')
+    })
+    it('should update composition field', () => {
+      vm.setComposition('<h1>composition</h1>')
+      const expectedField: Field<string> = {
+        value: '<h1>composition</h1>',
+        canEdit: true
+      }
+      expect(vm.getComposition()).toStrictEqual(expectedField)
+    })
+  })
+
   describe('DTO', () => {
     describe('For a dto', () => {
       it('should prepare the dto', () => {
@@ -317,7 +398,10 @@ describe('Create product VM', () => {
           priceWithoutTax: '12',
           percentTaxRate: '5',
           location: 'G2',
-          availableStock: '21'
+          availableStock: '21',
+          description: '<p>description</p>',
+          instructionsForUse: '<p>instructionsForUse</p>',
+          composition: '<p>composition</p>'
         }
         vm.setName(expectedDTO.name)
         vm.setCip13(expectedDTO.cip13)
@@ -328,6 +412,9 @@ describe('Create product VM', () => {
         vm.setPercentTaxRate(expectedDTO.percentTaxRate)
         vm.setLocation(expectedDTO.location)
         vm.setAvailableStock(expectedDTO.availableStock)
+        vm.setDescription(expectedDTO.description)
+        vm.setInstructionsForUse(expectedDTO.instructionsForUse)
+        vm.setComposition(expectedDTO.composition)
         expect(vm.getDto()).toStrictEqual(expectedDTO)
       })
     })

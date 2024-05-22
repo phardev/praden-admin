@@ -45,7 +45,16 @@ export default defineNuxtConfig({
   typescript: {
     strict: true
   },
-  modules: ['@pinia/nuxt', 'nuxt-icon', '@vueuse/nuxt', '@nuxt/ui'],
+  modules: [
+    '@pinia/nuxt',
+    'nuxt-icon',
+    '@vueuse/nuxt',
+    '@nuxt/ui',
+    'nuxt-tiptap-editor'
+  ],
+  tiptap: {
+    prefix: 'Tiptap'
+  },
   dir: {
     // assets: 'custom-assets',
     layouts: './src/adapters/primary/nuxt/layouts',

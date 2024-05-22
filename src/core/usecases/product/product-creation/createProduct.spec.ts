@@ -28,7 +28,10 @@ describe('Add product', () => {
         percentTaxRate: '10',
         location: 'product-location',
         availableStock: '12',
-        laboratory: 'product-laboratory'
+        laboratory: 'product-laboratory',
+        description: '<p>description</p>',
+        instructionsForUse: '<p>instructions For Use</p>',
+        composition: '<p>composition</p>'
       }
       const expectedProduct: Product = {
         name: dto.name,
@@ -40,7 +43,10 @@ describe('Add product', () => {
         percentTaxRate: 10,
         location: dto.location,
         availableStock: 12,
-        laboratory: dto.laboratory
+        laboratory: dto.laboratory,
+        description: dto.description,
+        instructionsForUse: dto.instructionsForUse,
+        composition: dto.composition
       }
       beforeEach(async () => {
         await whenCreateProduct(dto)
@@ -66,7 +72,10 @@ describe('Add product', () => {
         percentTaxRate: '10.5',
         location: 'another-product-location',
         availableStock: '21',
-        laboratory: 'another-product-laboratory'
+        laboratory: 'another-product-laboratory',
+        description: '<p>another description</p>',
+        instructionsForUse: '<p>another instructions For Use</p>',
+        composition: '<p>another composition</p>'
       }
       const expectedProduct: Product = {
         name: dto.name,
@@ -82,7 +91,10 @@ describe('Add product', () => {
         percentTaxRate: 10.5,
         location: dto.location,
         availableStock: 21,
-        laboratory: dto.laboratory
+        laboratory: dto.laboratory,
+        description: dto.description,
+        instructionsForUse: dto.instructionsForUse,
+        composition: dto.composition
       }
       beforeEach(async () => {
         givenThereIsExistingProducts(dolodent, hemoclar)

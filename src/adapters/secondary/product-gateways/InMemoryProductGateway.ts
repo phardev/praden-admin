@@ -30,7 +30,10 @@ export class InMemoryProductGateway implements ProductGateway {
       percentTaxRate: parseFloat(dto.percentTaxRate),
       location: dto.location,
       availableStock: parseInt(dto.availableStock),
-      laboratory: dto.laboratory
+      laboratory: dto.laboratory,
+      description: dto.description,
+      instructionsForUse: dto.instructionsForUse,
+      composition: dto.composition
     }
     this.products.push(product)
     return Promise.resolve(product)

@@ -70,15 +70,22 @@ div(v-if="currentVM")
           )
       template(#details)
         UFormGroup.pb-4(label="Description" name="description")
-          FtRichTextInput
-        UFormGroup.pb-4(label="Stock disponible" name="availableStock")
-          ft-text-field(
-            :model-value="currentVM.getAvailableStock().value"
-            type="number"
-            @update:model-value="availableStockChanged"
+          FtRichTextInput(
+            :model-value="currentVM.getDescription().value"
+            @update:model-value="descriptionChanged"
+          )
+        UFormGroup.pb-4(label="Instructions" name="instructions")
+          FtRichTextInput(
+            :model-value="currentVM.getInstructionsForUse().value"
+            @update:model-value="instructionsChanged"
+          )
+        UFormGroup.pb-4(label="Composition" name="composition")
+          FtRichTextInput(
+            :model-value="currentVM.getComposition().value"
+            @update:model-value="compositionChanged"
           )
   div.flex.flex-row-reverse.mt-4
-    ft-button.button-solid.px-6.text-xl(
+    ft-button.px-6.text-xl(
       v-if="currentVM.getDisplayValidate()"
       :disabled="!currentVM.getCanValidate()"
       @click.prevent="validate"
@@ -86,8 +93,6 @@ div(v-if="currentVM")
 </template>
 
 <script lang="ts" setup>
-import FtRichTextInput from '@adapters/primary/nuxt/components/molecules/FtRichTextInput.client.vue'
-
 definePageMeta({ layout: 'main' })
 
 const items = [
@@ -163,6 +168,18 @@ const locationChanged = (location: string) => {
 
 const availableStockChanged = (availableStock: string) => {
   currentVM?.value?.setAvailableStock(availableStock)
+}
+
+const descriptionChanged = (description: string) => {
+  currentVM?.value?.setDescription(description)
+}
+
+const instructionsChanged = (instructions: string) => {
+  currentVM?.value?.setInstructionsForUse(instructions)
+}
+
+const compositionChanged = (composition: string) => {
+  currentVM?.value?.setComposition(composition)
 }
 
 const emit = defineEmits<{
