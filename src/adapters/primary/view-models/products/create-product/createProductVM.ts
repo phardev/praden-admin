@@ -21,7 +21,9 @@ export class CreateProductVM {
     this.formStore.set(this.key, {
       name: '',
       categoryUuid: undefined,
+      cip7: '',
       cip13: '',
+      ean13: '',
       priceWithoutTax: undefined,
       percentTaxRate: undefined,
       laboratory: '',
@@ -65,6 +67,16 @@ export class CreateProductVM {
     })
   }
 
+  getCip7(): Field<string> {
+    return {
+      value: this.formStore.get(this.key).cip7,
+      canEdit: true
+    }
+  }
+  setCip7(cip7: string): void {
+    this.formStore.set(this.key, { cip7 })
+  }
+
   getCip13(): Field<string> {
     return {
       value: this.formStore.get(this.key).cip13,
@@ -73,6 +85,16 @@ export class CreateProductVM {
   }
   setCip13(cip13: string): void {
     this.formStore.set(this.key, { cip13 })
+  }
+
+  getEan13(): Field<string> {
+    return {
+      value: this.formStore.get(this.key).ean13,
+      canEdit: true
+    }
+  }
+  setEan13(ean13: string): void {
+    this.formStore.set(this.key, { ean13 })
   }
 
   getPriceWithoutTax(): Field<string | undefined> {
@@ -180,7 +202,9 @@ export class CreateProductVM {
     const formValue = this.formStore.get(this.key)
     return {
       name: formValue.name,
+      cip7: formValue.cip7,
       cip13: formValue.cip13,
+      ean13: formValue.ean13,
       categoryUuid: formValue.categoryUuid,
       laboratory: formValue.laboratory,
       images: formValue.newImages,

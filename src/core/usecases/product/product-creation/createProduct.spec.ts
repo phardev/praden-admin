@@ -21,7 +21,9 @@ describe('Add product', () => {
     describe('For a product', () => {
       const dto: CreateProductDTO = {
         name: 'Created product',
+        cip7: '1234567',
         cip13: '1234567890123',
+        ean13: '1234567890123',
         images: [new File(['data1'], 'File 1', { type: 'image/png' })],
         categoryUuid: 'category-uuid',
         priceWithoutTax: '1',
@@ -35,7 +37,9 @@ describe('Add product', () => {
       }
       const expectedProduct: Product = {
         name: dto.name,
+        cip7: dto.cip7,
         cip13: dto.cip13,
+        ean13: dto.ean13,
         miniature: '',
         images: ['data:image/png;base64,ZGF0YTE='],
         categoryUuid: dto.categoryUuid,
@@ -61,7 +65,9 @@ describe('Add product', () => {
     describe('For another product', () => {
       const dto: CreateProductDTO = {
         name: 'Another created product',
+        cip7: '0987654',
         cip13: '0987654321098',
+        ean13: '0987654321098',
         images: [
           new File(['data1'], 'File 1', { type: 'image/png' }),
           new File(['data2'], 'File 2', { type: 'image/jpeg' }),
@@ -79,7 +85,9 @@ describe('Add product', () => {
       }
       const expectedProduct: Product = {
         name: dto.name,
+        cip7: dto.cip7,
         cip13: dto.cip13,
+        ean13: dto.ean13,
         miniature: '',
         images: [
           'data:image/png;base64,ZGF0YTE=',

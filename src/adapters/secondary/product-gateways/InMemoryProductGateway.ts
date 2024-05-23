@@ -22,7 +22,9 @@ export class InMemoryProductGateway implements ProductGateway {
     }
     const product: Product = {
       name: dto.name,
+      cip7: dto.cip7,
       cip13: dto.cip13,
+      ean13: dto.ean13,
       miniature: '',
       images,
       categoryUuid: dto.categoryUuid,

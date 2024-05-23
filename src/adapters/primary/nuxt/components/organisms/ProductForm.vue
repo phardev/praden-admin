@@ -24,10 +24,20 @@ div(v-if="currentVM")
           )
             template(#option="{ option: category }")
               span {{ category.name }}
+        UFormGroup.pb-4(label="CIP7" name="cip7")
+          ft-text-field(
+            :model-value="currentVM.getCip7().value"
+            @update:model-value="cip7Changed"
+          )
         UFormGroup.pb-4(label="CIP13" name="cip13")
           ft-text-field(
             :model-value="currentVM.getCip13().value"
             @update:model-value="cip13Changed"
+          )
+        UFormGroup.pb-4(label="EAN13" name="ean13")
+          ft-text-field(
+            :model-value="currentVM.getEan13().value"
+            @update:model-value="ean13Changed"
           )
         UFormGroup.pb-4(label="Laboratoire" name="laboratory")
           ft-text-field(
@@ -133,8 +143,15 @@ const nameChanged = (name: string) => {
   currentVM?.value?.setName(name)
 }
 
+const cip7Changed = (cip7: string) => {
+  currentVM?.value?.setCip7(cip7)
+}
 const cip13Changed = (cip13: string) => {
   currentVM?.value?.setCip13(cip13)
+}
+
+const ean13Changed = (ean13: string) => {
+  currentVM?.value?.setEan13(ean13)
 }
 
 const priceWithoutTaxChanged = (priceWithoutTax: number) => {

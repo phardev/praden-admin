@@ -68,6 +68,18 @@ describe('Create product VM', () => {
         expect(formStore.get(key).categoryUuid).toBe(undefined)
       })
     })
+    describe('Cip7 field', () => {
+      it('should have an empty cip7', () => {
+        const expectedField: Field<string> = {
+          value: '',
+          canEdit: true
+        }
+        expect(vm.getCip7()).toStrictEqual(expectedField)
+      })
+      it('should save the cip7 value in form store', () => {
+        expect(formStore.get(key).cip7).toStrictEqual('')
+      })
+    })
     describe('Cip13 field', () => {
       it('should have an empty cip13', () => {
         const expectedField: Field<string> = {
@@ -78,6 +90,18 @@ describe('Create product VM', () => {
       })
       it('should save the cip13 value in form store', () => {
         expect(formStore.get(key).cip13).toStrictEqual('')
+      })
+    })
+    describe('EAN13 field', () => {
+      it('should have an empty ean13', () => {
+        const expectedField: Field<string> = {
+          value: '',
+          canEdit: true
+        }
+        expect(vm.getEan13()).toStrictEqual(expectedField)
+      })
+      it('should save the ean13 value in form store', () => {
+        expect(formStore.get(key).ean13).toStrictEqual('')
       })
     })
     describe('Price without tax', () => {
@@ -218,6 +242,21 @@ describe('Create product VM', () => {
     })
   })
 
+  describe('Update cip7', () => {
+    it('should update cip7 value in form store', () => {
+      vm.setCip7('test')
+      expect(formStore.get(key).cip7).toStrictEqual('test')
+    })
+    it('should update cip7 field', () => {
+      vm.setCip7('test')
+      const expectedField: Field<string> = {
+        value: 'test',
+        canEdit: true
+      }
+      expect(vm.getCip7()).toStrictEqual(expectedField)
+    })
+  })
+
   describe('Update cip13', () => {
     it('should update cip13 value in form store', () => {
       vm.setCip13('test')
@@ -230,6 +269,21 @@ describe('Create product VM', () => {
         canEdit: true
       }
       expect(vm.getCip13()).toStrictEqual(expectedField)
+    })
+  })
+
+  describe('Update ean13', () => {
+    it('should update ean13 value in form store', () => {
+      vm.setEan13('test')
+      expect(formStore.get(key).ean13).toStrictEqual('test')
+    })
+    it('should update ean13 field', () => {
+      vm.setEan13('test')
+      const expectedField: Field<string> = {
+        value: 'test',
+        canEdit: true
+      }
+      expect(vm.getEan13()).toStrictEqual(expectedField)
     })
   })
 
@@ -391,7 +445,9 @@ describe('Create product VM', () => {
         ]
         const expectedDTO: CreateProductDTO = {
           name: 'test',
+          cip7: '1234567',
           cip13: '1234567890123',
+          ean13: '1234567890123',
           categoryUuid: 'abc123',
           laboratory: 'laboratory',
           images: newImages,
@@ -404,7 +460,9 @@ describe('Create product VM', () => {
           composition: '<p>composition</p>'
         }
         vm.setName(expectedDTO.name)
+        vm.setCip7(expectedDTO.cip7)
         vm.setCip13(expectedDTO.cip13)
+        vm.setEan13(expectedDTO.ean13)
         vm.setNewImages(newImages)
         vm.setCategoryUuid(expectedDTO.categoryUuid)
         vm.setLaboratory(expectedDTO.laboratory)
