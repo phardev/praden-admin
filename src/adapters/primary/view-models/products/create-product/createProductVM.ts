@@ -5,6 +5,7 @@ import { type Field } from '@adapters/primary/view-models/promotions/create-prom
 import { type UUID } from '@core/types/types'
 import { getFileContent } from '@utils/file'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
+import { addTaxToPrice, removeTaxFromPrice } from '@utils/price'
 
 export type CreateProductCategoriesVM = Array<Pick<Category, 'uuid' | 'name'>>
 
@@ -26,6 +27,7 @@ export class CreateProductVM {
       ean13: '',
       priceWithoutTax: undefined,
       percentTaxRate: undefined,
+      priceWithTax: undefined,
       laboratory: '',
       location: '',
       availableStock: '',
@@ -105,6 +107,15 @@ export class CreateProductVM {
   }
   setPriceWithoutTax(priceWithoutTax: string | undefined): void {
     this.formStore.set(this.key, { priceWithoutTax })
+    const taxRate = this.getPercentTaxRate().value
+    if (taxRate) {
+      const newPriceWithTax = addTaxToPrice(+priceWithoutTax, taxRate).toFixed(
+        2
+      )
+      if (newPriceWithTax !== this.getPriceWithTax().value) {
+        this.formStore.set(this.key, { priceWithTax: newPriceWithTax })
+      }
+    }
   }
 
   getPercentTaxRate(): Field<number | undefined> {
@@ -113,8 +124,48 @@ export class CreateProductVM {
       canEdit: true
     }
   }
+
   setPercentTaxRate(percentTaxRate: string | undefined): void {
     this.formStore.set(this.key, { percentTaxRate })
+    const priceWithoutTax = this.getPriceWithoutTax().value
+    const priceWithTax = this.getPriceWithTax().value
+    if (priceWithTax && !priceWithoutTax) {
+      const newPriceWithoutTax = removeTaxFromPrice(
+        +priceWithTax,
+        +percentTaxRate
+      ).toFixed(2)
+      if (newPriceWithoutTax !== this.getPriceWithoutTax().value) {
+        this.formStore.set(this.key, { priceWithoutTax: newPriceWithoutTax })
+      }
+    } else if (priceWithoutTax) {
+      const newPriceWithTax = addTaxToPrice(
+        +priceWithoutTax,
+        +percentTaxRate
+      ).toFixed(2)
+      if (newPriceWithTax !== this.getPriceWithTax().value) {
+        this.formStore.set(this.key, { priceWithTax: newPriceWithTax })
+      }
+    }
+  }
+
+  getPriceWithTax(): Field<string | undefined> {
+    return {
+      value: this.formStore.get(this.key).priceWithTax,
+      canEdit: true
+    }
+  }
+  setPriceWithTax(priceWithTax: string | undefined): void {
+    this.formStore.set(this.key, { priceWithTax })
+    const taxRate = this.getPercentTaxRate().value
+    if (taxRate) {
+      const newPriceWithoutTax = removeTaxFromPrice(
+        +priceWithTax,
+        taxRate
+      ).toFixed(2)
+      if (newPriceWithoutTax !== this.getPriceWithoutTax().value) {
+        this.formStore.set(this.key, { priceWithoutTax: newPriceWithoutTax })
+      }
+    }
   }
 
   getLaboratory(): Field<string | undefined> {

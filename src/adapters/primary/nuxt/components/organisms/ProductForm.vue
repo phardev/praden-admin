@@ -56,7 +56,7 @@ div(v-if="currentVM")
       template(#price)
         UFormGroup.pb-4(label="Prix (HT)" name="priceWithoutTax")
           ft-currency-input(
-              v-model="currentVM.getPriceWithoutTax().value"
+              v-model.lazy="currentVM.getPriceWithoutTax().value"
               label="Prix (HT)"
               @update:model-value="priceWithoutTaxChanged"
             )
@@ -65,6 +65,12 @@ div(v-if="currentVM")
             :model-value="currentVM.getPercentTaxRate().value"
             label="Taxe (%)"
             @update:model-value="percentTaxRateChanged"
+          )
+        UFormGroup.pb-4(label="Prix (TTC)" name="priceWithTax")
+          ft-currency-input(
+            v-model.lazy="currentVM.getPriceWithTax().value"
+            label="Prix (HT)"
+            @update:model-value="priceWithTaxChanged"
           )
       template(#stock)
         UFormGroup.pb-4(label="Code Géographique" name="location")
@@ -146,6 +152,7 @@ const nameChanged = (name: string) => {
 const cip7Changed = (cip7: string) => {
   currentVM?.value?.setCip7(cip7)
 }
+
 const cip13Changed = (cip13: string) => {
   currentVM?.value?.setCip13(cip13)
 }
@@ -155,12 +162,15 @@ const ean13Changed = (ean13: string) => {
 }
 
 const priceWithoutTaxChanged = (priceWithoutTax: number) => {
-  console.log('coucou: ', priceWithoutTax)
   currentVM?.value?.setPriceWithoutTax(priceWithoutTax)
 }
 
 const percentTaxRateChanged = (percentTaxRate: number) => {
   currentVM?.value?.setPercentTaxRate(percentTaxRate)
+}
+
+const priceWithTaxChanged = (priceWithTax: number) => {
+  currentVM?.value?.setPriceWithTax(priceWithTax)
 }
 
 const laboratoryChanged = (laboratory: string) => {

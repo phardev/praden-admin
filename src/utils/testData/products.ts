@@ -67,7 +67,9 @@ export const chamomilla: Product = {
 
 export const calmosine: Product = {
   name: 'Calmosine 100 ml',
-  images: [''],
+  images: [
+    'https://www.pharmacieagnespraden.com/70697-home_default/calmosine-100ml.jpg'
+  ],
   miniature: '',
   categoryUuid: baby.uuid,
   cip13: '1234567890123',
@@ -80,7 +82,7 @@ export const calmosine: Product = {
 
 export const hemoclar: Product = {
   name: 'Hemoclar 0,5% crème 30g',
-  images: [''],
+  images: ['https://fakeimg.pl/300/'],
   miniature: '',
   categoryUuid: baby.uuid,
   cip13: '098765432123',
@@ -93,7 +95,7 @@ export const hemoclar: Product = {
 
 export const productWithoutLocation: Product = {
   name: 'Product without location',
-  images: [''],
+  images: ['https://fakeimg.pl/300/'],
   miniature: '',
   categoryUuid: baby.uuid,
   cip13: '0637218312823',
