@@ -68,6 +68,18 @@ describe('Create product VM', () => {
         expect(formStore.get(key).categoryUuid).toBe(undefined)
       })
     })
+    describe('Cip7 field', () => {
+      it('should have an empty cip7', () => {
+        const expectedField: Field<string> = {
+          value: '',
+          canEdit: true
+        }
+        expect(vm.getCip7()).toStrictEqual(expectedField)
+      })
+      it('should save the cip7 value in form store', () => {
+        expect(formStore.get(key).cip7).toStrictEqual('')
+      })
+    })
     describe('Cip13 field', () => {
       it('should have an empty cip13', () => {
         const expectedField: Field<string> = {
@@ -78,6 +90,18 @@ describe('Create product VM', () => {
       })
       it('should save the cip13 value in form store', () => {
         expect(formStore.get(key).cip13).toStrictEqual('')
+      })
+    })
+    describe('EAN13 field', () => {
+      it('should have an empty ean13', () => {
+        const expectedField: Field<string> = {
+          value: '',
+          canEdit: true
+        }
+        expect(vm.getEan13()).toStrictEqual(expectedField)
+      })
+      it('should save the ean13 value in form store', () => {
+        expect(formStore.get(key).ean13).toStrictEqual('')
       })
     })
     describe('Price without tax', () => {
@@ -101,7 +125,19 @@ describe('Create product VM', () => {
         expect(vm.getPercentTaxRate()).toStrictEqual(expectedField)
       })
       it('should not have any percent tax rate in form store', () => {
-        expect(formStore.get(key).priceWithoutTax).toBe(undefined)
+        expect(formStore.get(key).percentTaxRate).toBe(undefined)
+      })
+    })
+    describe('Price with tax', () => {
+      it('should not have any price with tax', () => {
+        const expectedField: Field<string | undefined> = {
+          value: undefined,
+          canEdit: true
+        }
+        expect(vm.getPriceWithTax()).toStrictEqual(expectedField)
+      })
+      it('should not have any price with tax in form store', () => {
+        expect(formStore.get(key).priceWithTax).toBe(undefined)
       })
     })
     describe('Laboratory field', () => {
@@ -152,6 +188,42 @@ describe('Create product VM', () => {
         expect(formStore.get(key).newImages).toStrictEqual([])
       })
     })
+    describe('Description field', () => {
+      it('should have an empty description', () => {
+        const expectedField: Field<string> = {
+          value: '',
+          canEdit: true
+        }
+        expect(vm.getDescription()).toStrictEqual(expectedField)
+      })
+      it('should save the description in form store', () => {
+        expect(formStore.get(key).description).toBe('')
+      })
+    })
+    describe('Instruction for use field', () => {
+      it('should have an empty instructions', () => {
+        const expectedField: Field<string> = {
+          value: '',
+          canEdit: true
+        }
+        expect(vm.getInstructionsForUse()).toStrictEqual(expectedField)
+      })
+      it('should save the instructions in form store', () => {
+        expect(formStore.get(key).instructionsForUse).toBe('')
+      })
+    })
+    describe('Composition field', () => {
+      it('should have an empty composition', () => {
+        const expectedField: Field<string> = {
+          value: '',
+          canEdit: true
+        }
+        expect(vm.getComposition()).toStrictEqual(expectedField)
+      })
+      it('should save the composition in form store', () => {
+        expect(formStore.get(key).composition).toBe('')
+      })
+    })
   })
   describe('Update name', () => {
     it('should update name value in form store', () => {
@@ -182,6 +254,21 @@ describe('Create product VM', () => {
     })
   })
 
+  describe('Update cip7', () => {
+    it('should update cip7 value in form store', () => {
+      vm.setCip7('test')
+      expect(formStore.get(key).cip7).toStrictEqual('test')
+    })
+    it('should update cip7 field', () => {
+      vm.setCip7('test')
+      const expectedField: Field<string> = {
+        value: 'test',
+        canEdit: true
+      }
+      expect(vm.getCip7()).toStrictEqual(expectedField)
+    })
+  })
+
   describe('Update cip13', () => {
     it('should update cip13 value in form store', () => {
       vm.setCip13('test')
@@ -197,33 +284,256 @@ describe('Create product VM', () => {
     })
   })
 
-  describe('Update price without tax', () => {
-    it('should update price without tax value in form store', () => {
-      vm.setPriceWithoutTax('12')
-      expect(formStore.get(key).priceWithoutTax).toStrictEqual('12')
+  describe('Update ean13', () => {
+    it('should update ean13 value in form store', () => {
+      vm.setEan13('test')
+      expect(formStore.get(key).ean13).toStrictEqual('test')
     })
-    it('should update price without tax field', () => {
-      vm.setPriceWithoutTax('12')
+    it('should update ean13 field', () => {
+      vm.setEan13('test')
       const expectedField: Field<string> = {
-        value: '12',
+        value: 'test',
         canEdit: true
       }
-      expect(vm.getPriceWithoutTax()).toStrictEqual(expectedField)
+      expect(vm.getEan13()).toStrictEqual(expectedField)
+    })
+  })
+
+  describe('Update price without tax', () => {
+    describe('The tax rate is not set', () => {
+      beforeEach(() => {
+        vm.setPriceWithoutTax('12')
+      })
+      it('should update price without tax value in form store', () => {
+        expect(formStore.get(key).priceWithoutTax).toStrictEqual('12')
+      })
+      it('should update price without tax field', () => {
+        const expectedField: Field<string> = {
+          value: '12',
+          canEdit: true
+        }
+        expect(vm.getPriceWithoutTax()).toStrictEqual(expectedField)
+      })
+      it('should not have any price with tax', () => {
+        const expectedField: Field<string | undefined> = {
+          value: undefined,
+          canEdit: true
+        }
+        expect(vm.getPriceWithTax()).toStrictEqual(expectedField)
+      })
+      it('should not have any price with tax in form store', () => {
+        expect(formStore.get(key).priceWithTax).toBe(undefined)
+      })
+    })
+    describe('The tax rate is set', () => {
+      beforeEach(() => {
+        vm.setPercentTaxRate('5.5')
+        vm.setPriceWithoutTax('12')
+      })
+      it('should update price without tax value in form store', () => {
+        expect(formStore.get(key).priceWithoutTax).toStrictEqual('12')
+      })
+      it('should update price without tax field', () => {
+        const expectedField: Field<string> = {
+          value: '12',
+          canEdit: true
+        }
+        expect(vm.getPriceWithoutTax()).toStrictEqual(expectedField)
+      })
+      it('should update price with tax value in form store', () => {
+        expect(formStore.get(key).priceWithTax).toStrictEqual('12.66')
+      })
+      it('should update price with tax field', () => {
+        const expectedField: Field<string> = {
+          value: '12.66',
+          canEdit: true
+        }
+        expect(vm.getPriceWithTax()).toStrictEqual(expectedField)
+      })
     })
   })
 
   describe('Update percent tax rate', () => {
-    it('should update percent tax rate value in form store', () => {
-      vm.setPercentTaxRate('5')
-      expect(formStore.get(key).percentTaxRate).toStrictEqual('5')
+    describe('Price without tax and price with tax are not set', () => {
+      beforeEach(() => {
+        vm.setPercentTaxRate('5')
+      })
+      it('should update percent tax rate value in form store', () => {
+        expect(formStore.get(key).percentTaxRate).toStrictEqual('5')
+      })
+      it('should update percent tax rate field', () => {
+        const expectedField: Field<string> = {
+          value: '5',
+          canEdit: true
+        }
+        expect(vm.getPercentTaxRate()).toStrictEqual(expectedField)
+      })
+      it('should not update price without tax value in form store', () => {
+        expect(formStore.get(key).priceWithoutTax).toStrictEqual(undefined)
+      })
+      it('should update price without tax field', () => {
+        const expectedField: Field<string> = {
+          value: undefined,
+          canEdit: true
+        }
+        expect(vm.getPriceWithoutTax()).toStrictEqual(expectedField)
+      })
+      it('should not have any price with tax', () => {
+        const expectedField: Field<string | undefined> = {
+          value: undefined,
+          canEdit: true
+        }
+        expect(vm.getPriceWithTax()).toStrictEqual(expectedField)
+      })
+      it('should not have any price with tax in form store', () => {
+        expect(formStore.get(key).priceWithTax).toBe(undefined)
+      })
     })
-    it('should update percent tax rate field', () => {
-      vm.setPercentTaxRate('5')
-      const expectedField: Field<string> = {
-        value: '5',
-        canEdit: true
-      }
-      expect(vm.getPercentTaxRate()).toStrictEqual(expectedField)
+    describe('Price without tax is already set  and price with tax is not set', () => {
+      const percentTaxRate = '10'
+      beforeEach(() => {
+        vm.setPriceWithoutTax('20')
+        vm.setPercentTaxRate(percentTaxRate)
+      })
+      it('should update percent tax rate value in form store', () => {
+        expect(formStore.get(key).percentTaxRate).toStrictEqual(percentTaxRate)
+      })
+      it('should update percent tax rate field', () => {
+        const expectedField: Field<string> = {
+          value: percentTaxRate,
+          canEdit: true
+        }
+        expect(vm.getPercentTaxRate()).toStrictEqual(expectedField)
+      })
+      it('should compute the price with tax', () => {
+        const expectedField: Field<string | undefined> = {
+          value: '22.00',
+          canEdit: true
+        }
+        expect(vm.getPriceWithTax()).toStrictEqual(expectedField)
+      })
+      it('should have the price with tax in form store', () => {
+        expect(formStore.get(key).priceWithTax).toBe('22.00')
+      })
+    })
+    describe('Price without tax is not set and price with tax is already set', () => {
+      const percentTaxRate = '10'
+      beforeEach(() => {
+        vm.setPriceWithTax('20')
+        vm.setPercentTaxRate(percentTaxRate)
+      })
+      it('should update percent tax rate value in form store', () => {
+        expect(formStore.get(key).percentTaxRate).toStrictEqual(percentTaxRate)
+      })
+      it('should update percent tax rate field', () => {
+        const expectedField: Field<string> = {
+          value: percentTaxRate,
+          canEdit: true
+        }
+        expect(vm.getPercentTaxRate()).toStrictEqual(expectedField)
+      })
+      it('should compute the price without tax', () => {
+        const expectedField: Field<string | undefined> = {
+          value: '18.18',
+          canEdit: true
+        }
+        expect(vm.getPriceWithoutTax()).toStrictEqual(expectedField)
+      })
+      it('should have the price without tax in form store', () => {
+        expect(formStore.get(key).priceWithoutTax).toBe('18.18')
+      })
+    })
+    describe('Both price without tax and price with tax are already set', () => {
+      const percentTaxRate = '20'
+      beforeEach(() => {
+        vm.setPriceWithoutTax('20')
+        vm.setPriceWithTax('100')
+        vm.setPercentTaxRate(percentTaxRate)
+      })
+      it('should update percent tax rate value in form store', () => {
+        expect(formStore.get(key).percentTaxRate).toStrictEqual(percentTaxRate)
+      })
+      it('should update percent tax rate field', () => {
+        const expectedField: Field<string> = {
+          value: percentTaxRate,
+          canEdit: true
+        }
+        expect(vm.getPercentTaxRate()).toStrictEqual(expectedField)
+      })
+      it('should not change the price without tax', () => {
+        const expectedField: Field<string | undefined> = {
+          value: '20',
+          canEdit: true
+        }
+        expect(vm.getPriceWithoutTax()).toStrictEqual(expectedField)
+      })
+      it('should have the price without tax in form store', () => {
+        expect(formStore.get(key).priceWithoutTax).toBe('20')
+      })
+      it('should re-compute the price with tax', () => {
+        const expectedField: Field<string | undefined> = {
+          value: '24.00',
+          canEdit: true
+        }
+        expect(vm.getPriceWithTax()).toStrictEqual(expectedField)
+      })
+      it('should have the price with tax in form store', () => {
+        expect(formStore.get(key).priceWithTax).toBe('24.00')
+      })
+    })
+  })
+
+  describe('Update price with tax', () => {
+    describe('Tax rate is not already defined', () => {
+      beforeEach(() => {
+        vm.setPriceWithTax('12')
+      })
+      it('should update price with tax value in form store', () => {
+        expect(formStore.get(key).priceWithTax).toStrictEqual('12')
+      })
+      it('should update price with tax field', () => {
+        const expectedField: Field<string> = {
+          value: '12',
+          canEdit: true
+        }
+        expect(vm.getPriceWithTax()).toStrictEqual(expectedField)
+      })
+      it('should not update price without tax value in form store', () => {
+        expect(formStore.get(key).priceWithoutTax).toStrictEqual(undefined)
+      })
+      it('should update price without tax field', () => {
+        const expectedField: Field<string> = {
+          value: undefined,
+          canEdit: true
+        }
+        expect(vm.getPriceWithoutTax()).toStrictEqual(expectedField)
+      })
+    })
+    describe('Tax rate is already defined', () => {
+      beforeEach(() => {
+        formStore.set(key, { percentTaxRate: 10 })
+        vm.setPriceWithTax('12')
+      })
+      it('should update price with tax value in form store', () => {
+        expect(formStore.get(key).priceWithTax).toStrictEqual('12')
+      })
+      it('should update price without tax value in form store', () => {
+        expect(formStore.get(key).priceWithoutTax).toStrictEqual('10.91')
+      })
+      it('should update price with tax field', () => {
+        const expectedField: Field<string> = {
+          value: '10.91',
+          canEdit: true
+        }
+        expect(vm.getPriceWithoutTax()).toStrictEqual(expectedField)
+      })
+      it('should update price without tax field', () => {
+        const expectedField: Field<string> = {
+          value: '10.91',
+          canEdit: true
+        }
+        expect(vm.getPriceWithoutTax()).toStrictEqual(expectedField)
+      })
     })
   })
 
@@ -300,6 +610,51 @@ describe('Create product VM', () => {
       expect(vm.getImages()).toStrictEqual(expectedImages)
     })
   })
+  describe('Update description', () => {
+    it('should update description value in form store', () => {
+      vm.setDescription('<p>description</p>')
+      expect(formStore.get(key).description).toStrictEqual('<p>description</p>')
+    })
+    it('should update description field', () => {
+      vm.setDescription('<h1>description</h1>')
+      const expectedField: Field<string> = {
+        value: '<h1>description</h1>',
+        canEdit: true
+      }
+      expect(vm.getDescription()).toStrictEqual(expectedField)
+    })
+  })
+  describe('Update instructions for use', () => {
+    it('should update instructions for use value in form store', () => {
+      vm.setInstructionsForUse('<p>this is the instructions</p>')
+      expect(formStore.get(key).instructionsForUse).toStrictEqual(
+        '<p>this is the instructions</p>'
+      )
+    })
+    it('should update instructions for use field', () => {
+      vm.setInstructionsForUse('<h1>this is the new instructions</h1>')
+      const expectedField: Field<string> = {
+        value: '<h1>this is the new instructions</h1>',
+        canEdit: true
+      }
+      expect(vm.getInstructionsForUse()).toStrictEqual(expectedField)
+    })
+  })
+  describe('Update composition', () => {
+    it('should update composition value in form store', () => {
+      vm.setComposition('<p>composition</p>')
+      expect(formStore.get(key).composition).toStrictEqual('<p>composition</p>')
+    })
+    it('should update composition field', () => {
+      vm.setComposition('<h1>composition</h1>')
+      const expectedField: Field<string> = {
+        value: '<h1>composition</h1>',
+        canEdit: true
+      }
+      expect(vm.getComposition()).toStrictEqual(expectedField)
+    })
+  })
+
   describe('DTO', () => {
     describe('For a dto', () => {
       it('should prepare the dto', () => {
@@ -310,17 +665,24 @@ describe('Create product VM', () => {
         ]
         const expectedDTO: CreateProductDTO = {
           name: 'test',
+          cip7: '1234567',
           cip13: '1234567890123',
+          ean13: '1234567890123',
           categoryUuid: 'abc123',
           laboratory: 'laboratory',
           images: newImages,
           priceWithoutTax: '12',
           percentTaxRate: '5',
           location: 'G2',
-          availableStock: '21'
+          availableStock: '21',
+          description: '<p>description</p>',
+          instructionsForUse: '<p>instructionsForUse</p>',
+          composition: '<p>composition</p>'
         }
         vm.setName(expectedDTO.name)
+        vm.setCip7(expectedDTO.cip7)
         vm.setCip13(expectedDTO.cip13)
+        vm.setEan13(expectedDTO.ean13)
         vm.setNewImages(newImages)
         vm.setCategoryUuid(expectedDTO.categoryUuid)
         vm.setLaboratory(expectedDTO.laboratory)
@@ -328,6 +690,9 @@ describe('Create product VM', () => {
         vm.setPercentTaxRate(expectedDTO.percentTaxRate)
         vm.setLocation(expectedDTO.location)
         vm.setAvailableStock(expectedDTO.availableStock)
+        vm.setDescription(expectedDTO.description)
+        vm.setInstructionsForUse(expectedDTO.instructionsForUse)
+        vm.setComposition(expectedDTO.composition)
         expect(vm.getDto()).toStrictEqual(expectedDTO)
       })
     })

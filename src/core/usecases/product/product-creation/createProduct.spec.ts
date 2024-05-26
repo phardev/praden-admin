@@ -21,18 +21,25 @@ describe('Add product', () => {
     describe('For a product', () => {
       const dto: CreateProductDTO = {
         name: 'Created product',
+        cip7: '1234567',
         cip13: '1234567890123',
+        ean13: '1234567890123',
         images: [new File(['data1'], 'File 1', { type: 'image/png' })],
         categoryUuid: 'category-uuid',
         priceWithoutTax: '1',
         percentTaxRate: '10',
         location: 'product-location',
         availableStock: '12',
-        laboratory: 'product-laboratory'
+        laboratory: 'product-laboratory',
+        description: '<p>description</p>',
+        instructionsForUse: '<p>instructions For Use</p>',
+        composition: '<p>composition</p>'
       }
       const expectedProduct: Product = {
         name: dto.name,
+        cip7: dto.cip7,
         cip13: dto.cip13,
+        ean13: dto.ean13,
         miniature: '',
         images: ['data:image/png;base64,ZGF0YTE='],
         categoryUuid: dto.categoryUuid,
@@ -40,7 +47,10 @@ describe('Add product', () => {
         percentTaxRate: 10,
         location: dto.location,
         availableStock: 12,
-        laboratory: dto.laboratory
+        laboratory: dto.laboratory,
+        description: dto.description,
+        instructionsForUse: dto.instructionsForUse,
+        composition: dto.composition
       }
       beforeEach(async () => {
         await whenCreateProduct(dto)
@@ -55,7 +65,9 @@ describe('Add product', () => {
     describe('For another product', () => {
       const dto: CreateProductDTO = {
         name: 'Another created product',
+        cip7: '0987654',
         cip13: '0987654321098',
+        ean13: '0987654321098',
         images: [
           new File(['data1'], 'File 1', { type: 'image/png' }),
           new File(['data2'], 'File 2', { type: 'image/jpeg' }),
@@ -66,11 +78,16 @@ describe('Add product', () => {
         percentTaxRate: '10.5',
         location: 'another-product-location',
         availableStock: '21',
-        laboratory: 'another-product-laboratory'
+        laboratory: 'another-product-laboratory',
+        description: '<p>another description</p>',
+        instructionsForUse: '<p>another instructions For Use</p>',
+        composition: '<p>another composition</p>'
       }
       const expectedProduct: Product = {
         name: dto.name,
+        cip7: dto.cip7,
         cip13: dto.cip13,
+        ean13: dto.ean13,
         miniature: '',
         images: [
           'data:image/png;base64,ZGF0YTE=',
@@ -82,7 +99,10 @@ describe('Add product', () => {
         percentTaxRate: 10.5,
         location: dto.location,
         availableStock: 21,
-        laboratory: dto.laboratory
+        laboratory: dto.laboratory,
+        description: dto.description,
+        instructionsForUse: dto.instructionsForUse,
+        composition: dto.composition
       }
       beforeEach(async () => {
         givenThereIsExistingProducts(dolodent, hemoclar)

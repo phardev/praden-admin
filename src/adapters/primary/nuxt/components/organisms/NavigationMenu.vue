@@ -20,21 +20,26 @@ const menu = {
   logo: 'https://www.pharmabest.com/images/header/pharmabest-header.svg',
   title: 'Pharmacie Agnes Praden',
   sections: [
-    // {
-    //   title: 'Catalogue',
-    //   links: [
-    //     {
-    //       name: 'Produits',
-    //       icon: 'fluent-mdl2:product-catalog',
-    //       href: '/products'
-    //     },
-    //     {
-    //       name: 'Promotions',
-    //       icon: 'uil:euro-circle',
-    //       href: '/promotions'
-    //     }
-    //   ]
-    // },
+    {
+      title: 'Catalogue',
+      links: [
+        {
+          name: 'Produits',
+          icon: 'fluent-mdl2:product-catalog',
+          href: '/products'
+        },
+        {
+          name: 'Catégories',
+          icon: 'tabler:category',
+          href: '/categories'
+          // },
+          // {
+          //   name: 'Promotions',
+          //   icon: 'uil:euro-circle',
+          //   href: '/promotions'
+        }
+      ]
+    },
     {
       title: 'Commandes',
       links: [

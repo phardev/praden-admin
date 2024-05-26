@@ -8,7 +8,7 @@
   }
 
   .border-neutral-light {
-    @apply border-gray4
+    @apply border-gray7
   }
 
   .border-opposite {

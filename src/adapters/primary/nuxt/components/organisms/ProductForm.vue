@@ -24,10 +24,20 @@ div(v-if="currentVM")
           )
             template(#option="{ option: category }")
               span {{ category.name }}
+        UFormGroup.pb-4(label="CIP7" name="cip7")
+          ft-text-field(
+            :model-value="currentVM.getCip7().value"
+            @update:model-value="cip7Changed"
+          )
         UFormGroup.pb-4(label="CIP13" name="cip13")
           ft-text-field(
             :model-value="currentVM.getCip13().value"
             @update:model-value="cip13Changed"
+          )
+        UFormGroup.pb-4(label="EAN13" name="ean13")
+          ft-text-field(
+            :model-value="currentVM.getEan13().value"
+            @update:model-value="ean13Changed"
           )
         UFormGroup.pb-4(label="Laboratoire" name="laboratory")
           ft-text-field(
@@ -46,7 +56,7 @@ div(v-if="currentVM")
       template(#price)
         UFormGroup.pb-4(label="Prix (HT)" name="priceWithoutTax")
           ft-currency-input(
-              v-model="currentVM.getPriceWithoutTax().value"
+              v-model.lazy="currentVM.getPriceWithoutTax().value"
               label="Prix (HT)"
               @update:model-value="priceWithoutTaxChanged"
             )
@@ -55,6 +65,12 @@ div(v-if="currentVM")
             :model-value="currentVM.getPercentTaxRate().value"
             label="Taxe (%)"
             @update:model-value="percentTaxRateChanged"
+          )
+        UFormGroup.pb-4(label="Prix (TTC)" name="priceWithTax")
+          ft-currency-input(
+            v-model.lazy="currentVM.getPriceWithTax().value"
+            label="Prix (HT)"
+            @update:model-value="priceWithTaxChanged"
           )
       template(#stock)
         UFormGroup.pb-4(label="Code Géographique" name="location")
@@ -70,15 +86,22 @@ div(v-if="currentVM")
           )
       template(#details)
         UFormGroup.pb-4(label="Description" name="description")
-          FtRichTextInput
-        UFormGroup.pb-4(label="Stock disponible" name="availableStock")
-          ft-text-field(
-            :model-value="currentVM.getAvailableStock().value"
-            type="number"
-            @update:model-value="availableStockChanged"
+          FtRichTextInput(
+            :model-value="currentVM.getDescription().value"
+            @update:model-value="descriptionChanged"
+          )
+        UFormGroup.pb-4(label="Instructions" name="instructions")
+          FtRichTextInput(
+            :model-value="currentVM.getInstructionsForUse().value"
+            @update:model-value="instructionsChanged"
+          )
+        UFormGroup.pb-4(label="Composition" name="composition")
+          FtRichTextInput(
+            :model-value="currentVM.getComposition().value"
+            @update:model-value="compositionChanged"
           )
   div.flex.flex-row-reverse.mt-4
-    ft-button.button-solid.px-6.text-xl(
+    ft-button.px-6.text-xl(
       v-if="currentVM.getDisplayValidate()"
       :disabled="!currentVM.getCanValidate()"
       @click.prevent="validate"
@@ -86,8 +109,6 @@ div(v-if="currentVM")
 </template>
 
 <script lang="ts" setup>
-import FtRichTextInput from '@adapters/primary/nuxt/components/molecules/FtRichTextInput.client.vue'
-
 definePageMeta({ layout: 'main' })
 
 const items = [
@@ -128,17 +149,28 @@ const nameChanged = (name: string) => {
   currentVM?.value?.setName(name)
 }
 
+const cip7Changed = (cip7: string) => {
+  currentVM?.value?.setCip7(cip7)
+}
+
 const cip13Changed = (cip13: string) => {
   currentVM?.value?.setCip13(cip13)
 }
 
+const ean13Changed = (ean13: string) => {
+  currentVM?.value?.setEan13(ean13)
+}
+
 const priceWithoutTaxChanged = (priceWithoutTax: number) => {
-  console.log('coucou: ', priceWithoutTax)
   currentVM?.value?.setPriceWithoutTax(priceWithoutTax)
 }
 
 const percentTaxRateChanged = (percentTaxRate: number) => {
   currentVM?.value?.setPercentTaxRate(percentTaxRate)
+}
+
+const priceWithTaxChanged = (priceWithTax: number) => {
+  currentVM?.value?.setPriceWithTax(priceWithTax)
 }
 
 const laboratoryChanged = (laboratory: string) => {
@@ -163,6 +195,18 @@ const locationChanged = (location: string) => {
 
 const availableStockChanged = (availableStock: string) => {
   currentVM?.value?.setAvailableStock(availableStock)
+}
+
+const descriptionChanged = (description: string) => {
+  currentVM?.value?.setDescription(description)
+}
+
+const instructionsChanged = (instructions: string) => {
+  currentVM?.value?.setInstructionsForUse(instructions)
+}
+
+const compositionChanged = (composition: string) => {
+  currentVM?.value?.setComposition(composition)
 }
 
 const emit = defineEmits<{
