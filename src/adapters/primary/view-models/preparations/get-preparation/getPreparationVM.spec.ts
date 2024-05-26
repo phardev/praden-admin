@@ -16,6 +16,10 @@ import {
 } from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
 import { dolodent, ultraLevure } from '@utils/testData/products'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import {
+  PreparationError,
+  PreparationErrorType
+} from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
 
 describe('Get preparation VM', () => {
   let preparationStore: any
@@ -64,7 +68,8 @@ describe('Get preparation VM', () => {
           messages: [],
           canValidate: false,
           canCancel: false,
-          canAskHowToFinish: false
+          canAskHowToFinish: false,
+          error: undefined
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -92,7 +97,8 @@ describe('Get preparation VM', () => {
           messages: [],
           canValidate: false,
           canCancel: false,
-          canAskHowToFinish: false
+          canAskHowToFinish: false,
+          error: undefined
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -102,7 +108,7 @@ describe('Get preparation VM', () => {
         const order = JSON.parse(JSON.stringify(orderToPrepare1))
         order.lines[0].preparedQuantity = 2
         givenCurrentPreparationIs(order)
-        const expectedVM: GetPreparationVM = {
+        const expectedVM: Partial<GetPreparationVM> = {
           reference: orderToPrepare1.uuid,
           headers,
           lines: [
@@ -119,14 +125,14 @@ describe('Get preparation VM', () => {
           canCancel: false,
           canAskHowToFinish: false
         }
-        expect(getPreparationVM()).toStrictEqual(expectedVM)
+        expectVMToMatch(expectedVM)
       })
       it('should get the preparation vm for a partially prepared order', () => {
         const order = JSON.parse(JSON.stringify(orderToPrepare2))
         order.lines[0].preparedQuantity = 1
         order.lines[1].preparedQuantity = 1
         givenCurrentPreparationIs(order)
-        const expectedVM: GetPreparationVM = {
+        const expectedVM: Partial<GetPreparationVM> = {
           reference: orderToPrepare2.uuid,
           headers,
           lines: [
@@ -150,13 +156,13 @@ describe('Get preparation VM', () => {
           canCancel: false,
           canAskHowToFinish: false
         }
-        expect(getPreparationVM()).toStrictEqual(expectedVM)
+        expectVMToMatch(expectedVM)
       })
       it('should get the preparation vm for an preparation with too much prepared quantity', () => {
         const order = JSON.parse(JSON.stringify(orderToPrepare1))
         order.lines[0].preparedQuantity = 3
         givenCurrentPreparationIs(order)
-        const expectedVM: GetPreparationVM = {
+        const expectedVM: Partial<GetPreparationVM> = {
           reference: orderToPrepare1.uuid,
           headers,
           lines: [
@@ -173,7 +179,7 @@ describe('Get preparation VM', () => {
           canCancel: false,
           canAskHowToFinish: false
         }
-        expect(getPreparationVM()).toStrictEqual(expectedVM)
+        expectVMToMatch(expectedVM)
       })
     })
     describe('All products were scanned', () => {
@@ -181,7 +187,7 @@ describe('Get preparation VM', () => {
         const order = JSON.parse(JSON.stringify(orderSaved1))
         order.lines[0].preparedQuantity = order.lines[0].expectedQuantity
         givenCurrentPreparationIs(order)
-        const expectedVM: GetPreparationVM = {
+        const expectedVM: Partial<GetPreparationVM> = {
           reference: orderSaved1.uuid,
           headers,
           lines: [
@@ -198,7 +204,21 @@ describe('Get preparation VM', () => {
           canCancel: false,
           canAskHowToFinish: false
         }
-        expect(getPreparationVM()).toStrictEqual(expectedVM)
+        expectVMToMatch(expectedVM)
+      })
+    })
+    describe('There is an error', () => {
+      it('should give the error', () => {
+        const error: PreparationError = {
+          type: PreparationErrorType.ProductNotInPreparationError,
+          value: 'value'
+        }
+        givenCurrentPreparationIs(orderToPrepare1)
+        givenThereIsAnError(error)
+        const expectedVM: Partial<GetPreparationVM> = {
+          error
+        }
+        expectVMToMatch(expectedVM)
       })
     })
   })
@@ -313,6 +333,10 @@ describe('Get preparation VM', () => {
 
   const givenCurrentPreparationIs = (order: Order) => {
     preparationStore.current = order
+  }
+
+  const givenThereIsAnError = (error: PreparationError) => {
+    preparationStore.error = error
   }
 
   const expectVMToMatch = (partialVM: Partial<GetPreparationVM>) => {
