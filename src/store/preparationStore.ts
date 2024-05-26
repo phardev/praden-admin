@@ -1,13 +1,15 @@
 import { defineStore } from 'pinia'
 import { Order } from '@core/entities/order'
 import { UUID } from '@core/types/types'
+import { PreparationError } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
 
 export const usePreparationStore = defineStore('PreparationStore', {
   state: () => {
     return {
       items: [] as Array<Order>,
       selected: [] as Array<UUID>,
-      current: undefined as Order | undefined
+      current: undefined as Order | undefined,
+      error: undefined
     }
   },
   getters: {
@@ -52,6 +54,12 @@ export const usePreparationStore = defineStore('PreparationStore', {
     },
     clearSelection() {
       this.selected = []
+    },
+    setError(error: PreparationError) {
+      this.error = error
+    },
+    clearError() {
+      this.error = undefined
     }
   }
 })

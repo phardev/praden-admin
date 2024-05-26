@@ -40,6 +40,11 @@ invoice.hidden.printme.mx-2
     ft-messages(
       :messages="preparationVM.messages"
     )
+  ft-preparation-error-modal(
+    v-model="isErrorModalOpened"
+    :error="errorMessage"
+    @close="closeErrorModal"
+  )
   ft-preparation-actions-modal(
     v-model="isActionModalOpened"
     :products="products"
@@ -67,6 +72,9 @@ import { askClientHowToFinishPreparation } from '@core/usecases/order/ask-client
 import { removeProductFromPreparation } from '@core/usecases/order/scan-product-to-remove-fom-preparation/scanProductToRemoveFromPreparation'
 import { setProductQuantityForPreparation } from '@core/usecases/order/set-product-quantity-for-preparation/setProductQuantityForPreparation'
 import { changeProductCip13ForPreparation } from '@core/usecases/order/change-product-cip13-for-preparation/changeProductCip13ForPreparation'
+import { clearPreparationError } from '@core/usecases/order/preparation-error-clearing/clearPreparationError'
+import FtButton from '@adapters/primary/nuxt/components/atoms/FtButton.vue'
+import FtPreparationErrorModal from '@adapters/primary/nuxt/components/molecules/FtPreparationErrorModal.vue'
 
 definePageMeta({ layout: 'main' })
 
@@ -81,6 +89,11 @@ const mainScanner = ref(null)
 
 const closeActionsModal = () => {
   isActionModalOpened.value = false
+  setFocusOnMainScanner()
+}
+
+const closeErrorModal = () => {
+  clearPreparationError()
   setFocusOnMainScanner()
 }
 
@@ -151,6 +164,24 @@ const save = async () => {
 const preparationVM = computed(() => {
   return getPreparationVM()
 })
+
+const isErrorModalOpened = ref(false)
+const errorMessage = ref('')
+
+watch(
+  () => preparationVM.value.error,
+  (newValue) => {
+    if (newValue) {
+      errorMessage.value = `Le produit ${newValue.value} n'est pas attendu dans cette préparation`
+    }
+    isErrorModalOpened.value = !!newValue
+  },
+  { immediate: true }
+)
+// const isErrorModalOpened = computed(() => {
+//   console.log('plop')
+//   return preparationVM.value.error
+// })
 </script>
 
 <style lang="scss" scoped>
