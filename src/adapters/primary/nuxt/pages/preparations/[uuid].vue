@@ -3,9 +3,9 @@ invoice.hidden.printme.mx-2
 .section.no-printme
   h1.text-4xl.font-semibold.text-default Commande \#{{ preparationVM.reference }}
   ft-scanner(
+    ref="mainScanner"
     placeholder="Code produit"
     @scanned="scanProductToPreparation"
-    @scanner-mounted="mainScannerMounted"
   )
   ft-table(
     :headers="preparationVM.headers"
@@ -18,9 +18,11 @@ invoice.hidden.printme.mx-2
   div.w-full.flex.justify-between.items-center.relative
     div.flex.justify-center.items-center.gap-4
       ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
+        variant="outline"
         @click="save"
       ) Sauvegarder
       ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
+        variant="outline"
         @click="openActionDialog"
       ) Actions particulières
     ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
@@ -56,7 +58,6 @@ invoice.hidden.printme.mx-2
 </template>
 
 <script lang="ts" setup>
-import { definePageMeta } from '../../../../../../.nuxt/imports'
 import { useOrderGateway } from '../../../../../../gateways/orderGateway'
 import { getPreparation } from '@core/usecases/order/get-preparation/getPreparation'
 import {
@@ -73,8 +74,6 @@ import { removeProductFromPreparation } from '@core/usecases/order/scan-product-
 import { setProductQuantityForPreparation } from '@core/usecases/order/set-product-quantity-for-preparation/setProductQuantityForPreparation'
 import { changeProductCip13ForPreparation } from '@core/usecases/order/change-product-cip13-for-preparation/changeProductCip13ForPreparation'
 import { clearPreparationError } from '@core/usecases/order/preparation-error-clearing/clearPreparationError'
-import FtButton from '@adapters/primary/nuxt/components/atoms/FtButton.vue'
-import FtPreparationErrorModal from '@adapters/primary/nuxt/components/molecules/FtPreparationErrorModal.vue'
 
 definePageMeta({ layout: 'main' })
 
@@ -98,18 +97,16 @@ const closeErrorModal = () => {
 }
 
 const setFocusOnMainScanner = () => {
-  setFocus(mainScanner.value)
+  nextTick(() => {
+    setTimeout(() => {
+      setFocus(mainScanner.value)
+    }, 300)
+  })
 }
 
 const setFocus = (el: any) => {
-  setTimeout(() => {
-    el.focus()
-  }, 300)
-}
-
-const mainScannerMounted = (input: any) => {
+  const input = el.$el.querySelector('input')
   input.focus()
-  mainScanner.value = input
 }
 
 const products = computed(() => {
@@ -117,7 +114,9 @@ const products = computed(() => {
 })
 
 const isActionModalOpened = ref(false)
-const openActionDialog = () => {
+
+const openActionDialog = (e: any) => {
+  e.preventDefault()
   isActionModalOpened.value = true
 }
 

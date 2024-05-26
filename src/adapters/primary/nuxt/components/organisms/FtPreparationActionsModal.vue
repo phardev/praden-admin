@@ -1,9 +1,9 @@
 <template lang="pug">
 ft-modal(v-model="model")
   div.grid.grid-cols-1.gap-4.mx-10.my-10(class="md:grid-cols-2")
-    ft-button.button-solid.h-24.col-span-2(@click="openRemoveProduct") Retirer un produit
-    ft-button.button-solid.h-24.col-span-2(@click="openChangeQuantity") Changer la quantité
-    ft-button.button-solid.h-24.col-span-2(@click="openChangeReference") Modifier la référence
+    ft-button.button-solid.h-24.col-span-2.text-lg(@click="openRemoveProduct") Retirer un produit
+    ft-button.button-solid.h-24.col-span-2.text-lg(@click="openChangeQuantity") Changer la quantité
+    ft-button.button-solid.h-24.col-span-2.text-lg(@click="openChangeReference") Modifier la référence
 
   ft-remove-product-modal(
     v-model="isRemoveProductOpened"

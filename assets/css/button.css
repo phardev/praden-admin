@@ -1,6 +1,6 @@
 @layer utilities {
   .button-default {
-    @apply bg-component text-colored;
+    @apply bg-contrast text-colored;
   }
 
   .button-warning {
