@@ -95,7 +95,6 @@ describe('Start preparations VM', () => {
                 reference: orderToPrepare1.uuid,
                 deliveryMethodName: orderToPrepare1.delivery.method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
-                clientFullname: `${orderToPrepare1.deliveryAddress.firstname} ${orderToPrepare1.deliveryAddress.lastname}`,
                 createdDate: '21 janv. 2023',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
@@ -115,7 +114,8 @@ describe('Start preparations VM', () => {
                     taxRate: '10 %',
                     totalPrice: '11,00\u00A0€'
                   }
-                ]
+                ],
+                totalWithTax: '11,00\u00A0€'
               }
             ]
           }
@@ -148,7 +148,6 @@ describe('Start preparations VM', () => {
                 reference: orderToPrepare2.uuid,
                 deliveryMethodName: orderToPrepare2.delivery.method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
-                clientFullname: `${orderToPrepare2.deliveryAddress.firstname} ${orderToPrepare2.deliveryAddress.lastname}`,
                 createdDate: '5 févr. 2023',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
@@ -177,7 +176,8 @@ describe('Start preparations VM', () => {
                     taxRate: '10 %',
                     totalPrice: '5,50\u00A0€'
                   }
-                ]
+                ],
+                totalWithTax: '15,00\u00A0€'
               }
             ]
           }
@@ -212,7 +212,6 @@ describe('Start preparations VM', () => {
                   orderWithProductWithoutLocation.delivery.method.name,
                 clientLastname:
                   orderWithProductWithoutLocation.deliveryAddress.lastname,
-                clientFullname: `${orderWithProductWithoutLocation.deliveryAddress.firstname} ${orderWithProductWithoutLocation.deliveryAddress.lastname}`,
                 createdDate: '21 janv. 2023',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
@@ -241,7 +240,8 @@ describe('Start preparations VM', () => {
                     taxRate: '10 %',
                     totalPrice: '19,47\u00A0€'
                   }
-                ]
+                ],
+                totalWithTax: '37,29\u00A0€'
               }
             ]
           }
@@ -272,7 +272,6 @@ describe('Start preparations VM', () => {
                 reference: orderToPrepare1.uuid,
                 deliveryMethodName: orderToPrepare1.delivery.method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
-                clientFullname: `${orderToPrepare1.deliveryAddress.firstname} ${orderToPrepare1.deliveryAddress.lastname}`,
                 createdDate: '21 janv. 2023',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
@@ -292,7 +291,8 @@ describe('Start preparations VM', () => {
                     taxRate: '10 %',
                     totalPrice: '11,00\u00A0€'
                   }
-                ]
+                ],
+                totalWithTax: '11,00\u00A0€'
               }
             ]
           }
@@ -325,7 +325,6 @@ describe('Start preparations VM', () => {
                 reference: orderToPrepare2.uuid,
                 deliveryMethodName: orderToPrepare2.delivery.method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
-                clientFullname: `${orderToPrepare2.deliveryAddress.firstname} ${orderToPrepare2.deliveryAddress.lastname}`,
                 createdDate: '5 févr. 2023',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
@@ -354,7 +353,8 @@ describe('Start preparations VM', () => {
                     taxRate: '10 %',
                     totalPrice: '9,50\u00A0€'
                   }
-                ]
+                ],
+                totalWithTax: '15,00\u00A0€'
               }
             ]
           }
@@ -382,7 +382,6 @@ describe('Start preparations VM', () => {
               reference: orderToPrepare3.uuid,
               deliveryMethodName: orderToPrepare3.delivery.method.name,
               clientLastname: orderToPrepare3.deliveryAddress.lastname,
-              clientFullname: `${orderToPrepare3.deliveryAddress.firstname} ${orderToPrepare3.deliveryAddress.lastname}`,
               createdDate: '5 févr. 2023',
               deliveryPrice: '5,99\u00A0€',
               deliveryAddress: {
@@ -402,7 +401,8 @@ describe('Start preparations VM', () => {
                   taxRate: '10 %',
                   totalPrice: '5,50\u00A0€'
                 }
-              ]
+              ],
+              totalWithTax: '5,50\u00A0€'
             }
           ]
         }
@@ -443,7 +443,6 @@ describe('Start preparations VM', () => {
                 reference: orderToPrepare1.uuid,
                 deliveryMethodName: orderToPrepare1.delivery.method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
-                clientFullname: `${orderToPrepare1.deliveryAddress.firstname} ${orderToPrepare1.deliveryAddress.lastname}`,
                 createdDate: '21 janv. 2023',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
@@ -463,14 +462,14 @@ describe('Start preparations VM', () => {
                     taxRate: '10 %',
                     totalPrice: '11,00\u00A0€'
                   }
-                ]
+                ],
+                totalWithTax: '11,00\u00A0€'
               },
               {
                 href: `${origin}/preparations/${orderToPrepare2.uuid}`,
                 reference: orderToPrepare2.uuid,
                 deliveryMethodName: orderToPrepare2.delivery.method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
-                clientFullname: `${orderToPrepare2.deliveryAddress.firstname} ${orderToPrepare2.deliveryAddress.lastname}`,
                 createdDate: '5 févr. 2023',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
@@ -499,7 +498,8 @@ describe('Start preparations VM', () => {
                     taxRate: '10 %',
                     totalPrice: '5,50\u00A0€'
                   }
-                ]
+                ],
+                totalWithTax: '15,00\u00A0€'
               }
             ]
           }
@@ -539,7 +539,6 @@ describe('Start preparations VM', () => {
                 reference: orderToPrepare1.uuid,
                 deliveryMethodName: orderToPrepare1.delivery.method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
-                clientFullname: `${orderToPrepare1.deliveryAddress.firstname} ${orderToPrepare1.deliveryAddress.lastname}`,
                 createdDate: '21 janv. 2023',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
@@ -559,14 +558,14 @@ describe('Start preparations VM', () => {
                     taxRate: '10 %',
                     totalPrice: '11,00\u00A0€'
                   }
-                ]
+                ],
+                totalWithTax: '11,00\u00A0€'
               },
               {
                 href: `${origin}/preparations/${orderToPrepare2.uuid}`,
                 reference: orderToPrepare2.uuid,
                 deliveryMethodName: orderToPrepare2.delivery.method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
-                clientFullname: `${orderToPrepare2.deliveryAddress.firstname} ${orderToPrepare2.deliveryAddress.lastname}`,
                 createdDate: '5 févr. 2023',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
@@ -595,7 +594,8 @@ describe('Start preparations VM', () => {
                     taxRate: '10 %',
                     totalPrice: '9,50\u00A0€'
                   }
-                ]
+                ],
+                totalWithTax: '15,00\u00A0€'
               }
             ]
           }

@@ -15,7 +15,7 @@ div.hidden.printme.mx-2
           :code="order.clientLastname"
           :width="1"
           :height="50"
-          :text="order.clientFullname"
+          :text="order.deliveryAddress.name"
         )
       client-only
         vueQr(:text="order.href")
@@ -34,6 +34,10 @@ div.hidden.printme.mx-2
       div.flex.items-center.justify-around.m-2
         div(class="w-1/2") Frais de livraison
         div.text-right(class="w-1/2") {{ order.deliveryPrice }}
+    div(class="w-1/3").ml-auto.border-b.border-light.ml-8
+      div.flex.items-center.justify-around.m-2
+        div(class="w-1/2") Total TTC
+        div.text-right(class="w-1/2") {{ order.totalWithTax }}
 </template>
 
 <script lang="ts" setup>
