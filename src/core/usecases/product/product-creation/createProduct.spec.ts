@@ -8,7 +8,7 @@ import {
 import { Product } from '@core/entities/product'
 import { dolodent, hemoclar } from '@utils/testData/products'
 
-describe('Add product', () => {
+describe('Create product', () => {
   let productStore: any
   let productGateway: InMemoryProductGateway
 
