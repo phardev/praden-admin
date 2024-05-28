@@ -1,7 +1,8 @@
 <template lang="pug">
 .section
-  nuxt-link.flex.flex-row-reverse(to="/categories/new")
-    ft-button.button-solid.text-xl.px-6 Créer catégorie
+  div.flex.flex-row-reverse
+    nuxt-link(to="/categories/new")
+      ft-button.button-solid.text-xl.px-6 Créer catégorie
   ft-table(
     :headers="categoriesVM.headers"
     :items="categoriesVM.items"
