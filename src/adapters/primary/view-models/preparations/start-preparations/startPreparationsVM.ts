@@ -95,7 +95,9 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
       href: `${origin}/preparations/${order.uuid}`,
       reference: order.uuid,
       deliveryMethodName: order.delivery.method.name,
-      clientLastname: order.deliveryAddress.lastname,
+      clientLastname: order.deliveryAddress.lastname
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, ''),
       createdDate: timestampToLocaleString(order.createdAt, 'fr-FR'),
       deliveryPrice:
         order.delivery.method.price > 0

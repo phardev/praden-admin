@@ -408,6 +408,54 @@ describe('Start preparations VM', () => {
         }
         expect(vm).toStrictEqual(expectedVM)
       })
+      it('should sanitize the client last name', () => {
+        preparationsStore.selected = [orderToPrepare3.uuid]
+        orderToPrepare3.deliveryAddress.lastname = 'NameWithé'
+        const anotherOrigin = 'http://another-origin:3000'
+        const vm = getStartPreparationsVM(anotherOrigin)
+        const expectedVM: StartPreparationsVM = {
+          globalHeaders,
+          detailHeaders,
+          global: [
+            {
+              reference: dolodent.cip13,
+              name: dolodent.name,
+              location: dolodent.location,
+              quantity: 1
+            }
+          ],
+          detail: [
+            {
+              href: `${anotherOrigin}/preparations/${orderToPrepare3.uuid}`,
+              reference: orderToPrepare3.uuid,
+              deliveryMethodName: orderToPrepare3.delivery.method.name,
+              clientLastname: 'NameWithe',
+              createdDate: '5 févr. 2023',
+              deliveryPrice: '5,99\u00A0€',
+              deliveryAddress: {
+                name: 'Jeanne NameWithé',
+                address: '12 avenue du bois',
+                city: 'Boisville',
+                zip: '54321',
+                phone: '9876543210'
+              },
+              lines: [
+                {
+                  reference: dolodent.cip13,
+                  name: dolodent.name,
+                  location: dolodent.location,
+                  quantity: 1,
+                  unitPrice: '5,50\u00A0€',
+                  taxRate: '10 %',
+                  totalPrice: '5,50\u00A0€'
+                }
+              ],
+              totalWithTax: '5,50\u00A0€'
+            }
+          ]
+        }
+        expect(vm).toStrictEqual(expectedVM)
+      })
     })
     describe('There is multiple preparations selected', () => {
       describe('The sort is by location', () => {
