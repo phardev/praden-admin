@@ -4,7 +4,7 @@ export interface Category {
   uuid: UUID
   name: string
   description: string
-  parentUuid: UUID | undefined
+  parentUuid?: UUID
 }
 
 export const isCategory = (object: any): object is Category => {
