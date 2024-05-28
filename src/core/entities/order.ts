@@ -91,8 +91,8 @@ export interface Order {
 //   }, 0)
 // }
 
-export const getTotalWithTax = (lines: Array<OrderLine>): number => {
-  return lines.reduce((acc: number, line: OrderLine) => {
+export const getTotalWithTax = (order: Order): number => {
+  const totalLine = order.lines.reduce((acc: number, line: OrderLine) => {
     return (
       acc +
       (line.expectedQuantity *
@@ -100,4 +100,6 @@ export const getTotalWithTax = (lines: Array<OrderLine>): number => {
         100
     )
   }, 0)
+  const deliveryPrice = order.delivery.method.price / 100
+  return totalLine + deliveryPrice
 }

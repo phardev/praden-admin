@@ -120,7 +120,7 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
           }
         })
         .sort(pickingSort),
-      totalWithTax: formatter.format(getTotalWithTax(order.lines))
+      totalWithTax: formatter.format(getTotalWithTax(order))
     })
   })
   res.global = res.detail.reduce(

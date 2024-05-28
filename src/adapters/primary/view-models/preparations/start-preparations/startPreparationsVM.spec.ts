@@ -402,7 +402,7 @@ describe('Start preparations VM', () => {
                   totalPrice: '5,50\u00A0€'
                 }
               ],
-              totalWithTax: '5,50\u00A0€'
+              totalWithTax: '11,49\u00A0€'
             }
           ]
         }
@@ -450,7 +450,7 @@ describe('Start preparations VM', () => {
                   totalPrice: '5,50\u00A0€'
                 }
               ],
-              totalWithTax: '5,50\u00A0€'
+              totalWithTax: '11,49\u00A0€'
             }
           ]
         }
