@@ -6,7 +6,7 @@ UInputMenu(
 )
   template(#trailing)
     UButton(
-      v-show="model"
+      v-show="model && !$attrs.disabled"
       color="gray"
       variant="link"
       icon="i-heroicons-x-mark-20-solid"

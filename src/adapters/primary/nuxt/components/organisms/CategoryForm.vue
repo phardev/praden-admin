@@ -3,16 +3,19 @@ div(v-if="currentVM")
   UFormGroup.pb-4(label="Nom" name="name")
     ft-text-field(
       :model-value="currentVM.getName().value"
+      :disabled="!currentVM.getName().canEdit"
       @update:model-value="nameChanged"
     )
   UFormGroup.pb-4(label="Description" name="description")
     ft-text-field(
       :model-value="currentVM.getDescription().value"
+      :disabled="!currentVM.getDescription().canEdit"
       @update:model-value="descriptionChanged"
     )
   UFormGroup.pb-4(label="Catégorie parent" name="category")
     ft-autocomplete(
       :model-value="currentVM.getParentUuid().value"
+      :disabled="!currentVM.getParentUuid().canEdit"
       :options="currentVM.getAvailableCategories()"
       placeholder="Rechercher une catégorie"
       by="id"

@@ -9,7 +9,7 @@ import { Category } from '@core/entities/category'
 import { UUID } from '@core/types/types'
 import { useCategoryStore } from '@store/categoryStore'
 import { dents } from '@utils/testData/categories'
-import { ParentCategoryDoesNotExistsError } from '@core/usecases/promotions/promotion-creation/ParentCategoryDoesNotExistsError'
+import { ParentCategoryDoesNotExistsError } from '@core/errors/ParentCategoryDoesNotExistsError'
 
 describe('Create category', () => {
   let categoryStore

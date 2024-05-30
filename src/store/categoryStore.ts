@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
-import { Category } from '../core/entities/category'
+import { Category } from '@core/entities/category'
 
 export const useCategoryStore = defineStore('CategoryStore', {
   state: () => {
     return {
-      items: [] as Array<Category>
+      items: [] as Array<Category>,
+      current: undefined as Category | undefined
     }
   },
   actions: {
@@ -13,6 +14,17 @@ export const useCategoryStore = defineStore('CategoryStore', {
     },
     add(category: Category) {
       this.items.push(category)
+    },
+    edit(category: Category) {
+      this.items = this.items.map((c) => {
+        return c.uuid === category.uuid ? category : c
+      })
+    },
+    setCurrent(category: Category) {
+      this.current = JSON.parse(JSON.stringify(category))
+    },
+    resetCurrent() {
+      this.current = undefined
     }
   }
 })

@@ -1,30 +1,17 @@
-import { useFormStore } from '@store/formStore'
-import { useCategoryStore } from '@store/categoryStore'
 import type { Field } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
-import type { Category } from '@core/entities/category'
-import { CreateProductCategoriesVM } from '@adapters/primary/view-models/products/create-product/createProductVM'
 import type { UUID } from '@core/types/types'
 import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
+import { GetCategoryVM } from '@adapters/primary/view-models/categories/get-category/getCategoryVM'
+import { useCategoryStore } from '@store/categoryStore'
 
-export class CreateCategoryVM {
-  protected readonly key: string
-  protected formStore: any
-  protected categoryStore: any
-
+export class CreateCategoryVM extends GetCategoryVM {
   constructor(key: string) {
-    this.key = key
-    this.formStore = useFormStore()
-    this.categoryStore = useCategoryStore()
-    this.formStore.set(this.key, {
-      name: '',
-      description: '',
-      parentUuid: undefined
-    })
+    super(key)
   }
 
   getName(): Field<string> {
     return {
-      value: this.formStore.get(this.key).name,
+      ...super.getName(),
       canEdit: true
     }
   }
@@ -32,19 +19,9 @@ export class CreateCategoryVM {
     this.formStore.set(this.key, { name })
   }
 
-  getAvailableCategories(): CreateProductCategoriesVM {
-    const categories = this.categoryStore.items
-    return categories.map((c: Category) => {
-      return {
-        uuid: c.uuid,
-        name: c.name
-      }
-    })
-  }
-
   getParentUuid(): Field<UUID | undefined> {
     return {
-      value: this.formStore.get(this.key).parentUuid,
+      ...super.getParentUuid(),
       canEdit: true
     }
   }
@@ -54,7 +31,7 @@ export class CreateCategoryVM {
 
   getDescription(): Field<string> {
     return {
-      value: this.formStore.get(this.key).description,
+      ...super.getDescription(),
       canEdit: true
     }
   }
@@ -78,4 +55,10 @@ export class CreateCategoryVM {
   getCanValidate(): boolean {
     return true
   }
+}
+
+export const createCategoryVM = (key: string) => {
+  const categoryStore = useCategoryStore()
+  categoryStore.resetCurrent()
+  return new CreateCategoryVM(key)
 }

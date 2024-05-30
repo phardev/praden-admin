@@ -1,8 +1,10 @@
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { useCategoryStore } from '@store/categoryStore'
 import { Category } from '@core/entities/category'
+import { UUID } from '@core/types/types'
 
 export interface GetCategoriesItemVM {
+  uuid: UUID
   name: string
   description: string
 }
@@ -31,6 +33,7 @@ export const getCategoriesVM = (): GetCategoriesVM => {
     headers,
     items: categories.map((c: Category) => {
       return {
+        uuid: c.uuid,
         name: c.name,
         description: c.description
       }

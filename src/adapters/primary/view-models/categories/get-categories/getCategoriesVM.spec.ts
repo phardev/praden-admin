@@ -43,10 +43,12 @@ describe('Get categories', () => {
         headers: expectedHeaders,
         items: [
           {
+            uuid: dents.uuid,
             name: dents.name,
             description: dents.description
           },
           {
+            uuid: minceur.uuid,
             name: minceur.name,
             description: minceur.description
           }

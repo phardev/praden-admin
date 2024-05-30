@@ -6,6 +6,7 @@
   ft-table(
     :headers="categoriesVM.headers"
     :items="categoriesVM.items"
+    @clicked="categorySelected"
   )
     template(#title) Catégories
     template(#name="{ item }")
@@ -26,4 +27,9 @@ onMounted(() => {
 const categoriesVM = computed(() => {
   return getCategoriesVM()
 })
+
+const categorySelected = (uuid: string) => {
+  const router = useRouter()
+  router.push(`/categories/get/${uuid}`)
+}
 </script>
