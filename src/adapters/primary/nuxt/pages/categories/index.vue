@@ -15,7 +15,7 @@
 <script lang="ts" setup>
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
-import { getCategoriesVM } from '@adapters/primary/view-models/categories/get-categories/getCategories'
+import { getCategoriesVM } from '@adapters/primary/view-models/categories/get-categories/getCategoriesVM'
 
 definePageMeta({ layout: 'main' })
 

@@ -14,7 +14,7 @@ export class InMemoryCategoryGateway implements CategoryGateway {
   }
 
   list(): Promise<Array<Category>> {
-    return Promise.resolve(this.categories)
+    return Promise.resolve(JSON.parse(JSON.stringify(this.categories)))
   }
 
   create(dto: CreateCategoryDTO): Promise<Category> {

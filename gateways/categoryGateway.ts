@@ -2,8 +2,11 @@ import { InMemoryCategoryGateway } from '@adapters/secondary/category-gateways/I
 import * as categories from '@utils/testData/categories'
 import { RealCategoryGateway } from '@adapters/secondary/category-gateways/realCategoryGateway'
 import { isLocalEnv } from '@utils/env'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 
-const categoryGateway = new InMemoryCategoryGateway()
+const uuidGenerator = new FakeUuidGenerator()
+uuidGenerator.setNext('new-uuid')
+const categoryGateway = new InMemoryCategoryGateway(uuidGenerator)
 categoryGateway.feedWith(...Object.values(categories))
 
 export const useCategoryGateway = () => {
