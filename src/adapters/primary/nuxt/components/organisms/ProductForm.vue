@@ -21,6 +21,7 @@ div(v-if="currentVM")
             option-attribute="name"
             value-attribute="uuid"
             @update:model-value="categoryChanged"
+            @clear="clearCategory"
           )
             template(#option="{ option: category }")
               span {{ category.name }}
@@ -187,6 +188,10 @@ const imagesChanged = async (value: any) => {
 
 const categoryChanged = (uuid: string) => {
   currentVM?.value?.setCategoryUuid(uuid)
+}
+
+const clearCategory = () => {
+  currentVM?.value?.setCategoryUuid(undefined)
 }
 
 const locationChanged = (location: string) => {
