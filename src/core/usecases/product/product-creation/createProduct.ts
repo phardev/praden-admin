@@ -4,6 +4,7 @@ import { useProductStore } from '@store/productStore'
 
 export type CreateProductDTO = Omit<
   Product,
+  | 'uuid'
   | 'images'
   | 'priceWithoutTax'
   | 'percentTaxRate'

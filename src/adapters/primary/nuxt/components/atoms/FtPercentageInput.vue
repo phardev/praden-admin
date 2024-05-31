@@ -23,6 +23,10 @@ const props = defineProps({
   }
 })
 
+onMounted(() => {
+  rawValue.value = props.modelValue
+})
+
 watch(
   () => props.modelValue,
   (value) => {

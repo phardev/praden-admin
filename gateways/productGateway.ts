@@ -2,8 +2,11 @@ import { RealProductGateway } from '@adapters/secondary/product-gateways/RealPro
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import * as products from '@utils/testData/products'
 import { isLocalEnv } from '@utils/env'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 
-const inMemoryGateway = new InMemoryProductGateway()
+const uuidGenerator = new FakeUuidGenerator()
+uuidGenerator.setNext('new-uuid-123')
+const inMemoryGateway = new InMemoryProductGateway(uuidGenerator)
 inMemoryGateway.feedWith(...Object.values(products))
 
 export const useProductGateway = () => {

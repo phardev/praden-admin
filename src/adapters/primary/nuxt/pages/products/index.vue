@@ -6,6 +6,7 @@
   ft-table(
     :headers="productsVM.headers"
     :items="productsVM.items"
+    @clicked="productSelected"
   )
     template(#title) Produits
     template(#img="{ item }")
@@ -36,4 +37,9 @@ onMounted(() => {
 const productsVM = computed(() => {
   return getProductsVM()
 })
+
+const productSelected = (uuid: string) => {
+  const router = useRouter()
+  router.push(`/products/get/${uuid}`)
+}
 </script>

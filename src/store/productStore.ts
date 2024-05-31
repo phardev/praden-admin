@@ -5,7 +5,8 @@ export const useProductStore = defineStore('ProductStore', {
   state: () => {
     return {
       items: [] as Array<Product>,
-      stock: {} as Stock
+      stock: {} as Stock,
+      current: undefined as Product
     }
   },
   actions: {
@@ -17,6 +18,9 @@ export const useProductStore = defineStore('ProductStore', {
     },
     add(product: Product) {
       this.items.push(product)
+    },
+    setCurrent(product: Product) {
+      this.current = JSON.parse(JSON.stringify(product))
     }
   }
 })

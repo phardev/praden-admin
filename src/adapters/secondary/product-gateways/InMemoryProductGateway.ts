@@ -2,9 +2,17 @@ import { ProductGateway } from '@core/gateways/productGateway'
 import { Product } from '@core/entities/product'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import { getFileContent } from '@utils/file'
+import { UUID } from '@core/types/types'
+import { ProductDoesNotExistsError } from '@core/errors/ProductDoesNotExistsError'
+import { UuidGenerator } from '@core/gateways/uuidGenerator'
 
 export class InMemoryProductGateway implements ProductGateway {
   private products: Array<Product> = []
+  private uuidGenerator: UuidGenerator
+
+  constructor(uuidGenerator: UuidGenerator) {
+    this.uuidGenerator = uuidGenerator
+  }
 
   async list(): Promise<Array<Product>> {
     return Promise.resolve(JSON.parse(JSON.stringify(this.products)))
@@ -21,6 +29,7 @@ export class InMemoryProductGateway implements ProductGateway {
       images.push(await getFileContent(image))
     }
     const product: Product = {
+      uuid: this.uuidGenerator.generate(),
       name: dto.name,
       cip7: dto.cip7,
       cip13: dto.cip13,
@@ -39,6 +48,12 @@ export class InMemoryProductGateway implements ProductGateway {
     }
     this.products.push(product)
     return Promise.resolve(product)
+  }
+
+  getByUuid(uuid: UUID): Promise<Product> {
+    const res = this.products.find((p) => p.uuid === uuid)
+    if (!res) throw new ProductDoesNotExistsError(uuid)
+    return Promise.resolve(JSON.parse(JSON.stringify(res)))
   }
 
   feedWith(...products: Array<Product>) {

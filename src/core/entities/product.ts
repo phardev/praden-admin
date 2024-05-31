@@ -3,6 +3,7 @@ import type { HashTable, UUID } from '@core/types/types'
 export type Stock = HashTable<number>
 
 export interface Product {
+  uuid: UUID
   name: string
   miniature: string
   images: Array<string>

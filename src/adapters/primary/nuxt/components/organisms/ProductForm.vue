@@ -10,11 +10,13 @@ div(v-if="currentVM")
         UFormGroup.pb-4(label="Nom" name="name")
           ft-text-field(
             :model-value="currentVM.getName().value"
+            :disabled="!currentVM.getName().canEdit"
             @update:model-value="nameChanged"
           )
         UFormGroup.pb-4(label="Catégorie" name="category")
           ft-autocomplete(
             :model-value="currentVM.getCategoryUuid().value"
+            :disabled="!currentVM.getCategoryUuid().canEdit"
             :options="currentVM.getAvailableCategories()"
             placeholder="Rechercher une catégorie"
             by="id"
@@ -28,28 +30,34 @@ div(v-if="currentVM")
         UFormGroup.pb-4(label="CIP7" name="cip7")
           ft-text-field(
             :model-value="currentVM.getCip7().value"
+            :disabled="!currentVM.getCip7().canEdit"
             @update:model-value="cip7Changed"
           )
         UFormGroup.pb-4(label="CIP13" name="cip13")
           ft-text-field(
             :model-value="currentVM.getCip13().value"
+            :disabled="!currentVM.getCip13().canEdit"
             @update:model-value="cip13Changed"
           )
         UFormGroup.pb-4(label="EAN13" name="ean13")
           ft-text-field(
             :model-value="currentVM.getEan13().value"
+            :disabled="!currentVM.getEan13().canEdit"
             @update:model-value="ean13Changed"
           )
         UFormGroup.pb-4(label="Laboratoire" name="laboratory")
           ft-text-field(
             :model-value="currentVM.getLaboratory().value"
+            :disabled="!currentVM.getLaboratory().canEdit"
             label="Laboratoire"
             @update:model-value="laboratoryChanged"
           )
         UFormGroup.pb-4(label="Images" name="images")
-          div(v-for="(image, index) in images" :key="index")
-            img.mb-4(:src="image" height=200 width=200 alt="Selected Image")
+          div.flex.items-center.gap-4
+            div(v-for="(image, index) in images" :key="index")
+              img.mb-4(:src="image" height=200 width=200 alt="Selected Image")
           ft-file-input(
+            v-if="currentVM.getNewImages().canEdit"
             accept="image/*"
             multiple
             @input="imagesChanged"
@@ -57,19 +65,22 @@ div(v-if="currentVM")
       template(#price)
         UFormGroup.pb-4(label="Prix (HT)" name="priceWithoutTax")
           ft-currency-input(
-              v-model.lazy="currentVM.getPriceWithoutTax().value"
-              label="Prix (HT)"
+            v-model.lazy="currentVM.getPriceWithoutTax().value"
+            :disabled="!currentVM.getPriceWithoutTax().canEdit"
+            label="Prix (HT)"
               @update:model-value="priceWithoutTaxChanged"
             )
         UFormGroup.pb-4(label="Taxe (%)" name="percentTaxRate")
           ft-percentage-input(
             :model-value="currentVM.getPercentTaxRate().value"
+            :disabled="!currentVM.getPercentTaxRate().canEdit"
             label="Taxe (%)"
             @update:model-value="percentTaxRateChanged"
           )
         UFormGroup.pb-4(label="Prix (TTC)" name="priceWithTax")
           ft-currency-input(
             v-model.lazy="currentVM.getPriceWithTax().value"
+            :disabled="!currentVM.getPriceWithTax().canEdit"
             label="Prix (HT)"
             @update:model-value="priceWithTaxChanged"
           )
@@ -77,11 +88,13 @@ div(v-if="currentVM")
         UFormGroup.pb-4(label="Code Géographique" name="location")
           ft-text-field(
             :model-value="currentVM.getLocation().value"
+            :disabled="!currentVM.getLocation().canEdit"
             @update:model-value="locationChanged"
           )
         UFormGroup.pb-4(label="Stock disponible" name="availableStock")
           ft-text-field(
             :model-value="currentVM.getAvailableStock().value"
+            :disabled="!currentVM.getAvailableStock().canEdit"
             type="number"
             @update:model-value="availableStockChanged"
           )
@@ -89,16 +102,19 @@ div(v-if="currentVM")
         UFormGroup.pb-4(label="Description" name="description")
           FtRichTextInput(
             :model-value="currentVM.getDescription().value"
+            :disabled="!currentVM.getDescription().canEdit"
             @update:model-value="descriptionChanged"
           )
         UFormGroup.pb-4(label="Instructions" name="instructions")
           FtRichTextInput(
             :model-value="currentVM.getInstructionsForUse().value"
+            :disabled="!currentVM.getInstructionsForUse().canEdit"
             @update:model-value="instructionsChanged"
           )
         UFormGroup.pb-4(label="Composition" name="composition")
           FtRichTextInput(
             :model-value="currentVM.getComposition().value"
+            :disabled="!currentVM.getComposition().canEdit"
             @update:model-value="compositionChanged"
           )
   div.flex.flex-row-reverse.mt-4
@@ -163,7 +179,8 @@ const ean13Changed = (ean13: string) => {
 }
 
 const priceWithoutTaxChanged = (priceWithoutTax: number) => {
-  currentVM?.value?.setPriceWithoutTax(priceWithoutTax)
+  if (currentVM?.value?.getPriceWithoutTax().canEdit)
+    currentVM?.value?.setPriceWithoutTax(priceWithoutTax)
 }
 
 const percentTaxRateChanged = (percentTaxRate: number) => {
@@ -171,7 +188,8 @@ const percentTaxRateChanged = (percentTaxRate: number) => {
 }
 
 const priceWithTaxChanged = (priceWithTax: number) => {
-  currentVM?.value?.setPriceWithTax(priceWithTax)
+  if (currentVM?.value?.getPriceWithTax().canEdit)
+    currentVM?.value?.setPriceWithTax(priceWithTax)
 }
 
 const laboratoryChanged = (laboratory: string) => {

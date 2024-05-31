@@ -3,8 +3,10 @@ import { Product } from '@core/entities/product'
 import { priceFormatter } from '@utils/formatters'
 import { useCategoryStore } from '@store/categoryStore'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { UUID } from '@core/types/types'
 
 export interface GetProductsItemVM {
+  uuid: UUID
   name: string
   img: string
   reference: string
@@ -63,6 +65,7 @@ export const getProductsVM = (): GetProductsVM => {
       const priceWithTax =
         p.priceWithoutTax + (p.priceWithoutTax * p.percentTaxRate) / 100
       return {
+        uuid: p.uuid,
         name: p.name,
         img: p.miniature,
         reference: p.cip13,

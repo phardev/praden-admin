@@ -7,18 +7,21 @@ import {
 } from '@core/usecases/product/product-creation/createProduct'
 import { Product } from '@core/entities/product'
 import { dolodent, hemoclar } from '@utils/testData/products'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 
 describe('Create product', () => {
   let productStore: any
   let productGateway: InMemoryProductGateway
+  const uuidGenerator = new FakeUuidGenerator()
 
   beforeEach(() => {
     setActivePinia(createPinia())
     productStore = useProductStore()
-    productGateway = new InMemoryProductGateway()
+    productGateway = new InMemoryProductGateway(uuidGenerator)
   })
   describe('Simple product', () => {
     describe('For a product', () => {
+      const uuid = 'new-uuid'
       const dto: CreateProductDTO = {
         name: 'Created product',
         cip7: '1234567',
@@ -36,6 +39,7 @@ describe('Create product', () => {
         composition: '<p>composition</p>'
       }
       const expectedProduct: Product = {
+        uuid,
         name: dto.name,
         cip7: dto.cip7,
         cip13: dto.cip13,
@@ -53,16 +57,18 @@ describe('Create product', () => {
         composition: dto.composition
       }
       beforeEach(async () => {
+        uuidGenerator.setNext(uuid)
         await whenCreateProduct(dto)
       })
       it('should save the product in product gateway', async () => {
         await expectProductGatewayToEqual(expectedProduct)
       })
-      it('should save the product in product store', async () => {
-        await expectProductStoreToEqual(expectedProduct)
+      it('should save the product in product store', () => {
+        expectProductStoreToEqual(expectedProduct)
       })
     })
     describe('For another product', () => {
+      const uuid = 'another-uuid'
       const dto: CreateProductDTO = {
         name: 'Another created product',
         cip7: '0987654',
@@ -84,6 +90,7 @@ describe('Create product', () => {
         composition: '<p>another composition</p>'
       }
       const expectedProduct: Product = {
+        uuid,
         name: dto.name,
         cip7: dto.cip7,
         cip13: dto.cip13,
@@ -106,6 +113,7 @@ describe('Create product', () => {
       }
       beforeEach(async () => {
         givenThereIsExistingProducts(dolodent, hemoclar)
+        uuidGenerator.setNext(uuid)
         await whenCreateProduct(dto)
       })
       it('should save the product in product gateway', async () => {

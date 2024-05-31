@@ -1,7 +1,7 @@
 <template lang="pug">
 div
   div(v-if="editor")
-    div.flex
+    div.flex(v-if="!disabled")
       div.border.border-neutral-light.rounded-t-lg.p-2.inline-flex.items-center.gap-1
         UDropdown.h-10(
           mode="hover"
@@ -33,8 +33,16 @@ import FtButton from '@adapters/primary/nuxt/components/atoms/FtButton.vue'
 
 const model = defineModel({ type: String })
 
+const props = defineProps({
+  disabled: {
+    type: Boolean,
+    default: false
+  }
+})
+
 const editor = useEditor({
   content: model.value,
+  editable: !props.disabled,
   extensions: [TiptapStarterKit],
   editorProps: {
     attributes: {

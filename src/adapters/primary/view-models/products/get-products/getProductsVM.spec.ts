@@ -69,6 +69,7 @@ describe('Get products VM', () => {
           headers: expectedHeaders,
           items: [
             {
+              uuid: dolodent.uuid,
               name: dolodent.name,
               img: dolodent.miniature,
               reference: dolodent.cip13,
@@ -78,6 +79,7 @@ describe('Get products VM', () => {
               availableStock: dolodent.availableStock
             },
             {
+              uuid: ultraLevure.uuid,
               name: ultraLevure.name,
               img: ultraLevure.miniature,
               reference: ultraLevure.cip13,
@@ -99,6 +101,7 @@ describe('Get products VM', () => {
           headers: expectedHeaders,
           items: [
             {
+              uuid: dolodent.uuid,
               name: dolodent.name,
               img: dolodent.miniature,
               reference: dolodent.cip13,
@@ -108,6 +111,7 @@ describe('Get products VM', () => {
               availableStock: dolodent.availableStock
             },
             {
+              uuid: ultraLevure.uuid,
               name: ultraLevure.name,
               img: ultraLevure.miniature,
               reference: ultraLevure.cip13,
