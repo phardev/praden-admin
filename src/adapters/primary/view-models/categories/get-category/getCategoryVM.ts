@@ -3,6 +3,16 @@ import { useCategoryStore } from '@store/categoryStore'
 import { Field } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
 import { CreateProductCategoriesVM } from '@adapters/primary/view-models/products/create-product/createProductVM'
 import type { Category } from '@core/entities/category'
+import { UUID } from '@core/types/types'
+
+export type FormReaderFunction<T> = () => T
+export type FormWriterFunction<T> = (value: T) => void
+
+export interface ReaderCategoryFormFields {
+  getName: FormReaderFunction<string>
+  getDescription: FormReaderFunction<string>
+  getParentUuid: FormReaderFunction<UUID | undefined>
+}
 
 export class GetCategoryVM {
   protected readonly key: string

@@ -2,7 +2,6 @@ import { baby, dents, minceur, mum } from '@utils/testData/categories'
 import { Field } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
 import { createPinia, setActivePinia } from 'pinia'
 import { useFormStore } from '@store/formStore'
-import { UUID } from '@core/types/types'
 import {
   getProductVM,
   GetProductVM
@@ -36,16 +35,33 @@ describe('Get product VM', () => {
       productStore.current = product
       vm = getProductVM(key)
     })
-    describe('Name field', () => {
-      it('should have an empty name', () => {
-        const expectedField: Field<string> = {
-          value: product.name,
+    describe.each([
+      { field: 'name', expected: product.name },
+      { field: 'categoryUuid', expected: product.categoryUuid },
+      { field: 'cip7', expected: product.cip7 },
+      { field: 'cip13', expected: product.cip13 },
+      { field: 'ean13', expected: product.ean13 },
+      { field: 'priceWithoutTax', expected: '4.32' },
+      { field: 'percentTaxRate', expected: product.percentTaxRate },
+      { field: 'priceWithTax', expected: '4.75' },
+      { field: 'laboratory', expected: product.laboratory },
+      { field: 'location', expected: product.location },
+      { field: 'availableStock', expected: product.availableStock },
+      { field: 'images', expected: product.images },
+      { field: 'newImages', expected: [] },
+      { field: 'description', expected: product.description },
+      { field: 'instructionsForUse', expected: product.instructionsForUse },
+      { field: 'composition', expected: product.composition }
+    ])('Field', ({ field, expected }) => {
+      it(`should have an empty ${field}`, () => {
+        const expectedField: Field<any> = {
+          value: expected,
           canEdit: false
         }
-        expect(vm.getName()).toStrictEqual(expectedField)
+        expect(vm.get(field)).toStrictEqual(expectedField)
       })
-      it('should save the name value in form store', () => {
-        expect(formStore.get(key).name).toStrictEqual(product.name)
+      it(`should save the ${field} value in form store`, () => {
+        expect(formStore.get(key)[field]).toStrictEqual(expected)
       })
     })
     describe('Category choices', () => {
@@ -68,182 +84,6 @@ describe('Get product VM', () => {
             name: mum.name
           }
         ])
-      })
-    })
-    describe('Category selected', () => {
-      it('should have the product category selected', () => {
-        const expectedField: Field<UUID | undefined> = {
-          value: product.categoryUuid,
-          canEdit: false
-        }
-        expect(vm.getCategoryUuid()).toStrictEqual(expectedField)
-      })
-      it('should not have any category selected in form store', () => {
-        expect(formStore.get(key).categoryUuid).toBe(product.categoryUuid)
-      })
-    })
-    describe('Cip7 field', () => {
-      it('should have the product cip', () => {
-        const expectedField: Field<string> = {
-          value: product.cip7,
-          canEdit: false
-        }
-        expect(vm.getCip7()).toStrictEqual(expectedField)
-      })
-      it('should save the cip7 value in form store', () => {
-        expect(formStore.get(key).cip7).toStrictEqual(product.cip7)
-      })
-    })
-    describe('Cip13 field', () => {
-      it('should have the product cip13', () => {
-        const expectedField: Field<string> = {
-          value: product.cip13,
-          canEdit: false
-        }
-        expect(vm.getCip13()).toStrictEqual(expectedField)
-      })
-      it('should save the cip13 value in form store', () => {
-        expect(formStore.get(key).cip13).toStrictEqual(product.cip13)
-      })
-    })
-    describe('EAN13 field', () => {
-      it('should have the product ean13', () => {
-        const expectedField: Field<string> = {
-          value: product.ean13,
-          canEdit: false
-        }
-        expect(vm.getEan13()).toStrictEqual(expectedField)
-      })
-      it('should save the ean13 value in form store', () => {
-        expect(formStore.get(key).ean13).toStrictEqual(product.ean13)
-      })
-    })
-    describe('Price without tax', () => {
-      it('should have the price without tax', () => {
-        const expectedField: Field<string | undefined> = {
-          value: '4.32',
-          canEdit: false
-        }
-        expect(vm.getPriceWithoutTax()).toStrictEqual(expectedField)
-      })
-      it('should not have any price without tax in form store', () => {
-        expect(formStore.get(key).priceWithoutTax).toBe('4.32')
-      })
-    })
-    describe('Percent tax rate', () => {
-      it('should get tax rate', () => {
-        const expectedField: Field<number | undefined> = {
-          value: 10,
-          canEdit: false
-        }
-        expect(vm.getPercentTaxRate()).toStrictEqual(expectedField)
-      })
-      it('should not have any percent tax rate in form store', () => {
-        expect(formStore.get(key).percentTaxRate).toBe(10)
-      })
-    })
-    describe('Price with tax', () => {
-      it('should have the price with tax', () => {
-        const expectedField: Field<string | undefined> = {
-          value: '4.75',
-          canEdit: false
-        }
-        expect(vm.getPriceWithTax()).toStrictEqual(expectedField)
-      })
-      it('should not have any price with tax in form store', () => {
-        expect(formStore.get(key).priceWithTax).toBe('4.75')
-      })
-    })
-    describe('Laboratory field', () => {
-      it('should have the laboratory', () => {
-        const expectedField: Field<string> = {
-          value: product.laboratory,
-          canEdit: false
-        }
-        expect(vm.getLaboratory()).toStrictEqual(expectedField)
-      })
-      it('should save the laboratory in form store', () => {
-        expect(formStore.get(key).laboratory).toBe(product.laboratory)
-      })
-    })
-    describe('Location field', () => {
-      it('should have the location', () => {
-        const expectedField: Field<string> = {
-          value: product.location,
-          canEdit: false
-        }
-        expect(vm.getLocation()).toStrictEqual(expectedField)
-      })
-      it('should save the location in form store', () => {
-        expect(formStore.get(key).location).toBe(product.location)
-      })
-    })
-    describe('Available stock field', () => {
-      it('should have an empty available stock', () => {
-        const expectedField: Field<number> = {
-          value: product.availableStock,
-          canEdit: false
-        }
-        expect(vm.getAvailableStock()).toStrictEqual(expectedField)
-      })
-      it('should save the available stock in form store', () => {
-        expect(formStore.get(key).availableStock).toBe(product.availableStock)
-      })
-    })
-    describe('Images', () => {
-      it('should get the images', () => {
-        const expectedField: Array<string> = product.images
-        expect(vm.getImages()).toStrictEqual(expectedField)
-      })
-    })
-    describe('New images', () => {
-      it('should have an empty array', () => {
-        const expectedField: Field<Array<File>> = {
-          value: [],
-          canEdit: false
-        }
-        expect(vm.getNewImages()).toStrictEqual(expectedField)
-      })
-      it('should save the new images in form store', () => {
-        expect(formStore.get(key).newImages).toStrictEqual([])
-      })
-    })
-    describe('Description field', () => {
-      it('should have the description', () => {
-        const expectedField: Field<string> = {
-          value: product.description,
-          canEdit: false
-        }
-        expect(vm.getDescription()).toStrictEqual(expectedField)
-      })
-      it('should save the description in form store', () => {
-        expect(formStore.get(key).description).toBe(product.description)
-      })
-    })
-    describe('Instruction for use field', () => {
-      it('should have the instructions', () => {
-        const expectedField: Field<string> = {
-          value: product.instructionsForUse,
-          canEdit: false
-        }
-        expect(vm.getInstructionsForUse()).toStrictEqual(expectedField)
-      })
-      it('should save the instructions in form store', () => {
-        expect(formStore.get(key).instructionsForUse).toBe(
-          product.instructionsForUse
-        )
-      })
-    })
-    describe('Composition field', () => {
-      it('should have the composition', () => {
-        const expectedField: Field<string> = {
-          value: product.composition,
-          canEdit: false
-        }
-        expect(vm.getComposition()).toStrictEqual(expectedField)
-      })
-      it('should save the composition in form store', () => {
-        expect(formStore.get(key).composition).toBe(product.composition)
       })
     })
   })

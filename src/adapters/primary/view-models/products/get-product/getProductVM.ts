@@ -1,28 +1,63 @@
 import { useFormStore } from '@store/formStore'
 import type { Field } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
-import type { UUID } from '@core/types/types'
 import type { Category } from '@core/entities/category'
 import { CreateProductCategoriesVM } from '@adapters/primary/view-models/products/create-product/createProductVM'
 import { useProductStore } from '@store/productStore'
 import { useCategoryStore } from '@store/categoryStore'
 import { addTaxToPrice } from '@utils/price'
 
-export class GetProductVM {
+export class FormFieldsReader {
+  protected readonly key: string
+  protected formStore: any
+
+  constructor(key: string) {
+    this.key = key
+    this.formStore = useFormStore()
+  }
+
+  get(fieldName: string): any {
+    return this.formStore.get(this.key)[fieldName]
+  }
+}
+
+export interface FormInitializer {
+  init(): void
+}
+
+export class ProductFormFieldsReader extends FormFieldsReader {
+  protected categoryStore: any
+
+  constructor(key: string) {
+    super(key)
+    this.categoryStore = useCategoryStore()
+  }
+
+  getAvailableCategories(): CreateProductCategoriesVM {
+    const categories = this.categoryStore.items
+    return categories.map((c: Category) => {
+      return {
+        uuid: c.uuid,
+        name: c.name
+      }
+    })
+  }
+}
+
+export class ExistingProductFormInitializer implements FormInitializer {
   protected readonly key: string
   protected formStore: any
   protected productStore: any
-  protected categoryStore: any
-  protected images: Array<string> = []
 
   constructor(key: string) {
     this.key = key
     this.formStore = useFormStore()
     this.productStore = useProductStore()
-    this.categoryStore = useCategoryStore()
+  }
+
+  init() {
     let product = this.productStore.current
     if (product) {
       product = JSON.parse(JSON.stringify(product))
-      this.images = product.images
     }
     this.formStore.set(this.key, {
       name: product.name || '',
@@ -46,122 +81,34 @@ export class GetProductVM {
       composition: product.composition || ''
     })
   }
+}
 
-  getName(): Field<string> {
-    return {
-      value: this.formStore.get(this.key).name,
-      canEdit: false
-    }
+export class GetProductVM {
+  protected initializer: ExistingProductFormInitializer
+  protected fieldsReader: ProductFormFieldsReader
+
+  constructor(
+    initializer: ExistingProductFormInitializer,
+    fieldReader: ProductFormFieldsReader
+  ) {
+    this.initializer = initializer
+    this.fieldsReader = fieldReader
+    initializer.init()
   }
 
-  getCategoryUuid(): Field<UUID | undefined> {
+  get(fieldName: string): any {
+    return this.createField(fieldName)
+  }
+
+  private createField<T>(fieldName: string): Field<T> {
     return {
-      value: this.formStore.get(this.key).categoryUuid,
+      value: this.fieldsReader.get(fieldName),
       canEdit: false
     }
   }
 
   getAvailableCategories(): CreateProductCategoriesVM {
-    const categories = this.categoryStore.items
-    return categories.map((c: Category) => {
-      return {
-        uuid: c.uuid,
-        name: c.name
-      }
-    })
-  }
-
-  getCip7(): Field<string> {
-    return {
-      value: this.formStore.get(this.key).cip7,
-      canEdit: false
-    }
-  }
-
-  getCip13(): Field<string> {
-    return {
-      value: this.formStore.get(this.key).cip13,
-      canEdit: false
-    }
-  }
-
-  getEan13(): Field<string> {
-    return {
-      value: this.formStore.get(this.key).ean13,
-      canEdit: false
-    }
-  }
-
-  getPriceWithoutTax(): Field<string | undefined> {
-    return {
-      value: this.formStore.get(this.key).priceWithoutTax,
-      canEdit: false
-    }
-  }
-
-  getPercentTaxRate(): Field<number | undefined> {
-    return {
-      value: this.formStore.get(this.key).percentTaxRate,
-      canEdit: false
-    }
-  }
-
-  getPriceWithTax(): Field<string | undefined> {
-    return {
-      value: this.formStore.get(this.key).priceWithTax,
-      canEdit: false
-    }
-  }
-  getLaboratory(): Field<string | undefined> {
-    return {
-      value: this.formStore.get(this.key).laboratory,
-      canEdit: false
-    }
-  }
-
-  getLocation(): Field<string | undefined> {
-    return {
-      value: this.formStore.get(this.key).location,
-      canEdit: false
-    }
-  }
-
-  getAvailableStock(): Field<string> {
-    return {
-      value: this.formStore.get(this.key).availableStock,
-      canEdit: false
-    }
-  }
-  getImages(): Array<string> {
-    return this.images
-  }
-
-  getNewImages(): Field<Array<File>> {
-    return {
-      value: this.formStore.get(this.key).newImages,
-      canEdit: false
-    }
-  }
-
-  getDescription(): Field<string> {
-    return {
-      value: this.formStore.get(this.key).description,
-      canEdit: false
-    }
-  }
-
-  getInstructionsForUse(): Field<string> {
-    return {
-      value: this.formStore.get(this.key).instructionsForUse,
-      canEdit: false
-    }
-  }
-
-  getComposition(): Field<string> {
-    return {
-      value: this.formStore.get(this.key).composition,
-      canEdit: false
-    }
+    return this.fieldsReader.getAvailableCategories()
   }
 
   getDisplayValidate(): boolean {
@@ -174,5 +121,7 @@ export class GetProductVM {
 }
 
 export const getProductVM = (key: string): GetProductVM => {
-  return new GetProductVM(key)
+  const initVM = new ExistingProductFormInitializer(key)
+  const getForm = new ProductFormFieldsReader(key)
+  return new GetProductVM(initVM, getForm)
 }

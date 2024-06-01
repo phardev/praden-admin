@@ -9,14 +9,14 @@ div(v-if="currentVM")
       template(#informations)
         UFormGroup.pb-4(label="Nom" name="name")
           ft-text-field(
-            :model-value="currentVM.getName().value"
-            :disabled="!currentVM.getName().canEdit"
+            :model-value="currentVM.get('name').value"
+            :disabled="!currentVM.get('name').canEdit"
             @update:model-value="nameChanged"
           )
         UFormGroup.pb-4(label="Catégorie" name="category")
           ft-autocomplete(
-            :model-value="currentVM.getCategoryUuid().value"
-            :disabled="!currentVM.getCategoryUuid().canEdit"
+            :model-value="currentVM.get('categoryUuid').value"
+            :disabled="!currentVM.get('categoryUuid').canEdit"
             :options="currentVM.getAvailableCategories()"
             placeholder="Rechercher une catégorie"
             by="id"
@@ -29,26 +29,26 @@ div(v-if="currentVM")
               span {{ category.name }}
         UFormGroup.pb-4(label="CIP7" name="cip7")
           ft-text-field(
-            :model-value="currentVM.getCip7().value"
-            :disabled="!currentVM.getCip7().canEdit"
+            :model-value="currentVM.get('cip7').value"
+            :disabled="!currentVM.get('cip7').canEdit"
             @update:model-value="cip7Changed"
           )
         UFormGroup.pb-4(label="CIP13" name="cip13")
           ft-text-field(
-            :model-value="currentVM.getCip13().value"
-            :disabled="!currentVM.getCip13().canEdit"
+            :model-value="currentVM.get('cip13').value"
+            :disabled="!currentVM.get('cip13').canEdit"
             @update:model-value="cip13Changed"
           )
         UFormGroup.pb-4(label="EAN13" name="ean13")
           ft-text-field(
-            :model-value="currentVM.getEan13().value"
-            :disabled="!currentVM.getEan13().canEdit"
+            :model-value="currentVM.get('ean13').value"
+            :disabled="!currentVM.get('ean13').canEdit"
             @update:model-value="ean13Changed"
           )
         UFormGroup.pb-4(label="Laboratoire" name="laboratory")
           ft-text-field(
-            :model-value="currentVM.getLaboratory().value"
-            :disabled="!currentVM.getLaboratory().canEdit"
+            :model-value="currentVM.get('laboratory').value"
+            :disabled="!currentVM.get('laboratory').canEdit"
             label="Laboratoire"
             @update:model-value="laboratoryChanged"
           )
@@ -57,7 +57,7 @@ div(v-if="currentVM")
             div(v-for="(image, index) in images" :key="index")
               img.mb-4(:src="image" height=200 width=200 alt="Selected Image")
           ft-file-input(
-            v-if="currentVM.getNewImages().canEdit"
+            v-if="currentVM.get('newImages').canEdit"
             accept="image/*"
             multiple
             @input="imagesChanged"
@@ -65,56 +65,56 @@ div(v-if="currentVM")
       template(#price)
         UFormGroup.pb-4(label="Prix (HT)" name="priceWithoutTax")
           ft-currency-input(
-            v-model.lazy="currentVM.getPriceWithoutTax().value"
-            :disabled="!currentVM.getPriceWithoutTax().canEdit"
+            v-model.lazy="currentVM.get('priceWithoutTax').value"
+            :disabled="!currentVM.get('priceWithoutTax').canEdit"
             label="Prix (HT)"
               @update:model-value="priceWithoutTaxChanged"
             )
         UFormGroup.pb-4(label="Taxe (%)" name="percentTaxRate")
           ft-percentage-input(
-            :model-value="currentVM.getPercentTaxRate().value"
-            :disabled="!currentVM.getPercentTaxRate().canEdit"
+            :model-value="currentVM.get('percentTaxRate').value"
+            :disabled="!currentVM.get('percentTaxRate').canEdit"
             label="Taxe (%)"
             @update:model-value="percentTaxRateChanged"
           )
         UFormGroup.pb-4(label="Prix (TTC)" name="priceWithTax")
           ft-currency-input(
-            v-model.lazy="currentVM.getPriceWithTax().value"
-            :disabled="!currentVM.getPriceWithTax().canEdit"
+            v-model.lazy="currentVM.get('priceWithTax').value"
+            :disabled="!currentVM.get('priceWithTax').canEdit"
             label="Prix (HT)"
             @update:model-value="priceWithTaxChanged"
           )
       template(#stock)
         UFormGroup.pb-4(label="Code Géographique" name="location")
           ft-text-field(
-            :model-value="currentVM.getLocation().value"
-            :disabled="!currentVM.getLocation().canEdit"
+            :model-value="currentVM.get('location').value"
+            :disabled="!currentVM.get('location').canEdit"
             @update:model-value="locationChanged"
           )
         UFormGroup.pb-4(label="Stock disponible" name="availableStock")
           ft-text-field(
-            :model-value="currentVM.getAvailableStock().value"
-            :disabled="!currentVM.getAvailableStock().canEdit"
+            :model-value="currentVM.get('availableStock').value"
+            :disabled="!currentVM.get('availableStock').canEdit"
             type="number"
             @update:model-value="availableStockChanged"
           )
       template(#details)
         UFormGroup.pb-4(label="Description" name="description")
           FtRichTextInput(
-            :model-value="currentVM.getDescription().value"
-            :disabled="!currentVM.getDescription().canEdit"
+            :model-value="currentVM.get('description').value"
+            :disabled="!currentVM.get('description').canEdit"
             @update:model-value="descriptionChanged"
           )
         UFormGroup.pb-4(label="Instructions" name="instructions")
           FtRichTextInput(
-            :model-value="currentVM.getInstructionsForUse().value"
-            :disabled="!currentVM.getInstructionsForUse().canEdit"
+            :model-value="currentVM.get('instructionsForUse').value"
+            :disabled="!currentVM.get('instructionsForUse').canEdit"
             @update:model-value="instructionsChanged"
           )
         UFormGroup.pb-4(label="Composition" name="composition")
           FtRichTextInput(
-            :model-value="currentVM.getComposition().value"
-            :disabled="!currentVM.getComposition().canEdit"
+            :model-value="currentVM.get('composition').value"
+            :disabled="!currentVM.get('composition').canEdit"
             @update:model-value="compositionChanged"
           )
   div.flex.flex-row-reverse.mt-4
@@ -163,73 +163,73 @@ const props = defineProps({
 const currentVM = toRef(props, 'vm')
 
 const nameChanged = (name: string) => {
-  currentVM?.value?.setName(name)
+  currentVM?.value?.set('name', name)
 }
 
 const cip7Changed = (cip7: string) => {
-  currentVM?.value?.setCip7(cip7)
+  currentVM?.value?.set('cip7', cip7)
 }
 
 const cip13Changed = (cip13: string) => {
-  currentVM?.value?.setCip13(cip13)
+  currentVM?.value?.set('cip13', cip13)
 }
 
 const ean13Changed = (ean13: string) => {
-  currentVM?.value?.setEan13(ean13)
+  currentVM?.value?.set('ean13', ean13)
 }
 
 const priceWithoutTaxChanged = (priceWithoutTax: number) => {
-  if (currentVM?.value?.getPriceWithoutTax().canEdit)
-    currentVM?.value?.setPriceWithoutTax(priceWithoutTax)
+  if (currentVM?.value?.get('priceWithoutTax').canEdit)
+    currentVM?.value?.set('priceWithoutTax', priceWithoutTax)
 }
 
 const percentTaxRateChanged = (percentTaxRate: number) => {
-  currentVM?.value?.setPercentTaxRate(percentTaxRate)
+  currentVM?.value?.set('percentTaxRate', percentTaxRate)
 }
 
 const priceWithTaxChanged = (priceWithTax: number) => {
-  if (currentVM?.value?.getPriceWithTax().canEdit)
-    currentVM?.value?.setPriceWithTax(priceWithTax)
+  if (currentVM?.value?.get('priceWithTax').canEdit)
+    currentVM?.value?.set('priceWithTax', priceWithTax)
 }
 
 const laboratoryChanged = (laboratory: string) => {
-  currentVM?.value?.setLaboratory(laboratory)
+  currentVM?.value?.set('laboratory', laboratory)
 }
 
 const images = computed(() => {
-  return currentVM?.value?.getImages()
+  return currentVM?.value?.get('images').value
 })
 
 const imagesChanged = async (value: any) => {
-  await currentVM?.value?.setNewImages(value)
+  await currentVM?.value?.set('newImages', value)
 }
 
 const categoryChanged = (uuid: string) => {
-  currentVM?.value?.setCategoryUuid(uuid)
+  currentVM?.value?.set('categoryUuid', uuid)
 }
 
 const clearCategory = () => {
-  currentVM?.value?.setCategoryUuid(undefined)
+  currentVM?.value?.set('categoryUuid', undefined)
 }
 
 const locationChanged = (location: string) => {
-  currentVM?.value?.setLocation(location)
+  currentVM?.value?.set('location', location)
 }
 
 const availableStockChanged = (availableStock: string) => {
-  currentVM?.value?.setAvailableStock(availableStock)
+  currentVM?.value?.set('availableStock', availableStock)
 }
 
 const descriptionChanged = (description: string) => {
-  currentVM?.value?.setDescription(description)
+  currentVM?.value?.set('description', description)
 }
 
 const instructionsChanged = (instructions: string) => {
-  currentVM?.value?.setInstructionsForUse(instructions)
+  currentVM?.value?.set('instructionsForUse', instructions)
 }
 
 const compositionChanged = (composition: string) => {
-  currentVM?.value?.setComposition(composition)
+  currentVM?.value?.set('composition', composition)
 }
 
 const emit = defineEmits<{
