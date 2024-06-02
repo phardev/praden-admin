@@ -575,7 +575,6 @@ describe('Promotion form', () => {
   })
 
   const givenCurrentPromotionIs = (promo: Promotion) => {
-    promotion = promo
     promotionStore.current = promo
   }
 
