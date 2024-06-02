@@ -1,4 +1,4 @@
-import type { Field } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
+import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
 import { CategoryFormFieldsReader } from '@adapters/primary/view-models/categories/category-form/categoryFormGetVM'
 import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'

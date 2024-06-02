@@ -24,7 +24,6 @@ const routeName = router.currentRoute.value.name
 const vm = ref(categoryFormCreateVM(routeName))
 
 const validate = async () => {
-  console.log('on cree la catégory: ', vm.value.getDto())
   await createCategory(vm.value.getDto(), useCategoryGateway())
   router.push('/categories/')
 }

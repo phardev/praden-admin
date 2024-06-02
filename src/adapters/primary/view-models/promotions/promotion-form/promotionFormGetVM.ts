@@ -5,23 +5,31 @@ import {
   Field,
   PromotionProductItemVM,
   TypeChoiceVM
-} from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
-import { Timestamp } from '@core/types/types'
+} from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { useProductStore } from '@store/productStore'
 import { Product } from '@core/entities/product'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { Category } from '@core/entities/category'
 import { useCategoryStore } from '@store/categoryStore'
+import {
+  FormFieldsReader,
+  FormInitializer
+} from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import { PromotionFormVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormVM'
 
-export class GetPromotionVM {
+export class ExistingPromotionFormInitializer implements FormInitializer {
   protected readonly key: string
   protected formStore: any
+  protected promotionStore: any
 
   constructor(key: string) {
     this.key = key
     this.formStore = useFormStore()
-    const promotionStore = usePromotionStore()
-    let promotion = promotionStore.current
+    this.promotionStore = usePromotionStore()
+  }
+
+  init() {
+    let promotion = this.promotionStore.current
     if (promotion) {
       promotion = JSON.parse(JSON.stringify(promotion))
     }
@@ -31,9 +39,20 @@ export class GetPromotionVM {
       products: promotion ? promotion.products : [],
       startDate: promotion ? promotion.startDate : undefined,
       endDate: promotion ? promotion.endDate : undefined,
-      amount: promotion ? promotion.amount : undefined
+      amount: promotion
+        ? promotion.type === ReductionType.Fixed
+          ? (promotion.amount / 100).toString()
+          : promotion.amount.toString()
+        : undefined
     })
   }
+}
+
+export class PromotionFormFieldsReader extends FormFieldsReader {
+  constructor(key: string) {
+    super(key)
+  }
+
   getAvailableTypeChoices(): Array<TypeChoiceVM> {
     return Object.values(ReductionType).map((type) => {
       const text = this.getTypeText(type)
@@ -48,41 +67,6 @@ export class GetPromotionVM {
       return 'Pourcentage'
     }
     return 'Euros'
-  }
-
-  getType(): Field<ReductionType> {
-    return {
-      value: this.formStore.get(this.key).type,
-      canEdit: false
-    }
-  }
-
-  getName(): Field<string> {
-    return {
-      value: this.formStore.get(this.key).name,
-      canEdit: false
-    }
-  }
-
-  getAmount(): Field<number | undefined> {
-    return {
-      value: this.formStore.get(this.key).amount.toString(),
-      canEdit: false
-    }
-  }
-
-  getStartDate(): Field<Timestamp | undefined> {
-    return {
-      value: this.formStore.get(this.key).startDate,
-      canEdit: false
-    }
-  }
-
-  getEndDate(): Field<Timestamp | undefined> {
-    return {
-      value: this.formStore.get(this.key).endDate,
-      canEdit: false
-    }
   }
 
   getProductsHeaders(): Array<Header> {
@@ -105,6 +89,34 @@ export class GetPromotionVM {
       }
     ]
   }
+}
+
+export class PromotionFormGetVM extends PromotionFormVM {
+  protected readonly key: string
+  protected formStore: any
+
+  constructor(
+    initializer: ExistingPromotionFormInitializer,
+    fieldReader: PromotionFormFieldsReader
+  ) {
+    super(fieldReader)
+    initializer.init()
+  }
+
+  get(fieldName: string): any {
+    return this.createField(fieldName)
+  }
+
+  private createField<T>(fieldName: string): Field<T> {
+    return {
+      value: this.fieldsReader.get(fieldName),
+      canEdit: false
+    }
+  }
+
+  getAvailableTypeChoices(): Array<TypeChoiceVM> {
+    return this.fieldsReader.getAvailableTypeChoices()
+  }
 
   getAvailableProducts(): Field<Array<PromotionProductItemVM>> {
     return {
@@ -114,7 +126,7 @@ export class GetPromotionVM {
   }
 
   getProducts(): Field<Array<PromotionProductItemVM>> {
-    const addedProducts = this.formStore.get(this.key).products
+    const addedProducts = this.fieldsReader.get('products')
     const productStore = useProductStore()
     const allProducts: Array<Product> = productStore.items
     const categoryStore = useCategoryStore()
@@ -144,6 +156,8 @@ export class GetPromotionVM {
   }
 }
 
-export const getPromotionVM = (key: string) => {
-  return new GetPromotionVM(key)
+export const promotionFormGetVM = (key: string): PromotionFormGetVM => {
+  const initializer = new ExistingPromotionFormInitializer(key)
+  const reader = new PromotionFormFieldsReader(key)
+  return new PromotionFormGetVM(initializer, reader)
 }

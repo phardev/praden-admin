@@ -6,7 +6,7 @@ import {
   CreateProductCategoriesVM,
   ProductFormFieldsWriter
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
-import type { Field } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
+import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 
 export class ProductFormEditVM {

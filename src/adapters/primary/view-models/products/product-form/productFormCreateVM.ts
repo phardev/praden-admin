@@ -1,6 +1,6 @@
 import { useFormStore } from '@store/formStore'
 import { type Category } from '@core/entities/category'
-import { type Field } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
+import { type Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { getFileContent } from '@utils/file'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import { addTaxToPrice, removeTaxFromPrice } from '@utils/price'

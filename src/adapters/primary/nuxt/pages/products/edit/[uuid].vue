@@ -34,7 +34,6 @@ onMounted(async () => {
 })
 
 const validate = async () => {
-  console.log('dto: ', vm.value.getDto())
   await editProduct(
     productUuid,
     vm.value.getDto(),

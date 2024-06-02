@@ -4,7 +4,7 @@ import {
   ExistingCategoryFormInitializer
 } from '@adapters/primary/view-models/categories/category-form/categoryFormGetVM'
 import { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
-import type { Field } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
+import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 
 export class CategoryFormEditVM {
   private fieldsReader: CategoryFormFieldsReader

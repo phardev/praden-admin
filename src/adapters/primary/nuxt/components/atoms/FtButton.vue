@@ -1,6 +1,6 @@
 <template lang="pug">
 UButton(
-  v-bind="$attrs"
+  v-bind="{ ...$attrs, ...$slots }"
   class='flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed'
 )
   slot

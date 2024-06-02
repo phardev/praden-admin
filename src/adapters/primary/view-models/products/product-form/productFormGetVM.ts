@@ -1,5 +1,5 @@
 import { useFormStore } from '@store/formStore'
-import type { Field } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
+import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import type { Category } from '@core/entities/category'
 import { CreateProductCategoriesVM } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import { useProductStore } from '@store/productStore'

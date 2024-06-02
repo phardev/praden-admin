@@ -1,0 +1,196 @@
+import { CreatePromotionDTO, ReductionType } from '@core/entities/promotion'
+import { Product } from '@core/entities/product'
+import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
+import { useFormStore } from '@store/formStore'
+import { PromotionFormFieldsReader } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
+import { useCategoryStore } from '@store/categoryStore'
+import { Category } from '@core/entities/category'
+import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import {
+  FieldHandler,
+  FormFieldsWriter
+} from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+import { PromotionFormVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormVM'
+
+export interface TypeChoiceVM {
+  type: ReductionType
+  text: string
+}
+
+export interface PromotionProductItemVM {
+  name: string
+  reference: string
+  category: string
+  laboratory: string
+}
+
+export interface Field<T> {
+  value: T
+  canEdit: boolean
+}
+
+export class PromotionFormFieldsWriter extends FormFieldsWriter {
+  protected fieldsReader: PromotionFormFieldsReader
+  private readonly fieldHandlers: Record<string, FieldHandler>
+
+  constructor(key: string, fieldsReader: PromotionFormFieldsReader) {
+    super(key)
+    this.fieldsReader = fieldsReader
+    this.fieldHandlers = {
+      type: this.setType.bind(this)
+    }
+  }
+
+  set(fieldName: string, value: any): void {
+    const handler =
+      this.fieldHandlers[fieldName] || super.set.bind(this, fieldName)
+    handler(value)
+  }
+
+  private setType(type: ReductionType): void {
+    this.set('amount', undefined)
+    super.set('type', type)
+  }
+
+  addProducts(cip13: Array<string>) {
+    const products = this.fieldsReader.get('products')
+    const productsSet = new Set(products)
+    cip13.forEach((item) => productsSet.add(item))
+    super.set('products', [...productsSet])
+  }
+
+  removeProducts(cip13: Array<string>) {
+    let products = this.fieldsReader.get('products')
+    products = products.filter((p: string) => !cip13.includes(p))
+    super.set('products', products)
+  }
+}
+
+export class NewPromotionFormInitializer implements FormInitializer {
+  protected readonly key: string
+  protected formStore: any
+
+  constructor(key: string) {
+    this.key = key
+    this.formStore = useFormStore()
+  }
+
+  init() {
+    this.formStore.set(this.key, {
+      name: '',
+      type: ReductionType.Fixed,
+      products: [],
+      startDate: undefined,
+      endDate: undefined,
+      amount: undefined
+    })
+  }
+}
+
+export class PromotionFormCreateVM extends PromotionFormVM {
+  protected readonly key: string
+  protected formStore: any
+  private fieldsWriter: PromotionFormFieldsWriter
+
+  constructor(
+    initializer: NewPromotionFormInitializer,
+    fieldsReader: PromotionFormFieldsReader,
+    fieldsWriter: PromotionFormFieldsWriter,
+    key: string
+  ) {
+    super(fieldsReader)
+    this.key = key
+    initializer.init()
+    this.fieldsWriter = fieldsWriter
+  }
+
+  get(fieldName: string): any {
+    return this.createField(fieldName)
+  }
+
+  private createField<T>(fieldName: string): Field<T> {
+    return {
+      value: this.fieldsReader.get(fieldName),
+      canEdit: true
+    }
+  }
+
+  set(fieldName: string, value: any): void {
+    this.fieldsWriter.set(fieldName, value)
+  }
+
+  getAvailableProducts() {
+    const productStore = useProductStore()
+    const allProducts: Array<Product> = productStore.items
+    const searchStore = useSearchStore()
+    const filteredProducts: Array<Product> = searchStore.get(this.key)
+    const addedProducts = this.fieldsReader.get('products')
+    const res = (filteredProducts || allProducts).filter(
+      (p) => !addedProducts.includes(p.cip13)
+    )
+    const categoryStore = useCategoryStore()
+    const categories: Array<Category> = categoryStore.items
+    return {
+      value: res.map((p: Product) => {
+        const c: Category = categories.find((c) => c.uuid === p.categoryUuid)
+        return {
+          name: p.name,
+          reference: p.cip13,
+          category: c.name,
+          laboratory: p.laboratory
+        }
+      }),
+      canEdit: true
+    }
+  }
+
+  addProducts(cip13: Array<string>) {
+    this.fieldsWriter.addProducts(cip13)
+  }
+
+  removeProducts(cip13: Array<string>) {
+    this.fieldsWriter.removeProducts(cip13)
+  }
+
+  getCanValidate(): boolean {
+    if (!this.fieldsReader.get('name').length) return false
+    if (!this.fieldsReader.get('amount')) return false
+    if (!this.fieldsReader.get('products').length) return false
+    return true
+  }
+
+  getDto(): CreatePromotionDTO {
+    let amount = this.fieldsReader.get('amount')
+    const type = this.fieldsReader.get('type')
+    if (type === ReductionType.Fixed) {
+      amount *= 100
+    }
+    const res: CreatePromotionDTO = {
+      name: this.fieldsReader.get('name'),
+      products: this.fieldsReader.get('products'),
+      type,
+      amount
+    }
+    const startDate = this.fieldsReader.get('startDate')
+    if (startDate) {
+      res.startDate = startDate
+    }
+    const endDate = this.fieldsReader.get('endDate')
+    if (endDate) {
+      res.endDate = endDate
+    }
+    return res
+  }
+
+  getDisplayValidate(): boolean {
+    return true
+  }
+}
+
+export const promotionFormCreateVM = (key: string) => {
+  const initializer = new NewPromotionFormInitializer(key)
+  const reader = new PromotionFormFieldsReader(key)
+  const writer = new PromotionFormFieldsWriter(key, reader)
+  return new PromotionFormCreateVM(initializer, reader, writer, key)
+}

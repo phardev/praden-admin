@@ -131,7 +131,6 @@ const changeProductQuantity = (cip13: string, quantity: number) => {
 }
 
 const changeProductReference = (oldReference: string, newReference: string) => {
-  console.log(oldReference, ' => ', newReference)
   changeProductCip13ForPreparation(oldReference, newReference)
   closeActionsModal()
 }
@@ -177,10 +176,6 @@ watch(
   },
   { immediate: true }
 )
-// const isErrorModalOpened = computed(() => {
-//   console.log('plop')
-//   return preparationVM.value.error
-// })
 </script>
 
 <style lang="scss" scoped>

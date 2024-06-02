@@ -1,55 +1,85 @@
 <template lang="pug">
 div(v-if="currentVM")
-  pre {{ currentVM }}
   div.flex.gap-6.mb-4
     ft-button.text-2xl.flex-1.h-24(
       v-for="(typeChoice, index) in currentVM.getAvailableTypeChoices()"
       :key="index"
-      :disabled="!currentVM.getType().canEdit"
-      :class="typeChoice.type === currentVM.getType().value ? 'button-solid' : 'button-default'"
-      @click="currentVM.setType(typeChoice.type)"
+      :disabled="!currentVM.get('type').canEdit"
+      :variant="typeChoice.type === currentVM.get('type').value ? 'solid' : 'outline'"
+      @click="currentVM.set('type', typeChoice.type)"
     )
       div.flex.flex-col.items-center.justify-center
         icon.icon-xl.mr-2(:name="getIcon(typeChoice.type)")
         span {{ typeChoice.text }}
+  UFormGroup.pb-4(label="Nom" name="name")
+    ft-text-field(
+      :model-value="currentVM.get('name').value"
+      :disabled="!currentVM.get('name').canEdit"
+      label="Nom"
+      @update:model-value="nameChanged"
+    )
+  UFormGroup.pb-4(label="Montant" name="amount")
+    ft-currency-input(
+      v-if="currentVM.get('type').value === ReductionType.Fixed"
+      v-model="currentVM.get('amount').value"
+      label="Valeur de la réduction (€)"
+      :disabled="!currentVM.get('amount').canEdit"
+      @update:model-value="amountChanged"
+    )
+    ft-percentage-input(
+      v-if="currentVM.get('type').value === ReductionType.Percentage"
+      v-model="currentVM.get('amount').value"
+      label="Valeur de la réduction (%)"
+      :disabled="!currentVM.get('amount').canEdit"
+      @update:model-value="amountChanged"
+    )
+  div.flex.mb-4.gap-8
+    UFormGroup.pb-4(label="Date de début" name="startDate")
+      UPopover(:popper="{ placement: 'bottom-start' }")
+        UButton(
+          icon="i-heroicons-calendar-days-20-solid"
+          :disabled="!currentVM.get('startDate').canEdit"
+          :label="currentVM.get('startDate').value ? format(currentVM.get('startDate').value, 'd MMMM yyy', { locale: fr }) : 'Choisissez une date'"
+        )
+          template(#trailing)
+            UButton(
+              v-show="currentVM.get('startDate').canEdit && currentVM.get('startDate').value"
+              color="white"
+              variant="link"
+              icon="i-heroicons-x-mark-20-solid"
+              :padded="false"
+              @click.prevent="clearStartDate"
+            )
+        template(#panel="{ close }")
+          ft-date-picker(
+            v-model="currentVM.get('startDate').value"
+            @update:model-value="startDateChanged"
+            @close="close"
+          )
+    UFormGroup.pb-4(label="Date de fin" name="endDate")
+      UPopover(:popper="{ placement: 'bottom-start' }")
+        UButton(
+          icon="i-heroicons-calendar-days-20-solid"
+          :disabled="!currentVM.get('endDate').canEdit"
+          :label="currentVM.get('endDate').value ? format(currentVM.get('endDate').value, 'd MMMM yyy', { locale: fr }) : 'Choisissez une date'"
+        )
+          template(#trailing)
+            UButton(
+              v-show="currentVM.get('endDate').canEdit && currentVM.get('endDate').value"
+              color="white"
+              variant="link"
+              icon="i-heroicons-x-mark-20-solid"
+              :padded="false"
+              @click.prevent="clearEndDate"
+            )
+        template(#panel="{ close }")
+          ft-date-picker(
+            v-model="currentVM.get('endDate').value"
+            @update:model-value="endDateChanged"
+            @close="close"
+          )
   ft-text-field(
-    :model-value="currentVM.getName().value"
-    :disabled="!currentVM.getName().canEdit"
-    label="Nom"
-    @update:model-value="nameChanged"
-  )
-  ft-currency-input(
-    v-if="currentVM.getType().value === ReductionType.Fixed"
-    v-model="currentVM.getAmount().value"
-    label="Valeur de la réduction (€)"
-    :disabled="!currentVM.getAmount().canEdit"
-    @update:model-value="amountChanged"
-  )
-  pre {{ currentVM.getAmount() }}
-  ft-percentage-input(
-    v-if="currentVM.getType().value === ReductionType.Percentage"
-    v-model="currentVM.getAmount().value"
-    label="Valeur de la réduction (%)"
-    :disabled="!currentVM.getAmount().canEdit"
-    @update:model-value="amountChanged"
-  )
-  div.flex.mb-4
-    ft-date-picker-input.flex-1(
-      :model-value="currentVM.getStartDate().value"
-      :start-time="startTime"
-      :disabled="!currentVM.getStartDate().canEdit"
-      for="startDate"
-      @date-changed="startDateChanged"
-    ) Date de début
-    ft-date-picker-input.flex-1(
-      :model-value="currentVM.getEndDate().value"
-      :disabled="!currentVM.getEndDate().canEdit"
-      :start-time="endTime"
-      for="endDate"
-      @date-changed="endDateChanged"
-    ) Date de fin
-  ft-input(
-    v-if="currentVM.getProducts().canEdit"
+    v-if="currentVM.get('products').canEdit"
     v-model="search"
     placeholder="Rechercher par nom, référence, catégorie, laboratoire"
     for="search"
@@ -59,7 +89,7 @@ div(v-if="currentVM")
   ) Rechercher un produit
   div.flex.gap-12.mt-4
     div.flex-1(
-      v-if="currentVM.getProducts().canEdit"
+      v-if="currentVM.get('products').canEdit"
     )
       ft-table(
         :headers="currentVM.getProductsHeaders()"
@@ -72,7 +102,7 @@ div(v-if="currentVM")
       )
         template(#title) Tous les produits
     div.flex.flex-col.justify-center.gap-6.mt-20(
-      v-if="currentVM.getProducts().canEdit"
+      v-if="currentVM.get('products').canEdit"
     )
       ft-button.button-solid(
         @click="addProducts"
@@ -106,6 +136,8 @@ import { ReductionType } from '@core/entities/promotion'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
 import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'
 import { useSearchGateway } from '../../../../../../gateways/searchGateway'
+import { format } from 'date-fns'
+import { fr } from 'date-fns/locale'
 
 definePageMeta({ layout: 'main' })
 
@@ -124,16 +156,14 @@ const routeName = router.currentRoute.value.name
 const availableProductSelector = useSelection()
 const addedProductSelector = useSelection()
 const search = ref('')
-const startTime = ref({ hours: 0, minutes: 0 })
-const endTime = ref({ hours: 23, minutes: 59, seconds: 59 })
 
 const nameChanged = (name: string) => {
-  currentVM.value.setName(name)
+  currentVM.value.set('name', name)
 }
 
 const amountChanged = (amount: string) => {
-  console.log('amount: ', amount)
-  currentVM.value.setAmount(amount)
+  if (currentVM?.value?.get('amount').canEdit)
+    currentVM.value.set('amount', amount)
 }
 
 const searchChanged = (e: any) => {
@@ -141,11 +171,19 @@ const searchChanged = (e: any) => {
 }
 
 const startDateChanged = (date: number) => {
-  currentVM.value.setStartDate(date)
+  currentVM.value.set('startDate', date)
+}
+
+const clearStartDate = () => {
+  currentVM.value.set('startDate', undefined)
 }
 
 const endDateChanged = (date: number) => {
-  currentVM.value.setEndDate(date)
+  currentVM.value.set('endDate', date)
+}
+
+const clearEndDate = () => {
+  currentVM.value.set('endDate', undefined)
 }
 
 const getIcon = (type: ReductionType) => {

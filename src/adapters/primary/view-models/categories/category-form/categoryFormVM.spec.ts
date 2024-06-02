@@ -1,4 +1,4 @@
-import { Field } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
+import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { useFormStore } from '@store/formStore'
 import { useCategoryStore } from '@store/categoryStore'
 import { baby, minceur, mum } from '@utils/testData/categories'

@@ -55,7 +55,6 @@ describe('Product edition', () => {
     })
     describe('Price change', () => {
       const product = JSON.parse(JSON.stringify(dolodent))
-      console.log('le produit: ', product)
       const dto: EditProductDTO = {
         priceWithoutTax: '5.5'
       }

@@ -1,6 +1,6 @@
-import { CreatePromotionVM } from '../create-promotion/createPromotionVM'
+import { PromotionFormCreateVM } from '../promotion-form/promotionFormCreateVM'
 
-export class EditPromotionVM extends CreatePromotionVM {
+export class EditPromotionVM extends PromotionFormCreateVM {
   constructor(key: string) {
     super(key)
   }

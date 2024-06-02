@@ -32,11 +32,11 @@ const menu = {
           name: 'Catégories',
           icon: 'tabler:category',
           href: '/categories'
-          // },
-          // {
-          //   name: 'Promotions',
-          //   icon: 'uil:euro-circle',
-          //   href: '/promotions'
+        },
+        {
+          name: 'Promotions',
+          icon: 'uil:euro-circle',
+          href: '/promotions'
         }
       ]
     },

@@ -7,7 +7,7 @@ import {
   productFormCreateVM,
   ProductFormCreateVM
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
-import { type Field } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
+import { type Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import {
   productFormEditVM,

@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { createPromotionVM } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
+import { promotionFormCreateVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { listProducts } from '@core/usecases/product/product-listing/listProducts'
 import { useProductGateway } from '../../../../../../gateways/productGateway'
 import { createPromotion } from '@core/usecases/promotions/promotion-creation/createPromotion'
@@ -25,9 +25,10 @@ onMounted(() => {
 
 const router = useRouter()
 const routeName = router.currentRoute.value.name
-const vm = ref(createPromotionVM(routeName))
+const vm = ref(promotionFormCreateVM(routeName))
 
 const validate = async () => {
+  console.log('dto: ', vm.value.getDto())
   await createPromotion(vm.value.getDto(), usePromotionGateway())
   router.push('/promotions/')
 }
