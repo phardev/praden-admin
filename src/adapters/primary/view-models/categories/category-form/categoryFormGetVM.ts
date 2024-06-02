@@ -25,9 +25,9 @@ export class ExistingCategoryFormInitializer implements FormInitializer {
       category = JSON.parse(JSON.stringify(category))
     }
     this.formStore.set(this.key, {
-      name: category.name || '',
-      description: category.description || '',
-      parentUuid: category.parentUuid || undefined
+      name: category.name,
+      description: category.description,
+      parentUuid: category.parentUuid
     })
   }
 }

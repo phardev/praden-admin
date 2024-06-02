@@ -22,9 +22,6 @@ export const useCategoryStore = defineStore('CategoryStore', {
     },
     setCurrent(category: Category) {
       this.current = JSON.parse(JSON.stringify(category))
-    },
-    resetCurrent() {
-      this.current = undefined
     }
   }
 })

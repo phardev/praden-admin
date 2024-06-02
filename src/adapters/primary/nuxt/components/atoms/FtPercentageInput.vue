@@ -24,14 +24,13 @@ const props = defineProps({
 })
 
 onMounted(() => {
-  rawValue.value = props.modelValue
+  rawValue.value = parseFloat(props.modelValue)
 })
 
 watch(
   () => props.modelValue,
   (value) => {
-    console.log('plop')
-    rawValue.value = value
+    rawValue.value = parseFloat(value)
   }
 )
 
@@ -40,15 +39,19 @@ const emit = defineEmits<{
 }>()
 
 const valueChanged = (value: string) => {
-  rawValue.value = value.replace(',', '.')
-  emit('update:model-value', rawValue.value)
+  if (value.length) {
+    rawValue.value = value.replace(',', '.')
+    emit('update:model-value', parseFloat(rawValue.value).toString())
+  } else {
+    emit('update:model-value', '')
+  }
 }
 
 const formattedValue = computed(() => {
   const f = focus.value
-  console.log('f: ', f)
-  console.log('rawValue: ', rawValue.value)
-  if (!rawValue.value) return ''
+  if (!rawValue.value) {
+    return ''
+  }
   if (f) return rawValue.value
   return percentFormatter(rawValue.value)
 })

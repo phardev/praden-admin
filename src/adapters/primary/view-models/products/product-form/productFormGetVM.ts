@@ -60,25 +60,25 @@ export class ExistingProductFormInitializer implements FormInitializer {
       product = JSON.parse(JSON.stringify(product))
     }
     this.formStore.set(this.key, {
-      name: product.name || '',
-      categoryUuid: product.categoryUuid || undefined,
-      cip7: product.cip7 || '',
-      cip13: product.cip13 || '',
-      ean13: product.ean13 || '',
-      priceWithoutTax: (product.priceWithoutTax / 100).toString() || undefined,
-      percentTaxRate: product.percentTaxRate || undefined,
+      name: product.name,
+      categoryUuid: product.categoryUuid,
+      cip7: product.cip7,
+      cip13: product.cip13,
+      ean13: product.ean13,
+      priceWithoutTax: (product.priceWithoutTax / 100).toString(),
+      percentTaxRate: product.percentTaxRate,
       priceWithTax:
         addTaxToPrice(product.priceWithoutTax / 100, product.percentTaxRate)
           .toFixed(2)
           .toString() || undefined,
-      laboratory: product.laboratory || '',
-      location: product.location || '',
-      availableStock: product.availableStock || '',
+      laboratory: product.laboratory,
+      location: product.location,
+      availableStock: product.availableStock,
       newImages: product.newImages || [],
       images: product.images || [],
-      description: product.description || '',
-      instructionsForUse: product.instructionsForUse || '',
-      composition: product.composition || ''
+      description: product.description,
+      instructionsForUse: product.instructionsForUse,
+      composition: product.composition
     })
   }
 }
