@@ -12,7 +12,7 @@
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { useCategoryGateway } from '../../../../../../../gateways/categoryGateway'
 import { getCategory } from '@core/usecases/categories/get-category/getCategory'
-import { getCategoryVM } from '@adapters/primary/view-models/categories/get-category/getCategoryVM'
+import { categoryFormGetVM } from '@adapters/primary/view-models/categories/category-form/categoryFormGetVM'
 
 definePageMeta({ layout: 'main' })
 
@@ -26,7 +26,7 @@ onMounted(async () => {
   const categoryGateway = useCategoryGateway()
   listCategories(categoryGateway)
   await getCategory(categoryUuid, categoryGateway)
-  vm.value = getCategoryVM(routeName)
+  vm.value = categoryFormGetVM(routeName)
 })
 
 const edit = () => {

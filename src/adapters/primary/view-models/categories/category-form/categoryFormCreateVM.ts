@@ -1,0 +1,87 @@
+import type { Field } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
+import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
+import { CategoryFormFieldsReader } from '@adapters/primary/view-models/categories/category-form/categoryFormGetVM'
+import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import { useFormStore } from '@store/formStore'
+import { FormFieldsWriter } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+
+export class CategoryFormFieldsWriter extends FormFieldsWriter {
+  constructor(key: string) {
+    super(key)
+  }
+}
+
+export class NewCategoryFormInitializer implements FormInitializer {
+  protected readonly key: string
+  protected formStore: any
+
+  constructor(key: string) {
+    this.key = key
+    this.formStore = useFormStore()
+  }
+
+  init() {
+    this.formStore.set(this.key, {
+      name: '',
+      description: '',
+      parentUuid: undefined
+    })
+  }
+}
+
+export class CategoryFormCreateVM {
+  private fieldsReader: CategoryFormFieldsReader
+  private fieldsWriter: CategoryFormFieldsWriter
+
+  constructor(
+    initializer: NewCategoryFormInitializer,
+    fieldsReader: CategoryFormFieldsReader,
+    fieldsWriter: CategoryFormFieldsWriter
+  ) {
+    initializer.init()
+    this.fieldsReader = fieldsReader
+    this.fieldsWriter = fieldsWriter
+  }
+
+  get(fieldName: string): any {
+    return this.createField(fieldName)
+  }
+
+  private createField<T>(fieldName: string): Field<T> {
+    return {
+      value: this.fieldsReader.get(fieldName),
+      canEdit: true
+    }
+  }
+
+  set(fieldName: string, value: any): void {
+    this.fieldsWriter.set(fieldName, value)
+  }
+
+  getAvailableCategories(): any {
+    return this.fieldsReader.getAvailableCategories()
+  }
+
+  getDto(): CreateCategoryDTO {
+    return {
+      name: this.fieldsReader.get('name'),
+      parentUuid: this.fieldsReader.get('parentUuid'),
+      description: this.fieldsReader.get('description')
+    }
+  }
+
+  getDisplayValidate(): boolean {
+    return true
+  }
+
+  getCanValidate(): boolean {
+    return true
+  }
+}
+
+export const categoryFormCreateVM = (key: string): CategoryFormCreateVM => {
+  const initializer = new NewCategoryFormInitializer(key)
+  const reader = new CategoryFormFieldsReader(key)
+  const writer = new CategoryFormFieldsWriter(key)
+  return new CategoryFormCreateVM(initializer, reader, writer)
+}

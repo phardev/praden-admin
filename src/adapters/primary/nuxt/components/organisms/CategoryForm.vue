@@ -2,20 +2,20 @@
 div(v-if="currentVM")
   UFormGroup.pb-4(label="Nom" name="name")
     ft-text-field(
-      :model-value="currentVM.getName().value"
-      :disabled="!currentVM.getName().canEdit"
+      :model-value="currentVM.get('name').value"
+      :disabled="!currentVM.get('name').canEdit"
       @update:model-value="nameChanged"
     )
   UFormGroup.pb-4(label="Description" name="description")
     ft-text-field(
-      :model-value="currentVM.getDescription().value"
-      :disabled="!currentVM.getDescription().canEdit"
+      :model-value="currentVM.get('description').value"
+      :disabled="!currentVM.get('description').canEdit"
       @update:model-value="descriptionChanged"
     )
   UFormGroup.pb-4(label="Catégorie parent" name="category")
     ft-autocomplete(
-      :model-value="currentVM.getParentUuid().value"
-      :disabled="!currentVM.getParentUuid().canEdit"
+      :model-value="currentVM.get('parentUuid').value"
+      :disabled="!currentVM.get('parentUuid').canEdit"
       :options="currentVM.getAvailableCategories()"
       placeholder="Rechercher une catégorie"
       by="id"
@@ -49,19 +49,19 @@ const props = defineProps({
 const currentVM = toRef(props, 'vm')
 
 const nameChanged = (name: string) => {
-  currentVM?.value?.setName(name)
+  currentVM?.value?.set('name', name)
 }
 
 const parentCategoryChanged = (uuid: string) => {
-  currentVM?.value?.setParentUuid(uuid)
+  currentVM?.value?.set('parentUuid', uuid)
 }
 
 const clearParentCategory = () => {
-  currentVM?.value?.setParentUuid(undefined)
+  currentVM?.value?.set('parentUuid', undefined)
 }
 
 const descriptionChanged = (description: string) => {
-  currentVM?.value?.setDescription(description)
+  currentVM?.value?.set('description', description)
 }
 
 const emit = defineEmits<{

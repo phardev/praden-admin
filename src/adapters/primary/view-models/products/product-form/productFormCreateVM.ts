@@ -12,7 +12,7 @@ import {
 
 export type CreateProductCategoriesVM = Array<Pick<Category, 'uuid' | 'name'>>
 
-type FieldHandler = (value: any) => void | Promise<void>
+export type FieldHandler = (value: any) => void | Promise<void>
 
 export class FormFieldsWriter {
   protected readonly key: string
