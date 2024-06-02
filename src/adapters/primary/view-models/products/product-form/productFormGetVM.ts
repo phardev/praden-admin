@@ -1,7 +1,7 @@
 import { useFormStore } from '@store/formStore'
 import type { Field } from '@adapters/primary/view-models/promotions/create-promotion/createPromotionVM'
 import type { Category } from '@core/entities/category'
-import { CreateProductCategoriesVM } from '@adapters/primary/view-models/products/create-product/createProductVM'
+import { CreateProductCategoriesVM } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import { useProductStore } from '@store/productStore'
 import { useCategoryStore } from '@store/categoryStore'
 import { addTaxToPrice } from '@utils/price'
@@ -83,7 +83,7 @@ export class ExistingProductFormInitializer implements FormInitializer {
   }
 }
 
-export class GetProductVM {
+export class ProductFormGetVM {
   protected initializer: ExistingProductFormInitializer
   protected fieldsReader: ProductFormFieldsReader
 
@@ -120,8 +120,8 @@ export class GetProductVM {
   }
 }
 
-export const getProductVM = (key: string): GetProductVM => {
+export const productFormGetVM = (key: string): ProductFormGetVM => {
   const initVM = new ExistingProductFormInitializer(key)
   const getForm = new ProductFormFieldsReader(key)
-  return new GetProductVM(initVM, getForm)
+  return new ProductFormGetVM(initVM, getForm)
 }

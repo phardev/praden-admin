@@ -6,7 +6,9 @@ export default {
     globals: true,
     environment: 'jsdom',
     coverage: {
-      provider: 'istanbul' // or 'c8'
+      provider: 'v8',
+      exclude: ['**/*.vue', '.nuxt', '*.config.*', '.eslintrc.js'],
+      reporter: ['text', 'json', 'html']
     }
   },
   plugins: [tsconfigPaths()],

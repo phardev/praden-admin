@@ -1,10 +1,9 @@
 <template lang="pug">
 .section(v-if="vm")
-  .flex.flex-row-reverse
-    ft-button.button-solid.text-xl.px-6(@click="edit") Editer produit
-  h1.text-title Voir produit
+  h1.text-title Editer produit
   product-form(
     :vm="vm"
+    @validate="validate"
   )
 </template>
 
@@ -14,7 +13,8 @@ import { useCategoryGateway } from '../../../../../../../gateways/categoryGatewa
 import { useProductGateway } from '../../../../../../../gateways/productGateway'
 import { listProducts } from '@core/usecases/product/product-listing/listProducts'
 import { getProduct } from '@core/usecases/product/get-product/get-product'
-import { productFormGetVM } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import { productFormEditVM } from '@adapters/primary/view-models/products/product-form/productFormEditVM'
+import { editProduct } from '@core/usecases/product/product-edition/editProduct'
 
 definePageMeta({ layout: 'main' })
 
@@ -30,10 +30,17 @@ onMounted(async () => {
   const productGateway = useProductGateway()
   listProducts(productGateway)
   await getProduct(productUuid, productGateway)
-  vm.value = productFormGetVM(routeName)
+  vm.value = productFormEditVM(routeName)
 })
 
-const edit = () => {
-  router.push(`/products/edit/${productUuid}`)
+const validate = async () => {
+  console.log('dto: ', vm.value.getDto())
+  await editProduct(
+    productUuid,
+    vm.value.getDto(),
+    useProductGateway(),
+    useCategoryGateway()
+  )
+  router.push('/products/')
 }
 </script>

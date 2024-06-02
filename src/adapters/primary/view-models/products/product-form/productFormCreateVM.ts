@@ -8,7 +8,7 @@ import { useProductStore } from '@store/productStore'
 import {
   FormInitializer,
   ProductFormFieldsReader
-} from '@adapters/primary/view-models/products/get-product/getProductVM'
+} from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 
 export type CreateProductCategoriesVM = Array<Pick<Category, 'uuid' | 'name'>>
 
@@ -23,14 +23,14 @@ export class FormFieldsWriter {
     this.formStore = useFormStore()
   }
 
-  set(fieldName: string, value: any): any {
-    return this.formStore.set(this.key, { [fieldName]: value })
+  set(fieldName: string, value: any): void {
+    this.formStore.set(this.key, { [fieldName]: value })
   }
 }
 
 export class ProductFormFieldsWriter extends FormFieldsWriter {
   protected fieldsReader: ProductFormFieldsReader
-  private fieldHandlers: Record<string, FieldHandler>
+  private readonly fieldHandlers: Record<string, FieldHandler>
 
   constructor(key: string, fieldsReader: ProductFormFieldsReader) {
     super(key)
@@ -60,6 +60,8 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
       if (newPriceWithTax !== this.fieldsReader.get('priceWithTax')) {
         super.set('priceWithTax', newPriceWithTax)
       }
+    } else {
+      super.set('priceWithTax', undefined)
     }
   }
 
@@ -144,7 +146,7 @@ export class NewProductFormInitializer implements FormInitializer {
   }
 }
 
-export class CreateProductVM {
+export class ProductFormCreateVM {
   private fieldsReader: ProductFormFieldsReader
   private fieldsWriter: ProductFormFieldsWriter
 
@@ -205,9 +207,9 @@ export class CreateProductVM {
   }
 }
 
-export const createProductVM = (key: string): CreateProductVM => {
+export const productFormCreateVM = (key: string): ProductFormCreateVM => {
   const initializer = new NewProductFormInitializer(key)
   const getter = new ProductFormFieldsReader(key)
   const setter = new ProductFormFieldsWriter(key, getter)
-  return new CreateProductVM(initializer, getter, setter)
+  return new ProductFormCreateVM(initializer, getter, setter)
 }

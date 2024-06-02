@@ -21,6 +21,11 @@ export const useProductStore = defineStore('ProductStore', {
     },
     setCurrent(product: Product) {
       this.current = JSON.parse(JSON.stringify(product))
+    },
+    edit(product: Product) {
+      this.items = this.items.map((c) => {
+        return c.uuid === product.uuid ? product : c
+      })
     }
   }
 })
