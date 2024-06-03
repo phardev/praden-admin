@@ -1,17 +1,21 @@
-import { CustomerFormCreateVM } from '@adapters/primary/view-models/categories/customer-form/customerFormCreateVM'
-import { CustomerFormEditVM } from '@adapters/primary/view-models/categories/customer-form/customerFormEditVM'
-import { CustomerFormGetVM } from '@adapters/primary/view-models/categories/customer-form/customerFormGetVM'
 import { useFormStore } from '@store/formStore'
 import { useCustomerStore } from '@store/customerStore'
 import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { createPinia, setActivePinia } from 'pinia'
-import { customerFormGetVM } from '@adapters/primary/view-models/customers/customer-form/customerFormGetVM'
+import {
+  CustomerFormGetVM,
+  customerFormGetVM
+} from '@adapters/primary/view-models/customers/customer-form/customerFormGetVM'
 import { elodieDurand, sophieMartinez } from '@utils/testData/customers'
-import { customerFormCreateVM } from '@adapters/primary/view-models/customers/customer-form/customerFormCreateVM'
-import { CustomerFormCreateVM } from '@adapters/primary/view-models/categories/category-form/categoryFormCreateVM'
-import { CustomerFormEditVM } from '@adapters/primary/view-models/categories/category-form/categoryFormEditVM'
-import { CreateCustomerDTO } from '@core/usecases/categories/category-creation/createCustomer'
-import { customerFormEditVM } from '@adapters/primary/view-models/customers/customer-form/customerFormEditVM'
+import {
+  CustomerFormCreateVM,
+  customerFormCreateVM
+} from '@adapters/primary/view-models/customers/customer-form/customerFormCreateVM'
+import {
+  CustomerFormEditVM,
+  customerFormEditVM
+} from '@adapters/primary/view-models/customers/customer-form/customerFormEditVM'
+import { CreateCustomerDTO } from '@core/usecases/customers/customer-creation/createCustomer'
 
 const editableInitialVMTests = (
   getVM: () => CustomerFormCreateVM | CustomerFormEditVM | CustomerFormGetVM,
