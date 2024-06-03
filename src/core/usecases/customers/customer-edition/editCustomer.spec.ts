@@ -1,0 +1,100 @@
+import { useCustomerStore } from '@store/customerStore'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { createPinia, setActivePinia } from 'pinia'
+import { Customer } from '@core/entities/customer'
+import {
+  elodieDurand,
+  lucasLefevre,
+  sophieMartinez
+} from '@utils/testData/customers'
+import { UUID } from '@core/types/types'
+import { CustomerDoesNotExistsError } from '@core/errors/CustomerDoesNotExistsError'
+import { InMemoryCustomerGateway } from '@adapters/secondary/customer-gateways/inMemoryCustomerGateway'
+import {
+  editCustomer,
+  EditCustomerDTO
+} from '@core/usecases/customers/customer-edition/editCustomer'
+
+describe('Customer Edition', () => {
+  let customerStore
+  let customerGateway: InMemoryCustomerGateway
+
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    customerStore = useCustomerStore()
+    customerGateway = new InMemoryCustomerGateway(new FakeUuidGenerator())
+  })
+  describe('The customer exists', () => {
+    beforeEach(() => {
+      givenExistingCustomers(elodieDurand, lucasLefevre, sophieMartinez)
+    })
+    describe('For a customer', () => {
+      const customer = elodieDurand
+      const dto: EditCustomerDTO = {
+        email: 'new@email.com'
+      }
+      const expectedCustomer: Customer = {
+        ...customer,
+        ...dto
+      }
+      const expectedRes: Array<Customer> = [
+        expectedCustomer,
+        lucasLefevre,
+        sophieMartinez
+      ]
+      beforeEach(async () => {
+        await whenEditCustomer(customer.uuid, dto)
+      })
+      it('should edit the customer in the gateway', async () => {
+        expect(await customerGateway.list()).toStrictEqual(expectedRes)
+      })
+      it('should edit the customer in the store', async () => {
+        expect(customerStore.items).toStrictEqual(expectedRes)
+      })
+    })
+    describe('For another customer', () => {
+      const customer = lucasLefevre
+      const dto: EditCustomerDTO = {
+        firstname: 'New firstname',
+        phone: '0879879870'
+      }
+      const expectedCustomer: Customer = {
+        ...customer,
+        ...dto
+      }
+      const expectedRes: Array<Customer> = [
+        elodieDurand,
+        expectedCustomer,
+        sophieMartinez
+      ]
+      beforeEach(async () => {
+        await whenEditCustomer(customer.uuid, dto)
+      })
+      it('should edit the customer in the gateway', async () => {
+        expect(await customerGateway.list()).toStrictEqual(expectedRes)
+      })
+      it('should edit the customer in the store', async () => {
+        expect(customerStore.items).toStrictEqual(expectedRes)
+      })
+    })
+  })
+  describe('The customer does not exists', () => {
+    it('should throw an error', async () => {
+      await expect(
+        whenEditCustomer('NotExists', { lastname: 'NewName' })
+      ).rejects.toThrow(CustomerDoesNotExistsError)
+    })
+  })
+
+  const givenExistingCustomers = (...customers: Array<Customer>) => {
+    customerGateway.feedWith(...JSON.parse(JSON.stringify(customers)))
+    customerStore.items = JSON.parse(JSON.stringify(customers))
+  }
+
+  const whenEditCustomer = async (
+    uuid: UUID,
+    dto: EditCustomerDTO
+  ): Promise<void> => {
+    await editCustomer(uuid, dto, customerGateway)
+  }
+})

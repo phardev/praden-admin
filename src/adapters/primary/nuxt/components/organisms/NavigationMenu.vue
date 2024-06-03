@@ -41,6 +41,16 @@ const menu = {
       ]
     },
     {
+      title: 'Clients',
+      links: [
+        {
+          name: 'Clients',
+          icon: 'material-symbols:person-outline-rounded',
+          href: '/customers'
+        }
+      ]
+    },
+    {
       title: 'Commandes',
       links: [
         {
