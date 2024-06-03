@@ -92,21 +92,14 @@ export class PromotionFormEditVM extends PromotionFormVM {
     if (type === ReductionType.Fixed) {
       amount *= 100
     }
-    const res: CreatePromotionDTO = {
+    return {
       name: this.fieldsReader.get('name'),
       products: this.fieldsReader.get('products'),
       type,
-      amount
+      amount,
+      startDate: this.fieldsReader.get('startDate'),
+      endDate: this.fieldsReader.get('endDate')
     }
-    const startDate = this.fieldsReader.get('startDate')
-    if (startDate) {
-      res.startDate = startDate
-    }
-    const endDate = this.fieldsReader.get('endDate')
-    if (endDate) {
-      res.endDate = endDate
-    }
-    return res
   }
 
   getDisplayValidate(): boolean {
