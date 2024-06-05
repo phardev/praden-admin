@@ -9,6 +9,15 @@
     @clicked="productSelected"
   )
     template(#title) Produits
+    template(#search)
+      ft-text-field(
+        v-model="search"
+        placeholder="Rechercher par nom, référence, catégorie, laboratoire"
+        for="search"
+        type='text'
+        name='search'
+        @input="searchChanged"
+      ) Rechercher un produit
     template(#img="{ item }")
       .h-10.w-10
         img.rounded-full.h-10.w-10(:src="item.img")
@@ -24,6 +33,8 @@ import { useCategoryStore } from '@store/categoryStore'
 import { dents, diarrhee } from '@utils/testData/categories'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
+import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
+import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 
 definePageMeta({ layout: 'main' })
 
@@ -34,12 +45,19 @@ onMounted(() => {
   listProducts(useProductGateway())
 })
 
+const search = ref('')
+const router = useRouter()
+const routeName = router.currentRoute.value.name
+
 const productsVM = computed(() => {
-  return getProductsVM()
+  return getProductsVM(routeName)
 })
 
+const searchChanged = (e: any) => {
+  searchProducts(routeName, e.target.value, useSearchGateway())
+}
+
 const productSelected = (uuid: string) => {
-  const router = useRouter()
   router.push(`/products/get/${uuid}`)
 }
 </script>

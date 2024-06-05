@@ -4,6 +4,7 @@ import { priceFormatter } from '@utils/formatters'
 import { useCategoryStore } from '@store/categoryStore'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { UUID } from '@core/types/types'
+import { useSearchStore } from '@store/searchStore'
 
 export interface GetProductsItemVM {
   uuid: UUID
@@ -21,10 +22,13 @@ export interface GetProductsVM {
   items: Array<GetProductsItemVM>
 }
 
-export const getProductsVM = (): GetProductsVM => {
+export const getProductsVM = (key: string): GetProductsVM => {
   const productStore = useProductStore()
   const categoryStore = useCategoryStore()
-  const products = productStore.items
+  const searchStore = useSearchStore()
+  const allProducts = productStore.items
+  const searchResult = searchStore.get(key)
+  const products = searchResult || allProducts
   const formatter = priceFormatter('fr-FR', 'EUR')
   const headers: Array<Header> = [
     {
