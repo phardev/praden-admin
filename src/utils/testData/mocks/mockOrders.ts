@@ -88,7 +88,7 @@ export const mockOrderWaitingForClientAnswer1 = {
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      location: dolodent.locations[0],
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674273789000
     }
@@ -125,7 +125,7 @@ export const mockOrderPartiallyShipped1 = {
       preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      location: dolodent.locations[0],
       deliveryStatus: DeliveryStatus.Shipped,
       updatedAt: 1674573778456
     },
@@ -139,7 +139,7 @@ export const mockOrderPartiallyShipped1 = {
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      location: dolodent.locations[0],
       deliveryStatus: DeliveryStatus.Shipped,
       updatedAt: 1674573778456
     }

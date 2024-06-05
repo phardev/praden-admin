@@ -85,7 +85,7 @@ describe('Start preparations VM', () => {
               {
                 reference: dolodent.cip13,
                 name: dolodent.name,
-                location: dolodent.location,
+                locations: dolodent.locations,
                 quantity: 2
               }
             ],
@@ -108,7 +108,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 2,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -132,13 +132,13 @@ describe('Start preparations VM', () => {
               {
                 reference: ultraLevure.cip13,
                 name: ultraLevure.name,
-                location: ultraLevure.location,
+                locations: ultraLevure.locations,
                 quantity: 2
               },
               {
                 reference: dolodent.cip13,
                 name: dolodent.name,
-                location: dolodent.location,
+                locations: dolodent.locations,
                 quantity: 1
               }
             ],
@@ -161,7 +161,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: ultraLevure.cip13,
                     name: ultraLevure.name,
-                    location: ultraLevure.location,
+                    locations: ultraLevure.locations,
                     quantity: 2,
                     unitPrice: '4,75\u00A0€',
                     taxRate: '10 %',
@@ -170,7 +170,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 1,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -194,13 +194,13 @@ describe('Start preparations VM', () => {
               {
                 reference: calmosine.cip13,
                 name: calmosine.name,
-                location: calmosine.location,
+                locations: calmosine.locations,
                 quantity: 2
               },
               {
                 reference: productWithoutLocation.cip13,
                 name: productWithoutLocation.name,
-                location: productWithoutLocation.location,
+                locations: productWithoutLocation.locations,
                 quantity: 3
               }
             ],
@@ -225,7 +225,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: calmosine.cip13,
                     name: calmosine.name,
-                    location: calmosine.location,
+                    locations: calmosine.locations,
                     quantity: 2,
                     unitPrice: '8,91\u00A0€',
                     taxRate: '10 %',
@@ -234,7 +234,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: productWithoutLocation.cip13,
                     name: productWithoutLocation.name,
-                    location: productWithoutLocation.location,
+                    locations: productWithoutLocation.locations,
                     quantity: 3,
                     unitPrice: '6,49\u00A0€',
                     taxRate: '10 %',
@@ -262,7 +262,7 @@ describe('Start preparations VM', () => {
               {
                 reference: dolodent.cip13,
                 name: dolodent.name,
-                location: dolodent.location,
+                locations: dolodent.locations,
                 quantity: 2
               }
             ],
@@ -285,7 +285,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 2,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -309,13 +309,13 @@ describe('Start preparations VM', () => {
               {
                 reference: dolodent.cip13,
                 name: dolodent.name,
-                location: dolodent.location,
+                locations: dolodent.locations,
                 quantity: 1
               },
               {
                 reference: ultraLevure.cip13,
                 name: ultraLevure.name,
-                location: ultraLevure.location,
+                locations: ultraLevure.locations,
                 quantity: 2
               }
             ],
@@ -338,7 +338,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 1,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -347,7 +347,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: ultraLevure.cip13,
                     name: ultraLevure.name,
-                    location: ultraLevure.location,
+                    locations: ultraLevure.locations,
                     quantity: 2,
                     unitPrice: '4,75\u00A0€',
                     taxRate: '10 %',
@@ -372,7 +372,7 @@ describe('Start preparations VM', () => {
             {
               reference: dolodent.cip13,
               name: dolodent.name,
-              location: dolodent.location,
+              locations: dolodent.locations,
               quantity: 1
             }
           ],
@@ -395,7 +395,7 @@ describe('Start preparations VM', () => {
                 {
                   reference: dolodent.cip13,
                   name: dolodent.name,
-                  location: dolodent.location,
+                  locations: dolodent.locations,
                   quantity: 1,
                   unitPrice: '5,50\u00A0€',
                   taxRate: '10 %',
@@ -420,7 +420,7 @@ describe('Start preparations VM', () => {
             {
               reference: dolodent.cip13,
               name: dolodent.name,
-              location: dolodent.location,
+              locations: dolodent.locations,
               quantity: 1
             }
           ],
@@ -443,7 +443,7 @@ describe('Start preparations VM', () => {
                 {
                   reference: dolodent.cip13,
                   name: dolodent.name,
-                  location: dolodent.location,
+                  locations: dolodent.locations,
                   quantity: 1,
                   unitPrice: '5,50\u00A0€',
                   taxRate: '10 %',
@@ -475,13 +475,13 @@ describe('Start preparations VM', () => {
               {
                 reference: ultraLevure.cip13,
                 name: ultraLevure.name,
-                location: ultraLevure.location,
+                locations: ultraLevure.locations,
                 quantity: 2
               },
               {
                 reference: dolodent.cip13,
                 name: dolodent.name,
-                location: dolodent.location,
+                locations: dolodent.locations,
                 quantity: 3
               }
             ],
@@ -504,7 +504,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 2,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -531,7 +531,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: ultraLevure.cip13,
                     name: ultraLevure.name,
-                    location: ultraLevure.location,
+                    locations: ultraLevure.locations,
                     quantity: 2,
                     unitPrice: '4,75\u00A0€',
                     taxRate: '10 %',
@@ -540,7 +540,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 1,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -571,13 +571,13 @@ describe('Start preparations VM', () => {
               {
                 reference: dolodent.cip13,
                 name: dolodent.name,
-                location: dolodent.location,
+                locations: dolodent.locations,
                 quantity: 3
               },
               {
                 reference: ultraLevure.cip13,
                 name: ultraLevure.name,
-                location: ultraLevure.location,
+                locations: ultraLevure.locations,
                 quantity: 2
               }
             ],
@@ -600,7 +600,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 2,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -627,7 +627,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 1,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -636,7 +636,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: ultraLevure.cip13,
                     name: ultraLevure.name,
-                    location: ultraLevure.location,
+                    locations: ultraLevure.locations,
                     quantity: 2,
                     unitPrice: '4,75\u00A0€',
                     taxRate: '10 %',

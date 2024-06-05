@@ -149,7 +149,7 @@ describe('Validate preparation', () => {
           preparedQuantity: 0,
           unitAmount: ultraLevure.priceWithoutTax,
           percentTaxRate: ultraLevure.percentTaxRate,
-          location: ultraLevure.location,
+          locations: ultraLevure.locations,
           deliveryStatus: DeliveryStatus.Canceled,
           updatedAt: now
         }
@@ -205,7 +205,7 @@ describe('Validate preparation', () => {
           preparedQuantity: 0,
           unitAmount: dolodent.priceWithoutTax,
           percentTaxRate: dolodent.percentTaxRate,
-          location: dolodent.location,
+          locations: dolodent.locations,
           deliveryStatus: DeliveryStatus.Canceled,
           updatedAt: now
         }
@@ -216,7 +216,7 @@ describe('Validate preparation', () => {
           preparedQuantity: 0,
           unitAmount: ultraLevure.priceWithoutTax,
           percentTaxRate: ultraLevure.percentTaxRate,
-          location: ultraLevure.location,
+          locations: ultraLevure.locations,
           deliveryStatus: DeliveryStatus.Canceled,
           updatedAt: now
         }

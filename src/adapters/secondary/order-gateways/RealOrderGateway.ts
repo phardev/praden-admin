@@ -86,10 +86,17 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
   private convertToOrder(data: any): Order {
     const copy = JSON.parse(JSON.stringify(data))
     delete copy.payment.sessionUrl
+    copy.lines = copy.lines.map((l: any) => {
+      return {
+        ...l,
+        locations: [l.location]
+      }
+    })
     copy.lines.forEach((l: any) => {
       delete l.img
       delete l.description
       delete l.productUuid
+      delete l.location
     })
     copy.messages.forEach((m: any) => {
       delete m.orderUuid

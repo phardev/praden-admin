@@ -12,7 +12,7 @@ import { getTotalWithTax } from '@core/entities/order'
 export interface GlobalPreparationLineVM {
   reference: string
   name: string
-  location: string
+  locations: Array<string>
   quantity: number
 }
 
@@ -42,9 +42,9 @@ export interface StartPreparationsVM {
 }
 
 const sortByLocation = (a: any, b: any): number => {
-  if (a.location === '') return 1
-  if (b.location === '') return -1
-  return a.location < b.location ? -1 : 1
+  if (!a.locations.length) return 1
+  if (!b.locations.length) return -1
+  return a.locations[0] < b.locations[0] ? -1 : 1
 }
 
 const sortByProductName = (a: any, b: any): number => {
@@ -112,7 +112,7 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
           return {
             reference: line.cip13,
             name: line.name,
-            location: line.location,
+            locations: line.locations,
             quantity,
             unitPrice: formatter.format(unitPrice),
             taxRate: `${line.percentTaxRate} %`,

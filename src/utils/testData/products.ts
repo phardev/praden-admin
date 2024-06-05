@@ -13,7 +13,7 @@ export const dolodent: Product = {
   cip13: '3400921929201',
   priceWithoutTax: 500,
   percentTaxRate: 10,
-  location: 'DD02',
+  locations: ['DD02'],
   availableStock: 59,
   laboratory: 'Gilbert'
 }
@@ -32,7 +32,7 @@ export const ultraLevure: Product = {
   ean13: '3400922096612',
   priceWithoutTax: 432,
   percentTaxRate: 10,
-  location: 'C3',
+  locations: ['C3'],
   availableStock: 36,
   laboratory: 'BIOCODEX',
   description: '<p> ultralevure description</p>',
@@ -52,7 +52,7 @@ export const anaca3Minceur: Product = {
   cip13: '3760007337185',
   priceWithoutTax: 891,
   percentTaxRate: 5.5,
-  location: '1D450',
+  locations: ['1D450'],
   availableStock: 36,
   laboratory: 'ANACA 3'
 }
@@ -69,7 +69,7 @@ export const chamomilla: Product = {
   cip13: '3400921924008',
   priceWithoutTax: 627,
   percentTaxRate: 10,
-  location: 'HOMEO-D',
+  locations: ['HOMEO-D'],
   availableStock: 1,
   laboratory: 'BOIRON'
 }
@@ -85,7 +85,7 @@ export const calmosine: Product = {
   cip13: '1234567890123',
   priceWithoutTax: 810,
   percentTaxRate: 10,
-  location: 'E2',
+  locations: ['E2'],
   availableStock: 10,
   laboratory: 'NUTRISANTE'
 }
@@ -103,7 +103,7 @@ export const hemoclar: Product = {
   cip13: '098765432123',
   priceWithoutTax: 590,
   percentTaxRate: 10,
-  location: 'D2',
+  locations: ['D2'],
   availableStock: 23,
   laboratory: 'SANOFI-AVENTIS'
 }
@@ -117,7 +117,7 @@ export const productWithoutLocation: Product = {
   cip13: '0637218312823',
   priceWithoutTax: 590,
   percentTaxRate: 10,
-  location: '',
+  locations: [],
   availableStock: 23,
   laboratory: 'SANOFI-AVENTIS'
 }
