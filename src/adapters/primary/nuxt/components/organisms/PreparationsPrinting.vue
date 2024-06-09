@@ -1,10 +1,13 @@
 <template lang="pug">
+pre {{ startVM.detail }}
 div.hidden.printme.mx-2
   p Récapitulatif des commandes
   ft-table(
     :headers="startVM.globalHeaders"
     :items="startVM.global"
   )
+    template(#locations="{ item }")
+      pre {{ item }}
   div.break-before-page(v-for="order in startVM.detail" :key="order.reference")
     div.flex
       div.grow

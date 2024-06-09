@@ -15,6 +15,7 @@ import { dolodent, ultraLevure } from '@utils/testData/products'
 import { Product } from '@core/entities/product'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { useProductStore } from '@store/productStore'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 
 describe('Start preparations', () => {
   let orderGateway: InMemoryOrderGateway
@@ -26,7 +27,7 @@ describe('Start preparations', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     orderGateway = new InMemoryOrderGateway(new FakeDateProvider())
-    productGateway = new InMemoryProductGateway()
+    productGateway = new InMemoryProductGateway(new FakeUuidGenerator())
     emailGateway = new FakeEmailGateway()
     preparationStore = usePreparationStore()
     productStore = useProductStore()

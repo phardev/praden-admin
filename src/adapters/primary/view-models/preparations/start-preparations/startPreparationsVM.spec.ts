@@ -19,17 +19,22 @@ import {
 } from '@utils/testData/products'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { useSettingStore } from '@store/settingStore'
+import { useLocationStore } from '@store/locationStore'
+import { reserve, zoneGeo } from '@utils/testData/locations'
+import { Location } from '@core/entities/location'
 
 describe('Start preparations VM', () => {
   let preparationsStore: any
   let settingStore: any
+  let locationStore: any
 
   const origin = 'https://my-website'
 
   const detailHeaders: Array<Header> = [
     { name: 'Référence', value: 'reference' },
     { name: 'Nom', value: 'name' },
-    { name: 'Zone géo', value: 'location' },
+    { name: zoneGeo.name, value: 'locations' },
+    { name: reserve.name, value: 'locations' },
     { name: 'Prix unitaire', value: 'unitPrice' },
     { name: 'Quantité', value: 'quantity' },
     { name: 'TVA', value: 'taxRate' },
@@ -39,7 +44,8 @@ describe('Start preparations VM', () => {
   const globalHeaders: Array<Header> = [
     { name: 'Référence', value: 'reference' },
     { name: 'Nom', value: 'name' },
-    { name: 'Zone géo', value: 'location' },
+    { name: zoneGeo.name, value: 'locations' },
+    { name: reserve.name, value: 'locations' },
     { name: 'Quantité', value: 'quantity' }
   ]
 
@@ -47,6 +53,8 @@ describe('Start preparations VM', () => {
     setActivePinia(createPinia())
     preparationsStore = usePreparationStore()
     settingStore = useSettingStore()
+    locationStore = useLocationStore()
+    givenExistingLocations(zoneGeo, reserve)
   })
 
   describe('There is some existing preparations', () => {
@@ -652,6 +660,10 @@ describe('Start preparations VM', () => {
       })
     })
   })
+
+  const givenExistingLocations = (...locations: Array<Location>) => {
+    locationStore.items = locations
+  }
 
   const getStartPreparationsVM = (origin: string) => {
     return startPreparationsVM(origin)

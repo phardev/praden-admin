@@ -8,6 +8,7 @@ import {
 import { useSettingStore } from '@store/settingStore'
 import { addTaxToPrice } from '@utils/price'
 import { getTotalWithTax } from '@core/entities/order'
+import { useLocationStore } from '@store/locationStore'
 
 export interface GlobalPreparationLineVM {
   reference: string
@@ -58,6 +59,17 @@ export enum PickingSortType {
   Name
 }
 
+const computeLocationHeaders = () => {
+  const locationStore = useLocationStore()
+  const locations = locationStore.items
+  return locations.map((l) => {
+    return {
+      name: l.name,
+      value: 'locations'
+    }
+  })
+}
+
 export const startPreparationsVM = (origin: string): StartPreparationsVM => {
   const preparationStore = usePreparationStore()
   const settingStore = useSettingStore()
@@ -65,13 +77,13 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
   const globalHeaders: Array<Header> = [
     { name: 'Référence', value: 'reference' },
     { name: 'Nom', value: 'name' },
-    { name: 'Zone géo', value: 'location' },
+    ...computeLocationHeaders(),
     { name: 'Quantité', value: 'quantity' }
   ]
   const detailHeaders: Array<Header> = [
     { name: 'Référence', value: 'reference' },
     { name: 'Nom', value: 'name' },
-    { name: 'Zone géo', value: 'location' },
+    ...computeLocationHeaders(),
     { name: 'Prix unitaire', value: 'unitPrice' },
     { name: 'Quantité', value: 'quantity' },
     { name: 'TVA', value: 'taxRate' },
