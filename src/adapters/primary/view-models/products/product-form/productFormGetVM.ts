@@ -1,0 +1,127 @@
+import { useFormStore } from '@store/formStore'
+import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import type { Category } from '@core/entities/category'
+import { CreateProductCategoriesVM } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+import { useProductStore } from '@store/productStore'
+import { useCategoryStore } from '@store/categoryStore'
+import { addTaxToPrice } from '@utils/price'
+
+export class FormFieldsReader {
+  protected readonly key: string
+  protected formStore: any
+
+  constructor(key: string) {
+    this.key = key
+    this.formStore = useFormStore()
+  }
+
+  get(fieldName: string): any {
+    return this.formStore.get(this.key)[fieldName]
+  }
+}
+
+export interface FormInitializer {
+  init(): void
+}
+
+export class ProductFormFieldsReader extends FormFieldsReader {
+  protected categoryStore: any
+
+  constructor(key: string) {
+    super(key)
+    this.categoryStore = useCategoryStore()
+  }
+
+  getAvailableCategories(): CreateProductCategoriesVM {
+    const categories = this.categoryStore.items
+    return categories.map((c: Category) => {
+      return {
+        uuid: c.uuid,
+        name: c.name
+      }
+    })
+  }
+}
+
+export class ExistingProductFormInitializer implements FormInitializer {
+  protected readonly key: string
+  protected formStore: any
+  protected productStore: any
+
+  constructor(key: string) {
+    this.key = key
+    this.formStore = useFormStore()
+    this.productStore = useProductStore()
+  }
+
+  init() {
+    let product = this.productStore.current
+    if (product) {
+      product = JSON.parse(JSON.stringify(product))
+    }
+    this.formStore.set(this.key, {
+      name: product.name,
+      categoryUuid: product.categoryUuid,
+      cip7: product.cip7,
+      cip13: product.cip13,
+      ean13: product.ean13,
+      priceWithoutTax: (product.priceWithoutTax / 100).toString(),
+      percentTaxRate: product.percentTaxRate,
+      priceWithTax:
+        addTaxToPrice(product.priceWithoutTax / 100, product.percentTaxRate)
+          .toFixed(2)
+          .toString() || undefined,
+      laboratory: product.laboratory,
+      location: product.location,
+      availableStock: product.availableStock,
+      newImages: product.newImages || [],
+      images: product.images || [],
+      description: product.description,
+      instructionsForUse: product.instructionsForUse,
+      composition: product.composition
+    })
+  }
+}
+
+export class ProductFormGetVM {
+  protected initializer: ExistingProductFormInitializer
+  protected fieldsReader: ProductFormFieldsReader
+
+  constructor(
+    initializer: ExistingProductFormInitializer,
+    fieldReader: ProductFormFieldsReader
+  ) {
+    this.initializer = initializer
+    this.fieldsReader = fieldReader
+    initializer.init()
+  }
+
+  get(fieldName: string): any {
+    return this.createField(fieldName)
+  }
+
+  private createField<T>(fieldName: string): Field<T> {
+    return {
+      value: this.fieldsReader.get(fieldName),
+      canEdit: false
+    }
+  }
+
+  getAvailableCategories(): CreateProductCategoriesVM {
+    return this.fieldsReader.getAvailableCategories()
+  }
+
+  getDisplayValidate(): boolean {
+    return false
+  }
+
+  getCanValidate(): boolean {
+    return false
+  }
+}
+
+export const productFormGetVM = (key: string): ProductFormGetVM => {
+  const initVM = new ExistingProductFormInitializer(key)
+  const getForm = new ProductFormFieldsReader(key)
+  return new ProductFormGetVM(initVM, getForm)
+}

@@ -7,32 +7,43 @@ import {
 } from '@core/usecases/product/product-creation/createProduct'
 import { Product } from '@core/entities/product'
 import { dolodent, hemoclar } from '@utils/testData/products'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 
-describe('Add product', () => {
+describe('Create product', () => {
   let productStore: any
   let productGateway: InMemoryProductGateway
+  const uuidGenerator = new FakeUuidGenerator()
 
   beforeEach(() => {
     setActivePinia(createPinia())
     productStore = useProductStore()
-    productGateway = new InMemoryProductGateway()
+    productGateway = new InMemoryProductGateway(uuidGenerator)
   })
   describe('Simple product', () => {
     describe('For a product', () => {
+      const uuid = 'new-uuid'
       const dto: CreateProductDTO = {
         name: 'Created product',
+        cip7: '1234567',
         cip13: '1234567890123',
+        ean13: '1234567890123',
         images: [new File(['data1'], 'File 1', { type: 'image/png' })],
         categoryUuid: 'category-uuid',
         priceWithoutTax: '1',
         percentTaxRate: '10',
         location: 'product-location',
         availableStock: '12',
-        laboratory: 'product-laboratory'
+        laboratory: 'product-laboratory',
+        description: '<p>description</p>',
+        instructionsForUse: '<p>instructions For Use</p>',
+        composition: '<p>composition</p>'
       }
       const expectedProduct: Product = {
+        uuid,
         name: dto.name,
+        cip7: dto.cip7,
         cip13: dto.cip13,
+        ean13: dto.ean13,
         miniature: '',
         images: ['data:image/png;base64,ZGF0YTE='],
         categoryUuid: dto.categoryUuid,
@@ -40,22 +51,29 @@ describe('Add product', () => {
         percentTaxRate: 10,
         location: dto.location,
         availableStock: 12,
-        laboratory: dto.laboratory
+        laboratory: dto.laboratory,
+        description: dto.description,
+        instructionsForUse: dto.instructionsForUse,
+        composition: dto.composition
       }
       beforeEach(async () => {
+        uuidGenerator.setNext(uuid)
         await whenCreateProduct(dto)
       })
       it('should save the product in product gateway', async () => {
         await expectProductGatewayToEqual(expectedProduct)
       })
-      it('should save the product in product store', async () => {
-        await expectProductStoreToEqual(expectedProduct)
+      it('should save the product in product store', () => {
+        expectProductStoreToEqual(expectedProduct)
       })
     })
     describe('For another product', () => {
+      const uuid = 'another-uuid'
       const dto: CreateProductDTO = {
         name: 'Another created product',
+        cip7: '0987654',
         cip13: '0987654321098',
+        ean13: '0987654321098',
         images: [
           new File(['data1'], 'File 1', { type: 'image/png' }),
           new File(['data2'], 'File 2', { type: 'image/jpeg' }),
@@ -66,11 +84,17 @@ describe('Add product', () => {
         percentTaxRate: '10.5',
         location: 'another-product-location',
         availableStock: '21',
-        laboratory: 'another-product-laboratory'
+        laboratory: 'another-product-laboratory',
+        description: '<p>another description</p>',
+        instructionsForUse: '<p>another instructions For Use</p>',
+        composition: '<p>another composition</p>'
       }
       const expectedProduct: Product = {
+        uuid,
         name: dto.name,
+        cip7: dto.cip7,
         cip13: dto.cip13,
+        ean13: dto.ean13,
         miniature: '',
         images: [
           'data:image/png;base64,ZGF0YTE=',
@@ -82,10 +106,14 @@ describe('Add product', () => {
         percentTaxRate: 10.5,
         location: dto.location,
         availableStock: 21,
-        laboratory: dto.laboratory
+        laboratory: dto.laboratory,
+        description: dto.description,
+        instructionsForUse: dto.instructionsForUse,
+        composition: dto.composition
       }
       beforeEach(async () => {
         givenThereIsExistingProducts(dolodent, hemoclar)
+        uuidGenerator.setNext(uuid)
         await whenCreateProduct(dto)
       })
       it('should save the product in product gateway', async () => {

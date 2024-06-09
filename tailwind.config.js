@@ -8,7 +8,7 @@ module.exports = {
     './src/adapters/primary/nuxt/plugins/**/*.{js,ts}',
     './nuxt.config.{js,ts}'
   ],
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/typography')],
   corePlugins: {
     container: false
   },

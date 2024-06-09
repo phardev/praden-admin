@@ -1,43 +1,22 @@
 <template lang="pug">
-input.mt-8.w-full.rounded-full.border-opposite(
-  ref="scanner"
-  type='text'
-  :placeholder='placeholder'
-  :value="scan"
-  @change="scanChanged"
+UInput.mt-8.w-full.rounded-full.border-opposite(
+  v-model="model"
+  v-bind="$attrs"
+  autofocus
   @keyup.enter="scanned"
 )
 
 </template>
 
 <script lang="ts" setup>
-defineProps({
-  placeholder: {
-    type: String,
-    default: () => {
-      return ''
-    }
-  }
-})
-
-const scanner = ref(null)
-const scan = ref('')
+const model = defineModel({ type: String })
 
 const emit = defineEmits<{
   (e: 'scanned', value: string): void
-  (e: 'scanner-mounted', input: any): void
 }>()
 
-onMounted(() => {
-  emit('scanner-mounted', scanner.value)
-})
-
-const scanChanged = (e: any) => {
-  scan.value = e.target.value
-}
-
 const scanned = () => {
-  emit('scanned', scan.value)
-  scan.value = ''
+  emit('scanned', model.value)
+  model.value = ''
 }
 </script>

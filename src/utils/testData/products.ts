@@ -2,6 +2,7 @@ import { Product } from '@core/entities/product'
 import { baby } from '@utils/testData/categories'
 
 export const dolodent: Product = {
+  uuid: 'product-dolodent',
   name: 'Dolodent solution 27g',
   miniature:
     'https://www.pharmacieagnespraden.com/img/tmp/product_mini_195_1.jpg',
@@ -18,6 +19,7 @@ export const dolodent: Product = {
 }
 
 export const ultraLevure: Product = {
+  uuid: 'product-ultralevure',
   name: 'Ultra levure 200 mg 10 gélules',
   miniature:
     'https://www.pharmacieagnespraden.com/img/tmp/product_mini_198_1.jpg?time=1675901328',
@@ -25,15 +27,21 @@ export const ultraLevure: Product = {
     'https://www.pharmacieagnespraden.com/54697-large_default/ultra-levure-200-mg.jpg'
   ],
   categoryUuid: 'category-diarrhee',
+  cip7: '3400922',
   cip13: '3400922096612',
+  ean13: '3400922096612',
   priceWithoutTax: 432,
   percentTaxRate: 10,
   location: 'C3',
   availableStock: 36,
-  laboratory: 'BIOCODEX'
+  laboratory: 'BIOCODEX',
+  description: '<p> ultralevure description</p>',
+  instructionsForUse: '<p> ultralevure instructions</p>',
+  composition: '<p> ultralevure composition</p>'
 }
 
 export const anaca3Minceur: Product = {
+  uuid: 'product-anaca3minceur',
   name: 'Anaca3 Perte de Poids Infusion 24 Sachets',
   miniature:
     'https://www.pharmacieagnespraden.com/img/tmp/product_mini_198_1.jpg?time=1675901328',
@@ -50,6 +58,7 @@ export const anaca3Minceur: Product = {
 }
 
 export const chamomilla: Product = {
+  uuid: 'product-chamomilla',
   name: 'Chamomilla vulgaris 9CH suppositoires Boiron (poussée dentaire)',
   miniature:
     'https://www.pharmacieagnespraden.com/img/tmp/product_mini_198_1.jpg?time=1675901328',
@@ -66,8 +75,11 @@ export const chamomilla: Product = {
 }
 
 export const calmosine: Product = {
+  uuid: 'product-calmosine',
   name: 'Calmosine 100 ml',
-  images: [''],
+  images: [
+    'https://www.pharmacieagnespraden.com/70697-home_default/calmosine-100ml.jpg'
+  ],
   miniature: '',
   categoryUuid: baby.uuid,
   cip13: '1234567890123',
@@ -79,8 +91,13 @@ export const calmosine: Product = {
 }
 
 export const hemoclar: Product = {
+  uuid: 'product-hemoclar',
   name: 'Hemoclar 0,5% crème 30g',
-  images: [''],
+  images: [
+    'https://fakeimg.pl/300/',
+    'https://fakeimg.pl/400/',
+    'https://fakeimg.pl/300/'
+  ],
   miniature: '',
   categoryUuid: baby.uuid,
   cip13: '098765432123',
@@ -92,8 +109,9 @@ export const hemoclar: Product = {
 }
 
 export const productWithoutLocation: Product = {
+  uuid: 'product-withoutlocation',
   name: 'Product without location',
-  images: [''],
+  images: ['https://fakeimg.pl/300/'],
   miniature: '',
   categoryUuid: baby.uuid,
   cip13: '0637218312823',

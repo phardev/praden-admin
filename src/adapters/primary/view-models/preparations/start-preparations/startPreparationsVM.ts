@@ -6,6 +6,8 @@ import {
   getDeliveryAddressVM
 } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 import { useSettingStore } from '@store/settingStore'
+import { addTaxToPrice } from '@utils/price'
+import { getTotalWithTax } from '@core/entities/order'
 
 export interface GlobalPreparationLineVM {
   reference: string
@@ -25,11 +27,11 @@ export interface PreparationLineDetailVM {
   reference: string
   deliveryMethodName: string
   clientLastname: string
-  clientFullname: string
   createdDate: string
   deliveryPrice: string
   deliveryAddress: AddressVM
   lines: Array<DetailPreparationLineVM>
+  totalWithTax: string
 }
 
 export interface StartPreparationsVM {
@@ -93,8 +95,9 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
       href: `${origin}/preparations/${order.uuid}`,
       reference: order.uuid,
       deliveryMethodName: order.delivery.method.name,
-      clientLastname: order.deliveryAddress.lastname,
-      clientFullname: `${order.deliveryAddress.firstname} ${order.deliveryAddress.lastname}`,
+      clientLastname: order.deliveryAddress.lastname
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, ''),
       createdDate: timestampToLocaleString(order.createdAt, 'fr-FR'),
       deliveryPrice:
         order.delivery.method.price > 0
@@ -104,8 +107,7 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
       lines: order.lines
         .map((line): DetailPreparationLineVM => {
           const unitPrice =
-            (line.unitAmount + (line.unitAmount * line.percentTaxRate) / 100) /
-            100
+            addTaxToPrice(line.unitAmount, line.percentTaxRate) / 100
           const quantity = line.expectedQuantity
           return {
             reference: line.cip13,
@@ -117,7 +119,8 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
             totalPrice: formatter.format(unitPrice * quantity)
           }
         })
-        .sort(pickingSort)
+        .sort(pickingSort),
+      totalWithTax: formatter.format(getTotalWithTax(order))
     })
   })
   res.global = res.detail.reduce(

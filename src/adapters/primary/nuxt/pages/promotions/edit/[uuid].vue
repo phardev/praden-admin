@@ -11,11 +11,11 @@
 import { listProducts } from '@core/usecases/product/product-listing/listProducts'
 import { useProductGateway } from '../../../../../../../gateways/productGateway'
 import { usePromotionGateway } from '../../../../../../../gateways/promotionGateway'
-import { editPromotionVM } from '@adapters/primary/view-models/promotions/edit-promotion/editPromotionVM'
 import { getPromotion } from '@core/usecases/promotions/promotion-get/getPromotion'
 import { editPromotion } from '@core/usecases/promotions/promotion-edition/editPromotion'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { useCategoryGateway } from '../../../../../../../gateways/categoryGateway'
+import { promotionFormEditVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormEditVM'
 
 definePageMeta({ layout: 'main' })
 
@@ -29,11 +29,12 @@ onMounted(async () => {
   listProducts(useProductGateway())
   listCategories(useCategoryGateway())
   await getPromotion(promotionUuid, usePromotionGateway())
-  vm.value = editPromotionVM(routeName)
+  vm.value = promotionFormEditVM(routeName)
 })
 
 const validate = async () => {
-  await editPromotion(promotionUuid, vm.value.dto, usePromotionGateway())
+  console.log('vm.value.dto: ', vm.value.getDto())
+  await editPromotion(promotionUuid, vm.value.getDto(), usePromotionGateway())
   router.push('/promotions/')
 }
 </script>

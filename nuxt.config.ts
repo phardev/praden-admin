@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url'
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
+      ENV: process.env.NUXT_PUBLIC_ENV,
       PREPARATION_STARTED_TEMPLATE_ID:
         process.env.PREPARATION_STARTED_TEMPLATE_ID,
       SEND_EMAIL_URL: process.env.SEND_EMAIL_URL,
@@ -44,7 +45,16 @@ export default defineNuxtConfig({
   typescript: {
     strict: true
   },
-  modules: ['@pinia/nuxt', 'nuxt-icon', '@vueuse/nuxt', '@nuxt/ui'],
+  modules: [
+    '@pinia/nuxt',
+    'nuxt-icon',
+    '@vueuse/nuxt',
+    '@nuxt/ui',
+    'nuxt-tiptap-editor'
+  ],
+  tiptap: {
+    prefix: 'Tiptap'
+  },
   dir: {
     // assets: 'custom-assets',
     layouts: './src/adapters/primary/nuxt/layouts',

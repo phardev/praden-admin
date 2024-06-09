@@ -5,6 +5,8 @@
     div(class='sm:flex-auto')
       h1.text-2xl.font-semibold.text-default
         slot(name="title")
+  div(:class="{'mt-4': hasSearchSlot}")
+    slot(name="search")
   .-mx-4.mt-10.ring-1.ring-light(class='sm:-mx-6 md:mx-0 md:rounded-lg')
     table.min-w-full.divide-y.divide-light
       thead.bg-contrast
@@ -78,6 +80,10 @@ const props = defineProps({
     }
   }
 })
+
+const slots = useSlots()
+
+const hasSearchSlot = computed(() => !!slots.search)
 
 const emit = defineEmits<{
   (e: 'clicked', value: any): void

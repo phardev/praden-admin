@@ -2,6 +2,15 @@ import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedEr
 import { usePreparationStore } from '@store/preparationStore'
 import { Order, OrderLine } from '@core/entities/order'
 
+export enum PreparationErrorType {
+  ProductNotInPreparationError = 'ProductNotInPreparationError'
+}
+
+export interface PreparationError {
+  type: PreparationErrorType
+  value: string
+}
+
 export const scanProductToPreparation = (cip13: string) => {
   const preparationStore = usePreparationStore()
   if (!preparationStore.current) throw new NoPreparationSelectedError()
@@ -11,6 +20,12 @@ export const scanProductToPreparation = (cip13: string) => {
   const line = preparation.lines.find((line: OrderLine) => line.cip13 === cip13)
   if (line) {
     line.preparedQuantity++
+    preparationStore.setCurrent(preparation)
+  } else {
+    const error: PreparationError = {
+      type: PreparationErrorType.ProductNotInPreparationError,
+      value: cip13
+    }
+    preparationStore.setError(error)
   }
-  preparationStore.setCurrent(preparation)
 }

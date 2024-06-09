@@ -1,14 +1,18 @@
-import { getProductsVM } from './getProductsVM'
+import { GetProductsVM, getProductsVM } from './getProductsVM'
 import { dolodent, ultraLevure } from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
 import { useProductStore } from '@store/productStore'
 import { useCategoryStore } from '@store/categoryStore'
 import { dents, diarrhee } from '@utils/testData/categories'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { useSearchStore } from '@store/searchStore'
 
 describe('Get products VM', () => {
   let productStore: any
   let categoryStore: any
+  let searchStore: any
+  let vm: GetProductsVM
+  const key = 'list-products'
 
   const expectedHeaders: Array<Header> = [
     {
@@ -45,11 +49,12 @@ describe('Get products VM', () => {
     setActivePinia(createPinia())
     productStore = useProductStore()
     categoryStore = useCategoryStore()
+    searchStore = useSearchStore()
   })
 
   describe('There is no products', () => {
     it('should list nothing', () => {
-      const vm = getProductsVM()
+      vm = whenGetProductsVM(key)
       const expectedVM = {
         headers: expectedHeaders,
         items: []
@@ -64,11 +69,12 @@ describe('Get products VM', () => {
     describe('Categories are not loaded', () => {
       it('should list all of them', () => {
         categoryStore.items = []
-        const vm = getProductsVM()
+        vm = whenGetProductsVM(key)
         const expectedVM = {
           headers: expectedHeaders,
           items: [
             {
+              uuid: dolodent.uuid,
               name: dolodent.name,
               img: dolodent.miniature,
               reference: dolodent.cip13,
@@ -78,6 +84,7 @@ describe('Get products VM', () => {
               availableStock: dolodent.availableStock
             },
             {
+              uuid: ultraLevure.uuid,
               name: ultraLevure.name,
               img: ultraLevure.miniature,
               reference: ultraLevure.cip13,
@@ -94,11 +101,12 @@ describe('Get products VM', () => {
     describe('Categories are loaded', () => {
       it('should list all of them', () => {
         categoryStore.items = [dents, diarrhee]
-        const vm = getProductsVM()
+        vm = whenGetProductsVM(key)
         const expectedVM = {
           headers: expectedHeaders,
           items: [
             {
+              uuid: dolodent.uuid,
               name: dolodent.name,
               img: dolodent.miniature,
               reference: dolodent.cip13,
@@ -108,6 +116,7 @@ describe('Get products VM', () => {
               availableStock: dolodent.availableStock
             },
             {
+              uuid: ultraLevure.uuid,
               name: ultraLevure.name,
               img: ultraLevure.miniature,
               reference: ultraLevure.cip13,
@@ -121,5 +130,61 @@ describe('Get products VM', () => {
         expect(vm).toStrictEqual(expectedVM)
       })
     })
+    describe('Search', () => {
+      describe('There is a search result', () => {
+        beforeEach(() => {
+          categoryStore.items = [dents, diarrhee]
+          searchStore.set(key, [dolodent])
+          vm = whenGetProductsVM(key)
+        })
+        it('should list only the search result', () => {
+          const expectedVM = {
+            headers: expectedHeaders,
+            items: [
+              {
+                uuid: dolodent.uuid,
+                name: dolodent.name,
+                img: dolodent.miniature,
+                reference: dolodent.cip13,
+                category: 'Dents',
+                priceWithoutTax: '5,00\u00A0€',
+                priceWithTax: '5,50\u00A0€',
+                availableStock: dolodent.availableStock
+              }
+            ]
+          }
+          expect(vm).toStrictEqual(expectedVM)
+        })
+      })
+      describe('There is another search result', () => {
+        beforeEach(() => {
+          categoryStore.items = [dents, diarrhee]
+          searchStore.set(key, [ultraLevure])
+          vm = whenGetProductsVM(key)
+        })
+        it('should list only the search result', () => {
+          const expectedVM = {
+            headers: expectedHeaders,
+            items: [
+              {
+                uuid: ultraLevure.uuid,
+                name: ultraLevure.name,
+                img: ultraLevure.miniature,
+                reference: ultraLevure.cip13,
+                category: 'Diarrhée',
+                priceWithoutTax: '4,32\u00A0€',
+                priceWithTax: '4,75\u00A0€',
+                availableStock: ultraLevure.availableStock
+              }
+            ]
+          }
+          expect(vm).toStrictEqual(expectedVM)
+        })
+      })
+    })
   })
+
+  const whenGetProductsVM = (key: string): GetProductsVM => {
+    return getProductsVM(key)
+  }
 })

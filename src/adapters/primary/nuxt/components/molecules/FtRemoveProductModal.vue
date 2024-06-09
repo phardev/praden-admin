@@ -2,9 +2,9 @@
 ft-modal(v-model="model")
   div.mx-10.my-10
     UFormGroup.pb-4(label="Scannez le produit à retirer" name="scanner")
-      ft-text-field(
+      ft-scanner(
         v-model="scan"
-        @keyup.enter="removeProduct"
+        @scanned="removeProduct"
       )
 </template>
 

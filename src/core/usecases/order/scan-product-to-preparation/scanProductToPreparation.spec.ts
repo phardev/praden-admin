@@ -1,5 +1,9 @@
 import { dolodent, ultraLevure } from '@utils/testData/products'
-import { scanProductToPreparation } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
+import {
+  PreparationError,
+  PreparationErrorType,
+  scanProductToPreparation
+} from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
 import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
 import { createPinia, setActivePinia } from 'pinia'
 import { usePreparationStore } from '@store/preparationStore'
@@ -51,10 +55,19 @@ describe('Scan product to preparation', () => {
   })
 
   describe('The product is not in the preparation', () => {
-    it('should do nothing', () => {
+    it('should do nothing the preparation', () => {
       givenCurrentPreparationIs(orderToPrepare1)
       whenAddProductToPreparation(ultraLevure.cip13)
       expectCurrentPreparationToBe(orderToPrepare1)
+    })
+    it('should create an error', () => {
+      givenCurrentPreparationIs(orderToPrepare1)
+      whenAddProductToPreparation(ultraLevure.cip13)
+      const error: PreparationError = {
+        type: PreparationErrorType.ProductNotInPreparationError,
+        value: ultraLevure.cip13
+      }
+      expectPreparationErrorToBe(error)
     })
   })
 
@@ -80,5 +93,9 @@ describe('Scan product to preparation', () => {
 
   const expectCurrentPreparationToBe = (order: Order) => {
     expect(preparationStore.current).toStrictEqual(order)
+  }
+
+  const expectPreparationErrorToBe = (error: PreparationError) => {
+    expect(preparationStore.error).toStrictEqual(error)
   }
 })

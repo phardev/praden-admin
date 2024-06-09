@@ -8,6 +8,7 @@ import {
 } from '@core/entities/order'
 import { timestampToLocaleString } from '@utils/formatters'
 import { HashTable } from '@core/types/types'
+import { PreparationError } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
 
 export enum PreparationStatus {
   NotPrepared,
@@ -31,6 +32,7 @@ export interface GetPreparationVM {
   canValidate: boolean
   canCancel: boolean
   canAskHowToFinish: boolean
+  error?: PreparationError
 }
 
 const canValidate = (
@@ -151,6 +153,7 @@ export const getPreparationVM = (): GetPreparationVM => {
       status: getLineStatus(line)
     }
   })
+  const error = preparationStore.error
   return {
     reference: preparation.uuid,
     headers,
@@ -158,6 +161,7 @@ export const getPreparationVM = (): GetPreparationVM => {
     messages: getMessages(preparation.messages),
     canValidate: canValidate(lines, preparation.messages),
     canCancel: canCancel(preparation.messages),
-    canAskHowToFinish: canAskHowToFinish(lines, preparation)
+    canAskHowToFinish: canAskHowToFinish(lines, preparation),
+    error
   }
 }

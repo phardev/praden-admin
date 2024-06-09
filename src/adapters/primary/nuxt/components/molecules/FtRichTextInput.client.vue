@@ -1,38 +1,56 @@
 <template lang="pug">
 div
   div(v-if="editor")
-    div.flex
-      div.border.border-default.rounded-t-lg.p-2.inline-flex.items-center.gap-1
+    div.flex(v-if="!disabled")
+      div.border.border-neutral-light.rounded-t-lg.p-2.inline-flex.items-center.gap-1
         UDropdown.h-10(
           mode="hover"
           :items="textTypeOptions"
           :popper="{ placement: 'bottom-start' }"
         )
-          ft-button.button-default(
-            trailing-icon="i-heroicons-chevron-down-20-solid"
-          ) {{ lastAction }}
-        ft-button.button-default.h-10(
+          div.flex
+            ft-button(
+              variant="outline"
+              icon="i-heroicons-chevron-down-20-solid"
+              trailing
+            ) {{ lastAction }}
+        ft-button.h-10(
           v-for="option in options"
           :key="option.label"
-          :class="['button-default', { 'is-active': editor.isActive(option.action, option.args) }]"
+          variant="outline"
           :disabled="!editor.can().chain().focus()[option.action](option.args).run()"
           @click="editor.chain().focus()[option.action](option.args).run()"
         )
           icon.icon-sm(:name="option.icon")
-    TiptapEditorContent.border.border-default.rounded-b-lg.rounded-tr-lg(
+    TiptapEditorContent.border.border-neutral-light.rounded-b-lg.rounded-tr-lg(
       class="-mt-px relative"
       :editor="editor"
     )
 </template>
 
 <script setup>
+import FtButton from '@adapters/primary/nuxt/components/atoms/FtButton.vue'
+
+const model = defineModel({ type: String })
+
+const props = defineProps({
+  disabled: {
+    type: Boolean,
+    default: false
+  }
+})
+
 const editor = useEditor({
-  content: "<p>I'm running Tiptap with Vue.js. 🎉</p>",
+  content: model.value,
+  editable: !props.disabled,
   extensions: [TiptapStarterKit],
   editorProps: {
     attributes: {
       class: 'prose prose-sm m-5 focus:outline-none'
     }
+  },
+  onUpdate({ editor }) {
+    model.value = editor.getHTML()
   }
 })
 

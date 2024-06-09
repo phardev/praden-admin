@@ -36,7 +36,6 @@ const emit = defineEmits<{
 }>()
 
 const fileInput = (e: any) => {
-  console.log('e: ', e.target.files)
   e.preventDefault()
   emit('input', e.target.files)
 }

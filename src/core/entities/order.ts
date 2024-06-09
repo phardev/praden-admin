@@ -1,4 +1,5 @@
 import { Timestamp, UUID } from '@core/types/types'
+import { addTaxToPrice } from '@utils/price'
 
 export interface Address {
   firstname: string
@@ -82,4 +83,23 @@ export interface Order {
   contact: Contact
   delivery: OrderDelivery
   messages: Array<Message>
+}
+
+// export const getTotalWithoutTax = (lines: Array<OrderLine>) => {
+//   return lines.reduce((acc: number, line: OrderLine) => {
+//     return acc + line.preparedQuantity * line.unitAmount
+//   }, 0)
+// }
+
+export const getTotalWithTax = (order: Order): number => {
+  const totalLine = order.lines.reduce((acc: number, line: OrderLine) => {
+    return (
+      acc +
+      (line.expectedQuantity *
+        addTaxToPrice(line.unitAmount, line.percentTaxRate)) /
+        100
+    )
+  }, 0)
+  const deliveryPrice = order.delivery.method.price / 100
+  return totalLine + deliveryPrice
 }
