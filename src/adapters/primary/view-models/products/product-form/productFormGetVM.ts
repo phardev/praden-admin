@@ -1,10 +1,15 @@
 import { useFormStore } from '@store/formStore'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import type { Category } from '@core/entities/category'
-import { CreateProductCategoriesVM } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+import {
+  CreateProductCategoriesVM,
+  CreateProductLocationsVM
+} from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import { useProductStore } from '@store/productStore'
 import { useCategoryStore } from '@store/categoryStore'
 import { addTaxToPrice } from '@utils/price'
+import { useLocationStore } from '@store/locationStore'
+import { Location, sortLocationByOrder } from '@core/entities/location'
 
 export class FormFieldsReader {
   protected readonly key: string
@@ -26,10 +31,12 @@ export interface FormInitializer {
 
 export class ProductFormFieldsReader extends FormFieldsReader {
   protected categoryStore: any
+  protected locationStore: any
 
   constructor(key: string) {
     super(key)
     this.categoryStore = useCategoryStore()
+    this.locationStore = useLocationStore()
   }
 
   getAvailableCategories(): CreateProductCategoriesVM {
@@ -41,17 +48,29 @@ export class ProductFormFieldsReader extends FormFieldsReader {
       }
     })
   }
+
+  getAvailableLocations(): CreateProductLocationsVM {
+    const locations = this.locationStore.items
+    return locations.sort(sortLocationByOrder).map((l: Location) => {
+      return {
+        uuid: l.uuid,
+        name: l.name
+      }
+    })
+  }
 }
 
 export class ExistingProductFormInitializer implements FormInitializer {
   protected readonly key: string
   protected formStore: any
   protected productStore: any
+  protected locationStore: any
 
   constructor(key: string) {
     this.key = key
     this.formStore = useFormStore()
     this.productStore = useProductStore()
+    this.locationStore = useLocationStore()
   }
 
   init() {
@@ -72,13 +91,24 @@ export class ExistingProductFormInitializer implements FormInitializer {
           .toFixed(2)
           .toString() || undefined,
       laboratory: product.laboratory,
-      location: product.location,
+      locations: product.locations,
       availableStock: product.availableStock,
       newImages: product.newImages || [],
       images: product.images || [],
       description: product.description,
       instructionsForUse: product.instructionsForUse,
       composition: product.composition
+    })
+  }
+
+  private getProductLocations(locations: object): Array<any> {
+    const allLocations = this.locationStore.items
+    return allLocations.sort(sortLocationByOrder).map((location) => {
+      return {
+        uuid: location.uuid,
+        label: location.name,
+        value: locations[location.uuid]
+      }
     })
   }
 }
@@ -109,6 +139,10 @@ export class ProductFormGetVM {
 
   getAvailableCategories(): CreateProductCategoriesVM {
     return this.fieldsReader.getAvailableCategories()
+  }
+
+  getAvailableLocations(): CreateProductLocationsVM {
+    return this.fieldsReader.getAvailableLocations()
   }
 
   getDisplayValidate(): boolean {

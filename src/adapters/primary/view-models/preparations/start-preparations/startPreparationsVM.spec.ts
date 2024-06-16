@@ -33,8 +33,8 @@ describe('Start preparations VM', () => {
   const detailHeaders: Array<Header> = [
     { name: 'Référence', value: 'reference' },
     { name: 'Nom', value: 'name' },
-    { name: zoneGeo.name, value: 'locations' },
-    { name: reserve.name, value: 'locations' },
+    { name: zoneGeo.name, value: `locations.${zoneGeo.uuid}` },
+    { name: reserve.name, value: `locations.${reserve.uuid}` },
     { name: 'Prix unitaire', value: 'unitPrice' },
     { name: 'Quantité', value: 'quantity' },
     { name: 'TVA', value: 'taxRate' },
@@ -44,8 +44,8 @@ describe('Start preparations VM', () => {
   const globalHeaders: Array<Header> = [
     { name: 'Référence', value: 'reference' },
     { name: 'Nom', value: 'name' },
-    { name: zoneGeo.name, value: 'locations' },
-    { name: reserve.name, value: 'locations' },
+    { name: zoneGeo.name, value: `locations.${zoneGeo.uuid}` },
+    { name: reserve.name, value: `locations.${reserve.uuid}` },
     { name: 'Quantité', value: 'quantity' }
   ]
 
@@ -54,7 +54,7 @@ describe('Start preparations VM', () => {
     preparationsStore = usePreparationStore()
     settingStore = useSettingStore()
     locationStore = useLocationStore()
-    givenExistingLocations(zoneGeo, reserve)
+    givenExistingLocations(reserve, zoneGeo)
   })
 
   describe('There is some existing preparations', () => {

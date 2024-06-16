@@ -13,7 +13,7 @@ export interface Product {
   ean13: string
   priceWithoutTax: number
   percentTaxRate: number
-  locations: Array<string>
+  locations: object
   availableStock: number
   laboratory: string
   description: string

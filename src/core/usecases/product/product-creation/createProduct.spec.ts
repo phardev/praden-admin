@@ -8,16 +8,36 @@ import {
 import { Product } from '@core/entities/product'
 import { dolodent, hemoclar } from '@utils/testData/products'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { reserve, zoneGeo } from '@utils/testData/locations'
+import { InMemoryCategoryGateway } from '@adapters/secondary/category-gateways/InMemoryCategoryGateway'
+import { InMemoryLocationGateway } from '@adapters/secondary/location-gateways/inMemoryLocationGateway'
+import { useCategoryStore } from '@store/categoryStore'
+import { useLocationStore } from '@store/locationStore'
+import { CategoryDoesNotExistsError } from '@core/errors/CategoryDoesNotExistsError'
+import { diarrhee, mum } from '@utils/testData/categories'
+import { Category } from '@core/entities/category'
+import { Location } from '@core/entities/location'
+import { LocationDoesNotExistsError } from '@core/errors/LocationDoesNotExistsError'
 
 describe('Create product', () => {
   let productStore: any
+  let categoryStore: any
+  let locationStore: any
   let productGateway: InMemoryProductGateway
+  let categoryGateway: InMemoryCategoryGateway
+  let locationGateway: InMemoryLocationGateway
   const uuidGenerator = new FakeUuidGenerator()
 
   beforeEach(() => {
     setActivePinia(createPinia())
     productStore = useProductStore()
+    categoryStore = useCategoryStore()
+    locationStore = useLocationStore()
     productGateway = new InMemoryProductGateway(uuidGenerator)
+    categoryGateway = new InMemoryCategoryGateway(new FakeUuidGenerator())
+    locationGateway = new InMemoryLocationGateway()
+    givenThereIsExistingCategories(mum, diarrhee)
+    givenThereIsExistingLocations(zoneGeo, reserve)
   })
   describe('Simple product', () => {
     describe('For a product', () => {
@@ -28,10 +48,10 @@ describe('Create product', () => {
         cip13: '1234567890123',
         ean13: '1234567890123',
         images: [new File(['data1'], 'File 1', { type: 'image/png' })],
-        categoryUuid: 'category-uuid',
+        categoryUuid: mum.uuid,
         priceWithoutTax: '1',
         percentTaxRate: '10',
-        location: 'product-location',
+        locations: { [zoneGeo.uuid]: 'product-location' },
         availableStock: '12',
         laboratory: 'product-laboratory',
         description: '<p>description</p>',
@@ -49,7 +69,7 @@ describe('Create product', () => {
         categoryUuid: dto.categoryUuid,
         priceWithoutTax: 100,
         percentTaxRate: 10,
-        location: dto.location,
+        locations: dto.locations,
         availableStock: 12,
         laboratory: dto.laboratory,
         description: dto.description,
@@ -79,10 +99,13 @@ describe('Create product', () => {
           new File(['data2'], 'File 2', { type: 'image/jpeg' }),
           new File(['data3'], 'File 3', { type: 'image/gif' })
         ],
-        categoryUuid: 'another-category-uuid',
+        categoryUuid: diarrhee.uuid,
         priceWithoutTax: '12.5',
         percentTaxRate: '10.5',
-        location: 'another-product-location',
+        locations: {
+          [zoneGeo.uuid]: 'another-product-location',
+          [reserve.uuid]: 'RESERVE'
+        },
         availableStock: '21',
         laboratory: 'another-product-laboratory',
         description: '<p>another description</p>',
@@ -104,7 +127,7 @@ describe('Create product', () => {
         categoryUuid: dto.categoryUuid,
         priceWithoutTax: 1250,
         percentTaxRate: 10.5,
-        location: dto.location,
+        locations: dto.locations,
         availableStock: 21,
         laboratory: dto.laboratory,
         description: dto.description,
@@ -119,8 +142,64 @@ describe('Create product', () => {
       it('should save the product in product gateway', async () => {
         await expectProductGatewayToEqual(dolodent, hemoclar, expectedProduct)
       })
-      it('should save the product in product store', async () => {
-        await expectProductStoreToEqual(dolodent, hemoclar, expectedProduct)
+      it('should save the product in product store', () => {
+        expectProductStoreToEqual(dolodent, hemoclar, expectedProduct)
+      })
+    })
+  })
+
+  describe('Errors', () => {
+    describe('The category does not exists', () => {
+      const uuid = 'new-uuid'
+      const dto: CreateProductDTO = {
+        name: 'Created product',
+        cip7: '1234567',
+        cip13: '1234567890123',
+        ean13: '1234567890123',
+        images: [new File(['data1'], 'File 1', { type: 'image/png' })],
+        categoryUuid: 'not-existing-category',
+        priceWithoutTax: '1',
+        percentTaxRate: '10',
+        locations: { [zoneGeo.uuid]: 'product-location' },
+        availableStock: '12',
+        laboratory: 'product-laboratory',
+        description: '<p>description</p>',
+        instructionsForUse: '<p>instructions For Use</p>',
+        composition: '<p>composition</p>'
+      }
+      it('should throw an error', async () => {
+        uuidGenerator.setNext(uuid)
+        await expect(whenCreateProduct(dto)).rejects.toThrow(
+          CategoryDoesNotExistsError
+        )
+      })
+    })
+    describe('The location does not exists', () => {
+      const uuid = 'new-uuid'
+      const dto: CreateProductDTO = {
+        name: 'Created product',
+        cip7: '1234567',
+        cip13: '1234567890123',
+        ean13: '1234567890123',
+        images: [new File(['data1'], 'File 1', { type: 'image/png' })],
+        categoryUuid: mum.uuid,
+        priceWithoutTax: '1',
+        percentTaxRate: '10',
+        locations: {
+          [zoneGeo.uuid]: 'product-location',
+          ['not-exists']: 'value'
+        },
+        availableStock: '12',
+        laboratory: 'product-laboratory',
+        description: '<p>description</p>',
+        instructionsForUse: '<p>instructions For Use</p>',
+        composition: '<p>composition</p>'
+      }
+      it('should throw an error', async () => {
+        uuidGenerator.setNext(uuid)
+        await expect(whenCreateProduct(dto)).rejects.toThrow(
+          LocationDoesNotExistsError
+        )
       })
     })
   })
@@ -130,8 +209,18 @@ describe('Create product', () => {
     productStore.items = products
   }
 
+  const givenThereIsExistingCategories = (...categories: Array<Category>) => {
+    categoryGateway.feedWith(...categories)
+    categoryStore.items = categories
+  }
+
+  const givenThereIsExistingLocations = (...locations: Array<Location>) => {
+    locationGateway.feedWith(...locations)
+    locationStore.items = locations
+  }
+
   const whenCreateProduct = async (dto: CreateProductDTO) => {
-    await createProduct(dto, productGateway)
+    await createProduct(dto, productGateway, categoryGateway, locationGateway)
   }
   const expectProductStoreToEqual = (...products: Array<Product>) => {
     expect(productStore.items).toStrictEqual(products)

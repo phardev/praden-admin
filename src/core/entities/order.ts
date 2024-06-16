@@ -24,7 +24,7 @@ export interface OrderLine {
   unitAmount: number
   expectedQuantity: number
   preparedQuantity: number
-  locations: Array<string>
+  locations: object
   percentTaxRate: number
   deliveryStatus: DeliveryStatus
   updatedAt: Timestamp

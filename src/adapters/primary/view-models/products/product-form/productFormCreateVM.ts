@@ -9,8 +9,11 @@ import {
   FormInitializer,
   ProductFormFieldsReader
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import { useLocationStore } from '@store/locationStore'
+import { Location } from '@core/entities/location'
 
 export type CreateProductCategoriesVM = Array<Pick<Category, 'uuid' | 'name'>>
+export type CreateProductLocationsVM = Array<Pick<Location, 'uuid' | 'name'>>
 
 export type FieldHandler = (value: any) => void | Promise<void>
 
@@ -40,7 +43,8 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
       priceWithoutTax: this.setPriceWithoutTax.bind(this),
       percentTaxRate: this.setPercentTaxRate.bind(this),
       priceWithTax: this.setPriceWithTax.bind(this),
-      newImages: this.setNewImages.bind(this)
+      newImages: this.setNewImages.bind(this),
+      locations: this.setLocations.bind(this)
     }
   }
 
@@ -111,17 +115,27 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
     }
     super.set('images', images)
   }
+
+  setLocations(location: any): void {
+    if (location.uuid) {
+      const locations = this.fieldsReader.get('locations')
+      locations[location.uuid] = location.value
+      super.set('locations', locations)
+    }
+  }
 }
 
 export class NewProductFormInitializer implements FormInitializer {
   protected readonly key: string
   protected formStore: any
   protected productStore: any
+  protected locationStore: any
 
   constructor(key: string) {
     this.key = key
     this.formStore = useFormStore()
     this.productStore = useProductStore()
+    this.locationStore = useLocationStore()
   }
 
   init() {
@@ -135,7 +149,7 @@ export class NewProductFormInitializer implements FormInitializer {
       percentTaxRate: undefined,
       priceWithTax: undefined,
       laboratory: '',
-      location: '',
+      locations: {},
       availableStock: '',
       newImages: [],
       images: [],
@@ -179,6 +193,10 @@ export class ProductFormCreateVM {
     return this.fieldsReader.getAvailableCategories()
   }
 
+  getAvailableLocations(): CreateProductLocationsVM {
+    return this.fieldsReader.getAvailableLocations()
+  }
+
   getDto(): CreateProductDTO {
     return {
       name: this.fieldsReader.get('name'),
@@ -190,7 +208,7 @@ export class ProductFormCreateVM {
       images: this.fieldsReader.get('newImages'),
       priceWithoutTax: this.fieldsReader.get('priceWithoutTax'),
       percentTaxRate: this.fieldsReader.get('percentTaxRate').toString(),
-      location: this.fieldsReader.get('location'),
+      locations: this.fieldsReader.get('locations'),
       availableStock: this.fieldsReader.get('availableStock'),
       description: this.fieldsReader.get('description'),
       instructionsForUse: this.fieldsReader.get('instructionsForUse'),

@@ -33,7 +33,6 @@ onMounted(async () => {
 })
 
 const validate = async () => {
-  console.log('vm.value.dto: ', vm.value.getDto())
   await editPromotion(promotionUuid, vm.value.getDto(), usePromotionGateway())
   router.push('/promotions/')
 }

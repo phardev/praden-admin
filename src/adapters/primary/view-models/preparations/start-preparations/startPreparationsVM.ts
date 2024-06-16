@@ -9,11 +9,13 @@ import { useSettingStore } from '@store/settingStore'
 import { addTaxToPrice } from '@utils/price'
 import { getTotalWithTax } from '@core/entities/order'
 import { useLocationStore } from '@store/locationStore'
+import { zoneGeo } from '@utils/testData/locations'
+import { sortLocationByOrder } from '@core/entities/location'
 
 export interface GlobalPreparationLineVM {
   reference: string
   name: string
-  locations: Array<string>
+  locations: object
   quantity: number
 }
 
@@ -43,9 +45,9 @@ export interface StartPreparationsVM {
 }
 
 const sortByLocation = (a: any, b: any): number => {
-  if (!a.locations.length) return 1
-  if (!b.locations.length) return -1
-  return a.locations[0] < b.locations[0] ? -1 : 1
+  if (!a.locations[zoneGeo.uuid]) return 1
+  if (!b.locations[zoneGeo.uuid]) return -1
+  return a.locations[zoneGeo.uuid] < b.locations[zoneGeo.uuid] ? -1 : 1
 }
 
 const sortByProductName = (a: any, b: any): number => {
@@ -62,10 +64,10 @@ export enum PickingSortType {
 const computeLocationHeaders = () => {
   const locationStore = useLocationStore()
   const locations = locationStore.items
-  return locations.map((l) => {
+  return locations.sort(sortLocationByOrder).map((l) => {
     return {
       name: l.name,
-      value: 'locations'
+      value: `locations.${l.uuid}`
     }
   })
 }

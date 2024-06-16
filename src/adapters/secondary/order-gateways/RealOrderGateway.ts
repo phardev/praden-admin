@@ -2,6 +2,7 @@ import { OrderGateway } from '@core/gateways/orderGateway'
 import { Order } from '@core/entities/order'
 import type { UUID } from '@core/types/types'
 import axios from 'axios'
+import { zoneGeo } from '@utils/testData/locations'
 
 export abstract class RealGateway {
   protected readonly baseUrl: string
@@ -89,7 +90,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
     copy.lines = copy.lines.map((l: any) => {
       return {
         ...l,
-        locations: [l.location]
+        locations: { [zoneGeo.uuid]: l.location }
       }
     })
     copy.lines.forEach((l: any) => {
