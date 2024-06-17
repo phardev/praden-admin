@@ -36,7 +36,7 @@ tab-group.border-b.border-gray-200(as="div")
         ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
           v-if="ordersSelectedVM.items.length > 0"
           @click="start"
-        ) Commencer les préparations
+        ) {{ index < 2 ? 'Commencer les préparations' : 'Imprimer les BL' }}
 </template>
 
 <script lang="ts" setup>

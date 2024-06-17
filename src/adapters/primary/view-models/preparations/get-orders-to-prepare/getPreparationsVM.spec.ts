@@ -116,7 +116,7 @@ describe('Get orders to prepare VM', () => {
       const expectedVM: GetPreparationsVM = {
         'À terminer': {
           count: 1,
-          canSelect: false,
+          canSelect: true,
           table: {
             headers: expectedHeaders,
             items: [
@@ -288,7 +288,7 @@ describe('Get orders to prepare VM', () => {
       },
       'À terminer': {
         count: 0,
-        canSelect: false,
+        canSelect: true,
         table: {
           headers: expectedHeaders,
           items: []

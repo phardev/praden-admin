@@ -161,7 +161,7 @@ export const getPreparationsVM = (): GetPreparationsVM => {
     {
       name: 'À terminer',
       filter: toContinueFilter,
-      canSelect: false
+      canSelect: true
     },
     {
       name: 'À completer',
