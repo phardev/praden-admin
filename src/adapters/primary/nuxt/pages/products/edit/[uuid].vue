@@ -15,6 +15,7 @@ import { listProducts } from '@core/usecases/product/product-listing/listProduct
 import { getProduct } from '@core/usecases/product/get-product/get-product'
 import { productFormEditVM } from '@adapters/primary/view-models/products/product-form/productFormEditVM'
 import { editProduct } from '@core/usecases/product/product-edition/editProduct'
+import { useLocationGateway } from '../../../../../../../gateways/locationGateway'
 
 definePageMeta({ layout: 'main' })
 
@@ -38,7 +39,8 @@ const validate = async () => {
     productUuid,
     vm.value.getDto(),
     useProductGateway(),
-    useCategoryGateway()
+    useCategoryGateway(),
+    useLocationGateway()
   )
   router.push('/products/')
 }

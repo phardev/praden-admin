@@ -14,19 +14,28 @@ import { Category } from '@core/entities/category'
 import { InMemoryCategoryGateway } from '@adapters/secondary/category-gateways/InMemoryCategoryGateway'
 import { useCategoryStore } from '@store/categoryStore'
 import { CategoryDoesNotExistsError } from '@core/errors/CategoryDoesNotExistsError'
+import { reserve, zoneGeo } from '@utils/testData/locations'
+import { Location } from '@core/entities/location'
+import { InMemoryLocationGateway } from '@adapters/secondary/location-gateways/inMemoryLocationGateway'
+import { useLocationStore } from '@store/locationStore'
+import { LocationDoesNotExistsError } from '@core/errors/LocationDoesNotExistsError'
 
 describe('Product edition', () => {
   let productStore: any
   let categoryStore: any
+  let locationStore: any
   let productGateway: InMemoryProductGateway
   let categoryGateway: InMemoryCategoryGateway
+  let locationGateway: InMemoryLocationGateway
 
   beforeEach(() => {
     setActivePinia(createPinia())
     productStore = useProductStore()
     categoryStore = useCategoryStore()
+    locationStore = useLocationStore()
     productGateway = new InMemoryProductGateway(new FakeUuidGenerator())
     categoryGateway = new InMemoryCategoryGateway(new FakeUuidGenerator())
+    locationGateway = new InMemoryLocationGateway()
   })
 
   describe('The product exists', () => {
@@ -106,6 +115,53 @@ describe('Product edition', () => {
         })
       })
     })
+    describe('Change location', () => {
+      beforeEach(() => {
+        givenExistingLocations(zoneGeo, reserve)
+      })
+      const product = JSON.parse(JSON.stringify(ultraLevure))
+      describe('The location exists', () => {
+        it('should change the location', async () => {
+          const dto: EditProductDTO = {
+            locations: { [zoneGeo.uuid]: 'new-zoneGeo' }
+          }
+          const expectedProduct = {
+            ...product,
+            locations: {
+              ...ultraLevure.locations,
+              ...dto.locations
+            }
+          }
+          await whenEditProduct(product.uuid, dto)
+          expect(productStore.items).toStrictEqual([
+            chamomilla,
+            expectedProduct,
+            dolodent
+          ])
+        })
+      })
+      describe('The location does not exists', () => {
+        it('should throw an error', async () => {
+          const dto: EditProductDTO = {
+            locations: { ['not-existing']: 'value' }
+          }
+          await expect(whenEditProduct(product.uuid, dto)).rejects.toThrow(
+            LocationDoesNotExistsError
+          )
+        })
+        it('should check all locations', async () => {
+          const dto: EditProductDTO = {
+            locations: {
+              [zoneGeo.uuid]: 'new-zoneGeo',
+              ['not-existing']: 'value'
+            }
+          }
+          await expect(whenEditProduct(product.uuid, dto)).rejects.toThrow(
+            LocationDoesNotExistsError
+          )
+        })
+      })
+    })
   })
 
   const givenExistingProducts = (...products: Array<Product>) => {
@@ -118,7 +174,18 @@ describe('Product edition', () => {
     categoryGateway.feedWith(...categories)
   }
 
+  const givenExistingLocations = (...locations: Array<Location>) => {
+    locationStore.items = locations
+    locationGateway.feedWith(...locations)
+  }
+
   const whenEditProduct = async (uuid: UUID, dto: EditProductDTO) => {
-    await editProduct(uuid, dto, productGateway, categoryGateway)
+    await editProduct(
+      uuid,
+      dto,
+      productGateway,
+      categoryGateway,
+      locationGateway
+    )
   }
 })

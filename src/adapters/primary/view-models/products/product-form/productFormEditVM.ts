@@ -4,6 +4,7 @@ import {
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import {
   CreateProductCategoriesVM,
+  CreateProductLocationsVM,
   ProductFormFieldsWriter
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
@@ -42,6 +43,10 @@ export class ProductFormEditVM {
     return this.fieldsReader.getAvailableCategories()
   }
 
+  getAvailableLocations(): CreateProductLocationsVM {
+    return this.fieldsReader.getAvailableLocations()
+  }
+
   getDto(): EditProductDTO {
     return {
       name: this.fieldsReader.get('name'),
@@ -53,7 +58,7 @@ export class ProductFormEditVM {
       images: this.fieldsReader.get('newImages'),
       priceWithoutTax: this.fieldsReader.get('priceWithoutTax'),
       percentTaxRate: this.fieldsReader.get('percentTaxRate').toString(),
-      location: this.fieldsReader.get('location'),
+      locations: this.fieldsReader.get('locations'),
       availableStock: this.fieldsReader.get('availableStock'),
       description: this.fieldsReader.get('description'),
       instructionsForUse: this.fieldsReader.get('instructionsForUse'),

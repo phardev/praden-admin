@@ -28,7 +28,6 @@ const routeName = router.currentRoute.value.name
 const vm = ref(promotionFormCreateVM(routeName))
 
 const validate = async () => {
-  console.log('dto: ', vm.value.getDto())
   await createPromotion(vm.value.getDto(), usePromotionGateway())
   router.push('/promotions/')
 }

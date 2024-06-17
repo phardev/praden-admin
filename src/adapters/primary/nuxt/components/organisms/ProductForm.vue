@@ -85,11 +85,15 @@ div(v-if="currentVM")
             @update:model-value="priceWithTaxChanged"
           )
       template(#stock)
-        UFormGroup.pb-4(label="Code Géographique" name="location")
+        UFormGroup.pb-4(
+          v-for="location in currentVM.getAvailableLocations()"
+          :key="location.uuid"
+          :label="location.name"
+        )
           ft-text-field(
-            :model-value="currentVM.get('location').value"
-            :disabled="!currentVM.get('location').canEdit"
-            @update:model-value="locationChanged"
+            :model-value="currentVM.get('locations').value[location.uuid]"
+            :disabled="!currentVM.get('locations').canEdit"
+            @update:model-value="(newValue) => locationChanged(location.uuid, newValue)"
           )
         UFormGroup.pb-4(label="Stock disponible" name="availableStock")
           ft-text-field(
@@ -126,7 +130,14 @@ div(v-if="currentVM")
 </template>
 
 <script lang="ts" setup>
+import { listLocations } from '@core/usecases/locations/location-listing/listLocations'
+import { useLocationGateway } from '../../../../../../gateways/locationGateway'
+
 definePageMeta({ layout: 'main' })
+
+onMounted(() => {
+  listLocations(useLocationGateway())
+})
 
 const items = [
   {
@@ -212,8 +223,8 @@ const clearCategory = () => {
   currentVM?.value?.set('categoryUuid', undefined)
 }
 
-const locationChanged = (location: string) => {
-  currentVM?.value?.set('location', location)
+const locationChanged = (uuid: string, value: string) => {
+  currentVM?.value?.set('locations', { uuid, value })
 }
 
 const availableStockChanged = (availableStock: string) => {

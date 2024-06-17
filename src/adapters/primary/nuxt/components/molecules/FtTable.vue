@@ -44,7 +44,7 @@
             v-for="(header, headerIndex) in headers"
             :key="headerIndex"
           )
-            slot(:name="header.value" :item="item") {{ item[header.value] }}
+            slot(:name="header.value" :item="item") {{ getValue(item, header.value) }}
 </template>
 
 <script lang="ts" setup>
@@ -117,5 +117,9 @@ const selectAll = () => {
     'select-all',
     props.items?.map((i: any) => i[props.itemKey])
   )
+}
+
+const getValue = (item, key) => {
+  return key.split('.').reduce((item, key) => item && item[key], item)
 }
 </script>

@@ -19,17 +19,22 @@ import {
 } from '@utils/testData/products'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { useSettingStore } from '@store/settingStore'
+import { useLocationStore } from '@store/locationStore'
+import { reserve, zoneGeo } from '@utils/testData/locations'
+import { Location } from '@core/entities/location'
 
 describe('Start preparations VM', () => {
   let preparationsStore: any
   let settingStore: any
+  let locationStore: any
 
   const origin = 'https://my-website'
 
   const detailHeaders: Array<Header> = [
     { name: 'Référence', value: 'reference' },
     { name: 'Nom', value: 'name' },
-    { name: 'Zone géo', value: 'location' },
+    { name: zoneGeo.name, value: `locations.${zoneGeo.uuid}` },
+    { name: reserve.name, value: `locations.${reserve.uuid}` },
     { name: 'Prix unitaire', value: 'unitPrice' },
     { name: 'Quantité', value: 'quantity' },
     { name: 'TVA', value: 'taxRate' },
@@ -39,7 +44,8 @@ describe('Start preparations VM', () => {
   const globalHeaders: Array<Header> = [
     { name: 'Référence', value: 'reference' },
     { name: 'Nom', value: 'name' },
-    { name: 'Zone géo', value: 'location' },
+    { name: zoneGeo.name, value: `locations.${zoneGeo.uuid}` },
+    { name: reserve.name, value: `locations.${reserve.uuid}` },
     { name: 'Quantité', value: 'quantity' }
   ]
 
@@ -47,6 +53,8 @@ describe('Start preparations VM', () => {
     setActivePinia(createPinia())
     preparationsStore = usePreparationStore()
     settingStore = useSettingStore()
+    locationStore = useLocationStore()
+    givenExistingLocations(reserve, zoneGeo)
   })
 
   describe('There is some existing preparations', () => {
@@ -85,7 +93,7 @@ describe('Start preparations VM', () => {
               {
                 reference: dolodent.cip13,
                 name: dolodent.name,
-                location: dolodent.location,
+                locations: dolodent.locations,
                 quantity: 2
               }
             ],
@@ -108,7 +116,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 2,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -132,13 +140,13 @@ describe('Start preparations VM', () => {
               {
                 reference: ultraLevure.cip13,
                 name: ultraLevure.name,
-                location: ultraLevure.location,
+                locations: ultraLevure.locations,
                 quantity: 2
               },
               {
                 reference: dolodent.cip13,
                 name: dolodent.name,
-                location: dolodent.location,
+                locations: dolodent.locations,
                 quantity: 1
               }
             ],
@@ -161,7 +169,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: ultraLevure.cip13,
                     name: ultraLevure.name,
-                    location: ultraLevure.location,
+                    locations: ultraLevure.locations,
                     quantity: 2,
                     unitPrice: '4,75\u00A0€',
                     taxRate: '10 %',
@@ -170,7 +178,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 1,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -194,13 +202,13 @@ describe('Start preparations VM', () => {
               {
                 reference: calmosine.cip13,
                 name: calmosine.name,
-                location: calmosine.location,
+                locations: calmosine.locations,
                 quantity: 2
               },
               {
                 reference: productWithoutLocation.cip13,
                 name: productWithoutLocation.name,
-                location: productWithoutLocation.location,
+                locations: productWithoutLocation.locations,
                 quantity: 3
               }
             ],
@@ -225,7 +233,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: calmosine.cip13,
                     name: calmosine.name,
-                    location: calmosine.location,
+                    locations: calmosine.locations,
                     quantity: 2,
                     unitPrice: '8,91\u00A0€',
                     taxRate: '10 %',
@@ -234,7 +242,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: productWithoutLocation.cip13,
                     name: productWithoutLocation.name,
-                    location: productWithoutLocation.location,
+                    locations: productWithoutLocation.locations,
                     quantity: 3,
                     unitPrice: '6,49\u00A0€',
                     taxRate: '10 %',
@@ -262,7 +270,7 @@ describe('Start preparations VM', () => {
               {
                 reference: dolodent.cip13,
                 name: dolodent.name,
-                location: dolodent.location,
+                locations: dolodent.locations,
                 quantity: 2
               }
             ],
@@ -285,7 +293,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 2,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -309,13 +317,13 @@ describe('Start preparations VM', () => {
               {
                 reference: dolodent.cip13,
                 name: dolodent.name,
-                location: dolodent.location,
+                locations: dolodent.locations,
                 quantity: 1
               },
               {
                 reference: ultraLevure.cip13,
                 name: ultraLevure.name,
-                location: ultraLevure.location,
+                locations: ultraLevure.locations,
                 quantity: 2
               }
             ],
@@ -338,7 +346,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 1,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -347,7 +355,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: ultraLevure.cip13,
                     name: ultraLevure.name,
-                    location: ultraLevure.location,
+                    locations: ultraLevure.locations,
                     quantity: 2,
                     unitPrice: '4,75\u00A0€',
                     taxRate: '10 %',
@@ -372,7 +380,7 @@ describe('Start preparations VM', () => {
             {
               reference: dolodent.cip13,
               name: dolodent.name,
-              location: dolodent.location,
+              locations: dolodent.locations,
               quantity: 1
             }
           ],
@@ -395,7 +403,7 @@ describe('Start preparations VM', () => {
                 {
                   reference: dolodent.cip13,
                   name: dolodent.name,
-                  location: dolodent.location,
+                  locations: dolodent.locations,
                   quantity: 1,
                   unitPrice: '5,50\u00A0€',
                   taxRate: '10 %',
@@ -420,7 +428,7 @@ describe('Start preparations VM', () => {
             {
               reference: dolodent.cip13,
               name: dolodent.name,
-              location: dolodent.location,
+              locations: dolodent.locations,
               quantity: 1
             }
           ],
@@ -443,7 +451,7 @@ describe('Start preparations VM', () => {
                 {
                   reference: dolodent.cip13,
                   name: dolodent.name,
-                  location: dolodent.location,
+                  locations: dolodent.locations,
                   quantity: 1,
                   unitPrice: '5,50\u00A0€',
                   taxRate: '10 %',
@@ -475,13 +483,13 @@ describe('Start preparations VM', () => {
               {
                 reference: ultraLevure.cip13,
                 name: ultraLevure.name,
-                location: ultraLevure.location,
+                locations: ultraLevure.locations,
                 quantity: 2
               },
               {
                 reference: dolodent.cip13,
                 name: dolodent.name,
-                location: dolodent.location,
+                locations: dolodent.locations,
                 quantity: 3
               }
             ],
@@ -504,7 +512,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 2,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -531,7 +539,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: ultraLevure.cip13,
                     name: ultraLevure.name,
-                    location: ultraLevure.location,
+                    locations: ultraLevure.locations,
                     quantity: 2,
                     unitPrice: '4,75\u00A0€',
                     taxRate: '10 %',
@@ -540,7 +548,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 1,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -571,13 +579,13 @@ describe('Start preparations VM', () => {
               {
                 reference: dolodent.cip13,
                 name: dolodent.name,
-                location: dolodent.location,
+                locations: dolodent.locations,
                 quantity: 3
               },
               {
                 reference: ultraLevure.cip13,
                 name: ultraLevure.name,
-                location: ultraLevure.location,
+                locations: ultraLevure.locations,
                 quantity: 2
               }
             ],
@@ -600,7 +608,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 2,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -627,7 +635,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: dolodent.cip13,
                     name: dolodent.name,
-                    location: dolodent.location,
+                    locations: dolodent.locations,
                     quantity: 1,
                     unitPrice: '5,50\u00A0€',
                     taxRate: '10 %',
@@ -636,7 +644,7 @@ describe('Start preparations VM', () => {
                   {
                     reference: ultraLevure.cip13,
                     name: ultraLevure.name,
-                    location: ultraLevure.location,
+                    locations: ultraLevure.locations,
                     quantity: 2,
                     unitPrice: '4,75\u00A0€',
                     taxRate: '10 %',
@@ -652,6 +660,10 @@ describe('Start preparations VM', () => {
       })
     })
   })
+
+  const givenExistingLocations = (...locations: Array<Location>) => {
+    locationStore.items = locations
+  }
 
   const getStartPreparationsVM = (origin: string) => {
     return startPreparationsVM(origin)

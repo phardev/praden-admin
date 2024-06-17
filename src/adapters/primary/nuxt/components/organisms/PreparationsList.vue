@@ -50,10 +50,13 @@ import { resetPreparationSelection } from '@core/usecases/order/reset-preparatio
 import { useProductGateway } from '../../../../../../gateways/productGateway'
 import { useOrderGateway } from '../../../../../../gateways/orderGateway'
 import { useEmailGateway } from '../../../../../../gateways/emailGateway'
+import { listLocations } from '@core/usecases/locations/location-listing/listLocations'
+import { useLocationGateway } from '../../../../../../gateways/locationGateway'
 
 definePageMeta({ layout: 'main' })
 
 onMounted(() => {
+  listLocations(useLocationGateway())
   listOrdersToPrepare(useOrderGateway(), useProductGateway())
 })
 

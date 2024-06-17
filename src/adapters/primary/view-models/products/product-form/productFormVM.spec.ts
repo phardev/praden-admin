@@ -20,6 +20,8 @@ import {
 import { Product } from '@core/entities/product'
 import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
 import { useProductStore } from '@store/productStore'
+import { useLocationStore } from '@store/locationStore'
+import { magasin, reserve, zoneGeo } from '@utils/testData/locations'
 
 const editableInitialVMTests = (
   getVM: () => ProductFormCreateVM | ProductFormEditVM | ProductFormGetVM,
@@ -46,11 +48,14 @@ const initialVMTests = (
   let formStore: any
   let vm: any
   let categoryStore: any
+  let locationStore: any
 
   beforeEach(() => {
     formStore = useFormStore()
     categoryStore = useCategoryStore()
     categoryStore.items = [medicaments, mumAndBaby, minceur]
+    locationStore = useLocationStore()
+    locationStore.items = [reserve, zoneGeo, magasin]
     vm = getVM()
   })
   describe.each([
@@ -63,7 +68,7 @@ const initialVMTests = (
     { field: 'percentTaxRate', expected: expectedValue.percentTaxRate },
     { field: 'priceWithTax', expected: expectedValue.priceWithTax },
     { field: 'laboratory', expected: expectedValue.laboratory },
-    { field: 'location', expected: expectedValue.location },
+    { field: 'locations', expected: expectedValue.locations },
     { field: 'availableStock', expected: expectedValue.availableStock },
     { field: 'images', expected: expectedValue.images },
     { field: 'newImages', expected: expectedValue.newImages },
@@ -100,6 +105,24 @@ const initialVMTests = (
       ])
     })
   })
+  describe('Locations choices', () => {
+    it('should provide all locations', () => {
+      expect(vm.getAvailableLocations()).toStrictEqual([
+        {
+          uuid: zoneGeo.uuid,
+          name: zoneGeo.name
+        },
+        {
+          uuid: reserve.uuid,
+          name: reserve.name
+        },
+        {
+          uuid: magasin.uuid,
+          name: magasin.name
+        }
+      ])
+    })
+  })
 }
 
 export const updateFieldsTests = (
@@ -119,7 +142,6 @@ export const updateFieldsTests = (
     { field: 'cip13', value: 'cip13', expected: 'cip13' },
     { field: 'ean13', value: 'ean13', expected: 'ean13' },
     { field: 'laboratory', value: 'laboratory', expected: 'laboratory' },
-    { field: 'location', value: 'location', expected: 'location' },
     { field: 'availableStock', value: 13, expected: 13 },
     { field: 'description', value: 'description', expected: 'description' },
     {
@@ -419,11 +441,87 @@ export const updateFieldsTests = (
       expect(vm.get('images')).toStrictEqual(expectedImages)
     })
   })
+  describe('Update locations', () => {
+    let location: any
+    let expectedLocations: any
+    let alreadyPresentLocation: any
+    describe('The locations are not set', () => {
+      beforeEach(() => {
+        alreadyPresentLocation = {}
+        location = { uuid: zoneGeo.uuid, value: 'new-location' }
+        expectedLocations = {
+          [zoneGeo.uuid]: location.value
+        }
+        formStore.set(key, { locations: alreadyPresentLocation })
+        vm.set('locations', location)
+      })
+      it('should update locations value in form store', () => {
+        expect(formStore.get(key).locations).toStrictEqual(expectedLocations)
+      })
+      it('should update locations field', () => {
+        const expectedField: Field<string> = {
+          value: expectedLocations,
+          canEdit: true
+        }
+        expect(vm.get('locations')).toStrictEqual(expectedField)
+      })
+    })
+    describe('The location is already set', () => {
+      beforeEach(() => {
+        alreadyPresentLocation = {
+          [zoneGeo.uuid]: 'old-location'
+        }
+        location = { uuid: zoneGeo.uuid, value: 'new-location' }
+        expectedLocations = {
+          [zoneGeo.uuid]: location.value
+        }
+        formStore.set(key, { locations: alreadyPresentLocation })
+        vm.set('locations', location)
+      })
+      it('should update locations value in form store', () => {
+        expect(formStore.get(key).locations).toStrictEqual(expectedLocations)
+      })
+      it('should update locations field', () => {
+        const expectedField: Field<string> = {
+          value: expectedLocations,
+          canEdit: true
+        }
+        expect(vm.get('locations')).toStrictEqual(expectedField)
+      })
+    })
+    describe('Another location is already set', () => {
+      beforeEach(() => {
+        alreadyPresentLocation = {
+          [zoneGeo.uuid]: 'zonegeo-location'
+        }
+        location = { uuid: reserve.uuid, value: 'reserve-location' }
+        expectedLocations = {
+          [zoneGeo.uuid]: 'zonegeo-location',
+          [reserve.uuid]: location.value
+        }
+        formStore.set(key, { locations: alreadyPresentLocation })
+        vm.set('locations', location)
+      })
+      it('should update the right location value in form store', () => {
+        expect(formStore.get(key).locations).toStrictEqual(expectedLocations)
+      })
+      it('should update locations field', () => {
+        const expectedField: Field<string> = {
+          value: expectedLocations,
+          canEdit: true
+        }
+        expect(vm.get('locations')).toStrictEqual(expectedField)
+      })
+    })
+  })
 }
 
 describe('Product form VM', () => {
+  let locationStore: any
   beforeEach(() => {
     setActivePinia(createPinia())
+    locationStore = useLocationStore()
+    locationStore.items = [reserve, zoneGeo, magasin]
   })
   describe('Product form create VM', () => {
     let vm: ProductFormCreateVM
@@ -444,7 +542,7 @@ describe('Product form VM', () => {
         newImages: [],
         priceWithoutTax: undefined,
         percentTaxRate: undefined,
-        location: '',
+        locations: {},
         availableStock: '',
         laboratory: '',
         description: '',
@@ -474,7 +572,7 @@ describe('Product form VM', () => {
             images: newImages,
             priceWithoutTax: '12',
             percentTaxRate: '5',
-            location: 'G2',
+            locations: {},
             availableStock: '21',
             description: '<p>description</p>',
             instructionsForUse: '<p>instructionsForUse</p>',
@@ -489,7 +587,7 @@ describe('Product form VM', () => {
           vm.set('laboratory', expectedDTO.laboratory)
           vm.set('priceWithoutTax', expectedDTO.priceWithoutTax)
           vm.set('percentTaxRate', expectedDTO.percentTaxRate)
-          vm.set('location', expectedDTO.location)
+          vm.set('locations', expectedDTO.locations)
           vm.set('availableStock', expectedDTO.availableStock)
           vm.set('description', expectedDTO.description)
           vm.set('instructionsForUse', expectedDTO.instructionsForUse)
@@ -541,7 +639,10 @@ describe('Product form VM', () => {
         priceWithoutTax: '4.32',
         priceWithTax: '4.75',
         percentTaxRate: product.percentTaxRate,
-        location: product.location,
+        locations: {
+          [zoneGeo.uuid]: 'C3',
+          [reserve.uuid]: 'RESERVE_1'
+        },
         availableStock: product.availableStock,
         laboratory: product.laboratory,
         description: product.description,
@@ -571,7 +672,10 @@ describe('Product form VM', () => {
             images: newImages,
             priceWithoutTax: '12',
             percentTaxRate: '5',
-            location: 'G2',
+            locations: {
+              [zoneGeo.uuid]: 'G2',
+              [reserve.uuid]: 'RESERVE_1'
+            },
             availableStock: '21',
             description: '<p>description</p>',
             instructionsForUse: '<p>instructionsForUse</p>',
@@ -586,7 +690,7 @@ describe('Product form VM', () => {
           vm.set('laboratory', expectedDTO.laboratory)
           vm.set('priceWithoutTax', expectedDTO.priceWithoutTax)
           vm.set('percentTaxRate', expectedDTO.percentTaxRate)
-          vm.set('location', expectedDTO.location)
+          vm.set('locations', { uuid: zoneGeo.uuid, value: 'G2' })
           vm.set('availableStock', expectedDTO.availableStock)
           vm.set('description', expectedDTO.description)
           vm.set('instructionsForUse', expectedDTO.instructionsForUse)
@@ -639,7 +743,10 @@ describe('Product form VM', () => {
         priceWithoutTax: '4.32',
         priceWithTax: '4.75',
         percentTaxRate: product.percentTaxRate,
-        location: product.location,
+        locations: {
+          [zoneGeo.uuid]: 'C3',
+          [reserve.uuid]: 'RESERVE_1'
+        },
         availableStock: product.availableStock,
         laboratory: product.laboratory,
         description: product.description,

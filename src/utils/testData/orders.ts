@@ -28,7 +28,7 @@ export const orderToPrepare1: Order = {
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Created,
       updatedAt: 1674273279000
     }
@@ -65,7 +65,7 @@ export const orderToPrepare2: Order = {
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Created,
       updatedAt: 1675565972527
     },
@@ -76,7 +76,7 @@ export const orderToPrepare2: Order = {
       preparedQuantity: 0,
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
-      location: ultraLevure.location,
+      locations: ultraLevure.locations,
       deliveryStatus: DeliveryStatus.Created,
       updatedAt: 1675565972527
     }
@@ -113,7 +113,7 @@ export const orderToPrepare3: Order = {
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Created,
       updatedAt: 1675565972527
     }
@@ -150,7 +150,7 @@ export const orderPrepared1: Order = {
       preparedQuantity: 2,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Shipped,
       updatedAt: 1675577400000
     }
@@ -187,7 +187,7 @@ export const orderInPreparation1: Order = {
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1675564520539
     }
@@ -233,7 +233,7 @@ export const orderDelivered1: Order = {
       preparedQuantity: 3,
       unitAmount: anaca3Minceur.priceWithoutTax,
       percentTaxRate: anaca3Minceur.percentTaxRate,
-      location: anaca3Minceur.location,
+      locations: anaca3Minceur.locations,
       deliveryStatus: DeliveryStatus.Delivered,
       updatedAt: 1674295599432
     },
@@ -244,7 +244,7 @@ export const orderDelivered1: Order = {
       preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Delivered,
       updatedAt: 1674295599432
     }
@@ -281,7 +281,7 @@ export const orderDelivered2: Order = {
       preparedQuantity: 3,
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
-      location: ultraLevure.location,
+      locations: ultraLevure.locations,
       deliveryStatus: DeliveryStatus.Delivered,
       updatedAt: 1674295599432
     },
@@ -292,7 +292,7 @@ export const orderDelivered2: Order = {
       preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Delivered,
       updatedAt: 1674295599432
     }
@@ -329,7 +329,7 @@ export const orderWithMissingProduct1: Order = {
       preparedQuantity: 2,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Shipped,
       updatedAt: 1674573778456
     },
@@ -340,7 +340,7 @@ export const orderWithMissingProduct1: Order = {
       preparedQuantity: 0,
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
-      location: ultraLevure.location,
+      locations: ultraLevure.locations,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674573698456
     }
@@ -386,7 +386,7 @@ export const orderWithMissingProduct2: Order = {
       preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Shipped,
       updatedAt: 1674573778456
     },
@@ -397,7 +397,7 @@ export const orderWithMissingProduct2: Order = {
       preparedQuantity: 2,
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
-      location: ultraLevure.location,
+      locations: ultraLevure.locations,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674573698456
     }
@@ -443,7 +443,7 @@ export const orderToCancel: Order = {
       preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674573778456
     }
@@ -489,7 +489,7 @@ export const orderNotPayed1: Order = {
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Created,
       updatedAt: 1674273789000
     }
@@ -525,7 +525,7 @@ export const orderSaved1: Order = {
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674273789000
     }
@@ -561,7 +561,7 @@ export const orderWaitingForClientAnswer1: Order = {
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674273789000
     }
@@ -602,7 +602,7 @@ export const orderWaitingForClientAnswer2: Order = {
       preparedQuantity: 2,
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
-      location: ultraLevure.location,
+      locations: ultraLevure.locations,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674295599432
     },
@@ -613,7 +613,7 @@ export const orderWaitingForClientAnswer2: Order = {
       preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674295599432
     }
@@ -655,7 +655,7 @@ export const orderWaitingForRestock: Order = {
       preparedQuantity: 0,
       unitAmount: chamomilla.priceWithoutTax,
       percentTaxRate: chamomilla.percentTaxRate,
-      location: chamomilla.location,
+      locations: chamomilla.locations,
       deliveryStatus: DeliveryStatus.Processing,
       updatedAt: 1674273789000
     }
@@ -700,7 +700,7 @@ export const orderPartiallyShipped1: Order = {
       preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Shipped,
       updatedAt: 1674573778456
     },
@@ -711,7 +711,7 @@ export const orderPartiallyShipped1: Order = {
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
-      location: dolodent.location,
+      locations: dolodent.locations,
       deliveryStatus: DeliveryStatus.Shipped,
       updatedAt: 1674573778456
     }
@@ -757,7 +757,7 @@ export const orderVFASF: Order = {
       preparedQuantity: 0,
       unitAmount: calmosine.priceWithoutTax,
       percentTaxRate: calmosine.percentTaxRate,
-      location: calmosine.location,
+      locations: calmosine.locations,
       deliveryStatus: DeliveryStatus.Created,
       updatedAt: 1674273279000
     },
@@ -768,7 +768,7 @@ export const orderVFASF: Order = {
       preparedQuantity: 0,
       unitAmount: hemoclar.priceWithoutTax,
       percentTaxRate: hemoclar.percentTaxRate,
-      location: hemoclar.location,
+      locations: hemoclar.locations,
       deliveryStatus: DeliveryStatus.Created,
       updatedAt: 1674273279000
     }
@@ -805,7 +805,7 @@ export const orderXUKIJ: Order = {
       preparedQuantity: 0,
       unitAmount: calmosine.priceWithoutTax,
       percentTaxRate: calmosine.percentTaxRate,
-      location: calmosine.location,
+      locations: calmosine.locations,
       deliveryStatus: DeliveryStatus.Created,
       updatedAt: 1674273279000
     }
@@ -842,7 +842,7 @@ export const orderWithProductWithoutLocation: Order = {
       preparedQuantity: 0,
       unitAmount: productWithoutLocation.priceWithoutTax,
       percentTaxRate: productWithoutLocation.percentTaxRate,
-      location: productWithoutLocation.location,
+      locations: productWithoutLocation.locations,
       deliveryStatus: DeliveryStatus.Created,
       updatedAt: 1674273279000
     },
@@ -853,7 +853,7 @@ export const orderWithProductWithoutLocation: Order = {
       preparedQuantity: 0,
       unitAmount: calmosine.priceWithoutTax,
       percentTaxRate: calmosine.percentTaxRate,
-      location: calmosine.location,
+      locations: calmosine.locations,
       deliveryStatus: DeliveryStatus.Created,
       updatedAt: 1674273279000
     }

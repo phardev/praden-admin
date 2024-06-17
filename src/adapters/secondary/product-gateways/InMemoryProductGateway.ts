@@ -40,7 +40,7 @@ export class InMemoryProductGateway implements ProductGateway {
       categoryUuid: dto.categoryUuid,
       priceWithoutTax: parseFloat(dto.priceWithoutTax) * 100,
       percentTaxRate: parseFloat(dto.percentTaxRate),
-      location: dto.location,
+      locations: dto.locations,
       availableStock: parseInt(dto.availableStock),
       laboratory: dto.laboratory,
       description: dto.description,
@@ -53,6 +53,11 @@ export class InMemoryProductGateway implements ProductGateway {
 
   edit(uuid: UUID, dto: EditProductDTO): Promise<Product> {
     const index = this.products.findIndex((c) => c.uuid === uuid)
+    const locations = this.products[index].locations
+    dto.locations = {
+      ...locations,
+      ...dto.locations
+    }
     this.products[index] = Object.assign(this.products[index], dto)
     return Promise.resolve(JSON.parse(JSON.stringify(this.products[index])))
   }

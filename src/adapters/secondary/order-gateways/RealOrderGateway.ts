@@ -2,6 +2,7 @@ import { OrderGateway } from '@core/gateways/orderGateway'
 import { Order } from '@core/entities/order'
 import type { UUID } from '@core/types/types'
 import axios from 'axios'
+import { zoneGeo } from '@utils/testData/locations'
 
 export abstract class RealGateway {
   protected readonly baseUrl: string
@@ -86,10 +87,17 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
   private convertToOrder(data: any): Order {
     const copy = JSON.parse(JSON.stringify(data))
     delete copy.payment.sessionUrl
+    copy.lines = copy.lines.map((l: any) => {
+      return {
+        ...l,
+        locations: { [zoneGeo.uuid]: l.location }
+      }
+    })
     copy.lines.forEach((l: any) => {
       delete l.img
       delete l.description
       delete l.productUuid
+      delete l.location
     })
     copy.messages.forEach((m: any) => {
       delete m.orderUuid

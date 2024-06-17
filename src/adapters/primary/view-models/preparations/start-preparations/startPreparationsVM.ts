@@ -8,11 +8,14 @@ import {
 import { useSettingStore } from '@store/settingStore'
 import { addTaxToPrice } from '@utils/price'
 import { getTotalWithTax } from '@core/entities/order'
+import { useLocationStore } from '@store/locationStore'
+import { zoneGeo } from '@utils/testData/locations'
+import { sortLocationByOrder } from '@core/entities/location'
 
 export interface GlobalPreparationLineVM {
   reference: string
   name: string
-  location: string
+  locations: object
   quantity: number
 }
 
@@ -42,9 +45,9 @@ export interface StartPreparationsVM {
 }
 
 const sortByLocation = (a: any, b: any): number => {
-  if (a.location === '') return 1
-  if (b.location === '') return -1
-  return a.location < b.location ? -1 : 1
+  if (!a.locations[zoneGeo.uuid]) return 1
+  if (!b.locations[zoneGeo.uuid]) return -1
+  return a.locations[zoneGeo.uuid] < b.locations[zoneGeo.uuid] ? -1 : 1
 }
 
 const sortByProductName = (a: any, b: any): number => {
@@ -58,6 +61,17 @@ export enum PickingSortType {
   Name
 }
 
+const computeLocationHeaders = () => {
+  const locationStore = useLocationStore()
+  const locations = locationStore.items
+  return locations.sort(sortLocationByOrder).map((l) => {
+    return {
+      name: l.name,
+      value: `locations.${l.uuid}`
+    }
+  })
+}
+
 export const startPreparationsVM = (origin: string): StartPreparationsVM => {
   const preparationStore = usePreparationStore()
   const settingStore = useSettingStore()
@@ -65,13 +79,13 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
   const globalHeaders: Array<Header> = [
     { name: 'Référence', value: 'reference' },
     { name: 'Nom', value: 'name' },
-    { name: 'Zone géo', value: 'location' },
+    ...computeLocationHeaders(),
     { name: 'Quantité', value: 'quantity' }
   ]
   const detailHeaders: Array<Header> = [
     { name: 'Référence', value: 'reference' },
     { name: 'Nom', value: 'name' },
-    { name: 'Zone géo', value: 'location' },
+    ...computeLocationHeaders(),
     { name: 'Prix unitaire', value: 'unitPrice' },
     { name: 'Quantité', value: 'quantity' },
     { name: 'TVA', value: 'taxRate' },
@@ -112,7 +126,7 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
           return {
             reference: line.cip13,
             name: line.name,
-            location: line.location,
+            locations: line.locations,
             quantity,
             unitPrice: formatter.format(unitPrice),
             taxRate: `${line.percentTaxRate} %`,
