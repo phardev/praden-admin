@@ -10,6 +10,18 @@ import { useCategoryStore } from '@store/categoryStore'
 import { addTaxToPrice } from '@utils/price'
 import { useLocationStore } from '@store/locationStore'
 import { Location, sortLocationByOrder } from '@core/entities/location'
+import { ReductionType } from '@core/entities/promotion'
+import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
+
+export interface GetProductPromotionVM {
+  href: string
+  type: string
+  amount: string
+  startDate: string
+  startDatetime: Date
+  endDate: string
+  endDatetime: Date
+}
 
 export class FormFieldsReader {
   protected readonly key: string
@@ -74,7 +86,7 @@ export class ExistingProductFormInitializer implements FormInitializer {
   }
 
   init() {
-    let product = this.productStore.current
+    let product = this.productStore.current?.product
     if (product) {
       product = JSON.parse(JSON.stringify(product))
     }
@@ -145,6 +157,26 @@ export class ProductFormGetVM {
 
   getAvailableLocations(): CreateProductLocationsVM {
     return this.fieldsReader.getAvailableLocations()
+  }
+
+  getPromotion(): GetProductPromotionVM | undefined {
+    const productStore = useProductStore()
+    if (!productStore.current?.promotion) return undefined
+    const promotion = productStore.current?.promotion
+    const formatter = priceFormatter('fr-FR', 'EUR')
+    return {
+      href: `/promotions/get/${promotion.uuid}`,
+      type: promotion.type === ReductionType.Fixed ? 'FIXE' : 'POURCENTAGE',
+      amount: formatter.format(promotion.amount / 100),
+      startDate: promotion.startDate
+        ? timestampToLocaleString(promotion.startDate, 'fr-FR')
+        : '',
+      startDatetime: new Date(promotion.startDate || ''),
+      endDate: promotion.endDate
+        ? timestampToLocaleString(promotion.endDate, 'fr-FR')
+        : '',
+      endDatetime: new Date(promotion.endDate || '')
+    }
   }
 
   getDisplayValidate(): boolean {

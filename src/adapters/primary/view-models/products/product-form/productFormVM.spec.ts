@@ -22,6 +22,7 @@ import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
 import { useProductStore } from '@store/productStore'
 import { useLocationStore } from '@store/locationStore'
 import { magasin, reserve, zoneGeo } from '@utils/testData/locations'
+import { promotionFixedMultipleProducts } from '@utils/testData/promotions'
 
 const editableInitialVMTests = (
   getVM: () => ProductFormCreateVM | ProductFormEditVM | ProductFormGetVM,
@@ -126,6 +127,11 @@ const initialVMTests = (
           name: magasin.name
         }
       ])
+    })
+  })
+  describe('Promotion', () => {
+    it('should provide the promotion', () => {
+      expect(vm.getPromotion()).toStrictEqual(expectedValue.promotion)
     })
   })
 }
@@ -636,7 +642,7 @@ describe('Product form VM', () => {
     beforeEach(() => {
       productStore = useProductStore()
       productStore.items = availableProducts
-      productStore.current = product
+      productStore.current = { product }
       vm = productFormEditVM(key)
     })
 
@@ -746,7 +752,10 @@ describe('Product form VM', () => {
     beforeEach(() => {
       productStore = useProductStore()
       productStore.items = availableProducts
-      productStore.current = product
+      productStore.current = {
+        product,
+        promotion: promotionFixedMultipleProducts
+      }
       vm = productFormGetVM(key)
     })
 
@@ -772,7 +781,16 @@ describe('Product form VM', () => {
         instructionsForUse: product.instructionsForUse,
         composition: product.composition,
         weight: '0.012',
-        maxQuantityForOrder: product.maxQuantityForOrder
+        maxQuantityForOrder: product.maxQuantityForOrder,
+        promotion: {
+          href: `/promotions/get/${promotionFixedMultipleProducts.uuid}`,
+          type: 'FIXE',
+          amount: '1,00\u00A0€',
+          startDate: '27 juil. 2023',
+          startDatetime: new Date('2023-07-27T00:00:00.000Z'),
+          endDate: '27 août 2023',
+          endDatetime: new Date('2023-08-27T00:00:00.000Z')
+        }
       }
       readOnlyInitialVMTests(() => vm, key, expected)
     })

@@ -43,6 +43,13 @@ export class InMemoryPromotionGateway implements PromotionGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(res)))
   }
 
+  getPromotionsForProduct(
+    productEan13: string
+  ): Promise<Array<Promotion> | undefined> {
+    const res = this.promotions.filter((p) => p.products.includes(productEan13))
+    return Promise.resolve(res)
+  }
+
   feedWith(...promotions: Array<Promotion>) {
     this.promotions = promotions
   }

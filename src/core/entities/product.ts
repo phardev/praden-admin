@@ -1,4 +1,5 @@
 import type { HashTable, UUID } from '@core/types/types'
+import { Promotion } from './promotion'
 
 export type Stock = HashTable<number>
 
@@ -21,6 +22,11 @@ export interface Product {
   composition: string
   weight: number
   maxQuantityForOrder?: number
+}
+
+export interface ProductWithPromotion {
+  product: Product
+  promotion?: Promotion
 }
 
 export const isProduct = (object: any): object is Product => {

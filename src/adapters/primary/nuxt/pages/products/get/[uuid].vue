@@ -15,6 +15,9 @@ import { useProductGateway } from '../../../../../../../gateways/productGateway'
 import { listProducts } from '@core/usecases/product/product-listing/listProducts'
 import { getProduct } from '@core/usecases/product/get-product/get-product'
 import { productFormGetVM } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import { listPromotions } from '@core/usecases/promotions/promotions-listing/listPromotions'
+import { usePromotionGateway } from '../../../../../../../gateways/promotionGateway'
+import { useDateProvider } from '../../../../../../../gateways/dateProvider'
 
 definePageMeta({ layout: 'main' })
 
@@ -29,7 +32,14 @@ onMounted(async () => {
   listCategories(categoryGateway)
   const productGateway = useProductGateway()
   listProducts(productGateway)
-  await getProduct(productUuid, productGateway)
+  const promotionGateway = usePromotionGateway()
+  listPromotions(promotionGateway)
+  await getProduct(
+    productUuid,
+    productGateway,
+    promotionGateway,
+    useDateProvider()
+  )
   vm.value = productFormGetVM(routeName)
 })
 

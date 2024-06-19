@@ -70,27 +70,43 @@ div(v-if="currentVM")
             @input="imagesChanged"
           )
       template(#price)
-        UFormGroup.pb-4(label="Prix (HT)" name="priceWithoutTax")
-          ft-currency-input(
-            v-model.lazy="currentVM.get('priceWithoutTax').value"
-            :disabled="!currentVM.get('priceWithoutTax').canEdit"
-            label="Prix (HT)"
-              @update:model-value="priceWithoutTaxChanged"
-            )
-        UFormGroup.pb-4(label="Taxe (%)" name="percentTaxRate")
-          ft-percentage-input(
-            :model-value="currentVM.get('percentTaxRate').value"
-            :disabled="!currentVM.get('percentTaxRate').canEdit"
-            label="Taxe (%)"
-            @update:model-value="percentTaxRateChanged"
-          )
-        UFormGroup.pb-4(label="Prix (TTC)" name="priceWithTax")
-          ft-currency-input(
-            v-model.lazy="currentVM.get('priceWithTax').value"
-            :disabled="!currentVM.get('priceWithTax').canEdit"
-            label="Prix (HT)"
-            @update:model-value="priceWithTaxChanged"
-          )
+        div.flex.gap-8.items-center
+          div.grow
+            UFormGroup.pb-4(label="Prix (HT)" name="priceWithoutTax")
+              ft-currency-input(
+                v-model.lazy="currentVM.get('priceWithoutTax').value"
+                :disabled="!currentVM.get('priceWithoutTax').canEdit"
+                label="Prix (HT)"
+                @update:model-value="priceWithoutTaxChanged"
+              )
+            UFormGroup.pb-4(label="Taxe (%)" name="percentTaxRate")
+              ft-percentage-input(
+                :model-value="currentVM.get('percentTaxRate').value"
+                :disabled="!currentVM.get('percentTaxRate').canEdit"
+                label="Taxe (%)"
+                @update:model-value="percentTaxRateChanged"
+              )
+            UFormGroup.pb-4(label="Prix (TTC)" name="priceWithTax")
+              ft-currency-input(
+                v-model.lazy="currentVM.get('priceWithTax').value"
+                :disabled="!currentVM.get('priceWithTax').canEdit"
+                label="Prix (HT)"
+                @update:model-value="priceWithTaxChanged"
+              )
+          div.flex.flex-col.gap-4.border.border-2.border-default.p-4(v-if="currentVM.getPromotion()")
+            p.text-2xl Promotion en cours
+            div {{ currentVM.getPromotion().amount }}
+            div.flex.gap-4
+              div(v-if="currentVM.getPromotion().startDatetime")
+                div Date de début
+                time(:datetime='currentVM.getPromotion().startDatetime') {{ currentVM.getPromotion().startDate }}
+              div(v-if="currentVM.getPromotion().endDatetime")
+                div Date de fin
+                time(:datetime='currentVM.getPromotion().endDatetime') {{ currentVM.getPromotion().endDate }}
+            div.flex.justify-center.items-center
+              icon.icon-md(name="material-symbols:arrow-circle-right-outline-rounded")
+              nuxt-link.text-xl.text-link(:href="currentVM.getPromotion().href") Voir la promotion
+
       template(#stock)
         UFormGroup.pb-4(
           v-for="location in currentVM.getAvailableLocations()"
@@ -146,6 +162,7 @@ div(v-if="currentVM")
 <script lang="ts" setup>
 import { listLocations } from '@core/usecases/locations/location-listing/listLocations'
 import { useLocationGateway } from '../../../../../../gateways/locationGateway'
+import FtButton from '@adapters/primary/nuxt/components/atoms/FtButton.vue'
 
 definePageMeta({ layout: 'main' })
 

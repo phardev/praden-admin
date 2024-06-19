@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
-import { Product, Stock } from '@core/entities/product'
+import { Product, ProductWithPromotion, Stock } from '@core/entities/product'
 
 export const useProductStore = defineStore('ProductStore', {
   state: () => {
     return {
       items: [] as Array<Product>,
       stock: {} as Stock,
-      current: undefined as Product
+      current: undefined as ProductWithPromotion
     }
   },
   actions: {
@@ -19,7 +19,7 @@ export const useProductStore = defineStore('ProductStore', {
     add(product: Product) {
       this.items.push(product)
     },
-    setCurrent(product: Product) {
+    setCurrent(product: ProductWithPromotion) {
       this.current = JSON.parse(JSON.stringify(product))
     },
     edit(product: Product) {

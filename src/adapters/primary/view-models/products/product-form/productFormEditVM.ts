@@ -1,5 +1,6 @@
 import {
   ExistingProductFormInitializer,
+  GetProductPromotionVM,
   ProductFormFieldsReader
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import {
@@ -9,6 +10,7 @@ import {
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
+import { useProductStore } from '@store/productStore'
 
 export class ProductFormEditVM {
   private fieldsReader: ProductFormFieldsReader
@@ -66,6 +68,11 @@ export class ProductFormEditVM {
       weight: +this.fieldsReader.get('weight') * 1000,
       maxQuantityForOrder: +this.fieldsReader.get('maxQuantityForOrder')
     }
+  }
+
+  getPromotion(): GetProductPromotionVM | undefined {
+    const productStore = useProductStore()
+    return productStore.current?.promotion
   }
 
   getDisplayValidate(): boolean {

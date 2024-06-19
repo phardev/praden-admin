@@ -220,6 +220,10 @@ export class ProductFormCreateVM {
     }
   }
 
+  getPromotion(): undefined {
+    return undefined
+  }
+
   getDisplayValidate(): boolean {
     return true
   }
