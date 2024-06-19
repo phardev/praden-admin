@@ -13,9 +13,7 @@ export const getProduct = async (
 ): Promise<void> => {
   const product = await productGateway.getByUuid(uuid)
   const productStore = useProductStore()
-  const promotions = await promotionGateway.getPromotionsForProduct(
-    product.ean13
-  )
+  const promotions = await promotionGateway.getPromotionsForProduct(uuid)
   const activePromotions = promotions.filter((p) =>
     isPromotionInProgress(p, dateProvider.now())
   )

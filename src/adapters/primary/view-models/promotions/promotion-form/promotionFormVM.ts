@@ -61,10 +61,11 @@ export abstract class PromotionFormVM {
     const allProducts: Array<Product> = productStore.items
     const categoryStore = useCategoryStore()
     const categories: Array<Category> = categoryStore.items
-    const value = addedProducts.map((cip13: string) => {
-      const p: Product = allProducts.find((p) => p.cip13 === cip13)
+    const value = addedProducts.map((uuid: string) => {
+      const p: Product = allProducts.find((p) => p.uuid === uuid)
       const c: Category = categories.find((c) => c.uuid === p.categoryUuid)
       return {
+        uuid: p.uuid,
         name: p.name,
         reference: p.cip13,
         category: c.name,

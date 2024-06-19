@@ -34,10 +34,10 @@
         )
           td.border-t.border-light(v-if="selectable" class="relative w-12 px-6 sm:w-16 sm:px-8")
             input(
-              :key="selection.includes(item.reference)"
+              :key="selection.includes(item[itemKey])"
               type="checkbox"
               class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-light text-colored focus:ring-colored sm:left-6"
-              :checked="selection.includes(item.reference)"
+              :checked="selection.includes(item[itemKey])"
               @click.prevent="select(item)"
             )
           td.border-t.border-light.px-3.py-3.text-sm.text-contrast(
@@ -100,7 +100,7 @@ const indeterminate = computed(() => {
 
 const selectionIntersection = computed(() => {
   return props.selection.filter((s: any) =>
-    props.items.find((i: any) => i.reference === s)
+    props.items.find((i: any) => i[props.itemKey] === s)
   )
 })
 

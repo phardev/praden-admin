@@ -37,6 +37,7 @@ import {
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormEditVM'
 
 const anaca3VM: PromotionProductItemVM = {
+  uuid: anaca3Minceur.uuid,
   name: anaca3Minceur.name,
   reference: anaca3Minceur.cip13,
   category: minceur.name,
@@ -44,6 +45,7 @@ const anaca3VM: PromotionProductItemVM = {
 }
 
 const calmosineVM: PromotionProductItemVM = {
+  uuid: calmosine.uuid,
   name: calmosine.name,
   reference: calmosine.cip13,
   category: baby.name,
@@ -51,6 +53,7 @@ const calmosineVM: PromotionProductItemVM = {
 }
 
 const dolodentVM: PromotionProductItemVM = {
+  uuid: dolodent.uuid,
   name: dolodent.name,
   reference: dolodent.cip13,
   category: dents.name,
@@ -191,7 +194,7 @@ const updateVMTests = (
       givenExistingCategories(dents, baby, minceur)
     })
     describe('In one step', () => {
-      const selectedProducts = [dolodent.cip13, anaca3Minceur.cip13]
+      const selectedProducts = [dolodent.uuid, anaca3Minceur.uuid]
       let expectedProducts
       beforeEach(() => {
         givenExistingProducts(dolodent, anaca3Minceur, calmosine)
@@ -219,11 +222,11 @@ const updateVMTests = (
       })
     })
     describe('In multiple steps', () => {
-      const selectedProducts = [dolodent.cip13, anaca3Minceur.cip13]
+      const selectedProducts = [dolodent.uuid, anaca3Minceur.uuid]
       beforeEach(() => {
         givenExistingProducts(dolodent, anaca3Minceur)
-        vm.addProducts([dolodent.cip13])
-        vm.addProducts([anaca3Minceur.cip13])
+        vm.addProducts([dolodent.uuid])
+        vm.addProducts([anaca3Minceur.uuid])
       })
       it('should add selected products to form store', () => {
         expect(formStore.get(key).products).toStrictEqual(selectedProducts)
@@ -242,17 +245,17 @@ const updateVMTests = (
       givenExistingProducts(dolodent, anaca3Minceur, calmosine)
       givenExistingCategories(dents, baby, minceur)
       formStore.set(key, {
-        products: productStore.items.map((p: Product) => p.cip13)
+        products: productStore.items.map((p: Product) => p.uuid)
       })
     })
     describe('In one step', () => {
       beforeEach(() => {
-        vm.removeProducts([dolodent.cip13])
+        vm.removeProducts([dolodent.uuid])
       })
       it('should add selected products to form store', () => {
         expect(formStore.get(key).products).toStrictEqual([
-          anaca3Minceur.cip13,
-          calmosine.cip13
+          anaca3Minceur.uuid,
+          calmosine.uuid
         ])
       })
       it('should get all products vm', () => {
@@ -272,11 +275,11 @@ const updateVMTests = (
     })
     describe('In multiple steps', () => {
       beforeEach(() => {
-        vm.removeProducts([dolodent.cip13])
-        vm.removeProducts([anaca3Minceur.cip13])
+        vm.removeProducts([dolodent.uuid])
+        vm.removeProducts([anaca3Minceur.uuid])
       })
       it('should add selected products to form store', () => {
-        expect(formStore.get(key).products).toStrictEqual([calmosine.cip13])
+        expect(formStore.get(key).products).toStrictEqual([calmosine.uuid])
       })
       it('should get all products vm', () => {
         const expectedField: Field<Array<PromotionProductItemVM>> = {
@@ -320,7 +323,7 @@ describe('Promotion form', () => {
       })
       const expected: any = {
         name: promotion.name,
-        products: [dolodent.cip13, anaca3Minceur],
+        products: [dolodent.uuid, anaca3Minceur],
         type: ReductionType.Fixed,
         amount: '1',
         startDate: 1690416000000,
@@ -336,7 +339,7 @@ describe('Promotion form', () => {
       })
       const expected: any = {
         name: promotion.name,
-        products: [dolodent.cip13],
+        products: [dolodent.uuid],
         type: ReductionType.Percentage,
         amount: '10',
         startDate: 1690416000000,
@@ -405,7 +408,7 @@ describe('Promotion form', () => {
       beforeEach(() => {
         vm.set('name', 'Test')
         vm.set('amount', 12)
-        vm.addProducts([dolodent.cip13])
+        vm.addProducts([dolodent.uuid])
       })
       describe('Can validate', () => {
         it('should allow to validate', () => {
@@ -422,7 +425,7 @@ describe('Promotion form', () => {
           expect(vm.getCanValidate()).toBe(false)
         })
         it('should not allow to validate if there is no product selected', () => {
-          vm.removeProducts([dolodent.cip13])
+          vm.removeProducts([dolodent.uuid])
           expect(vm.getCanValidate()).toBeFalsy()
         })
       })
@@ -434,10 +437,10 @@ describe('Promotion form', () => {
       it('should prepare the promotion dto', () => {
         vm.set('name', 'Test')
         vm.set('amount', 1.5)
-        vm.addProducts([dolodent.cip13])
+        vm.addProducts([dolodent.uuid])
         const expectedDto: CreatePromotionDTO = {
           name: 'Test',
-          products: [dolodent.cip13],
+          products: [dolodent.uuid],
           type: ReductionType.Fixed,
           amount: 150
         }
@@ -449,10 +452,10 @@ describe('Promotion form', () => {
         vm.set('amount', 5.5)
         vm.set('startDate', 123456789)
         vm.set('endDate', 987654321)
-        vm.addProducts([dolodent.cip13, calmosine.cip13])
+        vm.addProducts([dolodent.uuid, calmosine.uuid])
         const expectedDto: CreatePromotionDTO = {
           name: 'AnotherTest',
-          products: [dolodent.cip13, calmosine.cip13],
+          products: [dolodent.uuid, calmosine.uuid],
           type: ReductionType.Percentage,
           amount: 5.5,
           startDate: 123456789,
@@ -476,7 +479,7 @@ describe('Promotion form', () => {
     describe('Initial VM', () => {
       const expected: any = {
         name: promotionPercentageDolodent.name,
-        products: [dolodent.cip13],
+        products: [dolodent.uuid],
         type: ReductionType.Percentage,
         amount: '10',
         startDate: promotionPercentageDolodent.startDate,
@@ -513,7 +516,7 @@ describe('Promotion form', () => {
       beforeEach(() => {
         vm.set('name', 'Test')
         vm.set('amount', 12)
-        vm.addProducts([dolodent.cip13])
+        vm.addProducts([dolodent.uuid])
       })
       describe('Can validate', () => {
         it('should allow to validate', () => {
@@ -530,7 +533,7 @@ describe('Promotion form', () => {
           expect(vm.getCanValidate()).toBe(false)
         })
         it('should not allow to validate if there is no product selected', () => {
-          vm.removeProducts([dolodent.cip13])
+          vm.removeProducts([dolodent.uuid])
           expect(vm.getCanValidate()).toBeFalsy()
         })
       })
@@ -543,10 +546,10 @@ describe('Promotion form', () => {
         vm.set('name', 'Test')
         vm.set('type', ReductionType.Fixed)
         vm.set('amount', 1.5)
-        vm.addProducts([dolodent.cip13])
+        vm.addProducts([dolodent.uuid])
         const expectedDto: EditPromotionDTO = {
           name: 'Test',
-          products: [dolodent.cip13],
+          products: [dolodent.uuid],
           type: ReductionType.Fixed,
           amount: 150,
           startDate: promotion.startDate,
@@ -560,10 +563,10 @@ describe('Promotion form', () => {
         vm.set('amount', 5.5)
         vm.set('startDate', 123456789)
         vm.set('endDate', 987654321)
-        vm.addProducts([dolodent.cip13, calmosine.cip13])
+        vm.addProducts([dolodent.uuid, calmosine.uuid])
         const expectedDto: CreatePromotionDTO = {
           name: 'AnotherTest',
-          products: [dolodent.cip13, calmosine.cip13],
+          products: [dolodent.uuid, calmosine.uuid],
           type: ReductionType.Percentage,
           amount: 5.5,
           startDate: 123456789,

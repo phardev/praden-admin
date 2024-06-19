@@ -96,7 +96,6 @@ div(v-if="currentVM")
         :items="currentVM.getAvailableProducts().value"
         :selectable="true"
         :selection="availableProductSelector.get()"
-        item-key="reference"
         @item-selected="availableProductSelector.toggleSelect"
         @select-all="availableProductSelector.toggleSelectAll"
       )
@@ -118,7 +117,6 @@ div(v-if="currentVM")
         :items="currentVM.getProducts().value"
         :selectable="currentVM.getProducts().canEdit"
         :selection="addedProductSelector.get()"
-        item-key="reference"
         @item-selected="addedProductSelector.toggleSelect"
         @select-all="addedProductSelector.toggleSelectAll"
       )

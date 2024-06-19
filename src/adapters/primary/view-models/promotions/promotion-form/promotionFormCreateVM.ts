@@ -12,6 +12,7 @@ import {
   FormFieldsWriter
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import { PromotionFormVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormVM'
+import { UUID } from '@core/types/types'
 
 export interface TypeChoiceVM {
   type: ReductionType
@@ -53,16 +54,16 @@ export class PromotionFormFieldsWriter extends FormFieldsWriter {
     super.set('type', type)
   }
 
-  addProducts(cip13: Array<string>) {
+  addProducts(uuids: Array<UUID>) {
     const products = this.fieldsReader.get('products')
-    const productsSet = new Set(products)
-    cip13.forEach((item) => productsSet.add(item))
+    const productsSet = new Set<UUID>(products)
+    uuids.forEach((uuid) => productsSet.add(uuid))
     super.set('products', [...productsSet])
   }
 
-  removeProducts(cip13: Array<string>) {
+  removeProducts(uuids: Array<UUID>) {
     let products = this.fieldsReader.get('products')
-    products = products.filter((p: string) => !cip13.includes(p))
+    products = products.filter((p: string) => !uuids.includes(p))
     super.set('products', products)
   }
 }
@@ -127,7 +128,7 @@ export class PromotionFormCreateVM extends PromotionFormVM {
     const filteredProducts: Array<Product> = searchStore.get(this.key)
     const addedProducts = this.fieldsReader.get('products')
     const res = (filteredProducts || allProducts).filter(
-      (p) => !addedProducts.includes(p.cip13)
+      (p) => !addedProducts.includes(p.uuid)
     )
     const categoryStore = useCategoryStore()
     const categories: Array<Category> = categoryStore.items
@@ -135,6 +136,7 @@ export class PromotionFormCreateVM extends PromotionFormVM {
       value: res.map((p: Product) => {
         const c: Category = categories.find((c) => c.uuid === p.categoryUuid)
         return {
+          uuid: p.uuid,
           name: p.name,
           reference: p.cip13,
           category: c.name,
@@ -145,12 +147,12 @@ export class PromotionFormCreateVM extends PromotionFormVM {
     }
   }
 
-  addProducts(cip13: Array<string>) {
-    this.fieldsWriter.addProducts(cip13)
+  addProducts(uuids: Array<UUID>) {
+    this.fieldsWriter.addProducts(uuids)
   }
 
-  removeProducts(cip13: Array<string>) {
-    this.fieldsWriter.removeProducts(cip13)
+  removeProducts(uuids: Array<UUID>) {
+    this.fieldsWriter.removeProducts(uuids)
   }
 
   getCanValidate(): boolean {

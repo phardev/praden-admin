@@ -53,7 +53,7 @@ export class PromotionFormEditVM extends PromotionFormVM {
     const filteredProducts: Array<Product> = searchStore.get(this.key)
     const addedProducts = this.fieldsReader.get('products')
     const res = (filteredProducts || allProducts).filter(
-      (p) => !addedProducts.includes(p.cip13)
+      (p) => !addedProducts.includes(p.uuid)
     )
     const categoryStore = useCategoryStore()
     const categories: Array<Category> = categoryStore.items
@@ -61,6 +61,7 @@ export class PromotionFormEditVM extends PromotionFormVM {
       value: res.map((p: Product) => {
         const c: Category = categories.find((c) => c.uuid === p.categoryUuid)
         return {
+          uuid: p.uuid,
           name: p.name,
           reference: p.cip13,
           category: c.name,
