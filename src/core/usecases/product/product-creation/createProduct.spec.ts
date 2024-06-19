@@ -56,7 +56,8 @@ describe('Create product', () => {
         laboratory: 'product-laboratory',
         description: '<p>description</p>',
         instructionsForUse: '<p>instructions For Use</p>',
-        composition: '<p>composition</p>'
+        composition: '<p>composition</p>',
+        weight: 342
       }
       const expectedProduct: Product = {
         uuid,
@@ -74,7 +75,8 @@ describe('Create product', () => {
         laboratory: dto.laboratory,
         description: dto.description,
         instructionsForUse: dto.instructionsForUse,
-        composition: dto.composition
+        composition: dto.composition,
+        weight: dto.weight
       }
       beforeEach(async () => {
         uuidGenerator.setNext(uuid)
@@ -110,7 +112,8 @@ describe('Create product', () => {
         laboratory: 'another-product-laboratory',
         description: '<p>another description</p>',
         instructionsForUse: '<p>another instructions For Use</p>',
-        composition: '<p>another composition</p>'
+        composition: '<p>another composition</p>',
+        weight: 60
       }
       const expectedProduct: Product = {
         uuid,
@@ -132,7 +135,8 @@ describe('Create product', () => {
         laboratory: dto.laboratory,
         description: dto.description,
         instructionsForUse: dto.instructionsForUse,
-        composition: dto.composition
+        composition: dto.composition,
+        weight: dto.weight
       }
       beforeEach(async () => {
         givenThereIsExistingProducts(dolodent, hemoclar)
@@ -165,7 +169,8 @@ describe('Create product', () => {
         laboratory: 'product-laboratory',
         description: '<p>description</p>',
         instructionsForUse: '<p>instructions For Use</p>',
-        composition: '<p>composition</p>'
+        composition: '<p>composition</p>',
+        weight: 500
       }
       it('should throw an error', async () => {
         uuidGenerator.setNext(uuid)
@@ -193,7 +198,8 @@ describe('Create product', () => {
         laboratory: 'product-laboratory',
         description: '<p>description</p>',
         instructionsForUse: '<p>instructions For Use</p>',
-        composition: '<p>composition</p>'
+        composition: '<p>composition</p>',
+        weight: 1000
       }
       it('should throw an error', async () => {
         uuidGenerator.setNext(uuid)

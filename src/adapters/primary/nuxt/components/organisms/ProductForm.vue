@@ -52,6 +52,13 @@ div(v-if="currentVM")
             label="Laboratoire"
             @update:model-value="laboratoryChanged"
           )
+        UFormGroup.pb-4(label="Poids (kg)" name="weight")
+          ft-text-field(
+            :model-value="currentVM.get('weight').value"
+            :disabled="!currentVM.get('weight').canEdit"
+            label="Poids (kg)"
+            @update:model-value="weightChanged"
+          )
         UFormGroup.pb-4(label="Images" name="images")
           div.flex.items-center.gap-4
             div(v-for="(image, index) in images" :key="index")
@@ -205,6 +212,10 @@ const priceWithTaxChanged = (priceWithTax: number) => {
 
 const laboratoryChanged = (laboratory: string) => {
   currentVM?.value?.set('laboratory', laboratory)
+}
+
+const weightChanged = (weight: string) => {
+  currentVM?.value?.set('weight', weight)
 }
 
 const images = computed(() => {

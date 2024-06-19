@@ -74,7 +74,8 @@ const initialVMTests = (
     { field: 'newImages', expected: expectedValue.newImages },
     { field: 'description', expected: expectedValue.description },
     { field: 'instructionsForUse', expected: expectedValue.instructionsForUse },
-    { field: 'composition', expected: expectedValue.composition }
+    { field: 'composition', expected: expectedValue.composition },
+    { field: 'weight', expected: expectedValue.weight }
   ])('Initial field value', ({ field, expected }) => {
     it(`should have ${field} to be "${expected}"`, () => {
       const expectedField: Field<any> = {
@@ -149,7 +150,8 @@ export const updateFieldsTests = (
       value: 'instructionsForUse',
       expected: 'instructionsForUse'
     },
-    { field: 'composition', value: 'composition', expected: 'composition' }
+    { field: 'composition', value: 'composition', expected: 'composition' },
+    { field: 'weight', value: '0.12', expected: '0.12' }
   ])('Update simple fields', ({ field, value, expected }) => {
     it(`should update ${field} value in form store`, () => {
       vm.set(field, value)
@@ -547,7 +549,8 @@ describe('Product form VM', () => {
         laboratory: '',
         description: '',
         instructionsForUse: '',
-        composition: ''
+        composition: '',
+        weight: ''
       }
       editableInitialVMTests(() => vm, key, expected)
     })
@@ -576,7 +579,8 @@ describe('Product form VM', () => {
             availableStock: '21',
             description: '<p>description</p>',
             instructionsForUse: '<p>instructionsForUse</p>',
-            composition: '<p>composition</p>'
+            composition: '<p>composition</p>',
+            weight: 1200
           }
           vm.set('name', expectedDTO.name)
           vm.set('cip7', expectedDTO.cip7)
@@ -592,6 +596,7 @@ describe('Product form VM', () => {
           vm.set('description', expectedDTO.description)
           vm.set('instructionsForUse', expectedDTO.instructionsForUse)
           vm.set('composition', expectedDTO.composition)
+          vm.set('weight', '1.2')
           expect(vm.getDto()).toStrictEqual(expectedDTO)
         })
       })
@@ -647,7 +652,8 @@ describe('Product form VM', () => {
         laboratory: product.laboratory,
         description: product.description,
         instructionsForUse: product.instructionsForUse,
-        composition: product.composition
+        composition: product.composition,
+        weight: '0.012'
       }
       editableInitialVMTests(() => vm, key, expected)
     })
@@ -679,7 +685,8 @@ describe('Product form VM', () => {
             availableStock: '21',
             description: '<p>description</p>',
             instructionsForUse: '<p>instructionsForUse</p>',
-            composition: '<p>composition</p>'
+            composition: '<p>composition</p>',
+            weight: 125
           }
           vm.set('name', expectedDTO.name)
           vm.set('cip7', expectedDTO.cip7)
@@ -695,6 +702,7 @@ describe('Product form VM', () => {
           vm.set('description', expectedDTO.description)
           vm.set('instructionsForUse', expectedDTO.instructionsForUse)
           vm.set('composition', expectedDTO.composition)
+          vm.set('weight', '0.125')
           expect(vm.getDto()).toStrictEqual(expectedDTO)
         })
       })
@@ -751,7 +759,8 @@ describe('Product form VM', () => {
         laboratory: product.laboratory,
         description: product.description,
         instructionsForUse: product.instructionsForUse,
-        composition: product.composition
+        composition: product.composition,
+        weight: '0.012'
       }
       readOnlyInitialVMTests(() => vm, key, expected)
     })

@@ -16,7 +16,8 @@ export const dolodent: Product = {
   percentTaxRate: 10,
   locations: { [zoneGeo.uuid]: 'DD02' },
   availableStock: 59,
-  laboratory: 'Gilbert'
+  laboratory: 'Gilbert',
+  weight: 980
 }
 
 export const ultraLevure: Product = {
@@ -38,7 +39,8 @@ export const ultraLevure: Product = {
   laboratory: 'BIOCODEX',
   description: '<p> ultralevure description</p>',
   instructionsForUse: '<p> ultralevure instructions</p>',
-  composition: '<p> ultralevure composition</p>'
+  composition: '<p> ultralevure composition</p>',
+  weight: 12
 }
 
 export const anaca3Minceur: Product = {
@@ -55,7 +57,8 @@ export const anaca3Minceur: Product = {
   percentTaxRate: 5.5,
   locations: { [zoneGeo.uuid]: '1D450' },
   availableStock: 36,
-  laboratory: 'ANACA 3'
+  laboratory: 'ANACA 3',
+  weight: 1200
 }
 
 export const chamomilla: Product = {
@@ -72,7 +75,8 @@ export const chamomilla: Product = {
   percentTaxRate: 10,
   locations: { [zoneGeo.uuid]: 'HOMEO-D' },
   availableStock: 1,
-  laboratory: 'BOIRON'
+  laboratory: 'BOIRON',
+  weight: 90
 }
 
 export const calmosine: Product = {
@@ -88,7 +92,8 @@ export const calmosine: Product = {
   percentTaxRate: 10,
   locations: { [zoneGeo.uuid]: 'E2' },
   availableStock: 10,
-  laboratory: 'NUTRISANTE'
+  laboratory: 'NUTRISANTE',
+  weight: 250
 }
 
 export const hemoclar: Product = {
@@ -106,7 +111,8 @@ export const hemoclar: Product = {
   percentTaxRate: 10,
   locations: { [zoneGeo.uuid]: 'D2' },
   availableStock: 23,
-  laboratory: 'SANOFI-AVENTIS'
+  laboratory: 'SANOFI-AVENTIS',
+  weight: 110
 }
 
 export const productWithoutLocation: Product = {
@@ -120,5 +126,6 @@ export const productWithoutLocation: Product = {
   percentTaxRate: 10,
   locations: {},
   availableStock: 23,
-  laboratory: 'SANOFI-AVENTIS'
+  laboratory: 'SANOFI-AVENTIS',
+  weight: 120
 }

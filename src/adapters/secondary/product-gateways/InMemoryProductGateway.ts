@@ -45,7 +45,8 @@ export class InMemoryProductGateway implements ProductGateway {
       laboratory: dto.laboratory,
       description: dto.description,
       instructionsForUse: dto.instructionsForUse,
-      composition: dto.composition
+      composition: dto.composition,
+      weight: dto.weight
     }
     this.products.push(product)
     return Promise.resolve(product)

@@ -19,6 +19,7 @@ export interface Product {
   description: string
   instructionsForUse: string
   composition: string
+  weight: number
 }
 
 export const isProduct = (object: any): object is Product => {
