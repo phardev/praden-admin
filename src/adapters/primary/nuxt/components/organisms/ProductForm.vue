@@ -109,6 +109,13 @@ div(v-if="currentVM")
             type="number"
             @update:model-value="availableStockChanged"
           )
+        UFormGroup.pb-4(label="Quantité limite pour une commande" name="maxQuantityForOrder")
+          ft-text-field(
+            :model-value="currentVM.get('maxQuantityForOrder').value"
+            :disabled="!currentVM.get('maxQuantityForOrder').canEdit"
+            type="number"
+            @update:model-value="maxQuantityForOrderChanged"
+          )
       template(#details)
         UFormGroup.pb-4(label="Description" name="description")
           FtRichTextInput(
@@ -240,6 +247,10 @@ const locationChanged = (uuid: string, value: string) => {
 
 const availableStockChanged = (availableStock: string) => {
   currentVM?.value?.set('availableStock', availableStock)
+}
+
+const maxQuantityForOrderChanged = (maxQuantityForOrder: string) => {
+  currentVM?.value?.set('maxQuantityForOrder', maxQuantityForOrder)
 }
 
 const descriptionChanged = (description: string) => {

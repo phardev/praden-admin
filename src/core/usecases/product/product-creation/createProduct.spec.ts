@@ -113,7 +113,8 @@ describe('Create product', () => {
         description: '<p>another description</p>',
         instructionsForUse: '<p>another instructions For Use</p>',
         composition: '<p>another composition</p>',
-        weight: 60
+        weight: 60,
+        maxQuantityForOrder: 12
       }
       const expectedProduct: Product = {
         uuid,
@@ -136,7 +137,8 @@ describe('Create product', () => {
         description: dto.description,
         instructionsForUse: dto.instructionsForUse,
         composition: dto.composition,
-        weight: dto.weight
+        weight: dto.weight,
+        maxQuantityForOrder: dto.maxQuantityForOrder
       }
       beforeEach(async () => {
         givenThereIsExistingProducts(dolodent, hemoclar)

@@ -98,7 +98,8 @@ export class ExistingProductFormInitializer implements FormInitializer {
       description: product.description,
       instructionsForUse: product.instructionsForUse,
       composition: product.composition,
-      weight: (product.weight / 1000).toString()
+      weight: (product.weight / 1000).toString(),
+      maxQuantityForOrder: product.maxQuantityForOrder
     })
   }
 

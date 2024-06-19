@@ -156,7 +156,8 @@ export class NewProductFormInitializer implements FormInitializer {
       description: '',
       instructionsForUse: '',
       composition: '',
-      weight: ''
+      weight: '',
+      maxQuantityForOrder: ''
     })
   }
 }
@@ -214,7 +215,8 @@ export class ProductFormCreateVM {
       description: this.fieldsReader.get('description'),
       instructionsForUse: this.fieldsReader.get('instructionsForUse'),
       composition: this.fieldsReader.get('composition'),
-      weight: +this.fieldsReader.get('weight') * 1000
+      weight: +this.fieldsReader.get('weight') * 1000,
+      maxQuantityForOrder: +this.fieldsReader.get('maxQuantityForOrder')
     }
   }
 

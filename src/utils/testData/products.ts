@@ -40,7 +40,8 @@ export const ultraLevure: Product = {
   description: '<p> ultralevure description</p>',
   instructionsForUse: '<p> ultralevure instructions</p>',
   composition: '<p> ultralevure composition</p>',
-  weight: 12
+  weight: 12,
+  maxQuantityForOrder: 6
 }
 
 export const anaca3Minceur: Product = {
@@ -58,7 +59,8 @@ export const anaca3Minceur: Product = {
   locations: { [zoneGeo.uuid]: '1D450' },
   availableStock: 36,
   laboratory: 'ANACA 3',
-  weight: 1200
+  weight: 1200,
+  maxQuantityForOrder: 3
 }
 
 export const chamomilla: Product = {

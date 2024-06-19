@@ -48,6 +48,9 @@ export class InMemoryProductGateway implements ProductGateway {
       composition: dto.composition,
       weight: dto.weight
     }
+    if (dto.maxQuantityForOrder) {
+      product.maxQuantityForOrder = dto.maxQuantityForOrder
+    }
     this.products.push(product)
     return Promise.resolve(product)
   }

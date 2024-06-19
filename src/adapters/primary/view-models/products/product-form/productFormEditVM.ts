@@ -63,7 +63,8 @@ export class ProductFormEditVM {
       description: this.fieldsReader.get('description'),
       instructionsForUse: this.fieldsReader.get('instructionsForUse'),
       composition: this.fieldsReader.get('composition'),
-      weight: +this.fieldsReader.get('weight') * 1000
+      weight: +this.fieldsReader.get('weight') * 1000,
+      maxQuantityForOrder: +this.fieldsReader.get('maxQuantityForOrder')
     }
   }
 
