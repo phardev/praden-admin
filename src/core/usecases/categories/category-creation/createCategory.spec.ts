@@ -10,22 +10,31 @@ import { UUID } from '@core/types/types'
 import { useCategoryStore } from '@store/categoryStore'
 import { dents } from '@utils/testData/categories'
 import { ParentCategoryDoesNotExistsError } from '@core/errors/ParentCategoryDoesNotExistsError'
+import { Product } from '@core/entities/product'
+import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
+import { calmosine, dolodent } from '@utils/testData/products'
+import { useProductStore } from '@store/productStore'
 
 describe('Create category', () => {
-  let categoryStore
+  let categoryStore: any
   const uuidGenerator: FakeUuidGenerator = new FakeUuidGenerator()
   let categoryGateway: InMemoryCategoryGateway
+  let productStore: any
+  let productGateway: InMemoryProductGateway
 
   beforeEach(() => {
     setActivePinia(createPinia())
     categoryStore = useCategoryStore()
     categoryGateway = new InMemoryCategoryGateway(uuidGenerator)
+    productStore = useProductStore()
+    productGateway = new InMemoryProductGateway(uuidGenerator)
   })
   describe('Root category', () => {
     const uuid = 'new-uuid'
     const categoryDTO: CreateCategoryDTO = {
       name: 'Created',
-      description: 'The description'
+      description: 'The description',
+      productsAdded: []
     }
     const expectedCategory: Category = {
       ...categoryDTO,
@@ -45,7 +54,8 @@ describe('Create category', () => {
     const uuid = 'new-uuid'
     const categoryDTO: CreateCategoryDTO = {
       name: 'Child category',
-      description: 'The child description'
+      description: 'The child description',
+      productsAdded: []
     }
     describe('The parent category exists', () => {
       const dto = JSON.parse(JSON.stringify(categoryDTO))
@@ -75,10 +85,44 @@ describe('Create category', () => {
       })
     })
   })
+  describe('Added products', () => {
+    let expectedProducts: Array<Product> = []
+    beforeEach(async () => {
+      givenExistingProducts(dolodent, calmosine)
+      const uuid = 'new-category-uuid'
+      const dto: CreateCategoryDTO = {
+        name: 'new-category',
+        description: 'The description',
+        productsAdded: [dolodent.uuid, calmosine.uuid]
+      }
+      await whenCreateCategory(uuid, dto)
+      expectedProducts = [
+        {
+          ...dolodent,
+          categoryUuid: uuid
+        },
+        {
+          ...calmosine,
+          categoryUuid: uuid
+        }
+      ]
+    })
+    it('should add the added products to the category', async () => {
+      expect(await productGateway.list()).toStrictEqual(expectedProducts)
+    })
+    it('should update the product store', () => {
+      expect(productStore.items).toStrictEqual(expectedProducts)
+    })
+  })
+
+  const givenExistingProducts = (...products: Array<Product>) => {
+    productGateway.feedWith(...JSON.parse(JSON.stringify(products)))
+    productStore.items = JSON.parse(JSON.stringify(products))
+  }
 
   const whenCreateCategory = async (uuid: UUID, dto: CreateCategoryDTO) => {
     uuidGenerator.setNext(uuid)
-    await createCategory(dto, categoryGateway)
+    await createCategory(dto, categoryGateway, productGateway)
   }
   const expectStoreToContains = (...categories: Array<Category>) => {
     expect(categoryStore.items).toStrictEqual(categories)

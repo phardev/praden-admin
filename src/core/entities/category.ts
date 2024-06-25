@@ -7,6 +7,11 @@ export interface Category {
   parentUuid?: UUID
 }
 
+export interface CategoryWithProducts {
+  category: Category
+  products: Array<UUID>
+}
+
 export const isCategory = (object: any): object is Category => {
   return 'uuid' in object && 'name' in object
 }

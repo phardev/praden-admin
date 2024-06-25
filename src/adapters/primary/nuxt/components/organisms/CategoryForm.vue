@@ -26,6 +26,49 @@ div(v-if="currentVM")
     )
       template(#option="{ option: category }")
         span {{ category.name }}
+  ft-text-field(
+    v-if="currentVM.get('products').canEdit"
+    v-model="search"
+    placeholder="Rechercher par nom, référence, catégorie, laboratoire"
+    for="search"
+    type='text'
+    name='search'
+    @input="searchChanged"
+  ) Rechercher un produit
+  div.flex.gap-12.mt-4
+    div.flex-1(
+      v-if="currentVM.get('products').canEdit"
+    )
+      ft-table(
+        :headers="currentVM.getAvailableProductsHeaders()"
+        :items="currentVM.getAvailableProducts().value"
+        :selectable="true"
+        :selection="availableProductSelector.get()"
+        @item-selected="availableProductSelector.toggleSelect"
+        @select-all="availableProductSelector.toggleSelectAll"
+      )
+        template(#title) Tous les produits
+    div.flex.flex-col.justify-center.gap-6.mt-20(
+      v-if="currentVM.get('products').canEdit"
+    )
+      ft-button.button-solid(
+        @click="addProducts"
+      )
+        icon.icon-lg(name="ic:baseline-keyboard-arrow-right")
+      ft-button.button-default(
+        @click="removeProducts"
+      )
+        icon.icon-lg.rotate-180(name="ic:baseline-keyboard-arrow-right")
+    div.flex-1
+      ft-table(
+        :headers="currentVM.getProductsHeaders()"
+        :items="currentVM.getProducts().value"
+        :selectable="currentVM.get('products').canEdit"
+        :selection="addedProductSelector.get()"
+        @item-selected="addedProductSelector.toggleSelect"
+        @select-all="addedProductSelector.toggleSelectAll"
+      )
+        template(#title) Produits de la catégorie
   div.flex.flex-row-reverse.mt-4
     ft-button.px-6.text-xl(
       v-if="currentVM.getDisplayValidate()"
@@ -35,6 +78,10 @@ div(v-if="currentVM")
 </template>
 
 <script lang="ts" setup>
+import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'
+import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
+import { useSearchGateway } from '../../../../../../gateways/searchGateway'
+
 definePageMeta({ layout: 'main' })
 
 const props = defineProps({
@@ -47,6 +94,11 @@ const props = defineProps({
 })
 
 const currentVM = toRef(props, 'vm')
+const router = useRouter()
+const routeName = router.currentRoute.value.name
+const availableProductSelector = useSelection()
+const addedProductSelector = useSelection()
+const search = ref('')
 
 const nameChanged = (name: string) => {
   currentVM?.value?.set('name', name)
@@ -62,6 +114,20 @@ const clearParentCategory = () => {
 
 const descriptionChanged = (description: string) => {
   currentVM?.value?.set('description', description)
+}
+
+const searchChanged = (e: any) => {
+  searchProducts(routeName, e.target.value, useSearchGateway())
+}
+
+const addProducts = () => {
+  currentVM.value.addProducts(availableProductSelector.get())
+  availableProductSelector.clear()
+}
+
+const removeProducts = () => {
+  currentVM.value.removeProducts(addedProductSelector.get())
+  addedProductSelector.clear()
 }
 
 const emit = defineEmits<{

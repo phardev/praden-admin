@@ -13,6 +13,7 @@ import { listCategories } from '@core/usecases/categories/list-categories/listCa
 import { useCategoryGateway } from '../../../../../../../gateways/categoryGateway'
 import { getCategory } from '@core/usecases/categories/get-category/getCategory'
 import { categoryFormGetVM } from '@adapters/primary/view-models/categories/category-form/categoryFormGetVM'
+import { useProductGateway } from '../../../../../../../gateways/productGateway'
 
 definePageMeta({ layout: 'main' })
 
@@ -25,7 +26,8 @@ const routeName = router.currentRoute.value.name
 onMounted(async () => {
   const categoryGateway = useCategoryGateway()
   listCategories(categoryGateway)
-  await getCategory(categoryUuid, categoryGateway)
+  const productGateway = useProductGateway()
+  await getCategory(categoryUuid, categoryGateway, productGateway)
   vm.value = categoryFormGetVM(routeName)
 })
 

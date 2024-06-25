@@ -13,6 +13,7 @@ import { useCategoryGateway } from '../../../../../../../gateways/categoryGatewa
 import { getCategory } from '@core/usecases/categories/get-category/getCategory'
 import { editCategory } from '@core/usecases/categories/category-edition/editCategory'
 import { categoryFormEditVM } from '@adapters/primary/view-models/categories/category-form/categoryFormEditVM'
+import { useProductGateway } from '../../../../../../../gateways/productGateway'
 
 definePageMeta({ layout: 'main' })
 
@@ -25,12 +26,18 @@ const routeName = router.currentRoute.value.name
 onMounted(async () => {
   const categoryGateway = useCategoryGateway()
   listCategories(categoryGateway)
-  await getCategory(categoryUuid, categoryGateway)
+  const productGateway = useProductGateway()
+  await getCategory(categoryUuid, categoryGateway, productGateway)
   vm.value = categoryFormEditVM(routeName)
 })
 
 const validate = async () => {
-  await editCategory(categoryUuid, vm.value.getDto(), useCategoryGateway())
+  await editCategory(
+    categoryUuid,
+    vm.value.getDto(),
+    useCategoryGateway(),
+    useProductGateway()
+  )
   router.push('/categories/')
 }
 </script>

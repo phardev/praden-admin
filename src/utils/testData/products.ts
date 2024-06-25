@@ -137,3 +137,19 @@ export const productWithoutLocation: Product = {
   laboratory: 'SANOFI-AVENTIS',
   weight: 120
 }
+
+export const productWithoutCategory: Product = {
+  uuid: 'product-withoutCategory',
+  name: 'Product without category',
+  images: ['https://fakeimg.pl/300/'],
+  miniature: '',
+  cip7: '0637218',
+  cip13: '0637218312823',
+  ean13: '0637218312823',
+  priceWithoutTax: 590,
+  percentTaxRate: 10,
+  locations: {},
+  availableStock: 23,
+  laboratory: 'SANOFI-AVENTIS',
+  weight: 120
+}

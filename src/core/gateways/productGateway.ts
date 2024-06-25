@@ -9,4 +9,5 @@ export interface ProductGateway {
   create(dto: CreateProductDTO): Promise<Product>
   edit(uuid: UUID, dto: EditProductDTO): Promise<Product>
   getByUuid(uuid: UUID): Promise<Product>
+  getByCategoryUuid(categoryUuid: UUID): Promise<Array<Product>>
 }

@@ -20,6 +20,7 @@ export interface TypeChoiceVM {
 }
 
 export interface PromotionProductItemVM {
+  uuid: UUID
   name: string
   reference: string
   category: string

@@ -72,6 +72,12 @@ export class InMemoryProductGateway implements ProductGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(res)))
   }
 
+  getByCategoryUuid(categoryUuid: UUID): Promise<Array<Product>> {
+    return Promise.resolve(
+      this.products.filter((p) => p.categoryUuid === categoryUuid)
+    )
+  }
+
   feedWith(...products: Array<Product>) {
     this.products = JSON.parse(JSON.stringify(products))
   }

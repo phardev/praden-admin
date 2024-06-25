@@ -16,6 +16,7 @@ import { getProduct } from '@core/usecases/product/get-product/get-product'
 import { productFormEditVM } from '@adapters/primary/view-models/products/product-form/productFormEditVM'
 import { editProduct } from '@core/usecases/product/product-edition/editProduct'
 import { useLocationGateway } from '../../../../../../../gateways/locationGateway'
+import { usePromotionGateway } from '../../../../../../../gateways/promotionGateway'
 
 definePageMeta({ layout: 'main' })
 
@@ -30,7 +31,7 @@ onMounted(async () => {
   listCategories(categoryGateway)
   const productGateway = useProductGateway()
   listProducts(productGateway)
-  await getProduct(productUuid, productGateway)
+  await getProduct(productUuid, productGateway, usePromotionGateway())
   vm.value = productFormEditVM(routeName)
 })
 

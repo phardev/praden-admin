@@ -7,6 +7,10 @@ import {
   FormFieldsReader,
   FormInitializer
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import {
+  CategoryFormVM,
+  CategoryProductItemVM
+} from '@adapters/primary/view-models/categories/category-form/categoryFormVM'
 
 export class ExistingCategoryFormInitializer implements FormInitializer {
   protected readonly key: string
@@ -20,14 +24,15 @@ export class ExistingCategoryFormInitializer implements FormInitializer {
   }
 
   init() {
-    let category = this.categoryStore.current
+    let category = this.categoryStore.current?.category
     if (category) {
       category = JSON.parse(JSON.stringify(category))
     }
     this.formStore.set(this.key, {
       name: category.name,
       description: category.description,
-      parentUuid: category.parentUuid
+      parentUuid: category.parentUuid,
+      products: this.categoryStore.current?.products || []
     })
   }
 }
@@ -42,7 +47,11 @@ export class CategoryFormFieldsReader extends FormFieldsReader {
 
   getAvailableCategories(): CreateProductCategoriesVM {
     const categories = this.categoryStore.items
-    return categories.map((c: Category) => {
+    const currentCategory = this.categoryStore.current?.category?.uuid
+    const filtered = categories.filter(
+      (c: Category) => c.uuid !== currentCategory
+    )
+    return filtered.map((c: Category) => {
       return {
         uuid: c.uuid,
         name: c.name
@@ -51,16 +60,16 @@ export class CategoryFormFieldsReader extends FormFieldsReader {
   }
 }
 
-export class CategoryFormGetVM {
+export class CategoryFormGetVM extends CategoryFormVM {
   protected initializer: ExistingCategoryFormInitializer
-  protected fieldsReader: CategoryFormFieldsReader
 
   constructor(
     initializer: ExistingCategoryFormInitializer,
-    fieldReader: CategoryFormFieldsReader
+    fieldReader: CategoryFormFieldsReader,
+    key: string
   ) {
+    super(fieldReader, key)
     this.initializer = initializer
-    this.fieldsReader = fieldReader
     initializer.init()
   }
 
@@ -79,6 +88,13 @@ export class CategoryFormGetVM {
     return this.fieldsReader.getAvailableCategories()
   }
 
+  getProducts(): Field<Array<CategoryProductItemVM>> {
+    return {
+      value: super.getCategoryProductsVM(),
+      canEdit: false
+    }
+  }
+
   getDisplayValidate(): boolean {
     return false
   }
@@ -91,5 +107,5 @@ export class CategoryFormGetVM {
 export const categoryFormGetVM = (key: string): CategoryFormGetVM => {
   const initializer = new ExistingCategoryFormInitializer(key)
   const reader = new CategoryFormFieldsReader(key)
-  return new CategoryFormGetVM(initializer, reader)
+  return new CategoryFormGetVM(initializer, reader, key)
 }

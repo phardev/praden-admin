@@ -11,15 +11,23 @@ import {
 import { UUID } from '@core/types/types'
 import { CategoryDoesNotExistsError } from '@core/errors/CategoryDoesNotExistsError'
 import { ParentCategoryDoesNotExistsError } from '@core/errors/ParentCategoryDoesNotExistsError'
+import { anaca3Minceur, calmosine, dolodent } from '@utils/testData/products'
+import { Product } from '@core/entities/product'
+import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
+import { useProductStore } from '@store/productStore'
 
 describe('Category Edition', () => {
   let categoryStore
   let categoryGateway: InMemoryCategoryGateway
+  let productStore
+  let productGateway: InMemoryProductGateway
 
   beforeEach(() => {
     setActivePinia(createPinia())
     categoryStore = useCategoryStore()
     categoryGateway = new InMemoryCategoryGateway(new FakeUuidGenerator())
+    productStore = useProductStore()
+    productGateway = new InMemoryProductGateway(new FakeUuidGenerator())
   })
   describe('The category exists', () => {
     beforeEach(() => {
@@ -71,6 +79,51 @@ describe('Category Edition', () => {
         ).rejects.toThrow(ParentCategoryDoesNotExistsError)
       })
     })
+    describe('Added products', () => {
+      let expectedProducts: Array<Product> = []
+      beforeEach(async () => {
+        givenExistingProducts(dolodent, calmosine)
+        const dto: EditCategoryDTO = {
+          productsAdded: [dolodent.uuid, calmosine.uuid]
+        }
+        await whenEditCategory(minceur.uuid, dto)
+        expectedProducts = [
+          {
+            ...dolodent,
+            categoryUuid: minceur.uuid
+          },
+          {
+            ...calmosine,
+            categoryUuid: minceur.uuid
+          }
+        ]
+      })
+      it('should add the added products to the category', async () => {
+        expect(await productGateway.list()).toStrictEqual(expectedProducts)
+      })
+      it('should update the product store', () => {
+        expect(productStore.items).toStrictEqual(expectedProducts)
+      })
+    })
+    describe('Removed products', () => {
+      let expectedProducts: Array<Product> = []
+      beforeEach(async () => {
+        givenExistingProducts(anaca3Minceur)
+        const dto: EditCategoryDTO = {
+          productsRemoved: [anaca3Minceur.uuid]
+        }
+        await whenEditCategory(minceur.uuid, dto)
+        const expectedProduct = anaca3Minceur
+        delete expectedProduct.categoryUuid
+        expectedProducts = [expectedProduct]
+      })
+      it('should add the added products to the category', async () => {
+        expect(await productGateway.list()).toStrictEqual(expectedProducts)
+      })
+      it('should update the product store', () => {
+        expect(productStore.items).toStrictEqual(expectedProducts)
+      })
+    })
   })
   describe('The category does not exists', () => {
     it('should throw an error', async () => {
@@ -85,10 +138,15 @@ describe('Category Edition', () => {
     categoryStore.items = JSON.parse(JSON.stringify(categories))
   }
 
+  const givenExistingProducts = (...products: Array<Product>) => {
+    productGateway.feedWith(...JSON.parse(JSON.stringify(products)))
+    productStore.items = JSON.parse(JSON.stringify(products))
+  }
+
   const whenEditCategory = async (
     uuid: UUID,
     dto: EditCategoryDTO
   ): Promise<void> => {
-    await editCategory(uuid, dto, categoryGateway)
+    await editCategory(uuid, dto, categoryGateway, productGateway)
   }
 })

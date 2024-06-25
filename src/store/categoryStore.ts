@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
-import { Category } from '@core/entities/category'
+import { Category, CategoryWithProducts } from '@core/entities/category'
 
 export const useCategoryStore = defineStore('CategoryStore', {
   state: () => {
     return {
       items: [] as Array<Category>,
-      current: undefined as Category | undefined
+      current: undefined as CategoryWithProducts | undefined
     }
   },
   actions: {
@@ -20,7 +20,7 @@ export const useCategoryStore = defineStore('CategoryStore', {
         return c.uuid === category.uuid ? category : c
       })
     },
-    setCurrent(category: Category) {
+    setCurrent(category: CategoryWithProducts) {
       this.current = JSON.parse(JSON.stringify(category))
     }
   }

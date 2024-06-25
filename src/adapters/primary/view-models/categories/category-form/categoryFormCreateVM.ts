@@ -4,10 +4,31 @@ import { CategoryFormFieldsReader } from '@adapters/primary/view-models/categori
 import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import { useFormStore } from '@store/formStore'
 import { FormFieldsWriter } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+import {
+  CategoryFormVM,
+  CategoryProductItemVM
+} from '@adapters/primary/view-models/categories/category-form/categoryFormVM'
+import { UUID } from '@core/types/types'
 
 export class CategoryFormFieldsWriter extends FormFieldsWriter {
-  constructor(key: string) {
+  protected fieldsReader: CategoryFormFieldsReader
+
+  constructor(key: string, fieldsReader: CategoryFormFieldsReader) {
     super(key)
+    this.fieldsReader = fieldsReader
+  }
+
+  addProducts(uuids: Array<UUID>) {
+    const products = this.fieldsReader.get('products')
+    const productsSet = new Set<UUID>(products)
+    uuids.forEach((uuid) => productsSet.add(uuid))
+    super.set('products', [...productsSet])
+  }
+
+  removeProducts(uuids: Array<UUID>) {
+    let products = this.fieldsReader.get('products')
+    products = products.filter((p: string) => !uuids.includes(p))
+    super.set('products', products)
   }
 }
 
@@ -24,22 +45,23 @@ export class NewCategoryFormInitializer implements FormInitializer {
     this.formStore.set(this.key, {
       name: '',
       description: '',
-      parentUuid: undefined
+      parentUuid: undefined,
+      products: []
     })
   }
 }
 
-export class CategoryFormCreateVM {
-  private fieldsReader: CategoryFormFieldsReader
+export class CategoryFormCreateVM extends CategoryFormVM {
   private fieldsWriter: CategoryFormFieldsWriter
 
   constructor(
     initializer: NewCategoryFormInitializer,
     fieldsReader: CategoryFormFieldsReader,
-    fieldsWriter: CategoryFormFieldsWriter
+    fieldsWriter: CategoryFormFieldsWriter,
+    key: string
   ) {
+    super(fieldsReader, key)
     initializer.init()
-    this.fieldsReader = fieldsReader
     this.fieldsWriter = fieldsWriter
   }
 
@@ -62,11 +84,27 @@ export class CategoryFormCreateVM {
     return this.fieldsReader.getAvailableCategories()
   }
 
+  getProducts(): Field<Array<CategoryProductItemVM>> {
+    return {
+      value: super.getCategoryProductsVM(),
+      canEdit: true
+    }
+  }
+
+  addProducts(uuids: Array<UUID>) {
+    this.fieldsWriter.addProducts(uuids)
+  }
+
+  removeProducts(cip13: Array<string>) {
+    this.fieldsWriter.removeProducts(cip13)
+  }
+
   getDto(): CreateCategoryDTO {
     return {
       name: this.fieldsReader.get('name'),
       parentUuid: this.fieldsReader.get('parentUuid'),
-      description: this.fieldsReader.get('description')
+      description: this.fieldsReader.get('description'),
+      productsAdded: this.fieldsReader.get('products')
     }
   }
 
@@ -82,6 +120,6 @@ export class CategoryFormCreateVM {
 export const categoryFormCreateVM = (key: string): CategoryFormCreateVM => {
   const initializer = new NewCategoryFormInitializer(key)
   const reader = new CategoryFormFieldsReader(key)
-  const writer = new CategoryFormFieldsWriter(key)
-  return new CategoryFormCreateVM(initializer, reader, writer)
+  const writer = new CategoryFormFieldsWriter(key, reader)
+  return new CategoryFormCreateVM(initializer, reader, writer, key)
 }
