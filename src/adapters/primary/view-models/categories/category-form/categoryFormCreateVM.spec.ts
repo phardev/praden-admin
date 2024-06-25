@@ -266,7 +266,7 @@ describe('Category form create VM', () => {
             expect(vm.getAvailableProducts()).toStrictEqual(expectedField)
           })
         })
-        describe.skip('In multiple steps', () => {
+        describe('In multiple steps', () => {
           const selectedProducts = [dolodent.uuid, anaca3Minceur.uuid]
           beforeEach(() => {
             givenExistingProducts(dolodent, anaca3Minceur)
