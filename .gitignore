@@ -7,3 +7,4 @@ coverage
 .output
 dist
 .env
+.stylelintcache
