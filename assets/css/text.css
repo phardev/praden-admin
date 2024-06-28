@@ -39,8 +39,12 @@
     @apply text-contrast hover:text-primary11
   }
 
+  .text-page-title {
+    @apply text-default text-3xl font-semibold
+  }
+
   .text-title {
-    @apply text-default text-3xl font-semibold mb-8
+    @apply text-page-title mb-8
   }
 
   .text-subtitle {

@@ -50,7 +50,8 @@ export default defineNuxtConfig({
     'nuxt-icon',
     '@vueuse/nuxt',
     '@nuxt/ui',
-    'nuxt-tiptap-editor'
+    'nuxt-tiptap-editor',
+    '@nuxtjs/stylelint-module'
   ],
   tiptap: {
     prefix: 'Tiptap'
@@ -77,5 +78,23 @@ export default defineNuxtConfig({
   },
   colorMode: {
     preference: 'light'
+  },
+  stylelint: {
+    rules: {
+      'at-rule-no-unknown': [
+        true,
+        {
+          ignoreAtRules: [
+            'tailwind',
+            'apply',
+            'variants',
+            'responsive',
+            'screen'
+          ]
+        }
+      ],
+      'no-descending-specificity': null
+    },
+    ignoreFiles: ['coverage/*']
   }
 })
