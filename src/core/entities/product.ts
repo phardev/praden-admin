@@ -22,6 +22,7 @@ export interface Product {
   composition: string
   weight: number
   maxQuantityForOrder?: number
+  isMedicine: boolean
 }
 
 export interface ProductWithPromotion {

@@ -18,7 +18,8 @@ export const dolodent: Product = {
   locations: { [zoneGeo.uuid]: 'DD02' },
   availableStock: 59,
   laboratory: 'Gilbert',
-  weight: 980
+  weight: 980,
+  isMedicine: true
 }
 
 export const ultraLevure: Product = {
@@ -42,7 +43,8 @@ export const ultraLevure: Product = {
   instructionsForUse: '<p> ultralevure instructions</p>',
   composition: '<p> ultralevure composition</p>',
   weight: 12,
-  maxQuantityForOrder: 6
+  maxQuantityForOrder: 6,
+  isMedicine: false
 }
 
 export const anaca3Minceur: Product = {
@@ -62,7 +64,8 @@ export const anaca3Minceur: Product = {
   availableStock: 36,
   laboratory: 'ANACA 3',
   weight: 1200,
-  maxQuantityForOrder: 3
+  maxQuantityForOrder: 3,
+  isMedicine: false
 }
 
 export const chamomilla: Product = {
@@ -81,7 +84,8 @@ export const chamomilla: Product = {
   locations: { [zoneGeo.uuid]: 'HOMEO-D' },
   availableStock: 1,
   laboratory: 'BOIRON',
-  weight: 90
+  weight: 90,
+  isMedicine: false
 }
 
 export const calmosine: Product = {
@@ -99,7 +103,8 @@ export const calmosine: Product = {
   locations: { [zoneGeo.uuid]: 'E2' },
   availableStock: 10,
   laboratory: 'NUTRISANTE',
-  weight: 250
+  weight: 250,
+  isMedicine: false
 }
 
 export const hemoclar: Product = {
@@ -119,7 +124,8 @@ export const hemoclar: Product = {
   locations: { [zoneGeo.uuid]: 'D2' },
   availableStock: 23,
   laboratory: 'SANOFI-AVENTIS',
-  weight: 110
+  weight: 110,
+  isMedicine: false
 }
 
 export const productWithoutLocation: Product = {
@@ -135,7 +141,8 @@ export const productWithoutLocation: Product = {
   locations: {},
   availableStock: 23,
   laboratory: 'SANOFI-AVENTIS',
-  weight: 120
+  weight: 120,
+  isMedicine: false
 }
 
 export const productWithoutCategory: Product = {
@@ -151,5 +158,6 @@ export const productWithoutCategory: Product = {
   locations: {},
   availableStock: 23,
   laboratory: 'SANOFI-AVENTIS',
-  weight: 120
+  weight: 120,
+  isMedicine: false
 }

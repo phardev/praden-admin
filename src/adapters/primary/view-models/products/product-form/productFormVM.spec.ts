@@ -77,6 +77,7 @@ const initialVMTests = (
     { field: 'instructionsForUse', expected: expectedValue.instructionsForUse },
     { field: 'composition', expected: expectedValue.composition },
     { field: 'weight', expected: expectedValue.weight },
+    { field: 'isMedecine', expected: expectedValue.isMedicine },
     {
       field: 'maxQuantityForOrder',
       expected: expectedValue.maxQuantityForOrder

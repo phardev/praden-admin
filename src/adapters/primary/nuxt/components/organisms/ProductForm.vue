@@ -33,6 +33,12 @@ div(v-if="currentVM")
             :disabled="!currentVM.get('cip7').canEdit"
             @update:model-value="cip7Changed"
           )
+        UFormGroup.pb-4(label="Médicament" name="isMedicine")
+          UToggle(
+            size="xl"
+            :model-value="currentVM.get('isMedicine').value"
+            :disabled="true"
+          )
         UFormGroup.pb-4(label="CIP13" name="cip13")
           ft-text-field(
             :model-value="currentVM.get('cip13').value"
