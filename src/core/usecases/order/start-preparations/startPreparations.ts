@@ -12,13 +12,20 @@ export const startPreparations = async (
   emailGateway: EmailGateway
 ) => {
   const preparationStore = usePreparationStore()
-  const ordersUuids = preparationStore.selected
-  for (const uuid of ordersUuids) {
-    const order = await orderGateway.startPreparation(uuid)
-    preparationStore.update(order)
-    await sendStartPreparationEmail(order, emailGateway)
+  try {
+    preparationStore.startLoading()
+    const ordersUuids = preparationStore.selected
+    for (const uuid of ordersUuids) {
+      const order = await orderGateway.startPreparation(uuid)
+      preparationStore.update(order)
+      await sendStartPreparationEmail(order, emailGateway)
+    }
+    preparationStore.clearSelection()
+  } catch (e: any) {
+    throw e
+  } finally {
+    preparationStore.stopLoading()
   }
-  preparationStore.clearSelection()
 }
 
 const sendStartPreparationEmail = async (

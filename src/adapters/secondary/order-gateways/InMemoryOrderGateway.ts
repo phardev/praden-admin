@@ -35,6 +35,9 @@ export class InMemoryOrderGateway implements OrderGateway {
 
   startPreparation(uuid: UUID): Promise<Order> {
     const order = this.orders.find((o) => o.uuid === uuid)
+    if (!order) {
+      throw new PreparationDoesNotExistsError(uuid)
+    }
     order?.lines.forEach((l) => {
       l.deliveryStatus = DeliveryStatus.Processing
     })

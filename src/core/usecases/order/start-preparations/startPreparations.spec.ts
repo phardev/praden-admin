@@ -16,6 +16,7 @@ import { Product } from '@core/entities/product'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { useProductStore } from '@store/productStore'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { PreparationDoesNotExistsError } from '@core/errors/PreparationDoesNotExistsError'
 
 describe('Start preparations', () => {
   let orderGateway: InMemoryOrderGateway
@@ -157,8 +158,43 @@ describe('Start preparations', () => {
         expectPreparationStoreToEqual(orderToPrepare1, expectedOrder2)
       })
     })
+    describe('Loading', () => {
+      it('should be aware during loading', async () => {
+        const unsubscribe = preparationStore.$subscribe(
+          (mutation: any, state: any) => {
+            expect(state.isLoading).toBe(true)
+            unsubscribe()
+          }
+        )
+        await whenStartPreparationForOrders(
+          orderToPrepare1.uuid,
+          orderToPrepare2.uuid
+        )
+      })
+      it('should be aware when loading is done', async () => {
+        await whenStartPreparationForOrders(
+          orderToPrepare1.uuid,
+          orderToPrepare2.uuid
+        )
+        expect(preparationStore.isLoading).toBe(false)
+      })
+    })
   })
-
+  describe('Errors', () => {
+    describe('The order does not exists', () => {
+      it('should throw an error', async () => {
+        await expect(
+          whenStartPreparationForOrders('not-exists')
+        ).rejects.toThrow(PreparationDoesNotExistsError)
+      })
+      it('should stop loading', async () => {
+        try {
+          await whenStartPreparationForOrders('not-exists')
+        } catch (e: any) {}
+        expect(preparationStore.isLoading).toBe(false)
+      })
+    })
+  })
   const givenThereIsOrdersToPrepare = (...orders: Array<Order>) => {
     orderGateway.feedWith(...orders)
     preparationStore.items = orders

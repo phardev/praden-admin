@@ -21,6 +21,7 @@
     "*.{css,vue}": "stylelint"
   },
   "devDependencies": {
+    "@nuxt/ui": "^2.17.0",
     "@nuxtjs/stylelint-module": "^5.2.0",
     "@tailwindcss/typography": "^0.5.12",
     "@types/jest": "^29.5.12",
@@ -57,7 +58,6 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.19",
     "@mdi/font": "^7.4.47",
-    "@nuxt/ui": "^2.15.0",
     "@pinia/nuxt": "^0.4.11",
     "@unhead/shared": "^1.8.20",
     "@vuepic/vue-datepicker": "^5.4.0",
