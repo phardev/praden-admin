@@ -26,7 +26,13 @@
             :class="[headerIndex === 0 ? 'pl-4 pr-3 sm:pl-6' : 'px-3 lg:table-cell', 'text-left text-sm font-semibold text-default py-3.5']"
             scope='col'
           ) {{ header.name }}
-      tbody
+      tbody(v-if="isLoading")
+        tr(v-for="i in 5" :key="i")
+          td(v-if="selectable" class="relative w-12 px-6 sm:w-16 sm:px-8")
+            USkeleton(class="h-4 w-4")
+          td(v-for="c in headers.length" :key="c")
+            USkeleton.my-4(class="h-4 w-[250px]")
+      tbody(v-else)
         tr.table-line(
           v-for='(item, index) in items'
           :key='index'
@@ -77,6 +83,12 @@ const props = defineProps({
     type: String,
     default: () => {
       return 'uuid'
+    }
+  },
+  isLoading: {
+    type: Boolean,
+    default: () => {
+      return false
     }
   }
 })

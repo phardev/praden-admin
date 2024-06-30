@@ -2,7 +2,7 @@
 tab-group.border-b.border-gray-200(as="div")
   tab-list.-mb-px.flex.space-x-4
     tab.w-full.rounded-md.border-neutral-light.py-2.pl-3.pr-10.text-base.outline-0.cursor-pointer(
-      v-for="(group, tabIndex) in Object.keys(preparationsVm)"
+      v-for="(group, tabIndex) in Object.keys(preparationsVm.items)"
       v-slot="{ selected }"
       :key="tabIndex"
       as="div"
@@ -13,16 +13,17 @@ tab-group.border-b.border-gray-200(as="div")
       )
         div {{ group }}
           span.hidden.ml-3.rounded-full.text-xs.font-medium(
-            v-if="preparationsVm[group].count"
+            v-if="preparationsVm.items[group].count"
             :class="[selected ? 'bg-contrast text-colored' : 'bg-light text-contrast', 'py-0.5 px-2.5 md:inline-block']"
-          ) {{ preparationsVm[group].count }}
-  tab-panels(v-for="(group, index) in Object.values(preparationsVm)" :key="index")
+          ) {{ preparationsVm.items[group].count }}
+  tab-panels(v-for="(group, index) in Object.values(preparationsVm.items)" :key="index")
     tab-panel.mt-4
       ft-table(
         :headers="group.table.headers"
         :items="group.table.items"
         :selectable="group.canSelect"
         :selection="ordersSelectedVM.items"
+        :is-loading="preparationsVm.isLoading"
         item-key="reference"
         @item-selected="select"
         @select-all="selectAll(group.table.items)"

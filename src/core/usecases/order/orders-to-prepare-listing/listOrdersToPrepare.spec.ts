@@ -110,6 +110,21 @@ describe('List orders to prepare', () => {
       )
     })
   })
+  describe('Loading', () => {
+    it('should be aware during loading', async () => {
+      const unsubscribe = preparationStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenListOrdersToPrepare()
+    })
+    it('should be aware when loading is done', async () => {
+      await whenListOrdersToPrepare()
+      expect(preparationStore.isLoading).toBe(false)
+    })
+  })
 
   const givenExistingOrders = (...orders: Array<Order>) => {
     orderGateway.feedWith(...orders)

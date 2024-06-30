@@ -31,7 +31,10 @@ interface GetPreparationsGroupVM {
   table: TableVM<GetPreparationsItemVM>
 }
 
-export type GetPreparationsVM = HashTable<GetPreparationsGroupVM>
+export interface GetPreparationsVM {
+  items: HashTable<GetPreparationsGroupVM>
+  isLoading: boolean
+}
 
 export const computeTotalWithTaxForOrder = (order: Order) => {
   const total = order.lines.reduce((acc: number, line: OrderLine) => {
@@ -115,12 +118,14 @@ export const getPreparationsVMHeaders: Array<Header> = [
   }
 ]
 
-export const filterPreparationsByGroup = (groups: any): GetPreparationsVM => {
+export const filterPreparationsByGroup = (
+  groups: any
+): HashTable<GetPreparationsGroupVM> => {
   const preparationStore = usePreparationStore()
   const orders = preparationStore.items
   const headers = getPreparationsVMHeaders
   const formatter = priceFormatter('fr-FR', 'EUR')
-  const res: GetPreparationsVM = {}
+  const res: HashTable<GetPreparationsGroupVM> = {}
   groups.forEach((group: any) => {
     const filteredItems = orders.filter(group.filter)
     const items = filteredItems.map((o: Order) => {
@@ -179,5 +184,10 @@ export const getPreparationsVM = (): GetPreparationsVM => {
       canSelect: false
     }
   ]
-  return filterPreparationsByGroup(groups)
+  const preparationStore = usePreparationStore()
+  const isLoading = preparationStore.isLoading
+  return {
+    items: filterPreparationsByGroup(groups),
+    isLoading
+  }
 }
