@@ -103,3 +103,8 @@ export const getTotalWithTax = (order: Order): number => {
   const deliveryPrice = order.delivery.method.price / 100
   return totalLine + deliveryPrice
 }
+
+export const getDeliveryStatus = (order: Order): DeliveryStatus => {
+  const statuses = order.lines.map((l) => l.deliveryStatus)
+  return Math.min(...statuses)
+}

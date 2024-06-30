@@ -46,6 +46,11 @@ export const fullMenu: NavigationMenu = {
           name: 'Préparations en attente',
           icon: 'pajamas:status-waiting',
           href: '/waitingPreparations'
+        },
+        {
+          name: 'Commandes',
+          icon: 'material-symbols:orders-outline',
+          href: '/orders'
         }
       ]
     }
