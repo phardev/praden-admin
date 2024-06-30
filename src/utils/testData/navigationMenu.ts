@@ -53,6 +53,16 @@ export const fullMenu: NavigationMenu = {
           href: '/orders'
         }
       ]
+    },
+    {
+      title: 'Boutique',
+      links: [
+        {
+          name: 'Bannières',
+          icon: 'material-symbols:add-photo-alternate-outline',
+          href: '/banners'
+        }
+      ]
     }
   ]
 }

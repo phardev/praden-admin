@@ -73,7 +73,8 @@
     "vue-composable": "1.0.0-beta.24",
     "vue-currency-input": "^3.1.0",
     "vue-qr": "^4.0.9",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vuedraggable": "^4.1.0"
   },
   "volta": {
     "node": "18.18.2"
