@@ -25,7 +25,12 @@ import {
   promotionFixedMultipleProducts,
   promotionPercentageDolodent
 } from '@utils/testData/promotions'
-import { anaca3Minceur, calmosine, dolodent } from '@utils/testData/products'
+import {
+  anaca3Minceur,
+  calmosine,
+  dolodent,
+  productWithoutCategory
+} from '@utils/testData/products'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { Product } from '@core/entities/product'
 import { useProductStore } from '@store/productStore'
@@ -58,6 +63,14 @@ const dolodentVM: PromotionProductItemVM = {
   reference: dolodent.cip13,
   category: dents.name,
   laboratory: dolodent.laboratory
+}
+
+const productWithoutCategoryVM: PromotionProductItemVM = {
+  uuid: productWithoutCategory.uuid,
+  name: productWithoutCategory.name,
+  reference: productWithoutCategory.cip13,
+  category: '',
+  laboratory: productWithoutCategory.laboratory
 }
 const availableTypeChoices: Array<TypeChoiceVM> = [
   {
@@ -380,12 +393,22 @@ describe('Promotion form', () => {
       editableInitialVMTests(() => vm, key, expected)
       describe('Available products', () => {
         beforeEach(() => {
-          givenExistingProducts(dolodent, anaca3Minceur, calmosine)
+          givenExistingProducts(
+            dolodent,
+            anaca3Minceur,
+            calmosine,
+            productWithoutCategory
+          )
           givenExistingCategories(dents, baby, minceur)
         })
         it('should list the available products', () => {
           const expectedField: Field<Array<PromotionProductItemVM>> = {
-            value: [dolodentVM, anaca3VM, calmosineVM],
+            value: [
+              dolodentVM,
+              anaca3VM,
+              calmosineVM,
+              productWithoutCategoryVM
+            ],
             canEdit: true
           }
           expect(vm.getAvailableProducts()).toStrictEqual(expectedField)
@@ -488,12 +511,17 @@ describe('Promotion form', () => {
       editableInitialVMTests(() => vm, key, expected)
       describe('Available products', () => {
         beforeEach(() => {
-          givenExistingProducts(dolodent, anaca3Minceur, calmosine)
+          givenExistingProducts(
+            dolodent,
+            anaca3Minceur,
+            calmosine,
+            productWithoutCategory
+          )
           givenExistingCategories(dents, baby, minceur)
         })
         it('should list the available products', () => {
           const expectedField: Field<Array<PromotionProductItemVM>> = {
-            value: [anaca3VM, calmosineVM],
+            value: [anaca3VM, calmosineVM, productWithoutCategoryVM],
             canEdit: true
           }
           expect(vm.getAvailableProducts()).toStrictEqual(expectedField)

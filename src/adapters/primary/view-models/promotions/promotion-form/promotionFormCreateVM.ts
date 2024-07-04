@@ -140,7 +140,7 @@ export class PromotionFormCreateVM extends PromotionFormVM {
           uuid: p.uuid,
           name: p.name,
           reference: p.cip13,
-          category: c.name,
+          category: c ? c.name : '',
           laboratory: p.laboratory
         }
       }),
