@@ -14,6 +14,7 @@ describe('Search products', () => {
   let searchStore: any
   let url = 'https://localhost:3000/'
   let searchGateway: FakeSearchGateway
+  let query: string
 
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -22,39 +23,61 @@ describe('Search products', () => {
   })
 
   describe('There is no filters', () => {
-    it('should return an empty array', async () => {
-      const query = ''
+    beforeEach(async () => {
+      query = ''
       await whenSearchForProducts(query)
+    })
+    it('should return an empty array', async () => {
       expectSearchResultToEqual()
+    })
+    it('should save the search', () => {
+      expectCurrentFilterToBe(query)
     })
   })
 
   describe('Other urls', () => {
-    it('should save the result for another url', async () => {
+    beforeEach(async () => {
       url = 'https://another-url.com/'
-      const query = ''
+      query = ''
       await whenSearchForProducts(query)
+    })
+    it('should save the result for another url', () => {
       expectSearchResultToEqual()
+    })
+    it('should save the search for another url', () => {
+      expectCurrentFilterToBe(query)
     })
   })
 
   describe('There is some filters', () => {
+    describe('Save current filter', () => {
+      it('should save a filter', async () => {
+        query = 'dol'
+        await whenSearchForProducts(query)
+        expectCurrentFilterToBe(query)
+      })
+      it('should save another filter', async () => {
+        query = 'another-filter'
+        await whenSearchForProducts(query)
+        expectCurrentFilterToBe(query)
+      })
+    })
     describe('Filter on name', () => {
       beforeEach(() => {
         searchGateway.feedWith(dolodent, chamomilla, calmosine)
       })
       it('should get one product with name containing the query', async () => {
-        const query = 'dol'
+        query = 'dol'
         await whenSearchForProducts(query)
         expectSearchResultToEqual(dolodent)
       })
       it('should get multiple products with name containing the query', async () => {
-        const query = 'mo'
+        query = 'mo'
         await whenSearchForProducts(query)
         expectSearchResultToEqual(chamomilla, calmosine)
       })
       it('should get nothing with name not containing the query', async () => {
-        const query = 'querywithoutresult'
+        query = 'querywithoutresult'
         await whenSearchForProducts(query)
         expectSearchResultToEqual()
       })
@@ -64,17 +87,17 @@ describe('Search products', () => {
         searchGateway.feedWith(dolodent, hemoclar, calmosine)
       })
       it('should get one product with laboratory containing the query', async () => {
-        const query = 'gilbe'
+        query = 'gilbe'
         await whenSearchForProducts(query)
         expectSearchResultToEqual(dolodent)
       })
       it('should get multiple products with name containing the query', async () => {
-        const query = 'saN'
+        query = 'saN'
         await whenSearchForProducts(query)
         expectSearchResultToEqual(hemoclar, calmosine)
       })
       it('should get nothing with name not containing the query', async () => {
-        const query = 'querywithoutresult'
+        query = 'querywithoutresult'
         await whenSearchForProducts(query)
         expectSearchResultToEqual()
       })
@@ -84,17 +107,17 @@ describe('Search products', () => {
         searchGateway.feedWith(dolodent, hemoclar, calmosine, dents, baby)
       })
       it('should get one product with category name containing the query', async () => {
-        const query = 'dents'
+        query = 'dents'
         await whenSearchForProducts(query)
         expectSearchResultToEqual(dolodent)
       })
       it('should get multiple products with category name containing the query', async () => {
-        const query = 'béb'
+        query = 'béb'
         await whenSearchForProducts(query)
         expectSearchResultToEqual(hemoclar, calmosine)
       })
       it('should get nothing with category name not containing the query', async () => {
-        const query = 'querywithoutresult'
+        query = 'querywithoutresult'
         await whenSearchForProducts(query)
         expectSearchResultToEqual()
       })
@@ -104,17 +127,17 @@ describe('Search products', () => {
         searchGateway.feedWith(dolodent, hemoclar, calmosine, dents, baby)
       })
       it('should get one product with cip13 containing the query', async () => {
-        const query = dolodent.cip13
+        query = dolodent.cip13
         await whenSearchForProducts(query)
         expectSearchResultToEqual(dolodent)
       })
       it('should get multiple products with category name containing the query', async () => {
-        const query = '123'
+        query = '123'
         await whenSearchForProducts(query)
         expectSearchResultToEqual(hemoclar, calmosine)
       })
       it('should get nothing with name not containing the query', async () => {
-        const query = 'querywithoutresult'
+        query = 'querywithoutresult'
         await whenSearchForProducts(query)
         expectSearchResultToEqual()
       })
@@ -127,5 +150,9 @@ describe('Search products', () => {
 
   const expectSearchResultToEqual = (...expectedRes: Array<any>) => {
     expect(searchStore.get(url)).toStrictEqual(expectedRes)
+  }
+
+  const expectCurrentFilterToBe = (currentFilter) => {
+    expect(searchStore.getFilter(url)).toBe(currentFilter)
   }
 })

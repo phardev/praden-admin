@@ -20,6 +20,7 @@ export interface GetProductsItemVM {
 export interface GetProductsVM {
   headers: Array<Header>
   items: Array<GetProductsItemVM>
+  currentSearch: string | undefined
 }
 
 export const getProductsVM = (key: string): GetProductsVM => {
@@ -28,6 +29,7 @@ export const getProductsVM = (key: string): GetProductsVM => {
   const searchStore = useSearchStore()
   const allProducts = productStore.items
   const searchResult = searchStore.get(key)
+  const searchFilter = searchStore.getFilter(key)
   const products = searchResult || allProducts
   const formatter = priceFormatter('fr-FR', 'EUR')
   const headers: Array<Header> = [
@@ -78,6 +80,7 @@ export const getProductsVM = (key: string): GetProductsVM => {
         priceWithTax: formatter.format(priceWithTax / 100),
         availableStock: p.availableStock
       }
-    })
+    }),
+    currentSearch: searchFilter
   }
 }

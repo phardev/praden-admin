@@ -45,13 +45,14 @@ onMounted(() => {
   listProducts(useProductGateway())
 })
 
-const search = ref('')
 const router = useRouter()
 const routeName = router.currentRoute.value.name
 
 const productsVM = computed(() => {
   return getProductsVM(routeName)
 })
+
+const search = ref(productsVM.value.currentSearch)
 
 const searchChanged = (e: any) => {
   searchProducts(routeName, e.target.value, useSearchGateway())

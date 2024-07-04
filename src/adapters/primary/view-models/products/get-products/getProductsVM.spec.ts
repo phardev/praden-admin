@@ -11,8 +11,8 @@ describe('Get products VM', () => {
   let productStore: any
   let categoryStore: any
   let searchStore: any
-  let vm: GetProductsVM
   const key = 'list-products'
+  let expectedVM: Partial<GetProductsVM>
 
   const expectedHeaders: Array<Header> = [
     {
@@ -54,12 +54,12 @@ describe('Get products VM', () => {
 
   describe('There is no products', () => {
     it('should list nothing', () => {
-      vm = whenGetProductsVM(key)
-      const expectedVM = {
+      expectedVM = {
         headers: expectedHeaders,
-        items: []
+        items: [],
+        currentSearch: undefined
       }
-      expect(vm).toStrictEqual(expectedVM)
+      expectVMToMatch(expectedVM)
     })
   })
   describe('There is some products', () => {
@@ -69,9 +69,7 @@ describe('Get products VM', () => {
     describe('Categories are not loaded', () => {
       it('should list all of them', () => {
         categoryStore.items = []
-        vm = whenGetProductsVM(key)
-        const expectedVM = {
-          headers: expectedHeaders,
+        expectedVM = {
           items: [
             {
               uuid: dolodent.uuid,
@@ -95,14 +93,13 @@ describe('Get products VM', () => {
             }
           ]
         }
-        expect(vm).toStrictEqual(expectedVM)
+        expectVMToMatch(expectedVM)
       })
     })
     describe('Categories are loaded', () => {
       it('should list all of them', () => {
         categoryStore.items = [dents, diarrhee]
-        vm = whenGetProductsVM(key)
-        const expectedVM = {
+        expectedVM = {
           headers: expectedHeaders,
           items: [
             {
@@ -127,7 +124,7 @@ describe('Get products VM', () => {
             }
           ]
         }
-        expect(vm).toStrictEqual(expectedVM)
+        expectVMToMatch(expectedVM)
       })
     })
     describe('Search', () => {
@@ -135,11 +132,10 @@ describe('Get products VM', () => {
         beforeEach(() => {
           categoryStore.items = [dents, diarrhee]
           searchStore.set(key, [dolodent])
-          vm = whenGetProductsVM(key)
+          searchStore.setFilter(key, 'dol')
         })
         it('should list only the search result', () => {
-          const expectedVM = {
-            headers: expectedHeaders,
+          expectedVM = {
             items: [
               {
                 uuid: dolodent.uuid,
@@ -151,19 +147,19 @@ describe('Get products VM', () => {
                 priceWithTax: '5,50\u00A0€',
                 availableStock: dolodent.availableStock
               }
-            ]
+            ],
+            currentSearch: 'dol'
           }
-          expect(vm).toStrictEqual(expectedVM)
+          expectVMToMatch(expectedVM)
         })
       })
       describe('There is another search result', () => {
         beforeEach(() => {
           categoryStore.items = [dents, diarrhee]
           searchStore.set(key, [ultraLevure])
-          vm = whenGetProductsVM(key)
         })
         it('should list only the search result', () => {
-          const expectedVM = {
+          expectedVM = {
             headers: expectedHeaders,
             items: [
               {
@@ -178,13 +174,18 @@ describe('Get products VM', () => {
               }
             ]
           }
-          expect(vm).toStrictEqual(expectedVM)
+          expectVMToMatch(expectedVM)
         })
       })
     })
   })
 
-  const whenGetProductsVM = (key: string): GetProductsVM => {
-    return getProductsVM(key)
+  const expectVMToMatch = (expectedVM: Partial<GetProductsVM>) => {
+    const emptyVM: GetProductsVM = {
+      headers: expectedHeaders,
+      items: [],
+      currentSearch: undefined
+    }
+    expect(getProductsVM(key)).toMatchObject({ ...emptyVM, ...expectedVM })
   }
 })

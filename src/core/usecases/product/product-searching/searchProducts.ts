@@ -7,8 +7,9 @@ export const searchProducts = async (
   query: string,
   searchGateway: SearchGateway
 ): Promise<void> => {
-  const searchResult = await searchGateway.searchProducts(query)
   const searchStore = useSearchStore()
+  searchStore.setFilter(from, query)
+  const searchResult = await searchGateway.searchProducts(query)
   searchStore.set(from, searchResult)
   return Promise.resolve()
 }
