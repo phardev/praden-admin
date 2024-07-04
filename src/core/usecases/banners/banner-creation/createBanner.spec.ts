@@ -24,7 +24,8 @@ describe('Create banner', () => {
       expectedBanner = {
         uuid,
         img: 'data:image/png;base64,ZGF0YTE=',
-        order: 0
+        order: 0,
+        isActive: true
       }
       uuidGenerator.setNext(uuid)
       await whenAddBanner(new File(['data1'], 'File 1', { type: 'image/png' }))
@@ -44,7 +45,8 @@ describe('Create banner', () => {
       expectedBanner = {
         uuid,
         img: 'data:image/jpeg;base64,ZGF0YTI=',
-        order: 2
+        order: 2,
+        isActive: true
       }
       uuidGenerator.setNext(uuid)
       await whenAddBanner(new File(['data2'], 'File 2', { type: 'image/jpeg' }))

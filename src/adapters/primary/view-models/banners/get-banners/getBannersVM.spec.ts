@@ -30,15 +30,18 @@ describe('Get banners VM', () => {
         items: [
           {
             uuid: banner1.uuid,
-            img: banner1.img
+            img: banner1.img,
+            isActive: true
           },
           {
             uuid: banner2.uuid,
-            img: banner2.img
+            img: banner2.img,
+            isActive: false
           },
           {
             uuid: banner3.uuid,
-            img: banner3.img
+            img: banner3.img,
+            isActive: true
           }
         ]
       }

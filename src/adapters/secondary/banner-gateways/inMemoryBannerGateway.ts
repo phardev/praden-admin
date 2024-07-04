@@ -3,6 +3,7 @@ import { Banner, sortByOrder } from '@core/usecases/banners/list-banners/banner'
 import { UUID } from '@core/types/types'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { getFileContent } from '@utils/file'
+import { EditBannerDTO } from '@core/usecases/banners/banner-edition/editBanner'
 
 export class InMemoryBannerGateway implements BannerGateway {
   private banners: Array<Banner> = []
@@ -36,10 +37,17 @@ export class InMemoryBannerGateway implements BannerGateway {
     const newBanner = {
       uuid: this.uuidGenerator.generate(),
       img: await getFileContent(file),
-      order: this.banners.length
+      order: this.banners.length,
+      isActive: true
     }
     this.banners.push(newBanner)
     return Promise.resolve(JSON.parse(JSON.stringify(newBanner)))
+  }
+
+  edit(uuid: UUID, dto: EditBannerDTO): Promise<Banner> {
+    const index = this.banners.findIndex((c) => c.uuid === uuid)
+    this.banners[index] = Object.assign(this.banners[index], dto)
+    return Promise.resolve(JSON.parse(JSON.stringify(this.banners[index])))
   }
 
   feedWith(...banners: Array<Banner>) {

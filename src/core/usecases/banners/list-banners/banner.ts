@@ -4,6 +4,7 @@ export interface Banner {
   uuid: UUID
   img: string
   order: number
+  isActive: boolean
 }
 
 export const sortByOrder = (a: any, b: any): number => {

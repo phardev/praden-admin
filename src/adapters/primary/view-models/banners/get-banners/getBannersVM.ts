@@ -4,6 +4,7 @@ import { useBannerStore } from '@store/bannerStore'
 export interface GetBannersItemVM {
   uuid: string
   img: string
+  isActive: boolean
 }
 
 export interface GetBannersVM {
@@ -18,7 +19,8 @@ export const getBannersVM = (): GetBannersVM => {
     items: sorted.map((b) => {
       return {
         uuid: b.uuid,
-        img: b.img
+        img: b.img,
+        isActive: b.isActive
       }
     })
   }
