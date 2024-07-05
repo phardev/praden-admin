@@ -13,11 +13,67 @@ ft-table(
     ft-delivery-status-badge(:status="item.deliveryStatus")
   template(#paymentStatus="{ item }")
     ft-payment-status-badge(:status="item.paymentStatus")
+  template(#search)
+    div.flex.items-center.justify-center.space-x-4
+      ft-text-field.flex-grow(
+        v-model="search"
+        placeholder="Rechercher par référence, client"
+        for="search"
+        type='text'
+        name='search'
+        @input="searchChanged"
+      ) Rechercher une commande
+      UFormGroup.pb-4(label="Date de début" name="startDate")
+        UPopover(:popper="{ placement: 'bottom-start' }")
+          UButton(
+            icon="i-heroicons-calendar-days-20-solid"
+            :label="startDate ? format(startDate, 'd MMMM yyy', { locale: fr }) : 'Choisissez une date'"
+          )
+            template(#trailing)
+              UButton(
+                v-show="startDate"
+                color="white"
+                variant="link"
+                icon="i-heroicons-x-mark-20-solid"
+                :padded="false"
+                @click.prevent="clearStartDate"
+              )
+          template(#panel="{ close }")
+            ft-date-picker(
+              v-model="startDate"
+              @update:model-value="startDateChanged"
+              @close="close"
+            )
+      UFormGroup.pb-4(label="Date de fin" name="endDate")
+        UPopover(:popper="{ placement: 'bottom-start' }")
+          UButton(
+            icon="i-heroicons-calendar-days-20-solid"
+            :label="endDate ? format(endDate, 'd MMMM yyy', { locale: fr }) : 'Choisissez une date'"
+          )
+            template(#trailing)
+              UButton(
+                v-show="endDate"
+                color="white"
+                variant="link"
+                icon="i-heroicons-x-mark-20-solid"
+                :padded="false"
+                @click.prevent="clearEndDate"
+              )
+          template(#panel="{ close }")
+            ft-date-picker(
+              v-model="endDate"
+              @update:model-value="endDateChanged"
+              @close="close"
+            )
 </template>
 
 <script lang="ts" setup>
 import { useOrderGateway } from '../../../../../../gateways/orderGateway'
 import { listOrders } from '@core/usecases/order/list-orders/listOrders'
+import { useSearchGateway } from '../../../../../../gateways/searchGateway'
+import { searchOrders } from '@core/usecases/order/orders-searching/searchOrders'
+import { format } from 'date-fns'
+import { fr } from 'date-fns/locale'
 
 definePageMeta({ layout: 'main' })
 
@@ -25,12 +81,61 @@ onMounted(() => {
   listOrders(useOrderGateway())
 })
 
-defineProps({
+const props = defineProps({
   vm: {
     type: Object,
     default() {
       return {}
     }
+  },
+  searchKey: {
+    type: String,
+    default() {
+      return 'default-key'
+    }
   }
 })
+
+const search = ref(props.vm.value?.currentSearch?.query || undefined)
+const startDate = ref(props.vm.value?.currentSearch?.startDate || undefined)
+const endDate = ref(props.vm.value?.currentSearch?.endDate || undefined)
+
+const dto = (partial) => {
+  return {
+    query: search.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
+    ...partial
+  }
+}
+
+const searchChanged = (e: any) => {
+  searchOrders(
+    props.searchKey,
+    dto({ query: e.target.value }),
+    useSearchGateway()
+  )
+}
+
+const startDateChanged = (date: number) => {
+  searchOrders(props.searchKey, dto({ startDate: date }), useSearchGateway())
+}
+
+const clearStartDate = () => {
+  startDate.value = undefined
+  searchOrders(
+    props.searchKey,
+    dto({ startDate: undefined }),
+    useSearchGateway()
+  )
+}
+
+const endDateChanged = (date: number) => {
+  searchOrders(props.searchKey, dto({ endDate: date }), useSearchGateway())
+}
+
+const clearEndDate = () => {
+  endDate.value = undefined
+  searchOrders(props.searchKey, dto({ endDate: undefined }), useSearchGateway())
+}
 </script>

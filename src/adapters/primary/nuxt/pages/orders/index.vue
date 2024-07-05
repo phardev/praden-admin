@@ -1,7 +1,7 @@
 <template lang="pug">
 .section
   h1.text-page-title.flex-grow Commandes
-  orders-list(:vm="ordersVM")
+  orders-list(:vm="ordersVM" :search-key="routeName")
 </template>
 
 <script lang="ts" setup>
@@ -9,7 +9,10 @@ import { getOrdersVM } from '@adapters/primary/view-models/orders/get-orders/get
 
 definePageMeta({ layout: 'main' })
 
+const router = useRouter()
+const routeName = router.currentRoute.value.name
+
 const ordersVM = computed(() => {
-  return getOrdersVM()
+  return getOrdersVM(routeName)
 })
 </script>

@@ -10,6 +10,8 @@ import {
   PaymentStatus
 } from '@core/entities/order'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
+import { useSearchStore } from '@store/searchStore'
+import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
 
 export interface GetOrdersItemVM {
   reference: string
@@ -26,6 +28,7 @@ export interface GetOrdersVM {
   headers: Array<Header>
   items: Array<GetOrdersItemVM>
   isLoading: boolean
+  currentSearch: SearchOrdersDTO | undefined
 }
 
 const headers: Array<Header> = [
@@ -70,12 +73,15 @@ const getOrderItemVM = (order: Order): GetOrdersItemVM => {
   }
 }
 
-export const getOrdersVM = (): GetOrdersVM => {
+export const getOrdersVM = (key: string): GetOrdersVM => {
+  const searchStore = useSearchStore()
   const orderStore = useOrderStore()
-  const orders = orderStore.items
+  const orders = searchStore.get(key) || orderStore.items
+  const searchFilter = searchStore.getFilter(key)
   return {
     headers,
     items: orders.map((o) => getOrderItemVM(o)),
-    isLoading: false
+    isLoading: false,
+    currentSearch: searchFilter
   }
 }

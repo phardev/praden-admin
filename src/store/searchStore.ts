@@ -5,7 +5,7 @@ export const useSearchStore = defineStore('SearchStore', {
   state: () => {
     return {
       items: {} as HashTable<Array<any>>,
-      filters: {} as HashTable<Array<string>>
+      filters: {} as HashTable<Array<any>>
     }
   },
   getters: {
@@ -15,7 +15,7 @@ export const useSearchStore = defineStore('SearchStore', {
       }
     },
     getFilter: (state) => {
-      return (key: string): Array<any> => {
+      return (key: string): any => {
         return state.filters[key]
       }
     }
@@ -24,7 +24,7 @@ export const useSearchStore = defineStore('SearchStore', {
     set(key: string, value: Array<any>) {
       this.items[key] = value
     },
-    setFilter(key: string, value: string) {
+    setFilter(key: string, value: any) {
       this.filters[key] = value
     }
   }
