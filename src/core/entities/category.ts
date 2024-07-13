@@ -5,6 +5,8 @@ export interface Category {
   name: string
   description: string
   parentUuid?: UUID
+  miniature: string
+  img: string
 }
 
 export interface CategoryWithProducts {

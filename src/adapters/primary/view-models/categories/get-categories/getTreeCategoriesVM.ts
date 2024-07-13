@@ -9,6 +9,7 @@ export interface TreeNode<T> {
 export interface TreeCategoryNodeVM {
   uuid: UUID
   name: string
+  miniature: string
 }
 
 export type TreeCategoriesVM = Array<TreeNode<TreeCategoryNodeVM>>
@@ -20,7 +21,8 @@ const getChildren = (uuid: UUID): TreeCategoriesVM => {
     return {
       data: {
         uuid: c.uuid,
-        name: c.name
+        name: c.name,
+        miniature: c.miniature
       },
       children: getChildren(c.uuid)
     }
@@ -34,7 +36,8 @@ export const getTreeCategoriesVM = (): TreeCategoriesVM => {
     return {
       data: {
         uuid: c.uuid,
-        name: c.name
+        name: c.name,
+        miniature: c.miniature
       },
       children: getChildren(c.uuid)
     }

@@ -4,7 +4,9 @@
     li(v-for="item in items" :key="item.data.uuid")
       .list-item(@click="toggle(item)")
         .flex.justify-between.items-center.p-2.cursor-pointer.bg-hover
-          span {{ item.data.name }}
+          div.flex.items-center.justify-center.space-x-4
+            img.w-8.h-8(:src="item.data.miniature")
+            span {{ item.data.name }}
           div.flex.items-center.justify-center
             ft-button.button-solid.mr-0.py-1.px-2.text-md(
               @click.prevent="view(item.data.uuid)"
