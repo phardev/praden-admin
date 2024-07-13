@@ -1,4 +1,7 @@
-import { getTreeCategoriesVM } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
+import {
+  getTreeCategoriesVM,
+  TreeCategoriesVM
+} from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
 import { baby, dents, minceur, mum } from '@utils/testData/categories'
 import { Category } from '@core/entities/category'
 import { createPinia, setActivePinia } from 'pinia'
@@ -13,14 +16,14 @@ describe('Get tree categories VM', () => {
   })
   describe('There is no categories', () => {
     it('should return an empty vm', () => {
-      const expectedVM = []
+      const expectedVM: TreeCategoriesVM = []
       expect(getTreeCategoriesVM()).toStrictEqual(expectedVM)
     })
   })
   describe('There only root categories', () => {
     it('should return one root category vm', () => {
       givenExistingCategories(mum)
-      const expectedVM = [
+      const expectedVM: TreeCategoriesVM = [
         {
           data: {
             uuid: mum.uuid,
@@ -33,7 +36,7 @@ describe('Get tree categories VM', () => {
     })
     it('should return multiple root category vm', () => {
       givenExistingCategories(mum, dents, minceur)
-      const expectedVM = [
+      const expectedVM: TreeCategoriesVM = [
         {
           data: {
             uuid: mum.uuid,
@@ -63,7 +66,7 @@ describe('Get tree categories VM', () => {
   describe('There is child categories', () => {
     it('should fill the children part', () => {
       givenExistingCategories(mum, baby)
-      const expectedVM = [
+      const expectedVM: TreeCategoriesVM = [
         {
           data: {
             uuid: mum.uuid,
@@ -127,7 +130,7 @@ describe('Get tree categories VM', () => {
         grandChildCategory1,
         grandChildCategory2
       )
-      const expectedVM = [
+      const expectedVM: TreeCategoriesVM = [
         {
           data: {
             uuid: rootCategory1.uuid,
