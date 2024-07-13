@@ -26,6 +26,30 @@ div(v-if="currentVM")
     )
       template(#option="{ option: category }")
         span {{ category.name }}
+  UFormGroup.pb-4(label="Miniature" name="miniature")
+    img.mb-4(
+      v-if="currentVM.get('miniature').value"
+      :src="currentVM.get('miniature').value"
+      alt="miniature"
+    )
+    ft-file-input(
+      v-if="currentVM.get('miniature').canEdit"
+      accept="image/*"
+      @input="miniatureChanged"
+    )
+  UFormGroup.pb-4(label="Image" name="image")
+    img.mb-4(
+      v-if="currentVM.get('img').value"
+      :src="currentVM.get('img').value"
+      height=200
+      width=200
+      alt="image"
+    )
+    ft-file-input(
+      v-if="currentVM.get('img').canEdit"
+      accept="image/*"
+      @input="imageChanged"
+    )
   ft-text-field(
     v-if="currentVM.get('products').canEdit"
     v-model="search"
@@ -128,6 +152,16 @@ const addProducts = () => {
 const removeProducts = () => {
   currentVM.value.removeProducts(addedProductSelector.get())
   addedProductSelector.clear()
+}
+
+const miniatureChanged = async (value: any) => {
+  console.log('on change la miniature')
+  await currentVM?.value?.set('miniature', value[0])
+}
+
+const imageChanged = async (value: any) => {
+  console.log('on change l image')
+  await currentVM?.value?.set('img', value[0])
 }
 
 const emit = defineEmits<{

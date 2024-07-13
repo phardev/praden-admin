@@ -51,8 +51,8 @@ export class CategoryFormEditVM extends CategoryFormVM {
     }
   }
 
-  set(fieldName: string, value: any): void {
-    this.fieldsWriter.set(fieldName, value)
+  async set(fieldName: string, value: any): Promise<void> {
+    await this.fieldsWriter.set(fieldName, value)
   }
 
   addProducts(uuids: Array<UUID>) {

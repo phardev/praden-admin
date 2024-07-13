@@ -149,6 +149,8 @@ describe('Category form create VM', () => {
     describe.each([
       { field: 'name', expected: '' },
       { field: 'description', expected: '' },
+      { field: 'miniature', expected: undefined },
+      { field: 'img', expected: undefined },
       { field: 'parentUuid', expected: undefined }
     ])('Initial field value', ({ field, expected }) => {
       it(`should have ${field} to be "${expected}"`, () => {
@@ -218,14 +220,24 @@ describe('Category form create VM', () => {
         value: 'the new description',
         expected: 'the new description'
       },
+      {
+        field: 'miniature',
+        value: new File(['miniature'], 'Miniature 1', { type: 'image/png' }),
+        expected: 'data:image/png;base64,bWluaWF0dXJl'
+      },
+      {
+        field: 'img',
+        value: new File(['img'], 'IMG 1', { type: 'image/jpg' }),
+        expected: 'data:image/jpg;base64,aW1n'
+      },
       { field: 'parentUuid', value: 'new-uuid', expected: 'new-uuid' }
     ])('Update simple fields', ({ field, value, expected }) => {
-      it(`should update ${field} value in form store`, () => {
-        vm.set(field, value)
+      it(`should update ${field} value in form store`, async () => {
+        await vm.set(field, value)
         expect(formStore.get(key)[field]).toStrictEqual(expected)
       })
-      it(`should update ${field} field`, () => {
-        vm.set(field, value)
+      it(`should update ${field} field`, async () => {
+        await vm.set(field, value)
         const expectedField: Field<any> = {
           value: expected,
           canEdit: true

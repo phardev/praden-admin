@@ -3,19 +3,35 @@ import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/c
 import { CategoryFormFieldsReader } from '@adapters/primary/view-models/categories/category-form/categoryFormGetVM'
 import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import { useFormStore } from '@store/formStore'
-import { FormFieldsWriter } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+import {
+  FieldHandler,
+  FormFieldsWriter
+} from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import {
   CategoryFormVM,
   CategoryProductItemVM
 } from '@adapters/primary/view-models/categories/category-form/categoryFormVM'
 import { UUID } from '@core/types/types'
+import { getFileContent } from '@utils/file'
 
 export class CategoryFormFieldsWriter extends FormFieldsWriter {
   protected fieldsReader: CategoryFormFieldsReader
+  private readonly fieldHandlers: Record<string, FieldHandler>
 
   constructor(key: string, fieldsReader: CategoryFormFieldsReader) {
     super(key)
     this.fieldsReader = fieldsReader
+
+    this.fieldHandlers = {
+      miniature: this.setMiniature.bind(this),
+      img: this.setImg.bind(this)
+    }
+  }
+
+  async set(fieldName: string, value: any): Promise<any> {
+    const handler =
+      this.fieldHandlers[fieldName] || super.set.bind(this, fieldName)
+    await handler(value)
   }
 
   addProducts(uuids: Array<UUID>) {
@@ -29,6 +45,16 @@ export class CategoryFormFieldsWriter extends FormFieldsWriter {
     let products = this.fieldsReader.get('products')
     products = products.filter((p: string) => !uuids.includes(p))
     super.set('products', products)
+  }
+
+  async setMiniature(miniature: File): Promise<void> {
+    const data = await getFileContent(miniature)
+    super.set('miniature', data)
+  }
+
+  async setImg(img: File): Promise<void> {
+    const data = await getFileContent(img)
+    super.set('img', data)
   }
 }
 
@@ -46,6 +72,8 @@ export class NewCategoryFormInitializer implements FormInitializer {
       name: '',
       description: '',
       parentUuid: undefined,
+      miniature: undefined,
+      img: undefined,
       products: []
     })
   }
@@ -76,8 +104,8 @@ export class CategoryFormCreateVM extends CategoryFormVM {
     }
   }
 
-  set(fieldName: string, value: any): void {
-    this.fieldsWriter.set(fieldName, value)
+  async set(fieldName: string, value: any): Promise<void> {
+    await this.fieldsWriter.set(fieldName, value)
   }
 
   getAvailableCategories(): any {
