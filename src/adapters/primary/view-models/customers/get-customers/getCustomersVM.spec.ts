@@ -12,6 +12,8 @@ import {
   sophieMartinez
 } from '@utils/testData/customers'
 import { Customer } from '@core/entities/customer'
+import { GetOrdersVM } from '@adapters/primary/view-models/orders/get-orders/getOrdersVM'
+import { useSearchStore } from '@store/searchStore'
 
 const expectedHeaders: Array<Header> = [
   {
@@ -34,35 +36,62 @@ const expectedHeaders: Array<Header> = [
 
 describe('Get customers VM', () => {
   let customerStore: any
-  let vm: GetCustomersVM
+  let searchStore: any
+  const key = 'index-customers'
 
   beforeEach(() => {
     setActivePinia(createPinia())
     customerStore = useCustomerStore()
+    searchStore = useSearchStore()
   })
 
   describe('There is no customers', () => {
     it('should return an empty VM', () => {
-      vm = getCustomersVM()
-      const expectedVM: GetCustomersVM = {
+      const expectedVM: Partial<GetCustomersVM> = {
         headers: expectedHeaders,
         items: []
       }
-      expectVMToEqual(expectedVM)
+      expectVMToMatch(expectedVM)
     })
   })
   describe('There is some customers', () => {
-    it('should create the vm for the customers', () => {
-      const existingCustomers = [elodieDurand, lucasLefevre, sophieMartinez]
-      givenExistingCustomers(...existingCustomers)
-      vm = getCustomersVM()
-      const expectedVM: GetCustomersVM = {
-        headers: expectedHeaders,
-        items: existingCustomers.map((customer) =>
-          createCustomerItemVM(customer)
-        )
-      }
-      expectVMToEqual(expectedVM)
+    describe('There is no filter', () => {
+      it('should create the vm for the customers', () => {
+        const existingCustomers = [elodieDurand, lucasLefevre, sophieMartinez]
+        givenExistingCustomers(...existingCustomers)
+        const expectedVM: Partial<GetCustomersVM> = {
+          headers: expectedHeaders,
+          items: existingCustomers.map((customer) =>
+            createCustomerItemVM(customer)
+          )
+        }
+        expectVMToMatch(expectedVM)
+      })
+    })
+    describe('There is some filters', () => {
+      it('should get all search result customers vm', () => {
+        const existingCustomers = [elodieDurand, lucasLefevre, sophieMartinez]
+        givenExistingCustomers(...existingCustomers)
+        searchStore.set(key, [lucasLefevre, sophieMartinez])
+        const expectedVM: Partial<GetCustomersVM> = {
+          headers: expectedHeaders,
+          items: [lucasLefevre, sophieMartinez].map((customer) =>
+            createCustomerItemVM(customer)
+          )
+        }
+        expectVMToMatch(expectedVM)
+      })
+      it('should get all search filters', () => {
+        searchStore.setFilter(key, {
+          query: 'test'
+        })
+        const expectedVM: Partial<GetCustomersVM> = {
+          currentSearch: {
+            query: 'test'
+          }
+        }
+        expectVMToMatch(expectedVM)
+      })
     })
   })
 
@@ -70,8 +99,14 @@ describe('Get customers VM', () => {
     customerStore.items = customers
   }
 
-  const expectVMToEqual = (expected: GetCustomersVM) => {
-    expect(vm).toStrictEqual(expected)
+  const expectVMToMatch = (expectedVM: Partial<GetCustomersVM>) => {
+    const emptyVM: GetOrdersVM = {
+      headers: expectedHeaders,
+      items: [],
+      isLoading: false,
+      currentSearch: undefined
+    }
+    expect(getCustomersVM(key)).toMatchObject({ ...emptyVM, ...expectedVM })
   }
 
   const createCustomerItemVM = (customer: Customer): GetCustomersItemVM => {

@@ -6,13 +6,18 @@ import { getDeliveryStatus, Order } from '@core/entities/order'
 import { useOrderStore } from '@store/orderStore'
 import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
 import { Timestamp } from '@core/types/types'
+import { SearchCustomersDTO } from '@core/usecases/customers/customer-searching/searchCustomer'
+import { Customer } from '@core/entities/customer'
+import { useCustomerStore } from '@store/customerStore'
 
 export class FakeSearchGateway implements SearchGateway {
   private items: Array<any> = []
   private orderStore: any
+  private customerStore: any
 
   constructor() {
     this.orderStore = useOrderStore()
+    this.customerStore = useCustomerStore()
   }
 
   searchProducts(query: string): Promise<Array<Product>> {
@@ -84,6 +89,31 @@ export class FakeSearchGateway implements SearchGateway {
     const isAfterStartDate = !startDate ? true : orderDate > startDate
     const isAfterEndDate = !endDate ? true : orderDate < endDate
     return isAfterStartDate && isAfterEndDate
+  }
+
+  searchCustomers(dto: SearchCustomersDTO): Promise<Array<Customer>> {
+    const customers = this.customerStore.items
+    const res = customers.filter((c) => {
+      return this.customerQueryMatch(c, dto.query)
+    })
+    return Promise.resolve(res)
+  }
+
+  private customerQueryMatch = (customer: Customer, query: string): boolean => {
+    const isFirstNameMatching = customer.firstname
+      .ftNormalize()
+      .includesWithoutCase(query)
+    const isLastNameMatching = customer.lastname
+      .ftNormalize()
+      .includesWithoutCase(query)
+    const isEmailMatching = customer.email.includes(query)
+    const isPhoneMatching = customer.phone.includes(query)
+    return (
+      isFirstNameMatching ||
+      isLastNameMatching ||
+      isEmailMatching ||
+      isPhoneMatching
+    )
   }
 
   feedWith(...items: Array<any>) {
