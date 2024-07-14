@@ -6,6 +6,9 @@ import {
   SearchOrdersDTO
 } from '@core/usecases/order/orders-searching/searchOrders'
 import {
+  elodieDurandOrder2,
+  lucasLefevreOrder1,
+  lucasLefevreOrder2,
   orderInPreparation1,
   orderNotPayed1,
   orderPartiallyShipped1,
@@ -16,6 +19,7 @@ import {
 } from '@utils/testData/orders'
 import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
 import { useOrderStore } from '@store/orderStore'
+import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
 
 describe('Search orders', () => {
   let searchStore: any
@@ -177,6 +181,25 @@ describe('Search orders', () => {
         dto.paymentStatus = PaymentStatus.WaitingForPayment
         await whenSearchForOrders(dto)
         expectSearchResultToEqual(orderNotPayed1)
+      })
+    })
+    describe('Filter on customer uuid', () => {
+      beforeEach(() => {
+        givenExistingOrders(
+          lucasLefevreOrder1,
+          elodieDurandOrder2,
+          lucasLefevreOrder2
+        )
+      })
+      it('should filter on a customer', async () => {
+        dto.customerUuid = lucasLefevre.uuid
+        await whenSearchForOrders(dto)
+        expectSearchResultToEqual(lucasLefevreOrder1, lucasLefevreOrder2)
+      })
+      it('should filter on another customer', async () => {
+        dto.customerUuid = elodieDurand.uuid
+        await whenSearchForOrders(dto)
+        expectSearchResultToEqual(elodieDurandOrder2)
       })
     })
     describe('Apply mulitple filters in multiple steps', () => {

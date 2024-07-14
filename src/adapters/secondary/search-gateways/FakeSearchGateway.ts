@@ -53,8 +53,16 @@ export class FakeSearchGateway implements SearchGateway {
         dto.paymentStatus !== undefined
           ? dto.paymentStatus === o.payment.status
           : true
+      const customerUuidMatch =
+        dto.customerUuid !== undefined
+          ? dto.customerUuid === o.customerUuid
+          : true
       return (
-        queryMatch && dateMatch && deliveryStatusMatch && paymentStatusMatch
+        queryMatch &&
+        dateMatch &&
+        deliveryStatusMatch &&
+        paymentStatusMatch &&
+        customerUuidMatch
       )
     })
     return Promise.resolve(res)

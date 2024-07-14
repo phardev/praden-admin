@@ -1,7 +1,8 @@
 import {
+  AnonymousOrder,
+  CustomerOrder,
   DeliveryStatus,
   MessageContent,
-  Order,
   PaymentStatus
 } from '@core/entities/order'
 import {
@@ -17,8 +18,9 @@ import {
   clickAndCollect,
   deliveryInRelayPoint
 } from '@utils/testData/deliveryMethods'
+import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
 
-export const orderToPrepare1: Order = {
+export const orderToPrepare1: AnonymousOrder = {
   uuid: 'XIKOKI',
   lines: [
     {
@@ -55,7 +57,7 @@ export const orderToPrepare1: Order = {
   messages: []
 }
 
-export const orderToPrepare2: Order = {
+export const orderToPrepare2: AnonymousOrder = {
   uuid: 'FHEIRF',
   lines: [
     {
@@ -103,7 +105,7 @@ export const orderToPrepare2: Order = {
   messages: []
 }
 
-export const orderToPrepare3: Order = {
+export const orderToPrepare3: AnonymousOrder = {
   uuid: 'DIJFPE',
   lines: [
     {
@@ -140,7 +142,7 @@ export const orderToPrepare3: Order = {
   messages: []
 }
 
-export const orderPrepared1: Order = {
+export const orderPrepared1: AnonymousOrder = {
   uuid: 'JOURJL',
   lines: [
     {
@@ -177,7 +179,7 @@ export const orderPrepared1: Order = {
   messages: []
 }
 
-export const orderInPreparation1: Order = {
+export const orderInPreparation1: AnonymousOrder = {
   uuid: 'UTRIEL',
   lines: [
     {
@@ -223,7 +225,7 @@ export const orderInPreparation1: Order = {
   ]
 }
 
-export const orderDelivered1: Order = {
+export const orderDelivered1: AnonymousOrder = {
   uuid: 'HGFRIW',
   lines: [
     {
@@ -271,7 +273,7 @@ export const orderDelivered1: Order = {
   messages: []
 }
 
-export const orderDelivered2: Order = {
+export const orderDelivered2: AnonymousOrder = {
   uuid: 'GJIRLK',
   lines: [
     {
@@ -319,7 +321,7 @@ export const orderDelivered2: Order = {
   messages: []
 }
 
-export const orderWithMissingProduct1: Order = {
+export const orderWithMissingProduct1: AnonymousOrder = {
   uuid: 'DKOWDW',
   lines: [
     {
@@ -376,7 +378,7 @@ export const orderWithMissingProduct1: Order = {
   ]
 }
 
-export const orderWithMissingProduct2: Order = {
+export const orderWithMissingProduct2: AnonymousOrder = {
   uuid: 'DJEIWLQ',
   lines: [
     {
@@ -433,7 +435,7 @@ export const orderWithMissingProduct2: Order = {
   ]
 }
 
-export const orderToCancel: Order = {
+export const orderToCancel: AnonymousOrder = {
   uuid: 'JFIJLJ',
   lines: [
     {
@@ -479,7 +481,7 @@ export const orderToCancel: Order = {
   ]
 }
 
-export const orderNotPayed1: Order = {
+export const orderNotPayed1: AnonymousOrder = {
   uuid: 'ADKEWR',
   lines: [
     {
@@ -515,7 +517,7 @@ export const orderNotPayed1: Order = {
   messages: []
 }
 
-export const orderSaved1: Order = {
+export const orderSaved1: AnonymousOrder = {
   uuid: 'FKEROFE',
   lines: [
     {
@@ -551,7 +553,7 @@ export const orderSaved1: Order = {
   messages: []
 }
 
-export const orderWaitingForClientAnswer1: Order = {
+export const orderWaitingForClientAnswer1: AnonymousOrder = {
   uuid: 'ZJOFRW',
   lines: [
     {
@@ -592,7 +594,7 @@ export const orderWaitingForClientAnswer1: Order = {
   ]
 }
 
-export const orderWaitingForClientAnswer2: Order = {
+export const orderWaitingForClientAnswer2: AnonymousOrder = {
   uuid: 'LOPFRE',
   lines: [
     {
@@ -645,7 +647,7 @@ export const orderWaitingForClientAnswer2: Order = {
   ]
 }
 
-export const orderWaitingForRestock: Order = {
+export const orderWaitingForRestock: AnonymousOrder = {
   uuid: 'EUIWQK',
   lines: [
     {
@@ -690,7 +692,7 @@ export const orderWaitingForRestock: Order = {
   ]
 }
 
-export const orderPartiallyShipped1: Order = {
+export const orderPartiallyShipped1: AnonymousOrder = {
   uuid: 'PIDWJK',
   lines: [
     {
@@ -747,7 +749,7 @@ export const orderPartiallyShipped1: Order = {
   ]
 }
 
-export const orderVFASF: Order = {
+export const orderVFASF: AnonymousOrder = {
   uuid: 'VFASF',
   lines: [
     {
@@ -795,7 +797,7 @@ export const orderVFASF: Order = {
   messages: []
 }
 
-export const orderXUKIJ: Order = {
+export const orderXUKIJ: AnonymousOrder = {
   uuid: 'XUKIJ',
   lines: [
     {
@@ -832,7 +834,7 @@ export const orderXUKIJ: Order = {
   messages: []
 }
 
-export const orderWithProductWithoutLocation: Order = {
+export const orderWithProductWithoutLocation: AnonymousOrder = {
   uuid: 'WITHOUTLOCATION',
   lines: [
     {
@@ -876,6 +878,164 @@ export const orderWithProductWithoutLocation: Order = {
   },
   delivery: {
     method: clickAndCollect
+  },
+  messages: []
+}
+
+export const elodieDurandOrder1: CustomerOrder = {
+  uuid: 'ELODIEABC',
+  customerUuid: elodieDurand.uuid,
+  lines: [
+    {
+      name: dolodent.name,
+      cip13: dolodent.cip13,
+      expectedQuantity: 3,
+      preparedQuantity: 0,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      locations: dolodent.locations,
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1674273279000
+    },
+    {
+      name: calmosine.name,
+      cip13: calmosine.cip13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: calmosine.priceWithoutTax,
+      percentTaxRate: calmosine.percentTaxRate,
+      locations: calmosine.locations,
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1674273279000
+    }
+  ],
+  deliveryAddress: {
+    firstname: elodieDurand.firstname,
+    lastname: elodieDurand.lastname,
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    invoiceNumber: '2023-00012',
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674273279000,
+  delivery: {
+    method: clickAndCollect
+  },
+  messages: []
+}
+
+export const elodieDurandOrder2: CustomerOrder = {
+  uuid: 'ELODIEDEF',
+  customerUuid: elodieDurand.uuid,
+  lines: [
+    {
+      name: ultraLevure.name,
+      cip13: ultraLevure.cip13,
+      expectedQuantity: 1,
+      preparedQuantity: 0,
+      unitAmount: ultraLevure.priceWithoutTax,
+      percentTaxRate: ultraLevure.percentTaxRate,
+      locations: ultraLevure.locations,
+      deliveryStatus: DeliveryStatus.Processing,
+      updatedAt: 1674273279000
+    },
+    {
+      name: calmosine.name,
+      cip13: calmosine.cip13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: calmosine.priceWithoutTax,
+      percentTaxRate: calmosine.percentTaxRate,
+      locations: calmosine.locations,
+      deliveryStatus: DeliveryStatus.Shipped,
+      updatedAt: 1674273279000
+    }
+  ],
+  deliveryAddress: {
+    firstname: elodieDurand.firstname,
+    lastname: elodieDurand.lastname,
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    invoiceNumber: '2023-00012',
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674273279000,
+  delivery: {
+    method: clickAndCollect
+  },
+  messages: []
+}
+
+export const lucasLefevreOrder1: CustomerOrder = {
+  uuid: 'LUCASABC',
+  customerUuid: lucasLefevre.uuid,
+  lines: [
+    {
+      name: calmosine.name,
+      cip13: calmosine.cip13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: calmosine.priceWithoutTax,
+      percentTaxRate: calmosine.percentTaxRate,
+      locations: calmosine.locations,
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1674373279000
+    }
+  ],
+  deliveryAddress: {
+    firstname: lucasLefevre.firstname,
+    lastname: lucasLefevre.lastname,
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    invoiceNumber: '2023-00013',
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674373279000,
+  delivery: {
+    method: clickAndCollect
+  },
+  messages: []
+}
+
+export const lucasLefevreOrder2: CustomerOrder = {
+  uuid: 'LUCASDEF',
+  customerUuid: lucasLefevre.uuid,
+  lines: [
+    {
+      name: ultraLevure.name,
+      cip13: ultraLevure.cip13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: ultraLevure.priceWithoutTax,
+      percentTaxRate: ultraLevure.percentTaxRate,
+      locations: ultraLevure.locations,
+      deliveryStatus: DeliveryStatus.Created,
+      updatedAt: 1674473279000
+    }
+  ],
+  deliveryAddress: {
+    firstname: lucasLefevre.firstname,
+    lastname: lucasLefevre.lastname,
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345'
+  },
+  payment: {
+    invoiceNumber: '2023-00014',
+    status: PaymentStatus.Payed
+  },
+  createdAt: 1674473279000,
+  delivery: {
+    method: deliveryInRelayPoint
   },
   messages: []
 }

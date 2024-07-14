@@ -1,6 +1,7 @@
 import { UUID } from '@core/types/types'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { useCustomerStore } from '@store/customerStore'
+import { Customer } from '@core/entities/customer'
 
 const headers: Array<Header> = [
   {
@@ -39,6 +40,12 @@ export const getCustomersVM = (): GetCustomersVM => {
   const customers = customerStore.items
   return {
     headers,
-    items: customers
+    items: customers.map((customer: Customer) => ({
+      uuid: customer.uuid,
+      firstname: customer.firstname,
+      lastname: customer.lastname,
+      email: customer.email,
+      phone: customer.phone
+    }))
   }
 }

@@ -74,16 +74,25 @@ export interface Message {
   sentAt: Timestamp
 }
 
-export interface Order {
+export interface BaseOrder {
   uuid: string
   lines: Array<OrderLine>
   deliveryAddress: Address
   payment: Payment
   createdAt: Timestamp
-  contact: Contact
   delivery: OrderDelivery
   messages: Array<Message>
 }
+
+export interface CustomerOrder extends BaseOrder {
+  customerUuid: UUID
+}
+
+export interface AnonymousOrder extends BaseOrder {
+  contact: Contact
+}
+
+export type Order = CustomerOrder | AnonymousOrder
 
 // export const getTotalWithoutTax = (lines: Array<OrderLine>) => {
 //   return lines.reduce((acc: number, line: OrderLine) => {

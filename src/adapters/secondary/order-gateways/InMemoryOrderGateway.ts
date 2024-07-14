@@ -126,6 +126,11 @@ export class InMemoryOrderGateway implements OrderGateway {
     return Promise.resolve(preparation)
   }
 
+  async batch(uuids: Array<UUID>): Promise<Array<Order>> {
+    const res = this.orders.filter((o) => uuids.includes(o.uuid))
+    return Promise.resolve(JSON.parse(JSON.stringify(res)))
+  }
+
   feedWith(...orders: Array<Order>) {
     this.orders = orders
   }

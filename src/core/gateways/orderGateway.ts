@@ -10,4 +10,5 @@ export interface OrderGateway {
   savePreparation(preparation: Order): Promise<Order>
   askHowToFinish(preparation: Order): Promise<Order>
   cancelPreparation(preparation: Order): Promise<Order>
+  batch(uuids: Array<UUID>): Promise<Array<Order>>
 }

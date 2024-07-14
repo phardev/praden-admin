@@ -22,6 +22,9 @@ export const useOrderStore = defineStore('OrderStore', {
     list(orders: Array<Order>) {
       this.items = orders
     },
+    batch(orders: Array<Order>) {
+      this.items.push(...orders)
+    },
     setCurrent(order: Order) {
       this.current = order
     },

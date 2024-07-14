@@ -1,7 +1,7 @@
 import { useSearchStore } from '@store/searchStore'
 
 import { SearchGateway } from '@core/gateways/searchGateway'
-import { Timestamp } from '@core/types/types'
+import { Timestamp, UUID } from '@core/types/types'
 import { DeliveryStatus, PaymentStatus } from '@core/entities/order'
 
 export interface SearchDTO {
@@ -13,6 +13,7 @@ export interface SearchOrdersDTO extends SearchDTO {
   endDate?: Timestamp
   deliveryStatus?: DeliveryStatus
   paymentStatus?: PaymentStatus
+  customerUuid?: UUID
 }
 
 export const searchOrders = async (

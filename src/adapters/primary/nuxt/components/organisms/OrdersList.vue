@@ -107,6 +107,12 @@ const props = defineProps({
     default() {
       return 'default-key'
     }
+  },
+  initialFilters: {
+    type: Object,
+    default() {
+      return {}
+    }
   }
 })
 
@@ -133,6 +139,7 @@ watch(
 )
 const dto = (partial) => {
   return {
+    ...props.initialFilters,
     query: search.value,
     startDate: startDate.value,
     endDate: endDate.value,
