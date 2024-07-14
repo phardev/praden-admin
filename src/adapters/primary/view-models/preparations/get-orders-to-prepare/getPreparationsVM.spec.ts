@@ -55,7 +55,7 @@ describe('Get orders to prepare VM', () => {
   describe('There is some orders to prepare in click & collect', () => {
     it('should list all of them', () => {
       preparationStore.items = [orderToPrepare1, orderToPrepare2]
-      const expectedVM: GetPreparationsVM = {
+      const expectedVM: Partial<GetPreparationsVM> = {
         items: {
           'Click & Collect': {
             count: 2,
