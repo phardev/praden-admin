@@ -8,10 +8,11 @@
             img.w-8.h-8(:src="item.data.miniature")
             span {{ item.data.name }}
           div.flex.items-center.justify-center
-            ft-button.button-solid.mr-0.py-1.px-2.text-md(
+            icon.icon-md.text-link(
+              name="mdi-eye-outline"
               @click.prevent="view(item.data.uuid)"
             ) Voir
-            span(v-if="item.children.length" class="ml-2")
+            span(v-if="item.children.length" class="ml-4")
               icon.icon-md(
                 v-if="isOpen(item.data.uuid)"
                 name="material-symbols-light:keyboard-arrow-up"
