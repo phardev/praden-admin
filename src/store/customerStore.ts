@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 
 import { Customer } from '@core/entities/customer'
+import { UUID } from '@core/types/types'
 
 export const useCustomerStore = defineStore('CustomerStore', {
   state: () => {
@@ -9,12 +10,22 @@ export const useCustomerStore = defineStore('CustomerStore', {
       current: undefined as Customer | undefined
     }
   },
+  getters: {
+    getByUuid: (state) => {
+      return (uuid: UUID): Customer => {
+        const customer = state.items.find((c) => c.uuid === uuid)
+        return customer
+      }
+    }
+  },
   actions: {
     list(customers: Array<Customer>) {
       this.items = customers
+      console.log('on liste tout')
     },
     add(customer: Customer) {
       this.items.push(customer)
+      console.log('la liste: ', this.items)
     },
     edit(customer: Customer) {
       this.items = this.items.map((c) => {

@@ -4,6 +4,7 @@ ft-table(
   :items="vm.items"
   :is-loading="vm.isLoading"
   item-key="reference"
+  @clicked="clicked"
 )
   template(#reference="{ item }")
     nuxt-link.font-medium.text-link(:href="item.href") {{ item.reference }}
@@ -215,5 +216,10 @@ const clearPaymentStatus = () => {
     dto({ paymentStatus: undefined }),
     useSearchGateway()
   )
+}
+
+const clicked = (reference) => {
+  const router = useRouter()
+  router.push(`/orders/${reference}`)
 }
 </script>

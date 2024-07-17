@@ -117,3 +117,7 @@ export const getDeliveryStatus = (order: Order): DeliveryStatus => {
   const statuses = order.lines.map((l) => l.deliveryStatus)
   return Math.min(...statuses)
 }
+
+export const isAnonymousOrder = (order: Order): order is AnonymousOrder => {
+  return (order as CustomerOrder).customerUuid === undefined
+}

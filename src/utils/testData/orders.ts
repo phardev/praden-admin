@@ -1025,7 +1025,7 @@ export const lucasLefevreOrder2: CustomerOrder = {
   deliveryAddress: {
     firstname: lucasLefevre.firstname,
     lastname: lucasLefevre.lastname,
-    address: '10 rue des peupliers',
+    address: '12 rue des peupliers',
     city: 'PlopLand',
     zip: '12345'
   },

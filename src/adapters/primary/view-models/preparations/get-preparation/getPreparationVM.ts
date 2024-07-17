@@ -49,7 +49,9 @@ const canValidate = (
   return areAllLinesPrepared || canDoPartialShip
 }
 
-const getLineStatus = (line: GetPreparationLineVM): PreparationStatus => {
+export const getLineStatus = (
+  line: GetPreparationLineVM
+): PreparationStatus => {
   if (line.expectedQuantity < line.preparedQuantity)
     return PreparationStatus.ErrorTooMuchQuantity
   return line.expectedQuantity === line.preparedQuantity
@@ -73,7 +75,7 @@ const getMessageContent = (content: MessageContent): string => {
   return messages[content]
 }
 
-const getMessages = (
+export const getMessagesVM = (
   messages: Array<Message>
 ): Array<GetPreparationMessagesVM> => {
   return messages.map((message) => {
@@ -158,7 +160,7 @@ export const getPreparationVM = (): GetPreparationVM => {
     reference: preparation.uuid,
     headers,
     lines,
-    messages: getMessages(preparation.messages),
+    messages: getMessagesVM(preparation.messages),
     canValidate: canValidate(lines, preparation.messages),
     canCancel: canCancel(preparation.messages),
     canAskHowToFinish: canAskHowToFinish(lines, preparation),

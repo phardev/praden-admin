@@ -7,14 +7,9 @@ invoice.hidden.printme.mx-2
     placeholder="Code produit"
     @scanned="scanProductToPreparation"
   )
-  ft-table(
-    :headers="preparationVM.headers"
-    :items="preparationVM.lines"
+  ft-preparation-table(
+    :vm="preparationVM"
   )
-    template(#status="{ item }")
-      icon.icon-lg.text-yellow-400(v-if="item.status === PreparationStatus.NotPrepared" name="bx:bxs-error")
-      icon.icon-lg.text-grass9(v-if="item.status === PreparationStatus.Prepared" name="material-symbols:check-circle")
-      icon.icon-lg.text-tomato8(v-if="item.status > PreparationStatus.Prepared" name="fluent-mdl2:status-error-full")
   div.w-full.flex.justify-between.items-center.relative
     div.flex.justify-center.items-center.gap-4
       ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
@@ -60,11 +55,7 @@ invoice.hidden.printme.mx-2
 <script lang="ts" setup>
 import { useOrderGateway } from '../../../../../../gateways/orderGateway'
 import { getPreparation } from '@core/usecases/order/get-preparation/getPreparation'
-import {
-  getPreparationVM,
-  PreparationStatus
-} from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
-import { scanProductToPreparation } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
+import { getPreparationVM } from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
 import { validatePreparation } from '@core/usecases/order/validate-preparation/validatePreparation'
 import { useInvoiceGateway } from '../../../../../../gateways/invoiceGateway'
 import { savePreparation } from '@core/usecases/order/save-preparation/savePreparation'
