@@ -1,6 +1,6 @@
 import { BannerGateway } from '@core/gateways/bannerGateway'
 import { UUID } from '@core/types/types'
-import { Banner } from '@core/usecases/banners/list-banners/banner'
+import { Banner } from '@core/entities/banner'
 import { useBannerStore } from '@store/bannerStore'
 
 export type EditBannerDTO = Partial<Omit<Banner, 'uuid'>>

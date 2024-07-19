@@ -1,4 +1,4 @@
-import { Banner } from '@core/usecases/banners/list-banners/banner'
+import { Banner } from '@core/entities/banner'
 import { createPinia, setActivePinia } from 'pinia'
 import { useBannerStore } from '@store/bannerStore'
 import { listBanners } from '@core/usecases/banners/list-banners/listBanners'

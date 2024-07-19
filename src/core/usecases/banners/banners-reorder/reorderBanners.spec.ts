@@ -1,10 +1,11 @@
-import { Banner } from '@core/usecases/banners/list-banners/banner'
+import { Banner } from '@core/entities/banner'
 import { InMemoryBannerGateway } from '@adapters/secondary/banner-gateways/inMemoryBannerGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { createPinia, setActivePinia } from 'pinia'
 import { useBannerStore } from '@store/bannerStore'
 import { banner1, banner2, banner3 } from '@utils/testData/banners'
 import { reorderBanners } from '@core/usecases/banners/banners-reorder/reorderBanners'
+import { UUID } from '@core/types/types'
 
 describe('Banners reorder', () => {
   let bannerGateway: InMemoryBannerGateway
@@ -34,7 +35,7 @@ describe('Banners reorder', () => {
           order: 2
         }
       ]
-      await whenReorderBanners([banner2, banner1, banner3])
+      await whenReorderBanners([banner2.uuid, banner1.uuid, banner3.uuid])
     })
     it('should reorder banners in gateway', async () => {
       expect(await bannerGateway.list()).toStrictEqual(expectedBanners)
@@ -60,7 +61,7 @@ describe('Banners reorder', () => {
           order: 2
         }
       ]
-      await whenReorderBanners([banner3, banner2, banner1])
+      await whenReorderBanners([banner3.uuid, banner2.uuid, banner1.uuid])
     })
     it('should reorder banners in gateway', async () => {
       expect(await bannerGateway.list()).toStrictEqual(expectedBanners)
@@ -75,7 +76,7 @@ describe('Banners reorder', () => {
     bannerStore.items = banners
   }
 
-  const whenReorderBanners = async (banners: Array<Banner>) => {
+  const whenReorderBanners = async (banners: Array<UUID>) => {
     await reorderBanners(banners, bannerGateway)
   }
 })

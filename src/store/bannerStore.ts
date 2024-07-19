@@ -1,4 +1,4 @@
-import { Banner, sortByOrder } from '@core/usecases/banners/list-banners/banner'
+import { Banner, sortByOrder } from '@core/entities/banner'
 import { defineStore } from 'pinia'
 
 export const useBannerStore = defineStore('BannerStore', {
@@ -10,9 +10,6 @@ export const useBannerStore = defineStore('BannerStore', {
   actions: {
     list(banners: Array<Banner>) {
       this.items = banners
-    },
-    add(banner: Banner) {
-      this.items.push(banner)
     },
     edit(banner: Banner) {
       this.items = this.items.map((p) => {

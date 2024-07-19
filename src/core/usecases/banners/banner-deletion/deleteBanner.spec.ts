@@ -1,6 +1,6 @@
 import { InMemoryBannerGateway } from '@adapters/secondary/banner-gateways/inMemoryBannerGateway'
 import { useBannerStore } from '@store/bannerStore'
-import { Banner } from '@core/usecases/banners/list-banners/banner'
+import { Banner } from '@core/entities/banner'
 import { banner1, banner2, banner3 } from '@utils/testData/banners'
 import { UUID } from '@core/types/types'
 import { deleteBanner } from '@core/usecases/banners/banner-deletion/deleteBanner'

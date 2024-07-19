@@ -1,9 +1,9 @@
 import { BannerGateway } from '@core/gateways/bannerGateway'
-import { Banner, sortByOrder } from '@core/usecases/banners/list-banners/banner'
+import { Banner, sortByOrder } from '@core/entities/banner'
 import { UUID } from '@core/types/types'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
-import { getFileContent } from '@utils/file'
 import { EditBannerDTO } from '@core/usecases/banners/banner-edition/editBanner'
+import { CreateBannerDTO } from '@core/usecases/banners/banner-creation/createBanner'
 
 export class InMemoryBannerGateway implements BannerGateway {
   private banners: Array<Banner> = []
@@ -17,9 +17,12 @@ export class InMemoryBannerGateway implements BannerGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(this.banners)))
   }
 
-  async reorder(banners: Array<Banner>): Promise<Array<Banner>> {
-    banners.forEach((b, i) => (b.order = i))
-    this.banners = banners
+  async reorder(bannerUuids: Array<UUID>): Promise<Array<Banner>> {
+    for (const uuid of bannerUuids) {
+      const i = bannerUuids.indexOf(uuid)
+      await this.edit(uuid, { order: i })
+    }
+    this.banners = this.banners.sort(sortByOrder)
     return Promise.resolve(JSON.parse(JSON.stringify(this.banners)))
   }
 
@@ -33,15 +36,19 @@ export class InMemoryBannerGateway implements BannerGateway {
     return Promise.resolve(deleted[0])
   }
 
-  async create(file: File): Promise<Banner> {
-    const newBanner = {
+  async create(dto: CreateBannerDTO): Promise<Array<Banner>> {
+    const newBanner: Banner = {
       uuid: this.uuidGenerator.generate(),
-      img: await getFileContent(file),
-      order: this.banners.length,
-      isActive: true
+      img: dto.img,
+      order: dto.order !== undefined ? dto.order : this.banners.length,
+      isActive: dto.isActive !== undefined ? dto.isActive : true,
+      href: dto.href,
+      startDate: dto.startDate,
+      endDate: dto.endDate
     }
-    this.banners.push(newBanner)
-    return Promise.resolve(JSON.parse(JSON.stringify(newBanner)))
+    this.banners.splice(newBanner.order, 0, newBanner)
+    await this.reorder(this.banners.map((b) => b.uuid))
+    return Promise.resolve(JSON.parse(JSON.stringify(this.banners)))
   }
 
   edit(uuid: UUID, dto: EditBannerDTO): Promise<Banner> {
