@@ -28,12 +28,12 @@ div.flex.items-center.justify-stretch.space-x-4.space-y-2
               variant="link"
               icon="i-heroicons-x-mark-20-solid"
               :padded="false"
-              @click.prevent="clearStartDate"
+              @click.prevent="clearStartDate(banner.uuid)"
             )
         template(#panel="{ close }")
           ft-date-picker(
             :model-value="banner.startDate"
-            @update:model-value="startDateChanged"
+            @update:model-value="(date) => startDateChanged(banner.uuid, date)"
             @close="close"
           )
     UFormGroup.pb-4(label="Date de fin" name="eendDate")
@@ -50,17 +50,21 @@ div.flex.items-center.justify-stretch.space-x-4.space-y-2
               variant="link"
               icon="i-heroicons-x-mark-20-solid"
               :padded="false"
-              @click.prevent="clearEndDate"
+              @click.prevent="clearEndDate(banner.uuid)"
             )
         template(#panel="{ close }")
           ft-date-picker(
             :model-value="banner.endDate"
-            @update:model-value="endDateChanged"
+            @update:model-value="(date) => endDateChanged(banner.uuid, date)"
             @close="close"
           )
   ft-toggle(
     :model-value="banner.isActive"
     @update:model-value="(value) => updateIsActive(banner.uuid, value)"
+  )
+  icon.icon-lg.text-link(
+    name="material-symbols:edit-square-outline"
+    @click="editClicked(banner.uuid)"
   )
 </template>
 
@@ -86,23 +90,28 @@ const updateIsActive = (uuid, isActive) => {
   editBanner(uuid, { isActive }, useBannerGateway())
 }
 
-const deleteBannerClicked = (uuid) => {
+const deleteBannerClicked = (uuid: string) => {
   deleteBanner(uuid, useBannerGateway())
 }
 
-const startDateChanged = (date: number) => {
-  console.log('startDate', date)
+const startDateChanged = (uuid: string, date: number) => {
+  editBanner(uuid, { startDate: date }, useBannerGateway())
 }
 
-const clearStartDate = () => {
-  console.log('on clear startDate')
+const clearStartDate = (uuid: string) => {
+  editBanner(uuid, { startDate: undefined }, useBannerGateway())
 }
 
-const endDateChanged = (date: number) => {
-  console.log('endDate', date)
+const endDateChanged = (uuid: string, date: number) => {
+  editBanner(uuid, { endDate: date }, useBannerGateway())
 }
 
-const clearEndDate = () => {
-  console.log('on clear end date')
+const clearEndDate = (uuid: string) => {
+  editBanner(uuid, { endDate: undefined }, useBannerGateway())
+}
+
+const editClicked = (uuid: string) => {
+  const router = useRouter()
+  router.push(`/banners/edit/${uuid}`)
 }
 </script>

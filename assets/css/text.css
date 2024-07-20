@@ -36,7 +36,7 @@
   }
 
   .text-link {
-    @apply text-contrast hover:text-primary11
+    @apply text-contrast hover:text-primary11 cursor-pointer
   }
 
   .text-page-title {

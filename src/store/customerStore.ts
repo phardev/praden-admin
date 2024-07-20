@@ -25,7 +25,6 @@ export const useCustomerStore = defineStore('CustomerStore', {
     },
     add(customer: Customer) {
       this.items.push(customer)
-      console.log('la liste: ', this.items)
     },
     edit(customer: Customer) {
       this.items = this.items.map((c) => {

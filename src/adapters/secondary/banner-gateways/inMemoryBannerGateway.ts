@@ -4,6 +4,7 @@ import { UUID } from '@core/types/types'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { EditBannerDTO } from '@core/usecases/banners/banner-edition/editBanner'
 import { CreateBannerDTO } from '@core/usecases/banners/banner-creation/createBanner'
+import { BannerDoesNotExistsError } from '@core/errors/BannerDoesNotExistsError'
 
 export class InMemoryBannerGateway implements BannerGateway {
   private banners: Array<Banner> = []
@@ -51,10 +52,21 @@ export class InMemoryBannerGateway implements BannerGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(this.banners)))
   }
 
-  edit(uuid: UUID, dto: EditBannerDTO): Promise<Banner> {
+  async edit(uuid: UUID, dto: EditBannerDTO): Promise<Banner> {
     const index = this.banners.findIndex((c) => c.uuid === uuid)
-    this.banners[index] = Object.assign(this.banners[index], dto)
-    return Promise.resolve(JSON.parse(JSON.stringify(this.banners[index])))
+    const updated: Banner = Object.assign(this.banners[index], dto)
+    this.banners.splice(index, 1)
+    this.banners.splice(updated.order, 0, updated)
+    this.banners.forEach((b, i) => {
+      b.order = i
+    })
+    return Promise.resolve(JSON.parse(JSON.stringify(updated)))
+  }
+
+  get(uuid: UUID): Promise<Banner> {
+    const banner = this.banners.find((c) => c.uuid === uuid)
+    if (!banner) throw new BannerDoesNotExistsError(uuid)
+    return Promise.resolve(JSON.parse(JSON.stringify(banner)))
   }
 
   feedWith(...banners: Array<Banner>) {

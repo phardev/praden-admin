@@ -1,4 +1,4 @@
-import { Banner, sortByOrder } from '@core/entities/banner'
+import { Banner } from '@core/entities/banner'
 import { defineStore } from 'pinia'
 
 export const useBannerStore = defineStore('BannerStore', {
@@ -12,13 +12,18 @@ export const useBannerStore = defineStore('BannerStore', {
     list(banners: Array<Banner>) {
       this.items = banners
     },
+    setCurrent(banner: Banner) {
+      this.current = JSON.parse(JSON.stringify(banner))
+    },
     edit(banner: Banner) {
-      this.items = this.items.map((p) => {
-        return p.uuid === banner.uuid ? banner : p
+      const index = this.items.findIndex((b) => b.uuid === banner.uuid)
+      this.items.splice(index, 1)
+      this.items.splice(banner.order, 0, banner)
+      this.items.forEach((b, i) => {
+        b.order = i
       })
     },
     delete(banner: Banner) {
-      this.items.sort(sortByOrder)
       const index = this.items.findIndex((b) => b.uuid === banner.uuid)
       this.items.splice(index, 1)
       this.items.forEach((b, i) => {

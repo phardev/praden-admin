@@ -24,15 +24,15 @@ class ExistingBannerFormInitializer implements FormInitializer {
     let banner = this.bannerStore.current
     if (banner) {
       banner = JSON.parse(JSON.stringify(banner))
-      this.formStore.set(this.key, {
-        img: banner.img,
-        order: banner.order + 1,
-        isActive: banner.isActive,
-        href: banner.href,
-        startDate: banner.startDate,
-        endDate: banner.endDate
-      })
     }
+    this.formStore.set(this.key, {
+      img: banner.img,
+      order: banner.order + 1,
+      isActive: banner.isActive,
+      href: banner.href,
+      startDate: banner.startDate,
+      endDate: banner.endDate
+    })
   }
 }
 

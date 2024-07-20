@@ -46,6 +46,33 @@ describe('Banner Edition', () => {
         expect(bannerStore.items).toStrictEqual(expectedBanners)
       })
     })
+    describe('Update order field', () => {
+      beforeEach(async () => {
+        const dto: EditBannerDTO = { order: 0 }
+        const uuid = banner3.uuid
+        expectedBanners = [
+          {
+            ...banner3,
+            order: 0
+          },
+          {
+            ...banner1,
+            order: 1
+          },
+          {
+            ...banner2,
+            order: 2
+          }
+        ]
+        await whenEditBanner(uuid, dto)
+      })
+      it('should update field and reorder others in gateway', async () => {
+        expect(await bannerGateway.list()).toStrictEqual(expectedBanners)
+      })
+      it('should update field and reorder others in store', () => {
+        expect(bannerStore.items).toStrictEqual(expectedBanners)
+      })
+    })
   })
 
   const givenExistingBanners = (...banners: Array<Banner>) => {

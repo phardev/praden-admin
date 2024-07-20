@@ -9,4 +9,5 @@ export interface BannerGateway {
   delete(uuid: UUID): Promise<Banner>
   create(dto: CreateBannerDTO): Promise<Array<Banner>>
   edit(uuid: UUID, dto: EditBannerDTO): Promise<Banner>
+  get(uuid: UUID): Promise<Banner>
 }
