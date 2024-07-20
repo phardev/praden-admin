@@ -4,7 +4,8 @@ import { defineStore } from 'pinia'
 export const useBannerStore = defineStore('BannerStore', {
   state: () => {
     return {
-      items: [] as Array<Banner>
+      items: [] as Array<Banner>,
+      current: undefined as Banner
     }
   },
   actions: {
