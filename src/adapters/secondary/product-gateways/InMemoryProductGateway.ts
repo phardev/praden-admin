@@ -26,7 +26,7 @@ export class InMemoryProductGateway implements ProductGateway {
 
   async create(dto: CreateProductDTO): Promise<Product> {
     const images: Array<string> = []
-    for (const image of dto.images) {
+    for (const image of dto.newImages) {
       images.push(await getFileContent(image))
     }
     const product: Product = {
@@ -37,16 +37,18 @@ export class InMemoryProductGateway implements ProductGateway {
       ean13: dto.ean13,
       miniature: '',
       images,
-      categoryUuid: dto.categoryUuid,
-      priceWithoutTax: parseFloat(dto.priceWithoutTax) * 100,
-      percentTaxRate: parseFloat(dto.percentTaxRate),
+      priceWithoutTax: dto.priceWithoutTax,
+      percentTaxRate: dto.percentTaxRate,
       locations: dto.locations,
-      availableStock: parseInt(dto.availableStock),
+      availableStock: dto.availableStock,
       laboratory: dto.laboratory,
       description: dto.description,
       instructionsForUse: dto.instructionsForUse,
       composition: dto.composition,
       weight: dto.weight
+    }
+    if (dto.categoryUuid) {
+      product.categoryUuid = dto.categoryUuid
     }
     if (dto.maxQuantityForOrder) {
       product.maxQuantityForOrder = dto.maxQuantityForOrder
@@ -55,12 +57,19 @@ export class InMemoryProductGateway implements ProductGateway {
     return Promise.resolve(product)
   }
 
-  edit(uuid: UUID, dto: EditProductDTO): Promise<Product> {
+  async edit(uuid: UUID, dto: EditProductDTO): Promise<Product> {
     const index = this.products.findIndex((c) => c.uuid === uuid)
-    const locations = this.products[index].locations
-    dto.locations = {
-      ...locations,
-      ...dto.locations
+    if (dto.locations) {
+      Object.assign(this.products[index].locations, dto.locations)
+      delete dto.locations
+    }
+    if (dto.newImages) {
+      const newImages: Array<string> = []
+      for (const image of dto.newImages) {
+        newImages.push(await getFileContent(image))
+      }
+      Array.prototype.push.apply(this.products[index].images, newImages)
+      delete dto.newImages
     }
     this.products[index] = Object.assign(this.products[index], dto)
     return Promise.resolve(JSON.parse(JSON.stringify(this.products[index])))

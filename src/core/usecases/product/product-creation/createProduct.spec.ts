@@ -47,12 +47,13 @@ describe('Create product', () => {
         cip7: '1234567',
         cip13: '1234567890123',
         ean13: '1234567890123',
-        images: [new File(['data1'], 'File 1', { type: 'image/png' })],
+        images: [],
+        newImages: [new File(['data1'], 'File 1', { type: 'image/png' })],
         categoryUuid: mum.uuid,
-        priceWithoutTax: '1',
-        percentTaxRate: '10',
+        priceWithoutTax: 100,
+        percentTaxRate: 10,
         locations: { [zoneGeo.uuid]: 'product-location' },
-        availableStock: '12',
+        availableStock: 12,
         laboratory: 'product-laboratory',
         description: '<p>description</p>',
         instructionsForUse: '<p>instructions For Use</p>',
@@ -96,19 +97,20 @@ describe('Create product', () => {
         cip7: '0987654',
         cip13: '0987654321098',
         ean13: '0987654321098',
-        images: [
+        images: [],
+        newImages: [
           new File(['data1'], 'File 1', { type: 'image/png' }),
           new File(['data2'], 'File 2', { type: 'image/jpeg' }),
           new File(['data3'], 'File 3', { type: 'image/gif' })
         ],
         categoryUuid: diarrhee.uuid,
-        priceWithoutTax: '12.5',
-        percentTaxRate: '10.5',
+        priceWithoutTax: 125,
+        percentTaxRate: 10.5,
         locations: {
           [zoneGeo.uuid]: 'another-product-location',
           [reserve.uuid]: 'RESERVE'
         },
-        availableStock: '21',
+        availableStock: 21,
         laboratory: 'another-product-laboratory',
         description: '<p>another description</p>',
         instructionsForUse: '<p>another instructions For Use</p>',
@@ -129,7 +131,70 @@ describe('Create product', () => {
           'data:image/gif;base64,ZGF0YTM='
         ],
         categoryUuid: dto.categoryUuid,
-        priceWithoutTax: 1250,
+        priceWithoutTax: 125,
+        percentTaxRate: 10.5,
+        locations: dto.locations,
+        availableStock: 21,
+        laboratory: dto.laboratory,
+        description: dto.description,
+        instructionsForUse: dto.instructionsForUse,
+        composition: dto.composition,
+        weight: dto.weight,
+        maxQuantityForOrder: dto.maxQuantityForOrder
+      }
+      beforeEach(async () => {
+        givenThereIsExistingProducts(dolodent, hemoclar)
+        uuidGenerator.setNext(uuid)
+        await whenCreateProduct(dto)
+      })
+      it('should save the product in product gateway', async () => {
+        await expectProductGatewayToEqual(dolodent, hemoclar, expectedProduct)
+      })
+      it('should save the product in product store', () => {
+        expectProductStoreToEqual(dolodent, hemoclar, expectedProduct)
+      })
+    })
+    describe('For a product without category', () => {
+      const uuid = 'another-uuid'
+      const dto: CreateProductDTO = {
+        name: 'Another created product',
+        cip7: '0987654',
+        cip13: '0987654321098',
+        ean13: '0987654321098',
+        images: [],
+        newImages: [
+          new File(['data1'], 'File 1', { type: 'image/png' }),
+          new File(['data2'], 'File 2', { type: 'image/jpeg' }),
+          new File(['data3'], 'File 3', { type: 'image/gif' })
+        ],
+        categoryUuid: undefined,
+        priceWithoutTax: 125,
+        percentTaxRate: 10.5,
+        locations: {
+          [zoneGeo.uuid]: 'another-product-location',
+          [reserve.uuid]: 'RESERVE'
+        },
+        availableStock: 21,
+        laboratory: 'another-product-laboratory',
+        description: '<p>another description</p>',
+        instructionsForUse: '<p>another instructions For Use</p>',
+        composition: '<p>another composition</p>',
+        weight: 60,
+        maxQuantityForOrder: 12
+      }
+      const expectedProduct: Product = {
+        uuid,
+        name: dto.name,
+        cip7: dto.cip7,
+        cip13: dto.cip13,
+        ean13: dto.ean13,
+        miniature: '',
+        images: [
+          'data:image/png;base64,ZGF0YTE=',
+          'data:image/jpeg;base64,ZGF0YTI=',
+          'data:image/gif;base64,ZGF0YTM='
+        ],
+        priceWithoutTax: 125,
         percentTaxRate: 10.5,
         locations: dto.locations,
         availableStock: 21,
@@ -162,12 +227,13 @@ describe('Create product', () => {
         cip7: '1234567',
         cip13: '1234567890123',
         ean13: '1234567890123',
-        images: [new File(['data1'], 'File 1', { type: 'image/png' })],
+        images: [],
+        newImages: [new File(['data1'], 'File 1', { type: 'image/png' })],
         categoryUuid: 'not-existing-category',
-        priceWithoutTax: '1',
-        percentTaxRate: '10',
+        priceWithoutTax: 100,
+        percentTaxRate: 10,
         locations: { [zoneGeo.uuid]: 'product-location' },
-        availableStock: '12',
+        availableStock: 12,
         laboratory: 'product-laboratory',
         description: '<p>description</p>',
         instructionsForUse: '<p>instructions For Use</p>',
@@ -188,15 +254,16 @@ describe('Create product', () => {
         cip7: '1234567',
         cip13: '1234567890123',
         ean13: '1234567890123',
-        images: [new File(['data1'], 'File 1', { type: 'image/png' })],
+        images: [],
+        newImages: [new File(['data1'], 'File 1', { type: 'image/png' })],
         categoryUuid: mum.uuid,
-        priceWithoutTax: '1',
-        percentTaxRate: '10',
+        priceWithoutTax: 100,
+        percentTaxRate: 10,
         locations: {
           [zoneGeo.uuid]: 'product-location',
           ['not-exists']: 'value'
         },
-        availableStock: '12',
+        availableStock: 12,
         laboratory: 'product-laboratory',
         description: '<p>description</p>',
         instructionsForUse: '<p>instructions For Use</p>',

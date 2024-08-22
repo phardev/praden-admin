@@ -6,17 +6,9 @@ import { LocationGateway } from '@core/gateways/locationGateway'
 
 export type CreateProductDTO = Omit<
   Product,
-  | 'uuid'
-  | 'images'
-  | 'priceWithoutTax'
-  | 'percentTaxRate'
-  | 'miniature'
-  | 'availableStock'
+  'uuid' | 'miniature' | 'isMedicine'
 > & {
-  images: Array<File>
-  priceWithoutTax: string
-  percentTaxRate: string
-  availableStock: string
+  newImages: Array<File>
 }
 
 export const createProduct = async (
@@ -25,7 +17,9 @@ export const createProduct = async (
   categoryGateway: CategoryGateway,
   locationGateway: LocationGateway
 ) => {
-  await categoryGateway.getByUuid(dto.categoryUuid)
+  if (dto.categoryUuid) {
+    await categoryGateway.getByUuid(dto.categoryUuid)
+  }
   for (const location of Object.entries(dto.locations)) {
     await locationGateway.getByUuid(location[0])
   }

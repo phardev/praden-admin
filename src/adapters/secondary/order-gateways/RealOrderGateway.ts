@@ -7,8 +7,26 @@ import { zoneGeo } from '@utils/testData/locations'
 export abstract class RealGateway {
   protected readonly baseUrl: string
 
-  constructor(baseUrl: string) {
+  protected constructor(baseUrl: string) {
     this.baseUrl = `${baseUrl}`
+  }
+
+  protected createFormData(dto: any): FormData {
+    const formData = new FormData()
+
+    for (const key in dto) {
+      if (dto.hasOwnProperty(key)) {
+        const value = dto[key]
+        if (Array.isArray(value)) {
+          value.forEach((item, index) => {
+            formData.append(`${key}[${index}]`, item)
+          })
+        } else if (value) {
+          formData.append(key, value)
+        }
+      }
+    }
+    return formData
   }
 }
 

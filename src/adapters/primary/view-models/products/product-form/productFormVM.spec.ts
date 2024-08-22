@@ -23,6 +23,7 @@ import { useProductStore } from '@store/productStore'
 import { useLocationStore } from '@store/locationStore'
 import { magasin, reserve, zoneGeo } from '@utils/testData/locations'
 import { promotionFixedMultipleProducts } from '@utils/testData/promotions'
+import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 
 const editableInitialVMTests = (
   getVM: () => ProductFormCreateVM | ProductFormEditVM | ProductFormGetVM,
@@ -586,10 +587,10 @@ describe('Product form VM', () => {
             categoryUuid: 'abc123',
             laboratory: 'laboratory',
             images: newImages,
-            priceWithoutTax: '12',
-            percentTaxRate: '5',
+            priceWithoutTax: 1200,
+            percentTaxRate: 5,
             locations: {},
-            availableStock: '21',
+            availableStock: 21,
             description: '<p>description</p>',
             instructionsForUse: '<p>instructionsForUse</p>',
             composition: '<p>composition</p>',
@@ -603,10 +604,10 @@ describe('Product form VM', () => {
           vm.set('newImages', newImages)
           vm.set('categoryUuid', expectedDTO.categoryUuid)
           vm.set('laboratory', expectedDTO.laboratory)
-          vm.set('priceWithoutTax', expectedDTO.priceWithoutTax)
-          vm.set('percentTaxRate', expectedDTO.percentTaxRate)
+          vm.set('priceWithoutTax', '12')
+          vm.set('percentTaxRate', '5')
           vm.set('locations', expectedDTO.locations)
-          vm.set('availableStock', expectedDTO.availableStock)
+          vm.set('availableStock', '21')
           vm.set('description', expectedDTO.description)
           vm.set('instructionsForUse', expectedDTO.instructionsForUse)
           vm.set('composition', expectedDTO.composition)
@@ -684,21 +685,22 @@ describe('Product form VM', () => {
             new File(['data2'], 'File 2', { type: 'image/jpeg' }),
             new File(['data3'], 'File 3', { type: 'image/gif' })
           ]
-          const expectedDTO: CreateProductDTO = {
+          const expectedDTO: EditProductDTO = {
             name: 'test',
             cip7: '1234567',
             cip13: '1234567890123',
             ean13: '1234567890123',
             categoryUuid: 'abc123',
             laboratory: 'laboratory',
-            images: newImages,
-            priceWithoutTax: '12',
-            percentTaxRate: '5',
+            images: product.images,
+            newImages,
+            priceWithoutTax: 1550,
+            percentTaxRate: 7.5,
             locations: {
               [zoneGeo.uuid]: 'G2',
               [reserve.uuid]: 'RESERVE_1'
             },
-            availableStock: '21',
+            availableStock: 22,
             description: '<p>description</p>',
             instructionsForUse: '<p>instructionsForUse</p>',
             composition: '<p>composition</p>',
@@ -712,15 +714,57 @@ describe('Product form VM', () => {
           vm.set('newImages', newImages)
           vm.set('categoryUuid', expectedDTO.categoryUuid)
           vm.set('laboratory', expectedDTO.laboratory)
-          vm.set('priceWithoutTax', expectedDTO.priceWithoutTax)
-          vm.set('percentTaxRate', expectedDTO.percentTaxRate)
+          vm.set('priceWithoutTax', '15.5')
+          vm.set('percentTaxRate', '7.5')
           vm.set('locations', { uuid: zoneGeo.uuid, value: 'G2' })
-          vm.set('availableStock', expectedDTO.availableStock)
+          vm.set('availableStock', '22')
           vm.set('description', expectedDTO.description)
           vm.set('instructionsForUse', expectedDTO.instructionsForUse)
           vm.set('composition', expectedDTO.composition)
           vm.set('weight', '0.125')
           vm.set('maxQuantityForOrder', '6')
+          expect(vm.getDto()).toStrictEqual(expectedDTO)
+        })
+      })
+      describe('With max quantity for order undefined', () => {
+        it('should prepare the dto', () => {
+          const expectedDTO: EditProductDTO = {
+            name: 'test',
+            images: product.images,
+            newImages: [],
+            cip7: undefined,
+            cip13: undefined,
+            ean13: undefined,
+            laboratory: undefined,
+            categoryUuid: undefined,
+            priceWithoutTax: 1200,
+            percentTaxRate: 5,
+            locations: {
+              [zoneGeo.uuid]: 'G2',
+              [reserve.uuid]: 'RESERVE_1'
+            },
+            availableStock: 21,
+            description: '<p>description</p>',
+            instructionsForUse: '<p>instructionsForUse</p>',
+            composition: '<p>composition</p>',
+            weight: 125,
+            maxQuantityForOrder: undefined
+          }
+          vm.set('name', expectedDTO.name)
+          vm.set('cip7', expectedDTO.cip7)
+          vm.set('cip13', expectedDTO.cip13)
+          vm.set('ean13', expectedDTO.ean13)
+          vm.set('categoryUuid', expectedDTO.categoryUuid)
+          vm.set('laboratory', expectedDTO.laboratory)
+          vm.set('priceWithoutTax', '12')
+          vm.set('percentTaxRate', '5')
+          vm.set('locations', { uuid: zoneGeo.uuid, value: 'G2' })
+          vm.set('availableStock', '21')
+          vm.set('description', expectedDTO.description)
+          vm.set('instructionsForUse', expectedDTO.instructionsForUse)
+          vm.set('composition', expectedDTO.composition)
+          vm.set('weight', '0.125')
+          vm.set('maxQuantityForOrder', '')
           expect(vm.getDto()).toStrictEqual(expectedDTO)
         })
       })

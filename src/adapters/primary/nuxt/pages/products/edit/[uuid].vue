@@ -42,6 +42,7 @@ onMounted(async () => {
 })
 
 const validate = async () => {
+  console.log('dans le dto: ', vm.value.getDto().images)
   await editProduct(
     productUuid,
     vm.value.getDto(),

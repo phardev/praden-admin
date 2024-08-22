@@ -252,8 +252,8 @@ const images = computed(() => {
   return currentVM?.value?.get('images').value
 })
 
-const imagesChanged = async (value: any) => {
-  await currentVM?.value?.set('newImages', value)
+const imagesChanged = async (value: FileList) => {
+  await currentVM?.value?.set('newImages', Array.from(value))
 }
 
 const categoryChanged = (uuid: string) => {

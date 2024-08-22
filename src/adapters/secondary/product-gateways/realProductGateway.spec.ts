@@ -27,7 +27,7 @@ describe('Real product gateway', () => {
         expect(res).toStrictEqual([])
       })
       it('should call the right url', () => {
-        expect(axios.get).toHaveBeenCalledWith(`${url}/products/`)
+        expect(axios.get).toHaveBeenCalledWith(`${url}/products`)
       })
     })
     describe('There is some products', () => {
@@ -47,7 +47,7 @@ describe('Real product gateway', () => {
         expect(res).toStrictEqual([dolodent, aspro])
       })
       it('should call the right url', () => {
-        expect(axios.get).toHaveBeenCalledWith(`${anotherUrl}/products/`)
+        expect(axios.get).toHaveBeenCalledWith(`${anotherUrl}/products`)
       })
     })
   })

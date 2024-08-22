@@ -7,14 +7,6 @@ import { LocationGateway } from '@core/gateways/locationGateway'
 
 export type EditProductDTO = Partial<CreateProductDTO>
 
-const formatDto = (dto: EditProductDTO): EditProductDTO => {
-  const res = JSON.parse(JSON.stringify(dto))
-  if (dto.priceWithoutTax) {
-    res.priceWithoutTax = parseFloat(dto.priceWithoutTax) * 100
-  }
-  return res
-}
-
 export const editProduct = async (
   uuid: UUID,
   dto: EditProductDTO,
@@ -28,8 +20,7 @@ export const editProduct = async (
       await locationGateway.getByUuid(location[0])
     }
   }
-  const formattedDto = formatDto(dto)
-  const edited = await productGateway.edit(uuid, formattedDto)
+  const edited = await productGateway.edit(uuid, dto)
   const productStore = useProductStore()
   productStore.edit(edited)
 }

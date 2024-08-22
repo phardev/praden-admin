@@ -27,6 +27,10 @@ describe('Product edition', () => {
   let productGateway: InMemoryProductGateway
   let categoryGateway: InMemoryCategoryGateway
   let locationGateway: InMemoryLocationGateway
+  let product: Product
+  let dto: EditProductDTO
+  let expectedProduct: Product
+  let expectedProducts: Array<Product>
 
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -43,16 +47,16 @@ describe('Product edition', () => {
       givenExistingProducts(chamomilla, ultraLevure, dolodent)
     })
     describe('Simple change', () => {
-      const product = JSON.parse(JSON.stringify(dolodent))
-      const dto: EditProductDTO = {
-        name: 'The new name'
-      }
-      const expectedProduct: Product = {
-        ...product,
-        ...dto
-      }
-      const expectedProducts = [chamomilla, ultraLevure, expectedProduct]
       beforeEach(async () => {
+        givenEditingProductIs(dolodent)
+        dto = {
+          name: 'The new name'
+        }
+        expectedProduct = {
+          ...product,
+          name: dto.name
+        }
+        expectedProducts = [chamomilla, ultraLevure, expectedProduct]
         await whenEditProduct(product.uuid, dto)
       })
       it('should edit the product in the gateway', async () => {
@@ -63,24 +67,45 @@ describe('Product edition', () => {
       })
     })
     describe('Price change', () => {
-      const product = JSON.parse(JSON.stringify(dolodent))
-      const dto: EditProductDTO = {
-        priceWithoutTax: '5.5'
-      }
-      const expectedProduct: Product = {
-        ...product,
-        priceWithoutTax: 550
-      }
-      const expectedProducts = [chamomilla, ultraLevure, expectedProduct]
       beforeEach(async () => {
+        givenEditingProductIs(dolodent)
+        dto = {
+          priceWithoutTax: 55
+        }
+        expectedProduct = {
+          ...product,
+          priceWithoutTax: 55
+        }
+        expectedProducts = [chamomilla, ultraLevure, expectedProduct]
         await whenEditProduct(product.uuid, dto)
       })
       it('should edit the product in the gateway', async () => {
         expect(await productGateway.list()).toStrictEqual(expectedProducts)
       })
-      // it('should edit the product in the store', async () => {
-      //   expect(productStore.items).toStrictEqual(expectedProducts)
-      // })
+      it('should edit the product in the store', async () => {
+        expect(productStore.items).toStrictEqual(expectedProducts)
+      })
+    })
+
+    describe('Tax change', () => {
+      beforeEach(async () => {
+        givenEditingProductIs(dolodent)
+        dto = {
+          percentTaxRate: 10.5
+        }
+        expectedProduct = {
+          ...product,
+          percentTaxRate: 10.5
+        }
+        expectedProducts = [chamomilla, ultraLevure, expectedProduct]
+        await whenEditProduct(product.uuid, dto)
+      })
+      it('should edit the product in the gateway', async () => {
+        expect(await productGateway.list()).toStrictEqual(expectedProducts)
+      })
+      it('should edit the product in the store', async () => {
+        expect(productStore.items).toStrictEqual(expectedProducts)
+      })
     })
     describe('Change category', () => {
       const product = JSON.parse(JSON.stringify(chamomilla))
@@ -89,10 +114,10 @@ describe('Product edition', () => {
           givenExistingCategories(mum, baby)
         })
         it('should change the category', async () => {
-          const dto: EditProductDTO = {
+          dto = {
             categoryUuid: mum.uuid
           }
-          const expectedProduct = {
+          expectedProduct = {
             ...product,
             ...dto
           }
@@ -106,7 +131,7 @@ describe('Product edition', () => {
       })
       describe('The category does not exists', () => {
         it('should throw an error', async () => {
-          const dto: EditProductDTO = {
+          dto = {
             categoryUuid: 'not-existing'
           }
           await expect(whenEditProduct(product.uuid, dto)).rejects.toThrow(
@@ -122,10 +147,10 @@ describe('Product edition', () => {
       const product = JSON.parse(JSON.stringify(ultraLevure))
       describe('The location exists', () => {
         it('should change the location', async () => {
-          const dto: EditProductDTO = {
+          dto = {
             locations: { [zoneGeo.uuid]: 'new-zoneGeo' }
           }
-          const expectedProduct = {
+          expectedProduct = {
             ...product,
             locations: {
               ...ultraLevure.locations,
@@ -142,24 +167,53 @@ describe('Product edition', () => {
       })
       describe('The location does not exists', () => {
         it('should throw an error', async () => {
-          const dto: EditProductDTO = {
+          dto = {
             locations: { ['not-existing']: 'value' }
           }
+
           await expect(whenEditProduct(product.uuid, dto)).rejects.toThrow(
             LocationDoesNotExistsError
           )
         })
         it('should check all locations', async () => {
-          const dto: EditProductDTO = {
+          dto = {
             locations: {
               [zoneGeo.uuid]: 'new-zoneGeo',
               ['not-existing']: 'value'
             }
           }
+
           await expect(whenEditProduct(product.uuid, dto)).rejects.toThrow(
             LocationDoesNotExistsError
           )
         })
+      })
+    })
+    describe('Images change', () => {
+      beforeEach(async () => {
+        dto = {
+          newImages: [
+            new File(['data1'], 'File 1', { type: 'image/png' }),
+            new File(['data2'], 'File 2', { type: 'image/jpeg' })
+          ]
+        }
+        givenEditingProductIs(dolodent)
+        expectedProduct = {
+          ...product,
+          images: [
+            ...product.images,
+            'data:image/png;base64,ZGF0YTE=',
+            'data:image/jpeg;base64,ZGF0YTI='
+          ]
+        }
+        expectedProducts = [chamomilla, ultraLevure, expectedProduct]
+        await whenEditProduct(product.uuid, dto)
+      })
+      it('should edit the product in the gateway', async () => {
+        expect(await productGateway.list()).toStrictEqual(expectedProducts)
+      })
+      it('should edit the product in the store', async () => {
+        expect(productStore.items).toStrictEqual(expectedProducts)
       })
     })
   })
@@ -167,6 +221,10 @@ describe('Product edition', () => {
   const givenExistingProducts = (...products: Array<Product>) => {
     productStore.items = products
     productGateway.feedWith(...products)
+  }
+
+  const givenEditingProductIs = (editing: Product) => {
+    product = JSON.parse(JSON.stringify(editing))
   }
 
   const givenExistingCategories = (...categories: Array<Category>) => {

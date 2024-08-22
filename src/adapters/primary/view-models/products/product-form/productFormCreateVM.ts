@@ -200,6 +200,15 @@ export class ProductFormCreateVM {
   }
 
   getDto(): CreateProductDTO {
+    const priceWithoutTax = this.fieldsReader.get('priceWithoutTax')
+      ? parseFloat(this.fieldsReader.get('priceWithoutTax')) * 100
+      : undefined
+    const percentTaxRate = this.fieldsReader.get('percentTaxRate')
+      ? parseFloat(this.fieldsReader.get('percentTaxRate'))
+      : undefined
+    const availableStock = this.fieldsReader.get('availableStock')
+      ? parseInt(this.fieldsReader.get('availableStock'))
+      : undefined
     return {
       name: this.fieldsReader.get('name'),
       cip7: this.fieldsReader.get('cip7'),
@@ -208,10 +217,10 @@ export class ProductFormCreateVM {
       categoryUuid: this.fieldsReader.get('categoryUuid'),
       laboratory: this.fieldsReader.get('laboratory'),
       images: this.fieldsReader.get('newImages'),
-      priceWithoutTax: this.fieldsReader.get('priceWithoutTax'),
-      percentTaxRate: this.fieldsReader.get('percentTaxRate').toString(),
+      priceWithoutTax,
+      percentTaxRate,
       locations: this.fieldsReader.get('locations'),
-      availableStock: this.fieldsReader.get('availableStock'),
+      availableStock,
       description: this.fieldsReader.get('description'),
       instructionsForUse: this.fieldsReader.get('instructionsForUse'),
       composition: this.fieldsReader.get('composition'),

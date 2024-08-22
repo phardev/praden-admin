@@ -50,6 +50,15 @@ export class ProductFormEditVM {
   }
 
   getDto(): EditProductDTO {
+    const priceWithoutTax = this.fieldsReader.get('priceWithoutTax')
+      ? parseFloat(this.fieldsReader.get('priceWithoutTax')) * 100
+      : undefined
+    const percentTaxRate = this.fieldsReader.get('percentTaxRate')
+      ? parseFloat(this.fieldsReader.get('percentTaxRate'))
+      : undefined
+    const availableStock = this.fieldsReader.get('availableStock')
+      ? parseInt(this.fieldsReader.get('availableStock'))
+      : undefined
     return {
       name: this.fieldsReader.get('name'),
       cip7: this.fieldsReader.get('cip7'),
@@ -57,16 +66,19 @@ export class ProductFormEditVM {
       ean13: this.fieldsReader.get('ean13'),
       categoryUuid: this.fieldsReader.get('categoryUuid'),
       laboratory: this.fieldsReader.get('laboratory'),
-      images: this.fieldsReader.get('newImages'),
-      priceWithoutTax: this.fieldsReader.get('priceWithoutTax'),
-      percentTaxRate: this.fieldsReader.get('percentTaxRate').toString(),
+      images: this.fieldsReader.get('images'),
+      newImages: this.fieldsReader.get('newImages'),
+      priceWithoutTax,
+      percentTaxRate,
       locations: this.fieldsReader.get('locations'),
-      availableStock: this.fieldsReader.get('availableStock'),
+      availableStock,
       description: this.fieldsReader.get('description'),
       instructionsForUse: this.fieldsReader.get('instructionsForUse'),
       composition: this.fieldsReader.get('composition'),
       weight: +this.fieldsReader.get('weight') * 1000,
-      maxQuantityForOrder: +this.fieldsReader.get('maxQuantityForOrder')
+      maxQuantityForOrder: this.fieldsReader.get('maxQuantityForOrder')
+        ? +this.fieldsReader.get('maxQuantityForOrder')
+        : undefined
     }
   }
 

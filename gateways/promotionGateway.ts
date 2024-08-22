@@ -10,9 +10,9 @@ const promotionGateway = new InMemoryPromotionGateway(uuidGenerator)
 promotionGateway.feedWith(...Object.values(promotions))
 
 export const usePromotionGateway = () => {
-  if (isLocalEnv()) {
-    return promotionGateway
-  }
-  const { BACKEND_URL } = useRuntimeConfig().public
-  return new RealPromotionGateway(BACKEND_URL)
+  // if (isLocalEnv()) {
+  return promotionGateway
+  // }
+  // const { BACKEND_URL } = useRuntimeConfig().public
+  // return new RealPromotionGateway(BACKEND_URL)
 }

@@ -10,9 +10,9 @@ const categoryGateway = new InMemoryCategoryGateway(uuidGenerator)
 categoryGateway.feedWith(...Object.values(categories))
 
 export const useCategoryGateway = () => {
-  if (isLocalEnv()) {
-    return categoryGateway
-  }
-  const { BACKEND_URL } = useRuntimeConfig().public
-  return new RealCategoryGateway(BACKEND_URL)
+  // if (isLocalEnv()) {
+  return categoryGateway
+  // }
+  // const { BACKEND_URL } = useRuntimeConfig().public
+  // return new RealCategoryGateway(BACKEND_URL)
 }

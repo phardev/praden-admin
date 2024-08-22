@@ -105,7 +105,7 @@ export class ExistingProductFormInitializer implements FormInitializer {
       laboratory: product.laboratory,
       locations: product.locations,
       availableStock: product.availableStock,
-      newImages: product.newImages || [],
+      newImages: [],
       images: product.images || [],
       description: product.description,
       instructionsForUse: product.instructionsForUse,
