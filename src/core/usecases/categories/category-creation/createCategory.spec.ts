@@ -37,7 +37,8 @@ describe('Create category', () => {
       productsAdded: []
     }
     const expectedCategory: Category = {
-      ...categoryDTO,
+      name: 'Created',
+      description: 'The description',
       uuid
     }
     beforeEach(async () => {
@@ -61,7 +62,8 @@ describe('Create category', () => {
       const dto = JSON.parse(JSON.stringify(categoryDTO))
       dto.parentUuid = dents.uuid
       const expectedCategory: Category = {
-        ...dto,
+        name: 'Child category',
+        description: 'The child description',
         uuid
       }
       beforeEach(async () => {
@@ -95,15 +97,20 @@ describe('Create category', () => {
         description: 'The description',
         productsAdded: [dolodent.uuid, calmosine.uuid]
       }
+      const expectedCategory: Category = {
+        name: 'new-category',
+        description: 'The description',
+        uuid
+      }
       await whenCreateCategory(uuid, dto)
       expectedProducts = [
         {
           ...dolodent,
-          categoryUuid: uuid
+          category: expectedCategory
         },
         {
           ...calmosine,
-          categoryUuid: uuid
+          category: expectedCategory
         }
       ]
     })

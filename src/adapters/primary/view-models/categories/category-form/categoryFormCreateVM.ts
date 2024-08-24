@@ -24,7 +24,7 @@ export class CategoryFormFieldsWriter extends FormFieldsWriter {
 
     this.fieldHandlers = {
       miniature: this.setMiniature.bind(this),
-      img: this.setImg.bind(this)
+      image: this.setImage.bind(this)
     }
   }
 
@@ -52,9 +52,10 @@ export class CategoryFormFieldsWriter extends FormFieldsWriter {
     super.set('miniature', data)
   }
 
-  async setImg(img: File): Promise<void> {
-    const data = await getFileContent(img)
-    super.set('img', data)
+  async setImage(image: File): Promise<void> {
+    const data = await getFileContent(image)
+    super.set('image', data)
+    super.set('newImage', image)
   }
 }
 
@@ -73,7 +74,7 @@ export class NewCategoryFormInitializer implements FormInitializer {
       description: '',
       parentUuid: undefined,
       miniature: undefined,
-      img: undefined,
+      image: undefined,
       products: []
     })
   }
@@ -132,7 +133,9 @@ export class CategoryFormCreateVM extends CategoryFormVM {
       name: this.fieldsReader.get('name'),
       parentUuid: this.fieldsReader.get('parentUuid'),
       description: this.fieldsReader.get('description'),
-      productsAdded: this.fieldsReader.get('products')
+      productsAdded: this.fieldsReader.get('products'),
+      miniature: this.fieldsReader.get('miniature'),
+      image: this.fieldsReader.get('newImage')
     }
   }
 

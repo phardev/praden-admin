@@ -6,13 +6,16 @@ import { UUID } from '@core/types/types'
 import { ProductDoesNotExistsError } from '@core/errors/ProductDoesNotExistsError'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
+import { useCategoryStore } from '@store/categoryStore'
 
 export class InMemoryProductGateway implements ProductGateway {
   private products: Array<Product> = []
+  private categoryStore: any
   private uuidGenerator: UuidGenerator
 
   constructor(uuidGenerator: UuidGenerator) {
     this.uuidGenerator = uuidGenerator
+    this.categoryStore = useCategoryStore()
   }
 
   async list(): Promise<Array<Product>> {
@@ -48,7 +51,10 @@ export class InMemoryProductGateway implements ProductGateway {
       weight: dto.weight
     }
     if (dto.categoryUuid) {
-      product.categoryUuid = dto.categoryUuid
+      product.category = this.categoryStore.getByUuid(dto.categoryUuid)
+    }
+    if (!product.category) {
+      delete product.category
     }
     if (dto.maxQuantityForOrder) {
       product.maxQuantityForOrder = dto.maxQuantityForOrder
@@ -71,6 +77,13 @@ export class InMemoryProductGateway implements ProductGateway {
       Array.prototype.push.apply(this.products[index].images, newImages)
       delete dto.newImages
     }
+    if (dto.categoryUuid) {
+      const category = this.categoryStore.getByUuid(dto.categoryUuid)
+      if (category) {
+        this.products[index].category = category
+      }
+    }
+    delete dto.categoryUuid
     this.products[index] = Object.assign(this.products[index], dto)
     return Promise.resolve(JSON.parse(JSON.stringify(this.products[index])))
   }
@@ -83,7 +96,7 @@ export class InMemoryProductGateway implements ProductGateway {
 
   getByCategoryUuid(categoryUuid: UUID): Promise<Array<Product>> {
     return Promise.resolve(
-      this.products.filter((p) => p.categoryUuid === categoryUuid)
+      this.products.filter((p) => p.category.uuid === categoryUuid)
     )
   }
 

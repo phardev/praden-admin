@@ -53,7 +53,7 @@ const calmosineVM: PromotionProductItemVM = {
   uuid: calmosine.uuid,
   name: calmosine.name,
   reference: calmosine.cip13,
-  category: baby.name,
+  category: calmosine.category.name,
   laboratory: calmosine.laboratory
 }
 

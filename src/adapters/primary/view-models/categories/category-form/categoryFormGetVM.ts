@@ -33,7 +33,8 @@ export class ExistingCategoryFormInitializer implements FormInitializer {
       description: category.description,
       parentUuid: category.parentUuid,
       miniature: category.miniature,
-      img: category.img,
+      image: category.image,
+      oldImage: category.image,
       products: this.categoryStore.current?.products || []
     })
   }

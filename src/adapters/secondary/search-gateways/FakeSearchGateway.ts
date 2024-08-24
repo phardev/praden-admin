@@ -1,6 +1,5 @@
 import { SearchGateway } from '@core/gateways/searchGateway'
 import { isProduct, Product } from '@core/entities/product'
-import { isCategory } from '@core/entities/category'
 import '@utils/strings'
 import { getDeliveryStatus, Order } from '@core/entities/order'
 import { useOrderStore } from '@store/orderStore'
@@ -23,10 +22,8 @@ export class FakeSearchGateway implements SearchGateway {
   searchProducts(query: string): Promise<Array<Product>> {
     const products = this.items.filter((i) => isProduct(i))
     const res = products.filter((i) => {
-      const categories = this.items.filter((i) => isCategory(i))
-      const category = categories.find((c) => c.uuid === i.categoryUuid)
-      const isCategoryNameMatching = category
-        ? category.name.includesWithoutCase(query)
+      const isCategoryNameMatching = i.category
+        ? i.category.name.includesWithoutCase(query)
         : false
       const isNameMatching = i.name.includesWithoutCase(query)
       const isLaboratoryMatching = i.laboratory.includesWithoutCase(query)

@@ -39,8 +39,8 @@ div(v-if="currentVM")
     )
   UFormGroup.pb-4(label="Image" name="image")
     img.mb-4(
-      v-if="currentVM.get('img').value"
-      :src="currentVM.get('img').value"
+      v-if="currentVM.get('image').value"
+      :src="currentVM.get('image').value"
       height=200
       width=200
       alt="image"
@@ -155,13 +155,11 @@ const removeProducts = () => {
 }
 
 const miniatureChanged = async (value: any) => {
-  console.log('on change la miniature')
   await currentVM?.value?.set('miniature', value[0])
 }
 
 const imageChanged = async (value: any) => {
-  console.log('on change l image')
-  await currentVM?.value?.set('img', value[0])
+  await currentVM?.value?.set('image', value[0])
 }
 
 const emit = defineEmits<{

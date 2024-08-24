@@ -4,8 +4,6 @@ import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
 import { useFormStore } from '@store/formStore'
 import { PromotionFormFieldsReader } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
-import { useCategoryStore } from '@store/categoryStore'
-import { Category } from '@core/entities/category'
 import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import {
   FieldHandler,
@@ -131,16 +129,13 @@ export class PromotionFormCreateVM extends PromotionFormVM {
     const res = (filteredProducts || allProducts).filter(
       (p) => !addedProducts.includes(p.uuid)
     )
-    const categoryStore = useCategoryStore()
-    const categories: Array<Category> = categoryStore.items
     return {
       value: res.map((p: Product) => {
-        const c: Category = categories.find((c) => c.uuid === p.categoryUuid)
         return {
           uuid: p.uuid,
           name: p.name,
           reference: p.cip13,
-          category: c ? c.name : '',
+          category: p.category ? p.category.name : '',
           laboratory: p.laboratory
         }
       }),

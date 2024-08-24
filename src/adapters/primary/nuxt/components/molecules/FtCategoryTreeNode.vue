@@ -25,6 +25,9 @@
         ul(v-if="isOpen(item.data.uuid)" class="pl-6")
           FtCategoryTreeNode(
             :items="item.children"
+            :open-items="openItems"
+            @view="view"
+            @update:open-items="updateOpenItems"
             @clicked.prevent="view"
           )
 </template>
@@ -52,7 +55,7 @@ const toggle = (item) => {
   } else {
     newOpenItems.push(uuid)
   }
-  emit('update:open-items', newOpenItems)
+  updateOpenItems(newOpenItems)
 }
 
 const isOpen = (uuid) => props.openItems.includes(uuid)
@@ -64,6 +67,10 @@ const emit = defineEmits<{
 
 const view = (uuid: string): void => {
   emit('view', uuid)
+}
+
+const updateOpenItems = (openItems: Array<any>): void => {
+  emit('update:open-items', openItems)
 }
 </script>
 

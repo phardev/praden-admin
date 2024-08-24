@@ -1,25 +1,22 @@
 import { type ProductGateway } from '@core/gateways/productGateway'
 import { type Product } from '@core/entities/product'
 import { useProductStore } from '@store/productStore'
-import { CategoryGateway } from '@core/gateways/categoryGateway'
 import { LocationGateway } from '@core/gateways/locationGateway'
+import { UUID } from '@core/types/types'
 
 export type CreateProductDTO = Omit<
   Product,
-  'uuid' | 'miniature' | 'isMedicine'
+  'uuid' | 'miniature' | 'isMedicine' | 'category'
 > & {
+  categoryUuid?: UUID
   newImages: Array<File>
 }
 
 export const createProduct = async (
   dto: CreateProductDTO,
   productGateway: ProductGateway,
-  categoryGateway: CategoryGateway,
   locationGateway: LocationGateway
 ) => {
-  if (dto.categoryUuid) {
-    await categoryGateway.getByUuid(dto.categoryUuid)
-  }
   for (const location of Object.entries(dto.locations)) {
     await locationGateway.getByUuid(location[0])
   }

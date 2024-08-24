@@ -1,5 +1,6 @@
 import type { HashTable, UUID } from '@core/types/types'
 import { Promotion } from './promotion'
+import { Category } from '@core/entities/category'
 
 export type Stock = HashTable<number>
 
@@ -8,7 +9,7 @@ export interface Product {
   name: string
   miniature: string
   images: Array<string>
-  categoryUuid?: UUID
+  category?: Category // AVANT - categoryUuid? : UUID
   cip7: string
   cip13: string
   ean13: string

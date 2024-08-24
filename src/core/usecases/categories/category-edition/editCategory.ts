@@ -5,8 +5,10 @@ import { useCategoryStore } from '@store/categoryStore'
 import { ProductGateway } from '@core/gateways/productGateway'
 import { useProductStore } from '@store/productStore'
 
-export type EditCategoryDTO = Partial<CreateCategoryDTO> & {
+export type EditCategoryDTO = Omit<CreateCategoryDTO, 'image'> & {
   productsRemoved: Array<UUID>
+  image?: string
+  newImage?: File
 }
 
 export const editCategory = async (
@@ -22,7 +24,7 @@ export const editCategory = async (
     const productStore = useProductStore()
     for (const productUuid of dto.productsAdded) {
       const editedProduct = await productGateway.edit(productUuid, {
-        categoryUuid: uuid
+        categoryUuid: edited.uuid
       })
       productStore.edit(editedProduct)
     }

@@ -81,7 +81,7 @@ describe('Category form get VM', () => {
       { field: 'name', expected: category.name },
       { field: 'description', expected: category.description },
       { field: 'miniature', expected: category.miniature },
-      { field: 'img', expected: category.img },
+      { field: 'image', expected: category.image },
       { field: 'parentUuid', expected: category.parentUuid }
     ])('Initial field value', ({ field, expected }) => {
       it(`should have ${field} to be "${expected}"`, () => {

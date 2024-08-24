@@ -35,11 +35,14 @@ describe('Category Edition', () => {
     })
     describe('For a category', () => {
       const dto: EditCategoryDTO = {
-        description: 'The new description'
+        ...dents,
+        description: 'The new description',
+        productsAdded: [],
+        productsRemoved: []
       }
       const expectedCategory: Category = {
         ...dents,
-        ...dto
+        description: 'The new description'
       }
       const expectedRes: Array<Category> = [expectedCategory, minceur, diarrhee]
       beforeEach(async () => {
@@ -54,12 +57,16 @@ describe('Category Edition', () => {
     })
     describe('For another category', () => {
       const dto: EditCategoryDTO = {
+        ...diarrhee,
         name: 'New name',
-        parentUuid: minceur.uuid
+        parentUuid: minceur.uuid,
+        productsAdded: [],
+        productsRemoved: []
       }
       const expectedCategory: Category = {
         ...diarrhee,
-        ...dto
+        name: 'New name',
+        parentUuid: minceur.uuid
       }
       const expectedRes: Array<Category> = [dents, minceur, expectedCategory]
       beforeEach(async () => {
@@ -90,11 +97,11 @@ describe('Category Edition', () => {
         expectedProducts = [
           {
             ...dolodent,
-            categoryUuid: minceur.uuid
+            category: minceur
           },
           {
             ...calmosine,
-            categoryUuid: minceur.uuid
+            category: minceur
           }
         ]
       })
@@ -113,9 +120,7 @@ describe('Category Edition', () => {
           productsRemoved: [anaca3Minceur.uuid]
         }
         await whenEditCategory(minceur.uuid, dto)
-        const expectedProduct = anaca3Minceur
-        delete expectedProduct.categoryUuid
-        expectedProducts = [expectedProduct]
+        expectedProducts = [anaca3Minceur]
       })
       it('should add the added products to the category', async () => {
         expect(await productGateway.list()).toStrictEqual(expectedProducts)

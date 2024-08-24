@@ -7,7 +7,7 @@ export const useNavigationMenuGateway = () => {
   if (isLocalEnv()) {
     navigationMenuGateway.feedWith(fullMenu)
   } else {
-    navigationMenuGateway.feedWith(fullMenu)
+    navigationMenuGateway.feedWith(prodMenu)
   }
   return navigationMenuGateway
 }

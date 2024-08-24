@@ -1,17 +1,18 @@
 import type { UUID } from '@core/types/types'
+import { Product } from '@core/entities/product'
 
 export interface Category {
   uuid: UUID
   name: string
   description: string
   parentUuid?: UUID
-  miniature: string
-  img: string
+  miniature?: string
+  image?: string
 }
 
 export interface CategoryWithProducts {
   category: Category
-  products: Array<UUID>
+  products: Array<Product>
 }
 
 export const isCategory = (object: any): object is Category => {

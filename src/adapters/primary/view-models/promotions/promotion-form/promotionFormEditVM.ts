@@ -6,8 +6,6 @@ import {
   ExistingPromotionFormInitializer,
   PromotionFormFieldsReader
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
-import { useCategoryStore } from '@store/categoryStore'
-import { Category } from '@core/entities/category'
 import { PromotionFormVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormVM'
 import {
   Field,
@@ -55,16 +53,13 @@ export class PromotionFormEditVM extends PromotionFormVM {
     const res = (filteredProducts || allProducts).filter(
       (p) => !addedProducts.includes(p.uuid)
     )
-    const categoryStore = useCategoryStore()
-    const categories: Array<Category> = categoryStore.items
     return {
       value: res.map((p: Product) => {
-        const c: Category = categories.find((c) => c.uuid === p.categoryUuid)
         return {
           uuid: p.uuid,
           name: p.name,
           reference: p.cip13,
-          category: c ? c.name : '',
+          category: p.category ? p.category.name : '',
           laboratory: p.laboratory
         }
       }),

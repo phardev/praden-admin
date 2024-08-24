@@ -11,9 +11,7 @@ import { UUID } from '@core/types/types'
 import { createPinia, setActivePinia } from 'pinia'
 import { baby, mum } from '@utils/testData/categories'
 import { Category } from '@core/entities/category'
-import { InMemoryCategoryGateway } from '@adapters/secondary/category-gateways/InMemoryCategoryGateway'
 import { useCategoryStore } from '@store/categoryStore'
-import { CategoryDoesNotExistsError } from '@core/errors/CategoryDoesNotExistsError'
 import { reserve, zoneGeo } from '@utils/testData/locations'
 import { Location } from '@core/entities/location'
 import { InMemoryLocationGateway } from '@adapters/secondary/location-gateways/inMemoryLocationGateway'
@@ -25,7 +23,6 @@ describe('Product edition', () => {
   let categoryStore: any
   let locationStore: any
   let productGateway: InMemoryProductGateway
-  let categoryGateway: InMemoryCategoryGateway
   let locationGateway: InMemoryLocationGateway
   let product: Product
   let dto: EditProductDTO
@@ -38,7 +35,6 @@ describe('Product edition', () => {
     categoryStore = useCategoryStore()
     locationStore = useLocationStore()
     productGateway = new InMemoryProductGateway(new FakeUuidGenerator())
-    categoryGateway = new InMemoryCategoryGateway(new FakeUuidGenerator())
     locationGateway = new InMemoryLocationGateway()
   })
 
@@ -119,7 +115,7 @@ describe('Product edition', () => {
           }
           expectedProduct = {
             ...product,
-            ...dto
+            category: mum
           }
           await whenEditProduct(product.uuid, dto)
           expect(productStore.items).toStrictEqual([
@@ -127,16 +123,6 @@ describe('Product edition', () => {
             ultraLevure,
             dolodent
           ])
-        })
-      })
-      describe('The category does not exists', () => {
-        it('should throw an error', async () => {
-          dto = {
-            categoryUuid: 'not-existing'
-          }
-          await expect(whenEditProduct(product.uuid, dto)).rejects.toThrow(
-            CategoryDoesNotExistsError
-          )
         })
       })
     })
@@ -229,7 +215,6 @@ describe('Product edition', () => {
 
   const givenExistingCategories = (...categories: Array<Category>) => {
     categoryStore.items = categories
-    categoryGateway.feedWith(...categories)
   }
 
   const givenExistingLocations = (...locations: Array<Location>) => {
@@ -238,12 +223,6 @@ describe('Product edition', () => {
   }
 
   const whenEditProduct = async (uuid: UUID, dto: EditProductDTO) => {
-    await editProduct(
-      uuid,
-      dto,
-      productGateway,
-      categoryGateway,
-      locationGateway
-    )
+    await editProduct(uuid, dto, productGateway, locationGateway)
   }
 })

@@ -29,7 +29,6 @@ const validate = async () => {
   await createProduct(
     vm.value.getDto(),
     useProductGateway(),
-    useCategoryGateway(),
     useLocationGateway()
   )
   router.push('/products/')

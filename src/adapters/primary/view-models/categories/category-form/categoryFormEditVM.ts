@@ -75,6 +75,9 @@ export class CategoryFormEditVM extends CategoryFormVM {
       name: this.fieldsReader.get('name'),
       parentUuid: this.fieldsReader.get('parentUuid'),
       description: this.fieldsReader.get('description'),
+      miniature: this.fieldsReader.get('miniature'),
+      image: this.fieldsReader.get('oldImage'),
+      newImage: this.fieldsReader.get('newImage'),
       productsAdded,
       productsRemoved
     }

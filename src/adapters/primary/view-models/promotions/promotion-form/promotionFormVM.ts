@@ -8,8 +8,6 @@ import {
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { useProductStore } from '@store/productStore'
 import { Product } from '@core/entities/product'
-import { useCategoryStore } from '@store/categoryStore'
-import { Category } from '@core/entities/category'
 
 export abstract class PromotionFormVM {
   protected fieldsReader: PromotionFormFieldsReader
@@ -59,16 +57,13 @@ export abstract class PromotionFormVM {
     const addedProducts = this.fieldsReader.get('products')
     const productStore = useProductStore()
     const allProducts: Array<Product> = productStore.items
-    const categoryStore = useCategoryStore()
-    const categories: Array<Category> = categoryStore.items
     const value = addedProducts.map((uuid: string) => {
       const p: Product = allProducts.find((p) => p.uuid === uuid)
-      const c: Category = categories.find((c) => c.uuid === p.categoryUuid)
       return {
         uuid: p.uuid,
         name: p.name,
         reference: p.cip13,
-        category: c.name,
+        category: p.category?.name,
         laboratory: p.laboratory
       }
     })

@@ -1,15 +1,16 @@
 import { GetProductsVM, getProductsVM } from './getProductsVM'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import {
+  dolodent,
+  productWithoutCategory,
+  ultraLevure
+} from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
 import { useProductStore } from '@store/productStore'
-import { useCategoryStore } from '@store/categoryStore'
-import { dents, diarrhee } from '@utils/testData/categories'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { useSearchStore } from '@store/searchStore'
 
 describe('Get products VM', () => {
   let productStore: any
-  let categoryStore: any
   let searchStore: any
   const key = 'list-products'
   let expectedVM: Partial<GetProductsVM>
@@ -48,7 +49,6 @@ describe('Get products VM', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     productStore = useProductStore()
-    categoryStore = useCategoryStore()
     searchStore = useSearchStore()
   })
 
@@ -63,42 +63,29 @@ describe('Get products VM', () => {
     })
   })
   describe('There is some products', () => {
-    beforeEach(() => {
-      productStore.items = [dolodent, ultraLevure]
-    })
-    describe('Categories are not loaded', () => {
-      it('should list all of them', () => {
-        categoryStore.items = []
+    describe('Product does not have category', () => {
+      it('should list all of them with empty name', () => {
+        productStore.items = [productWithoutCategory]
         expectedVM = {
           items: [
             {
-              uuid: dolodent.uuid,
-              name: dolodent.name,
-              img: dolodent.miniature,
-              reference: dolodent.cip13,
+              uuid: productWithoutCategory.uuid,
+              name: productWithoutCategory.name,
+              img: productWithoutCategory.miniature,
+              reference: productWithoutCategory.cip13,
               category: '',
-              priceWithoutTax: '5,00\u00A0€',
-              priceWithTax: '5,50\u00A0€',
-              availableStock: dolodent.availableStock
-            },
-            {
-              uuid: ultraLevure.uuid,
-              name: ultraLevure.name,
-              img: ultraLevure.miniature,
-              reference: ultraLevure.cip13,
-              category: '',
-              priceWithoutTax: '4,32\u00A0€',
-              priceWithTax: '4,75\u00A0€',
-              availableStock: ultraLevure.availableStock
+              priceWithoutTax: '5,90\u00A0€',
+              priceWithTax: '6,49\u00A0€',
+              availableStock: productWithoutCategory.availableStock
             }
           ]
         }
         expectVMToMatch(expectedVM)
       })
     })
-    describe('Categories are loaded', () => {
+    describe('There is category', () => {
       it('should list all of them', () => {
-        categoryStore.items = [dents, diarrhee]
+        productStore.items = [dolodent, ultraLevure]
         expectedVM = {
           headers: expectedHeaders,
           items: [
@@ -107,7 +94,7 @@ describe('Get products VM', () => {
               name: dolodent.name,
               img: dolodent.miniature,
               reference: dolodent.cip13,
-              category: 'Dents',
+              category: dolodent.category.name,
               priceWithoutTax: '5,00\u00A0€',
               priceWithTax: '5,50\u00A0€',
               availableStock: dolodent.availableStock
@@ -117,7 +104,7 @@ describe('Get products VM', () => {
               name: ultraLevure.name,
               img: ultraLevure.miniature,
               reference: ultraLevure.cip13,
-              category: 'Diarrhée',
+              category: ultraLevure.category.name,
               priceWithoutTax: '4,32\u00A0€',
               priceWithTax: '4,75\u00A0€',
               availableStock: ultraLevure.availableStock
@@ -130,7 +117,6 @@ describe('Get products VM', () => {
     describe('Search', () => {
       describe('There is a search result', () => {
         beforeEach(() => {
-          categoryStore.items = [dents, diarrhee]
           searchStore.set(key, [dolodent])
           searchStore.setFilter(key, 'dol')
         })
@@ -155,7 +141,6 @@ describe('Get products VM', () => {
       })
       describe('There is another search result', () => {
         beforeEach(() => {
-          categoryStore.items = [dents, diarrhee]
           searchStore.set(key, [ultraLevure])
         })
         it('should list only the search result', () => {

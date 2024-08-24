@@ -225,11 +225,6 @@ describe('Category form create VM', () => {
         value: new File(['miniature'], 'Miniature 1', { type: 'image/png' }),
         expected: 'data:image/png;base64,bWluaWF0dXJl'
       },
-      {
-        field: 'img',
-        value: new File(['img'], 'IMG 1', { type: 'image/jpg' }),
-        expected: 'data:image/jpg;base64,aW1n'
-      },
       { field: 'parentUuid', value: 'new-uuid', expected: 'new-uuid' }
     ])('Update simple fields', ({ field, value, expected }) => {
       it(`should update ${field} value in form store`, async () => {
@@ -348,6 +343,28 @@ describe('Category form create VM', () => {
         })
       })
     })
+    describe('Update image', () => {
+      const value = new File(['image'], 'IMG 1', { type: 'image/jpg' })
+      beforeEach(async () => {
+        await vm.set('image', value)
+      })
+      describe('Image', () => {
+        const expected = 'data:image/jpg;base64,aW1hZ2U='
+        it('should update image field in store', () => {
+          const expectedField: Field<any> = {
+            value: expected,
+            canEdit: true
+          }
+          expect(vm.get('image')).toStrictEqual(expectedField)
+        })
+        it('should update image field', () => {
+          expect(formStore.get(key)['image']).toStrictEqual(expected)
+        })
+      })
+      it('should update new image value in store', () => {
+        expect(formStore.get(key)['newImage']).toStrictEqual(value)
+      })
+    })
   })
   describe('DTO', () => {
     beforeEach(() => {
@@ -359,6 +376,8 @@ describe('Category form create VM', () => {
           name: 'test',
           parentUuid: 'abc123',
           description: 'description',
+          miniature: undefined,
+          image: undefined,
           productsAdded: []
         }
         vm.set('name', expectedDTO.name)
@@ -373,6 +392,8 @@ describe('Category form create VM', () => {
           name: '',
           parentUuid: undefined,
           description: '',
+          miniature: undefined,
+          image: undefined,
           productsAdded: [chamomilla.uuid]
         }
         vm.addProducts([chamomilla.uuid])
@@ -383,6 +404,8 @@ describe('Category form create VM', () => {
           name: '',
           parentUuid: undefined,
           description: '',
+          miniature: undefined,
+          image: undefined,
           productsAdded: [ultraLevure.uuid, chamomilla.uuid]
         }
         vm.addProducts([ultraLevure.uuid, chamomilla.uuid])
@@ -393,6 +416,8 @@ describe('Category form create VM', () => {
           name: '',
           parentUuid: undefined,
           description: '',
+          miniature: undefined,
+          image: undefined,
           productsAdded: [dolodent.uuid]
         }
         vm.addProducts([dolodent.uuid])
@@ -407,6 +432,8 @@ describe('Category form create VM', () => {
           name: baby.name,
           parentUuid: baby.parentUuid,
           description: baby.description,
+          miniature: undefined,
+          image: undefined,
           productsAdded: [ultraLevure.uuid, chamomilla.uuid, anaca3Minceur.uuid]
         }
         vm.set('name', baby.name)
@@ -417,6 +444,23 @@ describe('Category form create VM', () => {
         vm.set('parentUuid', baby.parentUuid)
         vm.addProducts([anaca3Minceur.uuid])
         vm.removeProducts([dolodent.uuid])
+        expect(vm.getDto()).toStrictEqual(expectedDTO)
+      })
+    })
+    describe('For a dto with image', () => {
+      it('should get the image', async () => {
+        const newImage = new File(['miniature'], 'Miniature 1', {
+          type: 'image/png'
+        })
+        const expectedDTO: CreateCategoryDTO = {
+          name: '',
+          parentUuid: undefined,
+          description: '',
+          miniature: undefined,
+          image: newImage,
+          productsAdded: []
+        }
+        await vm.set('image', newImage)
         expect(vm.getDto()).toStrictEqual(expectedDTO)
       })
     })

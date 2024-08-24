@@ -8,11 +8,11 @@
 </template>
 
 <script lang="ts" setup>
-import { createCategory } from '@core/usecases/categories/category-creation/createCategory'
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
 import { categoryFormCreateVM } from '@adapters/primary/view-models/categories/category-form/categoryFormCreateVM'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { useProductGateway } from '../../../../../../gateways/productGateway'
+import { createCategory } from '@core/usecases/categories/category-creation/createCategory'
 
 definePageMeta({ layout: 'main' })
 

@@ -2,8 +2,6 @@ import { Header } from '@adapters/primary/view-models/preparations/get-orders-to
 import { useProductStore } from '@store/productStore'
 import { Product } from '@core/entities/product'
 import { useSearchStore } from '@store/searchStore'
-import { useCategoryStore } from '@store/categoryStore'
-import { Category } from '@core/entities/category'
 import { UUID } from '@core/types/types'
 import { CategoryFormFieldsReader } from '@adapters/primary/view-models/categories/category-form/categoryFormGetVM'
 
@@ -89,16 +87,13 @@ export abstract class CategoryFormVM {
     const res = (filteredProducts || allProducts).filter(
       (p) => !addedProducts.includes(p.uuid)
     )
-    const categoryStore = useCategoryStore()
-    const categories: Array<Category> = categoryStore.items
     return {
       value: res.map((p: Product) => {
-        const c: Category = categories.find((c) => c.uuid === p.categoryUuid)
         return {
           uuid: p.uuid,
           name: p.name,
           reference: p.cip13,
-          category: c?.name || '',
+          category: p.category ? p.category.name : '',
           laboratory: p.laboratory
         }
       }),

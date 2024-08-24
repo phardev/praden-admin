@@ -8,6 +8,13 @@ export const useCategoryStore = defineStore('CategoryStore', {
       current: undefined as CategoryWithProducts | undefined
     }
   },
+  getters: {
+    getByUuid: (state) => {
+      return (uuid: string): Category | undefined => {
+        return state.items.find((c) => c.uuid === uuid)
+      }
+    }
+  },
   actions: {
     list(categories: Array<Category>) {
       this.items = categories

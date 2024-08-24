@@ -11,6 +11,13 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     super(url)
   }
 
+  async getByCategoryUuid(uuid: UUID): Promise<Array<Product>> {
+    const res = await axios.get(
+      `${this.baseUrl}/products/get-by-category/${uuid}`
+    )
+    return Promise.resolve(res.data.items)
+  }
+
   async batch(cip13s: Array<string>): Promise<Array<Product>> {
     const productRes = await fetch(`${this.baseUrl}/products/batch/`, {
       method: 'POST',
@@ -45,7 +52,6 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
   }
 
   async create(dto: CreateProductDTO): Promise<Product> {
-    console.log('dto: ', dto)
     const formData = this.createFormData(dto)
     const res = await axios.post(`${this.baseUrl}/products`, formData, {
       headers: {

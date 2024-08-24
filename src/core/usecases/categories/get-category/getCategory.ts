@@ -11,5 +11,5 @@ export const getCategory = async (
   const category = await categoryGateway.getByUuid(uuid)
   const categoryStore = useCategoryStore()
   const products = await productGateway.getByCategoryUuid(uuid)
-  categoryStore.setCurrent({ category, products: products.map((p) => p.uuid) })
+  categoryStore.setCurrent({ category, products })
 }

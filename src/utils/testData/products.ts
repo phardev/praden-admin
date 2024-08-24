@@ -1,5 +1,5 @@
 import { Product } from '@core/entities/product'
-import { baby } from '@utils/testData/categories'
+import { baby, dents, diarrhee, minceur } from '@utils/testData/categories'
 import { reserve, zoneGeo } from '@utils/testData/locations'
 
 export const dolodent: Product = {
@@ -10,7 +10,7 @@ export const dolodent: Product = {
   images: [
     'https://www.pharmacieagnespraden.com/52664-large_default/dolodent-solution-gingivale-27-g.jpg'
   ],
-  categoryUuid: 'category-dents',
+  category: dents,
   cip13: '3400921929201',
   ean13: '3400921929201',
   priceWithoutTax: 500,
@@ -30,7 +30,7 @@ export const ultraLevure: Product = {
   images: [
     'https://www.pharmacieagnespraden.com/54697-large_default/ultra-levure-200-mg.jpg'
   ],
-  categoryUuid: 'category-diarrhee',
+  category: diarrhee,
   cip7: '3400922',
   cip13: '3400922096612',
   ean13: '3400922096612',
@@ -55,7 +55,7 @@ export const anaca3Minceur: Product = {
   images: [
     'https://www.pharmacieagnespraden.com/72000-large_default/anaca-3-minc-infus-perte-poids-24sach.jpg'
   ],
-  categoryUuid: 'category-minceur',
+  category: minceur,
   cip13: '3760007337185',
   ean13: '3760007337185',
   priceWithoutTax: 891,
@@ -76,7 +76,7 @@ export const chamomilla: Product = {
   images: [
     'https://www.pharmacieagnespraden.com/55-large_default/chamomilla-vulgaris-9-ch-boiron-12-suppositoires.jpg'
   ],
-  categoryUuid: 'category-dents',
+  category: dents,
   cip13: '3400921924008',
   ean13: '3400921924008',
   priceWithoutTax: 627,
@@ -95,7 +95,7 @@ export const calmosine: Product = {
     'https://www.pharmacieagnespraden.com/70697-home_default/calmosine-100ml.jpg'
   ],
   miniature: '',
-  categoryUuid: baby.uuid,
+  category: baby,
   cip13: '1234567890123',
   ean13: '1234567890123',
   priceWithoutTax: 810,
@@ -116,7 +116,7 @@ export const hemoclar: Product = {
     'https://fakeimg.pl/300/'
   ],
   miniature: '',
-  categoryUuid: baby.uuid,
+  category: baby,
   cip13: '098765432123',
   ean13: '098765432123',
   priceWithoutTax: 590,
@@ -133,7 +133,7 @@ export const productWithoutLocation: Product = {
   name: 'Product without location',
   images: ['https://fakeimg.pl/300/'],
   miniature: '',
-  categoryUuid: baby.uuid,
+  category: baby,
   cip13: '0637218312823',
   ean13: '0637218312823',
   priceWithoutTax: 590,

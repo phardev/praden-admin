@@ -2,6 +2,9 @@ import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway
 import { CategoryGateway } from '@core/gateways/categoryGateway'
 import { Category } from '@core/entities/category'
 import axios from 'axios'
+import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
+import { UUID } from '@core/types/types'
+import { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
 
 export class RealCategoryGateway
   extends RealGateway
@@ -14,5 +17,31 @@ export class RealCategoryGateway
   async list(): Promise<Array<Category>> {
     const res = await axios.get(`${this.baseUrl}/categories/`)
     return Promise.resolve(res.data.items)
+  }
+
+  async create(dto: CreateCategoryDTO): Promise<Category> {
+    const formData = this.createFormData(dto)
+    const res = await axios.post(`${this.baseUrl}/categories`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    return Promise.resolve(res.data.item)
+  }
+
+  async edit(uuid: UUID, dto: EditCategoryDTO): Promise<Category> {
+    const formData = this.createFormData(dto)
+    formData.append('uuid', uuid)
+    const res = await axios.patch(`${this.baseUrl}/categories/edit`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    return Promise.resolve(res.data.item)
+  }
+
+  async getByUuid(uuid: UUID): Promise<Category> {
+    const res = await axios.get(`${this.baseUrl}/categories/${uuid}`)
+    return Promise.resolve(res.data.item)
   }
 }

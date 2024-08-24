@@ -42,7 +42,7 @@ describe('Get category', () => {
     it('should store it in category store', () => {
       expect(categoryStore.current).toStrictEqual({
         category: dents,
-        products: [dolodent.uuid, chamomilla.uuid]
+        products: [dolodent, chamomilla]
       })
     })
   })
