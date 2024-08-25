@@ -1,0 +1,30 @@
+import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
+import { Customer } from '@core/entities/customer'
+import { Order } from '@core/entities/order'
+import { Product } from '@core/entities/product'
+import { SearchGateway } from '@core/gateways/searchGateway'
+import { SearchCustomersDTO } from '@core/usecases/customers/customer-searching/searchCustomer'
+import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
+import axios from 'axios'
+
+export class RealSearchGateway extends RealGateway implements SearchGateway {
+  constructor(url: string) {
+    super(url)
+  }
+
+  async searchProducts(query: string): Promise<Array<Product>> {
+    const res = await axios.get(`${this.baseUrl}/search/products`, {
+      params: { query }
+    })
+    return Promise.resolve(res.data)
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  searchOrders(dto: SearchOrdersDTO): Promise<Array<Order>> {
+    throw new Error('Method not implemented.')
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  searchCustomers(dto: SearchCustomersDTO): Promise<Array<Customer>> {
+    throw new Error('Method not implemented.')
+  }
+}

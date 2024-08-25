@@ -54,8 +54,13 @@ const productsVM = computed(() => {
 
 const search = ref(productsVM.value.currentSearch)
 
+let debounceTimer
+
 const searchChanged = (e: any) => {
-  searchProducts(routeName, e.target.value, useSearchGateway())
+  if (debounceTimer) clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(() => {
+    searchProducts(routeName, e.target.value, useSearchGateway())
+  }, 300)
 }
 
 const productSelected = (uuid: string) => {
