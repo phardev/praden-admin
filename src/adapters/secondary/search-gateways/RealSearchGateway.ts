@@ -16,7 +16,7 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
     const res = await axios.get(`${this.baseUrl}/search/products`, {
       params: { query }
     })
-    return Promise.resolve(res.data)
+    return Promise.resolve(res.data.items)
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   searchOrders(dto: SearchOrdersDTO): Promise<Array<Order>> {
