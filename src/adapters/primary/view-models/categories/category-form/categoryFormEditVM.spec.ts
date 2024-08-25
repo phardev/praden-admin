@@ -150,7 +150,7 @@ describe('Category form edit VM', () => {
     },
     {
       category: minceur,
-      products: [anaca3Minceur.uuid, calmosine.uuid],
+      products: [anaca3Minceur, calmosine],
       expectedProducts: [anaca3VM, calmosineVM],
       expectedAvailableProducts: [
         availableDolodentVM,
@@ -232,7 +232,7 @@ describe('Category form edit VM', () => {
   )
   describe('Update fields', () => {
     beforeEach(() => {
-      categoryStore.current = { category: baby, products: [dolodent.uuid] }
+      categoryStore.current = { category: baby, products: [dolodent] }
       givenExistingProducts(dolodent, anaca3Minceur, chamomilla, calmosine)
       vm = getVM()
     })
@@ -270,12 +270,13 @@ describe('Category form edit VM', () => {
         })
         describe('In one step', () => {
           const selectedProducts = [dolodent.uuid, anaca3Minceur.uuid]
-          let expectedProducts
+          let expectedProducts: Array<Product>
           beforeEach(() => {
             givenExistingProducts(dolodent, anaca3Minceur, calmosine)
-            const expectedSet = new Set<string>(formStore.get(key).products)
-            selectedProducts.forEach((p) => expectedSet.add(p))
-            expectedProducts = [...expectedSet]
+            expectedProducts = [
+              ...categoryStore.current.products,
+              anaca3Minceur
+            ]
             vm.addProducts(selectedProducts)
           })
           it('should add selected products to form store', () => {
@@ -297,14 +298,14 @@ describe('Category form edit VM', () => {
           })
         })
         describe('In multiple steps', () => {
-          const selectedProducts = [dolodent.uuid, anaca3Minceur.uuid]
+          const expectedProducts = [dolodent, anaca3Minceur]
           beforeEach(() => {
             givenExistingProducts(dolodent, anaca3Minceur)
             vm.addProducts([dolodent.uuid])
             vm.addProducts([anaca3Minceur.uuid])
           })
           it('should add selected products to form store', () => {
-            expect(formStore.get(key).products).toStrictEqual(selectedProducts)
+            expect(formStore.get(key).products).toStrictEqual(expectedProducts)
           })
           it('should get all products vm', () => {
             const expectedField: Field<Array<CategoryProductItemVM>> = {
@@ -320,7 +321,7 @@ describe('Category form edit VM', () => {
           givenExistingProducts(dolodent, anaca3Minceur, calmosine)
           givenExistingCategories(dents, baby, minceur)
           formStore.set(key, {
-            products: productStore.items.map((p: Product) => p.uuid)
+            products: productStore.items
           })
         })
         describe('In one step', () => {
@@ -329,8 +330,8 @@ describe('Category form edit VM', () => {
           })
           it('should add selected products to form store', () => {
             expect(formStore.get(key).products).toStrictEqual([
-              anaca3Minceur.uuid,
-              calmosine.uuid
+              anaca3Minceur,
+              calmosine
             ])
           })
           it('should get all products vm', () => {
@@ -354,7 +355,7 @@ describe('Category form edit VM', () => {
             vm.removeProducts([anaca3Minceur.uuid])
           })
           it('should add selected products to form store', () => {
-            expect(formStore.get(key).products).toStrictEqual([calmosine.uuid])
+            expect(formStore.get(key).products).toStrictEqual([calmosine])
           })
           it('should get all products vm', () => {
             const expectedField: Field<Array<CategoryProductItemVM>> = {
@@ -394,7 +395,7 @@ describe('Category form edit VM', () => {
     beforeEach(() => {
       categoryStore.current = {
         category: currentCategory,
-        products: [dolodent.uuid]
+        products: [dolodent]
       }
       vm = getVM()
     })
@@ -418,6 +419,7 @@ describe('Category form edit VM', () => {
     })
     describe('For a dto with added products', () => {
       it('should prepare the dto for one added product', () => {
+        givenExistingProducts(chamomilla)
         const expectedDTO: EditCategoryDTO = {
           name: currentCategory.name,
           parentUuid: currentCategory.parentUuid,
@@ -442,6 +444,7 @@ describe('Category form edit VM', () => {
           productsAdded: [ultraLevure.uuid, chamomilla.uuid],
           productsRemoved: []
         }
+        givenExistingProducts(ultraLevure, chamomilla)
         vm.addProducts([ultraLevure.uuid, chamomilla.uuid])
         expect(vm.getDto()).toStrictEqual(expectedDTO)
       })
@@ -478,7 +481,7 @@ describe('Category form edit VM', () => {
       it('should prepare the dto for multiple removed products', () => {
         categoryStore.current = {
           category: baby,
-          products: [dolodent.uuid, chamomilla.uuid]
+          products: [dolodent, chamomilla]
         }
         vm = getVM()
         const expectedDTO: EditCategoryDTO = {
@@ -497,7 +500,7 @@ describe('Category form edit VM', () => {
       it('should not take in account an added and removed product', () => {
         categoryStore.current = {
           category: baby,
-          products: [dolodent.uuid]
+          products: [dolodent]
         }
         vm = getVM()
         const expectedDTO: EditCategoryDTO = {
@@ -510,6 +513,7 @@ describe('Category form edit VM', () => {
           productsAdded: [],
           productsRemoved: []
         }
+        givenExistingProducts(chamomilla)
         vm.addProducts([chamomilla.uuid])
         vm.removeProducts([chamomilla.uuid])
         expect(vm.getDto()).toStrictEqual(expectedDTO)
@@ -538,7 +542,7 @@ describe('Category form edit VM', () => {
       it('should manage a complex dto with multiple add and remove', () => {
         categoryStore.current = {
           category: baby,
-          products: [dolodent.uuid, chamomilla.uuid]
+          products: [dolodent, chamomilla]
         }
         vm = getVM()
         const expectedDTO: EditCategoryDTO = {
@@ -551,6 +555,7 @@ describe('Category form edit VM', () => {
           productsAdded: [ultraLevure.uuid, anaca3Minceur.uuid],
           productsRemoved: [dolodent.uuid]
         }
+        givenExistingProducts(ultraLevure, chamomilla, anaca3Minceur)
         vm.addProducts([ultraLevure.uuid])
         vm.removeProducts([ultraLevure.uuid, chamomilla.uuid])
         vm.addProducts([ultraLevure.uuid, chamomilla.uuid])

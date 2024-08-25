@@ -10,10 +10,11 @@ import {
   CategoryProductItemVM
 } from '@adapters/primary/view-models/categories/category-form/categoryFormVM'
 import { UUID } from '@core/types/types'
+import { Product } from '@core/entities/product'
 
 export class CategoryFormEditVM extends CategoryFormVM {
   private fieldsWriter: CategoryFormFieldsWriter
-  private initialProducts: Array<UUID>
+  private initialProducts: Array<Product>
 
   constructor(
     initializer: ExistingCategoryFormInitializer,
@@ -65,11 +66,15 @@ export class CategoryFormEditVM extends CategoryFormVM {
 
   getDto(): EditCategoryDTO {
     const products = this.fieldsReader.get('products')
-    const productsAdded = products.filter(
-      (uuid) => !this.initialProducts.includes(uuid)
+    const initialProductsUuids = this.initialProducts.map(
+      (p: Product) => p.uuid
     )
-    const productsRemoved = this.initialProducts.filter(
-      (uuid) => !products.includes(uuid)
+    const productsUuids = products.map((p: Product) => p.uuid)
+    const productsAdded = productsUuids.filter(
+      (uuid) => !initialProductsUuids.includes(uuid)
+    )
+    const productsRemoved = initialProductsUuids.filter(
+      (uuid) => !productsUuids.includes(uuid)
     )
     return {
       name: this.fieldsReader.get('name'),

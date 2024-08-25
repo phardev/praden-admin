@@ -65,10 +65,7 @@ export abstract class CategoryFormVM {
 
   getCategoryProductsVM(): Array<CategoryProductItemVM> {
     const addedProducts = this.fieldsReader.get('products')
-    const productStore = useProductStore()
-    const allProducts: Array<Product> = productStore.items
-    return addedProducts.map((uuid: string) => {
-      const p: Product = allProducts.find((p) => p.uuid === uuid)
+    return addedProducts.map((p: Product) => {
       return {
         uuid: p.uuid,
         name: p.name,
@@ -85,7 +82,7 @@ export abstract class CategoryFormVM {
     const filteredProducts: Array<Product> = searchStore.get(this.key)
     const addedProducts = this.fieldsReader.get('products')
     const res = (filteredProducts || allProducts).filter(
-      (p) => !addedProducts.includes(p.uuid)
+      (p) => !addedProducts.map((p) => p.uuid).includes(p.uuid)
     )
     return {
       value: res.map((p: Product) => {

@@ -9,6 +9,13 @@ export const useProductStore = defineStore('ProductStore', {
       current: undefined as ProductWithPromotion
     }
   },
+  getters: {
+    getByUuid: (state) => {
+      return (uuid: string): Product | undefined => {
+        return state.items.find((c) => c.uuid === uuid)
+      }
+    }
+  },
   actions: {
     list(products: Array<Product>) {
       this.items = products

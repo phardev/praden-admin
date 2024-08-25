@@ -21,7 +21,6 @@ export const useCustomerStore = defineStore('CustomerStore', {
   actions: {
     list(customers: Array<Customer>) {
       this.items = customers
-      console.log('on liste tout')
     },
     add(customer: Customer) {
       this.items.push(customer)

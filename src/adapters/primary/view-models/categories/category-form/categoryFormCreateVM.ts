@@ -13,6 +13,8 @@ import {
 } from '@adapters/primary/view-models/categories/category-form/categoryFormVM'
 import { UUID } from '@core/types/types'
 import { getFileContent } from '@utils/file'
+import { Product } from '@core/entities/product'
+import { useProductStore } from '@store/productStore'
 
 export class CategoryFormFieldsWriter extends FormFieldsWriter {
   protected fieldsReader: CategoryFormFieldsReader
@@ -36,14 +38,19 @@ export class CategoryFormFieldsWriter extends FormFieldsWriter {
 
   addProducts(uuids: Array<UUID>) {
     const products = this.fieldsReader.get('products')
-    const productsSet = new Set<UUID>(products)
-    uuids.forEach((uuid) => productsSet.add(uuid))
-    super.set('products', [...productsSet])
+    const productStore = useProductStore()
+    const alreadyAdded = products.map((p) => p.uuid)
+    uuids
+      .filter((uuid) => !alreadyAdded.includes(uuid))
+      .forEach((uuid) => {
+        products.push(productStore.getByUuid(uuid))
+      })
+    super.set('products', products)
   }
 
   removeProducts(uuids: Array<UUID>) {
     let products = this.fieldsReader.get('products')
-    products = products.filter((p: string) => !uuids.includes(p))
+    products = products.filter((p: Product) => !uuids.includes(p.uuid))
     super.set('products', products)
   }
 
@@ -129,11 +136,13 @@ export class CategoryFormCreateVM extends CategoryFormVM {
   }
 
   getDto(): CreateCategoryDTO {
+    const products: Array<Product> = this.fieldsReader.get('products')
+    const productsAdded = products.map((p: Product) => p.uuid)
     return {
       name: this.fieldsReader.get('name'),
       parentUuid: this.fieldsReader.get('parentUuid'),
       description: this.fieldsReader.get('description'),
-      productsAdded: this.fieldsReader.get('products'),
+      productsAdded,
       miniature: this.fieldsReader.get('miniature'),
       image: this.fieldsReader.get('newImage')
     }

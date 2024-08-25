@@ -14,7 +14,6 @@ export const getOrder = async (
   const orderStore = useOrderStore()
   orderStore.setCurrent(order)
   if (!isAnonymousOrder(order)) {
-    console.log('Cest une commande avec un customer')
     const customer = await customerGateway.getByUuid(order.customerUuid)
     const customerStore = useCustomerStore()
     customerStore.add(customer)

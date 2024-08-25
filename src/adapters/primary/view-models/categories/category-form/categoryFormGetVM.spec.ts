@@ -68,7 +68,7 @@ describe('Category form get VM', () => {
     },
     {
       category: minceur,
-      products: [anaca3Minceur.uuid, calmosine.uuid],
+      products: [anaca3Minceur, calmosine],
       expectedProducts: [anaca3VM, calmosineVM]
     }
   ])('Initial VM', ({ category, products, expectedProducts }) => {

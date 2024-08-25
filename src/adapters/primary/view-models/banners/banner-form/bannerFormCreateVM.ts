@@ -29,7 +29,6 @@ export class BannerFormFieldsWriter extends FormFieldsWriter {
 
   async setImg(img: File): Promise<void> {
     const data = await getFileContent(img)
-    console.log('on set img: ', data)
     super.set('img', data)
   }
 }

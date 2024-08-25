@@ -651,7 +651,7 @@ describe('Product form VM', () => {
     describe('Initial VM', () => {
       const expected: any = {
         name: product.name,
-        categoryUuid: product.categoryUuid,
+        categoryUuid: product.category?.uuid,
         cip7: product.cip7,
         cip13: product.cip13,
         ean13: product.ean13,
