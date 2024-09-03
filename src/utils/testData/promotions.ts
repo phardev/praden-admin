@@ -4,7 +4,7 @@ import { Promotion, ReductionType } from '@core/entities/promotion'
 export const promotionPercentageDolodent: Promotion = {
   uuid: 'promotion-dolodent',
   name: 'Promotion en pourcentage sur le dolodent',
-  products: [dolodent.uuid],
+  products: [dolodent],
   type: ReductionType.Percentage,
   amount: 10,
   startDate: 1690416000000,
@@ -14,7 +14,7 @@ export const promotionPercentageDolodent: Promotion = {
 export const promotionFixedMultipleProducts: Promotion = {
   uuid: 'promotion-multiple-products',
   name: 'Promotion fixe sur de multiples produits',
-  products: [ultraLevure.uuid, anaca3Minceur.uuid],
+  products: [ultraLevure, anaca3Minceur],
   type: ReductionType.Fixed,
   amount: 100,
   startDate: 1690416000000,

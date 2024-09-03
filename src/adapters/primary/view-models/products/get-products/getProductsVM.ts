@@ -69,7 +69,7 @@ export const getProductsVM = (key: string): GetProductsVM => {
         uuid: p.uuid,
         name: p.name,
         img: p.miniature,
-        reference: p.cip13,
+        reference: p.ean13,
         category: p.category?.name || '',
         priceWithoutTax: formatter.format(p.priceWithoutTax / 100),
         priceWithTax: formatter.format(priceWithTax / 100),

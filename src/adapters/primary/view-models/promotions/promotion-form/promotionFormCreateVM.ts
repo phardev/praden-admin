@@ -55,14 +55,19 @@ export class PromotionFormFieldsWriter extends FormFieldsWriter {
 
   addProducts(uuids: Array<UUID>) {
     const products = this.fieldsReader.get('products')
-    const productsSet = new Set<UUID>(products)
-    uuids.forEach((uuid) => productsSet.add(uuid))
-    super.set('products', [...productsSet])
+    const productStore = useProductStore()
+    const alreadyAdded = products.map((p) => p.uuid)
+    uuids
+      .filter((uuid) => !alreadyAdded.includes(uuid))
+      .forEach((uuid) => {
+        products.push(productStore.getByUuid(uuid))
+      })
+    super.set('products', products)
   }
 
   removeProducts(uuids: Array<UUID>) {
     let products = this.fieldsReader.get('products')
-    products = products.filter((p: string) => !uuids.includes(p))
+    products = products.filter((p: Product) => !uuids.includes(p.uuid))
     super.set('products', products)
   }
 }
@@ -127,7 +132,7 @@ export class PromotionFormCreateVM extends PromotionFormVM {
     const filteredProducts: Array<Product> = searchStore.get(this.key)
     const addedProducts = this.fieldsReader.get('products')
     const res = (filteredProducts || allProducts).filter(
-      (p) => !addedProducts.includes(p.uuid)
+      (p) => !addedProducts.map((p) => p.uuid).includes(p.uuid)
     )
     return {
       value: res.map((p: Product) => {
@@ -166,7 +171,7 @@ export class PromotionFormCreateVM extends PromotionFormVM {
     }
     const res: CreatePromotionDTO = {
       name: this.fieldsReader.get('name'),
-      products: this.fieldsReader.get('products'),
+      productUuids: this.fieldsReader.get('products').map((p) => p.uuid),
       type,
       amount
     }

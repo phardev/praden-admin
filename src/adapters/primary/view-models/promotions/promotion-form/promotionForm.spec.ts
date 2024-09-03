@@ -208,16 +208,15 @@ const updateVMTests = (
     })
     describe('In one step', () => {
       const selectedProducts = [dolodent.uuid, anaca3Minceur.uuid]
-      let expectedProducts
       beforeEach(() => {
         givenExistingProducts(dolodent, anaca3Minceur, calmosine)
-        const expectedSet = new Set<string>(formStore.get(key).products)
-        selectedProducts.forEach((p) => expectedSet.add(p))
-        expectedProducts = [...expectedSet]
         vm.addProducts(selectedProducts)
       })
       it('should add selected products to form store', () => {
-        expect(formStore.get(key).products).toStrictEqual(expectedProducts)
+        expect(formStore.get(key).products).toStrictEqual([
+          dolodent,
+          anaca3Minceur
+        ])
       })
       it('should get all products vm', () => {
         const expectedField: Field<Array<PromotionProductItemVM>> = {
@@ -235,14 +234,16 @@ const updateVMTests = (
       })
     })
     describe('In multiple steps', () => {
-      const selectedProducts = [dolodent.uuid, anaca3Minceur.uuid]
       beforeEach(() => {
         givenExistingProducts(dolodent, anaca3Minceur)
         vm.addProducts([dolodent.uuid])
         vm.addProducts([anaca3Minceur.uuid])
       })
       it('should add selected products to form store', () => {
-        expect(formStore.get(key).products).toStrictEqual(selectedProducts)
+        expect(formStore.get(key).products).toStrictEqual([
+          dolodent,
+          anaca3Minceur
+        ])
       })
       it('should get all products vm', () => {
         const expectedField: Field<Array<PromotionProductItemVM>> = {
@@ -258,7 +259,7 @@ const updateVMTests = (
       givenExistingProducts(dolodent, anaca3Minceur, calmosine)
       givenExistingCategories(dents, baby, minceur)
       formStore.set(key, {
-        products: productStore.items.map((p: Product) => p.uuid)
+        products: productStore.items
       })
     })
     describe('In one step', () => {
@@ -267,8 +268,8 @@ const updateVMTests = (
       })
       it('should add selected products to form store', () => {
         expect(formStore.get(key).products).toStrictEqual([
-          anaca3Minceur.uuid,
-          calmosine.uuid
+          anaca3Minceur,
+          calmosine
         ])
       })
       it('should get all products vm', () => {
@@ -292,7 +293,7 @@ const updateVMTests = (
         vm.removeProducts([anaca3Minceur.uuid])
       })
       it('should add selected products to form store', () => {
-        expect(formStore.get(key).products).toStrictEqual([calmosine.uuid])
+        expect(formStore.get(key).products).toStrictEqual([calmosine])
       })
       it('should get all products vm', () => {
         const expectedField: Field<Array<PromotionProductItemVM>> = {
@@ -429,6 +430,7 @@ describe('Promotion form', () => {
     })
     describe('Validation', () => {
       beforeEach(() => {
+        givenExistingProducts(dolodent)
         vm.set('name', 'Test')
         vm.set('amount', 12)
         vm.addProducts([dolodent.uuid])
@@ -457,13 +459,16 @@ describe('Promotion form', () => {
       })
     })
     describe('Dto', () => {
+      beforeEach(() => {
+        givenExistingProducts(dolodent, calmosine)
+      })
       it('should prepare the promotion dto', () => {
         vm.set('name', 'Test')
         vm.set('amount', 1.5)
         vm.addProducts([dolodent.uuid])
         const expectedDto: CreatePromotionDTO = {
           name: 'Test',
-          products: [dolodent.uuid],
+          productUuids: [dolodent.uuid],
           type: ReductionType.Fixed,
           amount: 150
         }
@@ -478,7 +483,7 @@ describe('Promotion form', () => {
         vm.addProducts([dolodent.uuid, calmosine.uuid])
         const expectedDto: CreatePromotionDTO = {
           name: 'AnotherTest',
-          products: [dolodent.uuid, calmosine.uuid],
+          productUuids: [dolodent.uuid, calmosine.uuid],
           type: ReductionType.Percentage,
           amount: 5.5,
           startDate: 123456789,
@@ -502,7 +507,7 @@ describe('Promotion form', () => {
     describe('Initial VM', () => {
       const expected: any = {
         name: promotionPercentageDolodent.name,
-        products: [dolodent.uuid],
+        products: [dolodent],
         type: ReductionType.Percentage,
         amount: '10',
         startDate: promotionPercentageDolodent.startDate,
@@ -537,7 +542,7 @@ describe('Promotion form', () => {
         })
       })
     })
-    describe('Update', () => {
+    describe('Update edit VM', () => {
       updateVMTests(() => vm, key)
     })
     describe('Validation', () => {
@@ -570,6 +575,9 @@ describe('Promotion form', () => {
       })
     })
     describe('Dto', () => {
+      beforeEach(() => {
+        givenExistingProducts(dolodent, calmosine)
+      })
       it('should prepare the promotion dto', () => {
         vm.set('name', 'Test')
         vm.set('type', ReductionType.Fixed)
@@ -577,7 +585,7 @@ describe('Promotion form', () => {
         vm.addProducts([dolodent.uuid])
         const expectedDto: EditPromotionDTO = {
           name: 'Test',
-          products: [dolodent.uuid],
+          productUuids: [dolodent.uuid],
           type: ReductionType.Fixed,
           amount: 150,
           startDate: promotion.startDate,
@@ -594,7 +602,7 @@ describe('Promotion form', () => {
         vm.addProducts([dolodent.uuid, calmosine.uuid])
         const expectedDto: CreatePromotionDTO = {
           name: 'AnotherTest',
-          products: [dolodent.uuid, calmosine.uuid],
+          productUuids: [dolodent.uuid, calmosine.uuid],
           type: ReductionType.Percentage,
           amount: 5.5,
           startDate: 123456789,

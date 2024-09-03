@@ -12,9 +12,7 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
   }
 
   async getByCategoryUuid(uuid: UUID): Promise<Array<Product>> {
-    const res = await axios.get(
-      `${this.baseUrl}/products/get-by-category/${uuid}`
-    )
+    const res = await axios.get(`${this.baseUrl}/categories/${uuid}/products`)
     return Promise.resolve(res.data.items)
   }
 
@@ -36,7 +34,7 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
   }
 
   async getByUuid(uuid: UUID): Promise<Product> {
-    const res = await axios.get(`${this.baseUrl}/products/get/${uuid}`)
+    const res = await axios.get(`${this.baseUrl}/products/${uuid}`)
     return Promise.resolve(res.data.item)
   }
 

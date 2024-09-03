@@ -1,4 +1,5 @@
 import { Timestamp, UUID } from '@core/types/types'
+import { Product } from '@core/entities/product'
 
 export enum ReductionType {
   Fixed = 'FIXED',
@@ -8,14 +9,16 @@ export enum ReductionType {
 export interface Promotion {
   uuid: UUID
   name: string
-  products: Array<UUID>
+  products: Array<Product>
   type: ReductionType
   amount: number
   startDate?: Timestamp
   endDate?: Timestamp
 }
 
-export type CreatePromotionDTO = Omit<Promotion, 'uuid'>
+export type CreatePromotionDTO = Omit<Promotion, 'uuid' | 'products'> & {
+  productUuids: Array<UUID>
+}
 export type EditPromotionDTO = Partial<CreatePromotionDTO>
 
 export const isPromotionStarted = (p: Promotion, now: Timestamp): boolean => {

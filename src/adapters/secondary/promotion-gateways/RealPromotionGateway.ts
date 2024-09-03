@@ -16,29 +16,42 @@ export class RealPromotionGateway
     super(baseUrl)
   }
 
-  async create(promotion: CreatePromotionDTO): Promise<Promotion> {
-    const res = await axios.post(
-      `${this.baseUrl}/promotions/`,
-      JSON.stringify(promotion)
+  async getPromotionsForProduct(productUuid: UUID): Promise<Array<Promotion>> {
+    const res = await axios.get(
+      `${this.baseUrl}/products/${productUuid}/promotions`
     )
-    return Promise.resolve(res.data)
+    return Promise.resolve(res.data.items)
+  }
+
+  async create(promotion: CreatePromotionDTO): Promise<Promotion> {
+    const formData = this.createFormData(promotion)
+    const res = await axios.post(`${this.baseUrl}/promotions`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    return Promise.resolve(res.data.item)
   }
 
   async edit(uuid: UUID, promotion: EditPromotionDTO): Promise<Promotion> {
-    const res = await axios.put(
-      `${this.baseUrl}/promotions/${uuid}/`,
-      JSON.stringify(promotion)
-    )
-    return Promise.resolve(res.data)
+    const formData = this.createFormData(promotion)
+    formData.append('uuid', uuid)
+    const res = await axios.patch(`${this.baseUrl}/promotions/edit`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    return Promise.resolve(res.data.item)
   }
 
   async getByUuid(uuid: UUID): Promise<Promotion> {
     const res = await axios.get(`${this.baseUrl}/promotions/${uuid}/`)
-    return Promise.resolve(res.data)
+    console.log('res: ', res)
+    return Promise.resolve(res.data.item)
   }
 
   async list(): Promise<Array<Promotion>> {
     const res = await axios.get(`${this.baseUrl}/promotions/`)
-    return Promise.resolve(res.data)
+    return Promise.resolve(res.data.items)
   }
 }

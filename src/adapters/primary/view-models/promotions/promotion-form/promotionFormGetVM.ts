@@ -9,8 +9,6 @@ import {
 import { useProductStore } from '@store/productStore'
 import { Product } from '@core/entities/product'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { Category } from '@core/entities/category'
-import { useCategoryStore } from '@store/categoryStore'
 import {
   FormFieldsReader,
   FormInitializer
@@ -129,16 +127,13 @@ export class PromotionFormGetVM extends PromotionFormVM {
     const addedProducts = this.fieldsReader.get('products')
     const productStore = useProductStore()
     const allProducts: Array<Product> = productStore.items
-    const categoryStore = useCategoryStore()
-    const categories: Array<Category> = categoryStore.items
-    const value = addedProducts.map((uuid: string) => {
-      const p: Product = allProducts.find((p) => p.uuid === uuid)
-      const c: Category = categories.find((c) => c.uuid === p.categoryUuid)
+    const value = addedProducts.map((product: Product) => {
+      const p: Product = allProducts.find((p) => p.uuid === product.uuid)
       return {
         uuid: p.uuid,
         name: p.name,
         reference: p.cip13,
-        category: c.name,
+        category: p.category?.name || '',
         laboratory: p.laboratory
       }
     })

@@ -51,7 +51,7 @@ export class PromotionFormEditVM extends PromotionFormVM {
     const filteredProducts: Array<Product> = searchStore.get(this.key)
     const addedProducts = this.fieldsReader.get('products')
     const res = (filteredProducts || allProducts).filter(
-      (p) => !addedProducts.includes(p.uuid)
+      (p) => !addedProducts.map((p) => p.uuid).includes(p.uuid)
     )
     return {
       value: res.map((p: Product) => {
@@ -90,7 +90,7 @@ export class PromotionFormEditVM extends PromotionFormVM {
     }
     return {
       name: this.fieldsReader.get('name'),
-      products: this.fieldsReader.get('products'),
+      productUuids: this.fieldsReader.get('products').map((p) => p.uuid),
       type,
       amount,
       startDate: this.fieldsReader.get('startDate'),

@@ -46,7 +46,9 @@ export class InMemoryPromotionGateway implements PromotionGateway {
   getPromotionsForProduct(
     productUUID: UUID
   ): Promise<Array<Promotion> | undefined> {
-    const res = this.promotions.filter((p) => p.products.includes(productUUID))
+    const res = this.promotions.filter((p) =>
+      p.products.map((product) => product.uuid).includes(productUUID)
+    )
     return Promise.resolve(res)
   }
 

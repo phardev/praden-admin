@@ -270,17 +270,15 @@ describe('Category form edit VM', () => {
         })
         describe('In one step', () => {
           const selectedProducts = [dolodent.uuid, anaca3Minceur.uuid]
-          let expectedProducts: Array<Product>
           beforeEach(() => {
             givenExistingProducts(dolodent, anaca3Minceur, calmosine)
-            expectedProducts = [
-              ...categoryStore.current.products,
-              anaca3Minceur
-            ]
             vm.addProducts(selectedProducts)
           })
           it('should add selected products to form store', () => {
-            expect(formStore.get(key).products).toStrictEqual(expectedProducts)
+            expect(formStore.get(key).products).toStrictEqual([
+              dolodent,
+              anaca3Minceur
+            ])
           })
           it('should get all products vm', () => {
             const expectedField: Field<Array<CategoryProductItemVM>> = {

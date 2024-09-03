@@ -57,8 +57,8 @@ export abstract class PromotionFormVM {
     const addedProducts = this.fieldsReader.get('products')
     const productStore = useProductStore()
     const allProducts: Array<Product> = productStore.items
-    const value = addedProducts.map((uuid: string) => {
-      const p: Product = allProducts.find((p) => p.uuid === uuid)
+    const value = addedProducts.map((product: Product) => {
+      const p: Product = allProducts.find((p) => p.uuid === product.uuid)
       return {
         uuid: p.uuid,
         name: p.name,
