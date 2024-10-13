@@ -18,7 +18,7 @@ export interface CategoryAvailableProductItemVM extends CategoryProductItemVM {
 
 export abstract class CategoryFormVM {
   protected fieldsReader: CategoryFormFieldsReader
-  private readonly key: string
+  protected readonly key: string
 
   protected constructor(fieldReader: CategoryFormFieldsReader, key: string) {
     this.fieldsReader = fieldReader

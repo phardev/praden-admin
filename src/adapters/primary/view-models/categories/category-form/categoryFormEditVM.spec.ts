@@ -27,6 +27,7 @@ import {
 } from '@adapters/primary/view-models/categories/category-form/categoryFormEditVM'
 import { Category } from '@core/entities/category'
 import { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
+import { useSearchStore } from '@store/searchStore'
 
 const anaca3VM: CategoryProductItemVM = {
   uuid: anaca3Minceur.uuid,
@@ -126,6 +127,7 @@ describe('Category form edit VM', () => {
   let categoryStore: any
   let productStore: any
   let formStore: any
+  let searchStore: any
   const key = 'edit-category-form'
   let vm: CategoryFormEditVM
 
@@ -134,6 +136,7 @@ describe('Category form edit VM', () => {
     categoryStore = useCategoryStore()
     productStore = useProductStore()
     formStore = useFormStore()
+    searchStore = useSearchStore()
   })
   describe.each([
     {
@@ -293,6 +296,33 @@ describe('Category form edit VM', () => {
               canEdit: true
             }
             expect(vm.getAvailableProducts()).toStrictEqual(expectedField)
+          })
+          describe('Add products from search result', () => {
+            beforeEach(() => {
+              givenExistingProducts()
+              givenExistingSearchResult(dolodent, anaca3Minceur, calmosine)
+              vm.addProducts([dolodent.uuid, anaca3Minceur.uuid])
+            })
+            it('should add selected products to form store', () => {
+              expect(formStore.get(key).products).toStrictEqual([
+                dolodent,
+                anaca3Minceur
+              ])
+            })
+            it('should get all products vm', () => {
+              const expectedField: Field<Array<CategoryProductItemVM>> = {
+                value: [dolodentVM, anaca3VM],
+                canEdit: true
+              }
+              expect(vm.getProducts()).toStrictEqual(expectedField)
+            })
+            it('should remove products from available selection', () => {
+              const expectedField: Field<Array<PromotionProductItemVM>> = {
+                value: [availableCalmosineVM],
+                canEdit: true
+              }
+              expect(vm.getAvailableProducts()).toStrictEqual(expectedField)
+            })
           })
         })
         describe('In multiple steps', () => {
@@ -581,6 +611,9 @@ describe('Category form edit VM', () => {
   }
   const givenExistingCategories = (...categories: Array<Category>) => {
     categoryStore.items = categories
+  }
+  const givenExistingSearchResult = (...products: Array<Product>) => {
+    searchStore.items[key] = products
   }
 
   const getVM = (): CategoryFormEditVM => {

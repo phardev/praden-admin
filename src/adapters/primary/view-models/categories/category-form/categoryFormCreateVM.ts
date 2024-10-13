@@ -15,6 +15,7 @@ import { UUID } from '@core/types/types'
 import { getFileContent } from '@utils/file'
 import { Product } from '@core/entities/product'
 import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
 
 export class CategoryFormFieldsWriter extends FormFieldsWriter {
   protected fieldsReader: CategoryFormFieldsReader
@@ -39,11 +40,17 @@ export class CategoryFormFieldsWriter extends FormFieldsWriter {
   addProducts(uuids: Array<UUID>) {
     const products = this.fieldsReader.get('products')
     const productStore = useProductStore()
+    const searchStore = useSearchStore()
+    const searchResult = searchStore.get(this.key)
     const alreadyAdded = products.map((p) => p.uuid)
     uuids
       .filter((uuid) => !alreadyAdded.includes(uuid))
       .forEach((uuid) => {
-        products.push(productStore.getByUuid(uuid))
+        let product = productStore.getByUuid(uuid)
+        if (!product) {
+          product = searchResult.find((p) => p.uuid === uuid)
+        }
+        products.push(product)
       })
     super.set('products', products)
   }

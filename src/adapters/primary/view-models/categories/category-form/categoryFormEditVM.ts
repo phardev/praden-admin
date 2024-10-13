@@ -12,6 +12,7 @@ import {
 import { UUID } from '@core/types/types'
 import { Product } from '@core/entities/product'
 import { useProductStore } from '../../../../../store/productStore'
+import { useSearchStore } from '@store/searchStore'
 
 export class CategoryFormEditVM extends CategoryFormVM {
   private fieldsWriter: CategoryFormFieldsWriter
@@ -60,11 +61,17 @@ export class CategoryFormEditVM extends CategoryFormVM {
   addProducts(uuids: Array<UUID>) {
     const products = this.fieldsReader.get('products')
     const productStore = useProductStore()
+    const searchStore = useSearchStore()
+    const searchResult = searchStore.get(this.key)
     const alreadyAdded = products.map((p) => p.uuid)
     uuids
       .filter((uuid) => !alreadyAdded.includes(uuid))
       .forEach((uuid) => {
-        products.push(productStore.getByUuid(uuid))
+        let product = productStore.getByUuid(uuid)
+        if (!product) {
+          product = searchResult.find((p) => p.uuid === uuid)
+        }
+        products.push(product)
       })
     this.fieldsWriter.addProducts(uuids)
   }

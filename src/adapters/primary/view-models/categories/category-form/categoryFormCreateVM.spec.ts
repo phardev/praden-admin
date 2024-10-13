@@ -27,6 +27,7 @@ import {
   categoryFormCreateVM,
   CategoryFormCreateVM
 } from '@adapters/primary/view-models/categories/category-form/categoryFormCreateVM'
+import { useSearchStore } from '@store/searchStore'
 
 const anaca3VM: CategoryProductItemVM = {
   uuid: anaca3Minceur.uuid,
@@ -126,6 +127,7 @@ describe('Category form create VM', () => {
   let categoryStore: any
   let productStore: any
   let formStore: any
+  let searchStore: any
   const key = 'create-category-form'
   let vm: CategoryFormCreateVM
 
@@ -134,6 +136,7 @@ describe('Category form create VM', () => {
     categoryStore = useCategoryStore()
     productStore = useProductStore()
     formStore = useFormStore()
+    searchStore = useSearchStore()
   })
   describe('Initial VM', () => {
     beforeEach(() => {
@@ -290,6 +293,33 @@ describe('Category form create VM', () => {
               canEdit: true
             }
             expect(vm.getProducts()).toStrictEqual(expectedField)
+          })
+        })
+        describe('Add products from search result', () => {
+          beforeEach(() => {
+            givenExistingProducts()
+            givenExistingSearchResult(dolodent, anaca3Minceur, calmosine)
+            vm.addProducts([dolodent.uuid, anaca3Minceur.uuid])
+          })
+          it('should add selected products to form store', () => {
+            expect(formStore.get(key).products).toStrictEqual([
+              dolodent,
+              anaca3Minceur
+            ])
+          })
+          it('should get all products vm', () => {
+            const expectedField: Field<Array<CategoryProductItemVM>> = {
+              value: [dolodentVM, anaca3VM],
+              canEdit: true
+            }
+            expect(vm.getProducts()).toStrictEqual(expectedField)
+          })
+          it('should remove products from available selection', () => {
+            const expectedField: Field<Array<PromotionProductItemVM>> = {
+              value: [availableCalmosineVM],
+              canEdit: true
+            }
+            expect(vm.getAvailableProducts()).toStrictEqual(expectedField)
           })
         })
       })
@@ -486,6 +516,11 @@ describe('Category form create VM', () => {
   const givenExistingProducts = (...products: Array<Product>) => {
     productStore.items = products
   }
+
+  const givenExistingSearchResult = (...products: Array<Product>) => {
+    searchStore.items[key] = products
+  }
+
   const givenExistingCategories = (...categories: Array<Category>) => {
     categoryStore.items = categories
   }
