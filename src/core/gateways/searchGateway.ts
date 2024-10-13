@@ -6,6 +6,7 @@ import { Customer } from '@core/entities/customer'
 
 export interface SearchGateway {
   searchProducts(query: string): Promise<Array<Product>>
+  indexProducts(limit: number, offset: number): Promise<number>
   searchOrders(dto: SearchOrdersDTO): Promise<Array<Order>>
   searchCustomers(dto: SearchCustomersDTO): Promise<Array<Customer>>
 }

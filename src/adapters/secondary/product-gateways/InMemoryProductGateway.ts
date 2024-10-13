@@ -23,6 +23,10 @@ export class InMemoryProductGateway implements ProductGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(res)))
   }
 
+  async count(): Promise<number> {
+    return Promise.resolve(this.products.length)
+  }
+
   async batch(cip13s: Array<string>): Promise<Array<Product>> {
     const res = this.products.filter((p) => cip13s.includes(p.cip13))
     return Promise.resolve(JSON.parse(JSON.stringify(res)))

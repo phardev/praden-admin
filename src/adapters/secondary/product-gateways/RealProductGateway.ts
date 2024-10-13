@@ -38,6 +38,11 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     return Promise.resolve(res.data.items)
   }
 
+  async count(): Promise<number> {
+    const res = await axios.get(`${this.baseUrl}/count/products`)
+    return res.data
+  }
+
   async getByUuid(uuid: UUID): Promise<Product> {
     const res = await axios.get(`${this.baseUrl}/products/${uuid}`)
     return Promise.resolve(res.data.item)

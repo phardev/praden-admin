@@ -38,6 +38,11 @@ export class FakeSearchGateway implements SearchGateway {
     return Promise.resolve(res)
   }
 
+  indexProducts(limit: number, offset: number): Promise<number> {
+    console.log(`index ${limit} products from: ${offset}`)
+    return Promise.resolve(limit)
+  }
+
   searchOrders(dto: SearchOrdersDTO): Promise<Array<Order>> {
     const orders = this.orderStore.items
     const res = orders.filter((o) => {

@@ -18,6 +18,15 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
     })
     return Promise.resolve(res.data.items)
   }
+
+  async indexProducts(limit: number, offset: number): Promise<number> {
+    const res = await axios.post(`${this.baseUrl}/products/index`, {
+      limit,
+      offset
+    })
+    return Promise.resolve(res.data.length)
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   searchOrders(dto: SearchOrdersDTO): Promise<Array<Order>> {
     throw new Error('Method not implemented.')

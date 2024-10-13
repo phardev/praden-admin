@@ -63,6 +63,16 @@ export const fullMenu: NavigationMenu = {
           href: '/banners'
         }
       ]
+    },
+    {
+      title: 'Administration',
+      links: [
+        {
+          name: 'Recherche',
+          icon: 'material-symbols:search-rounded',
+          href: '/research'
+        }
+      ]
     }
   ]
 }
