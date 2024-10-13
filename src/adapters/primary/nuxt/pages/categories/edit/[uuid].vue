@@ -28,7 +28,7 @@ onMounted(async () => {
   const categoryGateway = useCategoryGateway()
   listCategories(categoryGateway)
   const productGateway = useProductGateway()
-  listProducts(useProductGateway())
+  listProducts(10, 0, useProductGateway())
   await getCategory(categoryUuid, categoryGateway, productGateway)
   vm.value = categoryFormEditVM(routeName)
 })

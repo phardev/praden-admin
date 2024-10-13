@@ -11,6 +11,7 @@ import {
 } from '@adapters/primary/view-models/categories/category-form/categoryFormVM'
 import { UUID } from '@core/types/types'
 import { Product } from '@core/entities/product'
+import { useProductStore } from '../../../../../store/productStore'
 
 export class CategoryFormEditVM extends CategoryFormVM {
   private fieldsWriter: CategoryFormFieldsWriter
@@ -57,6 +58,14 @@ export class CategoryFormEditVM extends CategoryFormVM {
   }
 
   addProducts(uuids: Array<UUID>) {
+    const products = this.fieldsReader.get('products')
+    const productStore = useProductStore()
+    const alreadyAdded = products.map((p) => p.uuid)
+    uuids
+      .filter((uuid) => !alreadyAdded.includes(uuid))
+      .forEach((uuid) => {
+        products.push(productStore.getByUuid(uuid))
+      })
     this.fieldsWriter.addProducts(uuids)
   }
 
