@@ -21,13 +21,18 @@ describe('Real product gateway', () => {
             items: []
           }
         })
-        res = await productGateway.list()
+        res = await productGateway.list(42, 0)
       })
       it('should return an empty list', () => {
         expect(res).toStrictEqual([])
       })
       it('should call the right url', () => {
-        expect(axios.get).toHaveBeenCalledWith(`${url}/products`)
+        expect(axios.get).toHaveBeenCalledWith(`${url}/products`, {
+          params: {
+            limit: 42,
+            offset: 0
+          }
+        })
       })
     })
     describe('There is some products', () => {
@@ -41,13 +46,18 @@ describe('Real product gateway', () => {
           }
         })
         productGateway = new RealProductGateway(anotherUrl)
-        res = await productGateway.list()
+        res = await productGateway.list(50, 0)
       })
       it('should return all products', () => {
         expect(res).toStrictEqual([dolodent, aspro])
       })
       it('should call the right url', () => {
-        expect(axios.get).toHaveBeenCalledWith(`${anotherUrl}/products`)
+        expect(axios.get).toHaveBeenCalledWith(`${anotherUrl}/products`, {
+          params: {
+            limit: 50,
+            offset: 0
+          }
+        })
       })
     })
   })

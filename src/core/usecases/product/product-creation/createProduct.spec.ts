@@ -271,6 +271,6 @@ describe('Create product', () => {
     expect(productStore.items).toStrictEqual(products)
   }
   const expectProductGatewayToEqual = async (...products: Array<Product>) => {
-    expect(await productGateway.list()).toStrictEqual(products)
+    expect(await productGateway.list(50, 0)).toStrictEqual(products)
   }
 })

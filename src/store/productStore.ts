@@ -18,9 +18,9 @@ export const useProductStore = defineStore('ProductStore', {
   },
   actions: {
     list(products: Array<Product>) {
-      this.items = products
-      this.items.forEach((i) => {
-        this.stock[i.cip13] = i.availableStock
+      this.items.push(...products)
+      products.forEach((p) => {
+        this.stock[p.ean13] = p.availableStock
       })
     },
     add(product: Product) {

@@ -56,7 +56,7 @@ describe('Product edition', () => {
         await whenEditProduct(product.uuid, dto)
       })
       it('should edit the product in the gateway', async () => {
-        expect(await productGateway.list()).toStrictEqual(expectedProducts)
+        await expectProductGatewayToContains(expectedProducts)
       })
       it('should edit the product in the store', async () => {
         expect(productStore.items).toStrictEqual(expectedProducts)
@@ -76,7 +76,7 @@ describe('Product edition', () => {
         await whenEditProduct(product.uuid, dto)
       })
       it('should edit the product in the gateway', async () => {
-        expect(await productGateway.list()).toStrictEqual(expectedProducts)
+        await expectProductGatewayToContains(expectedProducts)
       })
       it('should edit the product in the store', async () => {
         expect(productStore.items).toStrictEqual(expectedProducts)
@@ -97,7 +97,7 @@ describe('Product edition', () => {
         await whenEditProduct(product.uuid, dto)
       })
       it('should edit the product in the gateway', async () => {
-        expect(await productGateway.list()).toStrictEqual(expectedProducts)
+        await expectProductGatewayToContains(expectedProducts)
       })
       it('should edit the product in the store', async () => {
         expect(productStore.items).toStrictEqual(expectedProducts)
@@ -196,7 +196,7 @@ describe('Product edition', () => {
         await whenEditProduct(product.uuid, dto)
       })
       it('should edit the product in the gateway', async () => {
-        expect(await productGateway.list()).toStrictEqual(expectedProducts)
+        await expectProductGatewayToContains(expectedProducts)
       })
       it('should edit the product in the store', async () => {
         expect(productStore.items).toStrictEqual(expectedProducts)
@@ -224,5 +224,9 @@ describe('Product edition', () => {
 
   const whenEditProduct = async (uuid: UUID, dto: EditProductDTO) => {
     await editProduct(uuid, dto, productGateway, locationGateway)
+  }
+
+  const expectProductGatewayToContains = async (expected: Array<Product>) => {
+    expect(await productGateway.list(50, 0)).toStrictEqual(expected)
   }
 })

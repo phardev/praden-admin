@@ -115,7 +115,8 @@ describe('Create category', () => {
       ]
     })
     it('should add the added products to the category', async () => {
-      expect(await productGateway.list()).toStrictEqual(expectedProducts)
+      await expectProductGatewayToContains(expectedProducts)
+      expect(await productGateway.list(50, 0)).toStrictEqual(expectedProducts)
     })
     it('should update the product store', () => {
       expect(productStore.items).toStrictEqual(expectedProducts)
@@ -137,5 +138,9 @@ describe('Create category', () => {
 
   const expectGatewayToContains = async (...categories: Array<Category>) => {
     expect(await categoryGateway.list()).toStrictEqual(categories)
+  }
+
+  const expectProductGatewayToContains = async (expected: Array<Product>) => {
+    expect(await productGateway.list(50, 0)).toStrictEqual(expected)
   }
 })

@@ -28,8 +28,13 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     return jsonRes.items as Array<Product>
   }
 
-  async list(): Promise<Array<Product>> {
-    const res = await axios.get(`${this.baseUrl}/products`)
+  async list(limit: number, offset: number): Promise<Array<Product>> {
+    const res = await axios.get(`${this.baseUrl}/products`, {
+      params: {
+        limit,
+        offset
+      }
+    })
     return Promise.resolve(res.data.items)
   }
 

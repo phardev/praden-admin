@@ -3,16 +3,25 @@ import { useProductStore } from '@store/productStore'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { listProducts } from './listProducts'
 import { Product, Stock } from '@core/entities/product'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import {
+  anaca3Minceur,
+  chamomilla,
+  dolodent,
+  ultraLevure
+} from '@utils/testData/products'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { beforeEach, describe } from 'vitest'
 
 describe('List products', () => {
   let productStore: any
   let productGateway: InMemoryProductGateway
+  const defaultLimit = 50
+  const defaultOffset = 0
 
   beforeEach(() => {
     setActivePinia(createPinia())
     productStore = useProductStore()
-    productGateway = new InMemoryProductGateway()
+    productGateway = new InMemoryProductGateway(new FakeUuidGenerator())
   })
   describe('There is no products', () => {
     it('should list nothing', async () => {
@@ -30,10 +39,34 @@ describe('List products', () => {
     })
     it('should retrieve available stock', async () => {
       const expectedStock: Stock = {
-        [dolodent.cip13]: dolodent.availableStock,
-        [ultraLevure.cip13]: ultraLevure.availableStock
+        [dolodent.ean13]: dolodent.availableStock,
+        [ultraLevure.ean13]: ultraLevure.availableStock
       }
       expectStockToEqual(expectedStock)
+    })
+  })
+
+  describe('List by chunk', () => {
+    beforeEach(() => {
+      givenExistingProducts(dolodent, ultraLevure, anaca3Minceur, chamomilla)
+    })
+    it('should retrieve first products', async () => {
+      await whenListProducts(2, 0)
+      expectProductStoreToContains(dolodent, ultraLevure)
+    })
+    it('should retrieve products with an offset', async () => {
+      await whenListProducts(1, 2)
+      expectProductStoreToContains(anaca3Minceur)
+    })
+    it('should retrieve multiple chunks and keep the old products', async () => {
+      await whenListProducts(2, 0)
+      await whenListProducts(2, 2)
+      expectProductStoreToContains(
+        dolodent,
+        ultraLevure,
+        anaca3Minceur,
+        chamomilla
+      )
     })
   })
 
@@ -41,8 +74,12 @@ describe('List products', () => {
     productGateway.feedWith(...products)
   }
 
-  const whenListProducts = async () => {
-    await listProducts(productGateway)
+  const whenListProducts = async (limit?: number, offset?: number) => {
+    await listProducts(
+      limit || defaultLimit,
+      offset || defaultOffset,
+      productGateway
+    )
   }
 
   const expectProductStoreToContains = (...products: Array<Product>) => {

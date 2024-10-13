@@ -23,6 +23,7 @@
         img.rounded-full.h-10.w-10(:src="item.img")
     template(#name="{ item }")
       .font-medium.text-default {{ item.name }}
+  InfiniteLoading(@infinite="load")
 </template>
 
 <script lang="ts" setup>
@@ -35,14 +36,19 @@ import { listCategories } from '@core/usecases/categories/list-categories/listCa
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
 import { useSearchGateway } from '../../../../../../gateways/searchGateway'
+import InfiniteLoading from 'v3-infinite-loading'
+import 'v3-infinite-loading/lib/style.css'
 
 definePageMeta({ layout: 'main' })
+
+const productGateway = useProductGateway()
+const limit = 25
+let offset = 0
 
 onMounted(() => {
   const categoryStore = useCategoryStore()
   categoryStore.items = [dents, diarrhee]
   listCategories(useCategoryGateway())
-  listProducts(useProductGateway())
 })
 
 const router = useRouter()
@@ -51,6 +57,11 @@ const routeName = router.currentRoute.value.name
 const productsVM = computed(() => {
   return getProductsVM(routeName)
 })
+
+const load = async () => {
+  await listProducts(limit, offset, productGateway)
+  offset += limit
+}
 
 const search = ref(productsVM.value.currentSearch)
 

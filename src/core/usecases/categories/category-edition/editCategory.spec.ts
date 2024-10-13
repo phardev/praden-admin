@@ -106,7 +106,7 @@ describe('Category Edition', () => {
         ]
       })
       it('should add the added products to the category', async () => {
-        expect(await productGateway.list()).toStrictEqual(expectedProducts)
+        await expectProductGatewayToContains(expectedProducts)
       })
       it('should update the product store', () => {
         expect(productStore.items).toStrictEqual(expectedProducts)
@@ -123,7 +123,7 @@ describe('Category Edition', () => {
         expectedProducts = [anaca3Minceur]
       })
       it('should add the added products to the category', async () => {
-        expect(await productGateway.list()).toStrictEqual(expectedProducts)
+        await expectProductGatewayToContains(expectedProducts)
       })
       it('should update the product store', () => {
         expect(productStore.items).toStrictEqual(expectedProducts)
@@ -153,5 +153,9 @@ describe('Category Edition', () => {
     dto: EditCategoryDTO
   ): Promise<void> => {
     await editCategory(uuid, dto, categoryGateway, productGateway)
+  }
+
+  const expectProductGatewayToContains = async (expected: Array<Product>) => {
+    expect(await productGateway.list(50, 0)).toStrictEqual(expected)
   }
 })

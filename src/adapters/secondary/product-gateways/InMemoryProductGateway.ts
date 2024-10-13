@@ -18,8 +18,9 @@ export class InMemoryProductGateway implements ProductGateway {
     this.categoryStore = useCategoryStore()
   }
 
-  async list(): Promise<Array<Product>> {
-    return Promise.resolve(JSON.parse(JSON.stringify(this.products)))
+  async list(limit: number, offset: number): Promise<Array<Product>> {
+    const res = this.products.slice(offset, offset + limit)
+    return Promise.resolve(JSON.parse(JSON.stringify(res)))
   }
 
   async batch(cip13s: Array<string>): Promise<Array<Product>> {
