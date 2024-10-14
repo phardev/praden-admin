@@ -72,6 +72,7 @@ const initialVMTests = (
     { field: 'laboratory', expected: expectedValue.laboratory },
     { field: 'locations', expected: expectedValue.locations },
     { field: 'availableStock', expected: expectedValue.availableStock },
+    { field: 'miniature', expected: expectedValue.miniature },
     { field: 'images', expected: expectedValue.images },
     { field: 'newImages', expected: expectedValue.newImages },
     { field: 'description', expected: expectedValue.description },
@@ -422,7 +423,7 @@ export const updateFieldsTests = (
       })
     })
   })
-  describe('Update new images', () => {
+  describe('Update images', () => {
     const newImages: Array<File> = [
       new File(['data1'], 'File 1', { type: 'image/png' }),
       new File(['data2'], 'File 2', { type: 'image/jpeg' }),
@@ -431,13 +432,13 @@ export const updateFieldsTests = (
     let oldImages
     beforeEach(async () => {
       oldImages = JSON.parse(JSON.stringify(vm.get('images').value))
-      await vm.set('newImages', newImages)
+      await vm.set('images', newImages)
     })
     it('should update new images value in form store', () => {
       expect(formStore.get(key).newImages).toStrictEqual(newImages)
     })
     it('should update new images field', () => {
-      const expectedField: Field<Array<File>> = {
+      const expectedField: Field<Array<any>> = {
         value: newImages,
         canEdit: true
       }
@@ -454,6 +455,34 @@ export const updateFieldsTests = (
         canEdit: true
       }
       expect(vm.get('images')).toStrictEqual(expectedImages)
+    })
+  })
+  describe('Update miniature', () => {
+    const newMiniature: File = new File(['data1'], 'File 1', {
+      type: 'image/png'
+    })
+    let oldMiniature
+    beforeEach(async () => {
+      const tmp = vm.get('miniature').value
+      oldMiniature = tmp ? JSON.parse(JSON.stringify(tmp)) : undefined
+      await vm.set('newMiniature', newMiniature)
+    })
+    it('should update new miniature value in form store', () => {
+      expect(formStore.get(key).newMiniature).toStrictEqual(newMiniature)
+    })
+    it('should update new miniature field', () => {
+      const expectedField: Field<File> = {
+        value: newMiniature,
+        canEdit: true
+      }
+      expect(vm.get('newMiniature')).toStrictEqual(expectedField)
+    })
+    it('should extract new images content', () => {
+      const expectedMiniature: Field<string> = {
+        value: oldMiniature,
+        canEdit: true
+      }
+      expect(vm.get('miniature')).toStrictEqual(expectedMiniature)
     })
   })
   describe('Update locations', () => {
@@ -553,6 +582,8 @@ describe('Product form VM', () => {
         cip7: '',
         cip13: '',
         ean13: '',
+        miniature: undefined,
+        newMiniature: undefined,
         images: [],
         newImages: [],
         priceWithoutTax: undefined,
@@ -573,12 +604,15 @@ describe('Product form VM', () => {
     })
     describe('DTO', () => {
       describe('For a dto', () => {
-        it('should prepare the dto', () => {
+        it('should prepare the dto', async () => {
           const newImages = [
             new File(['data1'], 'File 1', { type: 'image/png' }),
             new File(['data2'], 'File 2', { type: 'image/jpeg' }),
             new File(['data3'], 'File 3', { type: 'image/gif' })
           ]
+          const newMiniature = new File(['data1'], 'MINIATURE', {
+            type: 'image/png'
+          })
           const expectedDTO: CreateProductDTO = {
             name: 'test',
             cip7: '1234567',
@@ -586,6 +620,7 @@ describe('Product form VM', () => {
             ean13: '1234567890123',
             categoryUuid: 'abc123',
             laboratory: 'laboratory',
+            miniature: newMiniature,
             images: newImages,
             priceWithoutTax: 1200,
             percentTaxRate: 5,
@@ -601,7 +636,8 @@ describe('Product form VM', () => {
           vm.set('cip7', expectedDTO.cip7)
           vm.set('cip13', expectedDTO.cip13)
           vm.set('ean13', expectedDTO.ean13)
-          vm.set('newImages', newImages)
+          await vm.set('miniature', newMiniature)
+          await vm.set('images', newImages)
           vm.set('categoryUuid', expectedDTO.categoryUuid)
           vm.set('laboratory', expectedDTO.laboratory)
           vm.set('priceWithoutTax', '12')
@@ -655,6 +691,8 @@ describe('Product form VM', () => {
         cip7: product.cip7,
         cip13: product.cip13,
         ean13: product.ean13,
+        miniature: product.miniature,
+        newMiniature: undefined,
         images: product.images,
         newImages: [],
         priceWithoutTax: '4.32',
@@ -679,12 +717,15 @@ describe('Product form VM', () => {
     })
     describe('DTO', () => {
       describe('For a dto', () => {
-        it('should prepare the dto', () => {
+        it('should prepare the dto', async () => {
           const newImages = [
             new File(['data1'], 'File 1', { type: 'image/png' }),
             new File(['data2'], 'File 2', { type: 'image/jpeg' }),
             new File(['data3'], 'File 3', { type: 'image/gif' })
           ]
+          const newMiniature = new File(['data3'], 'File 3', {
+            type: 'image/gif'
+          })
           const expectedDTO: EditProductDTO = {
             name: 'test',
             cip7: '1234567',
@@ -692,6 +733,8 @@ describe('Product form VM', () => {
             ean13: '1234567890123',
             categoryUuid: 'abc123',
             laboratory: 'laboratory',
+            miniature: 'data:image/gif;base64,ZGF0YTM=',
+            newMiniature,
             images: product.images,
             newImages,
             priceWithoutTax: 1550,
@@ -711,7 +754,8 @@ describe('Product form VM', () => {
           vm.set('cip7', expectedDTO.cip7)
           vm.set('cip13', expectedDTO.cip13)
           vm.set('ean13', expectedDTO.ean13)
-          vm.set('newImages', newImages)
+          await vm.set('miniature', newMiniature)
+          await vm.set('images', newImages)
           vm.set('categoryUuid', expectedDTO.categoryUuid)
           vm.set('laboratory', expectedDTO.laboratory)
           vm.set('priceWithoutTax', '15.5')
@@ -730,6 +774,8 @@ describe('Product form VM', () => {
         it('should prepare the dto', () => {
           const expectedDTO: EditProductDTO = {
             name: 'test',
+            miniature: product.miniature,
+            newMiniature: undefined,
             images: product.images,
             newImages: [],
             cip7: undefined,
@@ -811,6 +857,8 @@ describe('Product form VM', () => {
         cip7: product.cip7,
         cip13: product.cip13,
         ean13: product.ean13,
+        miniature: product.miniature,
+        newMiniature: undefined,
         images: product.images,
         newImages: [],
         priceWithoutTax: '4.32',

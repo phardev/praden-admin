@@ -65,6 +65,18 @@ div(v-if="currentVM")
             label="Poids (kg)"
             @update:model-value="weightChanged"
           )
+        UFormGroup.pb-4(label="Miniature" name="miniature")
+          img.mb-4(
+            v-if="currentVM.get('miniature').value"
+            height=200 width=200
+            :src="currentVM.get('miniature').value"
+            alt="miniature"
+          )
+          ft-file-input(
+            v-if="currentVM.get('miniature').canEdit"
+            accept="image/*"
+            @input="miniatureChanged"
+          )
         UFormGroup.pb-4(label="Images" name="images")
           div.flex.items-center.gap-4
             div(v-for="(image, index) in images" :key="index")
@@ -251,6 +263,10 @@ const weightChanged = (weight: string) => {
 const images = computed(() => {
   return currentVM?.value?.get('images').value
 })
+
+const miniatureChanged = async (value: any) => {
+  await currentVM?.value?.set('miniature', value[0])
+}
 
 const imagesChanged = async (value: FileList) => {
   await currentVM?.value?.set('newImages', Array.from(value))

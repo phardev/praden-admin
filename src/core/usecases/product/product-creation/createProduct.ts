@@ -6,10 +6,11 @@ import { UUID } from '@core/types/types'
 
 export type CreateProductDTO = Omit<
   Product,
-  'uuid' | 'miniature' | 'isMedicine' | 'category'
+  'uuid' | 'isMedicine' | 'category' | 'images' | 'miniature'
 > & {
   categoryUuid?: UUID
-  newImages: Array<File>
+  images?: Array<File>
+  miniature?: File
 }
 
 export const createProduct = async (

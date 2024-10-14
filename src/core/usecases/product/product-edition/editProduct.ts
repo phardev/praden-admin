@@ -4,7 +4,12 @@ import { UUID } from '@core/types/types'
 import { useProductStore } from '@store/productStore'
 import { LocationGateway } from '@core/gateways/locationGateway'
 
-export type EditProductDTO = Partial<CreateProductDTO>
+export type EditProductDTO = Omit<CreateProductDTO, 'images' | 'miniature'> & {
+  images: Array<string>
+  newImages: Array<File>
+  miniature?: string
+  newMiniature?: File
+}
 
 export const editProduct = async (
   uuid: UUID,

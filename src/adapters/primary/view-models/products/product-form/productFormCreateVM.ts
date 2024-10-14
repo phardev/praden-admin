@@ -43,7 +43,8 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
       priceWithoutTax: this.setPriceWithoutTax.bind(this),
       percentTaxRate: this.setPercentTaxRate.bind(this),
       priceWithTax: this.setPriceWithTax.bind(this),
-      newImages: this.setNewImages.bind(this),
+      miniature: this.setMiniature.bind(this),
+      images: this.setImages.bind(this),
       locations: this.setLocations.bind(this)
     }
   }
@@ -106,7 +107,13 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
     }
   }
 
-  async setNewImages(newImages: Array<File>): Promise<void> {
+  async setMiniature(miniature: File): Promise<void> {
+    const data = await getFileContent(miniature)
+    super.set('miniature', data)
+    super.set('newMiniature', miniature)
+  }
+
+  async setImages(newImages: Array<File>): Promise<void> {
     super.set('newImages', newImages)
     const images = this.fieldsReader.get('images')
     for (const image of newImages) {
@@ -180,6 +187,11 @@ export class ProductFormCreateVM {
     return this.createField(fieldName)
   }
 
+  async setMiniature(miniature: File): Promise<void> {
+    const data = await getFileContent(miniature)
+    await this.fieldsWriter.set('miniature', data)
+  }
+
   private createField<T>(fieldName: string): Field<T> {
     return {
       value: this.fieldsReader.get(fieldName),
@@ -216,6 +228,7 @@ export class ProductFormCreateVM {
       ean13: this.fieldsReader.get('ean13'),
       categoryUuid: this.fieldsReader.get('categoryUuid'),
       laboratory: this.fieldsReader.get('laboratory'),
+      miniature: this.fieldsReader.get('newMiniature'),
       images: this.fieldsReader.get('newImages'),
       priceWithoutTax,
       percentTaxRate,
