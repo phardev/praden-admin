@@ -4,7 +4,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import { usePreparationStore } from '@store/preparationStore'
 import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
 import { Order } from '@core/entities/order'
-import { changeProductCip13ForPreparation } from '@core/usecases/order/change-product-cip13-for-preparation/changeProductCip13ForPreparation'
+import { changeProductEan13ForPreparation } from '@core/usecases/order/change-product-ean13-for-preparation/changeProductEan13ForPreparation'
 
 describe('Change product reference for preparation', () => {
   let preparationStore: any
@@ -15,29 +15,29 @@ describe('Change product reference for preparation', () => {
   describe('There is no current preparation', () => {
     it('should throw an error', () => {
       expect(() =>
-        whenChangeProductReferenceForPreparation(dolodent.cip13, '123456')
+        whenChangeProductReferenceForPreparation(dolodent.ean13, '123456')
       ).toThrow(NoPreparationSelectedError)
     })
   })
   describe('There is a current preparation', () => {
-    describe('There is existing cip13', () => {
-      it('should set the new cip13', () => {
+    describe('There is existing ean13', () => {
+      it('should set the new ean13', () => {
         givenCurrentPreparationIs(orderToPrepare1)
         const expectedOrder = JSON.parse(JSON.stringify(orderToPrepare1))
-        expectedOrder.lines[0].cip13 = '1234567890123'
+        expectedOrder.lines[0].ean13 = '1234567890123'
         whenChangeProductReferenceForPreparation(
-          dolodent.cip13,
+          dolodent.ean13,
           '1234567890123'
         )
         expectCurrentPreparationToBe(expectedOrder)
       })
-      it('should set another cip13', () => {
+      it('should set another ean13', () => {
         const order = JSON.parse(JSON.stringify(orderToPrepare1))
         givenCurrentPreparationIs(order)
         const expectedOrder = JSON.parse(JSON.stringify(order))
-        expectedOrder.lines[0].cip13 = '0987654321098'
+        expectedOrder.lines[0].ean13 = '0987654321098'
         whenChangeProductReferenceForPreparation(
-          dolodent.cip13,
+          dolodent.ean13,
           '0987654321098'
         )
         expectCurrentPreparationToBe(expectedOrder)
@@ -46,12 +46,12 @@ describe('Change product reference for preparation', () => {
   })
 
   describe('For another preparation', () => {
-    it('should set the cip13', () => {
+    it('should set the ean13', () => {
       givenCurrentPreparationIs(orderToPrepare2)
       const expectedOrder = JSON.parse(JSON.stringify(orderToPrepare2))
-      expectedOrder.lines[1].cip13 = '1234567890123'
+      expectedOrder.lines[1].ean13 = '1234567890123'
       whenChangeProductReferenceForPreparation(
-        ultraLevure.cip13,
+        ultraLevure.ean13,
         '1234567890123'
       )
       expectCurrentPreparationToBe(expectedOrder)
@@ -62,7 +62,7 @@ describe('Change product reference for preparation', () => {
     it('should do nothing', () => {
       givenCurrentPreparationIs(orderToPrepare1)
       whenChangeProductReferenceForPreparation(
-        ultraLevure.cip13,
+        ultraLevure.ean13,
         '1234567890123'
       )
       expectCurrentPreparationToBe(orderToPrepare1)
@@ -74,10 +74,10 @@ describe('Change product reference for preparation', () => {
   }
 
   const whenChangeProductReferenceForPreparation = (
-    oldCip13: string,
-    newCip13: string
+    oldEan13: string,
+    newEan13: string
   ) => {
-    changeProductCip13ForPreparation(oldCip13, newCip13)
+    changeProductEan13ForPreparation(oldEan13, newEan13)
   }
 
   const expectCurrentPreparationToBe = (order: Order) => {

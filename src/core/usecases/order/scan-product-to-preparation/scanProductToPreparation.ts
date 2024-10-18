@@ -11,20 +11,20 @@ export interface PreparationError {
   value: string
 }
 
-export const scanProductToPreparation = (cip13: string) => {
+export const scanProductToPreparation = (ean13: string) => {
   const preparationStore = usePreparationStore()
   if (!preparationStore.current) throw new NoPreparationSelectedError()
   const preparation: Order = JSON.parse(
     JSON.stringify(preparationStore.current)
   )
-  const line = preparation.lines.find((line: OrderLine) => line.ean13 === cip13)
+  const line = preparation.lines.find((line: OrderLine) => line.ean13 === ean13)
   if (line) {
     line.preparedQuantity++
     preparationStore.setCurrent(preparation)
   } else {
     const error: PreparationError = {
       type: PreparationErrorType.ProductNotInPreparationError,
-      value: cip13
+      value: ean13
     }
     preparationStore.setError(error)
   }

@@ -63,7 +63,7 @@ import { cancelPreparation } from '@core/usecases/order/cancel-preparation/cance
 import { askClientHowToFinishPreparation } from '@core/usecases/order/ask-client-how-to-finish-preparation/askClientHowToFinishPreparation'
 import { removeProductFromPreparation } from '@core/usecases/order/scan-product-to-remove-fom-preparation/scanProductToRemoveFromPreparation'
 import { setProductQuantityForPreparation } from '@core/usecases/order/set-product-quantity-for-preparation/setProductQuantityForPreparation'
-import { changeProductCip13ForPreparation } from '@core/usecases/order/change-product-cip13-for-preparation/changeProductCip13ForPreparation'
+import { changeProductEan13ForPreparation } from '@core/usecases/order/change-product-ean13-for-preparation/changeProductEan13ForPreparation'
 import { clearPreparationError } from '@core/usecases/order/preparation-error-clearing/clearPreparationError'
 
 definePageMeta({ layout: 'main' })
@@ -122,7 +122,7 @@ const changeProductQuantity = (cip13: string, quantity: number) => {
 }
 
 const changeProductReference = (oldReference: string, newReference: string) => {
-  changeProductCip13ForPreparation(oldReference, newReference)
+  changeProductEan13ForPreparation(oldReference, newReference)
   closeActionsModal()
 }
 

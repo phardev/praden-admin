@@ -91,7 +91,7 @@ describe('Start preparations VM', () => {
             detailHeaders,
             global: [
               {
-                reference: dolodent.cip13,
+                reference: dolodent.ean13,
                 name: dolodent.name,
                 locations: dolodent.locations,
                 quantity: 2
@@ -114,7 +114,7 @@ describe('Start preparations VM', () => {
                 },
                 lines: [
                   {
-                    reference: dolodent.cip13,
+                    reference: dolodent.ean13,
                     name: dolodent.name,
                     locations: dolodent.locations,
                     quantity: 2,
@@ -138,13 +138,13 @@ describe('Start preparations VM', () => {
             detailHeaders,
             global: [
               {
-                reference: ultraLevure.cip13,
+                reference: ultraLevure.ean13,
                 name: ultraLevure.name,
                 locations: ultraLevure.locations,
                 quantity: 2
               },
               {
-                reference: dolodent.cip13,
+                reference: dolodent.ean13,
                 name: dolodent.name,
                 locations: dolodent.locations,
                 quantity: 1
@@ -167,7 +167,7 @@ describe('Start preparations VM', () => {
                 },
                 lines: [
                   {
-                    reference: ultraLevure.cip13,
+                    reference: ultraLevure.ean13,
                     name: ultraLevure.name,
                     locations: ultraLevure.locations,
                     quantity: 2,
@@ -176,7 +176,7 @@ describe('Start preparations VM', () => {
                     totalPrice: '9,50\u00A0€'
                   },
                   {
-                    reference: dolodent.cip13,
+                    reference: dolodent.ean13,
                     name: dolodent.name,
                     locations: dolodent.locations,
                     quantity: 1,
@@ -200,13 +200,13 @@ describe('Start preparations VM', () => {
             detailHeaders,
             global: [
               {
-                reference: calmosine.cip13,
+                reference: calmosine.ean13,
                 name: calmosine.name,
                 locations: calmosine.locations,
                 quantity: 2
               },
               {
-                reference: productWithoutLocation.cip13,
+                reference: productWithoutLocation.ean13,
                 name: productWithoutLocation.name,
                 locations: productWithoutLocation.locations,
                 quantity: 3
@@ -231,7 +231,7 @@ describe('Start preparations VM', () => {
                 },
                 lines: [
                   {
-                    reference: calmosine.cip13,
+                    reference: calmosine.ean13,
                     name: calmosine.name,
                     locations: calmosine.locations,
                     quantity: 2,
@@ -240,7 +240,7 @@ describe('Start preparations VM', () => {
                     totalPrice: '17,82\u00A0€'
                   },
                   {
-                    reference: productWithoutLocation.cip13,
+                    reference: productWithoutLocation.ean13,
                     name: productWithoutLocation.name,
                     locations: productWithoutLocation.locations,
                     quantity: 3,
@@ -268,7 +268,7 @@ describe('Start preparations VM', () => {
             detailHeaders,
             global: [
               {
-                reference: dolodent.cip13,
+                reference: dolodent.ean13,
                 name: dolodent.name,
                 locations: dolodent.locations,
                 quantity: 2
@@ -291,7 +291,7 @@ describe('Start preparations VM', () => {
                 },
                 lines: [
                   {
-                    reference: dolodent.cip13,
+                    reference: dolodent.ean13,
                     name: dolodent.name,
                     locations: dolodent.locations,
                     quantity: 2,
@@ -315,13 +315,13 @@ describe('Start preparations VM', () => {
             detailHeaders,
             global: [
               {
-                reference: dolodent.cip13,
+                reference: dolodent.ean13,
                 name: dolodent.name,
                 locations: dolodent.locations,
                 quantity: 1
               },
               {
-                reference: ultraLevure.cip13,
+                reference: ultraLevure.ean13,
                 name: ultraLevure.name,
                 locations: ultraLevure.locations,
                 quantity: 2
@@ -344,7 +344,7 @@ describe('Start preparations VM', () => {
                 },
                 lines: [
                   {
-                    reference: dolodent.cip13,
+                    reference: dolodent.ean13,
                     name: dolodent.name,
                     locations: dolodent.locations,
                     quantity: 1,
@@ -353,7 +353,7 @@ describe('Start preparations VM', () => {
                     totalPrice: '5,50\u00A0€'
                   },
                   {
-                    reference: ultraLevure.cip13,
+                    reference: ultraLevure.ean13,
                     name: ultraLevure.name,
                     locations: ultraLevure.locations,
                     quantity: 2,
@@ -378,7 +378,7 @@ describe('Start preparations VM', () => {
           detailHeaders,
           global: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               locations: dolodent.locations,
               quantity: 1
@@ -401,7 +401,7 @@ describe('Start preparations VM', () => {
               },
               lines: [
                 {
-                  reference: dolodent.cip13,
+                  reference: dolodent.ean13,
                   name: dolodent.name,
                   locations: dolodent.locations,
                   quantity: 1,
@@ -426,7 +426,7 @@ describe('Start preparations VM', () => {
           detailHeaders,
           global: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               locations: dolodent.locations,
               quantity: 1
@@ -449,7 +449,7 @@ describe('Start preparations VM', () => {
               },
               lines: [
                 {
-                  reference: dolodent.cip13,
+                  reference: dolodent.ean13,
                   name: dolodent.name,
                   locations: dolodent.locations,
                   quantity: 1,
@@ -481,13 +481,13 @@ describe('Start preparations VM', () => {
             detailHeaders,
             global: [
               {
-                reference: ultraLevure.cip13,
+                reference: ultraLevure.ean13,
                 name: ultraLevure.name,
                 locations: ultraLevure.locations,
                 quantity: 2
               },
               {
-                reference: dolodent.cip13,
+                reference: dolodent.ean13,
                 name: dolodent.name,
                 locations: dolodent.locations,
                 quantity: 3
@@ -510,7 +510,7 @@ describe('Start preparations VM', () => {
                 },
                 lines: [
                   {
-                    reference: dolodent.cip13,
+                    reference: dolodent.ean13,
                     name: dolodent.name,
                     locations: dolodent.locations,
                     quantity: 2,
@@ -537,7 +537,7 @@ describe('Start preparations VM', () => {
                 },
                 lines: [
                   {
-                    reference: ultraLevure.cip13,
+                    reference: ultraLevure.ean13,
                     name: ultraLevure.name,
                     locations: ultraLevure.locations,
                     quantity: 2,
@@ -546,7 +546,7 @@ describe('Start preparations VM', () => {
                     totalPrice: '9,50\u00A0€'
                   },
                   {
-                    reference: dolodent.cip13,
+                    reference: dolodent.ean13,
                     name: dolodent.name,
                     locations: dolodent.locations,
                     quantity: 1,
@@ -577,13 +577,13 @@ describe('Start preparations VM', () => {
             detailHeaders,
             global: [
               {
-                reference: dolodent.cip13,
+                reference: dolodent.ean13,
                 name: dolodent.name,
                 locations: dolodent.locations,
                 quantity: 3
               },
               {
-                reference: ultraLevure.cip13,
+                reference: ultraLevure.ean13,
                 name: ultraLevure.name,
                 locations: ultraLevure.locations,
                 quantity: 2
@@ -606,7 +606,7 @@ describe('Start preparations VM', () => {
                 },
                 lines: [
                   {
-                    reference: dolodent.cip13,
+                    reference: dolodent.ean13,
                     name: dolodent.name,
                     locations: dolodent.locations,
                     quantity: 2,
@@ -633,7 +633,7 @@ describe('Start preparations VM', () => {
                 },
                 lines: [
                   {
-                    reference: dolodent.cip13,
+                    reference: dolodent.ean13,
                     name: dolodent.name,
                     locations: dolodent.locations,
                     quantity: 1,
@@ -642,7 +642,7 @@ describe('Start preparations VM', () => {
                     totalPrice: '5,50\u00A0€'
                   },
                   {
-                    reference: ultraLevure.cip13,
+                    reference: ultraLevure.ean13,
                     name: ultraLevure.name,
                     locations: ultraLevure.locations,
                     quantity: 2,

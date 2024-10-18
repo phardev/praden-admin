@@ -14,7 +14,7 @@ describe('Scan product to remove from preparation', () => {
   })
   describe('There is no current preparation', () => {
     it('should throw an error', () => {
-      expect(() => whenRemoveProductFromPreparation(dolodent.cip13)).toThrow(
+      expect(() => whenRemoveProductFromPreparation(dolodent.ean13)).toThrow(
         NoPreparationSelectedError
       )
     })
@@ -27,7 +27,7 @@ describe('Scan product to remove from preparation', () => {
         givenCurrentPreparationIs(order)
         const expectedOrder = JSON.parse(JSON.stringify(orderToPrepare1))
         expectedOrder.lines[0].preparedQuantity = 0
-        whenRemoveProductFromPreparation(dolodent.cip13)
+        whenRemoveProductFromPreparation(dolodent.ean13)
         expectCurrentPreparationToBe(expectedOrder)
       })
       it('should remove 1 to the prepared quantity if the quantity is > 1', () => {
@@ -36,7 +36,7 @@ describe('Scan product to remove from preparation', () => {
         givenCurrentPreparationIs(order)
         const expectedOrder = JSON.parse(JSON.stringify(order))
         expectedOrder.lines[0].preparedQuantity = 1
-        whenRemoveProductFromPreparation(dolodent.cip13)
+        whenRemoveProductFromPreparation(dolodent.ean13)
         expectCurrentPreparationToBe(expectedOrder)
       })
       it('should remove from another preparation', () => {
@@ -45,21 +45,21 @@ describe('Scan product to remove from preparation', () => {
         givenCurrentPreparationIs(order)
         const expectedOrder = JSON.parse(JSON.stringify(order))
         expectedOrder.lines[1].preparedQuantity = 1
-        whenRemoveProductFromPreparation(ultraLevure.cip13)
+        whenRemoveProductFromPreparation(ultraLevure.ean13)
         expectCurrentPreparationToBe(expectedOrder)
       })
     })
     describe('There is no prepared quantity', () => {
       it('should do nothing', () => {
         givenCurrentPreparationIs(orderToPrepare1)
-        whenRemoveProductFromPreparation(dolodent.cip13)
+        whenRemoveProductFromPreparation(dolodent.ean13)
         expectCurrentPreparationToBe(orderToPrepare1)
       })
     })
     describe('The product is not in the preparation', () => {
       it('should do nothing', () => {
         givenCurrentPreparationIs(orderToPrepare1)
-        whenRemoveProductFromPreparation(ultraLevure.cip13)
+        whenRemoveProductFromPreparation(ultraLevure.ean13)
         expectCurrentPreparationToBe(orderToPrepare1)
       })
     })
@@ -69,8 +69,8 @@ describe('Scan product to remove from preparation', () => {
     preparationStore.current = JSON.parse(JSON.stringify(order))
   }
 
-  const whenRemoveProductFromPreparation = (cip13: string) => {
-    removeProductFromPreparation(cip13)
+  const whenRemoveProductFromPreparation = (ean13: string) => {
+    removeProductFromPreparation(ean13)
   }
 
   const expectCurrentPreparationToBe = (order: Order) => {

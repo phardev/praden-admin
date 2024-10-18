@@ -34,7 +34,15 @@ export class RealEmailGateway implements EmailGateway {
           address: shippingAddress.address,
           phone: shippingAddress.phone
         },
-        lines: preparationStartedMessage.lines,
+        lines: preparationStartedMessage.lines.map((l) => {
+          return {
+            img: l.miniature,
+            name: l.name,
+            unitPrice: l.unitPrice,
+            quantity: l.quantity,
+            total: l.total
+          }
+        }),
         total: {
           product_price: totals.productPrice,
           shipping_price: totals.shippingPrice,
