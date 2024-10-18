@@ -1,5 +1,10 @@
 import { OrderGateway } from '@core/gateways/orderGateway'
-import { Order } from '@core/entities/order'
+import {
+  DeliveryStatus,
+  Order,
+  OrderLine,
+  PaymentStatus
+} from '@core/entities/order'
 import type { UUID } from '@core/types/types'
 import axios from 'axios'
 import { zoneGeo } from '@utils/testData/locations'
@@ -62,8 +67,14 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
     return Promise.resolve(this.convertToOrder(res.data))
   }
 
-  list(): Promise<Array<Order>> {
-    throw Error('Not implemented')
+  async list(): Promise<Array<Order>> {
+    const res = await axios.get(`${this.baseUrl}/orders/`)
+    console.log('res.data: ', res.data)
+    return Promise.resolve(
+      res.data.items.map((d: any) => {
+        return this.convertToOrder(d)
+      })
+    )
   }
 
   async listOrdersToPrepare(): Promise<Array<Order>> {
@@ -104,12 +115,21 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
 
   private convertToOrder(data: any): Order {
     const copy = JSON.parse(JSON.stringify(data))
+    copy.messages = []
     delete copy.payment.sessionUrl
     copy.lines = copy.lines.map((l: any) => {
-      return {
-        ...l,
-        locations: { [zoneGeo.uuid]: l.location }
+      const res: OrderLine = {
+        ean13: l.ean13,
+        expectedQuantity: l.expectedQuantity,
+        name: l.name,
+        percentTaxRate: l.percentTaxRate,
+        preparedQuantity: l.preparedQuantity,
+        unitAmount: l.priceWithoutTax,
+        deliveryStatus: this.getDeliveryStatus(l.deliveryStatus),
+        locations: { [zoneGeo.uuid]: l.location },
+        updatedAt: l.updatedAt
       }
+      return res
     })
     copy.lines.forEach((l: any) => {
       delete l.img
@@ -122,6 +142,21 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
       delete m.content.data
       m.content = m.content.type
     })
+    copy.payment.status = this.getPaymentStatus(copy.payment.status)
     return copy
+  }
+  private getDeliveryStatus(status: string): DeliveryStatus {
+    if (status === 'CREATED') return DeliveryStatus.Created
+    if (status === 'PROCESSING') return DeliveryStatus.Processing
+    if (status === 'SHIPPED') return DeliveryStatus.Shipped
+    if (status === 'DELIVERED') return DeliveryStatus.Delivered
+    if (status === 'CANCELED') return DeliveryStatus.Canceled
+    return DeliveryStatus.Created
+  }
+
+  private getPaymentStatus(status: string): PaymentStatus {
+    if (status === 'WAITINGFORPAYMENT') return PaymentStatus.WaitingForPayment
+    if (status === 'PROCESSING') return PaymentStatus.Payed
+    return PaymentStatus.WaitingForPayment
   }
 }

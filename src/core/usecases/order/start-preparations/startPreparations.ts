@@ -56,7 +56,7 @@ const sendStartPreparationEmail = async (
     lines: order.lines.map((line) => {
       const unitPriceWithTax =
         line.unitAmount + (line.unitAmount * line.percentTaxRate) / 100
-      const img = productStore.items.find((p) => p.cip13 === line.cip13).img
+      const img = productStore.items.find((p) => p.cip13 === line.ean13).img
       return {
         img,
         name: line.name,

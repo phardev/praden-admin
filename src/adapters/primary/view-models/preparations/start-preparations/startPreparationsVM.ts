@@ -124,7 +124,7 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
             addTaxToPrice(line.unitAmount, line.percentTaxRate) / 100
           const quantity = line.expectedQuantity
           return {
-            reference: line.cip13,
+            reference: line.ean13,
             name: line.name,
             locations: line.locations,
             quantity,

@@ -8,7 +8,7 @@ export const removeProductFromPreparation = (cip13: string) => {
   const preparation: Order = JSON.parse(
     JSON.stringify(preparationStore.current)
   )
-  const line = preparation.lines.find((line: OrderLine) => line.cip13 === cip13)
+  const line = preparation.lines.find((line: OrderLine) => line.ean13 === cip13)
   if (line && line.preparedQuantity > 0) {
     line.preparedQuantity--
   }

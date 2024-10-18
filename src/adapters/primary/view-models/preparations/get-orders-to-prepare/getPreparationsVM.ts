@@ -73,7 +73,7 @@ export const isStockAvailable = (lines: Array<OrderLine>): boolean => {
   const productStore = useProductStore()
   const stock = productStore.stock
   return lines.every(
-    (l) => stock[l.cip13] >= l.expectedQuantity - l.preparedQuantity
+    (l) => stock[l.ean13] >= l.expectedQuantity - l.preparedQuantity
   )
 }
 

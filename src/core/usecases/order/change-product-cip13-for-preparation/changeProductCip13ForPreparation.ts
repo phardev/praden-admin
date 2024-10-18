@@ -12,10 +12,10 @@ export const changeProductCip13ForPreparation = (
     JSON.stringify(preparationStore.current)
   )
   const line = preparation.lines.find(
-    (line: OrderLine) => line.cip13 === oldCip13
+    (line: OrderLine) => line.ean13 === oldCip13
   )
   if (line) {
-    line.cip13 = newCip13
+    line.ean13 = newCip13
   }
   preparationStore.setCurrent(preparation)
 }

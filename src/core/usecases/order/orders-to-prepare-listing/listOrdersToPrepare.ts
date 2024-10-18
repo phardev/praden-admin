@@ -23,7 +23,7 @@ const getUniqueProductsCip13 = (orders: Array<Order>): Array<string> => {
   const cip13Set: Set<string> = new Set()
   orders.forEach((order) => {
     order.lines.forEach((line) => {
-      cip13Set.add(line.cip13)
+      cip13Set.add(line.ean13)
     })
   })
   return Array.from(cip13Set)

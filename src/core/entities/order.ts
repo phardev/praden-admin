@@ -20,7 +20,7 @@ export enum DeliveryStatus {
 
 export interface OrderLine {
   name: string
-  cip13: string
+  ean13: string
   unitAmount: number
   expectedQuantity: number
   preparedQuantity: number

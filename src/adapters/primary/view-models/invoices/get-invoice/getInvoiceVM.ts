@@ -211,7 +211,7 @@ const getOrderLinesTable = (
       const unitAmountWithTax =
         line.unitAmount + (line.unitAmount * line.percentTaxRate) / 100
       return {
-        reference: line.cip13,
+        reference: line.ean13,
         name: line.name,
         taxRate: `${line.percentTaxRate} %`,
         unitAmountWithoutTax: formatter.format(line.unitAmount / 100),
@@ -265,7 +265,7 @@ const getRefundOrderLinesTable = (
       const unitAmountWithTax =
         line.unitAmount + (line.unitAmount * line.percentTaxRate) / 100
       return {
-        reference: line.cip13,
+        reference: line.ean13,
         name: line.name,
         taxRate: `${line.percentTaxRate} %`,
         unitAmountWithoutTax: formatter.format(-line.unitAmount / 100),
