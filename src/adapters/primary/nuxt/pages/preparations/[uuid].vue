@@ -65,6 +65,7 @@ import { removeProductFromPreparation } from '@core/usecases/order/scan-product-
 import { setProductQuantityForPreparation } from '@core/usecases/order/set-product-quantity-for-preparation/setProductQuantityForPreparation'
 import { changeProductEan13ForPreparation } from '@core/usecases/order/change-product-ean13-for-preparation/changeProductEan13ForPreparation'
 import { clearPreparationError } from '@core/usecases/order/preparation-error-clearing/clearPreparationError'
+import { scanProductToPreparation } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
 
 definePageMeta({ layout: 'main' })
 

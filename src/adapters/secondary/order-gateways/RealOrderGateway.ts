@@ -79,7 +79,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
   async listOrdersToPrepare(): Promise<Array<Order>> {
     const res = await axios.get(`${this.baseUrl}/preparations/`)
     return Promise.resolve(
-      res.data.map((d: any) => {
+      res.data.items.map((d: any) => {
         return this.convertToOrder(d)
       })
     )
