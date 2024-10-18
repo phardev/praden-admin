@@ -64,12 +64,11 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
 
   async getByUuid(uuid: UUID): Promise<Order> {
     const res = await axios.get(`${this.baseUrl}/orders/${uuid}/`)
-    return Promise.resolve(this.convertToOrder(res.data))
+    return Promise.resolve(this.convertToOrder(res.data.item))
   }
 
   async list(): Promise<Array<Order>> {
     const res = await axios.get(`${this.baseUrl}/orders/`)
-    console.log('res.data: ', res.data)
     return Promise.resolve(
       res.data.items.map((d: any) => {
         return this.convertToOrder(d)
