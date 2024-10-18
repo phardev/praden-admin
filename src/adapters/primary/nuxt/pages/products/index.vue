@@ -58,9 +58,12 @@ const productsVM = computed(() => {
   return getProductsVM(routeName)
 })
 
-const load = async () => {
-  await listProducts(limit, offset, productGateway)
-  offset += limit
+const load = async ($state) => {
+  if (!search.value) {
+    await listProducts(limit, offset, productGateway)
+    offset += limit
+    $state.loaded()
+  }
 }
 
 const search = ref(productsVM.value.currentSearch)
@@ -68,10 +71,8 @@ const search = ref(productsVM.value.currentSearch)
 let debounceTimer
 
 const searchChanged = (e: any) => {
-  console.log('search changed: ', e.target.value)
   if (debounceTimer) clearTimeout(debounceTimer)
   debounceTimer = setTimeout(() => {
-    console.log('on cherche: ', e.target.value)
     searchProducts(routeName, e.target.value, useSearchGateway())
   }, 300)
 }

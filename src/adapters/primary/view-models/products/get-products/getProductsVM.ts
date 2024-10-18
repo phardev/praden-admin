@@ -10,6 +10,7 @@ export interface GetProductsItemVM {
   name: string
   img: string
   reference: string
+  laboratory: string
   category: string
   priceWithoutTax: string
   priceWithTax: string
@@ -44,6 +45,10 @@ export const getProductsVM = (key: string): GetProductsVM => {
       value: 'reference'
     },
     {
+      name: 'Laboratoire',
+      value: 'laboratory'
+    },
+    {
       name: 'Catégorie',
       value: 'category'
     },
@@ -70,6 +75,7 @@ export const getProductsVM = (key: string): GetProductsVM => {
         name: p.name,
         img: p.miniature,
         reference: p.ean13,
+        laboratory: p.laboratory,
         category: p.category?.name || '',
         priceWithoutTax: formatter.format(p.priceWithoutTax / 100),
         priceWithTax: formatter.format(priceWithTax / 100),
