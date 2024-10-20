@@ -24,6 +24,8 @@
     template(#name="{ item }")
       .font-medium.text-default {{ item.name }}
   InfiniteLoading(@infinite="load")
+    template(#complete)
+      div
 </template>
 
 <script lang="ts" setup>
@@ -63,6 +65,8 @@ const load = async ($state) => {
     await listProducts(limit, offset, productGateway)
     offset += limit
     $state.loaded()
+  } else {
+    $state.complete()
   }
 }
 
