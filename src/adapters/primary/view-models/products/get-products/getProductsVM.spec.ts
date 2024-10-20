@@ -174,11 +174,25 @@ describe('Get products VM', () => {
     })
   })
 
+  describe('There is an error in search', () => {
+    beforeEach(() => {
+      searchStore.setError(key, 'dol')
+    })
+    it('should display the error', () => {
+      expectedVM = {
+        searchError:
+          'Veuillez saisir au moins 3 caractères pour lancer la recherche.'
+      }
+      expectVMToMatch(expectedVM)
+    })
+  })
+
   const expectVMToMatch = (expectedVM: Partial<GetProductsVM>) => {
     const emptyVM: GetProductsVM = {
       headers: expectedHeaders,
       items: [],
-      currentSearch: undefined
+      currentSearch: undefined,
+      searchError: undefined
     }
     expect(getProductsVM(key)).toMatchObject({ ...emptyVM, ...expectedVM })
   }

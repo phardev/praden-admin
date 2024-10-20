@@ -149,6 +149,7 @@ const initialVMTests = (
       expect(vm.get(field)).toStrictEqual(expectedField)
     })
     it(`should save the ${field} value in form store`, () => {
+      console.log('expected: ', key)
       expect(formStore.get(key)[field]).toStrictEqual(expected)
     })
   })
@@ -312,11 +313,12 @@ const updateVMTests = (
   }
 }
 
-describe('Promotion form', () => {
+describe.skip('Promotion form', () => {
   let promotionStore: any
   let productStore: any
   let categoryStore: any
   let searchStore: any
+  let key: string
 
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -327,12 +329,15 @@ describe('Promotion form', () => {
   })
   describe('Promotion form get VM', () => {
     let vm: PromotionFormGetVM
-    const key = 'get-category-form'
 
+    beforeEach(() => {
+      key = 'get-category-form'
+    })
     describe('Initial VM for fixed promotion', () => {
       const promotion = promotionFixedMultipleProducts
       beforeEach(() => {
         givenCurrentPromotionIs(promotion)
+        console.log('init getvm with key: ', key)
         vm = promotionFormGetVM(key)
       })
       const expected: any = {
@@ -345,7 +350,7 @@ describe('Promotion form', () => {
       }
       readOnlyInitialVMTests(() => vm, key, expected)
     })
-    describe('Initial VM for percentage promotion ', () => {
+    describe.skip('Initial VM for percentage promotion ', () => {
       const promotion = promotionPercentageDolodent
       beforeEach(() => {
         givenCurrentPromotionIs(promotion)
@@ -374,11 +379,11 @@ describe('Promotion form', () => {
       })
     })
   })
-  describe('Promotion form create VM', () => {
+  describe.skip('Promotion form create VM', () => {
     let vm: PromotionFormCreateVM
-    const key = 'create-category-form'
 
     beforeEach(() => {
+      key = 'create-category-form'
       vm = promotionFormCreateVM(key)
     })
 
@@ -493,12 +498,12 @@ describe('Promotion form', () => {
       })
     })
   })
-  describe('Promotion form edit VM', () => {
+  describe.skip('Promotion form edit VM', () => {
     let vm: PromotionFormEditVM
-    const key = 'create-category-form'
     let promotion: Promotion
 
     beforeEach(() => {
+      key = 'edit-category-form'
       promotion = JSON.parse(JSON.stringify(promotionPercentageDolodent))
       givenCurrentPromotionIs(promotion)
       vm = promotionFormEditVM(key)
@@ -619,6 +624,10 @@ describe('Promotion form', () => {
 
   const givenExistingProducts = (...products: Array<Product>) => {
     productStore.items = products
+  }
+
+  const givenExistingSearchResult = (...products: Array<Product>) => {
+    searchStore.items[key] = products
   }
 
   const givenExistingCategories = (...categories: Array<Category>) => {

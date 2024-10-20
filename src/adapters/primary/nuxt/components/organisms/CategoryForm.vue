@@ -140,8 +140,18 @@ const descriptionChanged = (description: string) => {
   currentVM?.value?.set('description', description)
 }
 
+let debounceTimer
+const minimumQueryLength = 3
+
 const searchChanged = (e: any) => {
-  searchProducts(routeName, e.target.value, useSearchGateway())
+  if (debounceTimer) clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(() => {
+    const filters = {
+      query: e.target.value,
+      minimumQueryLength
+    }
+    searchProducts(routeName, filters, useSearchGateway())
+  }, 300)
 }
 
 const addProducts = () => {

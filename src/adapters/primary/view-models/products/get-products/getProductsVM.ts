@@ -21,6 +21,7 @@ export interface GetProductsVM {
   headers: Array<Header>
   items: Array<GetProductsItemVM>
   currentSearch: string | undefined
+  searchError: string | undefined
 }
 
 export const getProductsVM = (key: string): GetProductsVM => {
@@ -29,6 +30,7 @@ export const getProductsVM = (key: string): GetProductsVM => {
   const allProducts = productStore.items
   const searchResult = searchStore.get(key)
   const searchFilter = searchStore.getFilter(key)
+  const searchError = searchStore.getError(key)
   const products = searchResult || allProducts
   const formatter = priceFormatter('fr-FR', 'EUR')
   const headers: Array<Header> = [
@@ -82,6 +84,9 @@ export const getProductsVM = (key: string): GetProductsVM => {
         availableStock: p.availableStock
       }
     }),
-    currentSearch: searchFilter
+    currentSearch: searchFilter,
+    searchError: searchError
+      ? 'Veuillez saisir au moins 3 caractères pour lancer la recherche.'
+      : undefined
   }
 }
