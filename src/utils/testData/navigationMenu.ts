@@ -13,6 +13,11 @@ export const fullMenu: NavigationMenu = {
           href: '/products'
         },
         {
+          name: 'Laboratoires',
+          icon: 'mdi:beaker-outline',
+          href: '/laboratories'
+        },
+        {
           name: 'Catégories',
           icon: 'tabler:category',
           href: '/categories'
@@ -31,6 +36,11 @@ export const fullMenu: NavigationMenu = {
           name: 'Clients',
           icon: 'material-symbols:person-outline-rounded',
           href: '/customers'
+        },
+        {
+          name: 'SAV',
+          icon: 'streamline:interface-help-customer-support-2-customer-headphones-headset-help-microphone-phone-person-support',
+          href: '/after-sales'
         }
       ]
     },
