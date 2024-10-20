@@ -118,6 +118,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
     delete copy.payment.sessionUrl
     copy.lines = copy.lines.map((l: any) => {
       const res: OrderLine = {
+        productUuid: l.productUuid,
         ean13: l.ean13,
         expectedQuantity: l.expectedQuantity,
         name: l.name,
@@ -155,7 +156,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
 
   private getPaymentStatus(status: string): PaymentStatus {
     if (status === 'WAITINGFORPAYMENT') return PaymentStatus.WaitingForPayment
-    if (status === 'PROCESSING') return PaymentStatus.Payed
+    if (status === 'PAYED') return PaymentStatus.Payed
     return PaymentStatus.WaitingForPayment
   }
 }
