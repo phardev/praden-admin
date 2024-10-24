@@ -16,9 +16,8 @@ export interface Promotion {
   endDate?: Timestamp
 }
 
-export type CreatePromotionDTO = Omit<Promotion, 'uuid' | 'products'> & {
-  productUuids: Array<UUID>
-}
+export type CreatePromotionDTO = Omit<Promotion, 'uuid'>
+
 export type EditPromotionDTO = Partial<CreatePromotionDTO>
 
 export const isPromotionStarted = (p: Promotion, now: Timestamp): boolean => {

@@ -6,7 +6,6 @@ import {
   PromotionProductItemVM,
   TypeChoiceVM
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { useProductStore } from '@store/productStore'
 import { Product } from '@core/entities/product'
 
 export abstract class PromotionFormVM {
@@ -55,16 +54,13 @@ export abstract class PromotionFormVM {
 
   getProducts(): Field<Array<PromotionProductItemVM>> {
     const addedProducts = this.fieldsReader.get('products')
-    const productStore = useProductStore()
-    const allProducts: Array<Product> = productStore.items
     const value = addedProducts.map((product: Product) => {
-      const p: Product = allProducts.find((p) => p.uuid === product.uuid)
       return {
-        uuid: p.uuid,
-        name: p.name,
-        reference: p.cip13,
-        category: p.category?.name,
-        laboratory: p.laboratory
+        uuid: product.uuid,
+        name: product.name,
+        reference: product.ean13,
+        category: product.category?.name,
+        laboratory: product.laboratory
       }
     })
     return {

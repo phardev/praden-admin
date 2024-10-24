@@ -9,13 +9,9 @@
 </template>
 
 <script lang="ts" setup>
-import { listProducts } from '@core/usecases/product/product-listing/listProducts'
 import { getPromotion } from '@core/usecases/promotions/promotion-get/getPromotion'
 import { promotionFormGetVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
-import { useProductGateway } from '../../../../../../../gateways/productGateway'
 import { usePromotionGateway } from '../../../../../../../gateways/promotionGateway'
-import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
-import { useCategoryGateway } from '../../../../../../../gateways/categoryGateway'
 
 definePageMeta({ layout: 'main' })
 
@@ -26,8 +22,6 @@ const router = useRouter()
 const routeName = router.currentRoute.value.name
 
 onMounted(async () => {
-  listProducts(useProductGateway())
-  listCategories(useCategoryGateway())
   await getPromotion(promotionUuid, usePromotionGateway())
   vm.value = promotionFormGetVM(routeName)
 })

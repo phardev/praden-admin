@@ -36,7 +36,7 @@ describe('Edit promotion', () => {
         name: 'New name',
         type: ReductionType.Fixed,
         amount: 150,
-        products: [calmosine.cip13],
+        products: [calmosine],
         startDate: 123456789,
         endDate: 987654321
       }
@@ -45,7 +45,7 @@ describe('Edit promotion', () => {
         name: 'New name',
         type: ReductionType.Fixed,
         amount: 150,
-        products: [calmosine.cip13],
+        products: [calmosine],
         startDate: 123456789,
         endDate: 987654321
       }
