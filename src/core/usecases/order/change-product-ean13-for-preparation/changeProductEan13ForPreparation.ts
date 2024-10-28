@@ -2,9 +2,9 @@ import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedEr
 import { usePreparationStore } from '@store/preparationStore'
 import { Order, OrderLine } from '@core/entities/order'
 
-export const changeProductCip13ForPreparation = (
-  oldCip13: string,
-  newCip13: string
+export const changeProductEan13ForPreparation = (
+  oldEan13: string,
+  newEan13: string
 ) => {
   const preparationStore = usePreparationStore()
   if (!preparationStore.current) throw new NoPreparationSelectedError()
@@ -12,10 +12,10 @@ export const changeProductCip13ForPreparation = (
     JSON.stringify(preparationStore.current)
   )
   const line = preparation.lines.find(
-    (line: OrderLine) => line.cip13 === oldCip13
+    (line: OrderLine) => line.ean13 === oldEan13
   )
   if (line) {
-    line.cip13 = newCip13
+    line.ean13 = newEan13
   }
   preparationStore.setCurrent(preparation)
 }

@@ -25,7 +25,7 @@ export const orderToPrepare1: AnonymousOrder = {
   lines: [
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 2,
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
@@ -62,7 +62,7 @@ export const orderToPrepare2: AnonymousOrder = {
   lines: [
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 1,
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
@@ -73,7 +73,7 @@ export const orderToPrepare2: AnonymousOrder = {
     },
     {
       name: ultraLevure.name,
-      cip13: ultraLevure.cip13,
+      ean13: ultraLevure.ean13,
       expectedQuantity: 2,
       preparedQuantity: 0,
       unitAmount: ultraLevure.priceWithoutTax,
@@ -110,7 +110,7 @@ export const orderToPrepare3: AnonymousOrder = {
   lines: [
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 1,
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
@@ -147,7 +147,7 @@ export const orderPrepared1: AnonymousOrder = {
   lines: [
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 2,
       preparedQuantity: 2,
       unitAmount: dolodent.priceWithoutTax,
@@ -184,7 +184,7 @@ export const orderInPreparation1: AnonymousOrder = {
   lines: [
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 2,
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
@@ -230,7 +230,7 @@ export const orderDelivered1: AnonymousOrder = {
   lines: [
     {
       name: anaca3Minceur.name,
-      cip13: anaca3Minceur.cip13,
+      ean13: anaca3Minceur.ean13,
       expectedQuantity: 3,
       preparedQuantity: 3,
       unitAmount: anaca3Minceur.priceWithoutTax,
@@ -241,7 +241,7 @@ export const orderDelivered1: AnonymousOrder = {
     },
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 1,
       preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
@@ -278,7 +278,7 @@ export const orderDelivered2: AnonymousOrder = {
   lines: [
     {
       name: ultraLevure.name,
-      cip13: ultraLevure.cip13,
+      ean13: ultraLevure.ean13,
       expectedQuantity: 3,
       preparedQuantity: 3,
       unitAmount: ultraLevure.priceWithoutTax,
@@ -289,7 +289,7 @@ export const orderDelivered2: AnonymousOrder = {
     },
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 1,
       preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
@@ -326,7 +326,7 @@ export const orderWithMissingProduct1: AnonymousOrder = {
   lines: [
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 2,
       preparedQuantity: 2,
       unitAmount: dolodent.priceWithoutTax,
@@ -337,7 +337,7 @@ export const orderWithMissingProduct1: AnonymousOrder = {
     },
     {
       name: ultraLevure.name,
-      cip13: ultraLevure.cip13,
+      ean13: ultraLevure.ean13,
       expectedQuantity: 4,
       preparedQuantity: 0,
       unitAmount: ultraLevure.priceWithoutTax,
@@ -383,7 +383,7 @@ export const orderWithMissingProduct2: AnonymousOrder = {
   lines: [
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 2,
       preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
@@ -394,7 +394,7 @@ export const orderWithMissingProduct2: AnonymousOrder = {
     },
     {
       name: ultraLevure.name,
-      cip13: ultraLevure.cip13,
+      ean13: ultraLevure.ean13,
       expectedQuantity: 4,
       preparedQuantity: 2,
       unitAmount: ultraLevure.priceWithoutTax,
@@ -440,7 +440,7 @@ export const orderToCancel: AnonymousOrder = {
   lines: [
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 2,
       preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
@@ -486,7 +486,7 @@ export const orderNotPayed1: AnonymousOrder = {
   lines: [
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 2,
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
@@ -522,7 +522,7 @@ export const orderSaved1: AnonymousOrder = {
   lines: [
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 2,
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
@@ -558,7 +558,7 @@ export const orderWaitingForClientAnswer1: AnonymousOrder = {
   lines: [
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 2,
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
@@ -599,7 +599,7 @@ export const orderWaitingForClientAnswer2: AnonymousOrder = {
   lines: [
     {
       name: ultraLevure.name,
-      cip13: ultraLevure.cip13,
+      ean13: ultraLevure.ean13,
       expectedQuantity: 3,
       preparedQuantity: 2,
       unitAmount: ultraLevure.priceWithoutTax,
@@ -610,7 +610,7 @@ export const orderWaitingForClientAnswer2: AnonymousOrder = {
     },
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 1,
       preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
@@ -652,7 +652,7 @@ export const orderWaitingForRestock: AnonymousOrder = {
   lines: [
     {
       name: chamomilla.name,
-      cip13: chamomilla.cip13,
+      ean13: chamomilla.ean13,
       expectedQuantity: 2,
       preparedQuantity: 0,
       unitAmount: chamomilla.priceWithoutTax,
@@ -697,7 +697,7 @@ export const orderPartiallyShipped1: AnonymousOrder = {
   lines: [
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 2,
       preparedQuantity: 1,
       unitAmount: dolodent.priceWithoutTax,
@@ -708,7 +708,7 @@ export const orderPartiallyShipped1: AnonymousOrder = {
     },
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: -1,
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
@@ -754,7 +754,7 @@ export const orderVFASF: AnonymousOrder = {
   lines: [
     {
       name: calmosine.name,
-      cip13: calmosine.cip13,
+      ean13: calmosine.ean13,
       expectedQuantity: 2,
       preparedQuantity: 0,
       unitAmount: calmosine.priceWithoutTax,
@@ -765,7 +765,7 @@ export const orderVFASF: AnonymousOrder = {
     },
     {
       name: hemoclar.name,
-      cip13: hemoclar.cip13,
+      ean13: hemoclar.ean13,
       expectedQuantity: 3,
       preparedQuantity: 0,
       unitAmount: hemoclar.priceWithoutTax,
@@ -802,7 +802,7 @@ export const orderXUKIJ: AnonymousOrder = {
   lines: [
     {
       name: calmosine.name,
-      cip13: calmosine.cip13,
+      ean13: calmosine.ean13,
       expectedQuantity: 1,
       preparedQuantity: 0,
       unitAmount: calmosine.priceWithoutTax,
@@ -839,7 +839,7 @@ export const orderWithProductWithoutLocation: AnonymousOrder = {
   lines: [
     {
       name: productWithoutLocation.name,
-      cip13: productWithoutLocation.cip13,
+      ean13: productWithoutLocation.ean13,
       expectedQuantity: 3,
       preparedQuantity: 0,
       unitAmount: productWithoutLocation.priceWithoutTax,
@@ -850,7 +850,7 @@ export const orderWithProductWithoutLocation: AnonymousOrder = {
     },
     {
       name: calmosine.name,
-      cip13: calmosine.cip13,
+      ean13: calmosine.ean13,
       expectedQuantity: 2,
       preparedQuantity: 0,
       unitAmount: calmosine.priceWithoutTax,
@@ -888,7 +888,7 @@ export const elodieDurandOrder1: CustomerOrder = {
   lines: [
     {
       name: dolodent.name,
-      cip13: dolodent.cip13,
+      ean13: dolodent.ean13,
       expectedQuantity: 3,
       preparedQuantity: 0,
       unitAmount: dolodent.priceWithoutTax,
@@ -899,7 +899,7 @@ export const elodieDurandOrder1: CustomerOrder = {
     },
     {
       name: calmosine.name,
-      cip13: calmosine.cip13,
+      ean13: calmosine.ean13,
       expectedQuantity: 2,
       preparedQuantity: 0,
       unitAmount: calmosine.priceWithoutTax,
@@ -933,7 +933,7 @@ export const elodieDurandOrder2: CustomerOrder = {
   lines: [
     {
       name: ultraLevure.name,
-      cip13: ultraLevure.cip13,
+      ean13: ultraLevure.ean13,
       expectedQuantity: 1,
       preparedQuantity: 0,
       unitAmount: ultraLevure.priceWithoutTax,
@@ -944,7 +944,7 @@ export const elodieDurandOrder2: CustomerOrder = {
     },
     {
       name: calmosine.name,
-      cip13: calmosine.cip13,
+      ean13: calmosine.ean13,
       expectedQuantity: 2,
       preparedQuantity: 0,
       unitAmount: calmosine.priceWithoutTax,
@@ -978,7 +978,7 @@ export const lucasLefevreOrder1: CustomerOrder = {
   lines: [
     {
       name: calmosine.name,
-      cip13: calmosine.cip13,
+      ean13: calmosine.ean13,
       expectedQuantity: 2,
       preparedQuantity: 0,
       unitAmount: calmosine.priceWithoutTax,
@@ -1012,7 +1012,7 @@ export const lucasLefevreOrder2: CustomerOrder = {
   lines: [
     {
       name: ultraLevure.name,
-      cip13: ultraLevure.cip13,
+      ean13: ultraLevure.ean13,
       expectedQuantity: 2,
       preparedQuantity: 0,
       unitAmount: ultraLevure.priceWithoutTax,

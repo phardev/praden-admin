@@ -11,20 +11,20 @@ export const listOrdersToPrepare = async (
   const preparationStore = usePreparationStore()
   preparationStore.startLoading()
   const orders = await orderGateway.listOrdersToPrepare()
-  const productsCip13 = getUniqueProductsCip13(orders)
-  const products = await productGateway.batch(productsCip13)
+  const productsEan13 = getUniqueProductsEan13(orders)
+  const products = await productGateway.batch(productsEan13)
   const productStore = useProductStore()
   productStore.list(products)
   preparationStore.list(orders)
   preparationStore.stopLoading()
 }
 
-const getUniqueProductsCip13 = (orders: Array<Order>): Array<string> => {
-  const cip13Set: Set<string> = new Set()
+const getUniqueProductsEan13 = (orders: Array<Order>): Array<string> => {
+  const ean13Set: Set<string> = new Set()
   orders.forEach((order) => {
     order.lines.forEach((line) => {
-      cip13Set.add(line.cip13)
+      ean13Set.add(line.ean13)
     })
   })
-  return Array.from(cip13Set)
+  return Array.from(ean13Set)
 }

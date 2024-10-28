@@ -13,7 +13,7 @@ export interface PreparationStartedBillingAddress {
 }
 
 export interface PreparationStartedLinesData {
-  img: string
+  miniature: string
   name: string
   unitPrice: string
   quantity: number

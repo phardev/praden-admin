@@ -10,6 +10,7 @@ export interface GetProductsItemVM {
   name: string
   img: string
   reference: string
+  laboratory: string
   category: string
   priceWithoutTax: string
   priceWithTax: string
@@ -20,6 +21,7 @@ export interface GetProductsVM {
   headers: Array<Header>
   items: Array<GetProductsItemVM>
   currentSearch: string | undefined
+  searchError: string | undefined
 }
 
 export const getProductsVM = (key: string): GetProductsVM => {
@@ -28,6 +30,7 @@ export const getProductsVM = (key: string): GetProductsVM => {
   const allProducts = productStore.items
   const searchResult = searchStore.get(key)
   const searchFilter = searchStore.getFilter(key)
+  const searchError = searchStore.getError(key)
   const products = searchResult || allProducts
   const formatter = priceFormatter('fr-FR', 'EUR')
   const headers: Array<Header> = [
@@ -42,6 +45,10 @@ export const getProductsVM = (key: string): GetProductsVM => {
     {
       name: 'Référence',
       value: 'reference'
+    },
+    {
+      name: 'Laboratoire',
+      value: 'laboratory'
     },
     {
       name: 'Catégorie',
@@ -70,12 +77,16 @@ export const getProductsVM = (key: string): GetProductsVM => {
         name: p.name,
         img: p.miniature,
         reference: p.ean13,
+        laboratory: p.laboratory,
         category: p.category?.name || '',
         priceWithoutTax: formatter.format(p.priceWithoutTax / 100),
         priceWithTax: formatter.format(priceWithTax / 100),
         availableStock: p.availableStock
       }
     }),
-    currentSearch: searchFilter
+    currentSearch: searchFilter,
+    searchError: searchError
+      ? 'Veuillez saisir au moins 3 caractères pour lancer la recherche.'
+      : undefined
   }
 }

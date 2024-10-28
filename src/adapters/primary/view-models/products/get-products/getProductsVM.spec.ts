@@ -29,6 +29,10 @@ describe('Get products VM', () => {
       value: 'reference'
     },
     {
+      name: 'Laboratoire',
+      value: 'laboratory'
+    },
+    {
       name: 'Catégorie',
       value: 'category'
     },
@@ -73,6 +77,7 @@ describe('Get products VM', () => {
               name: productWithoutCategory.name,
               img: productWithoutCategory.miniature,
               reference: productWithoutCategory.ean13,
+              laboratory: productWithoutCategory.laboratory,
               category: '',
               priceWithoutTax: '5,90\u00A0€',
               priceWithTax: '6,49\u00A0€',
@@ -94,6 +99,7 @@ describe('Get products VM', () => {
               name: dolodent.name,
               img: dolodent.miniature,
               reference: dolodent.ean13,
+              laboratory: dolodent.laboratory,
               category: dolodent.category.name,
               priceWithoutTax: '5,00\u00A0€',
               priceWithTax: '5,50\u00A0€',
@@ -104,6 +110,7 @@ describe('Get products VM', () => {
               name: ultraLevure.name,
               img: ultraLevure.miniature,
               reference: ultraLevure.ean13,
+              laboratory: ultraLevure.laboratory,
               category: ultraLevure.category.name,
               priceWithoutTax: '4,32\u00A0€',
               priceWithTax: '4,75\u00A0€',
@@ -128,6 +135,7 @@ describe('Get products VM', () => {
                 name: dolodent.name,
                 img: dolodent.miniature,
                 reference: dolodent.ean13,
+                laboratory: dolodent.laboratory,
                 category: 'Dents',
                 priceWithoutTax: '5,00\u00A0€',
                 priceWithTax: '5,50\u00A0€',
@@ -152,6 +160,7 @@ describe('Get products VM', () => {
                 name: ultraLevure.name,
                 img: ultraLevure.miniature,
                 reference: ultraLevure.ean13,
+                laboratory: ultraLevure.laboratory,
                 category: 'Diarrhée',
                 priceWithoutTax: '4,32\u00A0€',
                 priceWithTax: '4,75\u00A0€',
@@ -165,11 +174,25 @@ describe('Get products VM', () => {
     })
   })
 
+  describe('There is an error in search', () => {
+    beforeEach(() => {
+      searchStore.setError(key, 'dol')
+    })
+    it('should display the error', () => {
+      expectedVM = {
+        searchError:
+          'Veuillez saisir au moins 3 caractères pour lancer la recherche.'
+      }
+      expectVMToMatch(expectedVM)
+    })
+  })
+
   const expectVMToMatch = (expectedVM: Partial<GetProductsVM>) => {
     const emptyVM: GetProductsVM = {
       headers: expectedHeaders,
       items: [],
-      currentSearch: undefined
+      currentSearch: undefined,
+      searchError: undefined
     }
     expect(getProductsVM(key)).toMatchObject({ ...emptyVM, ...expectedVM })
   }

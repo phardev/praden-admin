@@ -95,7 +95,7 @@ describe('Get orders to prepare VM', () => {
   describe('There is some preparations waiting for replenishment', () => {
     it('should list all of them if stock is not available', () => {
       const stock: Stock = {
-        [dolodent.cip13]: 1
+        [dolodent.ean13]: 1
       }
       givenStockIs(stock)
       preparationStore.items = [orderInPreparation1]
@@ -123,7 +123,7 @@ describe('Get orders to prepare VM', () => {
     })
     it('should not list if stock is available', () => {
       const stock: Stock = {
-        [dolodent.cip13]: 100
+        [dolodent.ean13]: 100
       }
       givenStockIs(stock)
       preparationStore.items = [orderInPreparation1]
@@ -134,7 +134,7 @@ describe('Get orders to prepare VM', () => {
       order.lines[0].preparedQuantity = 1
       order.lines[0].expectedQuantity = 2
       const stock: Stock = {
-        [chamomilla.cip13]: 1
+        [chamomilla.ean13]: 1
       }
       givenStockIs(stock)
       preparationStore.items = [order]

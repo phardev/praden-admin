@@ -144,7 +144,7 @@ describe('Validate preparation', () => {
         expectedOrder.lines[1].updatedAt = now
         expectedOrder.lines[2] = {
           name: ultraLevure.name,
-          cip13: ultraLevure.cip13,
+          ean13: ultraLevure.ean13,
           expectedQuantity: -4,
           preparedQuantity: 0,
           unitAmount: ultraLevure.priceWithoutTax,
@@ -200,7 +200,7 @@ describe('Validate preparation', () => {
         expectedOrder.lines[1].updatedAt = now
         expectedOrder.lines[2] = {
           name: dolodent.name,
-          cip13: dolodent.cip13,
+          ean13: dolodent.ean13,
           expectedQuantity: -1,
           preparedQuantity: 0,
           unitAmount: dolodent.priceWithoutTax,
@@ -211,7 +211,7 @@ describe('Validate preparation', () => {
         }
         expectedOrder.lines[3] = {
           name: ultraLevure.name,
-          cip13: ultraLevure.cip13,
+          ean13: ultraLevure.ean13,
           expectedQuantity: -2,
           preparedQuantity: 0,
           unitAmount: ultraLevure.priceWithoutTax,

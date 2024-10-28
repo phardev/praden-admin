@@ -174,7 +174,7 @@ describe('Get invoice VM', () => {
           headers: orderLinesHeaders,
           items: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               taxRate: '10 %',
               unitAmountWithoutTax: '5,00\u00A0€',
@@ -302,7 +302,7 @@ describe('Get invoice VM', () => {
           headers: orderLinesHeaders,
           items: [
             {
-              reference: anaca3Minceur.cip13,
+              reference: anaca3Minceur.ean13,
               name: anaca3Minceur.name,
               taxRate: '5.5 %',
               unitAmountWithoutTax: '8,91\u00A0€',
@@ -311,7 +311,7 @@ describe('Get invoice VM', () => {
               totalWithTax: '28,20\u00A0€'
             },
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               taxRate: '10 %',
               unitAmountWithoutTax: '5,00\u00A0€',
@@ -458,7 +458,7 @@ describe('Get invoice VM', () => {
           headers: orderLinesHeaders,
           items: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               taxRate: '10 %',
               unitAmountWithoutTax: '5,00\u00A0€',
@@ -477,7 +477,7 @@ describe('Get invoice VM', () => {
           headers: orderLinesHeaders,
           items: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               taxRate: '10 %',
               unitAmountWithoutTax: '-5,00\u00A0€',

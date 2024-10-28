@@ -82,7 +82,7 @@ describe('Start preparations', () => {
             },
             lines: [
               {
-                img: dolodent.img,
+                miniature: dolodent.miniature,
                 name: dolodent.name,
                 unitPrice: '5,50\u00A0€',
                 quantity: 2,
@@ -112,14 +112,14 @@ describe('Start preparations', () => {
             },
             lines: [
               {
-                img: dolodent.img,
+                miniature: dolodent.miniature,
                 name: dolodent.name,
                 unitPrice: '5,50\u00A0€',
                 quantity: 1,
                 total: '5,50\u00A0€'
               },
               {
-                img: ultraLevure.img,
+                miniature: ultraLevure.miniature,
                 name: ultraLevure.name,
                 unitPrice: '4,75\u00A0€',
                 quantity: 2,

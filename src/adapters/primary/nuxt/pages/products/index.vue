@@ -18,12 +18,15 @@
         name='search'
         @input="searchChanged"
       ) Rechercher un produit
+      p.warning.text-warning(v-if="productsVM.searchError") {{ productsVM.searchError }}
     template(#img="{ item }")
       .h-10.w-10
         img.rounded-full.h-10.w-10(:src="item.img")
     template(#name="{ item }")
       .font-medium.text-default {{ item.name }}
-  //- InfiniteLoading(@infinite="load")
+  InfiniteLoading(@infinite="load")
+    template(#complete)
+      div
 </template>
 
 <script lang="ts" setup>
@@ -58,19 +61,28 @@ const productsVM = computed(() => {
   return getProductsVM(routeName)
 })
 
-const load = async () => {
-  await listProducts(limit, offset, productGateway)
-  offset += limit
+const load = async ($state) => {
+  if (!search.value) {
+    await listProducts(limit, offset, productGateway)
+    offset += limit
+    $state.loaded()
+  } else {
+    $state.complete()
+  }
 }
 
 const search = ref(productsVM.value.currentSearch)
-
+const minimumQueryLength = 3
 let debounceTimer
 
 const searchChanged = (e: any) => {
   if (debounceTimer) clearTimeout(debounceTimer)
   debounceTimer = setTimeout(() => {
-    searchProducts(routeName, e.target.value, useSearchGateway())
+    const filters = {
+      query: e.target.value,
+      minimumQueryLength
+    }
+    searchProducts(routeName, filters, useSearchGateway())
   }, 300)
 }
 
@@ -78,3 +90,10 @@ const productSelected = (uuid: string) => {
   router.push(`/products/get/${uuid}`)
 }
 </script>
+
+<style scoped>
+.warning {
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+</style>

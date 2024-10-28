@@ -56,11 +56,17 @@ export class PromotionFormFieldsWriter extends FormFieldsWriter {
   addProducts(uuids: Array<UUID>) {
     const products = this.fieldsReader.get('products')
     const productStore = useProductStore()
+    const searchStore = useSearchStore()
+    const searchResult = searchStore.get(this.key)
     const alreadyAdded = products.map((p) => p.uuid)
     uuids
       .filter((uuid) => !alreadyAdded.includes(uuid))
       .forEach((uuid) => {
-        products.push(productStore.getByUuid(uuid))
+        let product = productStore.getByUuid(uuid)
+        if (!product) {
+          product = searchResult.find((p) => p.uuid === uuid)
+        }
+        products.push(product)
       })
     super.set('products', products)
   }
@@ -139,7 +145,7 @@ export class PromotionFormCreateVM extends PromotionFormVM {
         return {
           uuid: p.uuid,
           name: p.name,
-          reference: p.cip13,
+          reference: p.ean13,
           category: p.category ? p.category.name : '',
           laboratory: p.laboratory
         }
@@ -171,7 +177,7 @@ export class PromotionFormCreateVM extends PromotionFormVM {
     }
     const res: CreatePromotionDTO = {
       name: this.fieldsReader.get('name'),
-      productUuids: this.fieldsReader.get('products').map((p) => p.uuid),
+      products: this.fieldsReader.get('products'),
       type,
       amount
     }

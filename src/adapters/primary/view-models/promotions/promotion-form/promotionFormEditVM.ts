@@ -58,7 +58,7 @@ export class PromotionFormEditVM extends PromotionFormVM {
         return {
           uuid: p.uuid,
           name: p.name,
-          reference: p.cip13,
+          reference: p.ean13,
           category: p.category ? p.category.name : '',
           laboratory: p.laboratory
         }
@@ -90,7 +90,7 @@ export class PromotionFormEditVM extends PromotionFormVM {
     }
     return {
       name: this.fieldsReader.get('name'),
-      productUuids: this.fieldsReader.get('products').map((p) => p.uuid),
+      products: this.fieldsReader.get('products'),
       type,
       amount,
       startDate: this.fieldsReader.get('startDate'),
@@ -103,7 +103,7 @@ export class PromotionFormEditVM extends PromotionFormVM {
   }
 }
 
-export const promotionFormEditVM = (key: string) => {
+export const promotionFormEditVM = (key: string): PromotionFormEditVM => {
   const initializer = new ExistingPromotionFormInitializer(key)
   const reader = new PromotionFormFieldsReader(key)
   const writer = new PromotionFormFieldsWriter(key, reader)

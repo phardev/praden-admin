@@ -6,7 +6,6 @@ import {
   PromotionProductItemVM,
   TypeChoiceVM
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { useProductStore } from '@store/productStore'
 import { Product } from '@core/entities/product'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import {
@@ -124,17 +123,15 @@ export class PromotionFormGetVM extends PromotionFormVM {
   }
 
   getProducts(): Field<Array<PromotionProductItemVM>> {
-    const addedProducts = this.fieldsReader.get('products')
-    const productStore = useProductStore()
-    const allProducts: Array<Product> = productStore.items
-    const value = addedProducts.map((product: Product) => {
-      const p: Product = allProducts.find((p) => p.uuid === product.uuid)
+    const promotionStore = usePromotionStore()
+    const promotion = promotionStore.current
+    const value = promotion.products.map((product: Product) => {
       return {
-        uuid: p.uuid,
-        name: p.name,
-        reference: p.cip13,
-        category: p.category?.name || '',
-        laboratory: p.laboratory
+        uuid: product.uuid,
+        name: product.name,
+        reference: product.ean13,
+        category: product.category?.name || '',
+        laboratory: product.laboratory
       }
     })
     return {

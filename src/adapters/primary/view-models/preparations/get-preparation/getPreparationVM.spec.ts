@@ -58,7 +58,7 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               expectedQuantity: 2,
               preparedQuantity: 0,
@@ -80,14 +80,14 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               expectedQuantity: 1,
               preparedQuantity: 0,
               status: PreparationStatus.NotPrepared
             },
             {
-              reference: ultraLevure.cip13,
+              reference: ultraLevure.ean13,
               name: ultraLevure.name,
               expectedQuantity: 2,
               preparedQuantity: 0,
@@ -113,7 +113,7 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               expectedQuantity: 2,
               preparedQuantity: 2,
@@ -137,14 +137,14 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               expectedQuantity: 1,
               preparedQuantity: 1,
               status: PreparationStatus.Prepared
             },
             {
-              reference: ultraLevure.cip13,
+              reference: ultraLevure.ean13,
               name: ultraLevure.name,
               expectedQuantity: 2,
               preparedQuantity: 1,
@@ -167,7 +167,7 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               expectedQuantity: 2,
               preparedQuantity: 3,
@@ -192,7 +192,7 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               expectedQuantity: 2,
               preparedQuantity: 2,

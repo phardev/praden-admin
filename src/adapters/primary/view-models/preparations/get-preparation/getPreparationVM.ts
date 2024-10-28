@@ -148,7 +148,7 @@ export const getPreparationVM = (): GetPreparationVM => {
   ]
   const lines: Array<GetPreparationLineVM> = preparation.lines.map((line) => {
     return {
-      reference: line.cip13,
+      reference: line.ean13,
       name: line.name,
       expectedQuantity: line.expectedQuantity,
       preparedQuantity: line.preparedQuantity,

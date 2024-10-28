@@ -11,7 +11,7 @@ export const setProductQuantityForPreparation = (
   const preparation: Order = JSON.parse(
     JSON.stringify(preparationStore.current)
   )
-  const line = preparation.lines.find((line: OrderLine) => line.cip13 === cip13)
+  const line = preparation.lines.find((line: OrderLine) => line.ean13 === cip13)
   if (line) {
     line.preparedQuantity = quantity
   }

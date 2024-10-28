@@ -19,8 +19,9 @@ export enum DeliveryStatus {
 }
 
 export interface OrderLine {
+  productUuid: UUID
   name: string
-  cip13: string
+  ean13: string
   unitAmount: number
   expectedQuantity: number
   preparedQuantity: number
@@ -46,8 +47,8 @@ export interface Contact {
 }
 
 export enum DeliveryType {
-  ClickAndCollect,
-  Delivery
+  ClickAndCollect = 'CLICKANDCOLLECT',
+  Delivery = 'DELIVERY'
 }
 
 export interface DeliveryMethod {
