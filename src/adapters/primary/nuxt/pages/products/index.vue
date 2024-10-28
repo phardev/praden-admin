@@ -9,6 +9,7 @@
     @clicked="productSelected"
   )
     template(#title) Produits
+    span TEST
     template(#search)
       ft-text-field(
         v-model="search"
@@ -23,7 +24,7 @@
         img.rounded-full.h-10.w-10(:src="item.img")
     template(#name="{ item }")
       .font-medium.text-default {{ item.name }}
-  InfiniteLoading(@infinite="load")
+  //- InfiniteLoading(@infinite="load")
 </template>
 
 <script lang="ts" setup>
