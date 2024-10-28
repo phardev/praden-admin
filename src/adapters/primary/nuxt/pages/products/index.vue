@@ -9,7 +9,6 @@
     @clicked="productSelected"
   )
     template(#title) Produits
-    span TEST
     template(#search)
       ft-text-field(
         v-model="search"
