@@ -4,14 +4,14 @@ import { fileURLToPath } from 'url'
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
-      ENV: 'DEV',
+      ENV: process.env.NUXT_PUBLIC_ENV,
       PREPARATION_STARTED_TEMPLATE_ID:
         process.env.PREPARATION_STARTED_TEMPLATE_ID,
       SEND_EMAIL_URL: process.env.SEND_EMAIL_URL,
-      BACKEND_URL: 'https://ecommerce-backend.admin-a5f.workers.dev/admin',
-      KEYCLOAK_URL: 'https://keycloak.phardev.local',
-      KEYCLOAK_REALM: 'Praden',
-      KEYCLOAK_CLIENT_ID: 'admin-app'
+      BACKEND_URL: process.env.BACKEND_URL,
+      KEYCLOAK_URL: process.env.KEYCLOAK_URL,
+      KEYCLOAK_REALM: process.env.KEYCLOAK_REALM,
+      KEYCLOAK_CLIENT_ID: process.env.KEYCLOAK_CLIENT_ID
     }
   },
 
