@@ -2,12 +2,12 @@ import Keycloak from 'keycloak-js'
 import { NuxtApp } from 'nuxt/app'
 
 export default defineNuxtPlugin((nuxtApp: NuxtApp) => {
-  const { KEYCLOAK_URL, KEYCLOAK_REALM, KEYCLOAK_CLIENT_ID } =
-    useRuntimeConfig().public
+  // const { KEYCLOAK_URL, KEYCLOAK_REALM, KEYCLOAK_CLIENT_ID } =
+  //   useRuntimeConfig().public
   const keycloak = new Keycloak({
-    url: KEYCLOAK_URL,
-    realm: KEYCLOAK_REALM,
-    clientId: KEYCLOAK_CLIENT_ID
+    url: 'https://keycloak.phardev.local',
+    realm: 'Praden',
+    clientId: 'admin-app'
   })
   keycloak
     .init({

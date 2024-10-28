@@ -14,17 +14,20 @@ export default defineNuxtConfig({
       KEYCLOAK_CLIENT_ID: process.env.KEYCLOAK_CLIENT_ID
     }
   },
+
   alias: {
     '@adapters/': fileURLToPath(new URL('./src/adapters/', import.meta.url)),
     '@core/': fileURLToPath(new URL('./src/core/', import.meta.url)),
     '@store/': fileURLToPath(new URL('./src/store/', import.meta.url)),
     '@utils/': fileURLToPath(new URL('./src/utils/', import.meta.url))
   },
+
   app: {
     head: {
       title: 'Praden Admin'
     }
   },
+
   build: {
     transpile: [
       'vue-qr',
@@ -32,6 +35,7 @@ export default defineNuxtConfig({
       '@vuepic/vue-datepicker'
     ]
   },
+
   components: {
     dirs: [
       {
@@ -42,9 +46,11 @@ export default defineNuxtConfig({
       '~/components'
     ]
   },
+
   typescript: {
     strict: true
   },
+
   modules: [
     '@pinia/nuxt',
     'nuxt-icon',
@@ -53,9 +59,11 @@ export default defineNuxtConfig({
     'nuxt-tiptap-editor',
     '@nuxtjs/stylelint-module'
   ],
+
   tiptap: {
     prefix: 'Tiptap'
   },
+
   dir: {
     // assets: 'custom-assets',
     layouts: './src/adapters/primary/nuxt/layouts',
@@ -65,20 +73,25 @@ export default defineNuxtConfig({
     // static: 'custom-static',
     // store: 'custom-store'
   },
+
   css: [
     '~/assets/css/tailwind.css',
     '@mdi/font/css/materialdesignicons.min.css'
   ],
+
   ssr: false,
+
   vite: {
     define: {
       'process.env.DEBUG': false
     },
     optimizeDeps: { exclude: ['fsevents'] }
   },
+
   colorMode: {
     preference: 'light'
   },
+
   stylelint: {
     rules: {
       'at-rule-no-unknown': [
@@ -96,5 +109,7 @@ export default defineNuxtConfig({
       'no-descending-specificity': null
     },
     ignoreFiles: ['coverage/*']
-  }
+  },
+
+  compatibilityDate: '2024-10-17'
 })

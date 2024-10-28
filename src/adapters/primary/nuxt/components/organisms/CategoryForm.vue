@@ -59,7 +59,7 @@ div(v-if="currentVM")
     name='search'
     @input="searchChanged"
   ) Rechercher un produit
-  div.flex.gap-12.mt-4
+  div.flex.gap-6.mt-4
     div.flex-1(
       v-if="currentVM.get('products').canEdit"
     )
