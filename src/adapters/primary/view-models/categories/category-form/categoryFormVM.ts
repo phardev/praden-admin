@@ -13,7 +13,7 @@ export interface CategoryProductItemVM {
 }
 
 export interface CategoryAvailableProductItemVM extends CategoryProductItemVM {
-  category: string
+  categories: Array<string>
 }
 
 export abstract class CategoryFormVM {
@@ -90,7 +90,7 @@ export abstract class CategoryFormVM {
           uuid: p.uuid,
           name: p.name,
           reference: p.cip13,
-          category: p.category ? p.category.name : '',
+          categories: p.categories.map((c) => c.name),
           laboratory: p.laboratory
         }
       }),

@@ -111,11 +111,11 @@ describe('Product edition', () => {
         })
         it('should change the category', async () => {
           dto = {
-            categoryUuid: mum.uuid
+            categoryUuids: [mum.uuid]
           }
           expectedProduct = {
             ...product,
-            category: mum
+            categories: [mum]
           }
           await whenEditProduct(product.uuid, dto)
           expect(productStore.items).toStrictEqual([

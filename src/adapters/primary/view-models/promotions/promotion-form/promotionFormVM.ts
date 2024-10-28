@@ -59,7 +59,7 @@ export abstract class PromotionFormVM {
         uuid: product.uuid,
         name: product.name,
         reference: product.ean13,
-        category: product.category?.name,
+        categories: product.categories.map((c) => c.name),
         laboratory: product.laboratory
       }
     })

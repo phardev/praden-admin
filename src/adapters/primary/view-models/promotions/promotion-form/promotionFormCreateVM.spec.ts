@@ -1,5 +1,4 @@
 import { createPinia, setActivePinia } from 'pinia'
-import { dents, minceur } from '@utils/testData/categories'
 import { useFormStore } from '@store/formStore'
 import {
   Field,
@@ -24,7 +23,7 @@ const anaca3VM: PromotionProductItemVM = {
   uuid: anaca3Minceur.uuid,
   name: anaca3Minceur.name,
   reference: anaca3Minceur.ean13,
-  category: minceur.name,
+  categories: anaca3Minceur.categories.map((c) => c.name),
   laboratory: anaca3Minceur.laboratory
 }
 
@@ -32,7 +31,7 @@ const ultraLevureVM: PromotionProductItemVM = {
   uuid: ultraLevure.uuid,
   name: ultraLevure.name,
   reference: ultraLevure.ean13,
-  category: ultraLevure.category.name,
+  categories: ultraLevure.categories.map((c) => c.name),
   laboratory: ultraLevure.laboratory
 }
 
@@ -40,7 +39,7 @@ const dolodentVM: PromotionProductItemVM = {
   uuid: dolodent.uuid,
   name: dolodent.name,
   reference: dolodent.ean13,
-  category: dents.name,
+  categories: dolodent.categories.map((c) => c.name),
   laboratory: dolodent.laboratory
 }
 

@@ -3,7 +3,7 @@ import { InMemoryCategoryGateway } from '@adapters/secondary/category-gateways/I
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { createPinia, setActivePinia } from 'pinia'
 import { Category } from '@core/entities/category'
-import { dents, diarrhee, minceur } from '@utils/testData/categories'
+import { baby, dents, diarrhee, minceur } from '@utils/testData/categories'
 import {
   editCategory,
   EditCategoryDTO
@@ -31,7 +31,7 @@ describe('Category Edition', () => {
   })
   describe('The category exists', () => {
     beforeEach(() => {
-      givenExistingCategories(dents, minceur, diarrhee)
+      givenExistingCategories(dents, minceur, diarrhee, baby)
     })
     describe('For a category', () => {
       const dto: EditCategoryDTO = {
@@ -44,7 +44,12 @@ describe('Category Edition', () => {
         ...dents,
         description: 'The new description'
       }
-      const expectedRes: Array<Category> = [expectedCategory, minceur, diarrhee]
+      const expectedRes: Array<Category> = [
+        expectedCategory,
+        minceur,
+        diarrhee,
+        baby
+      ]
       beforeEach(async () => {
         await whenEditCategory(expectedCategory.uuid, dto)
       })
@@ -68,7 +73,12 @@ describe('Category Edition', () => {
         name: 'New name',
         parentUuid: minceur.uuid
       }
-      const expectedRes: Array<Category> = [dents, minceur, expectedCategory]
+      const expectedRes: Array<Category> = [
+        dents,
+        minceur,
+        expectedCategory,
+        baby
+      ]
       beforeEach(async () => {
         await whenEditCategory(diarrhee.uuid, dto)
       })
@@ -97,11 +107,11 @@ describe('Category Edition', () => {
         expectedProducts = [
           {
             ...dolodent,
-            category: minceur
+            categories: [...dolodent.categories, minceur]
           },
           {
             ...calmosine,
-            category: minceur
+            categories: [...calmosine.categories, minceur]
           }
         ]
       })
@@ -120,7 +130,12 @@ describe('Category Edition', () => {
           productsRemoved: [anaca3Minceur.uuid]
         }
         await whenEditCategory(minceur.uuid, dto)
-        expectedProducts = [anaca3Minceur]
+        expectedProducts = [
+          {
+            ...anaca3Minceur,
+            categories: []
+          }
+        ]
       })
       it('should add the added products to the category', async () => {
         await expectProductGatewayToContains(expectedProducts)

@@ -11,20 +11,21 @@ export const listOrdersToPrepare = async (
   const preparationStore = usePreparationStore()
   preparationStore.startLoading()
   const orders = await orderGateway.listOrdersToPrepare()
-  const productsEan13 = getUniqueProductsEan13(orders)
-  const products = await productGateway.batch(productsEan13)
+  const productUuids = getUniqueProductUuids(orders)
+  console.log('productUuids: ', productUuids)
+  const products = await productGateway.batch(productUuids)
   const productStore = useProductStore()
   productStore.list(products)
   preparationStore.list(orders)
   preparationStore.stopLoading()
 }
 
-const getUniqueProductsEan13 = (orders: Array<Order>): Array<string> => {
-  const ean13Set: Set<string> = new Set()
+const getUniqueProductUuids = (orders: Array<Order>): Array<string> => {
+  const uuidsSet: Set<string> = new Set()
   orders.forEach((order) => {
     order.lines.forEach((line) => {
-      ean13Set.add(line.ean13)
+      uuidsSet.add(line.productUuid)
     })
   })
-  return Array.from(ean13Set)
+  return Array.from(uuidsSet)
 }

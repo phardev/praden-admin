@@ -6,7 +6,8 @@ export const useProductStore = defineStore('ProductStore', {
     return {
       items: [] as Array<Product>,
       stock: {} as Stock,
-      current: undefined as ProductWithPromotion
+      current: undefined as ProductWithPromotion,
+      hasMore: false as boolean
     }
   },
   getters: {
@@ -22,6 +23,7 @@ export const useProductStore = defineStore('ProductStore', {
       products.forEach((p) => {
         this.stock[p.ean13] = p.availableStock
       })
+      this.hasMore = products.length > 0
     },
     add(product: Product) {
       this.items.push(product)

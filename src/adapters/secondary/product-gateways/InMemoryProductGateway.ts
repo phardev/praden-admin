@@ -27,18 +27,19 @@ export class InMemoryProductGateway implements ProductGateway {
     return Promise.resolve(this.products.length)
   }
 
-  async batch(ean13s: Array<string>): Promise<Array<Product>> {
-    const res = this.products.filter((p) => ean13s.includes(p.ean13))
+  async batch(uuids: Array<UUID>): Promise<Array<Product>> {
+    const res = this.products.filter((p) => uuids.includes(p.uuid))
     return Promise.resolve(JSON.parse(JSON.stringify(res)))
   }
 
   async create(dto: CreateProductDTO): Promise<Product> {
     const images: Array<string> = []
-    for (const image of dto.newImages) {
+    for (const image of dto.images) {
       images.push(await getFileContent(image))
     }
     const product: Product = {
       uuid: this.uuidGenerator.generate(),
+      categories: [],
       name: dto.name,
       cip7: dto.cip7,
       cip13: dto.cip13,
@@ -55,15 +56,15 @@ export class InMemoryProductGateway implements ProductGateway {
       composition: dto.composition,
       weight: dto.weight
     }
-    if (dto.categoryUuid) {
-      product.category = this.categoryStore.getByUuid(dto.categoryUuid)
-    }
-    if (!product.category) {
-      delete product.category
-    }
     if (dto.maxQuantityForOrder) {
       product.maxQuantityForOrder = dto.maxQuantityForOrder
     }
+    dto.categoryUuids.forEach((uuid) => {
+      const category = this.categoryStore.getByUuid(uuid)
+      if (category) {
+        product.categories.push(category)
+      }
+    })
     this.products.push(product)
     return Promise.resolve(product)
   }
@@ -82,13 +83,16 @@ export class InMemoryProductGateway implements ProductGateway {
       Array.prototype.push.apply(this.products[index].images, newImages)
       delete dto.newImages
     }
-    if (dto.categoryUuid) {
-      const category = this.categoryStore.getByUuid(dto.categoryUuid)
-      if (category) {
-        this.products[index].category = category
-      }
+    if (dto.categoryUuids) {
+      this.products[index].categories = []
+      dto.categoryUuids.forEach((uuid) => {
+        const category = this.categoryStore.getByUuid(uuid)
+        if (category) {
+          this.products[index].categories.push(category)
+        }
+      })
+      delete dto.categoryUuids
     }
-    delete dto.categoryUuid
     this.products[index] = Object.assign(this.products[index], dto)
     return Promise.resolve(JSON.parse(JSON.stringify(this.products[index])))
   }
@@ -101,7 +105,9 @@ export class InMemoryProductGateway implements ProductGateway {
 
   getByCategoryUuid(categoryUuid: UUID): Promise<Array<Product>> {
     return Promise.resolve(
-      this.products.filter((p) => p.category.uuid === categoryUuid)
+      this.products.filter((p) =>
+        p.categories.some((c) => c.uuid === categoryUuid)
+      )
     )
   }
 

@@ -66,27 +66,27 @@ const productWithoutCategoryVM: CategoryProductItemVM = {
 
 const availableAnaca3VM: CategoryAvailableProductItemVM = {
   ...anaca3VM,
-  category: minceur.name
+  categories: [minceur.name]
 }
 
 const availableCalmosineVM: CategoryAvailableProductItemVM = {
   ...calmosineVM,
-  category: baby.name
+  categories: [baby.name]
 }
 
 const availableDolodentVM: CategoryAvailableProductItemVM = {
   ...dolodentVM,
-  category: dents.name
+  categories: [dents.name]
 }
 
 const availableChamomillaVM: CategoryAvailableProductItemVM = {
   ...chamomillaVM,
-  category: dents.name
+  categories: [dents.name]
 }
 
 const availableProductWithoutCategoryVM: CategoryAvailableProductItemVM = {
   ...productWithoutCategoryVM,
-  category: ''
+  categories: []
 }
 
 const expectedProductsHeader: Array<Header> = [

@@ -59,7 +59,7 @@ export class PromotionFormEditVM extends PromotionFormVM {
           uuid: p.uuid,
           name: p.name,
           reference: p.ean13,
-          category: p.category ? p.category.name : '',
+          categories: p.categories.map((c) => c.name),
           laboratory: p.laboratory
         }
       }),

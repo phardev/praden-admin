@@ -91,6 +91,7 @@ describe('Create category', () => {
     let expectedProducts: Array<Product> = []
     beforeEach(async () => {
       givenExistingProducts(dolodent, calmosine)
+      givenExistingCategories(...dolodent.categories, ...calmosine.categories)
       const uuid = 'new-category-uuid'
       const dto: CreateCategoryDTO = {
         name: 'new-category',
@@ -106,17 +107,16 @@ describe('Create category', () => {
       expectedProducts = [
         {
           ...dolodent,
-          category: expectedCategory
+          categories: [...dolodent.categories, expectedCategory]
         },
         {
           ...calmosine,
-          category: expectedCategory
+          categories: [...calmosine.categories, expectedCategory]
         }
       ]
     })
     it('should add the added products to the category', async () => {
       await expectProductGatewayToContains(expectedProducts)
-      expect(await productGateway.list(50, 0)).toStrictEqual(expectedProducts)
     })
     it('should update the product store', () => {
       expect(productStore.items).toStrictEqual(expectedProducts)
@@ -126,6 +126,11 @@ describe('Create category', () => {
   const givenExistingProducts = (...products: Array<Product>) => {
     productGateway.feedWith(...JSON.parse(JSON.stringify(products)))
     productStore.items = JSON.parse(JSON.stringify(products))
+  }
+
+  const givenExistingCategories = (...categories: Array<Category>) => {
+    categoryGateway.feedWith(...JSON.parse(JSON.stringify(categories)))
+    categoryStore.items = JSON.parse(JSON.stringify(categories))
   }
 
   const whenCreateCategory = async (uuid: UUID, dto: CreateCategoryDTO) => {

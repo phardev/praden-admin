@@ -24,6 +24,11 @@
         img.rounded-full.h-10.w-10(:src="item.img")
     template(#name="{ item }")
       .font-medium.text-default {{ item.name }}
+    template(#categories="{ item }")
+      div(v-if="item.categories && item.categories.length")
+        div(v-for="category in item.categories" :key="category")
+          UBadge(variant="subtle" :label="category")
+      div(v-else)
   InfiniteLoading(@infinite="load")
     template(#complete)
       div
@@ -65,7 +70,11 @@ const load = async ($state) => {
   if (!search.value) {
     await listProducts(limit, offset, productGateway)
     offset += limit
-    $state.loaded()
+    if (productsVM.hasMore) {
+      $state.loaded()
+    } else {
+      $state.complete()
+    }
   } else {
     $state.complete()
   }

@@ -24,9 +24,14 @@ describe('List products', () => {
     productGateway = new InMemoryProductGateway(new FakeUuidGenerator())
   })
   describe('There is no products', () => {
-    it('should list nothing', async () => {
+    beforeEach(async () => {
       await whenListProducts()
+    })
+    it('should list nothing', () => {
       expectProductStoreToContains()
+    })
+    it('should be aware that its over', () => {
+      expectHasMoreToBe(false)
     })
   })
   describe('There is some products', () => {
@@ -50,23 +55,38 @@ describe('List products', () => {
     beforeEach(() => {
       givenExistingProducts(dolodent, ultraLevure, anaca3Minceur, chamomilla)
     })
-    it('should retrieve first products', async () => {
-      await whenListProducts(2, 0)
-      expectProductStoreToContains(dolodent, ultraLevure)
+    describe('Retreive first products', () => {
+      beforeEach(async () => {
+        await whenListProducts(2, 0)
+      })
+      it('should retrieve first products', () => {
+        expectProductStoreToContains(dolodent, ultraLevure)
+      })
+      it('should be aware that its not over', () => {
+        expectHasMoreToBe(true)
+      })
     })
     it('should retrieve products with an offset', async () => {
       await whenListProducts(1, 2)
       expectProductStoreToContains(anaca3Minceur)
     })
-    it('should retrieve multiple chunks and keep the old products', async () => {
-      await whenListProducts(2, 0)
-      await whenListProducts(2, 2)
-      expectProductStoreToContains(
-        dolodent,
-        ultraLevure,
-        anaca3Minceur,
-        chamomilla
-      )
+    describe('Get all by chunk', () => {
+      beforeEach(async () => {
+        await whenListProducts(2, 0)
+        await whenListProducts(2, 2)
+        await whenListProducts(2, 4)
+      })
+      it('should retrieve multiple chunks and keep the old products', () => {
+        expectProductStoreToContains(
+          dolodent,
+          ultraLevure,
+          anaca3Minceur,
+          chamomilla
+        )
+      })
+      it('should be aware that its over', () => {
+        expectHasMoreToBe(false)
+      })
     })
   })
 
@@ -88,5 +108,9 @@ describe('List products', () => {
 
   const expectStockToEqual = (expectedStock: Stock) => {
     expect(productStore.stock).toStrictEqual(expectedStock)
+  }
+
+  const expectHasMoreToBe = (hasMore: boolean) => {
+    expect(productStore.hasMore).toBe(hasMore)
   }
 })

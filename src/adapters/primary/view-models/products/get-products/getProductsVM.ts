@@ -11,7 +11,7 @@ export interface GetProductsItemVM {
   img: string
   reference: string
   laboratory: string
-  category: string
+  categories: Array<string>
   priceWithoutTax: string
   priceWithTax: string
   availableStock: number
@@ -20,6 +20,7 @@ export interface GetProductsItemVM {
 export interface GetProductsVM {
   headers: Array<Header>
   items: Array<GetProductsItemVM>
+  hasMore: boolean
   currentSearch: string | undefined
   searchError: string | undefined
 }
@@ -51,8 +52,8 @@ export const getProductsVM = (key: string): GetProductsVM => {
       value: 'laboratory'
     },
     {
-      name: 'Catégorie',
-      value: 'category'
+      name: 'Catégories',
+      value: 'categories'
     },
     {
       name: 'Prix HT',
@@ -78,7 +79,7 @@ export const getProductsVM = (key: string): GetProductsVM => {
         img: p.miniature,
         reference: p.ean13,
         laboratory: p.laboratory,
-        category: p.category?.name || '',
+        categories: p.categories.map((c) => c.name),
         priceWithoutTax: formatter.format(p.priceWithoutTax / 100),
         priceWithTax: formatter.format(priceWithTax / 100),
         availableStock: p.availableStock
@@ -87,6 +88,7 @@ export const getProductsVM = (key: string): GetProductsVM => {
     currentSearch: searchFilter,
     searchError: searchError
       ? 'Veuillez saisir au moins 3 caractères pour lancer la recherche.'
-      : undefined
+      : undefined,
+    hasMore: productStore.hasMore.valueOf()
   }
 }

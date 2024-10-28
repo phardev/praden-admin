@@ -22,9 +22,9 @@ export class FakeSearchGateway implements SearchGateway {
   searchProducts(query: string): Promise<Array<Product>> {
     const products = this.items.filter((i) => isProduct(i))
     const res = products.filter((i) => {
-      const isCategoryNameMatching = i.category
-        ? i.category.name.includesWithoutCase(query)
-        : false
+      const isCategoryNameMatching = i.categories.some((c) =>
+        c.name.includesWithoutCase(query)
+      )
       const isNameMatching = i.name.includesWithoutCase(query)
       const isLaboratoryMatching = i.laboratory.includesWithoutCase(query)
       const isCip13Matching = i.cip13.includes(query)

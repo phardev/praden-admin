@@ -6,9 +6,9 @@ import { UUID } from '@core/types/types'
 
 export type CreateProductDTO = Omit<
   Product,
-  'uuid' | 'isMedicine' | 'category' | 'images' | 'miniature'
+  'uuid' | 'isMedicine' | 'categories' | 'images' | 'miniature'
 > & {
-  categoryUuid?: UUID
+  categoryUuids: Array<UUID>
   images?: Array<File>
   miniature?: File
 }

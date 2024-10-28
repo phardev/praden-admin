@@ -143,6 +143,7 @@ describe('Validate preparation', () => {
         expectedOrder.lines[1].deliveryStatus = DeliveryStatus.Canceled
         expectedOrder.lines[1].updatedAt = now
         expectedOrder.lines[2] = {
+          productUuid: ultraLevure.uuid,
           name: ultraLevure.name,
           ean13: ultraLevure.ean13,
           expectedQuantity: -4,
@@ -199,6 +200,7 @@ describe('Validate preparation', () => {
         expectedOrder.lines[1].deliveryStatus = DeliveryStatus.Shipped
         expectedOrder.lines[1].updatedAt = now
         expectedOrder.lines[2] = {
+          productUuid: dolodent.uuid,
           name: dolodent.name,
           ean13: dolodent.ean13,
           expectedQuantity: -1,
@@ -210,6 +212,7 @@ describe('Validate preparation', () => {
           updatedAt: now
         }
         expectedOrder.lines[3] = {
+          productUuid: ultraLevure.uuid,
           name: ultraLevure.name,
           ean13: ultraLevure.ean13,
           expectedQuantity: -2,

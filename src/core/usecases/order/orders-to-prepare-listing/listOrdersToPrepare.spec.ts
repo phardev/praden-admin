@@ -18,6 +18,7 @@ import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InM
 import { useProductStore } from '@store/productStore'
 import { Product, Stock } from '@core/entities/product'
 import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 
 describe('List orders to prepare', () => {
   let preparationStore: any
@@ -30,7 +31,7 @@ describe('List orders to prepare', () => {
     preparationStore = usePreparationStore()
     productStore = useProductStore()
     orderGateway = new InMemoryOrderGateway(new FakeDateProvider())
-    productGateway = new InMemoryProductGateway()
+    productGateway = new InMemoryProductGateway(new FakeUuidGenerator())
   })
 
   describe('There is no orders to prepare', () => {

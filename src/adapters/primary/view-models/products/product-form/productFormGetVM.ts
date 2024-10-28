@@ -92,7 +92,7 @@ export class ExistingProductFormInitializer implements FormInitializer {
     }
     this.formStore.set(this.key, {
       name: product.name,
-      categoryUuid: product.category?.uuid,
+      categoryUuids: product.categories.map((c) => c.uuid),
       cip7: product.cip7,
       cip13: product.cip13,
       ean13: product.ean13,

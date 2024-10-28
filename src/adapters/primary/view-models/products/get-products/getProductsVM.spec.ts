@@ -33,8 +33,8 @@ describe('Get products VM', () => {
       value: 'laboratory'
     },
     {
-      name: 'Catégorie',
-      value: 'category'
+      name: 'Catégories',
+      value: 'categories'
     },
     {
       name: 'Prix HT',
@@ -78,7 +78,7 @@ describe('Get products VM', () => {
               img: productWithoutCategory.miniature,
               reference: productWithoutCategory.ean13,
               laboratory: productWithoutCategory.laboratory,
-              category: '',
+              categories: [],
               priceWithoutTax: '5,90\u00A0€',
               priceWithTax: '6,49\u00A0€',
               availableStock: productWithoutCategory.availableStock
@@ -100,7 +100,7 @@ describe('Get products VM', () => {
               img: dolodent.miniature,
               reference: dolodent.ean13,
               laboratory: dolodent.laboratory,
-              category: dolodent.category.name,
+              categories: dolodent.categories.map((c) => c.name),
               priceWithoutTax: '5,00\u00A0€',
               priceWithTax: '5,50\u00A0€',
               availableStock: dolodent.availableStock
@@ -111,7 +111,7 @@ describe('Get products VM', () => {
               img: ultraLevure.miniature,
               reference: ultraLevure.ean13,
               laboratory: ultraLevure.laboratory,
-              category: ultraLevure.category.name,
+              categories: ultraLevure.categories.map((c) => c.name),
               priceWithoutTax: '4,32\u00A0€',
               priceWithTax: '4,75\u00A0€',
               availableStock: ultraLevure.availableStock
@@ -136,7 +136,7 @@ describe('Get products VM', () => {
                 img: dolodent.miniature,
                 reference: dolodent.ean13,
                 laboratory: dolodent.laboratory,
-                category: 'Dents',
+                categories: dolodent.categories.map((c) => c.name),
                 priceWithoutTax: '5,00\u00A0€',
                 priceWithTax: '5,50\u00A0€',
                 availableStock: dolodent.availableStock
@@ -161,7 +161,7 @@ describe('Get products VM', () => {
                 img: ultraLevure.miniature,
                 reference: ultraLevure.ean13,
                 laboratory: ultraLevure.laboratory,
-                category: 'Diarrhée',
+                categories: ultraLevure.categories.map((c) => c.name),
                 priceWithoutTax: '4,32\u00A0€',
                 priceWithTax: '4,75\u00A0€',
                 availableStock: ultraLevure.availableStock
@@ -170,6 +170,22 @@ describe('Get products VM', () => {
           }
           expectVMToMatch(expectedVM)
         })
+      })
+    })
+    describe('Are all products listed ?', () => {
+      it('should inform that there is more items', () => {
+        productStore.hasMore = false
+        expectedVM = {
+          hasMore: false
+        }
+        expectVMToMatch(expectedVM)
+      })
+      it('should inform that there is still items', () => {
+        productStore.hasMore = true
+        expectedVM = {
+          hasMore: true
+        }
+        expectVMToMatch(expectedVM)
       })
     })
   })
@@ -191,6 +207,7 @@ describe('Get products VM', () => {
     const emptyVM: GetProductsVM = {
       headers: expectedHeaders,
       items: [],
+      hasMore: false,
       currentSearch: undefined,
       searchError: undefined
     }

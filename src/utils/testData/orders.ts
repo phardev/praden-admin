@@ -24,6 +24,7 @@ export const orderToPrepare1: AnonymousOrder = {
   uuid: 'XIKOKI',
   lines: [
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 2,
@@ -61,6 +62,7 @@ export const orderToPrepare2: AnonymousOrder = {
   uuid: 'FHEIRF',
   lines: [
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 1,
@@ -72,6 +74,7 @@ export const orderToPrepare2: AnonymousOrder = {
       updatedAt: 1675565972527
     },
     {
+      productUuid: ultraLevure.uuid,
       name: ultraLevure.name,
       ean13: ultraLevure.ean13,
       expectedQuantity: 2,
@@ -109,6 +112,7 @@ export const orderToPrepare3: AnonymousOrder = {
   uuid: 'DIJFPE',
   lines: [
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 1,
@@ -146,6 +150,7 @@ export const orderPrepared1: AnonymousOrder = {
   uuid: 'JOURJL',
   lines: [
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 2,
@@ -183,6 +188,7 @@ export const orderInPreparation1: AnonymousOrder = {
   uuid: 'UTRIEL',
   lines: [
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 2,
@@ -229,6 +235,7 @@ export const orderDelivered1: AnonymousOrder = {
   uuid: 'HGFRIW',
   lines: [
     {
+      productUuid: anaca3Minceur.uuid,
       name: anaca3Minceur.name,
       ean13: anaca3Minceur.ean13,
       expectedQuantity: 3,
@@ -240,6 +247,7 @@ export const orderDelivered1: AnonymousOrder = {
       updatedAt: 1674295599432
     },
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 1,
@@ -277,6 +285,7 @@ export const orderDelivered2: AnonymousOrder = {
   uuid: 'GJIRLK',
   lines: [
     {
+      productUuid: ultraLevure.uuid,
       name: ultraLevure.name,
       ean13: ultraLevure.ean13,
       expectedQuantity: 3,
@@ -288,6 +297,7 @@ export const orderDelivered2: AnonymousOrder = {
       updatedAt: 1674295599432
     },
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 1,
@@ -325,6 +335,7 @@ export const orderWithMissingProduct1: AnonymousOrder = {
   uuid: 'DKOWDW',
   lines: [
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 2,
@@ -336,6 +347,7 @@ export const orderWithMissingProduct1: AnonymousOrder = {
       updatedAt: 1674573778456
     },
     {
+      productUuid: ultraLevure.uuid,
       name: ultraLevure.name,
       ean13: ultraLevure.ean13,
       expectedQuantity: 4,
@@ -382,6 +394,7 @@ export const orderWithMissingProduct2: AnonymousOrder = {
   uuid: 'DJEIWLQ',
   lines: [
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 2,
@@ -393,6 +406,7 @@ export const orderWithMissingProduct2: AnonymousOrder = {
       updatedAt: 1674573778456
     },
     {
+      productUuid: ultraLevure.uuid,
       name: ultraLevure.name,
       ean13: ultraLevure.ean13,
       expectedQuantity: 4,
@@ -439,6 +453,7 @@ export const orderToCancel: AnonymousOrder = {
   uuid: 'JFIJLJ',
   lines: [
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 2,
@@ -485,6 +500,7 @@ export const orderNotPayed1: AnonymousOrder = {
   uuid: 'ADKEWR',
   lines: [
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 2,
@@ -521,6 +537,7 @@ export const orderSaved1: AnonymousOrder = {
   uuid: 'FKEROFE',
   lines: [
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 2,
@@ -557,6 +574,7 @@ export const orderWaitingForClientAnswer1: AnonymousOrder = {
   uuid: 'ZJOFRW',
   lines: [
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 2,
@@ -598,6 +616,7 @@ export const orderWaitingForClientAnswer2: AnonymousOrder = {
   uuid: 'LOPFRE',
   lines: [
     {
+      productUuid: ultraLevure.uuid,
       name: ultraLevure.name,
       ean13: ultraLevure.ean13,
       expectedQuantity: 3,
@@ -609,6 +628,7 @@ export const orderWaitingForClientAnswer2: AnonymousOrder = {
       updatedAt: 1674295599432
     },
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 1,
@@ -651,6 +671,7 @@ export const orderWaitingForRestock: AnonymousOrder = {
   uuid: 'EUIWQK',
   lines: [
     {
+      productUuid: chamomilla.uuid,
       name: chamomilla.name,
       ean13: chamomilla.ean13,
       expectedQuantity: 2,
@@ -696,6 +717,7 @@ export const orderPartiallyShipped1: AnonymousOrder = {
   uuid: 'PIDWJK',
   lines: [
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 2,
@@ -707,6 +729,7 @@ export const orderPartiallyShipped1: AnonymousOrder = {
       updatedAt: 1674573778456
     },
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: -1,
@@ -753,6 +776,7 @@ export const orderVFASF: AnonymousOrder = {
   uuid: 'VFASF',
   lines: [
     {
+      productUuid: calmosine.uuid,
       name: calmosine.name,
       ean13: calmosine.ean13,
       expectedQuantity: 2,
@@ -764,6 +788,7 @@ export const orderVFASF: AnonymousOrder = {
       updatedAt: 1674273279000
     },
     {
+      productUuid: hemoclar.uuid,
       name: hemoclar.name,
       ean13: hemoclar.ean13,
       expectedQuantity: 3,
@@ -801,6 +826,7 @@ export const orderXUKIJ: AnonymousOrder = {
   uuid: 'XUKIJ',
   lines: [
     {
+      productUuid: calmosine.uuid,
       name: calmosine.name,
       ean13: calmosine.ean13,
       expectedQuantity: 1,
@@ -838,6 +864,7 @@ export const orderWithProductWithoutLocation: AnonymousOrder = {
   uuid: 'WITHOUTLOCATION',
   lines: [
     {
+      productUuid: productWithoutLocation.uuid,
       name: productWithoutLocation.name,
       ean13: productWithoutLocation.ean13,
       expectedQuantity: 3,
@@ -849,6 +876,7 @@ export const orderWithProductWithoutLocation: AnonymousOrder = {
       updatedAt: 1674273279000
     },
     {
+      productUuid: calmosine.uuid,
       name: calmosine.name,
       ean13: calmosine.ean13,
       expectedQuantity: 2,
@@ -887,6 +915,7 @@ export const elodieDurandOrder1: CustomerOrder = {
   customerUuid: elodieDurand.uuid,
   lines: [
     {
+      productUuid: dolodent.uuid,
       name: dolodent.name,
       ean13: dolodent.ean13,
       expectedQuantity: 3,
@@ -898,6 +927,7 @@ export const elodieDurandOrder1: CustomerOrder = {
       updatedAt: 1674273279000
     },
     {
+      productUuid: calmosine.uuid,
       name: calmosine.name,
       ean13: calmosine.ean13,
       expectedQuantity: 2,
@@ -932,6 +962,7 @@ export const elodieDurandOrder2: CustomerOrder = {
   customerUuid: elodieDurand.uuid,
   lines: [
     {
+      productUuid: ultraLevure.uuid,
       name: ultraLevure.name,
       ean13: ultraLevure.ean13,
       expectedQuantity: 1,
@@ -943,6 +974,7 @@ export const elodieDurandOrder2: CustomerOrder = {
       updatedAt: 1674273279000
     },
     {
+      productUuid: calmosine.uuid,
       name: calmosine.name,
       ean13: calmosine.ean13,
       expectedQuantity: 2,
@@ -977,6 +1009,7 @@ export const lucasLefevreOrder1: CustomerOrder = {
   customerUuid: lucasLefevre.uuid,
   lines: [
     {
+      productUuid: calmosine.uuid,
       name: calmosine.name,
       ean13: calmosine.ean13,
       expectedQuantity: 2,
@@ -1011,6 +1044,7 @@ export const lucasLefevreOrder2: CustomerOrder = {
   customerUuid: lucasLefevre.uuid,
   lines: [
     {
+      productUuid: ultraLevure.uuid,
       name: ultraLevure.name,
       ean13: ultraLevure.ean13,
       expectedQuantity: 2,

@@ -6,7 +6,7 @@ import { EditProductDTO } from '@core/usecases/product/product-edition/editProdu
 export interface ProductGateway {
   list(limit: number, offset: number): Promise<Array<Product>>
   count(): Promise<number>
-  batch(cip13s: Array<string>): Promise<Array<Product>>
+  batch(uuids: Array<UUID>): Promise<Array<Product>>
   create(dto: CreateProductDTO): Promise<Product>
   edit(uuid: UUID, dto: EditProductDTO): Promise<Product>
   getByUuid(uuid: UUID): Promise<Product>

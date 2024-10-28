@@ -37,7 +37,7 @@ describe('Create product', () => {
     productGateway = new InMemoryProductGateway(uuidGenerator)
     locationGateway = new InMemoryLocationGateway()
     givenThereIsExistingLocations(zoneGeo, reserve)
-    givenThereIsExistingCategories(mum)
+    givenThereIsExistingCategories(mum, diarrhee)
   })
   describe('Simple product', () => {
     describe('For a product', () => {
@@ -49,9 +49,8 @@ describe('Create product', () => {
           cip7: '1234567',
           cip13: '1234567890123',
           ean13: '1234567890123',
-          images: [],
-          newImages: [new File(['data1'], 'File 1', { type: 'image/png' })],
-          categoryUuid: mum.uuid,
+          images: [new File(['data1'], 'File 1', { type: 'image/png' })],
+          categoryUuids: [mum.uuid],
           priceWithoutTax: 100,
           percentTaxRate: 10,
           locations: { [zoneGeo.uuid]: 'product-location' },
@@ -68,7 +67,7 @@ describe('Create product', () => {
           cip7: dto.cip7,
           cip13: dto.cip13,
           ean13: dto.ean13,
-          category: mum,
+          categories: [mum],
           miniature: '',
           images: ['data:image/png;base64,ZGF0YTE='],
           priceWithoutTax: 100,
@@ -100,13 +99,12 @@ describe('Create product', () => {
           cip7: '0987654',
           cip13: '0987654321098',
           ean13: '0987654321098',
-          images: [],
-          newImages: [
+          images: [
             new File(['data1'], 'File 1', { type: 'image/png' }),
             new File(['data2'], 'File 2', { type: 'image/jpeg' }),
             new File(['data3'], 'File 3', { type: 'image/gif' })
           ],
-          categoryUuid: diarrhee.uuid,
+          categoryUuids: [diarrhee.uuid],
           priceWithoutTax: 125,
           percentTaxRate: 10.5,
           locations: {
@@ -123,6 +121,7 @@ describe('Create product', () => {
         }
         expectedProduct = {
           uuid,
+          categories: [diarrhee],
           name: dto.name,
           cip7: dto.cip7,
           cip13: dto.cip13,
@@ -160,12 +159,12 @@ describe('Create product', () => {
         cip7: '0987654',
         cip13: '0987654321098',
         ean13: '0987654321098',
-        images: [],
-        newImages: [
+        images: [
           new File(['data1'], 'File 1', { type: 'image/png' }),
           new File(['data2'], 'File 2', { type: 'image/jpeg' }),
           new File(['data3'], 'File 3', { type: 'image/gif' })
         ],
+        categoryUuids: [],
         priceWithoutTax: 125,
         percentTaxRate: 10.5,
         locations: {
@@ -183,6 +182,7 @@ describe('Create product', () => {
       const expectedProduct: Product = {
         uuid,
         name: dto.name,
+        categories: [],
         cip7: dto.cip7,
         cip13: dto.cip13,
         ean13: dto.ean13,
@@ -225,9 +225,8 @@ describe('Create product', () => {
         cip7: '1234567',
         cip13: '1234567890123',
         ean13: '1234567890123',
-        images: [],
-        newImages: [new File(['data1'], 'File 1', { type: 'image/png' })],
-        category: mum,
+        images: [new File(['data1'], 'File 1', { type: 'image/png' })],
+        categories: [mum],
         priceWithoutTax: 100,
         percentTaxRate: 10,
         locations: {

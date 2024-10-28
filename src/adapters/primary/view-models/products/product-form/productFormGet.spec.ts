@@ -136,7 +136,10 @@ describe('Product form get VM', () => {
         })
         describe.each([
           { field: 'name', expected: product.name },
-          { field: 'categoryUuid', expected: product.category.uuid },
+          {
+            field: 'categoryUuids',
+            expected: product.categories.map((c) => c.uuid)
+          },
           { field: 'cip7', expected: product.cip7 },
           { field: 'cip13', expected: product.cip13 },
           { field: 'ean13', expected: product.ean13 },

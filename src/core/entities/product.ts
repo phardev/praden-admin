@@ -9,7 +9,7 @@ export interface Product {
   name: string
   miniature: string
   images: Array<string>
-  category?: Category
+  categories: Array<Category>
   cip7: string
   cip13: string
   ean13: string

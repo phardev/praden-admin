@@ -19,9 +19,10 @@ export const createCategory = async (
   const categoryStore = useCategoryStore()
   categoryStore.add(created)
   const productStore = useProductStore()
-  for (const productUuid of dto.productsAdded) {
-    const editedProduct = await productGateway.edit(productUuid, {
-      categoryUuid: created.uuid
+  const products = await productGateway.batch(dto.productsAdded)
+  for (const product of products) {
+    const editedProduct = await productGateway.edit(product.uuid, {
+      categoryUuids: [...product.categories.map((c) => c.uuid), created.uuid]
     })
     productStore.edit(editedProduct)
   }
