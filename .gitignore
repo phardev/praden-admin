@@ -8,3 +8,4 @@ coverage
 dist
 .env
 .stylelintcache
+.nuxt.config.ts
