@@ -14,20 +14,14 @@ div(v-if="currentVM")
             @update:model-value="nameChanged"
           )
         UFormGroup.pb-4(label="Catégories" name="categories")
-          div(v-if="!currentVM.get('categoryUuids').canEdit")
-            div(v-for="categoryUuid in currentVM.get('categoryUuids').value" :key="categoryUuid")
-              ft-text-field(
-                :model-value="categoryUuid"
-                :disabled="true"
-              )
-          div(v-else)
-            ft-category-tree.mt-4(
-              :items="treeCategoriesVM"
-              :selectable="true"
-              :selection="currentVM.get('categoryUuids').value"
-              @view="viewCategory"
-              @selected="categorySelected"
-            )
+          ft-category-tree.mt-4(
+            :items="treeCategoriesVM"
+            :disabled="!currentVM.get('categoryUuids').canEdit"
+            :selectable="true"
+            :selection="currentVM.get('categoryUuids').value"
+            @view="viewCategory"
+            @selected="categorySelected"
+          )
         UFormGroup.pb-4(label="CIP7" name="cip7")
           ft-text-field(
             :model-value="currentVM.get('cip7').value"

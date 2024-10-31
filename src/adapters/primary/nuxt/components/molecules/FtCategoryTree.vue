@@ -17,6 +17,7 @@
   ft-category-tree-node(
     :items="items"
     :open-items="openItems"
+    :disabled="disabled"
     :selectable="selectable"
     :selection="selection"
     @selected="selected"
@@ -30,6 +31,12 @@ const props = defineProps({
     type: Array,
     default: () => {
       return []
+    }
+  },
+  disabled: {
+    type: Boolean,
+    default: () => {
+      return false
     }
   },
   selectable: {

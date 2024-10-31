@@ -8,6 +8,7 @@
             ft-checkbox(
               v-if="selectable"
               :key="isSelected(item.data.uuid)"
+              :disabled="disabled"
               :model-value="isSelected(item.data.uuid)"
               @click.stop.prevent="selected(item.data.uuid)"
             )
@@ -32,6 +33,7 @@
           FtCategoryTreeNode(
             :items="item.children"
             :open-items="openItems"
+            :disabled="disabled"
             :selectable="selectable"
             :selection="selection"
             @view="view"
@@ -54,6 +56,12 @@ const props = defineProps({
     type: Array,
     default: () => {
       return []
+    }
+  },
+  disabled: {
+    type: Boolean,
+    default: () => {
+      return false
     }
   },
   selectable: {
@@ -100,7 +108,9 @@ const updateOpenItems = (openItems: Array<any>): void => {
 }
 
 const selected = async (uuid: string) => {
-  emit('selected', uuid)
+  if (!props.disabled) {
+    emit('selected', uuid)
+  }
 }
 </script>
 
