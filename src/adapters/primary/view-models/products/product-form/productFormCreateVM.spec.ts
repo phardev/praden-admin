@@ -1,9 +1,7 @@
 import { productFormCreateVM, ProductFormCreateVM } from './productFormCreateVM'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import { createPinia, setActivePinia } from 'pinia'
-import { useLocationStore } from '@store/locationStore'
 import { useFormStore } from '@store/formStore'
-import { useProductStore } from '@store/productStore'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 
 describe('Product form create VM', () => {
@@ -13,9 +11,7 @@ describe('Product form create VM', () => {
 
   beforeEach(() => {
     setActivePinia(createPinia())
-    locationStore = useLocationStore()
     formStore = useFormStore()
-    productStore = useProductStore()
     vm = productFormCreateVM(key)
   })
 
