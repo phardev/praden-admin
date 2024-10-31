@@ -19,8 +19,13 @@ export const useProductStore = defineStore('ProductStore', {
   },
   actions: {
     list(products: Array<Product>) {
-      this.items.push(...products)
       products.forEach((p) => {
+        const existingProduct = this.items.find((item) => item.uuid === p.uuid)
+        if (existingProduct) {
+          Object.assign(existingProduct, p)
+        } else {
+          this.items.push(p)
+        }
         this.stock[p.ean13] = p.availableStock
       })
       this.hasMore = products.length > 0

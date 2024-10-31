@@ -7,6 +7,7 @@ import { ProductDoesNotExistsError } from '@core/errors/ProductDoesNotExistsErro
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { useCategoryStore } from '@store/categoryStore'
+import { Category } from '@core/entities/category'
 
 export class InMemoryProductGateway implements ProductGateway {
   private products: Array<Product> = []
@@ -107,6 +108,44 @@ export class InMemoryProductGateway implements ProductGateway {
     return Promise.resolve(
       this.products.filter((p) =>
         p.categories.some((c) => c.uuid === categoryUuid)
+      )
+    )
+  }
+
+  addProductsToCategory(
+    category: Category,
+    productUuids: Array<UUID>
+  ): Promise<Array<Product>> {
+    this.products.forEach((product) => {
+      if (productUuids.includes(product.uuid)) {
+        product.categories.push(category)
+      }
+    })
+    return Promise.resolve(
+      JSON.parse(
+        JSON.stringify(
+          this.products.filter((p) => productUuids.includes(p.uuid))
+        )
+      )
+    )
+  }
+
+  removeProductsFromCategory(
+    category: Category,
+    productUuids: Array<UUID>
+  ): Promise<Array<Product>> {
+    this.products.forEach((product) => {
+      if (productUuids.includes(product.uuid)) {
+        product.categories = product.categories.filter(
+          (c) => c.uuid !== category.uuid
+        )
+      }
+    })
+    return Promise.resolve(
+      JSON.parse(
+        JSON.stringify(
+          this.products.filter((p) => productUuids.includes(p.uuid))
+        )
       )
     )
   }

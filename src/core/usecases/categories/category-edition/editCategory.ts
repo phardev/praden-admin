@@ -18,34 +18,22 @@ export const editCategory = async (
   productGateway: ProductGateway
 ): Promise<void> => {
   const edited = await categoryGateway.edit(uuid, dto)
-  console.log('edited: ', edited)
   const categoryStore = useCategoryStore()
   categoryStore.edit(edited)
   const productStore = useProductStore()
   if (dto.productsAdded) {
-    console.log('added: ', dto.productsAdded)
-    const products = await productGateway.batch(dto.productsAdded)
-    for (const product of products) {
-      console.log('categoryUuids: ', [
-        ...product.categories.map((c) => c.uuid),
-        edited.uuid
-      ])
-      const editedProduct = await productGateway.edit(product.uuid, {
-        categoryUuids: [...product.categories.map((c) => c.uuid), edited.uuid]
-      })
-      productStore.edit(editedProduct)
-    }
+    const products = await productGateway.addProductsToCategory(
+      edited,
+      dto.productsAdded
+    )
+    productStore.list(products)
   }
   if (dto.productsRemoved) {
-    const products = await productGateway.batch(dto.productsRemoved)
-    for (const product of products) {
-      const editedProduct = await productGateway.edit(product.uuid, {
-        categoryUuids: product.categories
-          .map((c) => c.uuid)
-          .filter((uuid) => uuid !== edited.uuid)
-      })
-      productStore.edit(editedProduct)
-    }
+    const products = await productGateway.removeProductsFromCategory(
+      edited,
+      dto.productsRemoved
+    )
+    productStore.list(products)
   }
   return Promise.resolve()
 }
