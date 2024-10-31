@@ -26,7 +26,7 @@
       .font-medium.text-default {{ item.name }}
     template(#categories="{ item }")
       div(v-if="item.categories && item.categories.length")
-        div(v-for="category in item.categories" :key="category")
+        div.mb-1(v-for="category in item.categories" :key="category")
           UBadge(variant="subtle" :label="category")
       div(v-else)
   InfiniteLoading(@infinite="load")

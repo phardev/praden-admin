@@ -1,6 +1,7 @@
 <template lang="pug">
 .category-tree
   .flex.justify-end.mb-2.space-x-4
+
     ft-button.button-default.mr-0.py-1.px-2.text-md(
       variant="outline"
       @click="expandAll"
@@ -16,6 +17,9 @@
   ft-category-tree-node(
     :items="items"
     :open-items="openItems"
+    :selectable="selectable"
+    :selection="selection"
+    @selected="selected"
     @view="view"
     @update:open-items="updateOpenItems"
   )
@@ -24,6 +28,18 @@
 const props = defineProps({
   items: {
     type: Array,
+    default: () => {
+      return []
+    }
+  },
+  selectable: {
+    type: Boolean,
+    default: () => {
+      return false
+    }
+  },
+  selection: {
+    type: Array<string>,
     default: () => {
       return []
     }
@@ -55,11 +71,16 @@ const updateOpenItems = (newOpenItems) => {
 }
 const emit = defineEmits<{
   (e: 'view', uuid: string): void
+  (e: 'selected', uuid: string): void
   (e: 'update:open-items', items: Array<any>): void
 }>()
 
 const view = (uuid: string): void => {
   emit('view', uuid)
+}
+
+const selected = (uuid: string): void => {
+  emit('selected', uuid)
 }
 </script>
 

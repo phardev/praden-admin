@@ -5,6 +5,12 @@
       .list-item(@click="toggle(item)")
         .flex.justify-between.items-center.p-2.cursor-pointer.bg-hover
           div.flex.items-center.justify-center.space-x-4
+            ft-checkbox(
+              v-if="selectable"
+              :key="isSelected(item.data.uuid)"
+              :model-value="isSelected(item.data.uuid)"
+              @click.stop.prevent="selected(item.data.uuid)"
+            )
             img.w-8.h-8(:src="item.data.miniature")
             span {{ item.data.name }}
           div.flex.items-center.justify-center
@@ -26,12 +32,17 @@
           FtCategoryTreeNode(
             :items="item.children"
             :open-items="openItems"
+            :selectable="selectable"
+            :selection="selection"
             @view="view"
             @update:open-items="updateOpenItems"
+            @selected="selected"
             @clicked.prevent="view"
           )
 </template>
 <script setup lang="ts">
+import FtCheckbox from '@adapters/primary/nuxt/components/atoms/FtCheckbox.vue'
+
 const props = defineProps({
   items: {
     type: Array,
@@ -41,6 +52,18 @@ const props = defineProps({
   },
   openItems: {
     type: Array,
+    default: () => {
+      return []
+    }
+  },
+  selectable: {
+    type: Boolean,
+    default: () => {
+      return false
+    }
+  },
+  selection: {
+    type: Array<string>,
     default: () => {
       return []
     }
@@ -58,10 +81,13 @@ const toggle = (item) => {
   updateOpenItems(newOpenItems)
 }
 
+const isSelected = (uuid) => props.selection.includes(uuid)
+
 const isOpen = (uuid) => props.openItems.includes(uuid)
 
 const emit = defineEmits<{
   (e: 'view', uuid: string): void
+  (e: 'selected', uuid: string): void
   (e: 'update:open-items', items: Array<any>): void
 }>()
 
@@ -71,6 +97,10 @@ const view = (uuid: string): void => {
 
 const updateOpenItems = (openItems: Array<any>): void => {
   emit('update:open-items', openItems)
+}
+
+const selected = async (uuid: string) => {
+  emit('selected', uuid)
 }
 </script>
 

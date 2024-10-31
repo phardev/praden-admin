@@ -9,8 +9,11 @@ import {
   ProductFormFieldsWriter
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { useProductStore } from '@store/productStore'
+import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
+import { ReductionType } from '@core/entities/promotion'
+import { UUID } from '@core/types/types'
+import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 
 export class ProductFormEditVM {
   private fieldsReader: ProductFormFieldsReader
@@ -28,6 +31,17 @@ export class ProductFormEditVM {
 
   get(fieldName: string): any {
     return this.createField(fieldName)
+  }
+
+  toggleCategory(uuid: UUID): void {
+    const categoryUuids = this.fieldsReader.get('categoryUuids')
+    const index = categoryUuids.indexOf(uuid)
+    if (index < 0) {
+      categoryUuids.push(uuid)
+    } else {
+      categoryUuids.splice(index, 1)
+    }
+    this.fieldsWriter.set('categoryUuids', categoryUuids)
   }
 
   private createField<T>(fieldName: string): Field<T> {
@@ -49,7 +63,7 @@ export class ProductFormEditVM {
     return this.fieldsReader.getAvailableLocations()
   }
 
-  getDto(): EditProductDTO {
+  getDto(): CreateProductDTO {
     const priceWithoutTax = this.fieldsReader.get('priceWithoutTax')
       ? parseFloat(this.fieldsReader.get('priceWithoutTax')) * 100
       : undefined
@@ -64,12 +78,10 @@ export class ProductFormEditVM {
       cip7: this.fieldsReader.get('cip7'),
       cip13: this.fieldsReader.get('cip13'),
       ean13: this.fieldsReader.get('ean13'),
-      categoryUuid: this.fieldsReader.get('categoryUuid'),
+      categoryUuids: this.fieldsReader.get('categoryUuids'),
       laboratory: this.fieldsReader.get('laboratory'),
-      miniature: this.fieldsReader.get('miniature'),
-      newMiniature: this.fieldsReader.get('newMiniature'),
-      images: this.fieldsReader.get('initialImages'),
-      newImages: this.fieldsReader.get('newImages'),
+      miniature: this.fieldsReader.get('newMiniature'),
+      images: this.fieldsReader.get('newImages'),
       priceWithoutTax,
       percentTaxRate,
       locations: this.fieldsReader.get('locations'),
@@ -78,15 +90,28 @@ export class ProductFormEditVM {
       instructionsForUse: this.fieldsReader.get('instructionsForUse'),
       composition: this.fieldsReader.get('composition'),
       weight: +this.fieldsReader.get('weight') * 1000,
-      maxQuantityForOrder: this.fieldsReader.get('maxQuantityForOrder')
-        ? +this.fieldsReader.get('maxQuantityForOrder')
-        : undefined
+      maxQuantityForOrder: +this.fieldsReader.get('maxQuantityForOrder')
     }
   }
 
   getPromotion(): GetProductPromotionVM | undefined {
     const productStore = useProductStore()
-    return productStore.current?.promotion
+    if (!productStore.current?.promotion) return undefined
+    const promotion = productStore.current?.promotion
+    const formatter = priceFormatter('fr-FR', 'EUR')
+    return {
+      href: `/promotions/get/${promotion.uuid}`,
+      type: promotion.type === ReductionType.Fixed ? 'FIXE' : 'POURCENTAGE',
+      amount: formatter.format(promotion.amount / 100),
+      startDate: promotion.startDate
+        ? timestampToLocaleString(promotion.startDate, 'fr-FR')
+        : '',
+      startDatetime: new Date(promotion.startDate || ''),
+      endDate: promotion.endDate
+        ? timestampToLocaleString(promotion.endDate, 'fr-FR')
+        : '',
+      endDatetime: new Date(promotion.endDate || '')
+    }
   }
 
   getDisplayValidate(): boolean {

@@ -11,6 +11,7 @@ import {
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import { useLocationStore } from '@store/locationStore'
 import { Location } from '@core/entities/location'
+import { UUID } from '@core/types/types'
 
 export type CreateProductCategoriesVM = Array<Pick<Category, 'uuid' | 'name'>>
 export type CreateProductLocationsVM = Array<Pick<Location, 'uuid' | 'name'>>
@@ -148,7 +149,7 @@ export class NewProductFormInitializer implements FormInitializer {
   init() {
     this.formStore.set(this.key, {
       name: '',
-      categoryUuid: undefined,
+      categoryUuids: [],
       cip7: '',
       cip13: '',
       ean13: '',
@@ -192,6 +193,17 @@ export class ProductFormCreateVM {
     await this.fieldsWriter.set('miniature', data)
   }
 
+  toggleCategory(uuid: UUID): void {
+    const categoryUuids = this.fieldsReader.get('categoryUuids')
+    const index = categoryUuids.indexOf(uuid)
+    if (index < 0) {
+      categoryUuids.push(uuid)
+    } else {
+      categoryUuids.splice(index, 1)
+    }
+    this.fieldsWriter.set('categoryUuids', categoryUuids)
+  }
+
   private createField<T>(fieldName: string): Field<T> {
     return {
       value: this.fieldsReader.get(fieldName),
@@ -226,7 +238,7 @@ export class ProductFormCreateVM {
       cip7: this.fieldsReader.get('cip7'),
       cip13: this.fieldsReader.get('cip13'),
       ean13: this.fieldsReader.get('ean13'),
-      categoryUuid: this.fieldsReader.get('categoryUuid'),
+      categoryUuids: this.fieldsReader.get('categoryUuids'),
       laboratory: this.fieldsReader.get('laboratory'),
       miniature: this.fieldsReader.get('newMiniature'),
       images: this.fieldsReader.get('newImages'),

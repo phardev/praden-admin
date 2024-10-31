@@ -27,11 +27,14 @@ const productUuid = route.params.uuid
 const router = useRouter()
 const routeName = router.currentRoute.value.name
 
+const limit = 25
+const offset = 0
+
 onMounted(async () => {
   const categoryGateway = useCategoryGateway()
   listCategories(categoryGateway)
   const productGateway = useProductGateway()
-  listProducts(productGateway)
+  listProducts(limit, offset, productGateway)
   await getProduct(
     productUuid,
     productGateway,

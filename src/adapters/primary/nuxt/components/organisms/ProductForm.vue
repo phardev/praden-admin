@@ -13,20 +13,21 @@ div(v-if="currentVM")
             :disabled="!currentVM.get('name').canEdit"
             @update:model-value="nameChanged"
           )
-        UFormGroup.pb-4(label="Catégorie" name="category")
-          ft-autocomplete(
-            :model-value="currentVM.get('categoryUuid').value"
-            :disabled="!currentVM.get('categoryUuid').canEdit"
-            :options="currentVM.getAvailableCategories()"
-            placeholder="Rechercher une catégorie"
-            by="id"
-            option-attribute="name"
-            value-attribute="uuid"
-            @update:model-value="categoryChanged"
-            @clear="clearCategory"
-          )
-            template(#option="{ option: category }")
-              span {{ category.name }}
+        UFormGroup.pb-4(label="Catégories" name="categories")
+          div(v-if="!currentVM.get('categoryUuids').canEdit")
+            div(v-for="categoryUuid in currentVM.get('categoryUuids').value" :key="categoryUuid")
+              ft-text-field(
+                :model-value="categoryUuid"
+                :disabled="true"
+              )
+          div(v-else)
+            ft-category-tree.mt-4(
+              :items="treeCategoriesVM"
+              :selectable="true"
+              :selection="currentVM.get('categoryUuids').value"
+              @view="viewCategory"
+              @selected="categorySelected"
+            )
         UFormGroup.pb-4(label="CIP7" name="cip7")
           ft-text-field(
             :model-value="currentVM.get('cip7').value"
@@ -181,6 +182,7 @@ div(v-if="currentVM")
 import { listLocations } from '@core/usecases/locations/location-listing/listLocations'
 import { useLocationGateway } from '../../../../../../gateways/locationGateway'
 import FtButton from '@adapters/primary/nuxt/components/atoms/FtButton.vue'
+import { getTreeCategoriesVM } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
 
 definePageMeta({ layout: 'main' })
 
@@ -218,6 +220,10 @@ const props = defineProps({
       return undefined
     }
   }
+})
+
+const treeCategoriesVM = computed(() => {
+  return getTreeCategoriesVM()
 })
 
 const currentVM = toRef(props, 'vm')
@@ -272,12 +278,8 @@ const imagesChanged = async (value: FileList) => {
   await currentVM?.value?.set('newImages', Array.from(value))
 }
 
-const categoryChanged = (uuid: string) => {
-  currentVM?.value?.set('categoryUuid', uuid)
-}
-
-const clearCategory = () => {
-  currentVM?.value?.set('categoryUuid', undefined)
+const categorySelected = (uuid: string) => {
+  currentVM?.value?.toggleCategory(uuid)
 }
 
 const locationChanged = (uuid: string, value: string) => {
