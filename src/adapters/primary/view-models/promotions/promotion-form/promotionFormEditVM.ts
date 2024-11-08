@@ -60,7 +60,7 @@ export class PromotionFormEditVM extends PromotionFormVM {
           name: p.name,
           reference: p.ean13,
           categories: p.categories.map((c) => c.name),
-          laboratory: p.laboratory
+          laboratory: p.laboratory ? p.laboratory.name : ''
         }
       }),
       canEdit: true

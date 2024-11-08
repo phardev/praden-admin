@@ -35,7 +35,7 @@ const anaca3VM: PromotionProductItemVM = {
   name: anaca3Minceur.name,
   reference: anaca3Minceur.ean13,
   categories: anaca3Minceur.categories.map((c) => c.name),
-  laboratory: anaca3Minceur.laboratory
+  laboratory: anaca3Minceur.laboratory.name
 }
 
 const ultraLevureVM: PromotionProductItemVM = {
@@ -43,7 +43,7 @@ const ultraLevureVM: PromotionProductItemVM = {
   name: ultraLevure.name,
   reference: ultraLevure.ean13,
   categories: ultraLevure.categories.map((c) => c.name),
-  laboratory: ultraLevure.laboratory
+  laboratory: ultraLevure.laboratory.name
 }
 
 const dolodentVM: PromotionProductItemVM = {
@@ -51,7 +51,7 @@ const dolodentVM: PromotionProductItemVM = {
   name: dolodent.name,
   reference: dolodent.ean13,
   categories: dolodent.categories.map((c) => c.name),
-  laboratory: dolodent.laboratory
+  laboratory: dolodent.laboratory.name
 }
 
 const availableTypeChoices: Array<TypeChoiceVM> = [

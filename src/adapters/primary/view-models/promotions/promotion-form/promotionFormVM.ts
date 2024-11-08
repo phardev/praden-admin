@@ -60,7 +60,7 @@ export abstract class PromotionFormVM {
         name: product.name,
         reference: product.ean13,
         categories: product.categories.map((c) => c.name),
-        laboratory: product.laboratory
+        laboratory: product.laboratory ? product.laboratory.name : ''
       }
     })
     return {
