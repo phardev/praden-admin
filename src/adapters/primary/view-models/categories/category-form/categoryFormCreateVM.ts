@@ -64,6 +64,7 @@ export class CategoryFormFieldsWriter extends FormFieldsWriter {
   async setMiniature(miniature: File): Promise<void> {
     const data = await getFileContent(miniature)
     super.set('miniature', data)
+    super.set('newMiniature', miniature)
   }
 
   async setImage(image: File): Promise<void> {

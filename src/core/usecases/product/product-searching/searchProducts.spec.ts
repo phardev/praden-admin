@@ -8,7 +8,8 @@ import {
   calmosine,
   chamomilla,
   dolodent,
-  hemoclar
+  hemoclar,
+  productWithoutLaboratory
 } from '@utils/testData/products'
 import { FakeSearchGateway } from '@adapters/secondary/search-gateways/FakeSearchGateway'
 import { baby, dents } from '@utils/testData/categories'
@@ -94,7 +95,12 @@ describe('Search products', () => {
     })
     describe('Filter on laboratory', () => {
       beforeEach(() => {
-        searchGateway.feedWith(dolodent, hemoclar, calmosine)
+        searchGateway.feedWith(
+          dolodent,
+          hemoclar,
+          calmosine,
+          productWithoutLaboratory
+        )
       })
       it('should get one product with laboratory containing the query', async () => {
         givenQueryIs('gilbe')
@@ -132,21 +138,21 @@ describe('Search products', () => {
         expectSearchResultToEqual()
       })
     })
-    describe('Filter on cip13', () => {
+    describe('Filter on ean13', () => {
       beforeEach(() => {
         searchGateway.feedWith(dolodent, hemoclar, calmosine, dents, baby)
       })
-      it('should get one product with cip13 containing the query', async () => {
-        query = dolodent.cip13
+      it('should get one product with ean13 containing the query', async () => {
+        query = dolodent.ean13
         await whenSearchForProducts()
         expectSearchResultToEqual(dolodent)
       })
-      it('should get multiple products with category name containing the query', async () => {
+      it('should get multiple products with ean13 containing the query', async () => {
         givenQueryIs('123')
         await whenSearchForProducts()
         expectSearchResultToEqual(hemoclar, calmosine)
       })
-      it('should get nothing with name not containing the query', async () => {
+      it('should get nothing with ean13 not containing the query', async () => {
         givenQueryIs('querywithoutresult')
         await whenSearchForProducts()
         expectSearchResultToEqual()

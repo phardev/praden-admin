@@ -10,12 +10,20 @@ import { promotionFixedMultipleProducts } from '@utils/testData/promotions'
 import { useCategoryStore } from '@store/categoryStore'
 import { productFormEditVM, ProductFormEditVM } from './productFormEditVM'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
+import {
+  anaca3,
+  avene,
+  gilbert,
+  sanofiAventis
+} from '@utils/testData/laboratories'
+import { useLaboratoryStore } from '@store/laboratoryStore'
 
 describe('Product form edit VM', () => {
   let locationStore: any
   let vm: ProductFormEditVM
   let productStore: any
   let categoryStore: any
+  let laboratoryStore: any
   let formStore: any
   const key = 'edit-product-key'
   beforeEach(() => {
@@ -24,6 +32,7 @@ describe('Product form edit VM', () => {
     formStore = useFormStore()
     productStore = useProductStore()
     categoryStore = useCategoryStore()
+    laboratoryStore = useLaboratoryStore()
   })
 
   const productsTestsCases = [
@@ -75,6 +84,21 @@ describe('Product form edit VM', () => {
           uuid: minceur.uuid,
           name: minceur.name
         }
+      ],
+      availableLaboratories: [avene, gilbert, sanofiAventis],
+      expectedAvailableLaboratories: [
+        {
+          uuid: avene.uuid,
+          name: avene.name
+        },
+        {
+          uuid: gilbert.uuid,
+          name: gilbert.name
+        },
+        {
+          uuid: sanofiAventis.uuid,
+          name: sanofiAventis.name
+        }
       ]
     },
     {
@@ -104,6 +128,13 @@ describe('Product form edit VM', () => {
           uuid: minceur.uuid,
           name: minceur.name
         }
+      ],
+      availableLaboratories: [anaca3],
+      expectedAvailableLaboratories: [
+        {
+          uuid: anaca3.uuid,
+          name: anaca3.name
+        }
       ]
     }
   ]
@@ -121,7 +152,9 @@ describe('Product form edit VM', () => {
         availableLocations,
         expectedAvailableLocations,
         availableCategories,
-        expectedAvailableCategories
+        expectedAvailableCategories,
+        availableLaboratories,
+        expectedAvailableLaboratories
       }) => {
         beforeEach(() => {
           productStore.current = {
@@ -130,6 +163,7 @@ describe('Product form edit VM', () => {
           }
           locationStore.items = availableLocations
           categoryStore.items = availableCategories
+          laboratoryStore.items = availableLaboratories
           vm = productFormEditVM(key)
         })
         describe.each([
@@ -144,7 +178,7 @@ describe('Product form edit VM', () => {
           { field: 'images', expected: product.images },
           { field: 'percentTaxRate', expected: product.percentTaxRate },
           { field: 'availableStock', expected: product.availableStock },
-          { field: 'laboratory', expected: product.laboratory },
+          { field: 'laboratory', expected: product.laboratory.uuid },
           { field: 'description', expected: product.description },
           { field: 'instructionsForUse', expected: product.instructionsForUse },
           { field: 'composition', expected: product.composition },
@@ -180,6 +214,13 @@ describe('Product form edit VM', () => {
           it('should provide all locations', () => {
             expect(vm.getAvailableLocations()).toStrictEqual(
               expectedAvailableLocations
+            )
+          })
+        })
+        describe('Laboratory choices', () => {
+          it('should provide all laboratories', () => {
+            expect(vm.getAvailableLaboratories()).toStrictEqual(
+              expectedAvailableLaboratories
             )
           })
         })
@@ -259,6 +300,64 @@ describe('Product form edit VM', () => {
       })
     })
   })
+  describe('Change laboratory', () => {
+    const product = dolodent
+    beforeEach(() => {
+      productStore.current = {
+        product
+      }
+      vm = productFormEditVM(key)
+    })
+    describe('Simple toggle on multiple categories', () => {
+      it('should add the categories to the list of categories', () => {
+        vm.toggleCategory('added-category')
+        vm.toggleCategory('another-added-category')
+        const expectedField: Field<any> = {
+          value: [
+            ...product.categories.map((c) => c.uuid),
+            'added-category',
+            'another-added-category'
+          ],
+          canEdit: true
+        }
+        expect(vm.get('categoryUuids')).toStrictEqual(expectedField)
+      })
+    })
+    describe('Toggle 2 times a category', () => {
+      it('should not add the category to the list of categories', () => {
+        vm.toggleCategory('added-category')
+        vm.toggleCategory('added-category')
+        const expectedField: Field<any> = {
+          value: [...product.categories.map((c) => c.uuid)],
+          canEdit: true
+        }
+        expect(vm.get('categoryUuids')).toStrictEqual(expectedField)
+      })
+    })
+    describe('Complex toggle', () => {
+      it('should add some categories to the list of categories', () => {
+        vm.toggleCategory('added-category')
+        vm.toggleCategory('another-added-category')
+        vm.toggleCategory('added-category')
+        vm.toggleCategory('added-category')
+        vm.toggleCategory('another-added-category')
+        vm.toggleCategory('wow-category')
+        vm.toggleCategory('batman-category')
+        vm.toggleCategory('another-added-category')
+        vm.toggleCategory('added-category')
+        const expectedField: Field<any> = {
+          value: [
+            ...product.categories.map((c) => c.uuid),
+            'wow-category',
+            'batman-category',
+            'another-added-category'
+          ],
+          canEdit: true
+        }
+        expect(vm.get('categoryUuids')).toStrictEqual(expectedField)
+      })
+    })
+  })
 
   describe('DTO', () => {
     const product = dolodent
@@ -266,6 +365,7 @@ describe('Product form edit VM', () => {
       productStore.current = {
         product
       }
+      laboratoryStore.items = [avene, sanofiAventis]
       vm = productFormEditVM(key)
     })
     describe('For a dto', () => {
@@ -284,7 +384,7 @@ describe('Product form edit VM', () => {
           cip13: '1234567890123',
           ean13: '1234567890123',
           categoryUuids: [...product.categories.map((c) => c.uuid), 'abc123'],
-          laboratory: 'laboratory',
+          laboratory: avene,
           miniature: newMiniature,
           images: newImages,
           priceWithoutTax: 1200,
@@ -304,7 +404,7 @@ describe('Product form edit VM', () => {
         await vm.set('miniature', newMiniature)
         await vm.set('images', newImages)
         vm.toggleCategory('abc123')
-        vm.set('laboratory', expectedDTO.laboratory)
+        vm.set('laboratory', expectedDTO.laboratory.uuid)
         vm.set('priceWithoutTax', '12')
         vm.set('percentTaxRate', '5')
         vm.set('locations', expectedDTO.locations)

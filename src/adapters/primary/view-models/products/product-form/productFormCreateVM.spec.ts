@@ -1,17 +1,25 @@
-import { productFormCreateVM, ProductFormCreateVM } from './productFormCreateVM'
+import {
+  CreateProductLaboratoriesVM,
+  productFormCreateVM,
+  ProductFormCreateVM
+} from './productFormCreateVM'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import { createPinia, setActivePinia } from 'pinia'
-import { useFormStore } from '@store/formStore'
+import { useFormStore, useFormStore } from '@store/formStore'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { useLaboratoryStore } from '@store/laboratoryStore'
+import { anaca3, avene, sanofiAventis } from '@utils/testData/laboratories'
 
 describe('Product form create VM', () => {
   let vm: ProductFormCreateVM
   let formStore: any
+  let laboratoryStore: any
   const key = 'create-product-key'
 
   beforeEach(() => {
     setActivePinia(createPinia())
     formStore = useFormStore()
+    laboratoryStore = useLaboratoryStore()
     vm = productFormCreateVM(key)
   })
 
@@ -31,7 +39,7 @@ describe('Product form create VM', () => {
       priceWithTax: undefined,
       locations: {},
       availableStock: '',
-      laboratory: '',
+      laboratory: undefined,
       description: '',
       instructionsForUse: '',
       composition: '',
@@ -74,6 +82,22 @@ describe('Product form create VM', () => {
       it(`should save the ${field} value in form store`, () => {
         expect(formStore.get(key)[field]).toStrictEqual(expected)
       })
+    })
+  })
+  describe('Laboratory choices', () => {
+    it('should provide all laboratories', () => {
+      const availableLaboratories = [anaca3]
+      const expectedAvailableLaboratories: CreateProductLaboratoriesVM = [
+        {
+          uuid: anaca3.uuid,
+          name: anaca3.name
+        }
+      ]
+
+      laboratoryStore.items = availableLaboratories
+      expect(vm.getAvailableLaboratories()).toStrictEqual(
+        expectedAvailableLaboratories
+      )
     })
   })
   describe('Toggle categories', () => {
@@ -130,6 +154,9 @@ describe('Product form create VM', () => {
   })
   describe('DTO', () => {
     describe('For a dto', () => {
+      beforeEach(() => {
+        laboratoryStore.items = [avene, sanofiAventis]
+      })
       it('should prepare the dto', async () => {
         const newImages = [
           new File(['data1'], 'File 1', { type: 'image/png' }),
@@ -145,7 +172,7 @@ describe('Product form create VM', () => {
           cip13: '1234567890123',
           ean13: '1234567890123',
           categoryUuids: ['abc123'],
-          laboratory: 'laboratory',
+          laboratory: sanofiAventis,
           miniature: newMiniature,
           images: newImages,
           priceWithoutTax: 1200,
@@ -167,7 +194,7 @@ describe('Product form create VM', () => {
         expectedDTO.categoryUuids.forEach((uuid) => {
           vm.toggleCategory(uuid)
         })
-        vm.set('laboratory', expectedDTO.laboratory)
+        vm.set('laboratory', expectedDTO.laboratory.uuid)
         vm.set('priceWithoutTax', '12')
         vm.set('percentTaxRate', '5')
         vm.set('locations', expectedDTO.locations)

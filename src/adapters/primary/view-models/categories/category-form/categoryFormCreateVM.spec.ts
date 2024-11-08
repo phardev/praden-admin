@@ -33,35 +33,35 @@ const anaca3VM: CategoryProductItemVM = {
   uuid: anaca3Minceur.uuid,
   name: anaca3Minceur.name,
   reference: anaca3Minceur.cip13,
-  laboratory: anaca3Minceur.laboratory
+  laboratory: anaca3Minceur.laboratory.name
 }
 
 const calmosineVM: CategoryProductItemVM = {
   uuid: calmosine.uuid,
   name: calmosine.name,
   reference: calmosine.cip13,
-  laboratory: calmosine.laboratory
+  laboratory: calmosine.laboratory.name
 }
 
 const dolodentVM: CategoryProductItemVM = {
   uuid: dolodent.uuid,
   name: dolodent.name,
   reference: dolodent.cip13,
-  laboratory: dolodent.laboratory
+  laboratory: dolodent.laboratory.name
 }
 
 const chamomillaVM: CategoryProductItemVM = {
   uuid: chamomilla.uuid,
   name: chamomilla.name,
   reference: chamomilla.cip13,
-  laboratory: chamomilla.laboratory
+  laboratory: chamomilla.laboratory.name
 }
 
 const productWithoutCategoryVM: CategoryProductItemVM = {
   uuid: productWithoutCategory.uuid,
   name: productWithoutCategory.name,
   reference: productWithoutCategory.cip13,
-  laboratory: productWithoutCategory.laboratory
+  laboratory: productWithoutCategory.laboratory.name
 }
 
 const availableAnaca3VM: CategoryAvailableProductItemVM = {

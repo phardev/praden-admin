@@ -3,6 +3,7 @@ import type { Field } from '@adapters/primary/view-models/promotions/promotion-f
 import type { Category } from '@core/entities/category'
 import {
   CreateProductCategoriesVM,
+  CreateProductLaboratoriesVM,
   CreateProductLocationsVM
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import { useProductStore } from '@store/productStore'
@@ -12,6 +13,7 @@ import { useLocationStore } from '@store/locationStore'
 import { Location, sortLocationByOrder } from '@core/entities/location'
 import { ReductionType } from '@core/entities/promotion'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
+import { useLaboratoryStore } from '@store/laboratoryStore'
 
 export interface GetProductPromotionVM {
   href: string
@@ -44,11 +46,13 @@ export interface FormInitializer {
 export class ProductFormFieldsReader extends FormFieldsReader {
   protected categoryStore: any
   protected locationStore: any
+  protected laboratoryStore: any
 
   constructor(key: string) {
     super(key)
     this.categoryStore = useCategoryStore()
     this.locationStore = useLocationStore()
+    this.laboratoryStore = useLaboratoryStore()
   }
 
   getAvailableCategories(): CreateProductCategoriesVM {
@@ -64,6 +68,16 @@ export class ProductFormFieldsReader extends FormFieldsReader {
   getAvailableLocations(): CreateProductLocationsVM {
     const locations = this.locationStore.items
     return locations.sort(sortLocationByOrder).map((l: Location) => {
+      return {
+        uuid: l.uuid,
+        name: l.name
+      }
+    })
+  }
+
+  getAvailableLaboratories(): CreateProductLaboratoriesVM {
+    const laboratories = this.laboratoryStore.items
+    return laboratories.map((l: Location) => {
       return {
         uuid: l.uuid,
         name: l.name
@@ -102,7 +116,7 @@ export class ExistingProductFormInitializer implements FormInitializer {
         addTaxToPrice(product.priceWithoutTax / 100, product.percentTaxRate)
           .toFixed(2)
           .toString() || undefined,
-      laboratory: product.laboratory,
+      laboratory: product.laboratory.uuid,
       locations: product.locations,
       availableStock: product.availableStock,
       miniature: product.miniature,
@@ -161,6 +175,10 @@ export class ProductFormGetVM {
 
   getAvailableLocations(): CreateProductLocationsVM {
     return this.fieldsReader.getAvailableLocations()
+  }
+
+  getAvailableLaboratories(): CreateProductLaboratoriesVM {
+    return this.fieldsReader.getAvailableLaboratories()
   }
 
   getPromotion(): GetProductPromotionVM | undefined {

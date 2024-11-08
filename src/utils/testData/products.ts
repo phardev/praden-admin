@@ -1,6 +1,14 @@
 import { Product } from '@core/entities/product'
 import { baby, dents, diarrhee, minceur } from '@utils/testData/categories'
 import { reserve, zoneGeo } from '@utils/testData/locations'
+import {
+  anaca3,
+  biocodex,
+  boiron,
+  gilbert,
+  nutrisante,
+  sanofiAventis
+} from '@utils/testData/laboratories'
 
 export const dolodent: Product = {
   uuid: 'product-dolodent',
@@ -17,7 +25,7 @@ export const dolodent: Product = {
   percentTaxRate: 10,
   locations: { [zoneGeo.uuid]: 'DD02' },
   availableStock: 59,
-  laboratory: 'Gilbert',
+  laboratory: gilbert,
   weight: 980,
   isMedicine: true
 }
@@ -38,7 +46,7 @@ export const ultraLevure: Product = {
   percentTaxRate: 10,
   locations: { [zoneGeo.uuid]: 'C3', [reserve.uuid]: 'RESERVE_1' },
   availableStock: 36,
-  laboratory: 'BIOCODEX',
+  laboratory: biocodex,
   description: '<p> ultralevure description</p>',
   instructionsForUse: '<p> ultralevure instructions</p>',
   composition: '<p> ultralevure composition</p>',
@@ -62,7 +70,7 @@ export const anaca3Minceur: Product = {
   percentTaxRate: 5.5,
   locations: { [zoneGeo.uuid]: '1D450' },
   availableStock: 36,
-  laboratory: 'ANACA 3',
+  laboratory: anaca3,
   weight: 1200,
   maxQuantityForOrder: 3,
   isMedicine: false
@@ -83,7 +91,7 @@ export const chamomilla: Product = {
   percentTaxRate: 10,
   locations: { [zoneGeo.uuid]: 'HOMEO-D' },
   availableStock: 1,
-  laboratory: 'BOIRON',
+  laboratory: boiron,
   weight: 90,
   isMedicine: false
 }
@@ -102,7 +110,7 @@ export const calmosine: Product = {
   percentTaxRate: 10,
   locations: { [zoneGeo.uuid]: 'E2' },
   availableStock: 10,
-  laboratory: 'NUTRISANTE',
+  laboratory: nutrisante,
   weight: 250,
   isMedicine: false
 }
@@ -123,7 +131,7 @@ export const hemoclar: Product = {
   percentTaxRate: 10,
   locations: { [zoneGeo.uuid]: 'D2' },
   availableStock: 23,
-  laboratory: 'SANOFI-AVENTIS',
+  laboratory: sanofiAventis,
   weight: 110,
   isMedicine: false
 }
@@ -140,7 +148,7 @@ export const productWithoutLocation: Product = {
   percentTaxRate: 10,
   locations: {},
   availableStock: 23,
-  laboratory: 'SANOFI-AVENTIS',
+  laboratory: sanofiAventis,
   weight: 120,
   isMedicine: false
 }
@@ -158,7 +166,24 @@ export const productWithoutCategory: Product = {
   percentTaxRate: 10,
   locations: {},
   availableStock: 23,
-  laboratory: 'SANOFI-AVENTIS',
+  laboratory: sanofiAventis,
+  weight: 120,
+  isMedicine: false
+}
+
+export const productWithoutLaboratory: Product = {
+  uuid: 'product-withoutLaboratory',
+  name: 'Product without laboratory',
+  images: ['https://fakeimg.pl/300/'],
+  categories: [baby],
+  miniature: '',
+  cip7: '0637218',
+  cip13: 'cip13-0637218312823',
+  ean13: '0637218312823',
+  priceWithoutTax: 590,
+  percentTaxRate: 10,
+  locations: {},
+  availableStock: 23,
   weight: 120,
   isMedicine: false
 }

@@ -78,7 +78,7 @@ export const getProductsVM = (key: string): GetProductsVM => {
         name: p.name,
         img: p.miniature,
         reference: p.ean13,
-        laboratory: p.laboratory,
+        laboratory: p.laboratory?.name || '',
         categories: p.categories.map((c) => c.name),
         priceWithoutTax: formatter.format(p.priceWithoutTax / 100),
         priceWithTax: formatter.format(priceWithTax / 100),

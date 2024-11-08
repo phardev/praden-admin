@@ -22,7 +22,7 @@ export const useProductStore = defineStore('ProductStore', {
       products.forEach((p) => {
         const existingProduct = this.items.find((item) => item.uuid === p.uuid)
         if (existingProduct) {
-          Object.assign(existingProduct, p)
+          this.edit(p)
         } else {
           this.items.push(p)
         }

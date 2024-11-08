@@ -31,7 +31,7 @@ onMounted(async () => {
   const categoryGateway = useCategoryGateway()
   listCategories(categoryGateway)
   const productGateway = useProductGateway()
-  listProducts(productGateway)
+  listProducts(25, 0, productGateway)
   const promotionGateway = usePromotionGateway()
   listPromotions(promotionGateway)
   await getProduct(

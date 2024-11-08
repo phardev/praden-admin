@@ -98,6 +98,11 @@ export class InMemoryProductGateway implements ProductGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(this.products[index])))
   }
 
+  bulkEdit(dto: EditProductDTO, uuids: Array<UUID>): Promise<Array<Product>> {
+    const promises = uuids.map((uuid) => this.edit(uuid, dto))
+    return Promise.all(promises)
+  }
+
   getByUuid(uuid: UUID): Promise<Product> {
     const res = this.products.find((p) => p.uuid === uuid)
     if (!res) throw new ProductDoesNotExistsError(uuid)
@@ -108,6 +113,14 @@ export class InMemoryProductGateway implements ProductGateway {
     return Promise.resolve(
       this.products.filter((p) =>
         p.categories.some((c) => c.uuid === categoryUuid)
+      )
+    )
+  }
+
+  getByLaboratoryUuid(laboratoryUuid: UUID): Promise<Array<Product>> {
+    return Promise.resolve(
+      this.products.filter(
+        (p) => p.laboratory && p.laboratory.uuid === laboratoryUuid
       )
     )
   }

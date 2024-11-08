@@ -21,13 +21,15 @@ export class FakeSearchGateway implements SearchGateway {
 
   searchProducts(query: string): Promise<Array<Product>> {
     const products = this.items.filter((i) => isProduct(i))
-    const res = products.filter((i) => {
-      const isCategoryNameMatching = i.categories.some((c) =>
+    const res = products.filter((p) => {
+      const isCategoryNameMatching = p.categories.some((c) =>
         c.name.includesWithoutCase(query)
       )
-      const isNameMatching = i.name.includesWithoutCase(query)
-      const isLaboratoryMatching = i.laboratory.includesWithoutCase(query)
-      const isCip13Matching = i.cip13.includes(query)
+      const isNameMatching = p.name.includesWithoutCase(query)
+      const isLaboratoryMatching = p.laboratory
+        ? p.laboratory.name.includesWithoutCase(query)
+        : false
+      const isCip13Matching = p.cip13.includes(query)
       return (
         isNameMatching ||
         isLaboratoryMatching ||

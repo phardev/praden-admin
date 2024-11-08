@@ -70,7 +70,7 @@ export abstract class CategoryFormVM {
         uuid: p.uuid,
         name: p.name,
         reference: p.cip13,
-        laboratory: p.laboratory
+        laboratory: p.laboratory ? p.laboratory.name : ''
       }
     })
   }
@@ -91,7 +91,7 @@ export abstract class CategoryFormVM {
           name: p.name,
           reference: p.cip13,
           categories: p.categories.map((c) => c.name),
-          laboratory: p.laboratory
+          laboratory: p.laboratory ? p.laboratory.name : ''
         }
       }),
       canEdit: true

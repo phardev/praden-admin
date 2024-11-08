@@ -10,8 +10,10 @@ export interface ProductGateway {
   batch(uuids: Array<UUID>): Promise<Array<Product>>
   create(dto: CreateProductDTO): Promise<Product>
   edit(uuid: UUID, dto: EditProductDTO): Promise<Product>
+  bulkEdit(dto: EditProductDTO, uuids: Array<UUID>): Promise<Array<Product>>
   getByUuid(uuid: UUID): Promise<Product>
   getByCategoryUuid(categoryUuid: UUID): Promise<Array<Product>>
+  getByLaboratoryUuid(laboratoryUuid: UUID): Promise<Array<Product>>
   addProductsToCategory(
     category: Category,
     productUuids: Array<UUID>

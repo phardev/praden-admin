@@ -47,12 +47,19 @@ div(v-if="currentVM")
             @update:model-value="ean13Changed"
           )
         UFormGroup.pb-4(label="Laboratoire" name="laboratory")
-          ft-text-field(
+          ft-autocomplete(
             :model-value="currentVM.get('laboratory').value"
             :disabled="!currentVM.get('laboratory').canEdit"
-            label="Laboratoire"
+            :options="currentVM.getAvailableLaboratories()"
+            placeholder="Rechercher un laboratoire"
+            by="uuid"
+            option-attribute="name"
+            value-attribute="uuid"
             @update:model-value="laboratoryChanged"
+            @clear="clearLaboratory"
           )
+            template(#option="{ option: laboratory }")
+              span {{ laboratory.name }}
         UFormGroup.pb-4(label="Poids (kg)" name="weight")
           ft-text-field(
             :model-value="currentVM.get('weight').value"
@@ -177,11 +184,14 @@ import { listLocations } from '@core/usecases/locations/location-listing/listLoc
 import { useLocationGateway } from '../../../../../../gateways/locationGateway'
 import FtButton from '@adapters/primary/nuxt/components/atoms/FtButton.vue'
 import { getTreeCategoriesVM } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
+import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
+import { listLaboratories } from '@core/usecases/laboratories/laboratory-listing/listLaboratories'
 
 definePageMeta({ layout: 'main' })
 
 onMounted(() => {
   listLocations(useLocationGateway())
+  listLaboratories(useLaboratoryGateway())
 })
 
 const items = [
@@ -254,6 +264,10 @@ const priceWithTaxChanged = (priceWithTax: number) => {
 
 const laboratoryChanged = (laboratory: string) => {
   currentVM?.value?.set('laboratory', laboratory)
+}
+
+const clearLaboratory = () => {
+  currentVM?.value?.set('laboratory', undefined)
 }
 
 const weightChanged = (weight: string) => {

@@ -2,6 +2,7 @@ import { GetProductsVM, getProductsVM } from './getProductsVM'
 import {
   dolodent,
   productWithoutCategory,
+  productWithoutLaboratory,
   ultraLevure
 } from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
@@ -77,8 +78,31 @@ describe('Get products VM', () => {
               name: productWithoutCategory.name,
               img: productWithoutCategory.miniature,
               reference: productWithoutCategory.ean13,
-              laboratory: productWithoutCategory.laboratory,
+              laboratory: productWithoutCategory.laboratory.name,
               categories: [],
+              priceWithoutTax: '5,90\u00A0€',
+              priceWithTax: '6,49\u00A0€',
+              availableStock: productWithoutCategory.availableStock
+            }
+          ]
+        }
+        expectVMToMatch(expectedVM)
+      })
+    })
+    describe('Product does not have laboratory', () => {
+      it('should list all of them with empty name', () => {
+        productStore.items = [productWithoutLaboratory]
+        expectedVM = {
+          items: [
+            {
+              uuid: productWithoutLaboratory.uuid,
+              name: productWithoutLaboratory.name,
+              img: productWithoutLaboratory.miniature,
+              reference: productWithoutLaboratory.ean13,
+              laboratory: '',
+              categories: productWithoutLaboratory.categories.map(
+                (c) => c.name
+              ),
               priceWithoutTax: '5,90\u00A0€',
               priceWithTax: '6,49\u00A0€',
               availableStock: productWithoutCategory.availableStock
@@ -99,7 +123,7 @@ describe('Get products VM', () => {
               name: dolodent.name,
               img: dolodent.miniature,
               reference: dolodent.ean13,
-              laboratory: dolodent.laboratory,
+              laboratory: dolodent.laboratory.name,
               categories: dolodent.categories.map((c) => c.name),
               priceWithoutTax: '5,00\u00A0€',
               priceWithTax: '5,50\u00A0€',
@@ -110,7 +134,7 @@ describe('Get products VM', () => {
               name: ultraLevure.name,
               img: ultraLevure.miniature,
               reference: ultraLevure.ean13,
-              laboratory: ultraLevure.laboratory,
+              laboratory: ultraLevure.laboratory.name,
               categories: ultraLevure.categories.map((c) => c.name),
               priceWithoutTax: '4,32\u00A0€',
               priceWithTax: '4,75\u00A0€',
@@ -135,7 +159,7 @@ describe('Get products VM', () => {
                 name: dolodent.name,
                 img: dolodent.miniature,
                 reference: dolodent.ean13,
-                laboratory: dolodent.laboratory,
+                laboratory: dolodent.laboratory.name,
                 categories: dolodent.categories.map((c) => c.name),
                 priceWithoutTax: '5,00\u00A0€',
                 priceWithTax: '5,50\u00A0€',
@@ -160,7 +184,7 @@ describe('Get products VM', () => {
                 name: ultraLevure.name,
                 img: ultraLevure.miniature,
                 reference: ultraLevure.ean13,
-                laboratory: ultraLevure.laboratory,
+                laboratory: ultraLevure.laboratory.name,
                 categories: ultraLevure.categories.map((c) => c.name),
                 priceWithoutTax: '4,32\u00A0€',
                 priceWithTax: '4,75\u00A0€',

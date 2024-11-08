@@ -12,9 +12,14 @@ import {
 import { useLocationStore } from '@store/locationStore'
 import { Location } from '@core/entities/location'
 import { UUID } from '@core/types/types'
+import { Laboratory } from '@core/usecases/laboratories/laboratory-listing/laboratory'
+import { useLaboratoryStore } from '@store/laboratoryStore'
 
 export type CreateProductCategoriesVM = Array<Pick<Category, 'uuid' | 'name'>>
 export type CreateProductLocationsVM = Array<Pick<Location, 'uuid' | 'name'>>
+export type CreateProductLaboratoriesVM = Array<
+  Pick<Laboratory, 'uuid' | 'name'>
+>
 
 export type FieldHandler = (value: any) => void | Promise<void>
 
@@ -156,7 +161,7 @@ export class NewProductFormInitializer implements FormInitializer {
       priceWithoutTax: undefined,
       percentTaxRate: undefined,
       priceWithTax: undefined,
-      laboratory: '',
+      laboratory: undefined,
       locations: {},
       availableStock: '',
       newImages: [],
@@ -223,6 +228,10 @@ export class ProductFormCreateVM {
     return this.fieldsReader.getAvailableLocations()
   }
 
+  getAvailableLaboratories(): CreateProductLaboratoriesVM {
+    return this.fieldsReader.getAvailableLaboratories()
+  }
+
   getDto(): CreateProductDTO {
     const priceWithoutTax = this.fieldsReader.get('priceWithoutTax')
       ? parseFloat(this.fieldsReader.get('priceWithoutTax')) * 100
@@ -233,13 +242,17 @@ export class ProductFormCreateVM {
     const availableStock = this.fieldsReader.get('availableStock')
       ? parseInt(this.fieldsReader.get('availableStock'))
       : undefined
+    const laboratoryStore = useLaboratoryStore()
+    const laboratory = laboratoryStore.getByUuid(
+      this.fieldsReader.get('laboratory')
+    )
     return {
       name: this.fieldsReader.get('name'),
       cip7: this.fieldsReader.get('cip7'),
       cip13: this.fieldsReader.get('cip13'),
       ean13: this.fieldsReader.get('ean13'),
       categoryUuids: this.fieldsReader.get('categoryUuids'),
-      laboratory: this.fieldsReader.get('laboratory'),
+      laboratory,
       miniature: this.fieldsReader.get('newMiniature'),
       images: this.fieldsReader.get('newImages'),
       priceWithoutTax,

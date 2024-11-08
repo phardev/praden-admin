@@ -5,6 +5,7 @@ import {
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import {
   CreateProductCategoriesVM,
+  CreateProductLaboratoriesVM,
   CreateProductLocationsVM,
   ProductFormFieldsWriter
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
@@ -14,6 +15,7 @@ import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import { ReductionType } from '@core/entities/promotion'
 import { UUID } from '@core/types/types'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
+import { useLaboratoryStore } from '@store/laboratoryStore'
 
 export class ProductFormEditVM {
   private fieldsReader: ProductFormFieldsReader
@@ -63,6 +65,10 @@ export class ProductFormEditVM {
     return this.fieldsReader.getAvailableLocations()
   }
 
+  getAvailableLaboratories(): CreateProductLaboratoriesVM {
+    return this.fieldsReader.getAvailableLaboratories()
+  }
+
   getDto(): CreateProductDTO {
     const priceWithoutTax = this.fieldsReader.get('priceWithoutTax')
       ? parseFloat(this.fieldsReader.get('priceWithoutTax')) * 100
@@ -73,13 +79,17 @@ export class ProductFormEditVM {
     const availableStock = this.fieldsReader.get('availableStock')
       ? parseInt(this.fieldsReader.get('availableStock'))
       : undefined
+    const laboratoryStore = useLaboratoryStore()
+    const laboratory = laboratoryStore.getByUuid(
+      this.fieldsReader.get('laboratory')
+    )
     return {
       name: this.fieldsReader.get('name'),
       cip7: this.fieldsReader.get('cip7'),
       cip13: this.fieldsReader.get('cip13'),
       ean13: this.fieldsReader.get('ean13'),
       categoryUuids: this.fieldsReader.get('categoryUuids'),
-      laboratory: this.fieldsReader.get('laboratory'),
+      laboratory,
       miniature: this.fieldsReader.get('newMiniature'),
       images: this.fieldsReader.get('newImages'),
       priceWithoutTax,

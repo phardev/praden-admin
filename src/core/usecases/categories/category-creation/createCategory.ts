@@ -5,9 +5,13 @@ import { UUID } from '@core/types/types'
 import { useProductStore } from '@store/productStore'
 import { ProductGateway } from '@core/gateways/productGateway'
 
-export type CreateCategoryDTO = Omit<Category, 'uuid' | 'image'> & {
+export type CreateCategoryDTO = Omit<
+  Category,
+  'uuid' | 'image' | 'miniature'
+> & {
   productsAdded: Array<UUID>
   image?: File
+  miniature?: File
 }
 
 export const createCategory = async (

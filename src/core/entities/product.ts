@@ -1,6 +1,7 @@
 import type { HashTable, UUID } from '@core/types/types'
 import { Promotion } from './promotion'
 import { Category } from '@core/entities/category'
+import { Laboratory } from '@core/usecases/laboratories/laboratory-listing/laboratory'
 
 export type Stock = HashTable<number>
 
@@ -17,7 +18,7 @@ export interface Product {
   percentTaxRate: number
   locations: object
   availableStock: number
-  laboratory: string
+  laboratory?: Laboratory
   description: string
   instructionsForUse: string
   composition: string

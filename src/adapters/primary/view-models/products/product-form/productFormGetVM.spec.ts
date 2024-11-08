@@ -12,12 +12,20 @@ import { useLocationStore } from '@store/locationStore'
 import { magasin, reserve, zoneGeo } from '@utils/testData/locations'
 import { promotionFixedMultipleProducts } from '@utils/testData/promotions'
 import { useCategoryStore } from '@store/categoryStore'
+import { useLaboratoryStore } from '@store/laboratoryStore'
+import {
+  anaca3,
+  avene,
+  gilbert,
+  sanofiAventis
+} from '@utils/testData/laboratories'
 
 describe('Product form get VM', () => {
   let locationStore: any
   let vm: ProductFormGetVM
   let productStore: any
   let categoryStore: any
+  let laboratoryStore: any
   let formStore: any
   const key = 'get-product-key'
   beforeEach(() => {
@@ -26,6 +34,7 @@ describe('Product form get VM', () => {
     formStore = useFormStore()
     productStore = useProductStore()
     categoryStore = useCategoryStore()
+    laboratoryStore = useLaboratoryStore()
   })
 
   const productsTestsCases = [
@@ -77,6 +86,21 @@ describe('Product form get VM', () => {
           uuid: minceur.uuid,
           name: minceur.name
         }
+      ],
+      availableLaboratories: [avene, gilbert, sanofiAventis],
+      expectedAvailableLaboratories: [
+        {
+          uuid: avene.uuid,
+          name: avene.name
+        },
+        {
+          uuid: gilbert.uuid,
+          name: gilbert.name
+        },
+        {
+          uuid: sanofiAventis.uuid,
+          name: sanofiAventis.name
+        }
       ]
     },
     {
@@ -106,6 +130,13 @@ describe('Product form get VM', () => {
           uuid: minceur.uuid,
           name: minceur.name
         }
+      ],
+      availableLaboratories: [anaca3],
+      expectedAvailableLaboratories: [
+        {
+          uuid: anaca3.uuid,
+          name: anaca3.name
+        }
       ]
     }
   ]
@@ -123,7 +154,9 @@ describe('Product form get VM', () => {
         availableLocations,
         expectedAvailableLocations,
         availableCategories,
-        expectedAvailableCategories
+        expectedAvailableCategories,
+        availableLaboratories,
+        expectedAvailableLaboratories
       }) => {
         beforeEach(() => {
           productStore.current = {
@@ -132,6 +165,7 @@ describe('Product form get VM', () => {
           }
           locationStore.items = availableLocations
           categoryStore.items = availableCategories
+          laboratoryStore.items = availableLaboratories
           vm = productFormGetVM(key)
         })
         describe.each([
@@ -146,7 +180,7 @@ describe('Product form get VM', () => {
           { field: 'images', expected: product.images },
           { field: 'percentTaxRate', expected: product.percentTaxRate },
           { field: 'availableStock', expected: product.availableStock },
-          { field: 'laboratory', expected: product.laboratory },
+          { field: 'laboratory', expected: product.laboratory.uuid },
           { field: 'description', expected: product.description },
           { field: 'instructionsForUse', expected: product.instructionsForUse },
           { field: 'composition', expected: product.composition },
@@ -175,6 +209,13 @@ describe('Product form get VM', () => {
           it('should provide all categories', () => {
             expect(vm.getAvailableCategories()).toStrictEqual(
               expectedAvailableCategories
+            )
+          })
+        })
+        describe('Laboratory choices', () => {
+          it('should provide all laboratories', () => {
+            expect(vm.getAvailableLaboratories()).toStrictEqual(
+              expectedAvailableLaboratories
             )
           })
         })

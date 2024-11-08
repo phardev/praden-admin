@@ -17,6 +17,7 @@ import { Category } from '@core/entities/category'
 import { Location } from '@core/entities/location'
 import { LocationDoesNotExistsError } from '@core/errors/LocationDoesNotExistsError'
 import { UUID } from '@core/types/types'
+import { avene, gilbert } from '@utils/testData/laboratories'
 
 describe('Create product', () => {
   let productStore: any
@@ -55,7 +56,7 @@ describe('Create product', () => {
           percentTaxRate: 10,
           locations: { [zoneGeo.uuid]: 'product-location' },
           availableStock: 12,
-          laboratory: 'product-laboratory',
+          laboratory: avene,
           description: '<p>description</p>',
           instructionsForUse: '<p>instructions For Use</p>',
           composition: '<p>composition</p>',
@@ -112,7 +113,7 @@ describe('Create product', () => {
             [reserve.uuid]: 'RESERVE'
           },
           availableStock: 21,
-          laboratory: 'another-product-laboratory',
+          laboratory: gilbert,
           description: '<p>another description</p>',
           instructionsForUse: '<p>another instructions For Use</p>',
           composition: '<p>another composition</p>',
@@ -172,7 +173,7 @@ describe('Create product', () => {
           [reserve.uuid]: 'RESERVE'
         },
         availableStock: 21,
-        laboratory: 'another-product-laboratory',
+        laboratory: gilbert,
         description: '<p>another description</p>',
         instructionsForUse: '<p>another instructions For Use</p>',
         composition: '<p>another composition</p>',
@@ -234,7 +235,7 @@ describe('Create product', () => {
           ['not-exists']: 'value'
         },
         availableStock: 12,
-        laboratory: 'product-laboratory',
+        laboratory: avene,
         description: '<p>description</p>',
         instructionsForUse: '<p>instructions For Use</p>',
         composition: '<p>composition</p>',

@@ -12,7 +12,8 @@ import {
   anaca3Minceur,
   calmosine,
   chamomilla,
-  dolodent
+  dolodent,
+  productWithoutLaboratory
 } from '@utils/testData/products'
 import { Product } from '@core/entities/product'
 import { useProductStore } from '@store/productStore'
@@ -22,14 +23,21 @@ const anaca3VM: CategoryProductItemVM = {
   uuid: anaca3Minceur.uuid,
   name: anaca3Minceur.name,
   reference: anaca3Minceur.cip13,
-  laboratory: anaca3Minceur.laboratory
+  laboratory: anaca3Minceur.laboratory.name
 }
 
 const calmosineVM: CategoryProductItemVM = {
   uuid: calmosine.uuid,
   name: calmosine.name,
   reference: calmosine.cip13,
-  laboratory: calmosine.laboratory
+  laboratory: calmosine.laboratory.name
+}
+
+const productWithoutLaboratoryVM: CategoryProductItemVM = {
+  uuid: productWithoutLaboratory.uuid,
+  name: productWithoutLaboratory.name,
+  reference: productWithoutLaboratory.cip13,
+  laboratory: ''
 }
 
 const expectedProductsHeader: Array<Header> = [
@@ -68,13 +76,19 @@ describe('Category form get VM', () => {
     },
     {
       category: minceur,
-      products: [anaca3Minceur, calmosine],
-      expectedProducts: [anaca3VM, calmosineVM]
+      products: [anaca3Minceur, calmosine, productWithoutLaboratory],
+      expectedProducts: [anaca3VM, calmosineVM, productWithoutLaboratoryVM]
     }
   ])('Initial VM', ({ category, products, expectedProducts }) => {
     beforeEach(() => {
       categoryStore.current = { category, products }
-      givenExistingProducts(dolodent, anaca3Minceur, chamomilla, calmosine)
+      givenExistingProducts(
+        dolodent,
+        anaca3Minceur,
+        chamomilla,
+        calmosine,
+        productWithoutLaboratory
+      )
       vm = getVM()
     })
     describe.each([

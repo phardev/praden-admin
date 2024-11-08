@@ -5,10 +5,12 @@ import { useCategoryStore } from '@store/categoryStore'
 import { ProductGateway } from '@core/gateways/productGateway'
 import { useProductStore } from '@store/productStore'
 
-export type EditCategoryDTO = Omit<CreateCategoryDTO, 'image'> & {
+export type EditCategoryDTO = Omit<CreateCategoryDTO, 'image' | 'miniature'> & {
   productsRemoved: Array<UUID>
   image?: string
+  miniature?: string
   newImage?: File
+  newMiniature?: File
 }
 
 export const editCategory = async (
