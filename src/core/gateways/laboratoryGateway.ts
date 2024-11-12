@@ -1,7 +1,7 @@
 import { UUID } from '@core/types/types'
-import { Laboratory } from '@core/usecases/laboratories/laboratory-listing/laboratory'
+import { Laboratory } from '@core/entities/laboratory'
 import { CreateLaboratoryDTO } from '@core/usecases/laboratories/laboratory-creation/createLaboratory'
-import { EditLaboratoryDTO } from '../laboratory-edition/editLaboratory'
+import { EditLaboratoryDTO } from '../usecases/laboratories/laboratory-edition/editLaboratory'
 
 export interface LaboratoryGateway {
   list(): Promise<Array<Laboratory>>

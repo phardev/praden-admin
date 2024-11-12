@@ -19,7 +19,7 @@ import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
 import { LaboratoryProductItemVM } from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormGetVM'
 import { LaboratoryAvailableProductItemVM } from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormVM'
-import { Laboratory } from '@core/usecases/laboratories/laboratory-listing/laboratory'
+import { Laboratory } from '@core/entities/laboratory'
 import {
   laboratoryFormEditVM,
   LaboratoryFormEditVM

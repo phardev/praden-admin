@@ -1,7 +1,7 @@
 import {
   InMemoryLaboratoryGateway,
   InMemoryLaboratoryGateway
-} from '@core/usecases/laboratories/laboratory-listing/inMemoryLaboratoryGateway'
+} from '@adapters/secondary/laboratory-gateways/inMemoryLaboratoryGateway'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { createPinia, setActivePinia } from 'pinia'
 import { useLaboratoryStore } from '@store/laboratoryStore'

@@ -1,4 +1,4 @@
-import { Laboratory } from '@core/usecases/laboratories/laboratory-listing/laboratory'
+import { Laboratory } from '@core/entities/laboratory'
 import { defineStore } from 'pinia'
 import { Product } from '@core/entities/product'
 

@@ -1,4 +1,4 @@
-import { LaboratoryGateway } from '@core/usecases/laboratories/laboratory-listing/laboratoryGateway'
+import { LaboratoryGateway } from '@core/gateways/laboratoryGateway'
 import { useLaboratoryStore } from '@store/laboratoryStore'
 
 export const listLaboratories = async (

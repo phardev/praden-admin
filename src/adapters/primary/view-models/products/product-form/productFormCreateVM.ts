@@ -12,7 +12,7 @@ import {
 import { useLocationStore } from '@store/locationStore'
 import { Location } from '@core/entities/location'
 import { UUID } from '@core/types/types'
-import { Laboratory } from '@core/usecases/laboratories/laboratory-listing/laboratory'
+import { Laboratory } from '@core/entities/laboratory'
 import { useLaboratoryStore } from '@store/laboratoryStore'
 
 export type CreateProductCategoriesVM = Array<Pick<Category, 'uuid' | 'name'>>

@@ -19,7 +19,7 @@ import { Product } from '@core/entities/product'
 import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
 import { LaboratoryProductItemVM } from './laboratoryFormGetVM'
-import { Laboratory } from '@core/usecases/laboratories/laboratory-listing/laboratory'
+import { Laboratory } from '@core/entities/laboratory'
 import { avene, gilbert } from '@utils/testData/laboratories'
 import {
   LaboratoryFormCreateVM,

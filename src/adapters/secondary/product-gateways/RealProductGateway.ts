@@ -12,6 +12,10 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     super(url)
   }
 
+  bulkEdit(dto: EditProductDTO, uuids: Array<UUID>): Promise<Array<Product>> {
+    throw new Error('Method not implemented.')
+  }
+
   async addProductsToCategory(
     category: Category,
     productUuids: Array<UUID>
@@ -52,6 +56,11 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
 
   async getByCategoryUuid(uuid: UUID): Promise<Array<Product>> {
     const res = await axios.get(`${this.baseUrl}/categories/${uuid}/products`)
+    return Promise.resolve(res.data.items)
+  }
+
+  async getByLaboratoryUuid(uuid: UUID): Promise<Array<Product>> {
+    const res = await axios.get(`${this.baseUrl}/laboratories/${uuid}/products`)
     return Promise.resolve(res.data.items)
   }
 

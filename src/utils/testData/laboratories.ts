@@ -1,4 +1,4 @@
-import { Laboratory } from '@core/usecases/laboratories/laboratory-listing/laboratory'
+import { Laboratory } from '@core/entities/laboratory'
 
 export const avene: Laboratory = {
   uuid: 'avene-laboratory',

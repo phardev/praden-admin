@@ -1,8 +1,8 @@
 import { createPinia, setActivePinia } from 'pinia'
-import { InMemoryLaboratoryGateway } from '@core/usecases/laboratories/laboratory-listing/inMemoryLaboratoryGateway'
+import { InMemoryLaboratoryGateway } from '@adapters/secondary/laboratory-gateways/inMemoryLaboratoryGateway'
 import { useLaboratoryStore } from '@store/laboratoryStore'
 import { listLaboratories } from './listLaboratories'
-import { Laboratory } from '@core/usecases/laboratories/laboratory-listing/laboratory'
+import { Laboratory } from '@core/entities/laboratory'
 import { avene, gilbert } from '@utils/testData/laboratories'
 
 describe('Laboratory listing', () => {

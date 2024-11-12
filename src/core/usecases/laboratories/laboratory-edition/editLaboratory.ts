@@ -1,6 +1,6 @@
 import { UUID } from '@core/types/types'
 import { CreateLaboratoryDTO } from '@core/usecases/laboratories/laboratory-creation/createLaboratory'
-import { LaboratoryGateway } from '@core/usecases/laboratories/laboratory-listing/laboratoryGateway'
+import { LaboratoryGateway } from '@core/gateways/laboratoryGateway'
 import { ProductGateway } from '@core/gateways/productGateway'
 import { useLaboratoryStore } from '@store/laboratoryStore'
 import { useProductStore } from '@store/productStore'

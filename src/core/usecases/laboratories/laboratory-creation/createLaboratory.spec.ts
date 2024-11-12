@@ -1,4 +1,4 @@
-import { InMemoryLaboratoryGateway } from '../laboratory-listing/inMemoryLaboratoryGateway'
+import { InMemoryLaboratoryGateway } from '@adapters/secondary/laboratory-gateways/inMemoryLaboratoryGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { UUID } from '@core/types/types'
 import { useLaboratoryStore } from '@store/laboratoryStore'
@@ -7,7 +7,7 @@ import {
   createLaboratory,
   CreateLaboratoryDTO
 } from '@core/usecases/laboratories/laboratory-creation/createLaboratory'
-import { Laboratory } from '../laboratory-listing/laboratory'
+import { Laboratory } from '../../../entities/laboratory'
 import { dolodent, hemoclar } from '@utils/testData/products'
 import { Product } from '@core/entities/product'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'

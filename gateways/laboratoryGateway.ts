@@ -1,7 +1,8 @@
 import * as laboratories from '@utils/testData/laboratories'
 import { isLocalEnv } from '@utils/env'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { InMemoryLaboratoryGateway } from '@core/usecases/laboratories/laboratory-listing/inMemoryLaboratoryGateway'
+import { InMemoryLaboratoryGateway } from '@adapters/secondary/laboratory-gateways/inMemoryLaboratoryGateway'
+import { RealLaboratoryGateway } from '@adapters/secondary/laboratory-gateways/realLaboratoryGateway'
 
 const uuidGenerator = new FakeUuidGenerator()
 uuidGenerator.setNext('new-uuid')
@@ -12,7 +13,6 @@ export const useLaboratoryGateway = () => {
   if (isLocalEnv()) {
     return laboratoryGateway
   }
-  return laboratoryGateway
-  // const { BACKEND_URL } = useRuntimeConfig().public
-  // return new RealLaboratoryGateway(BACKEND_URL)
+  const { BACKEND_URL } = useRuntimeConfig().public
+  return new RealLaboratoryGateway(BACKEND_URL)
 }
