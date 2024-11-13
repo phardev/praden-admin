@@ -22,10 +22,27 @@ export class RealLaboratoryGateway
     const res = await axios.get(`${this.baseUrl}/laboratories/${uuid}`)
     return res.data.item
   }
-  create(dto: CreateLaboratoryDTO): Promise<Laboratory> {
-    throw new Error('Method not implemented.')
+  async create(dto: CreateLaboratoryDTO): Promise<Laboratory> {
+    const formData = this.createFormData(dto)
+    const res = await axios.post(`${this.baseUrl}/laboratories`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    return res.data.item
   }
-  edit(uuid: UUID, dto: EditLaboratoryDTO): Promise<Laboratory> {
-    throw new Error('Method not implemented.')
+  async edit(uuid: UUID, dto: EditLaboratoryDTO): Promise<Laboratory> {
+    const formData = this.createFormData(dto)
+    formData.append('uuid', uuid)
+    const res = await axios.patch(
+      `${this.baseUrl}/laboratories/edit/${uuid}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+    return res.data.item
   }
 }

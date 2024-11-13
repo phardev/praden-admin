@@ -12,8 +12,18 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     super(url)
   }
 
-  bulkEdit(dto: EditProductDTO, uuids: Array<UUID>): Promise<Array<Product>> {
-    throw new Error('Method not implemented.')
+  async bulkEdit(
+    dto: EditProductDTO,
+    uuids: Array<UUID>
+  ): Promise<Array<Product>> {
+    const data: any = {
+      productUuids: uuids
+    }
+    if (dto.laboratory) {
+      data.laboratoryUuid = dto.laboratory.uuid
+    }
+    const res = await axios.patch(`${this.baseUrl}/products/bulk-edit`, data)
+    return res.data.items
   }
 
   async addProductsToCategory(
