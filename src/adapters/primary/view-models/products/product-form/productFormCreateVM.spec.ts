@@ -5,7 +5,7 @@ import {
 } from './productFormCreateVM'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import { createPinia, setActivePinia } from 'pinia'
-import { useFormStore, useFormStore } from '@store/formStore'
+import { useFormStore } from '@store/formStore'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { useLaboratoryStore } from '@store/laboratoryStore'
 import { anaca3, avene, sanofiAventis } from '@utils/testData/laboratories'
@@ -194,6 +194,57 @@ describe('Product form create VM', () => {
         expectedDTO.categoryUuids.forEach((uuid) => {
           vm.toggleCategory(uuid)
         })
+        vm.set('laboratory', expectedDTO.laboratory.uuid)
+        vm.set('priceWithoutTax', '12')
+        vm.set('percentTaxRate', '5')
+        vm.set('locations', expectedDTO.locations)
+        vm.set('availableStock', '21')
+        vm.set('description', expectedDTO.description)
+        vm.set('instructionsForUse', expectedDTO.instructionsForUse)
+        vm.set('composition', expectedDTO.composition)
+        vm.set('weight', '1.2')
+        vm.set('maxQuantityForOrder', '12')
+        expect(vm.getDto()).toStrictEqual(expectedDTO)
+      })
+    })
+    describe('For a dto without category', () => {
+      beforeEach(() => {
+        laboratoryStore.items = [avene, sanofiAventis]
+      })
+      it('should prepare the dto', async () => {
+        const newImages = [
+          new File(['data1'], 'File 1', { type: 'image/png' }),
+          new File(['data2'], 'File 2', { type: 'image/jpeg' }),
+          new File(['data3'], 'File 3', { type: 'image/gif' })
+        ]
+        const newMiniature = new File(['data1'], 'MINIATURE', {
+          type: 'image/png'
+        })
+        const expectedDTO: CreateProductDTO = {
+          name: 'test',
+          cip7: '1234567',
+          cip13: '1234567890123',
+          ean13: '1234567890123',
+          categoryUuids: [],
+          laboratory: sanofiAventis,
+          miniature: newMiniature,
+          images: newImages,
+          priceWithoutTax: 1200,
+          percentTaxRate: 5,
+          locations: {},
+          availableStock: 21,
+          description: '<p>description</p>',
+          instructionsForUse: '<p>instructionsForUse</p>',
+          composition: '<p>composition</p>',
+          weight: 1200,
+          maxQuantityForOrder: 12
+        }
+        vm.set('name', expectedDTO.name)
+        vm.set('cip7', expectedDTO.cip7)
+        vm.set('cip13', expectedDTO.cip13)
+        vm.set('ean13', expectedDTO.ean13)
+        await vm.set('miniature', newMiniature)
+        await vm.set('images', newImages)
         vm.set('laboratory', expectedDTO.laboratory.uuid)
         vm.set('priceWithoutTax', '12')
         vm.set('percentTaxRate', '5')

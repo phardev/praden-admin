@@ -108,7 +108,11 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
   }
 
   async edit(uuid: UUID, dto: EditProductDTO): Promise<Product> {
-    const formData = this.createFormData(dto)
+    const { laboratory, ...productDto } = dto
+    const formData = this.createFormData(productDto)
+    if (laboratory) {
+      formData.append('laboratoryUuid', laboratory.uuid)
+    }
     formData.append('uuid', uuid)
     const res = await axios.patch(`${this.baseUrl}/products/edit`, formData, {
       headers: {
@@ -119,7 +123,11 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
   }
 
   async create(dto: CreateProductDTO): Promise<Product> {
-    const formData = this.createFormData(dto)
+    const { laboratory, ...productDto } = dto
+    const formData = this.createFormData(productDto)
+    if (laboratory) {
+      formData.append('laboratoryUuid', laboratory.uuid)
+    }
     const res = await axios.post(`${this.baseUrl}/products`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
