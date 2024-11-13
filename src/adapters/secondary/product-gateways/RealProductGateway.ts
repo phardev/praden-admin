@@ -19,7 +19,9 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     const data: any = {
       productUuids: uuids
     }
-    if (dto.laboratory) {
+    if (dto.laboratory === null) {
+      data.laboratoryUuid = null
+    } else if (dto.laboratory) {
       data.laboratoryUuid = dto.laboratory.uuid
     }
     const res = await axios.patch(`${this.baseUrl}/products/bulk-edit`, data)

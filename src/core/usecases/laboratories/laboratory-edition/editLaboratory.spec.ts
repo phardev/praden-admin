@@ -118,7 +118,7 @@ describe('Laboratory edition', () => {
         }
         expectedLaboratory = gilbert
         const expectedDolodent = JSON.parse(JSON.stringify(dolodent))
-        delete expectedDolodent.laboratory
+        expectedDolodent.laboratory = null
         expectedProducts = [expectedDolodent, hemoclar]
         await whenEditLaboratory(gilbert.uuid)
       })

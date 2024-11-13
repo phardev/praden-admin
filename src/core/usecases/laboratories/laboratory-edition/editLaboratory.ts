@@ -35,7 +35,7 @@ export const editLaboratory = async (
   }
   if (productsRemoved) {
     const products = await productGateway.bulkEdit(
-      { laboratory: undefined },
+      { laboratory: null },
       productsRemoved
     )
     productStore.list(products)
