@@ -7,7 +7,7 @@ div(v-if="currentVM")
       @update:model-value="nameChanged"
     )
   UFormGroup.pb-4(label="Description" name="description")
-    ft-text-field(
+    FtRichTextInput(
       :model-value="currentVM.get('description').value"
       :disabled="!currentVM.get('description').canEdit"
       @update:model-value="descriptionChanged"
