@@ -9,7 +9,6 @@ import { magasin, reserve, zoneGeo } from '@utils/testData/locations'
 import { promotionFixedMultipleProducts } from '@utils/testData/promotions'
 import { useCategoryStore } from '@store/categoryStore'
 import { productFormEditVM, ProductFormEditVM } from './productFormEditVM'
-import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import {
   anaca3,
   avene,
@@ -17,6 +16,7 @@ import {
   sanofiAventis
 } from '@utils/testData/laboratories'
 import { useLaboratoryStore } from '@store/laboratoryStore'
+import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 
 describe('Product form edit VM', () => {
   let locationStore: any
@@ -378,7 +378,7 @@ describe('Product form edit VM', () => {
         const newMiniature = new File(['data1'], 'MINIATURE', {
           type: 'image/png'
         })
-        const expectedDTO: CreateProductDTO = {
+        const expectedDTO: EditProductDTO = {
           name: 'test',
           cip7: '1234567',
           cip13: '1234567890123',
@@ -386,7 +386,7 @@ describe('Product form edit VM', () => {
           categoryUuids: [...product.categories.map((c) => c.uuid), 'abc123'],
           laboratory: avene,
           miniature: newMiniature,
-          images: newImages,
+          newImages,
           priceWithoutTax: 1200,
           percentTaxRate: 5,
           locations: product.locations,

@@ -5,11 +5,9 @@ import { useProductStore } from '@store/productStore'
 import { LocationGateway } from '@core/gateways/locationGateway'
 
 export type EditProductDTO = Partial<
-  Omit<CreateProductDTO, 'images' | 'miniature'> & {
+  Omit<CreateProductDTO, 'images'> & {
     images: Array<string>
     newImages: Array<File>
-    miniature: string
-    newMiniature: File
   }
 >
 
