@@ -70,7 +70,7 @@ div(v-if="currentVM")
         UFormGroup.pb-4(label="Miniature" name="miniature")
           img.mb-4(
             v-if="currentVM.get('miniature').value"
-            height=200 width=200
+            height=100 width=100
             :src="currentVM.get('miniature').value"
             alt="miniature"
           )
@@ -81,10 +81,10 @@ div(v-if="currentVM")
           )
         UFormGroup.pb-4(label="Images" name="images")
           div.flex.items-center.gap-4
-            div(v-for="(image, index) in images" :key="index")
+            div(v-for="(image, index) in currentVM.get('images').value" :key="index")
               img.mb-4(:src="image" height=200 width=200 alt="Selected Image")
           ft-file-input(
-            v-if="currentVM.get('newImages').canEdit"
+            v-if="currentVM.get('images').canEdit"
             accept="image/*"
             multiple
             @input="imagesChanged"
@@ -274,16 +274,12 @@ const weightChanged = (weight: string) => {
   currentVM?.value?.set('weight', weight)
 }
 
-const images = computed(() => {
-  return currentVM?.value?.get('images').value
-})
-
 const miniatureChanged = async (value: any) => {
   await currentVM?.value?.set('miniature', value[0])
 }
 
 const imagesChanged = async (value: FileList) => {
-  await currentVM?.value?.set('newImages', Array.from(value))
+  await currentVM?.value?.set('images', Array.from(value))
 }
 
 const categorySelected = (uuid: string) => {

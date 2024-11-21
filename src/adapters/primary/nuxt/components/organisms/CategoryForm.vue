@@ -46,7 +46,7 @@ div(v-if="currentVM")
       alt="image"
     )
     ft-file-input(
-      v-if="currentVM.get('img').canEdit"
+      v-if="currentVM.get('image').canEdit"
       accept="image/*"
       @input="imageChanged"
     )

@@ -25,7 +25,6 @@ const routeName = router.currentRoute.value.name
 const vm = ref(laboratoryFormCreateVM(routeName))
 
 const validate = async () => {
-  console.log('on valide: ', vm.value.getDto())
   await createLaboratory(
     vm.value.getDto(),
     useLaboratoryGateway(),

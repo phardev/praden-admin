@@ -103,7 +103,6 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
 
   async getByUuid(uuid: UUID): Promise<Product> {
     const res = await axios.get(`${this.baseUrl}/products/${uuid}`)
-    console.log('res: ', res)
     return Promise.resolve(res.data.item)
   }
 
@@ -113,12 +112,15 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     if (laboratory) {
       formData.append('laboratoryUuid', laboratory.uuid)
     }
-    formData.append('uuid', uuid)
-    const res = await axios.patch(`${this.baseUrl}/products/edit`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+    const res = await axios.patch(
+      `${this.baseUrl}/products/edit/${uuid}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       }
-    })
+    )
     return Promise.resolve(res.data.item)
   }
 

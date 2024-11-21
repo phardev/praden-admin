@@ -14,8 +14,8 @@ import { useProductStore } from '@store/productStore'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import { ReductionType } from '@core/entities/promotion'
 import { UUID } from '@core/types/types'
-import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import { useLaboratoryStore } from '@store/laboratoryStore'
+import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 
 export class ProductFormEditVM {
   private fieldsReader: ProductFormFieldsReader
@@ -69,7 +69,7 @@ export class ProductFormEditVM {
     return this.fieldsReader.getAvailableLaboratories()
   }
 
-  getDto(): CreateProductDTO {
+  getDto(): EditProductDTO {
     const priceWithoutTax = this.fieldsReader.get('priceWithoutTax')
       ? parseFloat(this.fieldsReader.get('priceWithoutTax')) * 100
       : undefined
@@ -91,7 +91,7 @@ export class ProductFormEditVM {
       categoryUuids: this.fieldsReader.get('categoryUuids'),
       laboratory,
       miniature: this.fieldsReader.get('newMiniature'),
-      images: this.fieldsReader.get('newImages'),
+      newImages: this.fieldsReader.get('newImages'),
       priceWithoutTax,
       percentTaxRate,
       locations: this.fieldsReader.get('locations'),
