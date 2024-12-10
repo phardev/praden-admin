@@ -6,7 +6,11 @@ import {
   ProductFormGetVM,
   productFormGetVM
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import {
+  dolodent,
+  productWithoutLaboratory,
+  ultraLevure
+} from '@utils/testData/products'
 import { useProductStore } from '@store/productStore'
 import { useLocationStore } from '@store/locationStore'
 import { magasin, reserve, zoneGeo } from '@utils/testData/locations'
@@ -138,6 +142,40 @@ describe('Product form get VM', () => {
           name: anaca3.name
         }
       ]
+    },
+    {
+      product: productWithoutLaboratory,
+      expectedPriceWithoutTax: '5.9',
+      expectedPriceWithTax: '6.49',
+      expectedLocations: {},
+      expectedWeight: '0.12',
+      promotion: undefined,
+      expectedPromotion: undefined,
+      availableLocations: [zoneGeo, magasin],
+      expectedAvailableLocations: [
+        {
+          uuid: zoneGeo.uuid,
+          name: zoneGeo.name
+        },
+        {
+          uuid: magasin.uuid,
+          name: magasin.name
+        }
+      ],
+      availableCategories: [minceur],
+      expectedAvailableCategories: [
+        {
+          uuid: minceur.uuid,
+          name: minceur.name
+        }
+      ],
+      availableLaboratories: [anaca3],
+      expectedAvailableLaboratories: [
+        {
+          uuid: anaca3.uuid,
+          name: anaca3.name
+        }
+      ]
     }
   ]
   describe('Initial VM', () => {
@@ -180,7 +218,7 @@ describe('Product form get VM', () => {
           { field: 'images', expected: product.images },
           { field: 'percentTaxRate', expected: product.percentTaxRate },
           { field: 'availableStock', expected: product.availableStock },
-          { field: 'laboratory', expected: product.laboratory.uuid },
+          { field: 'laboratory', expected: product.laboratory?.uuid || '' },
           { field: 'description', expected: product.description },
           { field: 'instructionsForUse', expected: product.instructionsForUse },
           { field: 'composition', expected: product.composition },

@@ -116,7 +116,7 @@ export class ExistingProductFormInitializer implements FormInitializer {
         addTaxToPrice(product.priceWithoutTax / 100, product.percentTaxRate)
           .toFixed(2)
           .toString() || undefined,
-      laboratory: product.laboratory.uuid,
+      laboratory: product.laboratory?.uuid || '',
       locations: product.locations,
       availableStock: product.availableStock,
       miniature: product.miniature,
