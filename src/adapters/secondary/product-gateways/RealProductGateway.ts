@@ -76,13 +76,16 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     return Promise.resolve(res.data.items)
   }
 
-  async batch(ean13s: Array<string>): Promise<Array<Product>> {
-    const res = await axios.post(`${this.baseUrl}/products/batch`, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ ean13s })
-    })
+  async batch(uuids: Array<string>): Promise<Array<Product>> {
+    const res = await axios.post(
+      `${this.baseUrl}/products/batch`,
+      { uuids },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
     return Promise.resolve(res.data.items)
   }
 

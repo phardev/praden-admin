@@ -45,7 +45,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
       orderUuid: preparation.uuid
     }
     const res = await axios.post(
-      `${this.baseUrl}/ask-how-to-finish/`,
+      `${this.baseUrl}/preparations/${preparation.uuid}/ask-how-to-finish/`,
       JSON.stringify(body)
     )
     return this.convertToOrder(res.data)
@@ -56,7 +56,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
       orderUuid: preparation.uuid
     }
     const res = await axios.post(
-      `${this.baseUrl}/cancel-preparation/`,
+      `${this.baseUrl}/preparations/${preparation.uuid}/cancel/`,
       JSON.stringify(body)
     )
     return this.convertToOrder(res.data)
@@ -95,10 +95,10 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
 
   async startPreparation(uuid: UUID): Promise<Order> {
     const res = await axios.post(
-      `${this.baseUrl}/start-preparation/`,
+      `${this.baseUrl}/preparations/${uuid}/start/`,
       JSON.stringify(uuid)
     )
-    return this.convertToOrder(res.data)
+    return this.convertToOrder(res.data.item)
   }
 
   async validatePreparation(preparation: Order): Promise<Order> {
@@ -134,7 +134,6 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
     copy.lines.forEach((l: any) => {
       delete l.img
       delete l.description
-      delete l.productUuid
       delete l.location
     })
     copy.messages.forEach((m: any) => {
