@@ -22,7 +22,7 @@ import { CategoryProductItemVM } from '@adapters/primary/view-models/categories/
 const anaca3VM: CategoryProductItemVM = {
   uuid: anaca3Minceur.uuid,
   name: anaca3Minceur.name,
-  reference: anaca3Minceur.cip13,
+  reference: anaca3Minceur.ean13,
   categories: anaca3Minceur.categories.map((c) => c.name),
   laboratory: anaca3Minceur.laboratory.name
 }
@@ -30,7 +30,7 @@ const anaca3VM: CategoryProductItemVM = {
 const calmosineVM: CategoryProductItemVM = {
   uuid: calmosine.uuid,
   name: calmosine.name,
-  reference: calmosine.cip13,
+  reference: calmosine.ean13,
   categories: calmosine.categories.map((c) => c.name),
   laboratory: calmosine.laboratory.name
 }
@@ -38,7 +38,7 @@ const calmosineVM: CategoryProductItemVM = {
 const productWithoutLaboratoryVM: CategoryProductItemVM = {
   uuid: productWithoutLaboratory.uuid,
   name: productWithoutLaboratory.name,
-  reference: productWithoutLaboratory.cip13,
+  reference: productWithoutLaboratory.ean13,
   categories: productWithoutLaboratory.categories.map((c) => c.name),
   laboratory: ''
 }

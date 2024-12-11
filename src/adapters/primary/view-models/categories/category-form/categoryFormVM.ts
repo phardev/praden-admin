@@ -72,7 +72,7 @@ export abstract class CategoryFormVM {
       return {
         uuid: p.uuid,
         name: p.name,
-        reference: p.cip13,
+        reference: p.ean13,
         categories: p.categories.map((c) => c.name),
         laboratory: p.laboratory ? p.laboratory.name : ''
       }
@@ -93,7 +93,7 @@ export abstract class CategoryFormVM {
         return {
           uuid: p.uuid,
           name: p.name,
-          reference: p.cip13,
+          reference: p.ean13,
           categories: p.categories.map((c) => c.name),
           laboratory: p.laboratory ? p.laboratory.name : ''
         }

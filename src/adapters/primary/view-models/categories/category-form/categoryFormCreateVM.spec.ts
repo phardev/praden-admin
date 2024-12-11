@@ -32,7 +32,7 @@ import { useSearchStore } from '@store/searchStore'
 const anaca3VM: CategoryProductItemVM = {
   uuid: anaca3Minceur.uuid,
   name: anaca3Minceur.name,
-  reference: anaca3Minceur.cip13,
+  reference: anaca3Minceur.ean13,
   categories: anaca3Minceur.categories.map((c) => c.name),
   laboratory: anaca3Minceur.laboratory.name
 }
@@ -40,7 +40,7 @@ const anaca3VM: CategoryProductItemVM = {
 const calmosineVM: CategoryProductItemVM = {
   uuid: calmosine.uuid,
   name: calmosine.name,
-  reference: calmosine.cip13,
+  reference: calmosine.ean13,
   categories: calmosine.categories.map((c) => c.name),
   laboratory: calmosine.laboratory.name
 }
@@ -48,7 +48,7 @@ const calmosineVM: CategoryProductItemVM = {
 const dolodentVM: CategoryProductItemVM = {
   uuid: dolodent.uuid,
   name: dolodent.name,
-  reference: dolodent.cip13,
+  reference: dolodent.ean13,
   categories: dolodent.categories.map((c) => c.name),
   laboratory: dolodent.laboratory.name
 }
@@ -56,7 +56,7 @@ const dolodentVM: CategoryProductItemVM = {
 const chamomillaVM: CategoryProductItemVM = {
   uuid: chamomilla.uuid,
   name: chamomilla.name,
-  reference: chamomilla.cip13,
+  reference: chamomilla.ean13,
   categories: chamomilla.categories.map((c) => c.name),
   laboratory: chamomilla.laboratory.name
 }
@@ -64,7 +64,7 @@ const chamomillaVM: CategoryProductItemVM = {
 const productWithoutCategoryVM: CategoryProductItemVM = {
   uuid: productWithoutCategory.uuid,
   name: productWithoutCategory.name,
-  reference: productWithoutCategory.cip13,
+  reference: productWithoutCategory.ean13,
   categories: [],
   laboratory: productWithoutCategory.laboratory.name
 }
