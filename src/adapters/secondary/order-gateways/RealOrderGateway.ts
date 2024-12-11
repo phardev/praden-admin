@@ -74,7 +74,6 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
 
   async listOrdersToPrepare(): Promise<Array<Order>> {
     const res = await axios.get(`${this.baseUrl}/preparations/`)
-    console.log('res: ', res.data.items)
     return Promise.resolve(
       res.data.items.map((d: any) => {
         return this.convertToOrder(d)
@@ -115,7 +114,6 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
 
   private convertToOrder(data: any): Order {
     const copy = JSON.parse(JSON.stringify(data))
-    copy.messages = []
     delete copy.payment.sessionUrl
     copy.lines = copy.lines.map((l: any) => {
       const res: OrderLine = {
@@ -137,10 +135,11 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
       delete l.description
       delete l.location
     })
-    copy.messages.forEach((m: any) => {
-      delete m.orderUuid
-      delete m.content.data
-      m.content = m.content.type
+    copy.messages = data.messages.map((m: any) => {
+      return {
+        content: m.data.type,
+        sentAt: m.updatedAt
+      }
     })
     copy.payment.status = this.getPaymentStatus(copy.payment.status)
     return copy
