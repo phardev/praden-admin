@@ -153,6 +153,37 @@ describe('Category Edition', () => {
     })
   })
 
+  describe('Loading', () => {
+    beforeEach(() => {
+      givenExistingCategories(dents)
+    })
+    it('should be aware during loading', async () => {
+      const dto: EditCategoryDTO = {
+        ...dents,
+        description: 'The new description',
+        productsAdded: [],
+        productsRemoved: []
+      }
+      const unsubscribe = categoryStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenEditCategory(dents.uuid, dto)
+    })
+    it('should be aware that loading is over', async () => {
+      const dto: EditCategoryDTO = {
+        ...dents,
+        description: 'The new description',
+        productsAdded: [],
+        productsRemoved: []
+      }
+      await whenEditCategory(dents.uuid, dto)
+      expect(categoryStore.isLoading).toBe(false)
+    })
+  })
+
   const givenExistingCategories = (...categories: Array<Category>) => {
     categoryGateway.feedWith(...JSON.parse(JSON.stringify(categories)))
     categoryStore.items = JSON.parse(JSON.stringify(categories))

@@ -122,6 +122,34 @@ describe('Create category', () => {
       expect(productStore.items).toStrictEqual(expectedProducts)
     })
   })
+  describe('Loading', () => {
+    beforeEach(() => {
+      givenExistingCategories(dents)
+    })
+    it('should be aware during loading', async () => {
+      const dto: CreateCategoryDTO = {
+        name: 'new-category',
+        description: 'The description',
+        productsAdded: [dolodent.uuid, calmosine.uuid]
+      }
+      const unsubscribe = categoryStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenCreateCategory(dents.uuid, dto)
+    })
+    it('should be aware that loading is over', async () => {
+      const dto: CreateCategoryDTO = {
+        name: 'new-category',
+        description: 'The description',
+        productsAdded: [dolodent.uuid, calmosine.uuid]
+      }
+      await whenCreateCategory(dents.uuid, dto)
+      expect(categoryStore.isLoading).toBe(false)
+    })
+  })
 
   const givenExistingProducts = (...products: Array<Product>) => {
     productGateway.feedWith(...JSON.parse(JSON.stringify(products)))

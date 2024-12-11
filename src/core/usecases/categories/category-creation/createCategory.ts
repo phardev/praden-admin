@@ -19,8 +19,9 @@ export const createCategory = async (
   categoryGateway: CategoryGateway,
   productGateway: ProductGateway
 ): Promise<void> => {
-  const created = await categoryGateway.create(dto)
   const categoryStore = useCategoryStore()
+  categoryStore.startLoading()
+  const created = await categoryGateway.create(dto)
   categoryStore.add(created)
   const productStore = useProductStore()
   const products = await productGateway.batch(dto.productsAdded)
@@ -30,4 +31,5 @@ export const createCategory = async (
     })
     productStore.edit(editedProduct)
   }
+  categoryStore.stopLoading()
 }

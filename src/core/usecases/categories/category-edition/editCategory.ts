@@ -19,8 +19,9 @@ export const editCategory = async (
   categoryGateway: CategoryGateway,
   productGateway: ProductGateway
 ): Promise<void> => {
-  const edited = await categoryGateway.edit(uuid, dto)
   const categoryStore = useCategoryStore()
+  categoryStore.startLoading()
+  const edited = await categoryGateway.edit(uuid, dto)
   categoryStore.edit(edited)
   const productStore = useProductStore()
   if (dto.productsAdded) {
@@ -37,5 +38,6 @@ export const editCategory = async (
     )
     productStore.list(products)
   }
+  categoryStore.stopLoading()
   return Promise.resolve()
 }

@@ -17,7 +17,7 @@ describe('Get tree categories VM', () => {
   describe('There is no categories', () => {
     it('should return an empty vm', () => {
       const expectedVM: TreeCategoriesVM = []
-      expect(getTreeCategoriesVM()).toStrictEqual(expectedVM)
+      expect(getTreeCategoriesVM().items).toStrictEqual(expectedVM)
     })
   })
   describe('There only root categories', () => {
@@ -33,7 +33,7 @@ describe('Get tree categories VM', () => {
           children: []
         }
       ]
-      expect(getTreeCategoriesVM()).toStrictEqual(expectedVM)
+      expect(getTreeCategoriesVM().items).toStrictEqual(expectedVM)
     })
     it('should return multiple root category vm', () => {
       givenExistingCategories(mum, dents, minceur)
@@ -63,7 +63,7 @@ describe('Get tree categories VM', () => {
           children: []
         }
       ]
-      expect(getTreeCategoriesVM()).toStrictEqual(expectedVM)
+      expect(getTreeCategoriesVM().items).toStrictEqual(expectedVM)
     })
   })
 
@@ -205,11 +205,22 @@ describe('Get tree categories VM', () => {
     })
   })
 
+  describe('Loading', () => {
+    it('should be aware if its loading', () => {
+      categoryStore.isLoading = true
+      expect(getTreeCategoriesVM().isLoading).toBe(true)
+    })
+    it('should be aware if its not loading', () => {
+      categoryStore.isLoading = false
+      expect(getTreeCategoriesVM().isLoading).toBe(false)
+    })
+  })
+
   const givenExistingCategories = (...categories: Array<Category>) => {
     categoryStore.items = categories
   }
 
   const expectVMToStrictEqual = (expectedVM: any) => {
-    expect(getTreeCategoriesVM()).toStrictEqual(expectedVM)
+    expect(getTreeCategoriesVM().items).toStrictEqual(expectedVM)
   }
 })

@@ -4,6 +4,7 @@ import { Product } from '@core/entities/product'
 import { useSearchStore } from '@store/searchStore'
 import { UUID } from '@core/types/types'
 import { CategoryFormFieldsReader } from '@adapters/primary/view-models/categories/category-form/categoryFormGetVM'
+import { useCategoryStore } from '@store/categoryStore'
 
 export interface CategoryProductItemVM {
   uuid: UUID
@@ -100,5 +101,9 @@ export abstract class CategoryFormVM {
       }),
       canEdit: true
     }
+  }
+  isLoading(): boolean {
+    const categoryStore = useCategoryStore()
+    return categoryStore.isLoading
   }
 }

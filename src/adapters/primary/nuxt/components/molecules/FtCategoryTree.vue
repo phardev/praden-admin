@@ -1,7 +1,18 @@
 <template lang="pug">
-.category-tree
+div(v-if="isLoading")
+  .space-y-6
+  .pb-4
+    .h-10.bg-gray-200.rounded.animate-pulse
+  .pb-4
+    .h-10.bg-gray-200.rounded.animate-pulse
+  .pb-4
+    .h-10.bg-gray-200.rounded.animate-pulse
+  .pb-4
+    .h-10.bg-gray-200.rounded.animate-pulse
+  .pb-4
+    .h-10.bg-gray-200.rounded.animate-pulse
+.category-tree(v-else)
   .flex.justify-end.mb-2.space-x-4
-
     ft-button.button-default.mr-0.py-1.px-2.text-md(
       variant="outline"
       @click="expandAll"
@@ -27,6 +38,12 @@
 </template>
 <script setup lang="ts">
 const props = defineProps({
+  isLoading: {
+    type: Boolean,
+    default: () => {
+      return false
+    }
+  },
   items: {
     type: Array,
     default: () => {

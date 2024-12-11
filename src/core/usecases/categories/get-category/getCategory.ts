@@ -8,8 +8,10 @@ export const getCategory = async (
   categoryGateway: CategoryGateway,
   productGateway: ProductGateway
 ) => {
-  const category = await categoryGateway.getByUuid(uuid)
   const categoryStore = useCategoryStore()
+  categoryStore.startLoading()
+  const category = await categoryGateway.getByUuid(uuid)
   const products = await productGateway.getByCategoryUuid(uuid)
   categoryStore.setCurrent({ category, products })
+  categoryStore.stopLoading()
 }

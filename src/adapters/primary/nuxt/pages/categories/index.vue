@@ -5,7 +5,8 @@
     nuxt-link(to="/categories/new")
       ft-button.button-solid.text-xl.px-6 Créer catégorie
   ft-category-tree.mt-4(
-    :items="treeCategoriesVM"
+    :is-loading="treeCategoriesVM.isLoading"
+    :items="treeCategoriesVM.items"
     @view="categorySelected"
   )
 </template>

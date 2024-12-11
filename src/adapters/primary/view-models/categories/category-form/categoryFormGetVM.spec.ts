@@ -134,6 +134,16 @@ describe('Category form get VM', () => {
       })
     })
   })
+  describe('Loading', () => {
+    it('should be aware during loading', () => {
+      categoryStore.isLoading = true
+      expect(vm.isLoading()).toBe(true)
+    })
+    it('should be aware when not loading', () => {
+      categoryStore.isLoading = false
+      expect(vm.isLoading()).toBe(false)
+    })
+  })
   describe('Validation', () => {
     describe('Display validate', () => {
       it('should never display the validate button', () => {

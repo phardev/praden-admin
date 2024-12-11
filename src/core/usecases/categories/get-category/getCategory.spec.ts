@@ -53,6 +53,25 @@ describe('Get category', () => {
       )
     })
   })
+  describe('Loading', () => {
+    beforeEach(() => {
+      categoryGateway.feedWith(dents)
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = categoryStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenGetCategory(dents.uuid)
+    })
+    it('should be aware that loading is over', async () => {
+      await whenGetCategory(dents.uuid)
+      expect(categoryStore.isLoading).toBe(false)
+    })
+  })
+
   const givenExistingProducts = (...products: Array<Product>) => {
     productGateway.feedWith(...products)
   }

@@ -5,7 +5,8 @@ export const useCategoryStore = defineStore('CategoryStore', {
   state: () => {
     return {
       items: [] as Array<Category>,
-      current: undefined as CategoryWithProducts | undefined
+      current: undefined as CategoryWithProducts | undefined,
+      isLoading: false
     }
   },
   getters: {
@@ -29,6 +30,12 @@ export const useCategoryStore = defineStore('CategoryStore', {
     },
     setCurrent(category: CategoryWithProducts) {
       this.current = JSON.parse(JSON.stringify(category))
+    },
+    startLoading() {
+      this.isLoading = true
+    },
+    stopLoading() {
+      this.isLoading = false
     }
   }
 })

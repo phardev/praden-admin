@@ -5,7 +5,7 @@ import {
   OrderLine,
   PaymentStatus
 } from '@core/entities/order'
-import type { UUID } from '@core/types/types'
+import type { HashTable, UUID } from '@core/types/types'
 import axios from 'axios'
 import { zoneGeo } from '@utils/testData/locations'
 
@@ -41,14 +41,10 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
   }
 
   async askHowToFinish(preparation: Order): Promise<Order> {
-    const body: any = {
-      orderUuid: preparation.uuid
-    }
     const res = await axios.post(
-      `${this.baseUrl}/preparations/${preparation.uuid}/ask-how-to-finish/`,
-      JSON.stringify(body)
+      `${this.baseUrl}/preparations/${preparation.uuid}/ask-how-to-finish/`
     )
-    return this.convertToOrder(res.data)
+    return this.convertToOrder(res.data.item)
   }
 
   async cancelPreparation(preparation: Order): Promise<Order> {
@@ -78,6 +74,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
 
   async listOrdersToPrepare(): Promise<Array<Order>> {
     const res = await axios.get(`${this.baseUrl}/preparations/`)
+    console.log('res: ', res.data.items)
     return Promise.resolve(
       res.data.items.map((d: any) => {
         return this.convertToOrder(d)
@@ -86,11 +83,15 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
   }
 
   async savePreparation(preparation: Order): Promise<Order> {
+    const lines: HashTable<number> = {}
+    preparation.lines.forEach((l) => {
+      lines[l.productUuid] = l.preparedQuantity
+    })
     const res = await axios.post(
-      `${this.baseUrl}/save-preparation/`,
-      JSON.stringify(preparation)
+      `${this.baseUrl}/preparations/${preparation.uuid}/save/`,
+      { lines }
     )
-    return this.convertToOrder(res.data)
+    return this.convertToOrder(res.data.item)
   }
 
   async startPreparation(uuid: UUID): Promise<Order> {

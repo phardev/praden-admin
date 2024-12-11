@@ -14,6 +14,11 @@ export interface TreeCategoryNodeVM {
 
 export type TreeCategoriesVM = Array<TreeNode<TreeCategoryNodeVM>>
 
+export interface CategoriesVM {
+  isLoading: boolean
+  items: TreeCategoriesVM
+}
+
 const getChildren = (uuid: UUID): TreeCategoriesVM => {
   const categoryStore = useCategoryStore()
   const categories = categoryStore.items.filter((c) => c.parentUuid === uuid)
@@ -29,17 +34,20 @@ const getChildren = (uuid: UUID): TreeCategoriesVM => {
   })
 }
 
-export const getTreeCategoriesVM = (): TreeCategoriesVM => {
+export const getTreeCategoriesVM = (): CategoriesVM => {
   const categoryStore = useCategoryStore()
   const rootCategories = categoryStore.items.filter((c) => !c.parentUuid)
-  return rootCategories.map((c) => {
-    return {
-      data: {
-        uuid: c.uuid,
-        name: c.name,
-        miniature: c.miniature
-      },
-      children: getChildren(c.uuid)
-    }
-  })
+  return {
+    isLoading: categoryStore.isLoading,
+    items: rootCategories.map((c) => {
+      return {
+        data: {
+          uuid: c.uuid,
+          name: c.name,
+          miniature: c.miniature
+        },
+        children: getChildren(c.uuid)
+      }
+    })
+  }
 }
