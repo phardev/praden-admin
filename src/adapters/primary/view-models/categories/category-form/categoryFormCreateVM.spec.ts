@@ -33,6 +33,7 @@ const anaca3VM: CategoryProductItemVM = {
   uuid: anaca3Minceur.uuid,
   name: anaca3Minceur.name,
   reference: anaca3Minceur.cip13,
+  categories: anaca3Minceur.categories.map((c) => c.name),
   laboratory: anaca3Minceur.laboratory.name
 }
 
@@ -40,6 +41,7 @@ const calmosineVM: CategoryProductItemVM = {
   uuid: calmosine.uuid,
   name: calmosine.name,
   reference: calmosine.cip13,
+  categories: calmosine.categories.map((c) => c.name),
   laboratory: calmosine.laboratory.name
 }
 
@@ -47,6 +49,7 @@ const dolodentVM: CategoryProductItemVM = {
   uuid: dolodent.uuid,
   name: dolodent.name,
   reference: dolodent.cip13,
+  categories: dolodent.categories.map((c) => c.name),
   laboratory: dolodent.laboratory.name
 }
 
@@ -54,6 +57,7 @@ const chamomillaVM: CategoryProductItemVM = {
   uuid: chamomilla.uuid,
   name: chamomilla.name,
   reference: chamomilla.cip13,
+  categories: chamomilla.categories.map((c) => c.name),
   laboratory: chamomilla.laboratory.name
 }
 
@@ -61,33 +65,16 @@ const productWithoutCategoryVM: CategoryProductItemVM = {
   uuid: productWithoutCategory.uuid,
   name: productWithoutCategory.name,
   reference: productWithoutCategory.cip13,
+  categories: [],
   laboratory: productWithoutCategory.laboratory.name
 }
 
-const availableAnaca3VM: CategoryAvailableProductItemVM = {
-  ...anaca3VM,
-  categories: [minceur.name]
-}
-
-const availableCalmosineVM: CategoryAvailableProductItemVM = {
-  ...calmosineVM,
-  categories: [baby.name]
-}
-
-const availableDolodentVM: CategoryAvailableProductItemVM = {
-  ...dolodentVM,
-  categories: [dents.name]
-}
-
-const availableChamomillaVM: CategoryAvailableProductItemVM = {
-  ...chamomillaVM,
-  categories: [dents.name]
-}
-
-const availableProductWithoutCategoryVM: CategoryAvailableProductItemVM = {
-  ...productWithoutCategoryVM,
-  categories: []
-}
+const availableAnaca3VM: CategoryAvailableProductItemVM = anaca3VM
+const availableCalmosineVM: CategoryAvailableProductItemVM = calmosineVM
+const availableDolodentVM: CategoryAvailableProductItemVM = dolodentVM
+const availableChamomillaVM: CategoryAvailableProductItemVM = chamomillaVM
+const availableProductWithoutCategoryVM: CategoryAvailableProductItemVM =
+  productWithoutCategoryVM
 
 const expectedProductsHeader: Array<Header> = [
   {
@@ -97,6 +84,10 @@ const expectedProductsHeader: Array<Header> = [
   {
     name: 'Référence',
     value: 'reference'
+  },
+  {
+    name: 'Catégories',
+    value: 'categories'
   },
   {
     name: 'Laboratoire',
@@ -114,8 +105,8 @@ const expectedAvailableProductsHeader: Array<Header> = [
     value: 'reference'
   },
   {
-    name: 'Catégorie',
-    value: 'category'
+    name: 'Catégories',
+    value: 'categories'
   },
   {
     name: 'Laboratoire',

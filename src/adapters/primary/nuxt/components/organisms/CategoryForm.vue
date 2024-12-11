@@ -63,7 +63,7 @@ div(v-if="currentVM")
     div.flex-1(
       v-if="currentVM.get('products').canEdit"
     )
-      ft-table(
+      product-table(
         :headers="currentVM.getAvailableProductsHeaders()"
         :items="currentVM.getAvailableProducts().value"
         :selectable="true"
@@ -84,7 +84,7 @@ div(v-if="currentVM")
       )
         icon.icon-lg.rotate-180(name="ic:baseline-keyboard-arrow-right")
     div.flex-1
-      ft-table(
+      product-table(
         :headers="currentVM.getProductsHeaders()"
         :items="currentVM.getProducts().value"
         :selectable="currentVM.get('products').canEdit"

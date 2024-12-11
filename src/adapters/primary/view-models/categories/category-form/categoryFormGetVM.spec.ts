@@ -23,6 +23,7 @@ const anaca3VM: CategoryProductItemVM = {
   uuid: anaca3Minceur.uuid,
   name: anaca3Minceur.name,
   reference: anaca3Minceur.cip13,
+  categories: anaca3Minceur.categories.map((c) => c.name),
   laboratory: anaca3Minceur.laboratory.name
 }
 
@@ -30,6 +31,7 @@ const calmosineVM: CategoryProductItemVM = {
   uuid: calmosine.uuid,
   name: calmosine.name,
   reference: calmosine.cip13,
+  categories: calmosine.categories.map((c) => c.name),
   laboratory: calmosine.laboratory.name
 }
 
@@ -37,6 +39,7 @@ const productWithoutLaboratoryVM: CategoryProductItemVM = {
   uuid: productWithoutLaboratory.uuid,
   name: productWithoutLaboratory.name,
   reference: productWithoutLaboratory.cip13,
+  categories: productWithoutLaboratory.categories.map((c) => c.name),
   laboratory: ''
 }
 
@@ -48,6 +51,10 @@ const expectedProductsHeader: Array<Header> = [
   {
     name: 'Référence',
     value: 'reference'
+  },
+  {
+    name: 'Catégories',
+    value: 'categories'
   },
   {
     name: 'Laboratoire',

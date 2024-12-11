@@ -9,12 +9,11 @@ export interface CategoryProductItemVM {
   uuid: UUID
   name: string
   reference: string
+  categories: Array<string>
   laboratory: string
 }
 
-export interface CategoryAvailableProductItemVM extends CategoryProductItemVM {
-  categories: Array<string>
-}
+export type CategoryAvailableProductItemVM = CategoryProductItemVM
 
 export abstract class CategoryFormVM {
   protected fieldsReader: CategoryFormFieldsReader
@@ -36,6 +35,10 @@ export abstract class CategoryFormVM {
         value: 'reference'
       },
       {
+        name: 'Catégories',
+        value: 'categories'
+      },
+      {
         name: 'Laboratoire',
         value: 'laboratory'
       }
@@ -53,8 +56,8 @@ export abstract class CategoryFormVM {
         value: 'reference'
       },
       {
-        name: 'Catégorie',
-        value: 'category'
+        name: 'Catégories',
+        value: 'categories'
       },
       {
         name: 'Laboratoire',
@@ -70,6 +73,7 @@ export abstract class CategoryFormVM {
         uuid: p.uuid,
         name: p.name,
         reference: p.cip13,
+        categories: p.categories.map((c) => c.name),
         laboratory: p.laboratory ? p.laboratory.name : ''
       }
     })
