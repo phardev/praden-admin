@@ -1,176 +1,206 @@
 <template lang="pug">
-div(v-if="currentVM")
-  UForm
-    UAccordion(
-      multiple
-      size="xl"
-      :items="items"
-    )
-      template(#informations)
-        UFormGroup.pb-4(label="Nom" name="name")
-          ft-text-field(
-            :model-value="currentVM.get('name').value"
-            :disabled="!currentVM.get('name').canEdit"
-            @update:model-value="nameChanged"
-          )
-        UFormGroup.pb-4(label="Catégories" name="categories")
-          ft-category-tree.mt-4(
-            :items="treeCategoriesVM"
-            :disabled="!currentVM.get('categoryUuids').canEdit"
-            :selectable="true"
-            :selection="currentVM.get('categoryUuids').value"
-            @view="viewCategory"
-            @selected="categorySelected"
-          )
-        UFormGroup.pb-4(label="CIP7" name="cip7")
-          ft-text-field(
-            :model-value="currentVM.get('cip7').value"
-            :disabled="!currentVM.get('cip7').canEdit"
-            @update:model-value="cip7Changed"
-          )
-        UFormGroup.pb-4(label="Médicament" name="isMedicine")
-          UToggle(
-            size="xl"
-            :model-value="currentVM.get('isMedicine').value"
-            :disabled="true"
-          )
-        UFormGroup.pb-4(label="CIP13" name="cip13")
-          ft-text-field(
-            :model-value="currentVM.get('cip13').value"
-            :disabled="!currentVM.get('cip13').canEdit"
-            @update:model-value="cip13Changed"
-          )
-        UFormGroup.pb-4(label="EAN13" name="ean13")
-          ft-text-field(
-            :model-value="currentVM.get('ean13').value"
-            :disabled="!currentVM.get('ean13').canEdit"
-            @update:model-value="ean13Changed"
-          )
-        UFormGroup.pb-4(label="Laboratoire" name="laboratory")
-          ft-autocomplete(
-            :model-value="currentVM.get('laboratory').value"
-            :disabled="!currentVM.get('laboratory').canEdit"
-            :options="currentVM.getAvailableLaboratories()"
-            placeholder="Rechercher un laboratoire"
-            by="uuid"
-            option-attribute="name"
-            value-attribute="uuid"
-            @update:model-value="laboratoryChanged"
-            @clear="clearLaboratory"
-          )
-            template(#option="{ option: laboratory }")
-              span {{ laboratory.name }}
-        UFormGroup.pb-4(label="Poids (kg)" name="weight")
-          ft-text-field(
-            :model-value="currentVM.get('weight').value"
-            :disabled="!currentVM.get('weight').canEdit"
-            label="Poids (kg)"
-            @update:model-value="weightChanged"
-          )
-        UFormGroup.pb-4(label="Miniature" name="miniature")
-          img.mb-4(
-            v-if="currentVM.get('miniature').value"
-            height=100 width=100
-            :src="currentVM.get('miniature').value"
-            alt="miniature"
-          )
-          ft-file-input(
-            v-if="currentVM.get('miniature').canEdit"
-            accept="image/*"
-            @input="miniatureChanged"
-          )
-        UFormGroup.pb-4(label="Images" name="images")
-          div.flex.items-center.gap-4
-            div(v-for="(image, index) in currentVM.get('images').value" :key="index")
-              img.mb-4(:src="image" height=200 width=200 alt="Selected Image")
-          ft-file-input(
-            v-if="currentVM.get('images').canEdit"
-            accept="image/*"
-            multiple
-            @input="imagesChanged"
-          )
-      template(#price)
-        div.flex.gap-8.items-center
-          div.grow
-            UFormGroup.pb-4(label="Prix (HT)" name="priceWithoutTax")
-              ft-currency-input(
-                v-model.lazy="currentVM.get('priceWithoutTax').value"
-                :disabled="!currentVM.get('priceWithoutTax').canEdit"
-                label="Prix (HT)"
-                @update:model-value="priceWithoutTaxChanged"
-              )
-            UFormGroup.pb-4(label="Taxe (%)" name="percentTaxRate")
-              ft-percentage-input(
-                :model-value="currentVM.get('percentTaxRate').value"
-                :disabled="!currentVM.get('percentTaxRate').canEdit"
-                label="Taxe (%)"
-                @update:model-value="percentTaxRateChanged"
-              )
-            UFormGroup.pb-4(label="Prix (TTC)" name="priceWithTax")
-              ft-currency-input(
-                v-model.lazy="currentVM.get('priceWithTax').value"
-                :disabled="!currentVM.get('priceWithTax').canEdit"
-                label="Prix (HT)"
-                @update:model-value="priceWithTaxChanged"
-              )
-          div.flex.flex-col.gap-4.border.border-2.border-default.p-4(v-if="currentVM.getPromotion()")
-            p.text-2xl Promotion en cours
-            div {{ currentVM.getPromotion().amount }}
-            div.flex.gap-4
-              div(v-if="currentVM.getPromotion().startDatetime")
-                div Date de début
-                time(:datetime='currentVM.getPromotion().startDatetime') {{ currentVM.getPromotion().startDate }}
-              div(v-if="currentVM.getPromotion().endDatetime")
-                div Date de fin
-                time(:datetime='currentVM.getPromotion().endDatetime') {{ currentVM.getPromotion().endDate }}
-            div.flex.justify-center.items-center
-              icon.icon-md(name="material-symbols:arrow-circle-right-outline-rounded")
-              nuxt-link.text-xl.text-link(:href="currentVM.getPromotion().href") Voir la promotion
-
-      template(#stock)
-        UFormGroup.pb-4(
-          v-for="location in currentVM.getAvailableLocations()"
-          :key="location.uuid"
-          :label="location.name"
+div(v-if="!currentVM || currentVM.isLoading()")
+  .space-y-6
+    .pb-4
+      .h-4.bg-gray-200.rounded.animate-pulse.mb-2(class='w-1/4')
+      .h-10.bg-gray-200.rounded.animate-pulse
+    .pb-4
+      .h-4.bg-gray-200.rounded.animate-pulse.mb-2(class='w-1/4')
+      .h-32.bg-gray-200.rounded.animate-pulse
+    .pb-4
+      .h-4.bg-gray-200.rounded.animate-pulse.mb-2(class='w-1/4')
+      .h-10.bg-gray-200.rounded.animate-pulse
+    .pb-4
+      .h-4.bg-gray-200.rounded.animate-pulse.mb-2(class='w-1/4')
+      .h-24.w-24.bg-gray-200.rounded.animate-pulse.mb-4
+      .h-10.bg-gray-200.rounded.animate-pulse
+    .pb-4
+      .h-4.bg-gray-200.rounded.animate-pulse.mb-2(class='w-1/4')
+      .h-48.w-48.bg-gray-200.rounded.animate-pulse.mb-4
+      .h-10.bg-gray-200.rounded.animate-pulse
+    .pb-4
+      .h-4.bg-gray-200.rounded.animate-pulse.mb-2(class='w-1/4')
+      .h-10.bg-gray-200.rounded.animate-pulse
+    .flex.gap-6.mt-4
+      .flex-1
+        .h-4.bg-gray-200.rounded.animate-pulse.mb-4(class='w-1/4')
+        .space-y-2
+          .h-10.bg-gray-200.rounded.animate-pulse
+          .h-10.bg-gray-200.rounded.animate-pulse
+          .h-10.bg-gray-200.rounded.animate-pulse
+    .flex.flex-row-reverse.mt-4
+      .h-12.w-32.bg-gray-200.rounded.animate-pulse
+UForm(v-else)
+  UAccordion(
+    multiple
+    size="xl"
+    :items="items"
+  )
+    template(#informations)
+      UFormGroup.pb-4(label="Nom" name="name")
+        ft-text-field(
+          :model-value="currentVM.get('name').value"
+          :disabled="!currentVM.get('name').canEdit"
+          @update:model-value="nameChanged"
         )
-          ft-text-field(
-            :model-value="currentVM.get('locations').value[location.uuid]"
-            :disabled="!currentVM.get('locations').canEdit"
-            @update:model-value="(newValue) => locationChanged(location.uuid, newValue)"
-          )
-        UFormGroup.pb-4(label="Stock disponible" name="availableStock")
-          ft-text-field(
-            :model-value="currentVM.get('availableStock').value"
-            :disabled="!currentVM.get('availableStock').canEdit"
-            type="number"
-            @update:model-value="availableStockChanged"
-          )
-        UFormGroup.pb-4(label="Quantité limite pour une commande" name="maxQuantityForOrder")
-          ft-text-field(
-            :model-value="currentVM.get('maxQuantityForOrder').value"
-            :disabled="!currentVM.get('maxQuantityForOrder').canEdit"
-            type="number"
-            @update:model-value="maxQuantityForOrderChanged"
-          )
-      template(#details)
-        UFormGroup.pb-4(label="Description" name="description")
-          FtRichTextInput(
-            :model-value="currentVM.get('description').value"
-            :disabled="!currentVM.get('description').canEdit"
-            @update:model-value="descriptionChanged"
-          )
-        UFormGroup.pb-4(label="Instructions" name="instructions")
-          FtRichTextInput(
-            :model-value="currentVM.get('instructionsForUse').value"
-            :disabled="!currentVM.get('instructionsForUse').canEdit"
-            @update:model-value="instructionsChanged"
-          )
-        UFormGroup.pb-4(label="Composition" name="composition")
-          FtRichTextInput(
-            :model-value="currentVM.get('composition').value"
-            :disabled="!currentVM.get('composition').canEdit"
-            @update:model-value="compositionChanged"
-          )
+      UFormGroup.pb-4(label="Catégories" name="categories")
+        ft-category-tree.mt-4(
+          :items="treeCategoriesVM.items"
+          :disabled="!currentVM.get('categoryUuids').canEdit"
+          :selectable="true"
+          :selection="currentVM.get('categoryUuids').value"
+          @view="viewCategory"
+          @selected="categorySelected"
+        )
+      UFormGroup.pb-4(label="CIP7" name="cip7")
+        ft-text-field(
+          :model-value="currentVM.get('cip7').value"
+          :disabled="!currentVM.get('cip7').canEdit"
+          @update:model-value="cip7Changed"
+        )
+      UFormGroup.pb-4(label="Médicament" name="isMedicine")
+        UToggle(
+          size="xl"
+          :model-value="currentVM.get('isMedicine').value"
+          :disabled="true"
+        )
+      UFormGroup.pb-4(label="CIP13" name="cip13")
+        ft-text-field(
+          :model-value="currentVM.get('cip13').value"
+          :disabled="!currentVM.get('cip13').canEdit"
+          @update:model-value="cip13Changed"
+        )
+      UFormGroup.pb-4(label="EAN13" name="ean13")
+        ft-text-field(
+          :model-value="currentVM.get('ean13').value"
+          :disabled="!currentVM.get('ean13').canEdit"
+          @update:model-value="ean13Changed"
+        )
+      UFormGroup.pb-4(label="Laboratoire" name="laboratory")
+        ft-autocomplete(
+          :model-value="currentVM.get('laboratory').value"
+          :disabled="!currentVM.get('laboratory').canEdit"
+          :options="currentVM.getAvailableLaboratories()"
+          placeholder="Rechercher un laboratoire"
+          by="uuid"
+          option-attribute="name"
+          value-attribute="uuid"
+          @update:model-value="laboratoryChanged"
+          @clear="clearLaboratory"
+        )
+          template(#option="{ option: laboratory }")
+            span {{ laboratory.name }}
+      UFormGroup.pb-4(label="Poids (kg)" name="weight")
+        ft-text-field(
+          :model-value="currentVM.get('weight').value"
+          :disabled="!currentVM.get('weight').canEdit"
+          label="Poids (kg)"
+          @update:model-value="weightChanged"
+        )
+      UFormGroup.pb-4(label="Miniature" name="miniature")
+        img.mb-4(
+          v-if="currentVM.get('miniature').value"
+          height=100 width=100
+          :src="currentVM.get('miniature').value"
+          alt="miniature"
+        )
+        ft-file-input(
+          v-if="currentVM.get('miniature').canEdit"
+          accept="image/*"
+          @input="miniatureChanged"
+        )
+      UFormGroup.pb-4(label="Images" name="images")
+        div.flex.items-center.gap-4
+          div(v-for="(image, index) in currentVM.get('images').value" :key="index")
+            img.mb-4(:src="image" height=200 width=200 alt="Selected Image")
+        ft-file-input(
+          v-if="currentVM.get('images').canEdit"
+          accept="image/*"
+          multiple
+          @input="imagesChanged"
+        )
+    template(#price)
+      div.flex.gap-8.items-center
+        div.grow
+          UFormGroup.pb-4(label="Prix (HT)" name="priceWithoutTax")
+            ft-currency-input(
+              v-model.lazy="currentVM.get('priceWithoutTax').value"
+              :disabled="!currentVM.get('priceWithoutTax').canEdit"
+              label="Prix (HT)"
+              @update:model-value="priceWithoutTaxChanged"
+            )
+          UFormGroup.pb-4(label="Taxe (%)" name="percentTaxRate")
+            ft-percentage-input(
+              :model-value="currentVM.get('percentTaxRate').value"
+              :disabled="!currentVM.get('percentTaxRate').canEdit"
+              label="Taxe (%)"
+              @update:model-value="percentTaxRateChanged"
+            )
+          UFormGroup.pb-4(label="Prix (TTC)" name="priceWithTax")
+            ft-currency-input(
+              v-model.lazy="currentVM.get('priceWithTax').value"
+              :disabled="!currentVM.get('priceWithTax').canEdit"
+              label="Prix (HT)"
+              @update:model-value="priceWithTaxChanged"
+            )
+        div.flex.flex-col.gap-4.border.border-2.border-default.p-4(v-if="currentVM.getPromotion()")
+          p.text-2xl Promotion en cours
+          div {{ currentVM.getPromotion().amount }}
+          div.flex.gap-4
+            div(v-if="currentVM.getPromotion().startDatetime")
+              div Date de début
+              time(:datetime='currentVM.getPromotion().startDatetime') {{ currentVM.getPromotion().startDate }}
+            div(v-if="currentVM.getPromotion().endDatetime")
+              div Date de fin
+              time(:datetime='currentVM.getPromotion().endDatetime') {{ currentVM.getPromotion().endDate }}
+          div.flex.justify-center.items-center
+            icon.icon-md(name="material-symbols:arrow-circle-right-outline-rounded")
+            nuxt-link.text-xl.text-link(:href="currentVM.getPromotion().href") Voir la promotion
+
+    template(#stock)
+      UFormGroup.pb-4(
+        v-for="location in currentVM.getAvailableLocations()"
+        :key="location.uuid"
+        :label="location.name"
+      )
+        ft-text-field(
+          :model-value="currentVM.get('locations').value[location.uuid]"
+          :disabled="!currentVM.get('locations').canEdit"
+          @update:model-value="(newValue) => locationChanged(location.uuid, newValue)"
+        )
+      UFormGroup.pb-4(label="Stock disponible" name="availableStock")
+        ft-text-field(
+          :model-value="currentVM.get('availableStock').value"
+          :disabled="!currentVM.get('availableStock').canEdit"
+          type="number"
+          @update:model-value="availableStockChanged"
+        )
+      UFormGroup.pb-4(label="Quantité limite pour une commande" name="maxQuantityForOrder")
+        ft-text-field(
+          :model-value="currentVM.get('maxQuantityForOrder').value"
+          :disabled="!currentVM.get('maxQuantityForOrder').canEdit"
+          type="number"
+          @update:model-value="maxQuantityForOrderChanged"
+        )
+    template(#details)
+      UFormGroup.pb-4(label="Description" name="description")
+        FtRichTextInput(
+          :model-value="currentVM.get('description').value"
+          :disabled="!currentVM.get('description').canEdit"
+          @update:model-value="descriptionChanged"
+        )
+      UFormGroup.pb-4(label="Instructions" name="instructions")
+        FtRichTextInput(
+          :model-value="currentVM.get('instructionsForUse').value"
+          :disabled="!currentVM.get('instructionsForUse').canEdit"
+          @update:model-value="instructionsChanged"
+        )
+      UFormGroup.pb-4(label="Composition" name="composition")
+        FtRichTextInput(
+          :model-value="currentVM.get('composition').value"
+          :disabled="!currentVM.get('composition').canEdit"
+          @update:model-value="compositionChanged"
+        )
   div.flex.flex-row-reverse.mt-4
     ft-button.px-6.text-xl(
       v-if="currentVM.getDisplayValidate()"

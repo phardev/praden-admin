@@ -17,12 +17,14 @@ export const editProduct = async (
   productGateway: ProductGateway,
   locationGateway: LocationGateway
 ): Promise<void> => {
+  const productStore = useProductStore()
+  productStore.startLoading()
   if (dto.locations) {
     for (const location of Object.entries(dto.locations)) {
       await locationGateway.getByUuid(location[0])
     }
   }
   const edited = await productGateway.edit(uuid, dto)
-  const productStore = useProductStore()
   productStore.edit(edited)
+  productStore.stopLoading()
 }

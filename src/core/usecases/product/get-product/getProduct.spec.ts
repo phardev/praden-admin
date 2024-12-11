@@ -1,10 +1,10 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { useProductStore } from '@store/productStore'
-import { chamomilla, dolodent } from '@utils/testData/products'
+import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
 import { Product, ProductWithPromotion } from '@core/entities/product'
 import { UUID } from '@core/types/types'
-import { getProduct } from '@core/usecases/product/get-product/get-product'
+import { getProduct } from '@core/usecases/product/get-product/getProduct'
 import { ProductDoesNotExistsError } from '@core/errors/ProductDoesNotExistsError'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { InMemoryPromotionGateway } from '@adapters/secondary/promotion-gateways/InMemoryPromotionGateway'
@@ -14,6 +14,7 @@ import {
   promotionPercentageDolodent
 } from '@utils/testData/promotions'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { beforeEach, describe } from 'vitest'
 
 describe('Get product', () => {
   let productStore: any
@@ -79,6 +80,25 @@ describe('Get product', () => {
       await expect(whenGetProduct('NotExists')).rejects.toThrow(
         ProductDoesNotExistsError
       )
+    })
+  })
+
+  describe('Loading', () => {
+    beforeEach(() => {
+      givenExistingProducts(dolodent, ultraLevure)
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = productStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenGetProduct(dolodent.uuid)
+    })
+    it('should be aware that loading is over', async () => {
+      await whenGetProduct(dolodent.uuid)
+      expect(productStore.isLoading).toBe(false)
     })
   })
 

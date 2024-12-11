@@ -227,13 +227,24 @@ describe('Get products VM', () => {
     })
   })
 
+  describe('Loading', () => {
+    it('should be aware during loading', () => {
+      productStore.isLoading = true
+      expectedVM = {
+        isLoading: true
+      }
+      expectVMToMatch(expectedVM)
+    })
+  })
+
   const expectVMToMatch = (expectedVM: Partial<GetProductsVM>) => {
     const emptyVM: GetProductsVM = {
       headers: expectedHeaders,
       items: [],
       hasMore: false,
       currentSearch: undefined,
-      searchError: undefined
+      searchError: undefined,
+      isLoading: false
     }
     expect(getProductsVM(key)).toMatchObject({ ...emptyVM, ...expectedVM })
   }

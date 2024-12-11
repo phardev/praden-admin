@@ -145,7 +145,14 @@ export class ExistingProductFormInitializer implements FormInitializer {
   }
 }
 
-export class ProductFormGetVM {
+export class ProductFormVM {
+  isLoading(): boolean {
+    const productStore = useProductStore()
+    return productStore.isLoading
+  }
+}
+
+export class ProductFormGetVM extends ProductFormVM {
   protected initializer: ExistingProductFormInitializer
   protected fieldsReader: ProductFormFieldsReader
 
@@ -153,6 +160,7 @@ export class ProductFormGetVM {
     initializer: ExistingProductFormInitializer,
     fieldReader: ProductFormFieldsReader
   ) {
+    super()
     this.initializer = initializer
     this.fieldsReader = fieldReader
     initializer.init()

@@ -7,7 +7,8 @@ export const useProductStore = defineStore('ProductStore', {
       items: [] as Array<Product>,
       stock: {} as Stock,
       current: undefined as ProductWithPromotion,
-      hasMore: false as boolean
+      hasMore: false as boolean,
+      isLoading: false
     }
   },
   getters: {
@@ -40,6 +41,12 @@ export const useProductStore = defineStore('ProductStore', {
       this.items = this.items.map((c) => {
         return c.uuid === product.uuid ? product : c
       })
+    },
+    startLoading() {
+      this.isLoading = true
+    },
+    stopLoading() {
+      this.isLoading = false
     }
   }
 })

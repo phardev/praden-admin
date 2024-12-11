@@ -18,10 +18,12 @@ export const createProduct = async (
   productGateway: ProductGateway,
   locationGateway: LocationGateway
 ) => {
+  const productStore = useProductStore()
+  productStore.startLoading()
   for (const location of Object.entries(dto.locations)) {
     await locationGateway.getByUuid(location[0])
   }
   const created = await productGateway.create(dto)
-  const productStore = useProductStore()
   productStore.add(created)
+  productStore.stopLoading()
 }

@@ -284,4 +284,14 @@ describe('Product form get VM', () => {
       })
     })
   })
+  describe('Loading', () => {
+    it('should be aware during loading', () => {
+      productStore.isLoading = true
+      expect(vm.isLoading()).toBe(true)
+    })
+    it('should be aware when not loading', () => {
+      productStore.isLoading = false
+      expect(vm.isLoading()).toBe(false)
+    })
+  })
 })

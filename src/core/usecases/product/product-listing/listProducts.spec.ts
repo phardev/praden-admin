@@ -89,6 +89,24 @@ describe('List products', () => {
       })
     })
   })
+  describe('Loading', () => {
+    beforeEach(() => {
+      givenExistingProducts(dolodent, ultraLevure)
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = productStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenListProducts()
+    })
+    it('should be aware that loading is over', async () => {
+      await whenListProducts()
+      expect(productStore.isLoading).toBe(false)
+    })
+  })
 
   const givenExistingProducts = (...products: Array<Product>) => {
     productGateway.feedWith(...products)

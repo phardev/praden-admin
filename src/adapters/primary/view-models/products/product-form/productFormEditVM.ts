@@ -1,7 +1,8 @@
 import {
   ExistingProductFormInitializer,
   GetProductPromotionVM,
-  ProductFormFieldsReader
+  ProductFormFieldsReader,
+  ProductFormVM
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import {
   CreateProductCategoriesVM,
@@ -17,7 +18,7 @@ import { UUID } from '@core/types/types'
 import { useLaboratoryStore } from '@store/laboratoryStore'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 
-export class ProductFormEditVM {
+export class ProductFormEditVM extends ProductFormVM {
   private fieldsReader: ProductFormFieldsReader
   private fieldsWriter: ProductFormFieldsWriter
 
@@ -26,6 +27,7 @@ export class ProductFormEditVM {
     fieldsReader: ProductFormFieldsReader,
     fieldsWriter: ProductFormFieldsWriter
   ) {
+    super()
     initializer.init()
     this.fieldsReader = fieldsReader
     this.fieldsWriter = fieldsWriter

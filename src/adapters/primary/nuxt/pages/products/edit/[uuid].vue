@@ -12,7 +12,7 @@ import { listCategories } from '@core/usecases/categories/list-categories/listCa
 import { useCategoryGateway } from '../../../../../../../gateways/categoryGateway'
 import { useProductGateway } from '../../../../../../../gateways/productGateway'
 import { listProducts } from '@core/usecases/product/product-listing/listProducts'
-import { getProduct } from '@core/usecases/product/get-product/get-product'
+import { getProduct } from '@core/usecases/product/get-product/getProduct'
 import { productFormEditVM } from '@adapters/primary/view-models/products/product-form/productFormEditVM'
 import { editProduct } from '@core/usecases/product/product-edition/editProduct'
 import { useLocationGateway } from '../../../../../../../gateways/locationGateway'

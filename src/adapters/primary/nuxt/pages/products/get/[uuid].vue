@@ -13,7 +13,7 @@ import { listCategories } from '@core/usecases/categories/list-categories/listCa
 import { useCategoryGateway } from '../../../../../../../gateways/categoryGateway'
 import { useProductGateway } from '../../../../../../../gateways/productGateway'
 import { listProducts } from '@core/usecases/product/product-listing/listProducts'
-import { getProduct } from '@core/usecases/product/get-product/get-product'
+import { getProduct } from '@core/usecases/product/get-product/getProduct'
 import { productFormGetVM } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import { listPromotions } from '@core/usecases/promotions/promotions-listing/listPromotions'
 import { usePromotionGateway } from '../../../../../../../gateways/promotionGateway'

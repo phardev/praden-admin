@@ -23,10 +23,12 @@ export interface GetProductsVM {
   hasMore: boolean
   currentSearch: string | undefined
   searchError: string | undefined
+  isLoading: boolean
 }
 
 export const getProductsVM = (key: string): GetProductsVM => {
   const productStore = useProductStore()
+  const isLoading = productStore.isLoading
   const searchStore = useSearchStore()
   const allProducts = productStore.items
   const searchResult = searchStore.get(key)
@@ -89,6 +91,7 @@ export const getProductsVM = (key: string): GetProductsVM => {
     searchError: searchError
       ? 'Veuillez saisir au moins 3 caractères pour lancer la recherche.'
       : undefined,
-    hasMore: productStore.hasMore.valueOf()
+    hasMore: productStore.hasMore.valueOf(),
+    isLoading
   }
 }

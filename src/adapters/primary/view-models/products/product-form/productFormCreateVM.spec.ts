@@ -9,6 +9,7 @@ import { useFormStore } from '@store/formStore'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { useLaboratoryStore } from '@store/laboratoryStore'
 import { anaca3, avene, sanofiAventis } from '@utils/testData/laboratories'
+import { useProductStore } from '@store/productStore'
 
 describe('Product form create VM', () => {
   let vm: ProductFormCreateVM
@@ -269,6 +270,18 @@ describe('Product form create VM', () => {
       it('should allow to validate at start', () => {
         expect(vm.getCanValidate()).toBe(true)
       })
+    })
+  })
+  describe('Loading', () => {
+    it('should be aware during loading', () => {
+      const productStore = useProductStore()
+      productStore.isLoading = true
+      expect(vm.isLoading()).toBe(true)
+    })
+    it('should be aware when not loading', () => {
+      const productStore = useProductStore()
+      productStore.isLoading = false
+      expect(vm.isLoading()).toBe(false)
     })
   })
 })

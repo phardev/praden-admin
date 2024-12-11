@@ -7,7 +7,8 @@ import { addTaxToPrice, removeTaxFromPrice } from '@utils/price'
 import { useProductStore } from '@store/productStore'
 import {
   FormInitializer,
-  ProductFormFieldsReader
+  ProductFormFieldsReader,
+  ProductFormVM
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import { useLocationStore } from '@store/locationStore'
 import { Location } from '@core/entities/location'
@@ -175,7 +176,7 @@ export class NewProductFormInitializer implements FormInitializer {
   }
 }
 
-export class ProductFormCreateVM {
+export class ProductFormCreateVM extends ProductFormVM {
   private fieldsReader: ProductFormFieldsReader
   private fieldsWriter: ProductFormFieldsWriter
 
@@ -184,6 +185,7 @@ export class ProductFormCreateVM {
     fieldsReader: ProductFormFieldsReader,
     fieldsWriter: ProductFormFieldsWriter
   ) {
+    super()
     initializer.init()
     this.fieldsReader = fieldsReader
     this.fieldsWriter = fieldsWriter

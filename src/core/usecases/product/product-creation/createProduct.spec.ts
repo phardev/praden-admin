@@ -249,6 +249,42 @@ describe('Create product', () => {
       })
     })
   })
+  describe('Loading', () => {
+    beforeEach(() => {
+      uuid = 'new-uuid'
+      uuidGenerator.setNext(uuid)
+      dto = {
+        name: 'Created product',
+        cip7: '1234567',
+        cip13: '1234567890123',
+        ean13: '1234567890123',
+        images: [new File(['data1'], 'File 1', { type: 'image/png' })],
+        categoryUuids: [mum.uuid],
+        priceWithoutTax: 100,
+        percentTaxRate: 10,
+        locations: { [zoneGeo.uuid]: 'product-location' },
+        availableStock: 12,
+        laboratory: avene,
+        description: '<p>description</p>',
+        instructionsForUse: '<p>instructions For Use</p>',
+        composition: '<p>composition</p>',
+        weight: 342
+      }
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = productStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenCreateProduct(dto)
+    })
+    it('should be aware that loading is over', async () => {
+      await whenCreateProduct(dto)
+      expect(productStore.isLoading).toBe(false)
+    })
+  })
 
   const givenThereIsExistingProducts = (...products: Array<Product>) => {
     productGateway.feedWith(...products)

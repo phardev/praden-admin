@@ -203,6 +203,28 @@ describe('Product edition', () => {
       })
     })
   })
+  describe('Loading', () => {
+    beforeEach(() => {
+      givenExistingProducts(dolodent)
+      givenEditingProductIs(dolodent)
+      dto = {
+        name: 'The new name'
+      }
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = productStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenEditProduct(product.uuid, dto)
+    })
+    it('should be aware that loading is over', async () => {
+      await whenEditProduct(product.uuid, dto)
+      expect(productStore.isLoading).toBe(false)
+    })
+  })
 
   const givenExistingProducts = (...products: Array<Product>) => {
     productStore.items = products

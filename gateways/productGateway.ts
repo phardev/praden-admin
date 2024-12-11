@@ -1,8 +1,8 @@
 import { RealProductGateway } from '@adapters/secondary/product-gateways/RealProductGateway'
-import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import * as products from '@utils/testData/products'
 import { isLocalEnv } from '@utils/env'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { InMemoryTimeoutProductGateway } from '@adapters/secondary/product-gateways/InMemoryTimeoutProductGateway'
 
 export const useProductGateway = () => {
   if (isLocalEnv()) {
@@ -18,7 +18,7 @@ const inMemory = (() => {
   const createInstance = () => {
     const uuidGenerator = new FakeUuidGenerator()
     uuidGenerator.setNext('new-uuid-123')
-    const gateway = new InMemoryProductGateway(uuidGenerator)
+    const gateway = new InMemoryTimeoutProductGateway(500, uuidGenerator)
     gateway.feedWith(...Object.values(products))
     return gateway
   }

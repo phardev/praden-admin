@@ -6,6 +6,7 @@
   ft-table(
     :headers="productsVM.headers"
     :items="productsVM.items"
+    :is-loading="productsVM.isLoading"
     @clicked="productSelected"
   )
     template(#title) Produits
