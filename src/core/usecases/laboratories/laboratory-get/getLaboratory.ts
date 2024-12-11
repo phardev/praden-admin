@@ -8,8 +8,10 @@ export const getLaboratory = async (
   laboratoryGateway: LaboratoryGateway,
   productGateway: ProductGateway
 ) => {
-  const laboratory = await laboratoryGateway.getByUuid(uuid)
   const laboratoryStore = useLaboratoryStore()
+  laboratoryStore.startLoading()
+  const laboratory = await laboratoryGateway.getByUuid(uuid)
   const products = await productGateway.getByLaboratoryUuid(uuid)
   laboratoryStore.setCurrent({ laboratory, products })
+  laboratoryStore.stopLoading()
 }

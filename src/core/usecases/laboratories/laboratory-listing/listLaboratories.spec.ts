@@ -3,7 +3,8 @@ import { InMemoryLaboratoryGateway } from '@adapters/secondary/laboratory-gatewa
 import { useLaboratoryStore } from '@store/laboratoryStore'
 import { listLaboratories } from './listLaboratories'
 import { Laboratory } from '@core/entities/laboratory'
-import { avene, gilbert } from '@utils/testData/laboratories'
+import { avene, gilbert, sanofiAventis } from '@utils/testData/laboratories'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 
 describe('Laboratory listing', () => {
   let laboratoryStore: any
@@ -12,7 +13,7 @@ describe('Laboratory listing', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     laboratoryStore = useLaboratoryStore()
-    laboratoryGateway = new InMemoryLaboratoryGateway()
+    laboratoryGateway = new InMemoryLaboratoryGateway(new FakeUuidGenerator())
   })
 
   describe('There is no laboratory', () => {
@@ -27,6 +28,24 @@ describe('Laboratory listing', () => {
       givenExistingLaboratories(avene, gilbert)
       await whenListLaboratories()
       expectStoreToEqual(avene, gilbert)
+    })
+  })
+  describe('Loading', () => {
+    beforeEach(() => {
+      laboratoryGateway.feedWith(sanofiAventis)
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = laboratoryStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenListLaboratories()
+    })
+    it('should be aware that loading is over', async () => {
+      await whenListLaboratories()
+      expect(laboratoryStore.isLoading).toBe(false)
     })
   })
 

@@ -21,9 +21,10 @@ export const editLaboratory = async (
   laboratoryGateway: LaboratoryGateway,
   productGateway: ProductGateway
 ) => {
+  const laboratoryStore = useLaboratoryStore()
+  laboratoryStore.startLoading()
   const { productsAdded, productsRemoved, ...laboratoryDto } = dto
   const edited = await laboratoryGateway.edit(uuid, laboratoryDto)
-  const laboratoryStore = useLaboratoryStore()
   laboratoryStore.edit(edited)
   const productStore = useProductStore()
   if (productsAdded) {
@@ -40,4 +41,5 @@ export const editLaboratory = async (
     )
     productStore.list(products)
   }
+  laboratoryStore.stopLoading()
 }

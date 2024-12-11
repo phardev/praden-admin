@@ -11,6 +11,7 @@ export interface GetLaboratoriesItemsVM {
 export interface GetLaboratoriesVM {
   headers: Array<Header>
   items: Array<GetLaboratoriesItemsVM>
+  isLoading: boolean
 }
 
 export const getLaboratoriesVM = (): GetLaboratoriesVM => {
@@ -35,6 +36,7 @@ export const getLaboratoriesVM = (): GetLaboratoriesVM => {
         miniature: l.miniature || '',
         name: l.name
       }
-    })
+    }),
+    isLoading: laboratoryStore.isLoading
   }
 }

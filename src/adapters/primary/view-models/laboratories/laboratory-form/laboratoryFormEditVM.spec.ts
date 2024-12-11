@@ -636,6 +636,16 @@ describe('Laboratory form edit VM', () => {
       })
     })
   })
+  describe('Loading', () => {
+    it('should be aware during loading', () => {
+      laboratoryStore.isLoading = true
+      expect(vm.isLoading()).toBe(true)
+    })
+    it('should be aware when not loading', () => {
+      laboratoryStore.isLoading = false
+      expect(vm.isLoading()).toBe(false)
+    })
+  })
 
   const givenExistingProducts = (...products: Array<Product>) => {
     productStore.items = products

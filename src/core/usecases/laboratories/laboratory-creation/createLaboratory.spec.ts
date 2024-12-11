@@ -117,6 +117,30 @@ describe('Laboratory creation', () => {
       expect(productStore.items).toStrictEqual(expectedProducts)
     })
   })
+  describe('Loading', () => {
+    beforeEach(() => {
+      givenExistingProducts(dolodent, hemoclar)
+      givenNextUuidIs('new-uuid')
+      dto = {
+        name: 'test',
+        description: 'description de test',
+        productsAdded: [dolodent.uuid, hemoclar.uuid]
+      }
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = laboratoryStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenCreateLaboratory()
+    })
+    it('should be aware that loading is over', async () => {
+      await whenCreateLaboratory()
+      expect(laboratoryStore.isLoading).toBe(false)
+    })
+  })
 
   const givenNextUuidIs = (nextUuid: UUID) => {
     uuid = nextUuid

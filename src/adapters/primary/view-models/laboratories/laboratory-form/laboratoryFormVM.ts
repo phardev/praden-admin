@@ -6,6 +6,7 @@ import { Header } from '@adapters/primary/view-models/preparations/get-orders-to
 import { Product } from '@core/entities/product'
 import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
+import { useLaboratoryStore } from '@store/laboratoryStore'
 
 export interface LaboratoryAvailableProductItemVM
   extends LaboratoryProductItemVM {
@@ -81,5 +82,10 @@ export abstract class LaboratoryFormVM {
       }),
       canEdit: true
     }
+  }
+
+  isLoading() {
+    const laboratoryStore = useLaboratoryStore()
+    return laboratoryStore.isLoading
   }
 }

@@ -1,7 +1,4 @@
-import {
-  InMemoryLaboratoryGateway,
-  InMemoryLaboratoryGateway
-} from '@adapters/secondary/laboratory-gateways/inMemoryLaboratoryGateway'
+import { InMemoryLaboratoryGateway } from '@adapters/secondary/laboratory-gateways/inMemoryLaboratoryGateway'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { createPinia, setActivePinia } from 'pinia'
 import { useLaboratoryStore } from '@store/laboratoryStore'
@@ -26,7 +23,7 @@ describe('Get laboratory', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     laboratoryStore = useLaboratoryStore()
-    laboratoryGateway = new InMemoryLaboratoryGateway()
+    laboratoryGateway = new InMemoryLaboratoryGateway(new FakeUuidGenerator())
     productGateway = new InMemoryProductGateway(new FakeUuidGenerator())
   })
 
@@ -67,6 +64,24 @@ describe('Get laboratory', () => {
       await expect(whenGetLaboratory('not-exists')).rejects.toThrow(
         LaboratoryDoesNotExistsError
       )
+    })
+  })
+  describe('Loading', () => {
+    beforeEach(() => {
+      laboratoryGateway.feedWith(sanofiAventis)
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = laboratoryStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenGetLaboratory(sanofiAventis.uuid)
+    })
+    it('should be aware that loading is over', async () => {
+      await whenGetLaboratory(sanofiAventis.uuid)
+      expect(laboratoryStore.isLoading).toBe(false)
     })
   })
 

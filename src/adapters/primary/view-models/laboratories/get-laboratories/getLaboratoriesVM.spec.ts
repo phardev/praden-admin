@@ -32,7 +32,8 @@ describe('Get laboratories VM', () => {
       const vm = getLaboratoriesVM()
       const expectedVM = {
         headers: expectedHeaders,
-        items: []
+        items: [],
+        isLoading: false
       }
       expect(vm).toStrictEqual(expectedVM)
     })
@@ -57,7 +58,8 @@ describe('Get laboratories VM', () => {
             miniature: gilbert.miniature,
             name: gilbert.name
           }
-        ]
+        ],
+        isLoading: false
       }
       expect(vm).toStrictEqual(expectedVM)
     })
@@ -76,9 +78,17 @@ describe('Get laboratories VM', () => {
             miniature: '',
             name: laboratoryWithoutImage.name
           }
-        ]
+        ],
+        isLoading: false
       }
       expect(vm).toStrictEqual(expectedVM)
+    })
+  })
+  describe('Loading', () => {
+    it('should be aware during loading', () => {
+      laboratoryStore.isLoading = true
+      const vm = getLaboratoriesVM()
+      expect(vm.isLoading).toBe(true)
     })
   })
 })

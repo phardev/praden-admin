@@ -8,7 +8,7 @@ import { editLaboratory, EditLaboratoryDTO } from './editLaboratory'
 import { createPinia, setActivePinia } from 'pinia'
 import { useLaboratoryStore } from '@store/laboratoryStore'
 import { useProductStore } from '@store/productStore'
-import { avene, gilbert } from '@utils/testData/laboratories'
+import { avene, gilbert, sanofiAventis } from '@utils/testData/laboratories'
 import { dolodent, hemoclar } from '@utils/testData/products'
 
 describe('Laboratory edition', () => {
@@ -128,6 +128,28 @@ describe('Laboratory edition', () => {
       it('should update the products in store', () => {
         expect(productStore.items).toStrictEqual(expectedProducts)
       })
+    })
+  })
+  describe('Loading', () => {
+    beforeEach(() => {
+      givenExistingLaboratories(sanofiAventis)
+      givenExistingProducts(dolodent)
+      dto = {
+        productsRemoved: [dolodent.uuid]
+      }
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = laboratoryStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenEditLaboratory(sanofiAventis.uuid)
+    })
+    it('should be aware that loading is over', async () => {
+      await whenEditLaboratory(sanofiAventis.uuid)
+      expect(laboratoryStore.isLoading).toBe(false)
     })
   })
 

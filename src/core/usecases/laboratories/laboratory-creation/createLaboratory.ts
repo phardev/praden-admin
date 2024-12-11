@@ -19,8 +19,9 @@ export const createLaboratory = async (
   laboratoryGateway: LaboratoryGateway,
   productGateway: ProductGateway
 ) => {
-  const created = await laboratoryGateway.create(dto)
   const laboratoryStore = useLaboratoryStore()
+  laboratoryStore.startLoading()
+  const created = await laboratoryGateway.create(dto)
   laboratoryStore.add(created)
   const productStore = useProductStore()
   if (dto.productsAdded.length) {
@@ -30,4 +31,5 @@ export const createLaboratory = async (
     )
     productStore.list(products)
   }
+  laboratoryStore.stopLoading()
 }

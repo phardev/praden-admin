@@ -11,7 +11,8 @@ export const useLaboratoryStore = defineStore('LaboratoryStore', {
   state: () => {
     return {
       items: [] as Array<Laboratory>,
-      current: undefined as LaboratoryWithProducts | undefined
+      current: undefined as LaboratoryWithProducts | undefined,
+      isLoading: false
     }
   },
   getters: {
@@ -35,6 +36,12 @@ export const useLaboratoryStore = defineStore('LaboratoryStore', {
     },
     setCurrent(laboratory: LaboratoryWithProducts) {
       this.current = JSON.parse(JSON.stringify(laboratory))
+    },
+    startLoading() {
+      this.isLoading = true
+    },
+    stopLoading() {
+      this.isLoading = false
     }
   }
 })

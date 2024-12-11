@@ -5,6 +5,7 @@
       ft-button.button-solid.text-xl.px-6 Créer laboratoire
   ft-table(
     :headers="laboratoriesVM.headers"
+    :is-loading="laboratoriesVM.isLoading"
     :items="laboratoriesVM.items"
     @clicked="laboratorySelected"
   )
