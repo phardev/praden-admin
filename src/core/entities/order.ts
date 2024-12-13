@@ -1,5 +1,6 @@
 import { Timestamp, UUID } from '@core/types/types'
 import { addTaxToPrice } from '@utils/price'
+import { Promotion } from '@core/entities/promotion'
 
 export interface Address {
   firstname: string
@@ -28,6 +29,7 @@ export interface OrderLine {
   locations: object
   percentTaxRate: number
   deliveryStatus: DeliveryStatus
+  promotion?: Promotion
   updatedAt: Timestamp
 }
 

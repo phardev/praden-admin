@@ -55,7 +55,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
       `${this.baseUrl}/preparations/${preparation.uuid}/cancel/`,
       JSON.stringify(body)
     )
-    return this.convertToOrder(res.data)
+    return this.convertToOrder(res.data.item)
   }
 
   async getByUuid(uuid: UUID): Promise<Order> {
@@ -102,14 +102,17 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
   }
 
   async validatePreparation(preparation: Order): Promise<Order> {
+    const lines: HashTable<number> = {}
+    preparation.lines.forEach((l) => {
+      lines[l.productUuid] = l.preparedQuantity
+    })
     const res = await axios.post(
-      `${this.baseUrl}/validate-preparation/`,
-      JSON.stringify({
-        uuid: preparation.uuid,
-        lines: preparation.lines
-      })
+      `${this.baseUrl}/preparations/${preparation.uuid}/validate/`,
+      {
+        lines
+      }
     )
-    return this.convertToOrder(res.data)
+    return this.convertToOrder(res.data.item)
   }
 
   private convertToOrder(data: any): Order {
@@ -135,12 +138,14 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
       delete l.description
       delete l.location
     })
-    copy.messages = data.messages.map((m: any) => {
-      return {
-        content: m.data.type,
-        sentAt: m.updatedAt
-      }
-    })
+    copy.messages = data.messages
+      .sort((m1, m2) => m1.updatedAt - m2.updatedAt)
+      .map((m: any) => {
+        return {
+          content: m.data.type,
+          sentAt: m.updatedAt
+        }
+      })
     copy.payment.status = this.getPaymentStatus(copy.payment.status)
     return copy
   }
