@@ -53,16 +53,33 @@ export enum DeliveryType {
   Delivery = 'DELIVERY'
 }
 
+export interface PriceWeightRange {
+  minWeight: number
+  maxWeight: number
+  price: number
+}
+
 export interface DeliveryMethod {
   uuid: UUID
   name: string
   description: string
   type: DeliveryType
-  price: number
+  priceRanges: Array<PriceWeightRange>
 }
 
 export interface OrderDelivery {
+  price: number
+  pickupId?: string
+  trackingNumber?: string
   method: DeliveryMethod
+  sender: {
+    contact: Contact
+    address: Address
+  }
+  receiver: {
+    contact: Contact
+    address: Address
+  }
 }
 
 export enum MessageContent {
@@ -83,7 +100,7 @@ export interface BaseOrder {
   deliveryAddress: Address
   payment: Payment
   createdAt: Timestamp
-  delivery: OrderDelivery
+  deliveries: Array<OrderDelivery>
   messages: Array<Message>
 }
 
@@ -112,7 +129,8 @@ export const getTotalWithTax = (order: Order): number => {
         100
     )
   }, 0)
-  const deliveryPrice = order.delivery.method.price / 100
+  const delivery = order.deliveries[0]
+  const deliveryPrice = delivery.price / 100
   return totalLine + deliveryPrice
 }
 

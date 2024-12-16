@@ -101,7 +101,7 @@ describe('Start preparations VM', () => {
               {
                 href: `${origin}/preparations/${orderToPrepare1.uuid}`,
                 reference: orderToPrepare1.uuid,
-                deliveryMethodName: orderToPrepare1.delivery.method.name,
+                deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
                 deliveryPrice: 'Gratuit',
@@ -154,7 +154,7 @@ describe('Start preparations VM', () => {
               {
                 href: `${anotherOrigin}/preparations/${orderToPrepare2.uuid}`,
                 reference: orderToPrepare2.uuid,
-                deliveryMethodName: orderToPrepare2.delivery.method.name,
+                deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',
                 deliveryPrice: 'Gratuit',
@@ -217,7 +217,7 @@ describe('Start preparations VM', () => {
                 href: `${anotherOrigin}/preparations/${orderWithProductWithoutLocation.uuid}`,
                 reference: orderWithProductWithoutLocation.uuid,
                 deliveryMethodName:
-                  orderWithProductWithoutLocation.delivery.method.name,
+                  orderWithProductWithoutLocation.deliveries[0].method.name,
                 clientLastname:
                   orderWithProductWithoutLocation.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
@@ -278,7 +278,7 @@ describe('Start preparations VM', () => {
               {
                 href: `${origin}/preparations/${orderToPrepare1.uuid}`,
                 reference: orderToPrepare1.uuid,
-                deliveryMethodName: orderToPrepare1.delivery.method.name,
+                deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
                 deliveryPrice: 'Gratuit',
@@ -331,7 +331,7 @@ describe('Start preparations VM', () => {
               {
                 href: `${anotherOrigin}/preparations/${orderToPrepare2.uuid}`,
                 reference: orderToPrepare2.uuid,
-                deliveryMethodName: orderToPrepare2.delivery.method.name,
+                deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',
                 deliveryPrice: 'Gratuit',
@@ -388,10 +388,10 @@ describe('Start preparations VM', () => {
             {
               href: `${anotherOrigin}/preparations/${orderToPrepare3.uuid}`,
               reference: orderToPrepare3.uuid,
-              deliveryMethodName: orderToPrepare3.delivery.method.name,
+              deliveryMethodName: orderToPrepare3.deliveries[0].method.name,
               clientLastname: orderToPrepare3.deliveryAddress.lastname,
               createdDate: '5 févr. 2023',
-              deliveryPrice: '5,99\u00A0€',
+              deliveryPrice: '5,00\u00A0€',
               deliveryAddress: {
                 name: "Jeanne D'arc",
                 address: '12 avenue du bois',
@@ -410,7 +410,7 @@ describe('Start preparations VM', () => {
                   totalPrice: '5,50\u00A0€'
                 }
               ],
-              totalWithTax: '11,49\u00A0€'
+              totalWithTax: '10,50\u00A0€'
             }
           ]
         }
@@ -436,10 +436,10 @@ describe('Start preparations VM', () => {
             {
               href: `${anotherOrigin}/preparations/${orderToPrepare3.uuid}`,
               reference: orderToPrepare3.uuid,
-              deliveryMethodName: orderToPrepare3.delivery.method.name,
+              deliveryMethodName: orderToPrepare3.deliveries[0].method.name,
               clientLastname: 'NameWithe',
               createdDate: '5 févr. 2023',
-              deliveryPrice: '5,99\u00A0€',
+              deliveryPrice: '5,00\u00A0€',
               deliveryAddress: {
                 name: 'Jeanne NameWithé',
                 address: '12 avenue du bois',
@@ -458,7 +458,7 @@ describe('Start preparations VM', () => {
                   totalPrice: '5,50\u00A0€'
                 }
               ],
-              totalWithTax: '11,49\u00A0€'
+              totalWithTax: '10,50\u00A0€'
             }
           ]
         }
@@ -497,7 +497,7 @@ describe('Start preparations VM', () => {
               {
                 href: `${origin}/preparations/${orderToPrepare1.uuid}`,
                 reference: orderToPrepare1.uuid,
-                deliveryMethodName: orderToPrepare1.delivery.method.name,
+                deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
                 deliveryPrice: 'Gratuit',
@@ -524,7 +524,7 @@ describe('Start preparations VM', () => {
               {
                 href: `${origin}/preparations/${orderToPrepare2.uuid}`,
                 reference: orderToPrepare2.uuid,
-                deliveryMethodName: orderToPrepare2.delivery.method.name,
+                deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',
                 deliveryPrice: 'Gratuit',
@@ -593,7 +593,7 @@ describe('Start preparations VM', () => {
               {
                 href: `${origin}/preparations/${orderToPrepare1.uuid}`,
                 reference: orderToPrepare1.uuid,
-                deliveryMethodName: orderToPrepare1.delivery.method.name,
+                deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
                 deliveryPrice: 'Gratuit',
@@ -620,7 +620,7 @@ describe('Start preparations VM', () => {
               {
                 href: `${origin}/preparations/${orderToPrepare2.uuid}`,
                 reference: orderToPrepare2.uuid,
-                deliveryMethodName: orderToPrepare2.delivery.method.name,
+                deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',
                 deliveryPrice: 'Gratuit',

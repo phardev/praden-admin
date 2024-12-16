@@ -105,18 +105,17 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
   const formatter = priceFormatter('fr-FR', 'EUR')
   selected.forEach((uuid) => {
     const order = preparationStore.getByUuid(uuid)
+    const delivery = order.deliveries[0]
     res.detail.push({
       href: `${origin}/preparations/${order.uuid}`,
       reference: order.uuid,
-      deliveryMethodName: order.delivery.method.name,
+      deliveryMethodName: delivery.method.name,
       clientLastname: order.deliveryAddress.lastname
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, ''),
       createdDate: timestampToLocaleString(order.createdAt, 'fr-FR'),
       deliveryPrice:
-        order.delivery.method.price > 0
-          ? formatter.format(order.delivery.method.price / 100)
-          : 'Gratuit',
+        delivery.price > 0 ? formatter.format(delivery.price / 100) : 'Gratuit',
       deliveryAddress: getDeliveryAddressVM(order),
       lines: order.lines
         .map((line): DetailPreparationLineVM => {

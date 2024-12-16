@@ -19,6 +19,7 @@ import {
   deliveryInRelayPoint
 } from '@utils/testData/deliveryMethods'
 import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
+import { praden } from '@utils/testData/shop'
 
 export const orderToPrepare1: AnonymousOrder = {
   uuid: 'XIKOKI',
@@ -52,9 +53,32 @@ export const orderToPrepare1: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: []
 }
 
@@ -102,9 +126,32 @@ export const orderToPrepare2: AnonymousOrder = {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
   },
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeannedarc@email.com',
+          phone: '9876543210'
+        },
+        address: {
+          firstname: 'Jeanne',
+          lastname: "D'arc",
+          address: '12 avenue du bois',
+          city: 'Boisville',
+          zip: '54321'
+        }
+      }
+    }
+  ],
   messages: []
 }
 
@@ -140,9 +187,32 @@ export const orderToPrepare3: AnonymousOrder = {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
   },
-  delivery: {
-    method: deliveryInRelayPoint
-  },
+  deliveries: [
+    {
+      price: 500,
+      method: deliveryInRelayPoint,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeannedarc@email.com',
+          phone: '9876543210'
+        },
+        address: {
+          firstname: 'Jeanne',
+          lastname: "D'arc",
+          address: '12 avenue du bois',
+          city: 'Boisville',
+          zip: '54321'
+        }
+      }
+    }
+  ],
   messages: []
 }
 
@@ -178,9 +248,32 @@ export const orderPrepared1: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: []
 }
 
@@ -216,9 +309,32 @@ export const orderInPreparation1: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: [
     {
       content: MessageContent.AskToClient,
@@ -275,9 +391,32 @@ export const orderDelivered1: AnonymousOrder = {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
   },
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeannedarc@email.com',
+          phone: '9876543210'
+        },
+        address: {
+          firstname: 'Jeanne',
+          lastname: "D'arc",
+          address: '12 avenue du bois',
+          city: 'Boisville',
+          zip: '54321'
+        }
+      }
+    }
+  ],
   messages: []
 }
 
@@ -325,9 +464,32 @@ export const orderDelivered2: AnonymousOrder = {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
   },
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeannedarc@email.com',
+          phone: '9876543210'
+        },
+        address: {
+          firstname: 'Jeanne',
+          lastname: "D'arc",
+          address: '12 avenue du bois',
+          city: 'Boisville',
+          zip: '54321'
+        }
+      }
+    }
+  ],
   messages: []
 }
 
@@ -375,9 +537,32 @@ export const orderWithMissingProduct1: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  delivery: {
-    method: deliveryInRelayPoint
-  },
+  deliveries: [
+    {
+      price: 599,
+      method: deliveryInRelayPoint,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: [
     {
       content: MessageContent.AskToClient,
@@ -434,9 +619,32 @@ export const orderWithMissingProduct2: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  delivery: {
-    method: deliveryInRelayPoint
-  },
+  deliveries: [
+    {
+      price: 599,
+      method: deliveryInRelayPoint,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: [
     {
       content: MessageContent.AskToClient,
@@ -481,9 +689,32 @@ export const orderToCancel: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  delivery: {
-    method: deliveryInRelayPoint
-  },
+  deliveries: [
+    {
+      price: 750,
+      method: deliveryInRelayPoint,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: [
     {
       content: MessageContent.AskToClient,
@@ -527,9 +758,32 @@ export const orderNotPayed1: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: []
 }
 
@@ -564,9 +818,32 @@ export const orderSaved1: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: []
 }
 
@@ -601,9 +878,32 @@ export const orderWaitingForClientAnswer1: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: [
     {
       content: MessageContent.AskToClient,
@@ -656,9 +956,32 @@ export const orderWaitingForClientAnswer2: AnonymousOrder = {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
   },
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeannedarc@email.com',
+          phone: '9876543210'
+        },
+        address: {
+          firstname: 'Jeanne',
+          lastname: "D'arc",
+          address: '12 avenue du bois',
+          city: 'Boisville',
+          zip: '54321'
+        }
+      }
+    }
+  ],
   messages: [
     {
       content: MessageContent.AskToClient,
@@ -698,9 +1021,32 @@ export const orderWaitingForRestock: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: [
     {
       content: MessageContent.AskToClient,
@@ -757,9 +1103,32 @@ export const orderPartiallyShipped1: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  delivery: {
-    method: deliveryInRelayPoint
-  },
+  deliveries: [
+    {
+      price: 500,
+      method: deliveryInRelayPoint,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: [
     {
       content: MessageContent.AskToClient,
@@ -816,9 +1185,32 @@ export const orderVFASF: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: []
 }
 
@@ -854,9 +1246,32 @@ export const orderXUKIJ: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: []
 }
 
@@ -904,9 +1319,32 @@ export const orderWithProductWithoutLocation: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: []
 }
 
@@ -951,9 +1389,32 @@ export const elodieDurandOrder1: CustomerOrder = {
     status: PaymentStatus.Payed
   },
   createdAt: 1674273279000,
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: elodieDurand.email,
+          phone: elodieDurand.phone
+        },
+        address: {
+          firstname: elodieDurand.firstname,
+          lastname: elodieDurand.lastname,
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: []
 }
 
@@ -998,9 +1459,32 @@ export const elodieDurandOrder2: CustomerOrder = {
     status: PaymentStatus.Payed
   },
   createdAt: 1674273279000,
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: elodieDurand.email,
+          phone: elodieDurand.phone
+        },
+        address: {
+          firstname: elodieDurand.firstname,
+          lastname: elodieDurand.lastname,
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: []
 }
 
@@ -1033,9 +1517,32 @@ export const lucasLefevreOrder1: CustomerOrder = {
     status: PaymentStatus.Payed
   },
   createdAt: 1674373279000,
-  delivery: {
-    method: clickAndCollect
-  },
+  deliveries: [
+    {
+      price: 0,
+      method: clickAndCollect,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: lucasLefevre.email,
+          phone: lucasLefevre.phone
+        },
+        address: {
+          firstname: lucasLefevre.firstname,
+          lastname: lucasLefevre.lastname,
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: []
 }
 
@@ -1068,8 +1575,31 @@ export const lucasLefevreOrder2: CustomerOrder = {
     status: PaymentStatus.Payed
   },
   createdAt: 1674473279000,
-  delivery: {
-    method: deliveryInRelayPoint
-  },
+  deliveries: [
+    {
+      price: 500,
+      method: deliveryInRelayPoint,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: lucasLefevre.email,
+          phone: lucasLefevre.phone
+        },
+        address: {
+          firstname: lucasLefevre.firstname,
+          lastname: lucasLefevre.lastname,
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345'
+        }
+      }
+    }
+  ],
   messages: []
 }

@@ -44,20 +44,23 @@ export const computeTotalWithTaxForOrder = (order: Order) => {
       (line.unitAmount * line.expectedQuantity * line.percentTaxRate) / 100
     )
   }, 0)
-  const delivery = order.delivery.method.price
-  return total + delivery
+  const delivery = order.deliveries[0]
+  const deliveryPrice = delivery.price
+  return total + deliveryPrice
 }
 
 const clickAndCollectFilter = (o: Order) => {
+  const delivery = o.deliveries[0]
   return (
-    o.delivery.method.type === DeliveryType.ClickAndCollect &&
+    delivery.method.type === DeliveryType.ClickAndCollect &&
     o.lines.every((l: OrderLine) => l.deliveryStatus === DeliveryStatus.Created)
   )
 }
 
 const deliveryFilter = (o: Order) => {
+  const delivery = o.deliveries[0]
   return (
-    o.delivery.method.type === DeliveryType.Delivery &&
+    delivery.method.type === DeliveryType.Delivery &&
     o.lines.every((l: OrderLine) => l.deliveryStatus === DeliveryStatus.Created)
   )
 }
