@@ -109,11 +109,15 @@ export class InMemoryProductGateway implements ProductGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(res)))
   }
 
-  getByCategoryUuid(categoryUuid: UUID): Promise<Array<Product>> {
+  getByCategoryUuid(
+    limit: number,
+    offset: number,
+    categoryUuid: UUID
+  ): Promise<Array<Product>> {
     return Promise.resolve(
-      this.products.filter((p) =>
-        p.categories.some((c) => c.uuid === categoryUuid)
-      )
+      this.products
+        .filter((p) => p.categories.some((c) => c.uuid === categoryUuid))
+        .slice(offset, offset + limit)
     )
   }
 

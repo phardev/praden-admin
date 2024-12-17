@@ -66,8 +66,17 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     return Promise.resolve(res.data.items)
   }
 
-  async getByCategoryUuid(uuid: UUID): Promise<Array<Product>> {
-    const res = await axios.get(`${this.baseUrl}/categories/${uuid}/products`)
+  async getByCategoryUuid(
+    limit: number,
+    offset: number,
+    uuid: UUID
+  ): Promise<Array<Product>> {
+    const res = await axios.get(`${this.baseUrl}/categories/${uuid}/products`, {
+      params: {
+        limit,
+        offset
+      }
+    })
     return Promise.resolve(res.data.items)
   }
 

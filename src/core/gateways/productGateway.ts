@@ -12,7 +12,11 @@ export interface ProductGateway {
   edit(uuid: UUID, dto: EditProductDTO): Promise<Product>
   bulkEdit(dto: EditProductDTO, uuids: Array<UUID>): Promise<Array<Product>>
   getByUuid(uuid: UUID): Promise<Product>
-  getByCategoryUuid(categoryUuid: UUID): Promise<Array<Product>>
+  getByCategoryUuid(
+    limit: number,
+    offset: number,
+    categoryUuid: UUID
+  ): Promise<Array<Product>>
   getByLaboratoryUuid(laboratoryUuid: UUID): Promise<Array<Product>>
   addProductsToCategory(
     category: Category,

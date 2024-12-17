@@ -133,6 +133,7 @@ form(v-else)
         :is-loading="currentVM.isLoading()"
         @item-selected="addedProductSelector.toggleSelect"
         @select-all="addedProductSelector.toggleSelectAll"
+        @clicked="productSelected"
       )
         template(#title) Produits de la catégorie
   div.flex.flex-row-reverse.mt-4
@@ -212,6 +213,10 @@ const miniatureChanged = async (value: any) => {
 
 const imageChanged = async (value: any) => {
   await currentVM?.value?.set('image', value[0])
+}
+
+const productSelected = (uuid: string) => {
+  router.push(`/products/get/${uuid}`)
 }
 
 const emit = defineEmits<{
