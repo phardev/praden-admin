@@ -580,7 +580,7 @@ describe('Category form edit VM', () => {
           description: currentCategory.description,
           miniature: currentCategory.miniature,
           newMiniature: undefined,
-          image: currentCategory.image,
+          image: 'data:image/png;base64,aW1hZ2U=',
           newImage,
           productsAdded: [],
           productsRemoved: []
@@ -598,7 +598,7 @@ describe('Category form edit VM', () => {
           name: currentCategory.name,
           parentUuid: currentCategory.parentUuid,
           description: currentCategory.description,
-          miniature: currentCategory.miniature,
+          miniature: 'data:image/png;base64,bWluaWF0dXJl',
           newMiniature,
           image: currentCategory.image,
           newImage: undefined,

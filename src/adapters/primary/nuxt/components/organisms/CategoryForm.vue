@@ -69,6 +69,7 @@ form(v-else)
   UFormGroup.pb-4(label="Miniature" name="miniature")
     img.mb-4(
       v-if="currentVM.get('miniature').value"
+      height=200 width=200
       :src="currentVM.get('miniature').value"
       alt="miniature"
     )

@@ -11,7 +11,7 @@ import {
 } from '@adapters/primary/view-models/categories/category-form/categoryFormVM'
 import { UUID } from '@core/types/types'
 import { Product } from '@core/entities/product'
-import { useProductStore } from '../../../../../store/productStore'
+import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
 
 export class CategoryFormEditVM extends CategoryFormVM {
@@ -96,9 +96,9 @@ export class CategoryFormEditVM extends CategoryFormVM {
       name: this.fieldsReader.get('name'),
       parentUuid: this.fieldsReader.get('parentUuid'),
       description: this.fieldsReader.get('description'),
-      miniature: this.fieldsReader.get('oldMiniature'),
+      miniature: this.fieldsReader.get('miniature'),
       newMiniature: this.fieldsReader.get('newMiniature'),
-      image: this.fieldsReader.get('oldImage'),
+      image: this.fieldsReader.get('image'),
       newImage: this.fieldsReader.get('newImage'),
       productsAdded,
       productsRemoved
