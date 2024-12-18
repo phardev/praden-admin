@@ -14,14 +14,14 @@ export default defineNuxtPlugin((nuxtApp: NuxtApp) => {
   const keycloakReady = new Promise<void>((resolve, reject) => {
     keycloak
       .init({
-        onLoad: 'check-sso',
-        silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`
+        checkLoginIframe: false
       })
       .then((authenticated) => {
         if (authenticated) {
-          setInterval(() => {
+          const intervalId = setInterval(() => {
             keycloak.updateToken(60).catch((err) => {
               console.error('Failed to refresh token', err)
+              clearInterval(intervalId)
             })
           }, 60000)
         } else {
