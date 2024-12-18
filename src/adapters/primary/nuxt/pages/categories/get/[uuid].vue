@@ -26,10 +26,8 @@ const routeName = router.currentRoute.value.name
 onMounted(async () => {
   const categoryGateway = useCategoryGateway()
   const productGateway = useProductGateway()
-  await Promise.all([
-    getCategory(categoryUuid, categoryGateway),
-    listCategoryProducts(25, 0, categoryUuid, productGateway)
-  ])
+  await getCategory(categoryUuid, categoryGateway)
+  await listCategoryProducts(25, 0, categoryUuid, productGateway)
   vm.value = categoryFormGetVM(routeName)
 })
 

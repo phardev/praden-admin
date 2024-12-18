@@ -30,10 +30,10 @@ export const useCategoryStore = defineStore('CategoryStore', {
       })
     },
     setCurrentCategory(category: Category) {
-      if (!this.current) {
-        this.current = { products: [] }
+      this.current = {
+        category: JSON.parse(JSON.stringify(category)),
+        products: []
       }
-      this.current.category = JSON.parse(JSON.stringify(category))
     },
     startLoading() {
       this.isLoading = true
@@ -51,7 +51,9 @@ export const useCategoryStore = defineStore('CategoryStore', {
         (product) =>
           !this.current.products.map((p) => p.uuid).includes(product.uuid)
       )
-      this.current.products.push(...toPush)
+      if (toPush.length) {
+        this.current.products.push(...toPush)
+      }
     }
   }
 })

@@ -35,10 +35,10 @@ describe('Get category', () => {
       categoryGateway.feedWith(dents)
       await whenGetCategory(dents.uuid)
     })
-    it('should store the category and keep products', () => {
+    it('should store the category and reset products', () => {
       expect(categoryStore.current).toStrictEqual({
         category: dents,
-        products: [dolodent]
+        products: []
       })
     })
   })
