@@ -1,11 +1,11 @@
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
 import { ProductGateway } from '@core/gateways/productGateway'
 import { Product } from '@core/entities/product'
-import axios from 'axios'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import { UUID } from '@core/types/types'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { Category } from '@core/entities/category'
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 
 export class RealProductGateway extends RealGateway implements ProductGateway {
   constructor(url: string) {
@@ -24,7 +24,10 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     } else if (dto.laboratory) {
       data.laboratoryUuid = dto.laboratory.uuid
     }
-    const res = await axios.patch(`${this.baseUrl}/products/bulk-edit`, data)
+    const res = await axiosWithBearer.patch(
+      `${this.baseUrl}/products/bulk-edit`,
+      data
+    )
     return res.data.items
   }
 
@@ -32,7 +35,7 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     category: Category,
     productUuids: Array<UUID>
   ): Promise<Array<Product>> {
-    const res = await axios.post(
+    const res = await axiosWithBearer.post(
       `${this.baseUrl}/products/add-category`,
       {
         categoryUuid: category.uuid,
@@ -51,7 +54,7 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     category: Category,
     productUuids: Array<UUID>
   ): Promise<Array<Product>> {
-    const res = await axios.post(
+    const res = await axiosWithBearer.post(
       `${this.baseUrl}/products/remove-category`,
       {
         categoryUuid: category.uuid,
@@ -71,22 +74,27 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     offset: number,
     uuid: UUID
   ): Promise<Array<Product>> {
-    const res = await axios.get(`${this.baseUrl}/categories/${uuid}/products`, {
-      params: {
-        limit,
-        offset
+    const res = await axiosWithBearer.get(
+      `${this.baseUrl}/categories/${uuid}/products`,
+      {
+        params: {
+          limit,
+          offset
+        }
       }
-    })
+    )
     return Promise.resolve(res.data.items)
   }
 
   async getByLaboratoryUuid(uuid: UUID): Promise<Array<Product>> {
-    const res = await axios.get(`${this.baseUrl}/laboratories/${uuid}/products`)
+    const res = await axiosWithBearer.get(
+      `${this.baseUrl}/laboratories/${uuid}/products`
+    )
     return Promise.resolve(res.data.items)
   }
 
   async batch(uuids: Array<string>): Promise<Array<Product>> {
-    const res = await axios.post(
+    const res = await axiosWithBearer.post(
       `${this.baseUrl}/products/batch`,
       { uuids },
       {
@@ -99,7 +107,7 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
   }
 
   async list(limit: number, offset: number): Promise<Array<Product>> {
-    const res = await axios.get(`${this.baseUrl}/products`, {
+    const res = await axiosWithBearer.get(`${this.baseUrl}/products`, {
       params: {
         limit,
         offset
@@ -109,12 +117,12 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
   }
 
   async count(): Promise<number> {
-    const res = await axios.get(`${this.baseUrl}/count/products`)
+    const res = await axiosWithBearer.get(`${this.baseUrl}/count/products`)
     return res.data
   }
 
   async getByUuid(uuid: UUID): Promise<Product> {
-    const res = await axios.get(`${this.baseUrl}/products/${uuid}`)
+    const res = await axiosWithBearer.get(`${this.baseUrl}/products/${uuid}`)
     return Promise.resolve(res.data.item)
   }
 
@@ -124,7 +132,7 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     if (laboratory) {
       formData.append('laboratoryUuid', laboratory.uuid)
     }
-    const res = await axios.patch(
+    const res = await axiosWithBearer.patch(
       `${this.baseUrl}/products/edit/${uuid}`,
       formData,
       {
@@ -142,11 +150,15 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     if (laboratory) {
       formData.append('laboratoryUuid', laboratory.uuid)
     }
-    const res = await axios.post(`${this.baseUrl}/products`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+    const res = await axiosWithBearer.post(
+      `${this.baseUrl}/products`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       }
-    })
+    )
     return Promise.resolve(res.data.item)
   }
 }

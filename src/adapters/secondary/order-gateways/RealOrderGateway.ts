@@ -6,8 +6,8 @@ import {
   PaymentStatus
 } from '@core/entities/order'
 import type { HashTable, UUID } from '@core/types/types'
-import axios from 'axios'
 import { zoneGeo } from '@utils/testData/locations'
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 
 export abstract class RealGateway {
   protected readonly baseUrl: string
@@ -41,7 +41,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
   }
 
   async askHowToFinish(preparation: Order): Promise<Order> {
-    const res = await axios.post(
+    const res = await axiosWithBearer.post(
       `${this.baseUrl}/preparations/${preparation.uuid}/ask-how-to-finish/`
     )
     return this.convertToOrder(res.data.item)
@@ -51,7 +51,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
     const body: any = {
       orderUuid: preparation.uuid
     }
-    const res = await axios.post(
+    const res = await axiosWithBearer.post(
       `${this.baseUrl}/preparations/${preparation.uuid}/cancel/`,
       JSON.stringify(body)
     )
@@ -59,12 +59,12 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
   }
 
   async getByUuid(uuid: UUID): Promise<Order> {
-    const res = await axios.get(`${this.baseUrl}/orders/${uuid}/`)
+    const res = await axiosWithBearer.get(`${this.baseUrl}/orders/${uuid}/`)
     return Promise.resolve(this.convertToOrder(res.data.item))
   }
 
   async list(): Promise<Array<Order>> {
-    const res = await axios.get(`${this.baseUrl}/orders/`)
+    const res = await axiosWithBearer.get(`${this.baseUrl}/orders/`)
     return Promise.resolve(
       res.data.items.map((d: any) => {
         return this.convertToOrder(d)
@@ -73,7 +73,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
   }
 
   async listOrdersToPrepare(): Promise<Array<Order>> {
-    const res = await axios.get(`${this.baseUrl}/preparations/`)
+    const res = await axiosWithBearer.get(`${this.baseUrl}/preparations/`)
     return Promise.resolve(
       res.data.items.map((d: any) => {
         return this.convertToOrder(d)
@@ -86,7 +86,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
     preparation.lines.forEach((l) => {
       lines[l.productUuid] = l.preparedQuantity
     })
-    const res = await axios.post(
+    const res = await axiosWithBearer.post(
       `${this.baseUrl}/preparations/${preparation.uuid}/save/`,
       { lines }
     )
@@ -94,7 +94,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
   }
 
   async startPreparation(uuid: UUID): Promise<Order> {
-    const res = await axios.post(
+    const res = await axiosWithBearer.post(
       `${this.baseUrl}/preparations/${uuid}/start/`,
       JSON.stringify(uuid)
     )
@@ -106,7 +106,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
     preparation.lines.forEach((l) => {
       lines[l.productUuid] = l.preparedQuantity
     })
-    const res = await axios.post(
+    const res = await axiosWithBearer.post(
       `${this.baseUrl}/preparations/${preparation.uuid}/validate/`,
       {
         lines

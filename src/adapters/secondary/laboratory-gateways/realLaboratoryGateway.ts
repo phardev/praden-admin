@@ -4,7 +4,7 @@ import { Laboratory } from '@core/entities/laboratory'
 import { UUID } from '@core/types/types'
 import { CreateLaboratoryDTO } from '@core/usecases/laboratories/laboratory-creation/createLaboratory'
 import { EditLaboratoryDTO } from '@core/usecases/laboratories/laboratory-edition/editLaboratory'
-import axios from 'axios'
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 
 export class RealLaboratoryGateway
   extends RealGateway
@@ -15,26 +15,32 @@ export class RealLaboratoryGateway
   }
 
   async list(): Promise<Array<Laboratory>> {
-    const res = await axios.get(`${this.baseUrl}/laboratories`)
+    const res = await axiosWithBearer.get(`${this.baseUrl}/laboratories`)
     return res.data.items
   }
   async getByUuid(uuid: UUID): Promise<Laboratory> {
-    const res = await axios.get(`${this.baseUrl}/laboratories/${uuid}`)
+    const res = await axiosWithBearer.get(
+      `${this.baseUrl}/laboratories/${uuid}`
+    )
     return res.data.item
   }
   async create(dto: CreateLaboratoryDTO): Promise<Laboratory> {
     const formData = this.createFormData(dto)
-    const res = await axios.post(`${this.baseUrl}/laboratories`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+    const res = await axiosWithBearer.post(
+      `${this.baseUrl}/laboratories`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       }
-    })
+    )
     return res.data.item
   }
   async edit(uuid: UUID, dto: EditLaboratoryDTO): Promise<Laboratory> {
     const formData = this.createFormData(dto)
     formData.append('uuid', uuid)
-    const res = await axios.patch(
+    const res = await axiosWithBearer.patch(
       `${this.baseUrl}/laboratories/edit/${uuid}`,
       formData,
       {

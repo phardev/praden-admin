@@ -5,8 +5,8 @@ import {
   Promotion
 } from '@core/entities/promotion'
 import { UUID } from '@core/types/types'
-import axios from 'axios'
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 
 export class RealPromotionGateway
   extends RealGateway
@@ -17,7 +17,7 @@ export class RealPromotionGateway
   }
 
   async getPromotionsForProduct(productUuid: UUID): Promise<Array<Promotion>> {
-    const res = await axios.get(
+    const res = await axiosWithBearer.get(
       `${this.baseUrl}/products/${productUuid}/promotions`
     )
     return Promise.resolve(res.data.items)
@@ -28,11 +28,15 @@ export class RealPromotionGateway
     delete realDto.products
     realDto.productUuids = promotion.products.map((p) => p.uuid)
     const formData = this.createFormData(realDto)
-    const res = await axios.post(`${this.baseUrl}/promotions`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+    const res = await axiosWithBearer.post(
+      `${this.baseUrl}/promotions`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       }
-    })
+    )
     return Promise.resolve(res.data.item)
   }
 
@@ -42,21 +46,25 @@ export class RealPromotionGateway
     realDto.productUuids = promotion.products.map((p) => p.uuid)
     const formData = this.createFormData(realDto)
     formData.append('uuid', uuid)
-    const res = await axios.patch(`${this.baseUrl}/promotions/edit`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+    const res = await axiosWithBearer.patch(
+      `${this.baseUrl}/promotions/edit`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       }
-    })
+    )
     return Promise.resolve(res.data.item)
   }
 
   async getByUuid(uuid: UUID): Promise<Promotion> {
-    const res = await axios.get(`${this.baseUrl}/promotions/${uuid}/`)
+    const res = await axiosWithBearer.get(`${this.baseUrl}/promotions/${uuid}/`)
     return Promise.resolve(res.data.item)
   }
 
   async list(): Promise<Array<Promotion>> {
-    const res = await axios.get(`${this.baseUrl}/promotions/`)
+    const res = await axiosWithBearer.get(`${this.baseUrl}/promotions/`)
     return Promise.resolve(res.data.items)
   }
 }
