@@ -34,8 +34,12 @@ export class RealCategoryGateway
     delete dto.miniature
     const formData = this.createFormData(dto)
     formData.append('uuid', uuid)
-    formData.append('image', dto.newImage)
-    formData.append('miniature', dto.newMiniature)
+    if (dto.newImage) {
+      formData.append('image', dto.newImage)
+    }
+    if (dto.newMiniature) {
+      formData.append('miniature', dto.newMiniature)
+    }
     const res = await axios.patch(`${this.baseUrl}/categories/edit`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
