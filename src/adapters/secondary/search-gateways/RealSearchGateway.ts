@@ -29,7 +29,7 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   searchOrders(dto: SearchOrdersDTO): Promise<Array<Order>> {
-    throw new Error('Method not implemented.')
+    return Promise.resolve([])
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
