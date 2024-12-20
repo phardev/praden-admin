@@ -3,6 +3,7 @@ import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway
 import { Customer } from '@core/entities/customer'
 import {
   DeliveryStatus,
+  getDeliveryStatus,
   Order,
   OrderLine,
   PaymentStatus
@@ -11,6 +12,7 @@ import { Product } from '@core/entities/product'
 import { SearchGateway } from '@core/gateways/searchGateway'
 import { SearchCustomersDTO } from '@core/usecases/customers/customer-searching/searchCustomer'
 import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
+import { useOrderStore } from '@store/orderStore'
 import { zoneGeo } from '@utils/testData/locations'
 
 export class RealSearchGateway extends RealGateway implements SearchGateway {
@@ -34,28 +36,89 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
   }
 
   async searchOrders(dto: SearchOrdersDTO): Promise<Array<Order>> {
-    const deliveryStatusMap = {
-      [DeliveryStatus.Created]: 'CREATED',
-      [DeliveryStatus.Processing]: 'PROCESSING',
-      [DeliveryStatus.Shipped]: 'SHIPPED',
-      [DeliveryStatus.Canceled]: 'CANCELED'
-    }
+    // const deliveryStatusMap = {
+    //   [DeliveryStatus.Created]: 'CREATED',
+    //   [DeliveryStatus.Processing]: 'PROCESSING',
+    //   [DeliveryStatus.Shipped]: 'SHIPPED',
+    //   [DeliveryStatus.Canceled]: 'CANCELED'
+    // }
     const paymentStatusMap = {
       [PaymentStatus.WaitingForPayment]: 'WAITINGFORPAYMENT',
       [PaymentStatus.Payed]: 'PAYED'
     }
     const body = {
-      ...dto,
-      deliveryStatus: deliveryStatusMap[dto.deliveryStatus],
-      paymentStatus: paymentStatusMap[dto.paymentStatus]
+      startDate: dto.startDate,
+      endDate: dto.endDate,
+      paymentStatus: paymentStatusMap[dto.paymentStatus],
+      customerUuid: dto.customerUuid
     }
-    const res = await axiosWithBearer.post(
-      `${this.baseUrl}/search/orders`,
-      body
+    const orderStore = useOrderStore()
+    let orders = orderStore.items
+    if (
+      body.startDate ||
+      body.endDate ||
+      body.paymentStatus ||
+      body.customerUuid
+    ) {
+      const res = await axiosWithBearer.post(
+        `${this.baseUrl}/search/orders`,
+        body
+      )
+      orders = res.data.items.map((d: any) => {
+        return this.convertToOrder(d)
+      })
+    }
+    let query: string | undefined = undefined
+    if (dto.query && dto.query.length) {
+      query = dto.query
+    }
+    const localFilters: SearchOrdersDTO = {
+      query,
+      deliveryStatus: dto.deliveryStatus
+    }
+    const filteredOrders = orders.filter((order) =>
+      this.applyOrderFilters(order, localFilters)
     )
-    return res.data.items.map((d: any) => {
-      return this.convertToOrder(d)
-    })
+    return Promise.resolve(filteredOrders)
+  }
+
+  private applyOrderFilters(order: Order, filters: SearchOrdersDTO): boolean {
+    if (filters.query) {
+      if (!this.applyQueryFilters(order, filters.query)) {
+        return false
+      }
+    }
+    if (filters.deliveryStatus) {
+      if (!this.applyDeliveryStatusFilter(order, filters.deliveryStatus)) {
+        return false
+      }
+    }
+    return true
+  }
+
+  private applyQueryFilters(order: Order, query: string): boolean {
+    const normalize = (str: string): string =>
+      str.normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+
+    const queryNormalized = normalize(query)
+
+    const queryRegex = new RegExp(queryNormalized, 'i')
+    const fullname = `${order.deliveryAddress.firstname} ${order.deliveryAddress.lastname}`
+    const reversedFullname = `${order.deliveryAddress.lastname} ${order.deliveryAddress.firstname}`
+    const fullnameNormalized = normalize(fullname)
+    const reversedFullnameNormalized = normalize(reversedFullname)
+    return !(
+      !queryRegex.test(order.uuid) &&
+      !queryRegex.test(fullnameNormalized) &&
+      !queryRegex.test(reversedFullnameNormalized)
+    )
+  }
+
+  private applyDeliveryStatusFilter(
+    order: Order,
+    deliveryStatus: DeliveryStatus
+  ): boolean {
+    return getDeliveryStatus(order) === deliveryStatus
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

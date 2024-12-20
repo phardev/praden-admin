@@ -46,7 +46,12 @@ const customerSelected = (uuid: string) => {
 
 const search = ref(customersVM.value?.currentSearch?.query || '')
 
+let debounceTimer
+
 const searchChanged = (e: any) => {
-  searchCustomers(routeName, { query: e.target.value }, useSearchGateway())
+  if (debounceTimer) clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(() => {
+    searchCustomers(routeName, { query: e.target.value }, useSearchGateway())
+  }, 300)
 }
 </script>
