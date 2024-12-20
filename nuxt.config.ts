@@ -111,5 +111,11 @@ export default defineNuxtConfig({
     ignoreFiles: ['coverage/*']
   },
 
-  compatibilityDate: '2024-10-17'
+  compatibilityDate: '2024-10-17',
+
+  nitro: {
+    devProxy: {
+      host: 'localhost'
+    }
+  }
 })
