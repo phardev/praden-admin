@@ -24,7 +24,7 @@ export class RealCustomerGateway
     return res.data
   }
   async create(dto: CreateCustomerDTO): Promise<Customer> {
-    const res = await axiosWithBearer.post(`${this.baseUrl}/customers/`, dto)
+    const res = await axiosWithBearer.post(`${this.baseUrl}/customers`, dto)
     return res.data
   }
 
