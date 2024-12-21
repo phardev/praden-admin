@@ -35,7 +35,8 @@ export interface OrderLine {
 
 export enum PaymentStatus {
   WaitingForPayment,
-  Payed
+  Payed,
+  Rejected
 }
 
 export interface Payment {
@@ -98,7 +99,7 @@ export interface BaseOrder {
   uuid: string
   lines: Array<OrderLine>
   deliveryAddress: Address
-  payment: Payment
+  payment?: Payment
   createdAt: Timestamp
   deliveries: Array<OrderDelivery>
   messages: Array<Message>

@@ -14,11 +14,13 @@ defineProps({
 
 const texts = {
   0: 'En attente de paiement',
-  1: 'Payé'
+  1: 'Payé',
+  2: 'Payment rejeté'
 }
 
 const colors = {
-  0: 'red',
-  1: 'green'
+  0: 'gray',
+  1: 'green',
+  2: 'red'
 }
 </script>

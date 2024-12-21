@@ -69,7 +69,7 @@ const getOrderItemVM = (order: Order): GetOrdersItemVM => {
     createdDatetime: new Date(order.createdAt),
     deliveryStatus: getDeliveryStatus(order),
     total: formatter.format(total / 100),
-    paymentStatus: order.payment.status
+    paymentStatus: order.payment?.status || PaymentStatus.WaitingForPayment
   }
 }
 

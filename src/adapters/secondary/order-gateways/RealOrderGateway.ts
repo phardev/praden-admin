@@ -117,7 +117,6 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
 
   private convertToOrder(data: any): Order {
     const copy = JSON.parse(JSON.stringify(data))
-    delete copy.payment.sessionUrl
     copy.lines = copy.lines.map((l: any) => {
       const res: OrderLine = {
         productUuid: l.productUuid,
@@ -146,7 +145,9 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
           sentAt: m.updatedAt
         }
       })
-    copy.payment.status = this.getPaymentStatus(copy.payment.status)
+    if (copy.payment) {
+      copy.payment.status = this.getPaymentStatus(copy.payment.status)
+    }
     return copy
   }
   private getDeliveryStatus(status: string): DeliveryStatus {
@@ -161,6 +162,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
   private getPaymentStatus(status: string): PaymentStatus {
     if (status === 'WAITINGFORPAYMENT') return PaymentStatus.WaitingForPayment
     if (status === 'PAYED') return PaymentStatus.Payed
+    if (status === 'REJECTED') return PaymentStatus.Rejected
     return PaymentStatus.WaitingForPayment
   }
 }

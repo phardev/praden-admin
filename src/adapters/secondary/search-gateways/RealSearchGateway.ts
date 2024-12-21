@@ -46,7 +46,8 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
     // }
     const paymentStatusMap = {
       [PaymentStatus.WaitingForPayment]: 'WAITINGFORPAYMENT',
-      [PaymentStatus.Payed]: 'PAYED'
+      [PaymentStatus.Payed]: 'PAYED',
+      [PaymentStatus.Rejected]: 'REJECTED'
     }
     const body = {
       startDate: dto.startDate,
