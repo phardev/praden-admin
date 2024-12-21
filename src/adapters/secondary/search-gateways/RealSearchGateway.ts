@@ -24,7 +24,9 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
     const res = await axiosWithBearer.get(`${this.baseUrl}/search/products`, {
       params: { query }
     })
-    return Promise.resolve(res.data.items)
+    return Promise.resolve(
+      res.data.items.sort((a, b) => b.availableStock - a.availableStock)
+    )
   }
 
   async indexProducts(limit: number, offset: number): Promise<number> {

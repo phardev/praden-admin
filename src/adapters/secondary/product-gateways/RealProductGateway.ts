@@ -47,7 +47,9 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
         }
       }
     )
-    return Promise.resolve(res.data.items)
+    return Promise.resolve(
+      res.data.items.sort((a, b) => b.availableStock - a.availableStock)
+    )
   }
 
   async removeProductsFromCategory(
@@ -66,7 +68,9 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
         }
       }
     )
-    return Promise.resolve(res.data.items)
+    return Promise.resolve(
+      res.data.items.sort((a, b) => b.availableStock - a.availableStock)
+    )
   }
 
   async getByCategoryUuid(
@@ -83,14 +87,18 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
         }
       }
     )
-    return Promise.resolve(res.data.items)
+    return Promise.resolve(
+      res.data.items.sort((a, b) => b.availableStock - a.availableStock)
+    )
   }
 
   async getByLaboratoryUuid(uuid: UUID): Promise<Array<Product>> {
     const res = await axiosWithBearer.get(
       `${this.baseUrl}/laboratories/${uuid}/products`
     )
-    return Promise.resolve(res.data.items)
+    return Promise.resolve(
+      res.data.items.sort((a, b) => b.availableStock - a.availableStock)
+    )
   }
 
   async batch(uuids: Array<string>): Promise<Array<Product>> {
@@ -103,7 +111,9 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
         }
       }
     )
-    return Promise.resolve(res.data.items)
+    return Promise.resolve(
+      res.data.items.sort((a, b) => b.availableStock - a.availableStock)
+    )
   }
 
   async list(limit: number, offset: number): Promise<Array<Product>> {
@@ -113,7 +123,9 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
         offset
       }
     })
-    return Promise.resolve(res.data.items)
+    return Promise.resolve(
+      res.data.items.sort((a, b) => b.availableStock - a.availableStock)
+    )
   }
 
   async count(): Promise<number> {
