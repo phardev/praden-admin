@@ -22,6 +22,7 @@ export interface GetOrderVM {
   deliveryAddress: AddressVM
   deliveryStatus: DeliveryStatus
   paymentStatus: PaymentStatus
+  invoiceNumber?: string
 }
 
 export const getOrderVM = (): GetOrderVM => {
@@ -31,7 +32,7 @@ export const getOrderVM = (): GetOrderVM => {
     return emptyVM()
   }
   const customer = getCustomerInformations(currentOrder)
-  return {
+  const res: GetOrderVM = {
     reference: currentOrder.uuid,
     customer: {
       firstname: customer.firstname,
@@ -44,11 +45,16 @@ export const getOrderVM = (): GetOrderVM => {
       address: currentOrder.deliveryAddress.address,
       city: currentOrder.deliveryAddress.city,
       zip: currentOrder.deliveryAddress.zip,
+      country: currentOrder.deliveryAddress.country,
       phone: customer.phone
     },
     deliveryStatus: getDeliveryStatus(currentOrder),
     paymentStatus: currentOrder.payment.status
   }
+  if (currentOrder.invoiceNumber) {
+    res.invoiceNumber = currentOrder.invoiceNumber
+  }
+  return res
 }
 
 const getCustomerInformations = (order: Order): OrderCustomerVM => {
@@ -83,7 +89,8 @@ const emptyVM = (): GetOrderVM => {
       address: '',
       zip: '',
       city: '',
-      phone: ''
+      phone: '',
+      country: ''
     },
     reference: '',
     deliveryStatus: DeliveryStatus.Created,

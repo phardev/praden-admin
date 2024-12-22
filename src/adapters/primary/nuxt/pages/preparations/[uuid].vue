@@ -131,12 +131,13 @@ const router = useRouter()
 
 const validate = async () => {
   await validatePreparation(useOrderGateway(), useInvoiceGateway())
-  // window.print()
+  window.print()
   router.push('/preparations')
 }
 
 const cancel = async () => {
   await cancelPreparation(useOrderGateway(), useInvoiceGateway())
+  window.print()
   router.push('/preparations')
 }
 

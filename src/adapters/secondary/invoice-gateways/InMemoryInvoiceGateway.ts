@@ -27,4 +27,8 @@ export class InMemoryInvoiceGateway implements InvoiceGateway {
     this.invoices.push(invoice)
     return Promise.resolve(invoice)
   }
+
+  feedWith(...invoices: Array<Invoice>) {
+    this.invoices = invoices
+  }
 }

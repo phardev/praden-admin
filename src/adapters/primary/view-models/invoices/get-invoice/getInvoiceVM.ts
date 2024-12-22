@@ -16,6 +16,8 @@ export interface AddressVM {
   zip: string
   city: string
   phone: string
+  country: string
+  appartement?: string
 }
 
 interface SummaryValueVM {
@@ -94,7 +96,8 @@ const emptyAddressVM = (): AddressVM => {
     address: '',
     zip: '',
     city: '',
-    phone: ''
+    phone: '',
+    country: ''
   }
 }
 
@@ -112,6 +115,7 @@ const getSupplierAddress = (): AddressVM => {
       '198 Avenue des Frères lumières\nCentre commercial Intermarché, Les Allemandes',
     city: 'ALES',
     zip: '30100',
+    country: 'France',
     phone: '0466303360'
   }
 }
@@ -122,6 +126,7 @@ export const getDeliveryAddressVM = (order: Order): AddressVM => {
     address: order.deliveryAddress.address,
     city: order.deliveryAddress.city,
     zip: order.deliveryAddress.zip,
+    country: order.deliveryAddress.country,
     phone: order.contact.phone
   }
 }
@@ -406,10 +411,11 @@ export const getInvoiceVM = (): GetInvoiceVM => {
     supplierAddress: getSupplierAddress(),
     deliveryAddress: getDeliveryAddressVM(invoice.data),
     billingAddress: {
-      name: `${invoice.data.deliveryAddress.firstname} ${invoice.data.deliveryAddress.lastname}`,
-      address: invoice.data.deliveryAddress.address,
-      city: invoice.data.deliveryAddress.city,
-      zip: invoice.data.deliveryAddress.zip,
+      name: `${invoice.data.billingAddress.firstname} ${invoice.data.billingAddress.lastname}`,
+      address: invoice.data.billingAddress.address,
+      city: invoice.data.billingAddress.city,
+      zip: invoice.data.billingAddress.zip,
+      country: invoice.data.billingAddress.country,
       phone: invoice.data.contact.phone
     },
     summaryTable: getSummaryTable(invoice),

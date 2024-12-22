@@ -123,6 +123,7 @@ describe('Get invoice VM', () => {
             '198 Avenue des Frères lumières\nCentre commercial Intermarché, Les Allemandes',
           city: 'ALES',
           zip: '30100',
+          country: 'France',
           phone: '0466303360'
         }
       }
@@ -135,6 +136,7 @@ describe('Get invoice VM', () => {
           address: '10 rue des peupliers',
           city: 'PlopLand',
           zip: '12345',
+          country: 'Plop',
           phone: '0123456789'
         }
       }
@@ -147,6 +149,7 @@ describe('Get invoice VM', () => {
           address: '10 rue des peupliers',
           city: 'PlopLand',
           zip: '12345',
+          country: 'Plop',
           phone: '0123456789'
         }
       }
@@ -251,6 +254,7 @@ describe('Get invoice VM', () => {
             '198 Avenue des Frères lumières\nCentre commercial Intermarché, Les Allemandes',
           city: 'ALES',
           zip: '30100',
+          country: 'France',
           phone: '0466303360'
         }
       }
@@ -263,6 +267,7 @@ describe('Get invoice VM', () => {
           address: '12 avenue du bois',
           city: 'Boisville',
           zip: '54321',
+          country: 'France',
           phone: '9876543210'
         }
       }
@@ -275,6 +280,7 @@ describe('Get invoice VM', () => {
           address: '12 avenue du bois',
           city: 'Boisville',
           zip: '54321',
+          country: 'France',
           phone: '9876543210'
         }
       }
@@ -399,6 +405,7 @@ describe('Get invoice VM', () => {
           address: '',
           city: '',
           zip: '',
+          country: '',
           phone: ''
         },
         deliveryAddress: {
@@ -406,6 +413,7 @@ describe('Get invoice VM', () => {
           address: '',
           city: '',
           zip: '',
+          country: '',
           phone: ''
         },
         billingAddress: {
@@ -413,6 +421,7 @@ describe('Get invoice VM', () => {
           address: '',
           city: '',
           zip: '',
+          country: '',
           phone: ''
         },
         summaryTable: {

@@ -110,6 +110,7 @@ describe('Start preparations VM', () => {
                   address: '10 rue des peupliers',
                   city: 'PlopLand',
                   zip: '12345',
+                  country: 'Plop',
                   phone: '0123456789'
                 },
                 lines: [
@@ -163,6 +164,7 @@ describe('Start preparations VM', () => {
                   address: '12 avenue du bois',
                   city: 'Boisville',
                   zip: '54321',
+                  country: 'France',
                   phone: '9876543210'
                 },
                 lines: [
@@ -227,6 +229,7 @@ describe('Start preparations VM', () => {
                   address: '10 rue des peupliers',
                   city: 'PlopLand',
                   zip: '12345',
+                  country: 'Plop',
                   phone: '0123456789'
                 },
                 lines: [
@@ -287,6 +290,7 @@ describe('Start preparations VM', () => {
                   address: '10 rue des peupliers',
                   city: 'PlopLand',
                   zip: '12345',
+                  country: 'Plop',
                   phone: '0123456789'
                 },
                 lines: [
@@ -340,6 +344,7 @@ describe('Start preparations VM', () => {
                   address: '12 avenue du bois',
                   city: 'Boisville',
                   zip: '54321',
+                  country: 'France',
                   phone: '9876543210'
                 },
                 lines: [
@@ -397,6 +402,7 @@ describe('Start preparations VM', () => {
                 address: '12 avenue du bois',
                 city: 'Boisville',
                 zip: '54321',
+                country: 'France',
                 phone: '9876543210'
               },
               lines: [
@@ -445,6 +451,7 @@ describe('Start preparations VM', () => {
                 address: '12 avenue du bois',
                 city: 'Boisville',
                 zip: '54321',
+                country: 'France',
                 phone: '9876543210'
               },
               lines: [
@@ -506,6 +513,7 @@ describe('Start preparations VM', () => {
                   address: '10 rue des peupliers',
                   city: 'PlopLand',
                   zip: '12345',
+                  country: 'Plop',
                   phone: '0123456789'
                 },
                 lines: [
@@ -533,6 +541,7 @@ describe('Start preparations VM', () => {
                   address: '12 avenue du bois',
                   city: 'Boisville',
                   zip: '54321',
+                  country: 'France',
                   phone: '9876543210'
                 },
                 lines: [
@@ -602,6 +611,7 @@ describe('Start preparations VM', () => {
                   address: '10 rue des peupliers',
                   city: 'PlopLand',
                   zip: '12345',
+                  country: 'Plop',
                   phone: '0123456789'
                 },
                 lines: [
@@ -629,6 +639,7 @@ describe('Start preparations VM', () => {
                   address: '12 avenue du bois',
                   city: 'Boisville',
                   zip: '54321',
+                  country: 'France',
                   phone: '9876543210'
                 },
                 lines: [

@@ -8,6 +8,7 @@ export interface Address {
   address: string
   city: string
   zip: string
+  country: string
   appartement?: string
 }
 
@@ -40,7 +41,6 @@ export enum PaymentStatus {
 }
 
 export interface Payment {
-  invoiceNumber?: string
   status: PaymentStatus
 }
 
@@ -99,10 +99,12 @@ export interface BaseOrder {
   uuid: string
   lines: Array<OrderLine>
   deliveryAddress: Address
+  billingAddress: Address
   payment?: Payment
   createdAt: Timestamp
   deliveries: Array<OrderDelivery>
   messages: Array<Message>
+  invoiceNumber?: string
 }
 
 export interface CustomerOrder extends BaseOrder {

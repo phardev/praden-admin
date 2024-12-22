@@ -2,6 +2,7 @@ import { useOrderStore } from '@store/orderStore'
 import {
   elodieDurandOrder1,
   lucasLefevreOrder2,
+  orderPrepared1,
   orderToPrepare1,
   orderWithMissingProduct1
 } from '@utils/testData/orders'
@@ -48,6 +49,7 @@ describe('Get order VM', () => {
             address: '10 rue des peupliers',
             city: 'PlopLand',
             zip: '12345',
+            country: 'Plop',
             phone: '0123456789'
           },
           deliveryStatus: DeliveryStatus.Created,
@@ -70,6 +72,7 @@ describe('Get order VM', () => {
             address: '10 rue des peupliers',
             city: 'PlopLand',
             zip: '12345',
+            country: 'Plop',
             phone: '0123456789'
           },
           deliveryStatus: DeliveryStatus.Processing,
@@ -98,6 +101,7 @@ describe('Get order VM', () => {
               address: '10 rue des peupliers',
               city: 'PlopLand',
               zip: '12345',
+              country: 'Plop',
               phone: elodieDurand.phone
             },
             deliveryStatus: DeliveryStatus.Created,
@@ -120,6 +124,7 @@ describe('Get order VM', () => {
               address: '12 rue des peupliers',
               city: 'PlopLand',
               zip: '12345',
+              country: 'Plop',
               phone: lucasLefevre.phone
             },
             deliveryStatus: DeliveryStatus.Created,
@@ -144,6 +149,7 @@ describe('Get order VM', () => {
               address: '12 rue des peupliers',
               city: 'PlopLand',
               zip: '12345',
+              country: 'Plop',
               phone: ''
             },
             deliveryStatus: DeliveryStatus.Created,
@@ -151,6 +157,55 @@ describe('Get order VM', () => {
           }
           expectVMToMatch(expectedVM)
         })
+      })
+    })
+    describe('Order with invoice', () => {
+      it('should return the order vm', () => {
+        givenCurrentOrderIs(orderPrepared1)
+        const expectedVM: Partial<GetOrderVM> = {
+          reference: orderPrepared1.uuid,
+          invoiceNumber: orderPrepared1.invoiceNumber,
+          customer: {
+            firstname: orderPrepared1.deliveryAddress.firstname,
+            lastname: orderPrepared1.deliveryAddress.lastname,
+            email: orderPrepared1.contact.email,
+            phone: orderPrepared1.contact.phone
+          },
+          deliveryAddress: {
+            name: 'Jean Bon',
+            address: '10 rue des peupliers',
+            city: 'PlopLand',
+            zip: '12345',
+            country: 'Plop',
+            phone: '0123456789'
+          },
+          deliveryStatus: DeliveryStatus.Shipped,
+          paymentStatus: PaymentStatus.Payed
+        }
+        expectVMToMatch(expectedVM)
+      })
+      it('should return the order vm for another order', () => {
+        givenCurrentOrderIs(orderWithMissingProduct1)
+        const expectedVM: Partial<GetOrderVM> = {
+          reference: orderWithMissingProduct1.uuid,
+          customer: {
+            firstname: orderWithMissingProduct1.deliveryAddress.firstname,
+            lastname: orderWithMissingProduct1.deliveryAddress.lastname,
+            email: orderWithMissingProduct1.contact.email,
+            phone: orderWithMissingProduct1.contact.phone
+          },
+          deliveryAddress: {
+            name: 'Jean Bon',
+            address: '10 rue des peupliers',
+            city: 'PlopLand',
+            zip: '12345',
+            country: 'Plop',
+            phone: '0123456789'
+          },
+          deliveryStatus: DeliveryStatus.Processing,
+          paymentStatus: PaymentStatus.Payed
+        }
+        expectVMToMatch(expectedVM)
       })
     })
   })
@@ -176,6 +231,7 @@ describe('Get order VM', () => {
         address: '',
         zip: '',
         city: '',
+        country: '',
         phone: ''
       },
       reference: '',

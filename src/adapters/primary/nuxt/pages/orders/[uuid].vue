@@ -21,10 +21,17 @@
         ft-payment-status-badge.ml-2(:status="orderVM.paymentStatus")
   ft-preparation-table(:vm="preparationVM")
   .max-w-lg.ml-auto(v-if="preparationVM.messages.length > 0")
+    div.flex.flex-row-reverse
+      div(v-if="orderVM.invoiceNumber")
+        ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
+          variant="outline"
+          @click="getInvoice"
+        ) Voir facture
     h1.text-2xl.font-semibold.text-default.mt-8 Messages
     ft-messages(
       :messages="preparationVM.messages"
     )
+
 </template>
 
 <script lang="ts" setup>
@@ -53,6 +60,11 @@ const preparationVM = computed(() => {
 const orderVM = computed(() => {
   return getOrderVM()
 })
+
+const getInvoice = () => {
+  const router = useRouter()
+  router.push(`invoice/${orderVM.value.invoiceNumber}`)
+}
 </script>
 
 <style lang="scss" scoped>

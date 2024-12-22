@@ -42,12 +42,21 @@ export const orderToPrepare1: AnonymousOrder = {
     lastname: 'Bon',
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
-    invoiceNumber: '2023-00006',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00006',
   createdAt: 1674273279000,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -74,7 +83,8 @@ export const orderToPrepare1: AnonymousOrder = {
           lastname: 'Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -115,12 +125,21 @@ export const orderToPrepare2: AnonymousOrder = {
     lastname: "D'arc",
     address: '12 avenue du bois',
     city: 'Boisville',
-    zip: '54321'
+    zip: '54321',
+    country: 'France'
+  },
+  billingAddress: {
+    firstname: 'Jeanne',
+    lastname: "D'arc",
+    address: '12 avenue du bois',
+    city: 'Boisville',
+    zip: '54321',
+    country: 'France'
   },
   payment: {
-    invoiceNumber: '2023-00007',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00007',
   createdAt: 1675565972527,
   contact: {
     email: 'jeannedarc@email.com',
@@ -147,7 +166,8 @@ export const orderToPrepare2: AnonymousOrder = {
           lastname: "D'arc",
           address: '12 avenue du bois',
           city: 'Boisville',
-          zip: '54321'
+          zip: '54321',
+          country: 'France'
         }
       }
     }
@@ -176,12 +196,21 @@ export const orderToPrepare3: AnonymousOrder = {
     lastname: "D'arc",
     address: '12 avenue du bois',
     city: 'Boisville',
-    zip: '54321'
+    zip: '54321',
+    country: 'France'
+  },
+  billingAddress: {
+    firstname: 'Jeanne',
+    lastname: "D'arc",
+    address: '12 avenue du bois',
+    city: 'Boisville',
+    zip: '54321',
+    country: 'France'
   },
   payment: {
-    invoiceNumber: '2023-00008',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00008',
   createdAt: 1675565972527,
   contact: {
     email: 'jeannedarc@email.com',
@@ -208,7 +237,8 @@ export const orderToPrepare3: AnonymousOrder = {
           lastname: "D'arc",
           address: '12 avenue du bois',
           city: 'Boisville',
-          zip: '54321'
+          zip: '54321',
+          country: 'France'
         }
       }
     }
@@ -237,12 +267,21 @@ export const orderPrepared1: AnonymousOrder = {
     lastname: 'Bon',
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
-    invoiceNumber: '2023-00005',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00005',
   createdAt: 1675564420539,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -269,7 +308,8 @@ export const orderPrepared1: AnonymousOrder = {
           lastname: 'Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -298,12 +338,21 @@ export const orderInPreparation1: AnonymousOrder = {
     lastname: 'Bon',
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
-    invoiceNumber: '2023-00004',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00004',
   createdAt: 1675564420539,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -330,7 +379,8 @@ export const orderInPreparation1: AnonymousOrder = {
           lastname: 'Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -380,12 +430,21 @@ export const orderDelivered1: AnonymousOrder = {
     lastname: "D'arc",
     address: '12 avenue du bois',
     city: 'Boisville',
-    zip: '54321'
+    zip: '54321',
+    country: 'France'
+  },
+  billingAddress: {
+    firstname: 'Jeanne',
+    lastname: "D'arc",
+    address: '12 avenue du bois',
+    city: 'Boisville',
+    zip: '54321',
+    country: 'France'
   },
   payment: {
-    invoiceNumber: '2023-00001',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00001',
   createdAt: 1674273599954,
   contact: {
     email: 'jeannedarc@email.com',
@@ -412,7 +471,8 @@ export const orderDelivered1: AnonymousOrder = {
           lastname: "D'arc",
           address: '12 avenue du bois',
           city: 'Boisville',
-          zip: '54321'
+          zip: '54321',
+          country: 'France'
         }
       }
     }
@@ -453,12 +513,21 @@ export const orderDelivered2: AnonymousOrder = {
     lastname: "D'arc",
     address: '12 avenue du bois',
     city: 'Boisville',
-    zip: '54321'
+    zip: '54321',
+    country: 'France'
+  },
+  billingAddress: {
+    firstname: 'Jeanne',
+    lastname: "D'arc",
+    address: '12 avenue du bois',
+    city: 'Boisville',
+    zip: '54321',
+    country: 'France'
   },
   payment: {
-    invoiceNumber: '2023-00001',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00001',
   createdAt: 1674273599954,
   contact: {
     email: 'jeannedarc@email.com',
@@ -485,7 +554,8 @@ export const orderDelivered2: AnonymousOrder = {
           lastname: "D'arc",
           address: '12 avenue du bois',
           city: 'Boisville',
-          zip: '54321'
+          zip: '54321',
+          country: 'France'
         }
       }
     }
@@ -526,12 +596,21 @@ export const orderWithMissingProduct1: AnonymousOrder = {
     lastname: 'Bon',
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
-    invoiceNumber: '2023-00002',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00002',
   createdAt: 1674573678456,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -558,7 +637,8 @@ export const orderWithMissingProduct1: AnonymousOrder = {
           lastname: 'Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -608,12 +688,21 @@ export const orderWithMissingProduct2: AnonymousOrder = {
     lastname: 'Bon',
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
-    invoiceNumber: '2023-00002',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00002',
   createdAt: 1674573678456,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -640,7 +729,8 @@ export const orderWithMissingProduct2: AnonymousOrder = {
           lastname: 'Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -678,12 +768,21 @@ export const orderToCancel: AnonymousOrder = {
     lastname: 'Bon',
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
-    invoiceNumber: '2023-00002',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00002',
   createdAt: 1674573678456,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -710,7 +809,8 @@ export const orderToCancel: AnonymousOrder = {
           lastname: 'Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -748,7 +848,16 @@ export const orderNotPayed1: AnonymousOrder = {
     lastname: 'Bon',
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
     status: PaymentStatus.WaitingForPayment
@@ -779,7 +888,8 @@ export const orderNotPayed1: AnonymousOrder = {
           lastname: 'Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -808,7 +918,16 @@ export const orderSaved1: AnonymousOrder = {
     lastname: 'Bon',
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
     status: PaymentStatus.Payed
@@ -839,7 +958,8 @@ export const orderSaved1: AnonymousOrder = {
           lastname: 'Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -868,7 +988,16 @@ export const orderWaitingForClientAnswer1: AnonymousOrder = {
     lastname: 'Bon',
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
     status: PaymentStatus.Payed
@@ -899,7 +1028,8 @@ export const orderWaitingForClientAnswer1: AnonymousOrder = {
           lastname: 'Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -945,12 +1075,21 @@ export const orderWaitingForClientAnswer2: AnonymousOrder = {
     lastname: "D'arc",
     address: '12 avenue du bois',
     city: 'Boisville',
-    zip: '54321'
+    zip: '54321',
+    country: 'France'
+  },
+  billingAddress: {
+    firstname: 'Jeanne',
+    lastname: "D'arc",
+    address: '12 avenue du bois',
+    city: 'Boisville',
+    zip: '54321',
+    country: 'France'
   },
   payment: {
-    invoiceNumber: '2023-00001',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00001',
   createdAt: 1674273599954,
   contact: {
     email: 'jeannedarc@email.com',
@@ -977,7 +1116,8 @@ export const orderWaitingForClientAnswer2: AnonymousOrder = {
           lastname: "D'arc",
           address: '12 avenue du bois',
           city: 'Boisville',
-          zip: '54321'
+          zip: '54321',
+          country: 'France'
         }
       }
     }
@@ -1011,7 +1151,16 @@ export const orderWaitingForRestock: AnonymousOrder = {
     lastname: 'Bon',
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
     status: PaymentStatus.Payed
@@ -1042,7 +1191,8 @@ export const orderWaitingForRestock: AnonymousOrder = {
           lastname: 'Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -1092,12 +1242,21 @@ export const orderPartiallyShipped1: AnonymousOrder = {
     lastname: 'Bon',
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
-    invoiceNumber: '2023-00009',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00009',
   createdAt: 1674573678456,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -1124,7 +1283,8 @@ export const orderPartiallyShipped1: AnonymousOrder = {
           lastname: 'Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -1174,12 +1334,21 @@ export const orderVFASF: AnonymousOrder = {
     lastname: 'Bon',
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
-    invoiceNumber: '2023-00006',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00006',
   createdAt: 1674273279000,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -1206,7 +1375,8 @@ export const orderVFASF: AnonymousOrder = {
           lastname: 'Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -1235,12 +1405,21 @@ export const orderXUKIJ: AnonymousOrder = {
     lastname: 'Bon',
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
-    invoiceNumber: '2023-00006',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00006',
   createdAt: 1674273279000,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -1267,7 +1446,8 @@ export const orderXUKIJ: AnonymousOrder = {
           lastname: 'Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -1308,12 +1488,21 @@ export const orderWithProductWithoutLocation: AnonymousOrder = {
     lastname: 'Bon',
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
-    invoiceNumber: '2023-00006',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00006',
   createdAt: 1674273279000,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -1340,7 +1529,8 @@ export const orderWithProductWithoutLocation: AnonymousOrder = {
           lastname: 'Bon',
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -1382,12 +1572,21 @@ export const elodieDurandOrder1: CustomerOrder = {
     lastname: elodieDurand.lastname,
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: elodieDurand.firstname,
+    lastname: elodieDurand.lastname,
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
-    invoiceNumber: '2023-00012',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00012',
   createdAt: 1674273279000,
   deliveries: [
     {
@@ -1410,7 +1609,8 @@ export const elodieDurandOrder1: CustomerOrder = {
           lastname: elodieDurand.lastname,
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -1452,12 +1652,21 @@ export const elodieDurandOrder2: CustomerOrder = {
     lastname: elodieDurand.lastname,
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: elodieDurand.firstname,
+    lastname: elodieDurand.lastname,
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
-    invoiceNumber: '2023-00012',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00012',
   createdAt: 1674273279000,
   deliveries: [
     {
@@ -1480,7 +1689,8 @@ export const elodieDurandOrder2: CustomerOrder = {
           lastname: elodieDurand.lastname,
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -1510,12 +1720,21 @@ export const lucasLefevreOrder1: CustomerOrder = {
     lastname: lucasLefevre.lastname,
     address: '10 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: lucasLefevre.firstname,
+    lastname: lucasLefevre.lastname,
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
-    invoiceNumber: '2023-00013',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00013',
   createdAt: 1674373279000,
   deliveries: [
     {
@@ -1538,7 +1757,8 @@ export const lucasLefevreOrder1: CustomerOrder = {
           lastname: lucasLefevre.lastname,
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }
@@ -1568,12 +1788,21 @@ export const lucasLefevreOrder2: CustomerOrder = {
     lastname: lucasLefevre.lastname,
     address: '12 rue des peupliers',
     city: 'PlopLand',
-    zip: '12345'
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: lucasLefevre.firstname,
+    lastname: lucasLefevre.lastname,
+    address: '12 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
   },
   payment: {
-    invoiceNumber: '2023-00014',
     status: PaymentStatus.Payed
   },
+  invoiceNumber: '2023-00014',
   createdAt: 1674473279000,
   deliveries: [
     {
@@ -1596,7 +1825,8 @@ export const lucasLefevreOrder2: CustomerOrder = {
           lastname: lucasLefevre.lastname,
           address: '10 rue des peupliers',
           city: 'PlopLand',
-          zip: '12345'
+          zip: '12345',
+          country: 'Plop'
         }
       }
     }

@@ -31,6 +31,7 @@
     :items="invoiceVM.summaryTable.items"
   )
   ft-table(
+    v-if="invoiceVM.orderLinesTable.items.length"
     :headers="invoiceVM.orderLinesTable.headers"
     :items="invoiceVM.orderLinesTable.items"
   )
