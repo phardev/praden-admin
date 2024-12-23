@@ -26,6 +26,12 @@ export abstract class RealGateway {
           value.forEach((item, index) => {
             formData.append(`${key}[${index}]`, item)
           })
+        } else if (typeof value === 'object' && value !== null) {
+          for (const subKey in value) {
+            if (value.hasOwnProperty(subKey)) {
+              formData.append(`${key}[${subKey}]`, value[subKey])
+            }
+          }
         } else if (value) {
           formData.append(key, value)
         }

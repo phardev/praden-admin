@@ -16,7 +16,7 @@ export interface Product {
   ean13: string
   priceWithoutTax: number
   percentTaxRate: number
-  locations: object
+  locations: HashTable<string>
   availableStock: number
   laboratory?: Laboratory | null
   description: string

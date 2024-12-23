@@ -16,7 +16,6 @@ import { reserve, zoneGeo } from '@utils/testData/locations'
 import { Location } from '@core/entities/location'
 import { InMemoryLocationGateway } from '@adapters/secondary/location-gateways/inMemoryLocationGateway'
 import { useLocationStore } from '@store/locationStore'
-import { LocationDoesNotExistsError } from '@core/errors/LocationDoesNotExistsError'
 
 describe('Product edition', () => {
   let productStore: any
@@ -151,29 +150,6 @@ describe('Product edition', () => {
           ])
         })
       })
-      describe('The location does not exists', () => {
-        it('should throw an error', async () => {
-          dto = {
-            locations: { ['not-existing']: 'value' }
-          }
-
-          await expect(whenEditProduct(product.uuid, dto)).rejects.toThrow(
-            LocationDoesNotExistsError
-          )
-        })
-        it('should check all locations', async () => {
-          dto = {
-            locations: {
-              [zoneGeo.uuid]: 'new-zoneGeo',
-              ['not-existing']: 'value'
-            }
-          }
-
-          await expect(whenEditProduct(product.uuid, dto)).rejects.toThrow(
-            LocationDoesNotExistsError
-          )
-        })
-      })
     })
     describe('Images change', () => {
       beforeEach(async () => {
@@ -245,7 +221,7 @@ describe('Product edition', () => {
   }
 
   const whenEditProduct = async (uuid: UUID, dto: EditProductDTO) => {
-    await editProduct(uuid, dto, productGateway, locationGateway)
+    await editProduct(uuid, dto, productGateway)
   }
 
   const expectProductGatewayToContains = async (expected: Array<Product>) => {

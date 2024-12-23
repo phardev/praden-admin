@@ -15,7 +15,6 @@ import { useLocationStore } from '@store/locationStore'
 import { diarrhee, mum } from '@utils/testData/categories'
 import { Category } from '@core/entities/category'
 import { Location } from '@core/entities/location'
-import { LocationDoesNotExistsError } from '@core/errors/LocationDoesNotExistsError'
 import { UUID } from '@core/types/types'
 import { avene, gilbert } from '@utils/testData/laboratories'
 
@@ -218,37 +217,6 @@ describe('Create product', () => {
     })
   })
 
-  describe('Errors', () => {
-    describe('The location does not exists', () => {
-      const uuid = 'new-uuid'
-      const dto: CreateProductDTO = {
-        name: 'Created product',
-        cip7: '1234567',
-        cip13: '1234567890123',
-        ean13: '1234567890123',
-        images: [new File(['data1'], 'File 1', { type: 'image/png' })],
-        categories: [mum],
-        priceWithoutTax: 100,
-        percentTaxRate: 10,
-        locations: {
-          [zoneGeo.uuid]: 'product-location',
-          ['not-exists']: 'value'
-        },
-        availableStock: 12,
-        laboratory: avene,
-        description: '<p>description</p>',
-        instructionsForUse: '<p>instructions For Use</p>',
-        composition: '<p>composition</p>',
-        weight: 1000
-      }
-      it('should throw an error', async () => {
-        uuidGenerator.setNext(uuid)
-        await expect(whenCreateProduct(dto)).rejects.toThrow(
-          LocationDoesNotExistsError
-        )
-      })
-    })
-  })
   describe('Loading', () => {
     beforeEach(() => {
       uuid = 'new-uuid'
@@ -301,7 +269,7 @@ describe('Create product', () => {
   }
 
   const whenCreateProduct = async (dto: CreateProductDTO) => {
-    await createProduct(dto, productGateway, locationGateway)
+    await createProduct(dto, productGateway)
   }
   const expectProductStoreToEqual = (...products: Array<Product>) => {
     expect(productStore.items).toStrictEqual(products)
