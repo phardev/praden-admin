@@ -36,7 +36,7 @@ div.flex.items-center.justify-stretch.space-x-4.space-y-2
             @update:model-value="(date) => startDateChanged(banner.uuid, date)"
             @close="close"
           )
-    UFormGroup.pb-4(label="Date de fin" name="eendDate")
+    UFormGroup.pb-4(label="Date de fin" name="endDate")
       UPopover(:popper="{ placement: 'bottom-start' }")
         UButton.w-72(
           icon="i-heroicons-calendar-days-20-solid"

@@ -29,7 +29,6 @@ export class RealBannerGateway extends RealGateway implements BannerGateway {
   async create(dto: CreateBannerDTO): Promise<Array<Banner>> {
     const formData = this.createFormData(dto)
     formData.append('image', dto.img)
-    console.log('formData[isActive]: ', formData.get('isActive'))
     const res = await axiosWithBearer.post(
       `${this.baseUrl}/banners`,
       formData,
@@ -42,9 +41,21 @@ export class RealBannerGateway extends RealGateway implements BannerGateway {
     return [this.convertToBanner(res.data.item)]
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  edit(uuid: UUID, dto: EditBannerDTO): Promise<Banner> {
-    throw new Error('Method not implemented.')
+  async edit(uuid: UUID, dto: EditBannerDTO): Promise<Banner> {
+    const formData = this.createFormData(dto)
+    if (dto.img) {
+      formData.append('image', dto.img)
+    }
+    const res = await axiosWithBearer.patch(
+      `${this.baseUrl}/banners/${uuid}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+    return this.convertToBanner(res.data.item)
   }
 
   async get(uuid: UUID): Promise<Banner> {

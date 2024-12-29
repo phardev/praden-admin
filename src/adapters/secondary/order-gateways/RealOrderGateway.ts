@@ -32,10 +32,8 @@ export abstract class RealGateway {
               formData.append(`${key}[${subKey}]`, value[subKey])
             }
           }
-        } else if (value) {
-          const formValue =
-            typeof value === 'boolean' ? value.toString() : value
-          formData.append(key, formValue)
+        } else {
+          formData.append(key, value)
         }
       }
     }
