@@ -5,6 +5,7 @@ import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { EditBannerDTO } from '@core/usecases/banners/banner-edition/editBanner'
 import { CreateBannerDTO } from '@core/usecases/banners/banner-creation/createBanner'
 import { BannerDoesNotExistsError } from '@core/errors/BannerDoesNotExistsError'
+import { getFileContent } from '@utils/file'
 
 export class InMemoryBannerGateway implements BannerGateway {
   private banners: Array<Banner> = []
@@ -40,7 +41,7 @@ export class InMemoryBannerGateway implements BannerGateway {
   async create(dto: CreateBannerDTO): Promise<Array<Banner>> {
     const newBanner: Banner = {
       uuid: this.uuidGenerator.generate(),
-      img: dto.img,
+      img: await getFileContent(dto.img),
       order: dto.order !== undefined ? dto.order : this.banners.length,
       isActive: dto.isActive !== undefined ? dto.isActive : true,
       href: dto.href,

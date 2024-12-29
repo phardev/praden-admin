@@ -33,7 +33,9 @@ export abstract class RealGateway {
             }
           }
         } else if (value) {
-          formData.append(key, value)
+          const formValue =
+            typeof value === 'boolean' ? value.toString() : value
+          formData.append(key, formValue)
         }
       }
     }

@@ -2,10 +2,8 @@ import { BannerGateway } from '@core/gateways/bannerGateway'
 import { useBannerStore } from '@store/bannerStore'
 import { Banner } from '@core/entities/banner'
 
-export type CreateBannerDTO = Pick<
-  Banner,
-  'img' | 'href' | 'startDate' | 'endDate'
-> & {
+export type CreateBannerDTO = Pick<Banner, 'href' | 'startDate' | 'endDate'> & {
+  img: File
   order?: number
   isActive?: boolean
 }
