@@ -16,14 +16,16 @@ export class RealBannerGateway extends RealGateway implements BannerGateway {
     return res.data.items.map(this.convertToBanner)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  reorder(bannerUuids: Array<UUID>): Promise<Array<Banner>> {
-    throw new Error('Method not implemented.')
+  async reorder(bannerUuids: Array<UUID>): Promise<Array<Banner>> {
+    const res = await axiosWithBearer.post(`${this.baseUrl}/banners/reorder`, {
+      uuids: bannerUuids
+    })
+    return res.data.items.map(this.convertToBanner)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  delete(uuid: UUID): Promise<Banner> {
-    throw new Error('Method not implemented.')
+  async delete(uuid: UUID): Promise<Banner> {
+    const res = await axiosWithBearer.delete(`${this.baseUrl}/banners/${uuid}`)
+    return this.convertToBanner(res.data.item)
   }
 
   async create(dto: CreateBannerDTO): Promise<Array<Banner>> {
@@ -42,10 +44,12 @@ export class RealBannerGateway extends RealGateway implements BannerGateway {
   }
 
   async edit(uuid: UUID, dto: EditBannerDTO): Promise<Banner> {
-    const formData = this.createFormData(dto)
-    if (dto.img) {
-      formData.append('image', dto.img)
+    const { img, ...editDTO } = dto
+    const formData = new FormData()
+    if (img) {
+      formData.append('image', img)
     }
+    formData.append('data', JSON.stringify(editDTO))
     const res = await axiosWithBearer.patch(
       `${this.baseUrl}/banners/${uuid}`,
       formData,

@@ -99,7 +99,7 @@ const startDateChanged = (uuid: string, date: number) => {
 }
 
 const clearStartDate = (uuid: string) => {
-  editBanner(uuid, { startDate: undefined }, useBannerGateway())
+  editBanner(uuid, { startDate: null }, useBannerGateway())
 }
 
 const endDateChanged = (uuid: string, date: number) => {
@@ -107,7 +107,7 @@ const endDateChanged = (uuid: string, date: number) => {
 }
 
 const clearEndDate = (uuid: string) => {
-  editBanner(uuid, { endDate: undefined }, useBannerGateway())
+  editBanner(uuid, { endDate: null }, useBannerGateway())
 }
 
 const editClicked = (uuid: string) => {
