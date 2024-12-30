@@ -29,6 +29,7 @@ export interface GetPreparationVM {
   headers: Array<Header>
   lines: Array<GetPreparationLineVM>
   messages: Array<any>
+  customerMessage?: string
   canValidate: boolean
   canCancel: boolean
   canAskHowToFinish: boolean
@@ -156,7 +157,7 @@ export const getPreparationVM = (): GetPreparationVM => {
     }
   })
   const error = preparationStore.error
-  return {
+  const res: GetPreparationVM = {
     reference: preparation.uuid,
     headers,
     lines,
@@ -166,4 +167,8 @@ export const getPreparationVM = (): GetPreparationVM => {
     canAskHowToFinish: canAskHowToFinish(lines, preparation),
     error
   }
+  if (preparation.customerMessage) {
+    res.customerMessage = preparation.customerMessage
+  }
+  return res
 }

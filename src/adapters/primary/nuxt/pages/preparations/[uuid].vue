@@ -32,11 +32,15 @@ invoice.hidden.printme.mx-2
       v-if="preparationVM.canAskHowToFinish"
       @click="askHowToFinish"
     ) Envoyer demande au client
-  .max-w-lg.ml-auto(v-if="preparationVM.messages.length > 0")
-    h1.text-2xl.font-semibold.text-default.mt-8 Messages
-    ft-messages(
-      :messages="preparationVM.messages"
-    )
+  div.w-full.flex.justify-between
+    .max-w-lg.flex-shrink-0(v-if="preparationVM.customerMessage")
+      h1.text-2xl.font-semibold.text-default.mt-8 Note du client
+      div.mt-2 {{ preparationVM.customerMessage }}
+    .max-w-lg.flex-grow(v-if="preparationVM.messages.length > 0")
+      h1.text-2xl.font-semibold.text-default.mt-8 Messages
+      ft-messages(
+        :messages="preparationVM.messages"
+      )
   ft-preparation-error-modal(
     v-model="isErrorModalOpened"
     :error="errorMessage"

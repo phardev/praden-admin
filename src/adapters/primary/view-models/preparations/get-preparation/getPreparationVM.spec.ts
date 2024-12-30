@@ -4,7 +4,8 @@ import {
   orderToPrepare1,
   orderToPrepare2,
   orderWithMissingProduct1,
-  orderSaved1
+  orderSaved1,
+  orderWithCustomerMessage
 } from '@utils/testData/orders'
 import { Order } from '@core/entities/order'
 import { createPinia, setActivePinia } from 'pinia'
@@ -328,6 +329,32 @@ describe('Get preparation VM', () => {
         canAskHowToFinish: false
       }
       expect(getPreparationVM()).toStrictEqual(emptyVM)
+    })
+  })
+
+  describe('There is a preparation with a customer message', () => {
+    it('should get the preparation vm with the customer message', () => {
+      givenCurrentPreparationIs(orderWithCustomerMessage)
+      const expectedVM: GetPreparationVM = {
+        reference: orderWithCustomerMessage.uuid,
+        headers,
+        lines: [
+          {
+            reference: dolodent.ean13,
+            name: dolodent.name,
+            expectedQuantity: 2,
+            preparedQuantity: 0,
+            status: PreparationStatus.NotPrepared
+          }
+        ],
+        messages: [],
+        customerMessage: orderWithCustomerMessage.customerMessage,
+        canValidate: false,
+        canCancel: false,
+        canAskHowToFinish: false,
+        error: undefined
+      }
+      expect(getPreparationVM()).toStrictEqual(expectedVM)
     })
   })
 

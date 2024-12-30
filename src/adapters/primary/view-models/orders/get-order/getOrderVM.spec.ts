@@ -4,6 +4,7 @@ import {
   lucasLefevreOrder2,
   orderPrepared1,
   orderToPrepare1,
+  orderWithCustomerMessage,
   orderWithMissingProduct1
 } from '@utils/testData/orders'
 import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
@@ -180,6 +181,55 @@ describe('Get order VM', () => {
             phone: '0123456789'
           },
           deliveryStatus: DeliveryStatus.Shipped,
+          paymentStatus: PaymentStatus.Payed
+        }
+        expectVMToMatch(expectedVM)
+      })
+      it('should return the order vm for another order', () => {
+        givenCurrentOrderIs(orderWithMissingProduct1)
+        const expectedVM: Partial<GetOrderVM> = {
+          reference: orderWithMissingProduct1.uuid,
+          customer: {
+            firstname: orderWithMissingProduct1.deliveryAddress.firstname,
+            lastname: orderWithMissingProduct1.deliveryAddress.lastname,
+            email: orderWithMissingProduct1.contact.email,
+            phone: orderWithMissingProduct1.contact.phone
+          },
+          deliveryAddress: {
+            name: 'Jean Bon',
+            address: '10 rue des peupliers',
+            city: 'PlopLand',
+            zip: '12345',
+            country: 'Plop',
+            phone: '0123456789'
+          },
+          deliveryStatus: DeliveryStatus.Processing,
+          paymentStatus: PaymentStatus.Payed
+        }
+        expectVMToMatch(expectedVM)
+      })
+    })
+    describe('Order with special instruction', () => {
+      it('should return the order vm', () => {
+        givenCurrentOrderIs(orderWithCustomerMessage)
+        const expectedVM: Partial<GetOrderVM> = {
+          reference: orderWithCustomerMessage.uuid,
+          customer: {
+            firstname: orderWithCustomerMessage.deliveryAddress.firstname,
+            lastname: orderWithCustomerMessage.deliveryAddress.lastname,
+            email: orderWithCustomerMessage.contact.email,
+            phone: orderWithCustomerMessage.contact.phone
+          },
+          deliveryAddress: {
+            name: 'Jean Bon',
+            address: '10 rue des peupliers',
+            city: 'PlopLand',
+            zip: '12345',
+            country: 'Plop',
+            phone: '0123456789'
+          },
+          customerMessage: orderWithCustomerMessage.customerMessage,
+          deliveryStatus: DeliveryStatus.Created,
           paymentStatus: PaymentStatus.Payed
         }
         expectVMToMatch(expectedVM)

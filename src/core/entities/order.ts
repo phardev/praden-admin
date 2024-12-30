@@ -105,6 +105,7 @@ export interface BaseOrder {
   deliveries: Array<OrderDelivery>
   messages: Array<Message>
   invoiceNumber?: string
+  customerMessage?: string
 }
 
 export interface CustomerOrder extends BaseOrder {

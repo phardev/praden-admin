@@ -23,6 +23,7 @@ export interface GetOrderVM {
   deliveryStatus: DeliveryStatus
   paymentStatus: PaymentStatus
   invoiceNumber?: string
+  customerMessage?: string
 }
 
 export const getOrderVM = (): GetOrderVM => {
@@ -53,6 +54,9 @@ export const getOrderVM = (): GetOrderVM => {
   }
   if (currentOrder.invoiceNumber) {
     res.invoiceNumber = currentOrder.invoiceNumber
+  }
+  if (currentOrder.customerMessage) {
+    res.customerMessage = currentOrder.customerMessage
   }
   return res
 }
