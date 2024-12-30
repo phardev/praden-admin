@@ -265,7 +265,9 @@ export class ProductFormCreateVM extends ProductFormVM {
       instructionsForUse: this.fieldsReader.get('instructionsForUse'),
       composition: this.fieldsReader.get('composition'),
       weight: +this.fieldsReader.get('weight') * 1000,
-      maxQuantityForOrder: +this.fieldsReader.get('maxQuantityForOrder')
+      maxQuantityForOrder: this.fieldsReader.get('maxQuantityForOrder')
+        ? +this.fieldsReader.get('maxQuantityForOrder')
+        : undefined
     }
   }
 
