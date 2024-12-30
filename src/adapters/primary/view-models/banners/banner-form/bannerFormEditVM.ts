@@ -70,7 +70,7 @@ export class BannerFormEditVM extends BannerFormVM {
     const startDate = this.fieldsReader.get('startDate')
     const endDate = this.fieldsReader.get('endDate')
     return {
-      img: this.fieldsReader.get('img'),
+      img: this.fieldsReader.get('newImg'),
       href: this.fieldsReader.get('href'),
       isActive: this.fieldsReader.get('isActive'),
       order: +order - 1,

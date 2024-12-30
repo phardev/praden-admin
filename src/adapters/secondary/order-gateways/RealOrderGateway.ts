@@ -32,7 +32,7 @@ export abstract class RealGateway {
               formData.append(`${key}[${subKey}]`, value[subKey])
             }
           }
-        } else if (value) {
+        } else if (value !== undefined) {
           formData.append(key, value)
         }
       }

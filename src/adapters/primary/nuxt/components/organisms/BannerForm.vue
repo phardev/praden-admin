@@ -125,7 +125,7 @@ const startDateChanged = (date: number) => {
 }
 
 const clearStartDate = () => {
-  currentVM.value.set('startDate', undefined)
+  currentVM.value.set('startDate', null)
 }
 
 const endDateChanged = (date: number) => {
@@ -133,7 +133,7 @@ const endDateChanged = (date: number) => {
 }
 
 const clearEndDate = () => {
-  currentVM.value.set('endDate', undefined)
+  currentVM.value.set('endDate', null)
 }
 
 const emit = defineEmits<{

@@ -53,11 +53,6 @@ describe('Banner form edit VM', () => {
       vm = getVM()
     })
     describe.each([
-      {
-        field: 'img',
-        value: new File(['img'], 'IMG 1', { type: 'image/jpg' }),
-        expected: 'data:image/jpg;base64,aW1n'
-      },
       { field: 'order', value: '2', expected: '2' },
       { field: 'isActive', value: false, expected: false },
       {
@@ -81,6 +76,23 @@ describe('Banner form edit VM', () => {
         expect(vm.get(field)).toStrictEqual(expectedField)
       })
     })
+    describe('Update image', () => {
+      beforeEach(async () => {
+        await vm.set('img', new File(['img'], 'IMG 1', { type: 'image/jpg' }))
+      })
+      describe('Img data', () => {
+        const expectedValue = 'data:image/jpg;base64,aW1n'
+        it('should update the img field', () => {
+          expect(vm.get('img')).toStrictEqual({
+            canEdit: true,
+            value: expectedValue
+          })
+        })
+        it('should update the img field in store', () => {
+          expect(formStore.get(key)['img']).toStrictEqual(expectedValue)
+        })
+      })
+    })
   })
 
   describe('DTO', () => {
@@ -88,7 +100,7 @@ describe('Banner form edit VM', () => {
       it('should prepare the dto', async () => {
         givenCurrentBannerIs(banner1)
         const expectedDTO: EditBannerDTO = {
-          img: 'data:image/jpg;base64,aW1n',
+          img: new File(['img'], 'IMG 1', { type: 'image/jpg' }),
           order: banner1.order,
           href: 'https://an-href.com',
           isActive: banner1.isActive,
@@ -105,7 +117,7 @@ describe('Banner form edit VM', () => {
       it('should prepare the dto', async () => {
         givenCurrentBannerIs(banner5)
         const expectedDTO: EditBannerDTO = {
-          img: 'data:image/jpg;base64,aW1n',
+          img: new File(['img'], 'IMG 1', { type: 'image/jpg' }),
           href: 'https://an-href.com',
           order: 1,
           isActive: false,

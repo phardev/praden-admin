@@ -1,9 +1,9 @@
 import { BannerGateway } from '@core/gateways/bannerGateway'
 import { UUID } from '@core/types/types'
-import { Banner } from '@core/entities/banner'
 import { useBannerStore } from '@store/bannerStore'
+import { CreateBannerDTO } from '@core/usecases/banners/banner-creation/createBanner'
 
-export type EditBannerDTO = Partial<Omit<Banner, 'uuid'>>
+export type EditBannerDTO = Partial<CreateBannerDTO>
 
 export const editBanner = async (
   uuid: UUID,

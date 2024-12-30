@@ -26,7 +26,7 @@ describe('Create banner', () => {
     beforeEach(async () => {
       uuid = 'new-uuid'
       dto = {
-        img: 'data:image/png;base64,ZGF0YTE=',
+        img: new File(['data1'], 'File 1', { type: 'image/png' }),
         href: 'https://new-link.com'
       }
       expectedBanner = {
@@ -52,12 +52,12 @@ describe('Create banner', () => {
       givenExistingBanners(banner1, banner2)
       uuid = 'another-new-uuid'
       dto = {
-        img: 'data:image/jpeg;base64,ZGF0YTI=',
+        img: new File(['data1'], 'File 1', { type: 'image/png' }),
         href: 'https://another-link.com'
       }
       expectedBanner = {
         uuid,
-        img: 'data:image/jpeg;base64,ZGF0YTI=',
+        img: 'data:image/png;base64,ZGF0YTE=',
         href: 'https://another-link.com',
         order: 2,
         isActive: true
@@ -87,13 +87,13 @@ describe('Create banner', () => {
       givenExistingBanners(banner1, banner2)
       uuid = 'another-new-uuid'
       dto = {
-        img: 'data:image/jpeg;base64,ZGF0YTI=',
+        img: new File(['data1'], 'File 1', { type: 'image/png' }),
         href: 'https://another-link.com',
         order: 1
       }
       expectedBanner = {
         uuid,
-        img: 'data:image/jpeg;base64,ZGF0YTI=',
+        img: 'data:image/png;base64,ZGF0YTE=',
         href: 'https://another-link.com',
         order: 1,
         isActive: true
@@ -122,13 +122,13 @@ describe('Create banner', () => {
       givenExistingBanners(banner1, banner2)
       uuid = 'another-new-uuid'
       dto = {
-        img: 'data:image/jpeg;base64,ZGF0YTI=',
+        img: new File(['data1'], 'File 1', { type: 'image/png' }),
         href: 'https://another-link.com',
         isActive: false
       }
       expectedBanner = {
         uuid,
-        img: 'data:image/jpeg;base64,ZGF0YTI=',
+        img: 'data:image/png;base64,ZGF0YTE=',
         href: 'https://another-link.com',
         order: 2,
         isActive: false
@@ -156,14 +156,14 @@ describe('Create banner', () => {
     beforeEach(async () => {
       uuid = 'another-new-uuid'
       dto = {
-        img: 'data:image/jpeg;base64,ZGF0YTI=',
+        img: new File(['data1'], 'File 1', { type: 'image/png' }),
         href: 'https://another-link.com',
         startDate: 1234567890,
         endDate: 2345678901
       }
       expectedBanner = {
         uuid,
-        img: 'data:image/jpeg;base64,ZGF0YTI=',
+        img: 'data:image/png;base64,ZGF0YTE=',
         href: 'https://another-link.com',
         order: 0,
         isActive: true,
