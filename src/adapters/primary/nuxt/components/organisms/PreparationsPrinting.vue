@@ -38,6 +38,10 @@ div.hidden.printme.mx-2
       div.flex.items-center.justify-around.m-2
         div(class="w-1/2") Total TTC
         div.text-right(class="w-1/2") {{ order.totalWithTax }}
+    .max-w-lg.flex-shrink-0(v-if="order.clientMessage")
+      h1.text-2xl.font-semibold.text-default.mt-8 Note du client
+      div.mt-2 {{ order.clientMessage }}
+
 </template>
 
 <script lang="ts" setup>

@@ -9,6 +9,7 @@ import {
   orderToPrepare1,
   orderToPrepare2,
   orderToPrepare3,
+  orderWithCustomerMessage,
   orderWithProductWithoutLocation
 } from '@utils/testData/orders'
 import {
@@ -63,7 +64,8 @@ describe('Start preparations VM', () => {
         orderToPrepare1,
         orderToPrepare2,
         orderWithProductWithoutLocation,
-        orderToPrepare3
+        orderToPrepare3,
+        orderWithCustomerMessage
       ]
     })
     describe('There is no preparations selected', () => {
@@ -466,6 +468,57 @@ describe('Start preparations VM', () => {
                 }
               ],
               totalWithTax: '10,50\u00A0€'
+            }
+          ]
+        }
+        expect(vm).toStrictEqual(expectedVM)
+      })
+      it('should display the client message', () => {
+        preparationsStore.selected = [orderWithCustomerMessage.uuid]
+        orderToPrepare3.deliveryAddress.lastname = 'NameWithé'
+        const anotherOrigin = 'http://another-origin:3000'
+        const vm = getStartPreparationsVM(anotherOrigin)
+        const expectedVM: StartPreparationsVM = {
+          globalHeaders,
+          detailHeaders,
+          global: [
+            {
+              reference: dolodent.ean13,
+              name: dolodent.name,
+              locations: dolodent.locations,
+              quantity: 2
+            }
+          ],
+          detail: [
+            {
+              href: `${anotherOrigin}/preparations/${orderWithCustomerMessage.uuid}`,
+              reference: orderWithCustomerMessage.uuid,
+              deliveryMethodName:
+                orderWithCustomerMessage.deliveries[0].method.name,
+              clientLastname: orderWithCustomerMessage.deliveryAddress.lastname,
+              createdDate: '21 janv. 2023',
+              deliveryPrice: 'Gratuit',
+              clientMessage: orderWithCustomerMessage.customerMessage,
+              deliveryAddress: {
+                name: 'Jean Bon',
+                address: '10 rue des peupliers',
+                city: 'PlopLand',
+                zip: '12345',
+                country: 'Plop',
+                phone: '0123456789'
+              },
+              lines: [
+                {
+                  reference: dolodent.ean13,
+                  name: dolodent.name,
+                  locations: dolodent.locations,
+                  quantity: 2,
+                  unitPrice: '5,50\u00A0€',
+                  taxRate: '10 %',
+                  totalPrice: '11,00\u00A0€'
+                }
+              ],
+              totalWithTax: '11,00\u00A0€'
             }
           ]
         }

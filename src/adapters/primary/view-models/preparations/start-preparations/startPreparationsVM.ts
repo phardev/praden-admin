@@ -7,7 +7,7 @@ import {
 } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 import { useSettingStore } from '@store/settingStore'
 import { addTaxToPrice } from '@utils/price'
-import { getTotalWithTax } from '@core/entities/order'
+import { getTotalWithTax, Order } from '@core/entities/order'
 import { useLocationStore } from '@store/locationStore'
 import { zoneGeo } from '@utils/testData/locations'
 import { sortLocationByOrder } from '@core/entities/location'
@@ -30,6 +30,7 @@ export interface PreparationLineDetailVM {
   reference: string
   deliveryMethodName: string
   clientLastname: string
+  clientMessage?: string
   createdDate: string
   deliveryPrice: string
   deliveryAddress: AddressVM
@@ -102,39 +103,14 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
     pickingSortType === PickingSortType.Location
       ? sortByLocation
       : sortByProductName
-  const formatter = priceFormatter('fr-FR', 'EUR')
   selected.forEach((uuid) => {
     const order = preparationStore.getByUuid(uuid)
-    const delivery = order.deliveries[0]
-    res.detail.push({
-      href: `${origin}/preparations/${order.uuid}`,
-      reference: order.uuid,
-      deliveryMethodName: delivery.method.name,
-      clientLastname: order.deliveryAddress.lastname
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, ''),
-      createdDate: timestampToLocaleString(order.createdAt, 'fr-FR'),
-      deliveryPrice:
-        delivery.price > 0 ? formatter.format(delivery.price / 100) : 'Gratuit',
-      deliveryAddress: getDeliveryAddressVM(order),
-      lines: order.lines
-        .map((line): DetailPreparationLineVM => {
-          const unitPrice =
-            addTaxToPrice(line.unitAmount, line.percentTaxRate) / 100
-          const quantity = line.expectedQuantity
-          return {
-            reference: line.ean13,
-            name: line.name,
-            locations: line.locations,
-            quantity,
-            unitPrice: formatter.format(unitPrice),
-            taxRate: `${line.percentTaxRate} %`,
-            totalPrice: formatter.format(unitPrice * quantity)
-          }
-        })
-        .sort(pickingSort),
-      totalWithTax: formatter.format(getTotalWithTax(order))
-    })
+    const detail: PreparationLineDetailVM = getDetailPreparationLineVM(
+      origin,
+      order,
+      pickingSort
+    )
+    res.detail.push(detail)
   })
   res.global = res.detail.reduce(
     (acc: Array<DetailPreparationLineVM>, detail) => {
@@ -156,4 +132,47 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
   )
   res.global.sort(pickingSort)
   return res
+}
+
+const getDetailPreparationLineVM = (
+  origin: string,
+  order: Order,
+  pickingSort: any
+): PreparationLineDetailVM => {
+  const delivery = order.deliveries[0]
+  const formatter = priceFormatter('fr-FR', 'EUR')
+
+  const detail: PreparationLineDetailVM = {
+    href: `${origin}/preparations/${order.uuid}`,
+    reference: order.uuid,
+    deliveryMethodName: delivery.method.name,
+    clientLastname: order.deliveryAddress.lastname
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, ''),
+    createdDate: timestampToLocaleString(order.createdAt, 'fr-FR'),
+    deliveryPrice:
+      delivery.price > 0 ? formatter.format(delivery.price / 100) : 'Gratuit',
+    deliveryAddress: getDeliveryAddressVM(order),
+    lines: order.lines
+      .map((line): DetailPreparationLineVM => {
+        const unitPrice =
+          addTaxToPrice(line.unitAmount, line.percentTaxRate) / 100
+        const quantity = line.expectedQuantity
+        return {
+          reference: line.ean13,
+          name: line.name,
+          locations: line.locations,
+          quantity,
+          unitPrice: formatter.format(unitPrice),
+          taxRate: `${line.percentTaxRate} %`,
+          totalPrice: formatter.format(unitPrice * quantity)
+        }
+      })
+      .sort(pickingSort),
+    totalWithTax: formatter.format(getTotalWithTax(order))
+  }
+  if (order.customerMessage) {
+    detail.clientMessage = order.customerMessage
+  }
+  return detail
 }
