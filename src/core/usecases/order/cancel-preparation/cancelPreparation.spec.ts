@@ -1,5 +1,5 @@
 import { createPinia, setActivePinia } from 'pinia'
-import { DeliveryStatus, Order } from '@core/entities/order'
+import { OrderLineStatus, Order } from '@core/entities/order'
 import { orderToCancel } from '@utils/testData/orders'
 import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
@@ -35,13 +35,13 @@ describe('Cancel preparation', () => {
       givenCurrentPreparationIs(order)
       expectedOrder = JSON.parse(JSON.stringify(order))
       expectedOrder.lines[0].preparedQuantity = 0
-      expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Canceled
+      expectedOrder.lines[0].status = OrderLineStatus.Canceled
       expectedOrder.lines[0].updatedAt = now
       expectedOrder.lines[1] = {
         ...expectedOrder.lines[0],
         expectedQuantity: -2,
         preparedQuantity: 0,
-        deliveryStatus: DeliveryStatus.Canceled,
+        status: OrderLineStatus.Canceled,
         updatedAt: now
       }
       await whenCancelPreparation()

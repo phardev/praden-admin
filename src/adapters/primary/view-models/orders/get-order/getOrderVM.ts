@@ -1,6 +1,6 @@
 import { useOrderStore } from '@store/orderStore'
 import {
-  DeliveryStatus,
+  OrderLineStatus,
   getDeliveryStatus,
   isAnonymousOrder,
   Order,
@@ -20,7 +20,7 @@ export interface GetOrderVM {
   reference: string
   customer: OrderCustomerVM
   deliveryAddress: AddressVM
-  deliveryStatus: DeliveryStatus
+  deliveryStatus: OrderLineStatus
   paymentStatus: PaymentStatus
   invoiceNumber?: string
   customerMessage?: string
@@ -97,7 +97,7 @@ const emptyVM = (): GetOrderVM => {
       country: ''
     },
     reference: '',
-    deliveryStatus: DeliveryStatus.Created,
+    deliveryStatus: OrderLineStatus.Created,
     paymentStatus: PaymentStatus.WaitingForPayment
   }
 }

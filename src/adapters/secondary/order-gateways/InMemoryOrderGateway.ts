@@ -1,6 +1,6 @@
 import { OrderGateway } from '@core/gateways/orderGateway'
 import {
-  DeliveryStatus,
+  OrderLineStatus,
   Message,
   MessageContent,
   Order,
@@ -27,7 +27,7 @@ export class InMemoryOrderGateway implements OrderGateway {
   listOrdersToPrepare(): Promise<Array<Order>> {
     const toPrepare = this.orders.filter(
       (o) =>
-        !o.lines.every((l) => l.deliveryStatus >= DeliveryStatus.Shipped) &&
+        !o.lines.every((l) => l.status >= OrderLineStatus.Prepared) &&
         o.payment.status > PaymentStatus.WaitingForPayment
     )
     return Promise.resolve(toPrepare)
@@ -39,7 +39,7 @@ export class InMemoryOrderGateway implements OrderGateway {
       throw new PreparationDoesNotExistsError(uuid)
     }
     order?.lines.forEach((l) => {
-      l.deliveryStatus = DeliveryStatus.Processing
+      l.status = OrderLineStatus.Started
     })
     return Promise.resolve(order)
   }
@@ -62,8 +62,8 @@ export class InMemoryOrderGateway implements OrderGateway {
 
   private shipOrCancelLines(lines: Array<OrderLine>) {
     lines.forEach((l) => {
-      if (l.preparedQuantity === 0) l.deliveryStatus = DeliveryStatus.Canceled
-      else l.deliveryStatus = DeliveryStatus.Shipped
+      if (l.preparedQuantity === 0) l.status = OrderLineStatus.Canceled
+      else l.status = OrderLineStatus.Prepared
       l.updatedAt = this.dateProvider.now()
     })
   }
@@ -76,7 +76,7 @@ export class InMemoryOrderGateway implements OrderGateway {
           ...line,
           preparedQuantity: 0,
           expectedQuantity: line.preparedQuantity - line.expectedQuantity,
-          deliveryStatus: DeliveryStatus.Canceled,
+          status: OrderLineStatus.Canceled,
           updatedAt: this.dateProvider.now()
         })
       }
@@ -92,12 +92,11 @@ export class InMemoryOrderGateway implements OrderGateway {
     preparation.lines.forEach((l, lineIndex) => {
       const currentLine = this.orders[index].lines[lineIndex]
       if (l.preparedQuantity !== currentLine.preparedQuantity) {
-        if (currentLine.deliveryStatus > DeliveryStatus.Processing)
+        if (currentLine.status > OrderLineStatus.Started)
           throw new OrderLineAlreadyProcessedError()
         l.updatedAt = this.dateProvider.now()
       }
-      if (l.deliveryStatus < DeliveryStatus.Processing)
-        l.deliveryStatus = DeliveryStatus.Processing
+      if (l.status < OrderLineStatus.Started) l.status = OrderLineStatus.Started
     })
     this.orders.splice(index, 1, preparation)
     return Promise.resolve(preparation)

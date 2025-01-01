@@ -1,7 +1,7 @@
 import { usePreparationStore } from '@store/preparationStore'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import {
-  DeliveryStatus,
+  OrderLineStatus,
   Message,
   MessageContent,
   Order
@@ -102,9 +102,7 @@ const canAskHowToFinish = (
     return false
   }
   if (
-    preparation.lines.every(
-      (line) => line.deliveryStatus === DeliveryStatus.Created
-    )
+    preparation.lines.every((line) => line.status === OrderLineStatus.Created)
   )
     return false
   const messages = preparation.messages

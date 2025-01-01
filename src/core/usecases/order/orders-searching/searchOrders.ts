@@ -2,7 +2,7 @@ import { useSearchStore } from '@store/searchStore'
 
 import { SearchGateway } from '@core/gateways/searchGateway'
 import { Timestamp, UUID } from '@core/types/types'
-import { DeliveryStatus, PaymentStatus } from '@core/entities/order'
+import { OrderLineStatus, PaymentStatus } from '@core/entities/order'
 
 export interface SearchDTO {
   query?: string
@@ -11,7 +11,7 @@ export interface SearchDTO {
 export interface SearchOrdersDTO extends SearchDTO {
   startDate?: Timestamp
   endDate?: Timestamp
-  deliveryStatus?: DeliveryStatus
+  deliveryStatus?: OrderLineStatus
   paymentStatus?: PaymentStatus
   customerUuid?: UUID
 }

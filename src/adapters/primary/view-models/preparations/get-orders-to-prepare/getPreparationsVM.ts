@@ -1,6 +1,6 @@
 import { usePreparationStore } from '@store/preparationStore'
 import {
-  DeliveryStatus,
+  OrderLineStatus,
   DeliveryType,
   MessageContent,
   Order,
@@ -53,7 +53,7 @@ const clickAndCollectFilter = (o: Order) => {
   const delivery = o.deliveries[0]
   return (
     delivery.method.type === DeliveryType.ClickAndCollect &&
-    o.lines.every((l: OrderLine) => l.deliveryStatus === DeliveryStatus.Created)
+    o.lines.every((l: OrderLine) => l.status === OrderLineStatus.Created)
   )
 }
 
@@ -61,13 +61,13 @@ const deliveryFilter = (o: Order) => {
   const delivery = o.deliveries[0]
   return (
     delivery.method.type === DeliveryType.Delivery &&
-    o.lines.every((l: OrderLine) => l.deliveryStatus === DeliveryStatus.Created)
+    o.lines.every((l: OrderLine) => l.status === OrderLineStatus.Created)
   )
 }
 
 const toContinueFilter = (o: Order) => {
   return (
-    o.lines.some((l) => l.deliveryStatus === DeliveryStatus.Processing) &&
+    o.lines.some((l) => l.status === OrderLineStatus.Started) &&
     !o.messages.length
   )
 }

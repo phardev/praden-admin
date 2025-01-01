@@ -4,7 +4,7 @@ import {
 } from '@utils/testData/deliveryMethods'
 import { praden } from '@utils/testData/shop'
 
-import { Delivery } from '@core/entities/delivery'
+import { Delivery, DeliveryStatus } from '@core/entities/delivery'
 
 export const deliveryOrderToPrepare1: Delivery = {
   uuid: 'delivery-order-to-prepare-1',
@@ -30,7 +30,8 @@ export const deliveryOrderToPrepare1: Delivery = {
       zip: '12345',
       country: 'Plop'
     }
-  }
+  },
+  status: DeliveryStatus.Created
 }
 
 export const deliveryOrderToPrepare2: Delivery = {
@@ -57,7 +58,8 @@ export const deliveryOrderToPrepare2: Delivery = {
       zip: '54321',
       country: 'France'
     }
-  }
+  },
+  status: DeliveryStatus.Created
 }
 
 export const deliveryOrderToPrepare3: Delivery = {
@@ -84,5 +86,6 @@ export const deliveryOrderToPrepare3: Delivery = {
       zip: '54321',
       country: 'France'
     }
-  }
+  },
+  status: DeliveryStatus.Created
 }

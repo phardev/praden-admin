@@ -2,7 +2,7 @@ import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
 import { Customer } from '@core/entities/customer'
 import {
-  DeliveryStatus,
+  OrderLineStatus,
   getDeliveryStatus,
   Order,
   OrderLine,
@@ -119,7 +119,7 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
 
   private applyDeliveryStatusFilter(
     order: Order,
-    deliveryStatus: DeliveryStatus
+    deliveryStatus: OrderLineStatus
   ): boolean {
     return getDeliveryStatus(order) === deliveryStatus
   }
@@ -141,7 +141,7 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
         percentTaxRate: l.percentTaxRate,
         preparedQuantity: l.preparedQuantity,
         unitAmount: l.priceWithoutTax,
-        deliveryStatus: this.getDeliveryStatus(l.deliveryStatus),
+        status: this.getDeliveryStatus(l.deliveryStatus),
         locations: { [zoneGeo.uuid]: l.location },
         updatedAt: l.updatedAt
       }
@@ -163,13 +163,13 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
     copy.payment.status = this.getPaymentStatus(copy.payment.status)
     return copy
   }
-  private getDeliveryStatus(status: string): DeliveryStatus {
-    if (status === 'CREATED') return DeliveryStatus.Created
-    if (status === 'PROCESSING') return DeliveryStatus.Processing
-    if (status === 'SHIPPED') return DeliveryStatus.Shipped
-    if (status === 'DELIVERED') return DeliveryStatus.Delivered
-    if (status === 'CANCELED') return DeliveryStatus.Canceled
-    return DeliveryStatus.Created
+  private getDeliveryStatus(status: string): OrderLineStatus {
+    if (status === 'CREATED') return OrderLineStatus.Created
+    if (status === 'PROCESSING') return OrderLineStatus.Started
+    if (status === 'SHIPPED') return OrderLineStatus.Prepared
+    if (status === 'DELIVERED') return OrderLineStatus.Delivered
+    if (status === 'CANCELED') return OrderLineStatus.Canceled
+    return OrderLineStatus.Created
   }
 
   private getPaymentStatus(status: string): PaymentStatus {

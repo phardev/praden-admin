@@ -17,7 +17,7 @@ import {
   orderToPrepare2,
   orderToPrepare3
 } from '@utils/testData/orders'
-import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
+import { OrderLineStatus, Order, PaymentStatus } from '@core/entities/order'
 import { useOrderStore } from '@store/orderStore'
 import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
 
@@ -154,12 +154,12 @@ describe('Search orders', () => {
         )
       })
       it('should filter on a status', async () => {
-        dto.deliveryStatus = DeliveryStatus.Shipped
+        dto.deliveryStatus = OrderLineStatus.Prepared
         await whenSearchForOrders(dto)
         expectSearchResultToEqual(orderPartiallyShipped1)
       })
       it('should filter on another status', async () => {
-        dto.deliveryStatus = DeliveryStatus.Created
+        dto.deliveryStatus = OrderLineStatus.Created
         await whenSearchForOrders(dto)
         expectSearchResultToEqual(orderToPrepare1, orderToPrepare2)
       })
@@ -215,7 +215,7 @@ describe('Search orders', () => {
         await whenSearchForOrders(dto)
         dto.startDate = orderToPrepare1.createdAt + 1000
         await whenSearchForOrders(dto)
-        dto.deliveryStatus = DeliveryStatus.Shipped
+        dto.deliveryStatus = OrderLineStatus.Prepared
         await whenSearchForOrders(dto)
         expectSearchResultToEqual(orderPartiallyShipped1)
       })

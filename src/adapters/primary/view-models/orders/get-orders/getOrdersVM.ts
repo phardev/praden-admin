@@ -4,7 +4,7 @@ import {
 } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
 import { useOrderStore } from '@store/orderStore'
 import {
-  DeliveryStatus,
+  OrderLineStatus,
   getDeliveryStatus,
   Order,
   PaymentStatus
@@ -19,7 +19,7 @@ export interface GetOrdersItemVM {
   client: string
   createdDate: string
   createdDatetime: Date
-  deliveryStatus: DeliveryStatus
+  deliveryStatus: OrderLineStatus
   total: string
   paymentStatus: PaymentStatus
 }

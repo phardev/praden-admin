@@ -7,7 +7,7 @@ import {
   orderWithCustomerMessage,
   orderWithMissingProduct1
 } from '@utils/testData/orders'
-import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
+import { OrderLineStatus, Order, PaymentStatus } from '@core/entities/order'
 import {
   getOrderVM,
   GetOrderVM
@@ -53,7 +53,7 @@ describe('Get order VM', () => {
             country: 'Plop',
             phone: '0123456789'
           },
-          deliveryStatus: DeliveryStatus.Created,
+          deliveryStatus: OrderLineStatus.Created,
           paymentStatus: PaymentStatus.Payed
         }
         expectVMToMatch(expectedVM)
@@ -76,7 +76,7 @@ describe('Get order VM', () => {
             country: 'Plop',
             phone: '0123456789'
           },
-          deliveryStatus: DeliveryStatus.Processing,
+          deliveryStatus: OrderLineStatus.Started,
           paymentStatus: PaymentStatus.Payed
         }
         expectVMToMatch(expectedVM)
@@ -105,7 +105,7 @@ describe('Get order VM', () => {
               country: 'Plop',
               phone: elodieDurand.phone
             },
-            deliveryStatus: DeliveryStatus.Created,
+            deliveryStatus: OrderLineStatus.Created,
             paymentStatus: PaymentStatus.Payed
           }
           expectVMToMatch(expectedVM)
@@ -128,7 +128,7 @@ describe('Get order VM', () => {
               country: 'Plop',
               phone: lucasLefevre.phone
             },
-            deliveryStatus: DeliveryStatus.Created,
+            deliveryStatus: OrderLineStatus.Created,
             paymentStatus: PaymentStatus.Payed
           }
           expectVMToMatch(expectedVM)
@@ -153,7 +153,7 @@ describe('Get order VM', () => {
               country: 'Plop',
               phone: ''
             },
-            deliveryStatus: DeliveryStatus.Created,
+            deliveryStatus: OrderLineStatus.Created,
             paymentStatus: PaymentStatus.Payed
           }
           expectVMToMatch(expectedVM)
@@ -180,7 +180,7 @@ describe('Get order VM', () => {
             country: 'Plop',
             phone: '0123456789'
           },
-          deliveryStatus: DeliveryStatus.Shipped,
+          deliveryStatus: OrderLineStatus.Prepared,
           paymentStatus: PaymentStatus.Payed
         }
         expectVMToMatch(expectedVM)
@@ -203,7 +203,7 @@ describe('Get order VM', () => {
             country: 'Plop',
             phone: '0123456789'
           },
-          deliveryStatus: DeliveryStatus.Processing,
+          deliveryStatus: OrderLineStatus.Started,
           paymentStatus: PaymentStatus.Payed
         }
         expectVMToMatch(expectedVM)
@@ -229,7 +229,7 @@ describe('Get order VM', () => {
             phone: '0123456789'
           },
           customerMessage: orderWithCustomerMessage.customerMessage,
-          deliveryStatus: DeliveryStatus.Created,
+          deliveryStatus: OrderLineStatus.Created,
           paymentStatus: PaymentStatus.Payed
         }
         expectVMToMatch(expectedVM)
@@ -252,7 +252,7 @@ describe('Get order VM', () => {
             country: 'Plop',
             phone: '0123456789'
           },
-          deliveryStatus: DeliveryStatus.Processing,
+          deliveryStatus: OrderLineStatus.Started,
           paymentStatus: PaymentStatus.Payed
         }
         expectVMToMatch(expectedVM)
@@ -285,7 +285,7 @@ describe('Get order VM', () => {
         phone: ''
       },
       reference: '',
-      deliveryStatus: DeliveryStatus.Created,
+      deliveryStatus: OrderLineStatus.Created,
       paymentStatus: PaymentStatus.WaitingForPayment
     }
     expect(getOrderVM()).toMatchObject({ ...emptyVM, ...expectedVM })

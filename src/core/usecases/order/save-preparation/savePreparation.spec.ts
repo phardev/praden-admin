@@ -7,7 +7,7 @@ import {
 } from '@utils/testData/orders'
 import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
-import { DeliveryStatus, Order, OrderLine } from '@core/entities/order'
+import { OrderLineStatus, Order, OrderLine } from '@core/entities/order'
 import { savePreparation } from '@core/usecases/order/save-preparation/savePreparation'
 import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
 import { PreparationDoesNotExistsError } from '@core/errors/PreparationDoesNotExistsError'
@@ -38,7 +38,7 @@ describe('Save preparation', () => {
           expectedPrep = JSON.parse(JSON.stringify(currentPreparation))
           expectedPrep.lines[0].updatedAt = now
           expectedPrep.lines.forEach((l: OrderLine) => {
-            l.deliveryStatus = DeliveryStatus.Processing
+            l.status = OrderLineStatus.Started
           })
           await whenSaveCurrentPreparation()
         })
@@ -60,7 +60,7 @@ describe('Save preparation', () => {
           expectedPrep = JSON.parse(JSON.stringify(currentPreparation))
           expectedPrep.lines[1].updatedAt = now
           expectedPrep.lines.forEach((l: OrderLine) => {
-            l.deliveryStatus = DeliveryStatus.Processing
+            l.status = OrderLineStatus.Started
           })
           await whenSaveCurrentPreparation()
         })
@@ -87,7 +87,7 @@ describe('Save preparation', () => {
         givenThereIsACurrentPreparation(currentPreparation)
         expectedPrep = JSON.parse(JSON.stringify(currentPreparation))
         expectedPrep.lines[1].updatedAt = now
-        expectedPrep.lines[1].deliveryStatus = DeliveryStatus.Processing
+        expectedPrep.lines[1].status = OrderLineStatus.Started
         await whenSaveCurrentPreparation()
         await expectOrderGatewayToEqual(expectedPrep)
       })

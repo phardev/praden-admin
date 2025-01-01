@@ -5,7 +5,7 @@ import {
   orderXUKIJ
 } from '@utils/testData/orders'
 import { dolodent } from '@utils/testData/products'
-import { DeliveryStatus, MessageContent } from '@core/entities/order'
+import { OrderLineStatus, MessageContent } from '@core/entities/order'
 import { zoneGeo } from '@utils/testData/locations'
 
 export const mockOrderXUKIJ = {
@@ -90,7 +90,7 @@ export const mockOrderWaitingForClientAnswer1 = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.locations[zoneGeo.uuid],
-      deliveryStatus: DeliveryStatus.Processing,
+      deliveryStatus: OrderLineStatus.Started,
       updatedAt: 1674273789000
     }
   ],
@@ -127,7 +127,7 @@ export const mockOrderPartiallyShipped1 = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.locations[zoneGeo.uuid],
-      deliveryStatus: DeliveryStatus.Shipped,
+      deliveryStatus: OrderLineStatus.Prepared,
       updatedAt: 1674573778456
     },
     {
@@ -141,7 +141,7 @@ export const mockOrderPartiallyShipped1 = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       location: dolodent.locations[zoneGeo.uuid],
-      deliveryStatus: DeliveryStatus.Shipped,
+      deliveryStatus: OrderLineStatus.Prepared,
       updatedAt: 1674573778456
     }
   ],

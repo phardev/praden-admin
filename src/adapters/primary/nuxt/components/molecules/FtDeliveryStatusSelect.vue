@@ -19,7 +19,7 @@ div.flex.items-center.justify-center
 </template>
 
 <script lang="ts" setup>
-import { DeliveryStatus } from '@core/entities/order'
+import { OrderLineStatus } from '@core/entities/order'
 import FtDeliveryStatusBadge from '@adapters/primary/nuxt/components/atoms/FtDeliveryStatusBadge.vue'
 
 const model = defineModel({ type: String })
@@ -29,7 +29,7 @@ const emit = defineEmits<{
 }>()
 
 const options = computed(() => {
-  return Object.keys(DeliveryStatus).filter((key) => !isNaN(Number(key)))
+  return Object.keys(OrderLineStatus).filter((key) => !isNaN(Number(key)))
 })
 
 const clear = () => {

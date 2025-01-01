@@ -1,8 +1,8 @@
 import {
   AnonymousOrder,
   CustomerOrder,
-  DeliveryStatus,
   MessageContent,
+  OrderLineStatus,
   PaymentStatus
 } from '@core/entities/order'
 import {
@@ -25,6 +25,7 @@ import {
   deliveryOrderToPrepare2,
   deliveryOrderToPrepare3
 } from '@utils/testData/deliveries'
+import { DeliveryStatus } from '@core/entities/delivery'
 
 export const orderToPrepare1: AnonymousOrder = {
   uuid: 'XIKOKI',
@@ -38,7 +39,7 @@ export const orderToPrepare1: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Created,
+      status: OrderLineStatus.Created,
       updatedAt: 1674273279000
     }
   ],
@@ -83,7 +84,7 @@ export const orderToPrepare2: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Created,
+      status: OrderLineStatus.Created,
       updatedAt: 1675565972527
     },
     {
@@ -95,7 +96,7 @@ export const orderToPrepare2: AnonymousOrder = {
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
       locations: ultraLevure.locations,
-      deliveryStatus: DeliveryStatus.Created,
+      status: OrderLineStatus.Created,
       updatedAt: 1675565972527
     }
   ],
@@ -140,7 +141,7 @@ export const orderToPrepare3: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Created,
+      status: OrderLineStatus.Created,
       updatedAt: 1675565972527
     }
   ],
@@ -185,7 +186,7 @@ export const orderPrepared1: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Shipped,
+      status: OrderLineStatus.Prepared,
       updatedAt: 1675577400000
     }
   ],
@@ -239,7 +240,8 @@ export const orderPrepared1: AnonymousOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: []
@@ -257,7 +259,7 @@ export const orderInPreparation1: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Processing,
+      status: OrderLineStatus.Started,
       updatedAt: 1675564520539
     }
   ],
@@ -311,7 +313,8 @@ export const orderInPreparation1: AnonymousOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: [
@@ -338,7 +341,7 @@ export const orderDelivered1: AnonymousOrder = {
       unitAmount: anaca3Minceur.priceWithoutTax,
       percentTaxRate: anaca3Minceur.percentTaxRate,
       locations: anaca3Minceur.locations,
-      deliveryStatus: DeliveryStatus.Delivered,
+      status: OrderLineStatus.Prepared,
       updatedAt: 1674295599432
     },
     {
@@ -350,7 +353,7 @@ export const orderDelivered1: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Delivered,
+      status: OrderLineStatus.Prepared,
       updatedAt: 1674295599432
     }
   ],
@@ -404,7 +407,8 @@ export const orderDelivered1: AnonymousOrder = {
           zip: '54321',
           country: 'France'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: []
@@ -422,7 +426,7 @@ export const orderDelivered2: AnonymousOrder = {
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
       locations: ultraLevure.locations,
-      deliveryStatus: DeliveryStatus.Delivered,
+      status: OrderLineStatus.Prepared,
       updatedAt: 1674295599432
     },
     {
@@ -434,7 +438,7 @@ export const orderDelivered2: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Delivered,
+      status: OrderLineStatus.Prepared,
       updatedAt: 1674295599432
     }
   ],
@@ -488,7 +492,8 @@ export const orderDelivered2: AnonymousOrder = {
           zip: '54321',
           country: 'France'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: []
@@ -506,7 +511,7 @@ export const orderWithMissingProduct1: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Shipped,
+      status: OrderLineStatus.Prepared,
       updatedAt: 1674573778456
     },
     {
@@ -518,7 +523,7 @@ export const orderWithMissingProduct1: AnonymousOrder = {
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
       locations: ultraLevure.locations,
-      deliveryStatus: DeliveryStatus.Processing,
+      status: OrderLineStatus.Started,
       updatedAt: 1674573698456
     }
   ],
@@ -552,6 +557,8 @@ export const orderWithMissingProduct1: AnonymousOrder = {
       uuid: 'delivery-order-with-missing-product',
       price: 599,
       method: deliveryInRelayPoint,
+      pickupId: '9638521',
+      trackingNumber: 'MissingProduct-78945632',
       sender: {
         contact: {
           email: praden.contact.email,
@@ -572,7 +579,8 @@ export const orderWithMissingProduct1: AnonymousOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: [
@@ -599,7 +607,7 @@ export const orderWithMissingProduct2: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Shipped,
+      status: OrderLineStatus.Prepared,
       updatedAt: 1674573778456
     },
     {
@@ -611,7 +619,7 @@ export const orderWithMissingProduct2: AnonymousOrder = {
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
       locations: ultraLevure.locations,
-      deliveryStatus: DeliveryStatus.Processing,
+      status: OrderLineStatus.Started,
       updatedAt: 1674573698456
     }
   ],
@@ -645,6 +653,8 @@ export const orderWithMissingProduct2: AnonymousOrder = {
       uuid: 'delivery-order-with-missing-product-2',
       price: 599,
       method: deliveryInRelayPoint,
+      pickupId: '123456',
+      trackingNumber: 'Missing2-123456',
       sender: {
         contact: {
           email: praden.contact.email,
@@ -665,7 +675,8 @@ export const orderWithMissingProduct2: AnonymousOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: [
@@ -692,7 +703,7 @@ export const orderToCancel: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Processing,
+      status: OrderLineStatus.Started,
       updatedAt: 1674573778456
     }
   ],
@@ -726,6 +737,8 @@ export const orderToCancel: AnonymousOrder = {
       uuid: 'delivery-order-to-cancel',
       price: 750,
       method: deliveryInRelayPoint,
+      pickupId: '7894561',
+      trackingNumber: 'ToCancel-5478551',
       sender: {
         contact: {
           email: praden.contact.email,
@@ -746,7 +759,8 @@ export const orderToCancel: AnonymousOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: [
@@ -773,7 +787,7 @@ export const orderNotPayed1: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Created,
+      status: OrderLineStatus.Created,
       updatedAt: 1674273789000
     }
   ],
@@ -826,7 +840,8 @@ export const orderNotPayed1: AnonymousOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: []
@@ -844,7 +859,7 @@ export const orderSaved1: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Processing,
+      status: OrderLineStatus.Started,
       updatedAt: 1674273789000
     }
   ],
@@ -897,7 +912,8 @@ export const orderSaved1: AnonymousOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: []
@@ -915,7 +931,7 @@ export const orderWaitingForClientAnswer1: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Processing,
+      status: OrderLineStatus.Started,
       updatedAt: 1674273789000
     }
   ],
@@ -968,7 +984,8 @@ export const orderWaitingForClientAnswer1: AnonymousOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: [
@@ -991,7 +1008,7 @@ export const orderWaitingForClientAnswer2: AnonymousOrder = {
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
       locations: ultraLevure.locations,
-      deliveryStatus: DeliveryStatus.Processing,
+      status: OrderLineStatus.Started,
       updatedAt: 1674295599432
     },
     {
@@ -1003,7 +1020,7 @@ export const orderWaitingForClientAnswer2: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Processing,
+      status: OrderLineStatus.Started,
       updatedAt: 1674295599432
     }
   ],
@@ -1057,7 +1074,8 @@ export const orderWaitingForClientAnswer2: AnonymousOrder = {
           zip: '54321',
           country: 'France'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: [
@@ -1080,7 +1098,7 @@ export const orderWaitingForRestock: AnonymousOrder = {
       unitAmount: chamomilla.priceWithoutTax,
       percentTaxRate: chamomilla.percentTaxRate,
       locations: chamomilla.locations,
-      deliveryStatus: DeliveryStatus.Processing,
+      status: OrderLineStatus.Started,
       updatedAt: 1674273789000
     }
   ],
@@ -1133,7 +1151,8 @@ export const orderWaitingForRestock: AnonymousOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: [
@@ -1160,7 +1179,7 @@ export const orderPartiallyShipped1: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Shipped,
+      status: OrderLineStatus.Prepared,
       updatedAt: 1674573778456
     },
     {
@@ -1172,7 +1191,7 @@ export const orderPartiallyShipped1: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Shipped,
+      status: OrderLineStatus.Canceled,
       updatedAt: 1674573778456
     }
   ],
@@ -1206,6 +1225,8 @@ export const orderPartiallyShipped1: AnonymousOrder = {
       uuid: 'delivery-order-partially-shipped-1',
       price: 500,
       method: deliveryInRelayPoint,
+      pickupId: '741852',
+      trackingNumber: 'PartiallyShipped-584214',
       sender: {
         contact: {
           email: praden.contact.email,
@@ -1226,7 +1247,8 @@ export const orderPartiallyShipped1: AnonymousOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Shipped
     }
   ],
   messages: [
@@ -1253,7 +1275,7 @@ export const orderVFASF: AnonymousOrder = {
       unitAmount: calmosine.priceWithoutTax,
       percentTaxRate: calmosine.percentTaxRate,
       locations: calmosine.locations,
-      deliveryStatus: DeliveryStatus.Created,
+      status: OrderLineStatus.Created,
       updatedAt: 1674273279000
     },
     {
@@ -1265,7 +1287,7 @@ export const orderVFASF: AnonymousOrder = {
       unitAmount: hemoclar.priceWithoutTax,
       percentTaxRate: hemoclar.percentTaxRate,
       locations: hemoclar.locations,
-      deliveryStatus: DeliveryStatus.Created,
+      status: OrderLineStatus.Created,
       updatedAt: 1674273279000
     }
   ],
@@ -1319,7 +1341,8 @@ export const orderVFASF: AnonymousOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: []
@@ -1337,7 +1360,7 @@ export const orderXUKIJ: AnonymousOrder = {
       unitAmount: calmosine.priceWithoutTax,
       percentTaxRate: calmosine.percentTaxRate,
       locations: calmosine.locations,
-      deliveryStatus: DeliveryStatus.Created,
+      status: OrderLineStatus.Created,
       updatedAt: 1674273279000
     }
   ],
@@ -1391,7 +1414,8 @@ export const orderXUKIJ: AnonymousOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: []
@@ -1409,7 +1433,7 @@ export const orderWithProductWithoutLocation: AnonymousOrder = {
       unitAmount: productWithoutLocation.priceWithoutTax,
       percentTaxRate: productWithoutLocation.percentTaxRate,
       locations: productWithoutLocation.locations,
-      deliveryStatus: DeliveryStatus.Created,
+      status: OrderLineStatus.Created,
       updatedAt: 1674273279000
     },
     {
@@ -1421,7 +1445,7 @@ export const orderWithProductWithoutLocation: AnonymousOrder = {
       unitAmount: calmosine.priceWithoutTax,
       percentTaxRate: calmosine.percentTaxRate,
       locations: calmosine.locations,
-      deliveryStatus: DeliveryStatus.Created,
+      status: OrderLineStatus.Created,
       updatedAt: 1674273279000
     }
   ],
@@ -1475,7 +1499,8 @@ export const orderWithProductWithoutLocation: AnonymousOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: []
@@ -1494,7 +1519,7 @@ export const elodieDurandOrder1: CustomerOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Created,
+      status: OrderLineStatus.Created,
       updatedAt: 1674273279000
     },
     {
@@ -1506,7 +1531,7 @@ export const elodieDurandOrder1: CustomerOrder = {
       unitAmount: calmosine.priceWithoutTax,
       percentTaxRate: calmosine.percentTaxRate,
       locations: calmosine.locations,
-      deliveryStatus: DeliveryStatus.Created,
+      status: OrderLineStatus.Created,
       updatedAt: 1674273279000
     }
   ],
@@ -1556,7 +1581,8 @@ export const elodieDurandOrder1: CustomerOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: []
@@ -1575,7 +1601,7 @@ export const elodieDurandOrder2: CustomerOrder = {
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
       locations: ultraLevure.locations,
-      deliveryStatus: DeliveryStatus.Processing,
+      status: OrderLineStatus.Started,
       updatedAt: 1674273279000
     },
     {
@@ -1587,7 +1613,7 @@ export const elodieDurandOrder2: CustomerOrder = {
       unitAmount: calmosine.priceWithoutTax,
       percentTaxRate: calmosine.percentTaxRate,
       locations: calmosine.locations,
-      deliveryStatus: DeliveryStatus.Shipped,
+      status: OrderLineStatus.Prepared,
       updatedAt: 1674273279000
     }
   ],
@@ -1637,7 +1663,8 @@ export const elodieDurandOrder2: CustomerOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: []
@@ -1656,7 +1683,7 @@ export const lucasLefevreOrder1: CustomerOrder = {
       unitAmount: calmosine.priceWithoutTax,
       percentTaxRate: calmosine.percentTaxRate,
       locations: calmosine.locations,
-      deliveryStatus: DeliveryStatus.Created,
+      status: OrderLineStatus.Created,
       updatedAt: 1674373279000
     }
   ],
@@ -1706,7 +1733,8 @@ export const lucasLefevreOrder1: CustomerOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: []
@@ -1725,7 +1753,7 @@ export const lucasLefevreOrder2: CustomerOrder = {
       unitAmount: ultraLevure.priceWithoutTax,
       percentTaxRate: ultraLevure.percentTaxRate,
       locations: ultraLevure.locations,
-      deliveryStatus: DeliveryStatus.Created,
+      status: OrderLineStatus.Created,
       updatedAt: 1674473279000
     }
   ],
@@ -1755,6 +1783,8 @@ export const lucasLefevreOrder2: CustomerOrder = {
       uuid: 'delivery-order-lucas-lefevre-2',
       price: 500,
       method: deliveryInRelayPoint,
+      pickupId: '7894561',
+      trackingNumber: 'Lucas2-021451',
       sender: {
         contact: {
           email: praden.contact.email,
@@ -1775,7 +1805,8 @@ export const lucasLefevreOrder2: CustomerOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: []
@@ -1793,7 +1824,7 @@ export const orderWithCustomerMessage: AnonymousOrder = {
       unitAmount: dolodent.priceWithoutTax,
       percentTaxRate: dolodent.percentTaxRate,
       locations: dolodent.locations,
-      deliveryStatus: DeliveryStatus.Created,
+      status: OrderLineStatus.Created,
       updatedAt: 1674273279000
     }
   ],
@@ -1847,7 +1878,8 @@ export const orderWithCustomerMessage: AnonymousOrder = {
           zip: '12345',
           country: 'Plop'
         }
-      }
+      },
+      status: DeliveryStatus.Created
     }
   ],
   messages: [],

@@ -1,4 +1,4 @@
-import { DeliveryStatus, Order, PaymentStatus } from '@core/entities/order'
+import { OrderLineStatus, Order, PaymentStatus } from '@core/entities/order'
 import { useOrderStore } from '@store/orderStore'
 import { createPinia, setActivePinia } from 'pinia'
 import { getOrdersVM, GetOrdersVM } from './getOrdersVM'
@@ -68,7 +68,7 @@ describe('Get orders VM', () => {
               client: 'J. Bon',
               createdDate: '21 janv. 2023',
               createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
-              deliveryStatus: DeliveryStatus.Created,
+              deliveryStatus: OrderLineStatus.Created,
               total: '11,00\u00A0€',
               paymentStatus: orderPrepared1.payment.status
             },
@@ -78,7 +78,7 @@ describe('Get orders VM', () => {
               client: 'J. Bon',
               createdDate: '5 févr. 2023',
               createdDatetime: new Date('2023-02-05T02:33:40.539Z'),
-              deliveryStatus: DeliveryStatus.Shipped,
+              deliveryStatus: OrderLineStatus.Prepared,
               total: '11,00\u00A0€',
               paymentStatus: orderPrepared1.payment.status
             },
@@ -88,7 +88,7 @@ describe('Get orders VM', () => {
               client: 'J. Bon',
               createdDate: '21 janv. 2023',
               createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
-              deliveryStatus: DeliveryStatus.Created,
+              deliveryStatus: OrderLineStatus.Created,
               total: '11,00\u00A0€',
               paymentStatus: orderNotPayed1.payment.status
             }
@@ -108,7 +108,7 @@ describe('Get orders VM', () => {
               client: 'J. Bon',
               createdDate: '21 janv. 2023',
               createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
-              deliveryStatus: DeliveryStatus.Created,
+              deliveryStatus: OrderLineStatus.Created,
               total: '11,00\u00A0€',
               paymentStatus: orderPrepared1.payment.status
             },
@@ -118,7 +118,7 @@ describe('Get orders VM', () => {
               client: 'J. Bon',
               createdDate: '21 janv. 2023',
               createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
-              deliveryStatus: DeliveryStatus.Created,
+              deliveryStatus: OrderLineStatus.Created,
               total: '11,00\u00A0€',
               paymentStatus: orderNotPayed1.payment.status
             }
@@ -131,7 +131,7 @@ describe('Get orders VM', () => {
           query: 'test',
           startDate: 1234567890,
           endDate: 9234567890,
-          deliveryStatus: DeliveryStatus.Processing,
+          deliveryStatus: OrderLineStatus.Started,
           paymentStatus: PaymentStatus.Payed
         })
         const expectedVM: Partial<GetOrdersVM> = {
@@ -139,7 +139,7 @@ describe('Get orders VM', () => {
             query: 'test',
             startDate: 1234567890,
             endDate: 9234567890,
-            deliveryStatus: DeliveryStatus.Processing,
+            deliveryStatus: OrderLineStatus.Started,
             paymentStatus: PaymentStatus.Payed
           }
         }

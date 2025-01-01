@@ -13,11 +13,10 @@ export interface Address {
   appartement?: string
 }
 
-export enum DeliveryStatus {
+export enum OrderLineStatus {
   Created,
-  Processing,
-  Shipped,
-  Delivered,
+  Started,
+  Prepared,
   Canceled
 }
 
@@ -30,7 +29,7 @@ export interface OrderLine {
   preparedQuantity: number
   locations: object
   percentTaxRate: number
-  deliveryStatus: DeliveryStatus
+  status: OrderLineStatus
   promotion?: Promotion
   updatedAt: Timestamp
 }
@@ -124,8 +123,8 @@ export const getTotalWithTax = (order: Order): number => {
   return totalLine + deliveryPrice
 }
 
-export const getDeliveryStatus = (order: Order): DeliveryStatus => {
-  const statuses = order.lines.map((l) => l.deliveryStatus)
+export const getDeliveryStatus = (order: Order): OrderLineStatus => {
+  const statuses = order.lines.map((l) => l.status)
   return Math.min(...statuses)
 }
 

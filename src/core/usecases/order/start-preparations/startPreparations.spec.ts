@@ -1,7 +1,7 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
 import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
-import { DeliveryStatus, Order, OrderLine } from '@core/entities/order'
+import { OrderLineStatus, Order, OrderLine } from '@core/entities/order'
 import { UUID } from '@core/types/types'
 import { startPreparations } from '@core/usecases/order/start-preparations/startPreparations'
 import { usePreparationStore } from '@store/preparationStore'
@@ -30,11 +30,11 @@ describe('Start preparations', () => {
   describe('Existing orders', () => {
     const expectedOrder1 = JSON.parse(JSON.stringify(orderToPrepare1))
     expectedOrder1.lines.forEach(
-      (l: OrderLine) => (l.deliveryStatus = DeliveryStatus.Processing)
+      (l: OrderLine) => (l.status = OrderLineStatus.Started)
     )
     const expectedOrder2 = JSON.parse(JSON.stringify(orderToPrepare2))
     expectedOrder2.lines.forEach(
-      (l: OrderLine) => (l.deliveryStatus = DeliveryStatus.Processing)
+      (l: OrderLine) => (l.status = OrderLineStatus.Started)
     )
     beforeEach(() => {
       givenThereIsOrdersToPrepare(orderToPrepare1, orderToPrepare2)

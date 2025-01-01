@@ -1,5 +1,10 @@
 import { Address, Contact, DeliveryMethod } from '@core/entities/order'
 
+export enum DeliveryStatus {
+  Created,
+  Shipped
+}
+
 export interface Delivery {
   uuid: string
   price: number
@@ -14,4 +19,5 @@ export interface Delivery {
     contact: Contact
     address: Address
   }
+  status: DeliveryStatus
 }

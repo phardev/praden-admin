@@ -1,6 +1,6 @@
 import { OrderGateway } from '@core/gateways/orderGateway'
 import {
-  DeliveryStatus,
+  OrderLineStatus,
   Order,
   OrderLine,
   PaymentStatus
@@ -132,7 +132,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
         percentTaxRate: l.percentTaxRate,
         preparedQuantity: l.preparedQuantity,
         unitAmount: l.priceWithoutTax,
-        deliveryStatus: this.getDeliveryStatus(l.deliveryStatus),
+        status: this.getDeliveryStatus(l.deliveryStatus),
         locations: { [zoneGeo.uuid]: l.location },
         updatedAt: l.updatedAt
       }
@@ -156,13 +156,12 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
     }
     return copy
   }
-  private getDeliveryStatus(status: string): DeliveryStatus {
-    if (status === 'CREATED') return DeliveryStatus.Created
-    if (status === 'PROCESSING') return DeliveryStatus.Processing
-    if (status === 'SHIPPED') return DeliveryStatus.Shipped
-    if (status === 'DELIVERED') return DeliveryStatus.Delivered
-    if (status === 'CANCELED') return DeliveryStatus.Canceled
-    return DeliveryStatus.Created
+  private getDeliveryStatus(status: string): OrderLineStatus {
+    if (status === 'CREATED') return OrderLineStatus.Created
+    if (status === 'PROCESSING') return OrderLineStatus.Started
+    if (status === 'SHIPPED') return OrderLineStatus.Prepared
+    if (status === 'CANCELED') return OrderLineStatus.Canceled
+    return OrderLineStatus.Created
   }
 
   private getPaymentStatus(status: string): PaymentStatus {
