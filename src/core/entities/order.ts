@@ -68,7 +68,7 @@ export interface DeliveryMethod {
   priceRanges: Array<PriceWeightRange>
 }
 
-export interface OrderDelivery {
+export interface Delivery {
   uuid: string
   price: number
   pickupId?: string
@@ -103,7 +103,7 @@ export interface BaseOrder {
   billingAddress: Address
   payment?: Payment
   createdAt: Timestamp
-  deliveries: Array<OrderDelivery>
+  deliveries: Array<Delivery>
   messages: Array<Message>
   invoiceNumber?: string
   customerMessage?: string

@@ -20,6 +20,11 @@ import {
 } from '@utils/testData/deliveryMethods'
 import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
 import { praden } from '@utils/testData/shop'
+import {
+  deliveryOrderToPrepare1,
+  deliveryOrderToPrepare2,
+  deliveryOrderToPrepare3
+} from '@utils/testData/deliveries'
 
 export const orderToPrepare1: AnonymousOrder = {
   uuid: 'XIKOKI',
@@ -62,34 +67,7 @@ export const orderToPrepare1: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  deliveries: [
-    {
-      uuid: 'delivery-order-to-prepare-1',
-      price: 0,
-      method: clickAndCollect,
-      sender: {
-        contact: {
-          email: praden.contact.email,
-          phone: praden.contact.phone
-        },
-        address: praden.address
-      },
-      receiver: {
-        contact: {
-          email: 'jeanbon@anotheremail.com',
-          phone: '0123456789'
-        },
-        address: {
-          firstname: 'Jean',
-          lastname: 'Bon',
-          address: '10 rue des peupliers',
-          city: 'PlopLand',
-          zip: '12345',
-          country: 'Plop'
-        }
-      }
-    }
-  ],
+  deliveries: [deliveryOrderToPrepare1],
   messages: []
 }
 
@@ -146,34 +124,7 @@ export const orderToPrepare2: AnonymousOrder = {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
   },
-  deliveries: [
-    {
-      uuid: 'delivery-order-to-prepare-2',
-      price: 0,
-      method: clickAndCollect,
-      sender: {
-        contact: {
-          email: praden.contact.email,
-          phone: praden.contact.phone
-        },
-        address: praden.address
-      },
-      receiver: {
-        contact: {
-          email: 'jeannedarc@email.com',
-          phone: '9876543210'
-        },
-        address: {
-          firstname: 'Jeanne',
-          lastname: "D'arc",
-          address: '12 avenue du bois',
-          city: 'Boisville',
-          zip: '54321',
-          country: 'France'
-        }
-      }
-    }
-  ],
+  deliveries: [deliveryOrderToPrepare2],
   messages: []
 }
 
@@ -218,34 +169,7 @@ export const orderToPrepare3: AnonymousOrder = {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
   },
-  deliveries: [
-    {
-      uuid: 'delivery-order-to-prepare-3',
-      price: 500,
-      method: deliveryInRelayPoint,
-      sender: {
-        contact: {
-          email: praden.contact.email,
-          phone: praden.contact.phone
-        },
-        address: praden.address
-      },
-      receiver: {
-        contact: {
-          email: 'jeannedarc@email.com',
-          phone: '9876543210'
-        },
-        address: {
-          firstname: 'Jeanne',
-          lastname: "D'arc",
-          address: '12 avenue du bois',
-          city: 'Boisville',
-          zip: '54321',
-          country: 'France'
-        }
-      }
-    }
-  ],
+  deliveries: [deliveryOrderToPrepare3],
   messages: []
 }
 
