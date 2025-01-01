@@ -64,6 +64,7 @@ export const orderToPrepare1: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-to-prepare-1',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -147,6 +148,7 @@ export const orderToPrepare2: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-to-prepare-2',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -218,6 +220,7 @@ export const orderToPrepare3: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-to-prepare-3',
       price: 500,
       method: deliveryInRelayPoint,
       sender: {
@@ -289,6 +292,7 @@ export const orderPrepared1: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-prepared-1',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -360,6 +364,7 @@ export const orderInPreparation1: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-in-preparation-1',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -452,6 +457,7 @@ export const orderDelivered1: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-delivered-1',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -535,6 +541,7 @@ export const orderDelivered2: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-delivered-2',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -618,6 +625,7 @@ export const orderWithMissingProduct1: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-with-missing-product',
       price: 599,
       method: deliveryInRelayPoint,
       sender: {
@@ -710,6 +718,7 @@ export const orderWithMissingProduct2: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-with-missing-product-2',
       price: 599,
       method: deliveryInRelayPoint,
       sender: {
@@ -790,6 +799,7 @@ export const orderToCancel: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-to-cancel',
       price: 750,
       method: deliveryInRelayPoint,
       sender: {
@@ -869,6 +879,7 @@ export const orderNotPayed1: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-not-payed-1',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -939,6 +950,7 @@ export const orderSaved1: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-saved-1',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -1009,6 +1021,7 @@ export const orderWaitingForClientAnswer1: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-waiting-for-client-answer-1',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -1097,6 +1110,7 @@ export const orderWaitingForClientAnswer2: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-waiting-for-client-answer-2',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -1172,6 +1186,7 @@ export const orderWaitingForRestock: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-waiting-for-restock',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -1264,6 +1279,7 @@ export const orderPartiallyShipped1: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-partially-shipped-1',
       price: 500,
       method: deliveryInRelayPoint,
       sender: {
@@ -1356,6 +1372,7 @@ export const orderVFASF: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-vfasf',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -1427,6 +1444,7 @@ export const orderXUKIJ: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-xukij',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -1510,6 +1528,7 @@ export const orderWithProductWithoutLocation: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-with-product-without-location',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -1590,6 +1609,7 @@ export const elodieDurandOrder1: CustomerOrder = {
   createdAt: 1674273279000,
   deliveries: [
     {
+      uuid: 'delivery-order-elodie-durand-1',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -1670,6 +1690,7 @@ export const elodieDurandOrder2: CustomerOrder = {
   createdAt: 1674273279000,
   deliveries: [
     {
+      uuid: 'delivery-order-elodie-durand-2',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -1738,6 +1759,7 @@ export const lucasLefevreOrder1: CustomerOrder = {
   createdAt: 1674373279000,
   deliveries: [
     {
+      uuid: 'delivery-order-lucas-lefevre-1',
       price: 0,
       method: clickAndCollect,
       sender: {
@@ -1806,6 +1828,7 @@ export const lucasLefevreOrder2: CustomerOrder = {
   createdAt: 1674473279000,
   deliveries: [
     {
+      uuid: 'delivery-order-lucas-lefevre-2',
       price: 500,
       method: deliveryInRelayPoint,
       sender: {
@@ -1877,6 +1900,7 @@ export const orderWithCustomerMessage: AnonymousOrder = {
   },
   deliveries: [
     {
+      uuid: 'delivery-order-with-customer-message',
       price: 0,
       method: clickAndCollect,
       sender: {

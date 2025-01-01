@@ -69,6 +69,7 @@ export interface DeliveryMethod {
 }
 
 export interface OrderDelivery {
+  uuid: string
   price: number
   pickupId?: string
   trackingNumber?: string
