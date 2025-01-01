@@ -1,6 +1,7 @@
 import { Timestamp, UUID } from '@core/types/types'
 import { addTaxToPrice } from '@utils/price'
 import { Promotion } from '@core/entities/promotion'
+import { Delivery } from '@core/entities/delivery'
 
 export interface Address {
   firstname: string
@@ -66,22 +67,6 @@ export interface DeliveryMethod {
   description: string
   type: DeliveryType
   priceRanges: Array<PriceWeightRange>
-}
-
-export interface Delivery {
-  uuid: string
-  price: number
-  pickupId?: string
-  trackingNumber?: string
-  method: DeliveryMethod
-  sender: {
-    contact: Contact
-    address: Address
-  }
-  receiver: {
-    contact: Contact
-    address: Address
-  }
 }
 
 export enum MessageContent {

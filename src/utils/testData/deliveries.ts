@@ -3,7 +3,8 @@ import {
   deliveryInRelayPoint
 } from '@utils/testData/deliveryMethods'
 import { praden } from '@utils/testData/shop'
-import { Delivery } from '@core/entities/order'
+
+import { Delivery } from '@core/entities/delivery'
 
 export const deliveryOrderToPrepare1: Delivery = {
   uuid: 'delivery-order-to-prepare-1',

@@ -1,6 +1,5 @@
 import { useDeliveryStore } from '@store/deliveryStore'
 import { createPinia, setActivePinia } from 'pinia'
-import { Delivery } from '@core/entities/order'
 import { InMemoryDeliveryGateway } from '@adapters/secondary/delivery-gateways/inMemoryDeliveryGateway'
 import { listDeliveries } from './listDeliveries'
 import {
@@ -8,6 +7,7 @@ import {
   deliveryOrderToPrepare2,
   deliveryOrderToPrepare3
 } from '@utils/testData/deliveries'
+import { Delivery } from '@core/entities/delivery'
 
 describe('Delivery listing', () => {
   let deliveryStore: any
