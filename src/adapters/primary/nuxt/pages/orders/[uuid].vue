@@ -33,7 +33,7 @@
       ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
         variant="outline"
         @click="printLabel"
-      ) Imprimer le BL
+      ) Etiquette
   div.w-full.flex.justify-between
     .max-w-lg.flex-shrink-0(v-if="preparationVM.customerMessage")
       h1.text-2xl.font-semibold.text-default.mt-8 Note du client
