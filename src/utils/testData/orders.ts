@@ -408,7 +408,7 @@ export const orderDelivered2: AnonymousOrder = {
   payment: {
     status: PaymentStatus.Payed
   },
-  invoiceNumber: '2023-00001',
+  invoiceNumber: '2023-00002',
   createdAt: 1674273599954,
   contact: {
     email: 'jeannedarc@email.com',
@@ -465,7 +465,7 @@ export const orderWithMissingProduct1: AnonymousOrder = {
   payment: {
     status: PaymentStatus.Payed
   },
-  invoiceNumber: '2023-00002',
+  invoiceNumber: '2023-00003',
   createdAt: 1674573678456,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -561,7 +561,7 @@ export const orderWithMissingProduct2: AnonymousOrder = {
   payment: {
     status: PaymentStatus.Payed
   },
-  invoiceNumber: '2023-00002',
+  invoiceNumber: '2023-00015',
   createdAt: 1674573678456,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -645,7 +645,7 @@ export const orderToCancel: AnonymousOrder = {
   payment: {
     status: PaymentStatus.Payed
   },
-  invoiceNumber: '2023-00002',
+  invoiceNumber: '2023-00016',
   createdAt: 1674573678456,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -962,7 +962,6 @@ export const orderWaitingForClientAnswer2: AnonymousOrder = {
   payment: {
     status: PaymentStatus.Payed
   },
-  invoiceNumber: '2023-00001',
   createdAt: 1674273599954,
   contact: {
     email: 'jeannedarc@email.com',
@@ -1229,7 +1228,7 @@ export const orderVFASF: AnonymousOrder = {
   payment: {
     status: PaymentStatus.Payed
   },
-  invoiceNumber: '2023-00006',
+  invoiceNumber: '2023-00017',
   createdAt: 1674273279000,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -1302,7 +1301,7 @@ export const orderXUKIJ: AnonymousOrder = {
   payment: {
     status: PaymentStatus.Payed
   },
-  invoiceNumber: '2023-00006',
+  invoiceNumber: '2023-00018',
   createdAt: 1674273279000,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -1387,7 +1386,7 @@ export const orderWithProductWithoutLocation: AnonymousOrder = {
   payment: {
     status: PaymentStatus.Payed
   },
-  invoiceNumber: '2023-00006',
+  invoiceNumber: '2023-00019',
   createdAt: 1674273279000,
   contact: {
     email: 'jeanbon@anotheremail.com',
@@ -1555,7 +1554,7 @@ export const elodieDurandOrder2: CustomerOrder = {
   payment: {
     status: PaymentStatus.Payed
   },
-  invoiceNumber: '2023-00012',
+  invoiceNumber: '2023-00020',
   createdAt: 1674273279000,
   deliveries: [
     {
@@ -1766,7 +1765,7 @@ export const orderWithCustomerMessage: AnonymousOrder = {
   payment: {
     status: PaymentStatus.Payed
   },
-  invoiceNumber: '2023-00006',
+  invoiceNumber: '2023-00021',
   createdAt: 1674273279000,
   contact: {
     email: 'jeanbon@anotheremail.com',

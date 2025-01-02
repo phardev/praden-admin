@@ -4,6 +4,7 @@ import { Header } from '@adapters/primary/view-models/preparations/get-orders-to
 import { Order, OrderLine } from '@core/entities/order'
 import { Invoice } from '@core/entities/invoice'
 import { HashTable } from '@core/types/types'
+import { Delivery } from '@core/entities/delivery'
 
 export interface TableVM<T> {
   headers: Array<Header>
@@ -49,6 +50,7 @@ interface TotalsVM {
   totalWithoutTax: string
   totalTax: string
   totalRefund?: string
+  deliveryPrice: string
   totalWithTax: string
 }
 
@@ -85,6 +87,7 @@ const emptyVM = (): GetInvoiceVM => {
       totalWithoutTax: '',
       totalTax: '',
       totalRefund: '',
+      deliveryPrice: '',
       totalWithTax: ''
     }
   }
@@ -356,7 +359,7 @@ const refundLinesFilter = (line: OrderLine) => {
   return line.expectedQuantity < 0
 }
 
-const getTotals = (orderLines: Array<OrderLine>) => {
+const getTotals = (orderLines: Array<OrderLine>, delivery: Delivery) => {
   const formatter = priceFormatter('fr-FR', 'EUR')
   const linesPrepared = orderLines.filter(preparedLinesFilter)
   const linesTotal = linesPrepared.reduce((acc: number, line: OrderLine) => {
@@ -383,7 +386,11 @@ const getTotals = (orderLines: Array<OrderLine>) => {
     totalWithoutTax: formatter.format(totalWithoutTax / 100),
     totalTax: formatter.format(totalTax / 100),
     totalRefund: formatter.format(totalRefund / 100),
-    totalWithTax: formatter.format((totalWithoutTax + totalTax) / 100)
+    deliveryPrice:
+      delivery.price === 0 ? 'Gratuit' : formatter.format(delivery.price / 100),
+    totalWithTax: formatter.format(
+      (totalWithoutTax + totalTax + delivery.price) / 100
+    )
   }
 }
 
@@ -422,6 +429,6 @@ export const getInvoiceVM = (): GetInvoiceVM => {
     orderLinesTable: getOrderLinesTable(invoice.data.lines),
     refundOrderLinesTable: getRefundOrderLinesTable(invoice.data.lines),
     taxDetailsTable: getTaxDetailsTable(invoice.data.lines),
-    totals: getTotals(invoice.data.lines)
+    totals: getTotals(invoice.data.lines, invoice.data.deliveries[0])
   }
 }
