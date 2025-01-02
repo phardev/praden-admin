@@ -23,7 +23,6 @@ export const searchOrders = async (
   dto: SearchOrdersDTO,
   searchGateway: SearchGateway
 ): Promise<void> => {
-  console.log('dto: ', dto)
   const searchStore = useSearchStore()
   searchStore.setFilter(from, dto)
   const searchResult = await searchGateway.searchOrders(dto)

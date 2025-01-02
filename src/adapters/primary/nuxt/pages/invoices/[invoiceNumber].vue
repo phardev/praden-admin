@@ -12,7 +12,6 @@ definePageMeta({ layout: 'main' })
 onMounted(() => {
   const route = useRoute()
   const invoiceNumber = decodeURIComponent(route.params.invoiceNumber)
-  console.log(invoiceNumber)
   getInvoice(invoiceNumber, useInvoiceGateway())
 })
 </script>

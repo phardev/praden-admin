@@ -129,8 +129,6 @@ export const getDeliveryStatus = (order: Order): DeliveryStatus => {
 
 export const getOrderStatus = (order: Order): OrderLineStatus => {
   const statuses = order.lines.map((l) => l.status)
-  console.log('order: ', order.uuid)
-  console.log('status: ', Math.min(...statuses))
   return Math.min(...statuses)
 }
 

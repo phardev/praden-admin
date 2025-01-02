@@ -123,7 +123,6 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
   }
 
   private convertToOrder(data: any): Order {
-    console.log('data: ', data)
     const copy = JSON.parse(JSON.stringify(data))
     copy.lines = copy.lines.map((l: any) => {
       const res: OrderLine = {
