@@ -1,5 +1,5 @@
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import { Delivery } from '@core/entities/delivery'
+import { Delivery, DeliveryStatus } from '@core/entities/delivery'
 import { DeliveryGateway } from '@core/gateways/deliveryGateway'
 import { UUID } from '@core/types/types'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
@@ -12,10 +12,35 @@ export class RealDeliveryGateway
     super(url)
   }
 
-  list(): Promise<Array<Delivery>> {
-    throw new Error('Method not implemented.')
+  async list(): Promise<Array<Delivery>> {
+    const filters = {
+      status: 'PREPARED',
+      type: 'DELIVERY'
+    }
+    const res = await axiosWithBearer.post(
+      `${this.baseUrl}/deliveries`,
+      filters
+    )
+    return res.data.map((d) => {
+      return this.convertToDelivery(d)
+    })
   }
   async printLabel(uuid: UUID): Promise<void> {
     await axiosWithBearer.post(`${this.baseUrl}/deliveries/${uuid}/print-label`)
+  }
+
+  private convertToDelivery(delivery: any) {
+    return {
+      ...delivery,
+      status: this.getStatus(delivery.status)
+    }
+  }
+
+  private getStatus(status: string): DeliveryStatus {
+    if (status === 'CREATED') return DeliveryStatus.Created
+    if (status === 'PREPARED') return DeliveryStatus.Prepared
+    if (status === 'SHIPPED') return DeliveryStatus.Shipped
+    if (status === 'DELIVERED') return DeliveryStatus.Delivered
+    return DeliveryStatus.Created
   }
 }
