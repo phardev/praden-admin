@@ -30,7 +30,7 @@ ft-table(
         UPopover(:popper="{ placement: 'bottom-start' }")
           UButton(
             icon="i-heroicons-calendar-days-20-solid"
-            :label="startDate ? format(startDate, 'd MMMM yyy', { locale: fr }) : 'Choisissez une date'"
+            :label="startDate ? format(startDate, 'd MMMM yyy', { locale: fr }) : ''"
           )
             template(#trailing)
               UButton(
@@ -51,7 +51,7 @@ ft-table(
         UPopover(:popper="{ placement: 'bottom-start' }")
           UButton(
             icon="i-heroicons-calendar-days-20-solid"
-            :label="endDate ? format(endDate, 'd MMMM yyy', { locale: fr }) : 'Choisissez une date'"
+            :label="endDate ? format(endDate, 'd MMMM yyy', { locale: fr }) : ''"
           )
             template(#trailing)
               UButton(

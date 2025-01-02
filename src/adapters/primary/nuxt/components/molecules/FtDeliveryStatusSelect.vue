@@ -1,6 +1,6 @@
 <template lang="pug">
 div.flex.items-center.justify-center
-  USelectMenu.w-44(
+  USelectMenu.w-32(
     v-model="model"
     :options="options"
   )
