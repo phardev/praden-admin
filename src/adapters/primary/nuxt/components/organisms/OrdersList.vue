@@ -11,6 +11,8 @@ ft-table(
   template(#createdDate="{ item }")
     time(:datetime='item.createdDatetime') {{ item.createdDate }}
   template(#status="{ item }")
+    ft-order-status-badge(:status="item.status")
+  template(#deliveryStatus="{ item }")
     ft-delivery-status-badge(:status="item.deliveryStatus")
   template(#paymentStatus="{ item }")
     ft-payment-status-badge(:status="item.paymentStatus")
@@ -66,6 +68,12 @@ ft-table(
               @update:model-value="endDateChanged"
               @close="close"
             )
+      UFormGroup.pb-4(label="Statut" name="orderStatus")
+        ft-order-status-select(
+          v-model="orderStatus"
+          @update:model-value="orderStatusChanged"
+          @clear="clearOrderStatus"
+        )
       UFormGroup.pb-4(label="Statut de livraison" name="deliveryStatus")
         ft-delivery-status-select(
           v-model="deliveryStatus"
@@ -87,7 +95,6 @@ import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 import { searchOrders } from '@core/usecases/order/orders-searching/searchOrders'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import FtDeliveryStatusSelect from '@adapters/primary/nuxt/components/molecules/FtDeliveryStatusSelect.vue'
 import FtTable from '@adapters/primary/nuxt/components/molecules/FtTable.vue'
 
 definePageMeta({ layout: 'main' })
@@ -120,6 +127,7 @@ const props = defineProps({
 const search = ref(props.vm.value?.currentSearch?.query || undefined)
 const startDate = ref(props.vm.value?.currentSearch?.startDate || undefined)
 const endDate = ref(props.vm.value?.currentSearch?.endDate || undefined)
+const orderStatus = ref(props.vm.value?.currentSearch?.orderStatus || undefined)
 const deliveryStatus = ref(
   props.vm.value?.currentSearch?.deliveryStatus || undefined
 )
@@ -133,6 +141,7 @@ watch(
     search.value = newVm.currentSearch?.query || undefined
     startDate.value = newVm.currentSearch?.startDate || undefined
     endDate.value = newVm.currentSearch?.endDate || undefined
+    orderStatus.value = newVm.currentSearch?.orderStatus ?? undefined
     deliveryStatus.value = newVm.currentSearch?.deliveryStatus ?? undefined
     paymentStatus.value = newVm.currentSearch?.paymentStatus ?? undefined
   },
@@ -144,6 +153,7 @@ const dto = (partial) => {
     query: search.value,
     startDate: startDate.value,
     endDate: endDate.value,
+    orderStatus: orderStatus.value,
     deliveryStatus: deliveryStatus.value,
     paymentStatus: paymentStatus.value,
     ...partial
@@ -195,6 +205,25 @@ const clearDeliveryStatus = () => {
   searchOrders(
     props.searchKey,
     dto({ deliveryStatus: undefined }),
+    useSearchGateway()
+  )
+}
+
+const orderStatusChanged = (stringStatus: string) => {
+  const status = +stringStatus
+  orderStatus.value = status
+  searchOrders(
+    props.searchKey,
+    dto({ orderStatus: status }),
+    useSearchGateway()
+  )
+}
+
+const clearOrderStatus = () => {
+  orderStatus.value = undefined
+  searchOrders(
+    props.searchKey,
+    dto({ orderStatus: undefined }),
     useSearchGateway()
   )
 }

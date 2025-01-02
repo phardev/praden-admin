@@ -21,6 +21,9 @@ import {
 import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
 import { praden } from '@utils/testData/shop'
 import {
+  deliveryOrderDelivered1,
+  deliveryOrderDelivered2,
+  deliveryOrderPrepared1,
   deliveryOrderToPrepare1,
   deliveryOrderToPrepare2,
   deliveryOrderToPrepare3
@@ -215,35 +218,7 @@ export const orderPrepared1: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  deliveries: [
-    {
-      uuid: 'delivery-order-prepared-1',
-      price: 0,
-      method: clickAndCollect,
-      sender: {
-        contact: {
-          email: praden.contact.email,
-          phone: praden.contact.phone
-        },
-        address: praden.address
-      },
-      receiver: {
-        contact: {
-          email: 'jeanbon@anotheremail.com',
-          phone: '0123456789'
-        },
-        address: {
-          firstname: 'Jean',
-          lastname: 'Bon',
-          address: '10 rue des peupliers',
-          city: 'PlopLand',
-          zip: '12345',
-          country: 'Plop'
-        }
-      },
-      status: DeliveryStatus.Created
-    }
-  ],
+  deliveries: [deliveryOrderPrepared1],
   messages: []
 }
 
@@ -382,35 +357,7 @@ export const orderDelivered1: AnonymousOrder = {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
   },
-  deliveries: [
-    {
-      uuid: 'delivery-order-delivered-1',
-      price: 0,
-      method: clickAndCollect,
-      sender: {
-        contact: {
-          email: praden.contact.email,
-          phone: praden.contact.phone
-        },
-        address: praden.address
-      },
-      receiver: {
-        contact: {
-          email: 'jeannedarc@email.com',
-          phone: '9876543210'
-        },
-        address: {
-          firstname: 'Jeanne',
-          lastname: "D'arc",
-          address: '12 avenue du bois',
-          city: 'Boisville',
-          zip: '54321',
-          country: 'France'
-        }
-      },
-      status: DeliveryStatus.Created
-    }
-  ],
+  deliveries: [deliveryOrderDelivered1],
   messages: []
 }
 
@@ -467,35 +414,7 @@ export const orderDelivered2: AnonymousOrder = {
     email: 'jeannedarc@email.com',
     phone: '9876543210'
   },
-  deliveries: [
-    {
-      uuid: 'delivery-order-delivered-2',
-      price: 0,
-      method: clickAndCollect,
-      sender: {
-        contact: {
-          email: praden.contact.email,
-          phone: praden.contact.phone
-        },
-        address: praden.address
-      },
-      receiver: {
-        contact: {
-          email: 'jeannedarc@email.com',
-          phone: '9876543210'
-        },
-        address: {
-          firstname: 'Jeanne',
-          lastname: "D'arc",
-          address: '12 avenue du bois',
-          city: 'Boisville',
-          zip: '54321',
-          country: 'France'
-        }
-      },
-      status: DeliveryStatus.Created
-    }
-  ],
+  deliveries: [deliveryOrderDelivered2],
   messages: []
 }
 

@@ -28,6 +28,10 @@ const expectedHeaders: Array<Header> = [
     value: 'status'
   },
   {
+    name: 'Statut Livraison',
+    value: 'deliveryStatus'
+  },
+  {
     name: 'Total TTC',
     value: 'total'
   },
@@ -68,9 +72,10 @@ describe('Get orders VM', () => {
               client: 'J. Bon',
               createdDate: '21 janv. 2023',
               createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
-              deliveryStatus: OrderLineStatus.Created,
+              status: OrderLineStatus.Created,
               total: '11,00\u00A0€',
-              paymentStatus: orderPrepared1.payment.status
+              paymentStatus: orderToPrepare1.payment.status,
+              deliveryStatus: orderToPrepare1.deliveries[0].status
             },
             {
               reference: orderPrepared1.uuid,
@@ -78,9 +83,10 @@ describe('Get orders VM', () => {
               client: 'J. Bon',
               createdDate: '5 févr. 2023',
               createdDatetime: new Date('2023-02-05T02:33:40.539Z'),
-              deliveryStatus: OrderLineStatus.Prepared,
+              status: OrderLineStatus.Prepared,
               total: '11,00\u00A0€',
-              paymentStatus: orderPrepared1.payment.status
+              paymentStatus: orderPrepared1.payment.status,
+              deliveryStatus: orderPrepared1.deliveries[0].status
             },
             {
               reference: orderNotPayed1.uuid,
@@ -88,9 +94,10 @@ describe('Get orders VM', () => {
               client: 'J. Bon',
               createdDate: '21 janv. 2023',
               createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
-              deliveryStatus: OrderLineStatus.Created,
+              status: OrderLineStatus.Created,
               total: '11,00\u00A0€',
-              paymentStatus: orderNotPayed1.payment.status
+              paymentStatus: orderNotPayed1.payment.status,
+              deliveryStatus: orderNotPayed1.deliveries[0].status
             }
           ]
         }
@@ -108,9 +115,10 @@ describe('Get orders VM', () => {
               client: 'J. Bon',
               createdDate: '21 janv. 2023',
               createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
-              deliveryStatus: OrderLineStatus.Created,
+              status: OrderLineStatus.Created,
               total: '11,00\u00A0€',
-              paymentStatus: orderPrepared1.payment.status
+              paymentStatus: orderToPrepare1.payment.status,
+              deliveryStatus: orderToPrepare1.deliveries[0].status
             },
             {
               reference: orderNotPayed1.uuid,
@@ -118,9 +126,10 @@ describe('Get orders VM', () => {
               client: 'J. Bon',
               createdDate: '21 janv. 2023',
               createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
-              deliveryStatus: OrderLineStatus.Created,
+              status: OrderLineStatus.Created,
               total: '11,00\u00A0€',
-              paymentStatus: orderNotPayed1.payment.status
+              paymentStatus: orderNotPayed1.payment.status,
+              deliveryStatus: orderNotPayed1.deliveries[0].status
             }
           ]
         }
@@ -131,7 +140,7 @@ describe('Get orders VM', () => {
           query: 'test',
           startDate: 1234567890,
           endDate: 9234567890,
-          deliveryStatus: OrderLineStatus.Started,
+          orderStatus: OrderLineStatus.Started,
           paymentStatus: PaymentStatus.Payed
         })
         const expectedVM: Partial<GetOrdersVM> = {
@@ -139,7 +148,7 @@ describe('Get orders VM', () => {
             query: 'test',
             startDate: 1234567890,
             endDate: 9234567890,
-            deliveryStatus: OrderLineStatus.Started,
+            orderStatus: OrderLineStatus.Started,
             paymentStatus: PaymentStatus.Payed
           }
         }

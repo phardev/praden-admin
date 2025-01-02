@@ -9,6 +9,7 @@ import {
   elodieDurandOrder2,
   lucasLefevreOrder1,
   lucasLefevreOrder2,
+  orderDelivered2,
   orderInPreparation1,
   orderNotPayed1,
   orderPartiallyShipped1,
@@ -17,9 +18,10 @@ import {
   orderToPrepare2,
   orderToPrepare3
 } from '@utils/testData/orders'
-import { OrderLineStatus, Order, PaymentStatus } from '@core/entities/order'
+import { Order, OrderLineStatus, PaymentStatus } from '@core/entities/order'
 import { useOrderStore } from '@store/orderStore'
 import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
+import { DeliveryStatus } from '@core/entities/delivery'
 
 describe('Search orders', () => {
   let searchStore: any
@@ -150,16 +152,37 @@ describe('Search orders', () => {
         givenExistingOrders(
           orderToPrepare1,
           orderToPrepare2,
-          orderPartiallyShipped1
+          orderPartiallyShipped1,
+          orderDelivered2
         )
       })
       it('should filter on a status', async () => {
-        dto.deliveryStatus = OrderLineStatus.Prepared
+        dto.deliveryStatus = DeliveryStatus.Shipped
         await whenSearchForOrders(dto)
         expectSearchResultToEqual(orderPartiallyShipped1)
       })
       it('should filter on another status', async () => {
-        dto.deliveryStatus = OrderLineStatus.Created
+        dto.deliveryStatus = DeliveryStatus.Created
+        await whenSearchForOrders(dto)
+        expectSearchResultToEqual(orderToPrepare1, orderToPrepare2)
+      })
+    })
+    describe('Filter on order status', () => {
+      beforeEach(() => {
+        givenExistingOrders(
+          orderToPrepare1,
+          orderToPrepare2,
+          orderPartiallyShipped1,
+          orderDelivered2
+        )
+      })
+      it('should filter on a status', async () => {
+        dto.orderStatus = OrderLineStatus.Prepared
+        await whenSearchForOrders(dto)
+        expectSearchResultToEqual(orderPartiallyShipped1, orderDelivered2)
+      })
+      it('should filter on another status', async () => {
+        dto.orderStatus = OrderLineStatus.Created
         await whenSearchForOrders(dto)
         expectSearchResultToEqual(orderToPrepare1, orderToPrepare2)
       })
@@ -209,13 +232,15 @@ describe('Search orders', () => {
           orderToPrepare2,
           orderNotPayed1,
           orderInPreparation1,
-          orderPartiallyShipped1
+          orderPartiallyShipped1,
+          orderDelivered2
         )
         dto.query = 'bon'
         await whenSearchForOrders(dto)
         dto.startDate = orderToPrepare1.createdAt + 1000
         await whenSearchForOrders(dto)
-        dto.deliveryStatus = OrderLineStatus.Prepared
+        dto.orderStatus = OrderLineStatus.Prepared
+        dto.deliveryStatus = DeliveryStatus.Shipped
         await whenSearchForOrders(dto)
         expectSearchResultToEqual(orderPartiallyShipped1)
       })

@@ -45,6 +45,16 @@ export const fullMenu: NavigationMenu = {
       ]
     },
     {
+      title: 'Logistique',
+      links: [
+        {
+          name: 'Livraisons',
+          icon: 'material-symbols-light:delivery-truck-speed-outline',
+          href: '/deliveries'
+        }
+      ]
+    },
+    {
       title: 'Commandes',
       links: [
         {

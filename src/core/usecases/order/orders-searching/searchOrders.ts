@@ -3,6 +3,7 @@ import { useSearchStore } from '@store/searchStore'
 import { SearchGateway } from '@core/gateways/searchGateway'
 import { Timestamp, UUID } from '@core/types/types'
 import { OrderLineStatus, PaymentStatus } from '@core/entities/order'
+import { DeliveryStatus } from '@core/entities/delivery'
 
 export interface SearchDTO {
   query?: string
@@ -11,7 +12,8 @@ export interface SearchDTO {
 export interface SearchOrdersDTO extends SearchDTO {
   startDate?: Timestamp
   endDate?: Timestamp
-  deliveryStatus?: OrderLineStatus
+  orderStatus?: OrderLineStatus
+  deliveryStatus?: DeliveryStatus
   paymentStatus?: PaymentStatus
   customerUuid?: UUID
 }
@@ -21,6 +23,7 @@ export const searchOrders = async (
   dto: SearchOrdersDTO,
   searchGateway: SearchGateway
 ): Promise<void> => {
+  console.log('dto: ', dto)
   const searchStore = useSearchStore()
   searchStore.setFilter(from, dto)
   const searchResult = await searchGateway.searchOrders(dto)

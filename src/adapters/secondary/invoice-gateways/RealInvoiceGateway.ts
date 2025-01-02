@@ -17,8 +17,9 @@ export class RealInvoiceGateway implements InvoiceGateway {
   }
 
   async get(invoiceNumber: string): Promise<Invoice> {
+    console.log('axios invoiceNumber', invoiceNumber)
     const res = await axiosWithBearer.get(
-      `${this.baseUrl}/invoices/${invoiceNumber}`
+      `${this.baseUrl}/invoices/${encodeURIComponent(invoiceNumber)}`
     )
     return this.convertToInvoice(res.data)
   }

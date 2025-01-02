@@ -4,7 +4,7 @@
     div.text-right
       div.text-xl Facture
       time.text-contrast(:datetime="invoiceVM.createdDatetime") {{ invoiceVM.createdDate }}
-      div.text-contrast \#{{ invoiceVM.invoiceNumber }}
+      div.text-contrast {{ invoiceVM.invoiceNumber }}
   div.flex.items-end.justify-between.mt-4
     div.shrink.w-72
       div {{ invoiceVM.supplierAddress.name }}

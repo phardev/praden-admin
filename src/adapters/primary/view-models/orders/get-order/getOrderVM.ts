@@ -1,13 +1,15 @@
 import { useOrderStore } from '@store/orderStore'
 import {
-  OrderLineStatus,
   getDeliveryStatus,
+  getOrderStatus,
   isAnonymousOrder,
   Order,
+  OrderLineStatus,
   PaymentStatus
 } from '@core/entities/order'
 import { AddressVM } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 import { useCustomerStore } from '@store/customerStore'
+import { Delivery, DeliveryStatus } from '@core/entities/delivery'
 
 export interface OrderCustomerVM {
   firstname: string
@@ -20,7 +22,10 @@ export interface GetOrderVM {
   reference: string
   customer: OrderCustomerVM
   deliveryAddress: AddressVM
-  deliveryStatus: OrderLineStatus
+  orderStatus: OrderLineStatus
+  deliveryStatus: DeliveryStatus
+  deliveries: Array<Delivery>
+  trackingNumber?: string
   paymentStatus: PaymentStatus
   invoiceNumber?: string
   customerMessage?: string
@@ -33,6 +38,7 @@ export const getOrderVM = (): GetOrderVM => {
     return emptyVM()
   }
   const customer = getCustomerInformations(currentOrder)
+  const deliveryStatus = getDeliveryStatus(currentOrder)
   const res: GetOrderVM = {
     reference: currentOrder.uuid,
     customer: {
@@ -49,7 +55,10 @@ export const getOrderVM = (): GetOrderVM => {
       country: currentOrder.deliveryAddress.country,
       phone: customer.phone
     },
-    deliveryStatus: getDeliveryStatus(currentOrder),
+    deliveries: currentOrder.deliveries,
+    orderStatus: getOrderStatus(currentOrder),
+    deliveryStatus,
+    trackingNumber: currentOrder.deliveries[0].trackingNumber,
     paymentStatus: currentOrder.payment.status
   }
   if (currentOrder.invoiceNumber) {
@@ -97,7 +106,9 @@ const emptyVM = (): GetOrderVM => {
       country: ''
     },
     reference: '',
-    deliveryStatus: OrderLineStatus.Created,
+    deliveries: [],
+    orderStatus: OrderLineStatus.Created,
+    deliveryStatus: DeliveryStatus.Created,
     paymentStatus: PaymentStatus.WaitingForPayment
   }
 }

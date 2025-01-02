@@ -1,7 +1,7 @@
 import { Timestamp, UUID } from '@core/types/types'
 import { addTaxToPrice } from '@utils/price'
 import { Promotion } from '@core/entities/promotion'
-import { Delivery } from '@core/entities/delivery'
+import { Delivery, DeliveryStatus } from '@core/entities/delivery'
 
 export interface Address {
   firstname: string
@@ -123,8 +123,14 @@ export const getTotalWithTax = (order: Order): number => {
   return totalLine + deliveryPrice
 }
 
-export const getDeliveryStatus = (order: Order): OrderLineStatus => {
+export const getDeliveryStatus = (order: Order): DeliveryStatus => {
+  return order.deliveries[0].status
+}
+
+export const getOrderStatus = (order: Order): OrderLineStatus => {
   const statuses = order.lines.map((l) => l.status)
+  console.log('order: ', order.uuid)
+  console.log('status: ', Math.min(...statuses))
   return Math.min(...statuses)
 }
 

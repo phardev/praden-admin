@@ -5,9 +5,9 @@ div.flex.items-center.justify-center
     :options="options"
   )
     template(#label)
-      ft-delivery-status-badge(v-if="model !== undefined" :status="model")
+      ft-order-status-badge(v-if="model !== undefined" :status="model")
     template(#option="{ option }")
-      ft-delivery-status-badge(:status="option")
+      ft-order-status-badge(:status="option")
   UButton(
     v-if="model !== undefined"
     color="gray"

@@ -8,6 +8,7 @@ import {
 import type { HashTable, UUID } from '@core/types/types'
 import { zoneGeo } from '@utils/testData/locations'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { DeliveryStatus } from '@core/entities/delivery'
 
 export abstract class RealGateway {
   protected readonly baseUrl: string
@@ -122,6 +123,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
   }
 
   private convertToOrder(data: any): Order {
+    console.log('data: ', data)
     const copy = JSON.parse(JSON.stringify(data))
     copy.lines = copy.lines.map((l: any) => {
       const res: OrderLine = {
@@ -132,11 +134,17 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
         percentTaxRate: l.percentTaxRate,
         preparedQuantity: l.preparedQuantity,
         unitAmount: l.priceWithoutTax,
-        status: this.getDeliveryStatus(l.deliveryStatus),
+        status: this.getOrderLineStatus(l.status),
         locations: { [zoneGeo.uuid]: l.location },
         updatedAt: l.updatedAt
       }
       return res
+    })
+    copy.deliveries = copy.deliveries.map((d: any) => {
+      return {
+        ...d,
+        status: this.getDeliveryStatus(d.status)
+      }
     })
     copy.lines.forEach((l: any) => {
       delete l.img
@@ -156,12 +164,21 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
     }
     return copy
   }
-  private getDeliveryStatus(status: string): OrderLineStatus {
+
+  private getOrderLineStatus(status: string): OrderLineStatus {
     if (status === 'CREATED') return OrderLineStatus.Created
-    if (status === 'PROCESSING') return OrderLineStatus.Started
-    if (status === 'SHIPPED') return OrderLineStatus.Prepared
+    if (status === 'STARTED') return OrderLineStatus.Started
+    if (status === 'PREPARED') return OrderLineStatus.Prepared
     if (status === 'CANCELED') return OrderLineStatus.Canceled
     return OrderLineStatus.Created
+  }
+
+  private getDeliveryStatus(status: string): DeliveryStatus {
+    if (status === 'CREATED') return DeliveryStatus.Created
+    if (status === 'PREPARED') return DeliveryStatus.Prepared
+    if (status === 'SHIPPED') return DeliveryStatus.Shipped
+    if (status === 'DELIVERED') return DeliveryStatus.Delivered
+    return DeliveryStatus.Created
   }
 
   private getPaymentStatus(status: string): PaymentStatus {

@@ -14,6 +14,7 @@ import { OrderLineAlreadyProcessedError } from '@core/errors/OrderLineAlreadyPro
 
 export class InMemoryOrderGateway implements OrderGateway {
   private orders: Array<Order> = []
+  private printed: Array<UUID> = []
   private dateProvider: DateProvider
 
   constructor(dateProvider: DateProvider) {
@@ -128,6 +129,10 @@ export class InMemoryOrderGateway implements OrderGateway {
   async batch(uuids: Array<UUID>): Promise<Array<Order>> {
     const res = this.orders.filter((o) => uuids.includes(o.uuid))
     return Promise.resolve(JSON.parse(JSON.stringify(res)))
+  }
+
+  listPrinted(): Array<UUID> {
+    return this.printed
   }
 
   feedWith(...orders: Array<Order>) {

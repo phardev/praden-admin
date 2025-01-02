@@ -2,7 +2,9 @@ import { Address, Contact, DeliveryMethod } from '@core/entities/order'
 
 export enum DeliveryStatus {
   Created,
-  Shipped
+  Prepared,
+  Shipped,
+  Delivered
 }
 
 export interface Delivery {

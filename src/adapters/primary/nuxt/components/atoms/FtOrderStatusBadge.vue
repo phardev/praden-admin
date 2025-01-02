@@ -14,15 +14,15 @@ defineProps({
 
 const texts = {
   0: 'Crée',
-  1: 'Préparé',
-  2: 'Expédié',
-  3: 'Livré'
+  1: 'En préparation',
+  2: 'Préparé',
+  3: 'Annulé'
 }
 
 const colors = {
   0: 'gray',
   1: 'blue',
-  2: 'orange',
-  3: 'green'
+  2: 'green',
+  3: 'red'
 }
 </script>

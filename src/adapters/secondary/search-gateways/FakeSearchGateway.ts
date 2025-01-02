@@ -1,7 +1,7 @@
 import { SearchGateway } from '@core/gateways/searchGateway'
 import { isProduct, Product } from '@core/entities/product'
 import '@utils/strings'
-import { getDeliveryStatus, Order } from '@core/entities/order'
+import { getDeliveryStatus, getOrderStatus, Order } from '@core/entities/order'
 import { useOrderStore } from '@store/orderStore'
 import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
 import { Timestamp } from '@core/types/types'
@@ -54,6 +54,10 @@ export class FakeSearchGateway implements SearchGateway {
         dto.startDate,
         dto.endDate
       )
+      const orderStatusMatch =
+        dto.orderStatus !== undefined
+          ? dto.orderStatus === getOrderStatus(o)
+          : true
       const deliveryStatusMatch =
         dto.deliveryStatus !== undefined
           ? dto.deliveryStatus === getDeliveryStatus(o)
@@ -69,6 +73,7 @@ export class FakeSearchGateway implements SearchGateway {
       return (
         queryMatch &&
         dateMatch &&
+        orderStatusMatch &&
         deliveryStatusMatch &&
         paymentStatusMatch &&
         customerUuidMatch

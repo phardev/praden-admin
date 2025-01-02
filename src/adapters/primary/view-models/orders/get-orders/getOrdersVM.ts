@@ -7,11 +7,13 @@ import {
   OrderLineStatus,
   getDeliveryStatus,
   Order,
-  PaymentStatus
+  PaymentStatus,
+  getOrderStatus
 } from '@core/entities/order'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import { useSearchStore } from '@store/searchStore'
 import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
+import { DeliveryStatus } from '@core/entities/delivery'
 
 export interface GetOrdersItemVM {
   reference: string
@@ -19,9 +21,10 @@ export interface GetOrdersItemVM {
   client: string
   createdDate: string
   createdDatetime: Date
-  deliveryStatus: OrderLineStatus
+  status: OrderLineStatus
   total: string
   paymentStatus: PaymentStatus
+  deliveryStatus: DeliveryStatus
 }
 
 export interface GetOrdersVM {
@@ -49,6 +52,10 @@ const headers: Array<Header> = [
     value: 'status'
   },
   {
+    name: 'Statut Livraison',
+    value: 'deliveryStatus'
+  },
+  {
     name: 'Total TTC',
     value: 'total'
   },
@@ -67,9 +74,10 @@ const getOrderItemVM = (order: Order): GetOrdersItemVM => {
     client: `${order.deliveryAddress.firstname[0]}. ${order.deliveryAddress.lastname}`,
     createdDate: timestampToLocaleString(order.createdAt, 'fr-FR'),
     createdDatetime: new Date(order.createdAt),
-    deliveryStatus: getDeliveryStatus(order),
+    status: getOrderStatus(order),
     total: formatter.format(total / 100),
-    paymentStatus: order.payment?.status || PaymentStatus.WaitingForPayment
+    paymentStatus: order.payment?.status || PaymentStatus.WaitingForPayment,
+    deliveryStatus: getDeliveryStatus(order)
   }
 }
 
