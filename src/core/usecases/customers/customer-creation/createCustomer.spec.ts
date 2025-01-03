@@ -74,6 +74,6 @@ describe('Create customer', () => {
   }
 
   const expectGatewayToContains = async (...categories: Array<Customer>) => {
-    expect(await customerGateway.list()).toStrictEqual(categories)
+    expect(await customerGateway.list(100, 0)).toStrictEqual(categories)
   }
 })

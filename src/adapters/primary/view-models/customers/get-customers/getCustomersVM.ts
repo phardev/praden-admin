@@ -36,6 +36,7 @@ export interface GetCustomersVM {
   headers: Array<Header>
   items: Array<GetCustomersItemVM>
   isLoading: boolean
+  hasMore: boolean
   currentSearch: SearchCustomersDTO | undefined
 }
 
@@ -54,6 +55,7 @@ export const getCustomersVM = (key: string): GetCustomersVM => {
       phone: customer.phone
     })),
     isLoading: false,
+    hasMore: customerStore.hasMore,
     currentSearch
   }
 }

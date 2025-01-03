@@ -7,7 +7,8 @@ export const useCustomerStore = defineStore('CustomerStore', {
   state: () => {
     return {
       items: [] as Array<Customer>,
-      current: undefined as Customer | undefined
+      current: undefined as Customer | undefined,
+      hasMore: false as boolean
     }
   },
   getters: {
@@ -20,7 +21,15 @@ export const useCustomerStore = defineStore('CustomerStore', {
   },
   actions: {
     list(customers: Array<Customer>) {
-      this.items = customers
+      customers.forEach((c) => {
+        const existingCustomer = this.items.find((item) => item.uuid === c.uuid)
+        if (existingCustomer) {
+          this.edit(c)
+        } else {
+          this.items.push(c)
+        }
+      })
+      this.hasMore = customers.length > 0
     },
     add(customer: Customer) {
       this.items.push(customer)

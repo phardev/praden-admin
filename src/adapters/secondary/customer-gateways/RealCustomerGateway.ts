@@ -14,8 +14,14 @@ export class RealCustomerGateway
     super(url)
   }
 
-  async list(): Promise<Array<Customer>> {
-    const res = await axiosWithBearer.get(`${this.baseUrl}/customers/`)
+  async list(limit: number, offset: number): Promise<Array<Customer>> {
+    console.log('on list')
+    const res = await axiosWithBearer.get(`${this.baseUrl}/customers/`, {
+      params: {
+        limit,
+        offset
+      }
+    })
     return res.data
   }
 

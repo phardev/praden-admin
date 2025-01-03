@@ -67,6 +67,19 @@ describe('Get customers VM', () => {
         }
         expectVMToMatch(expectedVM)
       })
+      it('should create the vm for the customers and there is more', () => {
+        const existingCustomers = [elodieDurand, lucasLefevre, sophieMartinez]
+        customerStore.hasMore = true
+        givenExistingCustomers(...existingCustomers)
+        const expectedVM: Partial<GetCustomersVM> = {
+          headers: expectedHeaders,
+          items: existingCustomers.map((customer) =>
+            createCustomerItemVM(customer)
+          ),
+          hasMore: true
+        }
+        expectVMToMatch(expectedVM)
+      })
     })
     describe('There is some filters', () => {
       it('should get all search result customers vm', () => {
@@ -104,6 +117,7 @@ describe('Get customers VM', () => {
       headers: expectedHeaders,
       items: [],
       isLoading: false,
+      hasMore: false,
       currentSearch: undefined
     }
     expect(getCustomersVM(key)).toMatchObject({ ...emptyVM, ...expectedVM })

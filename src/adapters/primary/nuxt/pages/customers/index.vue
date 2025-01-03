@@ -18,6 +18,9 @@
         name='search'
         @input="searchChanged"
       ) Rechercher une commande
+  InfiniteLoading(@infinite="load")
+    template(#complete)
+      div
 
 </template>
 
@@ -27,12 +30,23 @@ import { useCustomerGateway } from '../../../../../../gateways/customerGateway'
 import { getCustomersVM } from '@adapters/primary/view-models/customers/get-customers/getCustomersVM'
 import { searchCustomers } from '@core/usecases/customers/customer-searching/searchCustomer'
 import { useSearchGateway } from '../../../../../../gateways/searchGateway'
+import InfiniteLoading from 'v3-infinite-loading'
+import 'v3-infinite-loading/lib/style.css'
 
 definePageMeta({ layout: 'main' })
+const limit = 25
+let offset = 0
 
-onMounted(() => {
-  listCustomers(useCustomerGateway())
-})
+const load = async ($state) => {
+  console.log('on load')
+  await listCustomers(limit, offset, useCustomerGateway())
+  offset += limit
+  if (customersVM.hasMore) {
+    $state.loaded()
+  } else {
+    $state.complete()
+  }
+}
 const router = useRouter()
 const routeName = router.currentRoute.value.name
 

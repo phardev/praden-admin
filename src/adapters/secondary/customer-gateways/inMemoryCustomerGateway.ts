@@ -14,8 +14,9 @@ export class InMemoryCustomerGateway implements CustomerGateway {
     this.uuidGenerator = uuidGenerator
   }
 
-  list(): Promise<Array<Customer>> {
-    return Promise.resolve(JSON.parse(JSON.stringify(this.customers)))
+  list(limit: number, offset: number): Promise<Array<Customer>> {
+    const res = this.customers.slice(offset, offset + limit)
+    return Promise.resolve(JSON.parse(JSON.stringify(res)))
   }
 
   getByUuid(uuid: UUID): Promise<Customer> {

@@ -46,7 +46,7 @@ describe('Customer Edition', () => {
         await whenEditCustomer(customer.uuid, dto)
       })
       it('should edit the customer in the gateway', async () => {
-        expect(await customerGateway.list()).toStrictEqual(expectedRes)
+        expect(await customerGateway.list(100, 0)).toStrictEqual(expectedRes)
       })
       it('should edit the customer in the store', async () => {
         expect(customerStore.items).toStrictEqual(expectedRes)
@@ -71,7 +71,7 @@ describe('Customer Edition', () => {
         await whenEditCustomer(customer.uuid, dto)
       })
       it('should edit the customer in the gateway', async () => {
-        expect(await customerGateway.list()).toStrictEqual(expectedRes)
+        expect(await customerGateway.list(100, 0)).toStrictEqual(expectedRes)
       })
       it('should edit the customer in the store', async () => {
         expect(customerStore.items).toStrictEqual(expectedRes)
