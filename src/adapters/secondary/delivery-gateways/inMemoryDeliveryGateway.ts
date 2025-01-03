@@ -1,5 +1,5 @@
 import { DeliveryGateway } from '@core/gateways/deliveryGateway'
-import { Delivery } from '@core/entities/delivery'
+import { Delivery, DeliveryStatus } from '@core/entities/delivery'
 import { UUID } from '@core/types/types'
 
 export class InMemoryDeliveryGateway implements DeliveryGateway {
@@ -8,6 +8,18 @@ export class InMemoryDeliveryGateway implements DeliveryGateway {
 
   list(): Promise<Array<Delivery>> {
     return Promise.resolve(this.deliveries)
+  }
+
+  ship(uuids: Array<UUID>): Promise<Array<Delivery>> {
+    const res: Array<Delivery> = []
+    uuids.forEach((uuid) => {
+      const index = this.deliveries.findIndex(
+        (delivery) => delivery.uuid === uuid
+      )
+      this.deliveries[index].status = DeliveryStatus.Shipped
+      res.push(this.deliveries[index])
+    })
+    return Promise.resolve(res)
   }
 
   printLabel(uuid: UUID): Promise<void> {

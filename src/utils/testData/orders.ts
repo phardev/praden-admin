@@ -26,7 +26,8 @@ import {
   deliveryOrderPrepared1,
   deliveryOrderToPrepare1,
   deliveryOrderToPrepare2,
-  deliveryOrderToPrepare3
+  deliveryOrderToPrepare3,
+  deliveryOrderWithMissingProduct
 } from '@utils/testData/deliveries'
 import { DeliveryStatus } from '@core/entities/delivery'
 
@@ -268,6 +269,7 @@ export const orderInPreparation1: AnonymousOrder = {
       uuid: 'delivery-order-in-preparation-1',
       price: 0,
       method: clickAndCollect,
+      weight: 987,
       sender: {
         contact: {
           email: praden.contact.email,
@@ -471,37 +473,7 @@ export const orderWithMissingProduct1: AnonymousOrder = {
     email: 'jeanbon@anotheremail.com',
     phone: '0123456789'
   },
-  deliveries: [
-    {
-      uuid: 'delivery-order-with-missing-product',
-      price: 599,
-      method: deliveryInRelayPoint,
-      pickupId: '9638521',
-      trackingNumber: 'MissingProduct-78945632',
-      sender: {
-        contact: {
-          email: praden.contact.email,
-          phone: praden.contact.phone
-        },
-        address: praden.address
-      },
-      receiver: {
-        contact: {
-          email: 'jeanbon@anotheremail.com',
-          phone: '0123456789'
-        },
-        address: {
-          firstname: 'Jean',
-          lastname: 'Bon',
-          address: '10 rue des peupliers',
-          city: 'PlopLand',
-          zip: '12345',
-          country: 'Plop'
-        }
-      },
-      status: DeliveryStatus.Created
-    }
-  ],
+  deliveries: [deliveryOrderWithMissingProduct],
   messages: [
     {
       content: MessageContent.AskToClient,
@@ -572,6 +544,7 @@ export const orderWithMissingProduct2: AnonymousOrder = {
       uuid: 'delivery-order-with-missing-product-2',
       price: 599,
       method: deliveryInRelayPoint,
+      weight: 987,
       pickupId: '123456',
       trackingNumber: 'Missing2-123456',
       sender: {
@@ -656,6 +629,7 @@ export const orderToCancel: AnonymousOrder = {
       uuid: 'delivery-order-to-cancel',
       price: 750,
       method: deliveryInRelayPoint,
+      weight: 987,
       pickupId: '7894561',
       trackingNumber: 'ToCancel-5478551',
       sender: {
@@ -739,6 +713,7 @@ export const orderNotPayed1: AnonymousOrder = {
       uuid: 'delivery-order-not-payed-1',
       price: 0,
       method: clickAndCollect,
+      weight: 987,
       sender: {
         contact: {
           email: praden.contact.email,
@@ -811,6 +786,7 @@ export const orderSaved1: AnonymousOrder = {
       uuid: 'delivery-order-saved-1',
       price: 0,
       method: clickAndCollect,
+      weight: 987,
       sender: {
         contact: {
           email: praden.contact.email,
@@ -883,6 +859,7 @@ export const orderWaitingForClientAnswer1: AnonymousOrder = {
       uuid: 'delivery-order-waiting-for-client-answer-1',
       price: 0,
       method: clickAndCollect,
+      weight: 987,
       sender: {
         contact: {
           email: praden.contact.email,
@@ -972,6 +949,7 @@ export const orderWaitingForClientAnswer2: AnonymousOrder = {
       uuid: 'delivery-order-waiting-for-client-answer-2',
       price: 0,
       method: clickAndCollect,
+      weight: 987,
       sender: {
         contact: {
           email: praden.contact.email,
@@ -1049,6 +1027,7 @@ export const orderWaitingForRestock: AnonymousOrder = {
       uuid: 'delivery-order-waiting-for-restock',
       price: 0,
       method: clickAndCollect,
+      weight: 987,
       sender: {
         contact: {
           email: praden.contact.email,
@@ -1143,6 +1122,7 @@ export const orderPartiallyShipped1: AnonymousOrder = {
       uuid: 'delivery-order-partially-shipped-1',
       price: 500,
       method: deliveryInRelayPoint,
+      weight: 987,
       pickupId: '741852',
       trackingNumber: 'PartiallyShipped-584214',
       sender: {
@@ -1239,6 +1219,7 @@ export const orderVFASF: AnonymousOrder = {
       uuid: 'delivery-order-vfasf',
       price: 0,
       method: clickAndCollect,
+      weight: 987,
       sender: {
         contact: {
           email: praden.contact.email,
@@ -1312,6 +1293,7 @@ export const orderXUKIJ: AnonymousOrder = {
       uuid: 'delivery-order-xukij',
       price: 0,
       method: clickAndCollect,
+      weight: 987,
       sender: {
         contact: {
           email: praden.contact.email,
@@ -1397,6 +1379,7 @@ export const orderWithProductWithoutLocation: AnonymousOrder = {
       uuid: 'delivery-order-with-product-without-location',
       price: 0,
       method: clickAndCollect,
+      weight: 987,
       sender: {
         contact: {
           email: praden.contact.email,
@@ -1479,6 +1462,7 @@ export const elodieDurandOrder1: CustomerOrder = {
       uuid: 'delivery-order-elodie-durand-1',
       price: 0,
       method: clickAndCollect,
+      weight: 987,
       sender: {
         contact: {
           email: praden.contact.email,
@@ -1561,6 +1545,7 @@ export const elodieDurandOrder2: CustomerOrder = {
       uuid: 'delivery-order-elodie-durand-2',
       price: 0,
       method: clickAndCollect,
+      weight: 987,
       sender: {
         contact: {
           email: praden.contact.email,
@@ -1631,6 +1616,7 @@ export const lucasLefevreOrder1: CustomerOrder = {
       uuid: 'delivery-order-lucas-lefevre-1',
       price: 0,
       method: clickAndCollect,
+      weight: 987,
       sender: {
         contact: {
           email: praden.contact.email,
@@ -1701,6 +1687,7 @@ export const lucasLefevreOrder2: CustomerOrder = {
       uuid: 'delivery-order-lucas-lefevre-2',
       price: 500,
       method: deliveryInRelayPoint,
+      weight: 987,
       pickupId: '7894561',
       trackingNumber: 'Lucas2-021451',
       sender: {
@@ -1776,6 +1763,7 @@ export const orderWithCustomerMessage: AnonymousOrder = {
       uuid: 'delivery-order-with-customer-message',
       price: 0,
       method: clickAndCollect,
+      weight: 987,
       sender: {
         contact: {
           email: praden.contact.email,

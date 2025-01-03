@@ -25,6 +25,10 @@ describe('Get deliveries VM', () => {
       value: 'trackingNumber'
     },
     {
+      name: 'Poids (kg)',
+      value: 'weight'
+    },
+    {
       name: 'Statut',
       value: 'status'
     }
@@ -65,6 +69,7 @@ describe('Get deliveries VM', () => {
             method: deliveryOrderToPrepare1.method.name,
             client: 'Jean Bon',
             trackingNumber: '',
+            weight: 1.234,
             status: deliveryOrderToPrepare1.status
           },
           {
@@ -72,6 +77,7 @@ describe('Get deliveries VM', () => {
             method: deliveryOrderToPrepare3.method.name,
             client: "Jeanne D'arc",
             trackingNumber: deliveryOrderToPrepare3.trackingNumber,
+            weight: 1.5,
             status: deliveryOrderToPrepare3.status
           },
           {
@@ -79,6 +85,7 @@ describe('Get deliveries VM', () => {
             method: deliveryOrderDelivered2.method.name,
             client: "Jeanne D'arc",
             trackingNumber: '',
+            weight: 2.2,
             status: deliveryOrderDelivered2.status
           }
         ],

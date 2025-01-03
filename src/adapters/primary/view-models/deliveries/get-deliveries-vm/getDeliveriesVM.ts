@@ -8,6 +8,7 @@ export interface GetDeliveriesItemsVM {
   method: string
   client: string
   trackingNumber: string
+  weight: number
   status: DeliveryStatus
 }
 
@@ -32,6 +33,10 @@ export const getDeliveriesVM = (): GetDeliveriesVM => {
       value: 'trackingNumber'
     },
     {
+      name: 'Poids (kg)',
+      value: 'weight'
+    },
+    {
       name: 'Statut',
       value: 'status'
     }
@@ -47,6 +52,7 @@ export const getDeliveriesVM = (): GetDeliveriesVM => {
         method: d.method.name,
         client: `${d.receiver.address.firstname} ${d.receiver.address.lastname}`,
         trackingNumber: d.trackingNumber ?? '',
+        weight: d.weight / 1000,
         status: d.status
       }
     }),

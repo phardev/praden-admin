@@ -13,6 +13,7 @@ export interface Delivery {
   pickupId?: string
   trackingNumber?: string
   method: DeliveryMethod
+  weight: number
   sender: {
     contact: Contact
     address: Address

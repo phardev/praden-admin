@@ -12,6 +12,11 @@ export const useDeliveryStore = defineStore('DeliveryStore', {
     list(deliveries: Array<Delivery>) {
       this.items = deliveries
     },
+    edit(delivery: Delivery) {
+      this.items = this.items.map((d) => {
+        return d.uuid === delivery.uuid ? delivery : d
+      })
+    },
     startLoading() {
       this.isLoading = true
     },
