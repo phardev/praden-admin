@@ -38,7 +38,6 @@ const limit = 25
 let offset = 0
 
 const load = async ($state) => {
-  console.log('on load')
   await listCustomers(limit, offset, useCustomerGateway())
   offset += limit
   if (customersVM.hasMore) {
