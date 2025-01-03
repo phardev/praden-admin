@@ -25,6 +25,16 @@ export class RealDeliveryGateway
       return this.convertToDelivery(d)
     })
   }
+
+  async ship(uuids: Array<UUID>): Promise<Array<Delivery>> {
+    const res = await axiosWithBearer.post(`${this.baseUrl}/deliveries/ship`, {
+      uuids
+    })
+    return res.data.map((d) => {
+      return this.convertToDelivery(d)
+    })
+  }
+
   async printLabel(uuid: UUID): Promise<void> {
     await axiosWithBearer.post(`${this.baseUrl}/deliveries/${uuid}/print-label`)
   }
