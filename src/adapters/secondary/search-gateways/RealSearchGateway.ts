@@ -1,12 +1,13 @@
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
 import { Customer } from '@core/entities/customer'
+import { DeliveryStatus } from '@core/entities/delivery'
 import {
   OrderLineStatus,
-  getDeliveryStatus,
   Order,
   OrderLine,
-  PaymentStatus
+  PaymentStatus,
+  getOrderStatus
 } from '@core/entities/order'
 import { Product } from '@core/entities/product'
 import { SearchGateway } from '@core/gateways/searchGateway'
@@ -38,22 +39,23 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
   }
 
   async searchOrders(dto: SearchOrdersDTO): Promise<Array<Order>> {
-    // const deliveryStatusMap = {
-    //   [DeliveryStatus.Created]: 'CREATED',
-    //   [DeliveryStatus.Processing]: 'PROCESSING',
-    //   [DeliveryStatus.Shipped]: 'SHIPPED',
-    //   [DeliveryStatus.Canceled]: 'CANCELED'
-    // }
     const paymentStatusMap = {
       [PaymentStatus.WaitingForPayment]: 'WAITINGFORPAYMENT',
       [PaymentStatus.Payed]: 'PAYED',
       [PaymentStatus.Rejected]: 'REJECTED'
     }
+    const deliveryStatusMap = {
+      [DeliveryStatus.Created]: 'CREATED',
+      [DeliveryStatus.Prepared]: 'PREPARED',
+      [DeliveryStatus.Shipped]: 'SHIPPED',
+      [DeliveryStatus.Delivered]: 'DELIVERED'
+    }
     const body = {
       startDate: dto.startDate,
       endDate: dto.endDate,
       paymentStatus: paymentStatusMap[dto.paymentStatus],
-      customerUuid: dto.customerUuid
+      customerUuid: dto.customerUuid,
+      deliveryStatus: deliveryStatusMap[dto.deliveryStatus]
     }
     const orderStore = useOrderStore()
     let orders = orderStore.items
@@ -61,6 +63,7 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
       body.startDate ||
       body.endDate ||
       body.paymentStatus ||
+      body.deliveryStatus ||
       body.customerUuid
     ) {
       const res = await axiosWithBearer.post(
@@ -77,7 +80,7 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
     }
     const localFilters: SearchOrdersDTO = {
       query,
-      deliveryStatus: dto.deliveryStatus
+      orderStatus: dto.orderStatus
     }
     const filteredOrders = orders.filter((order) =>
       this.applyOrderFilters(order, localFilters)
@@ -91,8 +94,8 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
         return false
       }
     }
-    if (filters.deliveryStatus) {
-      if (!this.applyDeliveryStatusFilter(order, filters.deliveryStatus)) {
+    if (filters.orderStatus) {
+      if (!this.applyOrderStatusFilter(order, filters.orderStatus)) {
         return false
       }
     }
@@ -117,11 +120,11 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
     )
   }
 
-  private applyDeliveryStatusFilter(
+  private applyOrderStatusFilter(
     order: Order,
-    deliveryStatus: OrderLineStatus
+    orderStatus: OrderLineStatus
   ): boolean {
-    return getDeliveryStatus(order) === deliveryStatus
+    return getOrderStatus(order) === orderStatus
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -131,7 +134,6 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
 
   private convertToOrder(data: any): Order {
     const copy = JSON.parse(JSON.stringify(data))
-    delete copy.payment.sessionUrl
     copy.lines = copy.lines.map((l: any) => {
       const res: OrderLine = {
         productUuid: l.productUuid,
@@ -141,11 +143,17 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
         percentTaxRate: l.percentTaxRate,
         preparedQuantity: l.preparedQuantity,
         unitAmount: l.priceWithoutTax,
-        status: this.getDeliveryStatus(l.deliveryStatus),
+        status: this.getOrderLineStatus(l.status),
         locations: { [zoneGeo.uuid]: l.location },
         updatedAt: l.updatedAt
       }
       return res
+    })
+    copy.deliveries = copy.deliveries.map((d: any) => {
+      return {
+        ...d,
+        status: this.getDeliveryStatus(d.status)
+      }
     })
     copy.lines.forEach((l: any) => {
       delete l.img
@@ -160,16 +168,25 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
           sentAt: m.updatedAt
         }
       })
-    copy.payment.status = this.getPaymentStatus(copy.payment.status)
+    if (copy.payment) {
+      copy.payment.status = this.getPaymentStatus(copy.payment.status)
+    }
     return copy
   }
-  private getDeliveryStatus(status: string): OrderLineStatus {
+  private getOrderLineStatus(status: string): OrderLineStatus {
     if (status === 'CREATED') return OrderLineStatus.Created
-    if (status === 'PROCESSING') return OrderLineStatus.Started
-    if (status === 'SHIPPED') return OrderLineStatus.Prepared
-    if (status === 'DELIVERED') return OrderLineStatus.Delivered
+    if (status === 'STARTED') return OrderLineStatus.Started
+    if (status === 'PREPARED') return OrderLineStatus.Prepared
     if (status === 'CANCELED') return OrderLineStatus.Canceled
     return OrderLineStatus.Created
+  }
+
+  private getDeliveryStatus(status: string): DeliveryStatus {
+    if (status === 'CREATED') return DeliveryStatus.Created
+    if (status === 'PREPARED') return DeliveryStatus.Prepared
+    if (status === 'SHIPPED') return DeliveryStatus.Shipped
+    if (status === 'DELIVERED') return DeliveryStatus.Delivered
+    return DeliveryStatus.Created
   }
 
   private getPaymentStatus(status: string): PaymentStatus {
