@@ -127,9 +127,12 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
     return getOrderStatus(order) === orderStatus
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  searchCustomers(dto: SearchCustomersDTO): Promise<Array<Customer>> {
-    throw new Error('Method not implemented.')
+  async searchCustomers(dto: SearchCustomersDTO): Promise<Array<Customer>> {
+    const res = await axiosWithBearer.post(
+      `${this.baseUrl}/search/customers`,
+      dto
+    )
+    return res.data
   }
 
   private convertToOrder(data: any): Order {

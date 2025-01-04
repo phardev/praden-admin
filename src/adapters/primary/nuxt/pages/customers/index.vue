@@ -12,12 +12,13 @@
     template(#search)
       ft-text-field.flex-grow(
         v-model="search"
-        placeholder="Rechercher par référence, client"
+        placeholder="Rechercher par nom, email"
         for="search"
         type='text'
         name='search'
         @input="searchChanged"
-      ) Rechercher une commande
+      ) Rechercher un client
+      p.warning.text-warning(v-if="customersVM.searchError") {{ customersVM.searchError }}
   InfiniteLoading(@infinite="load")
     template(#complete)
       div
@@ -38,10 +39,14 @@ const limit = 25
 let offset = 0
 
 const load = async ($state) => {
-  await listCustomers(limit, offset, useCustomerGateway())
-  offset += limit
-  if (customersVM.hasMore) {
-    $state.loaded()
+  if (!search.value) {
+    await listCustomers(limit, offset, useCustomerGateway())
+    offset += limit
+    if (customersVM.hasMore) {
+      $state.loaded()
+    } else {
+      $state.complete()
+    }
   } else {
     $state.complete()
   }
