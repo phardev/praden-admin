@@ -29,11 +29,6 @@
         variant="outline"
         @click="getInvoice"
       ) Voir facture
-    div(v-if="orderVM.trackingNumber")
-      ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
-        variant="outline"
-        @click="printLabel"
-      ) Etiquette
   div.w-full.flex.justify-between
     .max-w-lg.flex-shrink-0(v-if="preparationVM.customerMessage")
       h1.text-2xl.font-semibold.text-default.mt-8 Note du client
@@ -43,6 +38,25 @@
       ft-messages(
         :messages="preparationVM.messages"
       )
+  ft-deliveries-table.mt-8(
+    v-if="orderVM.deliveries.length"
+    :headers="orderVM.deliveriesHeaders"
+    :is-loading="orderVM.isLoading"
+    :items="orderVM.deliveries"
+  )
+    template(#title) Livraison
+    template(#actions="{ item }")
+      div.flex.items-center.gap-4
+        nuxt-link(
+          v-if="item.followUrl"
+          :to="item.followUrl"
+          target="_blank"
+        )
+          ft-button.button-default.py-4.px-4(variant="outline" @click.stop) Suivre le colis
+        ft-button.button-default.py-4.px-4(
+          variant="outline"
+          @click="printLabel(item)"
+        ) Etiquette
 
 </template>
 
@@ -74,8 +88,8 @@ const orderVM = computed(() => {
   return getOrderVM()
 })
 
-const printLabel = () => {
-  printDeliveryLabel(orderVM.value.deliveries[0].uuid, useDeliveryGateway())
+const printLabel = (delivery) => {
+  printDeliveryLabel(delivery.uuid, useDeliveryGateway())
 }
 
 const getInvoice = () => {

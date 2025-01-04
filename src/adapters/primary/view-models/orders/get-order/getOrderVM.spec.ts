@@ -15,17 +15,45 @@ import {
 } from '@core/entities/order'
 import {
   getOrderVM,
-  GetOrderVM
+  GetOrderVM,
+  OrderDeliveriesItemVM
 } from '@adapters/primary/view-models/orders/get-order/getOrderVM'
 import { createPinia, setActivePinia } from 'pinia'
 import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
 import { Customer } from '@core/entities/customer'
 import { useCustomerStore } from '@store/customerStore'
-import { DeliveryStatus } from '@core/entities/delivery'
+import { Delivery, DeliveryStatus } from '@core/entities/delivery'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 
 describe('Get order VM', () => {
   let orderStore: any
   let customerStore: any
+  const expectedDeliveryHeaders: Array<Header> = [
+    {
+      name: 'Méthode',
+      value: 'method'
+    },
+    {
+      name: 'Client',
+      value: 'client'
+    },
+    {
+      name: 'Numéro de suivi',
+      value: 'trackingNumber'
+    },
+    {
+      name: 'Poids (kg)',
+      value: 'weight'
+    },
+    {
+      name: 'Statut',
+      value: 'status'
+    },
+    {
+      name: 'Actions',
+      value: 'actions'
+    }
+  ]
 
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -39,7 +67,7 @@ describe('Get order VM', () => {
     })
   })
 
-  describe('There is a preparation', () => {
+  describe('There is an order', () => {
     describe('Anonymous order', () => {
       it('should return the order vm', () => {
         givenCurrentOrderIs(orderToPrepare1)
@@ -61,7 +89,7 @@ describe('Get order VM', () => {
           },
           orderStatus: OrderLineStatus.Created,
           deliveryStatus: orderToPrepare1.deliveries[0].status,
-          deliveries: orderToPrepare1.deliveries,
+          deliveries: orderToPrepare1.deliveries.map(buildDeliveriesVM),
           paymentStatus: PaymentStatus.Payed
         }
         expectVMToMatch(expectedVM)
@@ -86,7 +114,8 @@ describe('Get order VM', () => {
           },
           orderStatus: OrderLineStatus.Started,
           deliveryStatus: orderWithMissingProduct1.deliveries[0].status,
-          deliveries: orderWithMissingProduct1.deliveries,
+          deliveries:
+            orderWithMissingProduct1.deliveries.map(buildDeliveriesVM),
           paymentStatus: PaymentStatus.Payed
         }
         expectVMToMatch(expectedVM)
@@ -117,7 +146,7 @@ describe('Get order VM', () => {
             },
             orderStatus: OrderLineStatus.Created,
             deliveryStatus: elodieDurandOrder1.deliveries[0].status,
-            deliveries: elodieDurandOrder1.deliveries,
+            deliveries: elodieDurandOrder1.deliveries.map(buildDeliveriesVM),
             paymentStatus: PaymentStatus.Payed
           }
           expectVMToMatch(expectedVM)
@@ -142,7 +171,7 @@ describe('Get order VM', () => {
             },
             orderStatus: OrderLineStatus.Created,
             deliveryStatus: lucasLefevreOrder2.deliveries[0].status,
-            deliveries: lucasLefevreOrder2.deliveries,
+            deliveries: lucasLefevreOrder2.deliveries.map(buildDeliveriesVM),
             paymentStatus: PaymentStatus.Payed
           }
           expectVMToMatch(expectedVM)
@@ -169,7 +198,7 @@ describe('Get order VM', () => {
             },
             orderStatus: OrderLineStatus.Created,
             deliveryStatus: DeliveryStatus.Created,
-            deliveries: lucasLefevreOrder2.deliveries,
+            deliveries: lucasLefevreOrder2.deliveries.map(buildDeliveriesVM),
             paymentStatus: PaymentStatus.Payed
           }
           expectVMToMatch(expectedVM)
@@ -198,7 +227,7 @@ describe('Get order VM', () => {
           },
           orderStatus: OrderLineStatus.Prepared,
           deliveryStatus: orderPrepared1.deliveries[0].status,
-          deliveries: orderPrepared1.deliveries,
+          deliveries: orderPrepared1.deliveries.map(buildDeliveriesVM),
           paymentStatus: PaymentStatus.Payed
         }
         expectVMToMatch(expectedVM)
@@ -223,7 +252,8 @@ describe('Get order VM', () => {
           },
           orderStatus: OrderLineStatus.Started,
           deliveryStatus: orderWithMissingProduct1.deliveries[0].status,
-          deliveries: orderWithMissingProduct1.deliveries,
+          deliveries:
+            orderWithMissingProduct1.deliveries.map(buildDeliveriesVM),
           paymentStatus: PaymentStatus.Payed
         }
         expectVMToMatch(expectedVM)
@@ -253,7 +283,7 @@ describe('Get order VM', () => {
           },
           orderStatus: OrderLineStatus.Prepared,
           deliveryStatus: order.deliveries[0].status,
-          deliveries: order.deliveries,
+          deliveries: order.deliveries.map(buildDeliveriesVM),
           trackingNumber: order.deliveries[0].trackingNumber,
           paymentStatus: PaymentStatus.Payed
         }
@@ -279,7 +309,8 @@ describe('Get order VM', () => {
           },
           orderStatus: OrderLineStatus.Started,
           deliveryStatus: orderWithMissingProduct1.deliveries[0].status,
-          deliveries: orderWithMissingProduct1.deliveries,
+          deliveries:
+            orderWithMissingProduct1.deliveries.map(buildDeliveriesVM),
           paymentStatus: PaymentStatus.Payed
         }
         expectVMToMatch(expectedVM)
@@ -307,7 +338,8 @@ describe('Get order VM', () => {
           customerMessage: orderWithCustomerMessage.customerMessage,
           orderStatus: OrderLineStatus.Created,
           deliveryStatus: orderWithCustomerMessage.deliveries[0].status,
-          deliveries: orderWithCustomerMessage.deliveries,
+          deliveries:
+            orderWithCustomerMessage.deliveries.map(buildDeliveriesVM),
           paymentStatus: PaymentStatus.Payed
         }
         expectVMToMatch(expectedVM)
@@ -332,7 +364,8 @@ describe('Get order VM', () => {
           },
           orderStatus: OrderLineStatus.Started,
           deliveryStatus: orderWithMissingProduct1.deliveries[0].status,
-          deliveries: orderWithMissingProduct1.deliveries,
+          deliveries:
+            orderWithMissingProduct1.deliveries.map(buildDeliveriesVM),
           paymentStatus: PaymentStatus.Payed
         }
         expectVMToMatch(expectedVM)
@@ -367,9 +400,25 @@ describe('Get order VM', () => {
       reference: '',
       orderStatus: OrderLineStatus.Created,
       deliveryStatus: DeliveryStatus.Created,
+      deliveriesHeaders: expectedDeliveryHeaders,
       deliveries: [],
       paymentStatus: PaymentStatus.WaitingForPayment
     }
     expect(getOrderVM()).toMatchObject({ ...emptyVM, ...expectedVM })
+  }
+
+  const buildDeliveriesVM = (delivery: Delivery): OrderDeliveriesItemVM => {
+    const res: OrderDeliveriesItemVM = {
+      uuid: delivery.uuid,
+      method: delivery.method.name,
+      client: `${delivery.receiver.address.firstname} ${delivery.receiver.address.lastname}`,
+      trackingNumber: delivery.trackingNumber ?? '',
+      weight: delivery.weight / 1000,
+      status: delivery.status
+    }
+    if (delivery.trackingNumber) {
+      res.followUrl = `https://laposte.fr/outils/suivre-vos-envois?code=${delivery.trackingNumber}`
+    }
+    return res
   }
 })

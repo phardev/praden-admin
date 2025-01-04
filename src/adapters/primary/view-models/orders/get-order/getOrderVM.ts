@@ -9,7 +9,9 @@ import {
 } from '@core/entities/order'
 import { AddressVM } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 import { useCustomerStore } from '@store/customerStore'
-import { Delivery, DeliveryStatus } from '@core/entities/delivery'
+import { DeliveryStatus } from '@core/entities/delivery'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { UUID } from '@core/types/types'
 
 export interface OrderCustomerVM {
   firstname: string
@@ -18,18 +20,56 @@ export interface OrderCustomerVM {
   phone: string
 }
 
+export interface OrderDeliveriesItemVM {
+  uuid: UUID
+  method: string
+  client: string
+  trackingNumber: string
+  weight: number
+  status: DeliveryStatus
+  followUrl?: string
+}
+
 export interface GetOrderVM {
   reference: string
   customer: OrderCustomerVM
   deliveryAddress: AddressVM
   orderStatus: OrderLineStatus
   deliveryStatus: DeliveryStatus
-  deliveries: Array<Delivery>
+  deliveriesHeaders: Array<Header>
+  deliveries: Array<OrderDeliveriesItemVM>
   trackingNumber?: string
   paymentStatus: PaymentStatus
   invoiceNumber?: string
   customerMessage?: string
 }
+
+const orderDeliveriesHeaders: Array<Header> = [
+  {
+    name: 'Méthode',
+    value: 'method'
+  },
+  {
+    name: 'Client',
+    value: 'client'
+  },
+  {
+    name: 'Numéro de suivi',
+    value: 'trackingNumber'
+  },
+  {
+    name: 'Poids (kg)',
+    value: 'weight'
+  },
+  {
+    name: 'Statut',
+    value: 'status'
+  },
+  {
+    name: 'Actions',
+    value: 'actions'
+  }
+]
 
 export const getOrderVM = (): GetOrderVM => {
   const orderStore = useOrderStore()
@@ -55,7 +95,21 @@ export const getOrderVM = (): GetOrderVM => {
       country: currentOrder.deliveryAddress.country,
       phone: customer.phone
     },
-    deliveries: currentOrder.deliveries,
+    deliveriesHeaders: orderDeliveriesHeaders,
+    deliveries: currentOrder.deliveries.map((delivery) => {
+      const res: OrderDeliveriesItemVM = {
+        uuid: delivery.uuid,
+        method: delivery.method.name,
+        client: `${delivery.receiver.address.firstname} ${delivery.receiver.address.lastname}`,
+        trackingNumber: delivery.trackingNumber ?? '',
+        weight: delivery.weight / 1000,
+        status: delivery.status
+      }
+      if (delivery.trackingNumber) {
+        res.followUrl = `https://laposte.fr/outils/suivre-vos-envois?code=${delivery.trackingNumber}`
+      }
+      return res
+    }),
     orderStatus: getOrderStatus(currentOrder),
     deliveryStatus,
     trackingNumber: currentOrder.deliveries[0].trackingNumber,
@@ -106,6 +160,7 @@ const emptyVM = (): GetOrderVM => {
       country: ''
     },
     reference: '',
+    deliveriesHeaders: orderDeliveriesHeaders,
     deliveries: [],
     orderStatus: OrderLineStatus.Created,
     deliveryStatus: DeliveryStatus.Created,
