@@ -130,7 +130,7 @@ export const getDeliveryAddressVM = (order: Order): AddressVM => {
     city: order.deliveryAddress.city,
     zip: order.deliveryAddress.zip,
     country: order.deliveryAddress.country,
-    phone: order.contact.phone
+    phone: order.contact?.phone ?? ''
   }
 }
 

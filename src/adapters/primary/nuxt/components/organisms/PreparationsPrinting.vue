@@ -9,23 +9,34 @@ div.hidden.printme.mx-2
     div.flex
       div.grow
         h1.text-xl {{ order.deliveryMethodName }}
-        h1.text-xl Commande {{ order.reference }}
-        h1.text-xl {{ order.createdDate }}
-        ft-barcode.w-10(
-          :code="order.clientLastname"
+        h1.text-xl Commande
+        ft-barcode.w-5(
+          :code="order.reference"
           :width="1"
           :height="50"
-          :text="order.deliveryAddress.name"
+          :text="order.reference"
         )
+        h1.text-xl {{ order.createdDate }}
       client-only
-        vueQr(:text="order.href")
-    div
-      div.text-lg.mb-2 Adresse de livraison
-      div {{ order.deliveryAddress.name }}
-      div {{ order.deliveryAddress.address }}
-      div {{ order.deliveryAddress.zip }}
-      div {{ order.deliveryAddress.city }}
-      div {{ order.deliveryAddress.phone }}
+        .qr-container
+          vueQr(
+            :text="order.href"
+          )
+    div.flex.mt-4
+      div.grow
+        div.text-lg.mb-2 Adresse de livraison
+        div {{ order.deliveryAddress.name }}
+        div {{ order.deliveryAddress.address }}
+        div {{ order.deliveryAddress.zip }}
+        div {{ order.deliveryAddress.city }}
+        div {{ order.deliveryAddress.phone }}
+      ft-barcode(
+        :code="order.clientLastname"
+        :width="1"
+        :height="50"
+        :text="order.deliveryAddress.name"
+      )
+
     ft-table(
       :headers="startVM.detailHeaders"
       :items="order.lines"
@@ -68,3 +79,16 @@ const startVM = computed(() => {
   return startPreparationsVM(origin)
 })
 </script>
+
+<style scoped>
+.qr-container {
+  display: flex;
+  justify-content: normal;
+  align-items: normal;
+}
+
+.qr-container img {
+  width: 120px;
+  height: 120px;
+}
+</style>
