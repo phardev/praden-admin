@@ -1,5 +1,6 @@
 import { useOrderStore } from '@store/orderStore'
 import {
+  DeliveryType,
   getDeliveryStatus,
   getOrderStatus,
   isAnonymousOrder,
@@ -28,6 +29,7 @@ export interface OrderDeliveriesItemVM {
   weight: number
   status: DeliveryStatus
   followUrl?: string
+  canMarkAsDelivered: boolean
 }
 
 export interface GetOrderVM {
@@ -103,7 +105,9 @@ export const getOrderVM = (): GetOrderVM => {
         client: `${delivery.receiver.address.firstname} ${delivery.receiver.address.lastname}`,
         trackingNumber: delivery.trackingNumber ?? '',
         weight: delivery.weight / 1000,
-        status: delivery.status
+        status: delivery.status,
+        canMarkAsDelivered:
+          delivery.method.type === DeliveryType.ClickAndCollect
       }
       if (delivery.trackingNumber) {
         res.followUrl = `https://laposte.fr/outils/suivre-vos-envois?code=${delivery.trackingNumber}`
@@ -113,7 +117,8 @@ export const getOrderVM = (): GetOrderVM => {
     orderStatus: getOrderStatus(currentOrder),
     deliveryStatus,
     trackingNumber: currentOrder.deliveries[0].trackingNumber,
-    paymentStatus: currentOrder.payment.status
+    paymentStatus:
+      currentOrder.payment?.status ?? PaymentStatus.WaitingForPayment
   }
   if (currentOrder.invoiceNumber) {
     res.invoiceNumber = currentOrder.invoiceNumber

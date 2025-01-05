@@ -54,6 +54,12 @@
         )
           ft-button.button-default.py-4.px-4(variant="outline" @click.stop) Suivre le colis
         ft-button.button-default.py-4.px-4(
+          v-if="item.canMarkAsDelivered"
+          variant="outline"
+          @click="markAsDelivered(item)"
+        ) Marquer comme livré
+        ft-button.button-default.py-4.px-4(
+          v-if="item.followUrl"
           variant="outline"
           @click="printLabel(item)"
         ) Etiquette
@@ -69,11 +75,13 @@ import { getOrderVM } from '@adapters/primary/view-models/orders/get-order/getOr
 import { useCustomerGateway } from '../../../../../../gateways/customerGateway'
 import { printDeliveryLabel } from '@core/usecases/deliveries/delivery-label-printing/printDeliveryLabel'
 import { useDeliveryGateway } from '../../../../../../gateways/deliveryGateway'
+import { markDeliveryAsDelivered } from '@core/usecases/deliveries/mark-delivery-as-delivered/markDeliveryAsDelivered'
 
 definePageMeta({ layout: 'main' })
 
 const route = useRoute()
 const orderUuid = route.params.uuid
+const router = useRouter()
 
 onMounted(() => {
   getPreparation(orderUuid, useOrderGateway())
@@ -92,8 +100,12 @@ const printLabel = (delivery) => {
   printDeliveryLabel(delivery.uuid, useDeliveryGateway())
 }
 
+const markAsDelivered = async (delivery) => {
+  await markDeliveryAsDelivered(delivery.uuid, useDeliveryGateway())
+  router.push('/orders/')
+}
+
 const getInvoice = () => {
-  const router = useRouter()
   const encodedInvoiceNumber = encodeURIComponent(orderVM.value.invoiceNumber)
   router.push(`/invoices/${encodedInvoiceNumber}`)
 }
