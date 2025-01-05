@@ -7,7 +7,7 @@ export class InMemoryDeliveryGateway implements DeliveryGateway {
   private printed: Array<UUID> = []
 
   list(): Promise<Array<Delivery>> {
-    return Promise.resolve(this.deliveries)
+    return Promise.resolve(JSON.parse(JSON.stringify(this.deliveries)))
   }
 
   ship(uuids: Array<UUID>): Promise<Array<Delivery>> {
@@ -25,6 +25,14 @@ export class InMemoryDeliveryGateway implements DeliveryGateway {
   printLabel(uuid: UUID): Promise<void> {
     this.printed.push(uuid)
     return Promise.resolve()
+  }
+
+  markAsDelivered(uuid: UUID): Promise<Delivery> {
+    const index = this.deliveries.findIndex(
+      (delivery) => delivery.uuid === uuid
+    )
+    this.deliveries[index].status = DeliveryStatus.Delivered
+    return Promise.resolve(JSON.parse(JSON.stringify(this.deliveries[index])))
   }
 
   listPrinted(): Array<UUID> {
