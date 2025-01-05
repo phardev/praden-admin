@@ -5,10 +5,12 @@ import {
   orderPrepared1,
   orderToPrepare1,
   orderWithCustomerMessage,
-  orderWithMissingProduct1
+  orderWithMissingProduct1,
+  orderWithoutPayment
 } from '@utils/testData/orders'
 import {
   AnonymousOrder,
+  DeliveryType,
   Order,
   OrderLineStatus,
   PaymentStatus
@@ -371,6 +373,33 @@ describe('Get order VM', () => {
         expectVMToMatch(expectedVM)
       })
     })
+    describe('Order without payment', () => {
+      it('should return the order vm with waiting for payment', () => {
+        givenCurrentOrderIs(orderWithoutPayment)
+        const expectedVM: Partial<GetOrderVM> = {
+          reference: orderWithoutPayment.uuid,
+          customer: {
+            firstname: orderWithoutPayment.deliveryAddress.firstname,
+            lastname: orderWithoutPayment.deliveryAddress.lastname,
+            email: orderWithoutPayment.contact.email,
+            phone: orderWithoutPayment.contact.phone
+          },
+          deliveryAddress: {
+            name: 'Jean Bon',
+            address: '10 rue des peupliers',
+            city: 'PlopLand',
+            zip: '12345',
+            country: 'Plop',
+            phone: '0123456789'
+          },
+          orderStatus: OrderLineStatus.Created,
+          deliveryStatus: orderWithoutPayment.deliveries[0].status,
+          deliveries: orderWithoutPayment.deliveries.map(buildDeliveriesVM),
+          paymentStatus: PaymentStatus.WaitingForPayment
+        }
+        expectVMToMatch(expectedVM)
+      })
+    })
   })
 
   const givenCurrentOrderIs = (order: Order) => {
@@ -414,7 +443,8 @@ describe('Get order VM', () => {
       client: `${delivery.receiver.address.firstname} ${delivery.receiver.address.lastname}`,
       trackingNumber: delivery.trackingNumber ?? '',
       weight: delivery.weight / 1000,
-      status: delivery.status
+      status: delivery.status,
+      canMarkAsDelivered: delivery.method.type === DeliveryType.ClickAndCollect
     }
     if (delivery.trackingNumber) {
       res.followUrl = `https://laposte.fr/outils/suivre-vos-envois?code=${delivery.trackingNumber}`

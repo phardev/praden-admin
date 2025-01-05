@@ -1791,3 +1791,74 @@ export const orderWithCustomerMessage: AnonymousOrder = {
   messages: [],
   customerMessage: 'Special message'
 }
+
+export const orderWithoutPayment: AnonymousOrder = {
+  uuid: 'order-without-payment',
+  lines: [
+    {
+      productUuid: dolodent.uuid,
+      name: dolodent.name,
+      ean13: dolodent.ean13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      locations: dolodent.locations,
+      status: OrderLineStatus.Created,
+      updatedAt: 1674273279000
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
+  },
+  createdAt: 1674273279000,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  deliveries: [
+    {
+      uuid: 'delivery-order-with-customer-message',
+      price: 0,
+      method: clickAndCollect,
+      weight: 987,
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345',
+          country: 'Plop'
+        }
+      },
+      status: DeliveryStatus.Created
+    }
+  ],
+  messages: [],
+  customerMessage: 'Special message'
+}
