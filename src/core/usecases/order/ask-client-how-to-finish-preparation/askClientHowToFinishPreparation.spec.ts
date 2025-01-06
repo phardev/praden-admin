@@ -72,6 +72,27 @@ describe('Ask client how to finish preparation', () => {
       )
     })
   })
+
+  describe('Loading', () => {
+    beforeEach(() => {
+      givenThereIsExistingOrders(orderToPrepare2)
+      givenThereIsACurrentPreparation(orderToPrepare2)
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = preparationStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenAskClientHowToFinishPreparation()
+    })
+    it('should be aware that loading is over', async () => {
+      await whenAskClientHowToFinishPreparation()
+      expect(preparationStore.isLoading).toBe(false)
+    })
+  })
+
   describe('The current preparation does not exists', () => {
     it('should throw an error', async () => {
       givenThereIsACurrentPreparation(orderToPrepare1)

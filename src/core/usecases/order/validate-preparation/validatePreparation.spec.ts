@@ -58,7 +58,7 @@ describe('Validate preparation', () => {
       let expectedInvoiceNumber: string
       let expectedInvoice: Invoice
       beforeEach(() => {
-        expectedInvoiceNumber = order.payment.invoiceNumber
+        expectedInvoiceNumber = order.invoiceNumber
         const expectedOrder: Order = JSON.parse(JSON.stringify(order))
         expectedOrder.lines[0].status = OrderLineStatus.Prepared
         expectedOrder.lines[0].updatedAt = now
@@ -107,7 +107,7 @@ describe('Validate preparation', () => {
       let expectedInvoiceNumber: string
       let expectedInvoice: Invoice
       beforeEach(() => {
-        expectedInvoiceNumber = order.payment.invoiceNumber
+        expectedInvoiceNumber = order.invoiceNumber
         const expectedOrder: Order = JSON.parse(JSON.stringify(order))
         expectedOrder.lines[0].status = OrderLineStatus.Prepared
         expectedOrder.lines[1].status = OrderLineStatus.Prepared
@@ -167,7 +167,7 @@ describe('Validate preparation', () => {
         let expectedInvoiceNumber: string
         let expectedInvoice: Invoice
         beforeEach(() => {
-          expectedInvoiceNumber = order.payment.invoiceNumber
+          expectedInvoiceNumber = order.invoiceNumber
           expectedInvoice = {
             id: expectedInvoiceNumber,
             data: expectedOrder,
@@ -225,6 +225,29 @@ describe('Validate preparation', () => {
         }
         expect(await orderGateway.list()).toStrictEqual([expectedOrder])
       })
+    })
+  })
+
+  describe('Loading', () => {
+    const order: Order = JSON.parse(JSON.stringify(orderWithMissingProduct2))
+    beforeEach(() => {
+      now = 1234567894321
+      dateProvider.feedWith(now)
+      givenThereIsExistingOrders(order)
+      givenThereIsAPreparationSelected(order)
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = preparationStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenValidatePreparation()
+    })
+    it('should be aware that loading is over', async () => {
+      await whenValidatePreparation()
+      expect(preparationStore.isLoading).toBe(false)
     })
   })
 

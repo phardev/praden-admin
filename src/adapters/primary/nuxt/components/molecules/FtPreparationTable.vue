@@ -2,6 +2,7 @@
 ft-table(
   :headers="vm.headers"
   :items="vm.lines"
+  :is-loading="vm.isLoading"
 )
   template(#status="{ item }")
     icon.icon-lg.text-yellow-400(v-if="item.status === PreparationStatus.NotPrepared" name="bx:bxs-error")

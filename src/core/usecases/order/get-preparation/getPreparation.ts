@@ -6,7 +6,9 @@ export const getPreparation = async (
   uuid: UUID,
   orderGateway: OrderGateway
 ) => {
-  const preparation = await orderGateway.getByUuid(uuid)
   const preparationStore = usePreparationStore()
+  preparationStore.startLoading()
+  const preparation = await orderGateway.getByUuid(uuid)
   preparationStore.setCurrent(preparation)
+  preparationStore.stopLoading()
 }
