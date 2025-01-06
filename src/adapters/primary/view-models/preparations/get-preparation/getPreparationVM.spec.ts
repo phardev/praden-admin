@@ -16,7 +16,10 @@ import {
   PreparationStatus
 } from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
 import { dolodent, ultraLevure } from '@utils/testData/products'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import {
+  GetPreparationsVM,
+  Header
+} from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import {
   PreparationError,
   PreparationErrorType
@@ -70,7 +73,8 @@ describe('Get preparation VM', () => {
           canValidate: false,
           canCancel: false,
           canAskHowToFinish: false,
-          error: undefined
+          error: undefined,
+          isLoading: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -99,7 +103,8 @@ describe('Get preparation VM', () => {
           canValidate: false,
           canCancel: false,
           canAskHowToFinish: false,
-          error: undefined
+          error: undefined,
+          isLoading: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -326,7 +331,8 @@ describe('Get preparation VM', () => {
         messages: [],
         canValidate: false,
         canCancel: false,
-        canAskHowToFinish: false
+        canAskHowToFinish: false,
+        isLoading: false
       }
       expect(getPreparationVM()).toStrictEqual(emptyVM)
     })
@@ -352,9 +358,21 @@ describe('Get preparation VM', () => {
         canValidate: false,
         canCancel: false,
         canAskHowToFinish: false,
-        error: undefined
+        error: undefined,
+        isLoading: false
       }
       expect(getPreparationVM()).toStrictEqual(expectedVM)
+    })
+  })
+
+  describe('Loading', () => {
+    it('should be aware when loading', () => {
+      givenCurrentPreparationIs(orderToPrepare1)
+      preparationStore.isLoading = true
+      const expectedVM: Partial<GetPreparationsVM> = {
+        isLoading: true
+      }
+      expectVMToMatch(expectedVM)
     })
   })
 

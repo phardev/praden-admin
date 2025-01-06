@@ -34,6 +34,7 @@ export interface GetPreparationVM {
   canCancel: boolean
   canAskHowToFinish: boolean
   error?: PreparationError
+  isLoading: boolean
 }
 
 const canValidate = (
@@ -120,7 +121,8 @@ export const getPreparationVM = (): GetPreparationVM => {
       messages: [],
       canValidate: false,
       canCancel: false,
-      canAskHowToFinish: false
+      canAskHowToFinish: false,
+      isLoading: false
     }
   }
   const headers: Array<Header> = [
@@ -163,7 +165,8 @@ export const getPreparationVM = (): GetPreparationVM => {
     canValidate: canValidate(lines, preparation.messages),
     canCancel: canCancel(preparation.messages),
     canAskHowToFinish: canAskHowToFinish(lines, preparation),
-    error
+    error,
+    isLoading: preparationStore.isLoading
   }
   if (preparation.customerMessage) {
     res.customerMessage = preparation.customerMessage

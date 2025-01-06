@@ -10,7 +10,8 @@ import {
   orderPrepared1,
   orderToPrepare1,
   orderToPrepare2,
-  orderWithMissingProduct1
+  orderWithMissingProduct1,
+  orderWithoutPayment
 } from '@utils/testData/orders'
 import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
@@ -85,7 +86,7 @@ describe('List orders to prepare', () => {
       expectPreparationStoreToContains()
     })
     it('should not list orders if they are not payed', async () => {
-      givenExistingOrders(orderNotPayed1)
+      givenExistingOrders(orderNotPayed1, orderWithoutPayment)
       await whenListOrdersToPrepare()
       expectPreparationStoreToContains()
     })

@@ -29,6 +29,7 @@ export class InMemoryOrderGateway implements OrderGateway {
     const toPrepare = this.orders.filter(
       (o) =>
         !o.lines.every((l) => l.status >= OrderLineStatus.Prepared) &&
+        o.payment &&
         o.payment.status > PaymentStatus.WaitingForPayment
     )
     return Promise.resolve(toPrepare)
