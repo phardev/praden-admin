@@ -7,7 +7,6 @@ invoice.hidden.printme.mx-2
     placeholder="Code produit"
     @scanned="scanProductToPreparation"
   )
-  pre isLoading {{ preparationVM.isLoading }}
   ft-preparation-table(
     :vm="preparationVM"
   )
