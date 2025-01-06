@@ -6,6 +6,7 @@ export const askClientHowToFinishPreparation = async (
   orderGateway: OrderGateway
 ) => {
   const preparationStore = usePreparationStore()
+  preparationStore.startLoading()
   const currentPreparation = preparationStore.current
   if (!currentPreparation) throw new NoPreparationSelectedError()
   const preparation = await orderGateway.askHowToFinish(
@@ -13,4 +14,5 @@ export const askClientHowToFinishPreparation = async (
   )
   preparationStore.update(preparation)
   preparationStore.setCurrent(preparation)
+  preparationStore.stopLoading()
 }

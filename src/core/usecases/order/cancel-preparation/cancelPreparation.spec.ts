@@ -56,7 +56,7 @@ describe('Cancel preparation', () => {
       let expectedInvoiceNumber: string
       let expectedInvoice: Invoice
       beforeEach(() => {
-        expectedInvoiceNumber = order.payment.invoiceNumber
+        expectedInvoiceNumber = order.invoiceNumber
         expectedInvoice = {
           id: expectedInvoiceNumber,
           data: expectedOrder,
@@ -71,6 +71,25 @@ describe('Cancel preparation', () => {
       it('should save the invoice in store', async () => {
         expect(invoiceStore.current).toStrictEqual(expectedInvoice)
       })
+    })
+  })
+  describe('Loading', () => {
+    beforeEach(() => {
+      givenPreparationsExists(orderToCancel)
+      givenCurrentPreparationIs(orderToCancel)
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = preparationStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenCancelPreparation()
+    })
+    it('should be aware that loading is over', async () => {
+      await whenCancelPreparation()
+      expect(preparationStore.isLoading).toBe(false)
     })
   })
   describe('There is no current preparation', () => {

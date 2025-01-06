@@ -9,6 +9,7 @@ export const validatePreparation = async (
   invoiceGateway: InvoiceGateway
 ) => {
   const preparationStore = usePreparationStore()
+  preparationStore.startLoading()
   const preparation = preparationStore.current
   if (!preparation) throw new NoPreparationSelectedError()
   const validated = await orderGateway.validatePreparation(preparation)
@@ -16,4 +17,5 @@ export const validatePreparation = async (
   const invoice = await invoiceGateway.create(validated)
   const invoiceStore = useInvoiceStore()
   invoiceStore.set(invoice)
+  preparationStore.stopLoading()
 }

@@ -111,6 +111,27 @@ describe('Save preparation', () => {
         )
       })
     })
+
+    describe('Loading', () => {
+      beforeEach(() => {
+        givenThereIsExistingPreparations(orderToPrepare2)
+        givenThereIsACurrentPreparation(orderToPrepare2)
+      })
+      it('should be aware during loading', async () => {
+        const unsubscribe = preparationStore.$subscribe(
+          (mutation: any, state: any) => {
+            expect(state.isLoading).toBe(true)
+            unsubscribe()
+          }
+        )
+        await whenSaveCurrentPreparation()
+      })
+      it('should be aware that loading is over', async () => {
+        await whenSaveCurrentPreparation()
+        expect(preparationStore.isLoading).toBe(false)
+      })
+    })
+
     describe('The preparation does not exists', () => {
       it('should throw an error', async () => {
         const current = JSON.parse(JSON.stringify(orderToPrepare1))

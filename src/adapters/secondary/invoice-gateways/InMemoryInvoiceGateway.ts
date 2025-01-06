@@ -20,7 +20,7 @@ export class InMemoryInvoiceGateway implements InvoiceGateway {
 
   create(order: Order): Promise<Invoice> {
     const invoice: Invoice = {
-      id: order.payment.invoiceNumber,
+      id: order.invoiceNumber,
       data: order,
       createdAt: this.dateProvider.now()
     }
