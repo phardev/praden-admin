@@ -46,7 +46,7 @@
       :headers="invoiceVM.taxDetailsTable.headers"
       :items="invoiceVM.taxDetailsTable.items"
     )
-    div(class="w-1/2").border.border-light.ml-8
+    div.invoice-summary(class="w-1/2").border.border-light.ml-8
       div.flex.items-center.justify-around.m-2
         div(class="w-1/2") Total Produits
         div.text-right(class="w-1/2") {{ invoiceVM.totals.linesTotal }}
@@ -74,3 +74,11 @@ const invoiceVM = computed(() => {
   return getInvoiceVM()
 })
 </script>
+
+<style scoped>
+@media print {
+  .invoice-summary {
+    page-break-inside: avoid;
+  }
+}
+</style>

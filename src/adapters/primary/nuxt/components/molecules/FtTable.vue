@@ -136,3 +136,40 @@ const getValue = (item, key) => {
   return key.split('.').reduce((item, key) => item && item[key], item)
 }
 </script>
+
+<style scoped>
+@media print {
+  td {
+    white-space: normal !important; /* Allows wrapping */
+    overflow: visible !important; /* Ensure content is visible */
+  }
+
+  div[style*='max-height'] {
+    max-height: none !important;
+  }
+
+  .break-page {
+    page-break-before: always;
+  }
+
+  .invoice {
+    font-size: 12px; /* Adjust font size for printing */
+  }
+
+  table {
+    page-break-inside: auto !important; /* Allow page breaks within tables */
+  }
+
+  tr {
+    page-break-inside: avoid !important; /* Avoid page breaks within table rows */
+  }
+
+  thead {
+    display: table-header-group !important; /* Repeat table headers on each page */
+  }
+
+  tfoot {
+    display: table-footer-group !important; /* Repeat table footers on each page */
+  }
+}
+</style>
