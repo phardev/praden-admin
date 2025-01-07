@@ -8,6 +8,7 @@ div.hidden.printme.mx-2
   div.flex.flex-row-reverse
     div
       p.mb-4 Nombre de colis {{ toPrint.count }}
+      time(:datetime='new Date(now)') Le {{ timestampToLocaleString(now, 'fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }) }}
       p.mr-0 Signature
       canvas.w-64.h-24.border.border-opposite
 
@@ -41,12 +42,16 @@ import { useDeliveryGateway } from '../../../../../../gateways/deliveryGateway'
 import { getDeliveriesVM } from '@adapters/primary/view-models/deliveries/get-deliveries-vm/getDeliveriesVM'
 import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'
 import { shipDeliveries } from '@core/usecases/deliveries/delivery-shipping/shipDeliveries'
+import { useDateProvider } from '../../../../../../gateways/dateProvider'
+import { timestampToLocaleString } from '@utils/formatters'
 
 definePageMeta({ layout: 'main' })
 
 onMounted(() => {
   listDeliveries(useDeliveryGateway())
 })
+
+const now = useDateProvider().now()
 
 const deliveriesVM = computed(() => {
   return getDeliveriesVM()
