@@ -1,4 +1,4 @@
-import { Product } from '@core/entities/product'
+import { Product, ProductStatus } from '@core/entities/product'
 import { baby, dents, diarrhee, minceur } from '@utils/testData/categories'
 import { reserve, zoneGeo } from '@utils/testData/locations'
 import {
@@ -12,6 +12,7 @@ import {
 
 export const dolodent: Product = {
   uuid: 'product-dolodent',
+  status: ProductStatus.Active,
   name: 'Dolodent solution 27g',
   miniature:
     'https://www.pharmacieagnespraden.com/img/tmp/product_mini_195_1.jpg',
@@ -32,6 +33,7 @@ export const dolodent: Product = {
 
 export const ultraLevure: Product = {
   uuid: 'product-ultralevure',
+  status: ProductStatus.Inactive,
   name: 'Ultra levure 200 mg 10 gélules',
   miniature:
     'https://www.pharmacieagnespraden.com/img/tmp/product_mini_198_1.jpg?time=1675901328',
@@ -57,6 +59,7 @@ export const ultraLevure: Product = {
 
 export const anaca3Minceur: Product = {
   uuid: 'product-anaca3minceur',
+  status: ProductStatus.Active,
   name: 'Anaca3 Perte de Poids Infusion 24 Sachets',
   miniature:
     'https://www.pharmacieagnespraden.com/img/tmp/product_mini_198_1.jpg?time=1675901328',
@@ -78,6 +81,7 @@ export const anaca3Minceur: Product = {
 
 export const chamomilla: Product = {
   uuid: 'product-chamomilla',
+  status: ProductStatus.Active,
   name: 'Chamomilla vulgaris 9CH suppositoires Boiron (poussée dentaire)',
   miniature:
     'https://www.pharmacieagnespraden.com/img/tmp/product_mini_198_1.jpg?time=1675901328',
@@ -98,6 +102,7 @@ export const chamomilla: Product = {
 
 export const calmosine: Product = {
   uuid: 'product-calmosine',
+  status: ProductStatus.Active,
   name: 'Calmosine 100 ml',
   images: [
     'https://www.pharmacieagnespraden.com/70697-home_default/calmosine-100ml.jpg'
@@ -117,6 +122,7 @@ export const calmosine: Product = {
 
 export const hemoclar: Product = {
   uuid: 'product-hemoclar',
+  status: ProductStatus.Active,
   name: 'Hemoclar 0,5% crème 30g',
   images: [
     'https://fakeimg.pl/300/',
@@ -138,6 +144,7 @@ export const hemoclar: Product = {
 
 export const productWithoutLocation: Product = {
   uuid: 'product-withoutlocation',
+  status: ProductStatus.Active,
   name: 'Product without location',
   images: ['https://fakeimg.pl/300/'],
   miniature: '',
@@ -155,6 +162,7 @@ export const productWithoutLocation: Product = {
 
 export const productWithoutCategory: Product = {
   uuid: 'product-withoutCategory',
+  status: ProductStatus.Active,
   name: 'Product without category',
   images: ['https://fakeimg.pl/300/'],
   categories: [],
@@ -173,6 +181,7 @@ export const productWithoutCategory: Product = {
 
 export const productWithoutLaboratory: Product = {
   uuid: 'product-withoutLaboratory',
+  status: ProductStatus.Active,
   name: 'Product without laboratory',
   images: ['https://fakeimg.pl/300/'],
   categories: [baby],

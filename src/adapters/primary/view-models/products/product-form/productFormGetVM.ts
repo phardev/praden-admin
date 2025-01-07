@@ -14,6 +14,7 @@ import { Location, sortLocationByOrder } from '@core/entities/location'
 import { ReductionType } from '@core/entities/promotion'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import { useLaboratoryStore } from '@store/laboratoryStore'
+import { isProductActive } from '@core/entities/product'
 
 export interface GetProductPromotionVM {
   href: string
@@ -106,6 +107,8 @@ export class ExistingProductFormInitializer implements FormInitializer {
     }
     this.formStore.set(this.key, {
       name: product.name,
+      status: product.status,
+      isActive: isProductActive(product),
       categoryUuids: product.categories.map((c) => c.uuid),
       cip7: product.cip7,
       cip13: product.cip13,

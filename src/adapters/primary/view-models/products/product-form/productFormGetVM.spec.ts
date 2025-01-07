@@ -44,6 +44,7 @@ describe('Product form get VM', () => {
   const productsTestsCases = [
     {
       product: ultraLevure,
+      expectedIsActive: false,
       expectedPriceWithoutTax: '4.32',
       expectedPriceWithTax: '4.75',
       expectedLocations: {
@@ -109,6 +110,7 @@ describe('Product form get VM', () => {
     },
     {
       product: dolodent,
+      expectedIsActive: true,
       expectedPriceWithoutTax: '5',
       expectedPriceWithTax: '5.50',
       expectedLocations: {
@@ -145,6 +147,7 @@ describe('Product form get VM', () => {
     },
     {
       product: productWithoutLaboratory,
+      expectedIsActive: true,
       expectedPriceWithoutTax: '5.9',
       expectedPriceWithTax: '6.49',
       expectedLocations: {},
@@ -183,6 +186,7 @@ describe('Product form get VM', () => {
       'For a product',
       ({
         product,
+        expectedIsActive,
         expectedPriceWithoutTax,
         expectedPriceWithTax,
         expectedLocations,
@@ -230,7 +234,8 @@ describe('Product form get VM', () => {
           { field: 'priceWithoutTax', expected: expectedPriceWithoutTax },
           { field: 'priceWithTax', expected: expectedPriceWithTax },
           { field: 'locations', expected: expectedLocations },
-          { field: 'weight', expected: expectedWeight }
+          { field: 'weight', expected: expectedWeight },
+          { field: 'isActive', expected: expectedIsActive }
         ])('Initial field value', ({ field, expected }) => {
           it(`should have ${field} to be "${expected}"`, () => {
             const expectedField: Field<any> = {

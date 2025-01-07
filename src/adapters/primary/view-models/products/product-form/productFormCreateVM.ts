@@ -15,6 +15,7 @@ import { Location } from '@core/entities/location'
 import { UUID } from '@core/types/types'
 import { Laboratory } from '@core/entities/laboratory'
 import { useLaboratoryStore } from '@store/laboratoryStore'
+import { ProductStatus } from '@core/entities/product'
 
 export type CreateProductCategoriesVM = Array<Pick<Category, 'uuid' | 'name'>>
 export type CreateProductLocationsVM = Array<Pick<Location, 'uuid' | 'name'>>
@@ -155,6 +156,7 @@ export class NewProductFormInitializer implements FormInitializer {
   init() {
     this.formStore.set(this.key, {
       name: '',
+      isActive: true,
       categoryUuids: [],
       cip7: '',
       cip13: '',
@@ -198,6 +200,11 @@ export class ProductFormCreateVM extends ProductFormVM {
   async setMiniature(miniature: File): Promise<void> {
     const data = await getFileContent(miniature)
     await this.fieldsWriter.set('miniature', data)
+  }
+
+  toggleIsActive(): void {
+    const isActive = this.fieldsReader.get('isActive')
+    this.fieldsWriter.set('isActive', !isActive)
   }
 
   toggleCategory(uuid: UUID): void {
@@ -250,6 +257,9 @@ export class ProductFormCreateVM extends ProductFormVM {
     )
     return {
       name: this.fieldsReader.get('name'),
+      status: this.fieldsReader.get('isActive')
+        ? ProductStatus.Active
+        : ProductStatus.Inactive,
       cip7: this.fieldsReader.get('cip7'),
       cip13: this.fieldsReader.get('cip13'),
       ean13: this.fieldsReader.get('ean13'),

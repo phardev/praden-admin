@@ -10,6 +10,7 @@ import type { Field } from '@adapters/primary/view-models/promotions/promotion-f
 import { useLaboratoryStore } from '@store/laboratoryStore'
 import { anaca3, avene, sanofiAventis } from '@utils/testData/laboratories'
 import { useProductStore } from '@store/productStore'
+import { ProductStatus } from '@core/entities/product'
 
 describe('Product form create VM', () => {
   let vm: ProductFormCreateVM
@@ -27,6 +28,7 @@ describe('Product form create VM', () => {
   describe('Initial VM', () => {
     const expected: any = {
       name: '',
+      isActive: true,
       categoryUuids: [],
       cip7: '',
       cip13: '',
@@ -71,7 +73,8 @@ describe('Product form create VM', () => {
       { field: 'priceWithoutTax', expected: expected.priceWithoutTax },
       { field: 'priceWithTax', expected: expected.priceWithTax },
       { field: 'locations', expected: expected.locations },
-      { field: 'weight', expected: expected.weight }
+      { field: 'weight', expected: expected.weight },
+      { field: 'isActive', expected: expected.isActive }
     ])('Initial field value', ({ field, expected }) => {
       it(`should have ${field} to be "${expected}"`, () => {
         const expectedField: Field<any> = {
@@ -153,6 +156,23 @@ describe('Product form create VM', () => {
       })
     })
   })
+  describe('Toggle is active', () => {
+    it('should toggle is active', () => {
+      vm.toggleIsActive()
+      expect(vm.get('isActive')).toStrictEqual({
+        canEdit: true,
+        value: false
+      })
+    })
+    it('should toggle 2 times', () => {
+      vm.toggleIsActive()
+      vm.toggleIsActive()
+      expect(vm.get('isActive')).toStrictEqual({
+        canEdit: true,
+        value: true
+      })
+    })
+  })
   describe('DTO', () => {
     describe('For a dto', () => {
       beforeEach(() => {
@@ -169,6 +189,7 @@ describe('Product form create VM', () => {
         })
         const expectedDTO: CreateProductDTO = {
           name: 'test',
+          status: ProductStatus.Active,
           cip7: '1234567',
           cip13: '1234567890123',
           ean13: '1234567890123',
@@ -208,6 +229,62 @@ describe('Product form create VM', () => {
         expect(vm.getDto()).toStrictEqual(expectedDTO)
       })
     })
+    describe('For a dto with inactive product', () => {
+      beforeEach(() => {
+        laboratoryStore.items = [avene, sanofiAventis]
+      })
+      it('should prepare the dto', async () => {
+        const newImages = [
+          new File(['data1'], 'File 1', { type: 'image/png' }),
+          new File(['data2'], 'File 2', { type: 'image/jpeg' }),
+          new File(['data3'], 'File 3', { type: 'image/gif' })
+        ]
+        const newMiniature = new File(['data1'], 'MINIATURE', {
+          type: 'image/png'
+        })
+        const expectedDTO: CreateProductDTO = {
+          name: 'test',
+          status: ProductStatus.Inactive,
+          cip7: '1234567',
+          cip13: '1234567890123',
+          ean13: '1234567890123',
+          categoryUuids: ['abc123'],
+          laboratory: sanofiAventis,
+          miniature: newMiniature,
+          images: newImages,
+          priceWithoutTax: 1200,
+          percentTaxRate: 5,
+          locations: {},
+          availableStock: 21,
+          description: '<p>description</p>',
+          instructionsForUse: '<p>instructionsForUse</p>',
+          composition: '<p>composition</p>',
+          weight: 1200,
+          maxQuantityForOrder: 12
+        }
+        vm.toggleIsActive()
+        vm.set('name', expectedDTO.name)
+        vm.set('cip7', expectedDTO.cip7)
+        vm.set('cip13', expectedDTO.cip13)
+        vm.set('ean13', expectedDTO.ean13)
+        await vm.set('miniature', newMiniature)
+        await vm.set('images', newImages)
+        expectedDTO.categoryUuids.forEach((uuid) => {
+          vm.toggleCategory(uuid)
+        })
+        vm.set('laboratory', expectedDTO.laboratory.uuid)
+        vm.set('priceWithoutTax', '12')
+        vm.set('percentTaxRate', '5')
+        vm.set('locations', expectedDTO.locations)
+        vm.set('availableStock', '21')
+        vm.set('description', expectedDTO.description)
+        vm.set('instructionsForUse', expectedDTO.instructionsForUse)
+        vm.set('composition', expectedDTO.composition)
+        vm.set('weight', '1.2')
+        vm.set('maxQuantityForOrder', '12')
+        expect(vm.getDto()).toStrictEqual(expectedDTO)
+      })
+    })
     describe('For a dto without category', () => {
       beforeEach(() => {
         laboratoryStore.items = [avene, sanofiAventis]
@@ -223,6 +300,7 @@ describe('Product form create VM', () => {
         })
         const expectedDTO: CreateProductDTO = {
           name: 'test',
+          status: ProductStatus.Active,
           cip7: '1234567',
           cip13: '1234567890123',
           ean13: '1234567890123',
@@ -274,6 +352,7 @@ describe('Product form create VM', () => {
         })
         const expectedDTO: CreateProductDTO = {
           name: 'test',
+          status: ProductStatus.Active,
           cip7: '1234567',
           cip13: '1234567890123',
           ean13: '1234567890123',

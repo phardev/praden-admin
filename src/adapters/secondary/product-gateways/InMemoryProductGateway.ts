@@ -40,6 +40,7 @@ export class InMemoryProductGateway implements ProductGateway {
     }
     const product: Product = {
       uuid: this.uuidGenerator.generate(),
+      status: dto.status,
       categories: [],
       name: dto.name,
       cip7: dto.cip7,

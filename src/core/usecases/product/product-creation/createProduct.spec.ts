@@ -5,7 +5,7 @@ import {
   createProduct,
   CreateProductDTO
 } from '@core/usecases/product/product-creation/createProduct'
-import { Product } from '@core/entities/product'
+import { Product, ProductStatus } from '@core/entities/product'
 import { dolodent, hemoclar } from '@utils/testData/products'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { reserve, zoneGeo } from '@utils/testData/locations'
@@ -46,6 +46,7 @@ describe('Create product', () => {
         uuidGenerator.setNext(uuid)
         dto = {
           name: 'Created product',
+          status: ProductStatus.Active,
           cip7: '1234567',
           cip13: '1234567890123',
           ean13: '1234567890123',
@@ -64,6 +65,7 @@ describe('Create product', () => {
         expectedProduct = {
           uuid,
           name: dto.name,
+          status: dto.status,
           cip7: dto.cip7,
           cip13: dto.cip13,
           ean13: dto.ean13,
@@ -96,6 +98,7 @@ describe('Create product', () => {
         uuidGenerator.setNext(uuid)
         dto = {
           name: 'Another created product',
+          status: ProductStatus.Inactive,
           cip7: '0987654',
           cip13: '0987654321098',
           ean13: '0987654321098',
@@ -121,6 +124,7 @@ describe('Create product', () => {
         }
         expectedProduct = {
           uuid,
+          status: dto.status,
           categories: [diarrhee],
           name: dto.name,
           cip7: dto.cip7,
@@ -156,6 +160,7 @@ describe('Create product', () => {
       const uuid = 'another-uuid'
       const dto: CreateProductDTO = {
         name: 'Another created product',
+        status: ProductStatus.Active,
         cip7: '0987654',
         cip13: '0987654321098',
         ean13: '0987654321098',
@@ -181,6 +186,7 @@ describe('Create product', () => {
       }
       const expectedProduct: Product = {
         uuid,
+        status: dto.status,
         name: dto.name,
         categories: [],
         cip7: dto.cip7,
@@ -223,6 +229,7 @@ describe('Create product', () => {
       uuidGenerator.setNext(uuid)
       dto = {
         name: 'Created product',
+        status: ProductStatus.Active,
         cip7: '1234567',
         cip13: '1234567890123',
         ean13: '1234567890123',
