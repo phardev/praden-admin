@@ -5,8 +5,14 @@ import { Laboratory } from '@core/entities/laboratory'
 
 export type Stock = HashTable<number>
 
+export enum ProductStatus {
+  Active = 'ACTIVE',
+  Inactive = 'INACTIVE'
+}
+
 export interface Product {
   uuid: UUID
+  status: ProductStatus
   name: string
   miniature: string
   images: Array<string>
@@ -34,4 +40,8 @@ export interface ProductWithPromotion {
 
 export const isProduct = (object: any): object is Product => {
   return 'cip13' in object
+}
+
+export const isProductActive = (product: Product): boolean => {
+  return product.status === ProductStatus.Active
 }

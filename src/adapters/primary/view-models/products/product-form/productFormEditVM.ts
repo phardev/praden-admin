@@ -17,6 +17,7 @@ import { ReductionType } from '@core/entities/promotion'
 import { UUID } from '@core/types/types'
 import { useLaboratoryStore } from '@store/laboratoryStore'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
+import { ProductStatus } from '@core/entities/product'
 
 export class ProductFormEditVM extends ProductFormVM {
   private fieldsReader: ProductFormFieldsReader
@@ -46,6 +47,11 @@ export class ProductFormEditVM extends ProductFormVM {
       categoryUuids.splice(index, 1)
     }
     this.fieldsWriter.set('categoryUuids', categoryUuids)
+  }
+
+  toggleIsActive(): void {
+    const isActive = this.fieldsReader.get('isActive')
+    this.fieldsWriter.set('isActive', !isActive)
   }
 
   private createField<T>(fieldName: string): Field<T> {
@@ -87,6 +93,9 @@ export class ProductFormEditVM extends ProductFormVM {
     )
     return {
       name: this.fieldsReader.get('name'),
+      status: this.fieldsReader.get('isActive')
+        ? ProductStatus.Active
+        : ProductStatus.Inactive,
       cip7: this.fieldsReader.get('cip7'),
       cip13: this.fieldsReader.get('cip13'),
       ean13: this.fieldsReader.get('ean13'),

@@ -37,6 +37,15 @@ UForm(v-else)
     :items="items"
   )
     template(#informations)
+      UFormGroup.pb-4(label="Statut" name="status")
+        UToggle(
+          size="xl"
+          on-icon="i-heroicons-check-20-solid"
+          off-icon="i-heroicons-x-mark-20-solid"
+          :model-value="currentVM.get('isActive').value"
+          :disabled="!currentVM.get('isActive').canEdit"
+          @click="toggleIsActive"
+        )
       UFormGroup.pb-4(label="Nom" name="name")
         ft-text-field(
           :model-value="currentVM.get('name').value"
@@ -338,6 +347,10 @@ const instructionsChanged = (instructions: string) => {
 
 const compositionChanged = (composition: string) => {
   currentVM?.value?.set('composition', composition)
+}
+
+const toggleIsActive = () => {
+  currentVM?.value?.toggleIsActive()
 }
 
 const emit = defineEmits<{

@@ -17,6 +17,7 @@ import {
 } from '@utils/testData/laboratories'
 import { useLaboratoryStore } from '@store/laboratoryStore'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
+import { ProductStatus } from '@core/entities/product'
 
 describe('Product form edit VM', () => {
   let locationStore: any
@@ -38,6 +39,7 @@ describe('Product form edit VM', () => {
   const productsTestsCases = [
     {
       product: ultraLevure,
+      status: ultraLevure.status,
       expectedPriceWithoutTax: '4.32',
       expectedPriceWithTax: '4.75',
       expectedLocations: {
@@ -103,6 +105,7 @@ describe('Product form edit VM', () => {
     },
     {
       product: dolodent,
+      status: dolodent.status,
       expectedPriceWithoutTax: '5',
       expectedPriceWithTax: '5.50',
       expectedLocations: {
@@ -168,6 +171,7 @@ describe('Product form edit VM', () => {
         })
         describe.each([
           { field: 'name', expected: product.name },
+          { field: 'status', expected: product.status },
           {
             field: 'categoryUuids',
             expected: product.categories.map((c) => c.uuid)
@@ -300,6 +304,33 @@ describe('Product form edit VM', () => {
       })
     })
   })
+  describe('Toggle is active', () => {
+    it('should toggle is active', () => {
+      const product = JSON.parse(JSON.stringify(ultraLevure))
+      productStore.current = {
+        product
+      }
+      vm = productFormEditVM(key)
+      vm.toggleIsActive()
+      expect(vm.get('isActive')).toStrictEqual({
+        canEdit: true,
+        value: true
+      })
+    })
+    it('should toggle 2 times', () => {
+      const product = JSON.parse(JSON.stringify(ultraLevure))
+      productStore.current = {
+        product
+      }
+      vm = productFormEditVM(key)
+      vm.toggleIsActive()
+      vm.toggleIsActive()
+      expect(vm.get('isActive')).toStrictEqual({
+        canEdit: true,
+        value: false
+      })
+    })
+  })
   describe('Change laboratory', () => {
     const product = dolodent
     beforeEach(() => {
@@ -380,6 +411,7 @@ describe('Product form edit VM', () => {
         })
         const expectedDTO: EditProductDTO = {
           name: 'test',
+          status: ProductStatus.Active,
           cip7: '1234567',
           cip13: '1234567890123',
           ean13: '1234567890123',
@@ -429,6 +461,7 @@ describe('Product form edit VM', () => {
         })
         const expectedDTO: EditProductDTO = {
           name: 'test',
+          status: ProductStatus.Inactive,
           cip7: '1234567',
           cip13: '1234567890123',
           ean13: '1234567890123',
@@ -446,6 +479,7 @@ describe('Product form edit VM', () => {
           weight: 1200,
           maxQuantityForOrder: 12
         }
+        vm.toggleIsActive()
         vm.set('name', expectedDTO.name)
         vm.set('cip7', expectedDTO.cip7)
         vm.set('cip13', expectedDTO.cip13)
