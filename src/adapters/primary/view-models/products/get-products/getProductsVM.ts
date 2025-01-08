@@ -1,5 +1,5 @@
 import { useProductStore } from '@store/productStore'
-import { Product } from '@core/entities/product'
+import { Product, ProductStatus } from '@core/entities/product'
 import { priceFormatter } from '@utils/formatters'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { UUID } from '@core/types/types'
@@ -15,6 +15,7 @@ export interface GetProductsItemVM {
   priceWithoutTax: string
   priceWithTax: string
   availableStock: number
+  isActive: boolean
 }
 
 export interface GetProductsVM {
@@ -68,6 +69,10 @@ export const getProductsVM = (key: string): GetProductsVM => {
     {
       name: 'Stock',
       value: 'availableStock'
+    },
+    {
+      name: 'Statut',
+      value: 'isActive'
     }
   ]
   return {
@@ -84,7 +89,8 @@ export const getProductsVM = (key: string): GetProductsVM => {
         categories: p.categories.map((c) => c.name),
         priceWithoutTax: formatter.format(p.priceWithoutTax / 100),
         priceWithTax: formatter.format(priceWithTax / 100),
-        availableStock: p.availableStock
+        availableStock: p.availableStock,
+        isActive: p.status === ProductStatus.Active
       }
     }),
     currentSearch: searchFilter,

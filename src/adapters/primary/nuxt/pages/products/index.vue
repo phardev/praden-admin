@@ -3,7 +3,7 @@
   div.flex.flex-row-reverse
     nuxt-link(to="/products/new")
       ft-button.button-solid.text-xl.px-6 Créer produit
-  ft-table(
+  product-table(
     :headers="productsVM.headers"
     :items="productsVM.items"
     :is-loading="productsVM.isLoading"
@@ -20,16 +20,8 @@
         @input="searchChanged"
       ) Rechercher un produit
       p.warning.text-warning(v-if="productsVM.searchError") {{ productsVM.searchError }}
-    template(#img="{ item }")
-      .h-10.w-10
-        img.rounded-full.h-10.w-10(:src="item.img")
     template(#name="{ item }")
       .font-medium.text-default {{ item.name }}
-    template(#categories="{ item }")
-      div(v-if="item.categories && item.categories.length")
-        div.mb-1(v-for="category in item.categories" :key="category")
-          UBadge(variant="subtle" :label="category")
-      div(v-else)
   InfiniteLoading(@infinite="load")
     template(#complete)
       div

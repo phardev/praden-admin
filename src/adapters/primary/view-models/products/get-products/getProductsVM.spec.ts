@@ -48,6 +48,10 @@ describe('Get products VM', () => {
     {
       name: 'Stock',
       value: 'availableStock'
+    },
+    {
+      name: 'Statut',
+      value: 'isActive'
     }
   ]
 
@@ -82,7 +86,8 @@ describe('Get products VM', () => {
               categories: [],
               priceWithoutTax: '5,90\u00A0€',
               priceWithTax: '6,49\u00A0€',
-              availableStock: productWithoutCategory.availableStock
+              availableStock: productWithoutCategory.availableStock,
+              isActive: true
             }
           ]
         }
@@ -105,7 +110,8 @@ describe('Get products VM', () => {
               ),
               priceWithoutTax: '5,90\u00A0€',
               priceWithTax: '6,49\u00A0€',
-              availableStock: productWithoutCategory.availableStock
+              availableStock: productWithoutCategory.availableStock,
+              isActive: true
             }
           ]
         }
@@ -127,7 +133,8 @@ describe('Get products VM', () => {
               categories: dolodent.categories.map((c) => c.name),
               priceWithoutTax: '5,00\u00A0€',
               priceWithTax: '5,50\u00A0€',
-              availableStock: dolodent.availableStock
+              availableStock: dolodent.availableStock,
+              isActive: true
             },
             {
               uuid: ultraLevure.uuid,
@@ -138,7 +145,8 @@ describe('Get products VM', () => {
               categories: ultraLevure.categories.map((c) => c.name),
               priceWithoutTax: '4,32\u00A0€',
               priceWithTax: '4,75\u00A0€',
-              availableStock: ultraLevure.availableStock
+              availableStock: ultraLevure.availableStock,
+              isActive: false
             }
           ]
         }
@@ -163,7 +171,8 @@ describe('Get products VM', () => {
                 categories: dolodent.categories.map((c) => c.name),
                 priceWithoutTax: '5,00\u00A0€',
                 priceWithTax: '5,50\u00A0€',
-                availableStock: dolodent.availableStock
+                availableStock: dolodent.availableStock,
+                isActive: true
               }
             ],
             currentSearch: 'dol'
@@ -188,7 +197,8 @@ describe('Get products VM', () => {
                 categories: ultraLevure.categories.map((c) => c.name),
                 priceWithoutTax: '4,32\u00A0€',
                 priceWithTax: '4,75\u00A0€',
-                availableStock: ultraLevure.availableStock
+                availableStock: ultraLevure.availableStock,
+                isActive: false
               }
             ]
           }

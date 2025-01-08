@@ -12,6 +12,12 @@ ft-table(
       div.mb-1(v-for="category in item.categories" :key="category")
         UBadge(variant="subtle" :label="category")
     div(v-else)
+  template(#isActive="{ item }")
+    UToggle(
+      size="md"
+      on-icon="i-heroicons-check-20-solid"
+      off-icon="i-heroicons-x-mark-20-solid"
+      :model-value="item.isActive"
+      :disabled="true"
+    )
 </template>
-
-<script lang="ts" setup></script>
