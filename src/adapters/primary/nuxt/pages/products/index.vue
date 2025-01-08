@@ -12,15 +12,16 @@
     template(#title) Produits
     template(#search)
       .flex.items-center.justify-center.space-x-4
-        ft-text-field.flex-grow(
-          v-model="search"
-          placeholder="Rechercher par nom, référence, catégorie, laboratoire"
-          for="search"
-          type='text'
-          name='search'
-          @input="searchChanged"
-        ) Rechercher un produit
-        p.warning.text-warning(v-if="productsVM.searchError") {{ productsVM.searchError }}
+        .flex-grow
+          ft-text-field(
+            v-model="search"
+            placeholder="Rechercher par nom, référence, catégorie, laboratoire"
+            for="search"
+            type='text'
+            name='search'
+            @input="searchChanged"
+          ) Rechercher un produit
+          p.warning.text-warning(v-if="productsVM.searchError") {{ productsVM.searchError }}
         UFormGroup.pb-4(label="Statut" name="productStatus")
           ft-product-status-select(
             v-model="productStatus"
