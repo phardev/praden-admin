@@ -54,6 +54,7 @@ div.flex.items-center.justify-stretch.space-x-4.space-y-2
             )
         template(#panel="{ close }")
           ft-date-picker(
+            :is-end-date="true"
             :model-value="banner.endDate"
             @update:model-value="(date) => endDateChanged(banner.uuid, date)"
             @close="close"

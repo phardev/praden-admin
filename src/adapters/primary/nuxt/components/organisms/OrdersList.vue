@@ -65,6 +65,7 @@ ft-table(
           template(#panel="{ close }")
             ft-date-picker(
               v-model="endDate"
+              :is-end-date="true"
               @update:model-value="endDateChanged"
               @close="close"
             )
