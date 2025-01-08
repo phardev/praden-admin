@@ -15,16 +15,20 @@ import { SearchCustomersDTO } from '@core/usecases/customers/customer-searching/
 import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
 import { useOrderStore } from '@store/orderStore'
 import { zoneGeo } from '@utils/testData/locations'
+import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
 
 export class RealSearchGateway extends RealGateway implements SearchGateway {
   constructor(url: string) {
     super(url)
   }
 
-  async searchProducts(query: string): Promise<Array<Product>> {
-    const res = await axiosWithBearer.get(`${this.baseUrl}/search/products`, {
-      params: { query }
-    })
+  async searchProducts(
+    filters: SearchProductsFilters
+  ): Promise<Array<Product>> {
+    const res = await axiosWithBearer.post(
+      `${this.baseUrl}/search/products`,
+      filters
+    )
     return Promise.resolve(
       res.data.items.sort((a, b) => b.availableStock - a.availableStock)
     )
