@@ -4,6 +4,7 @@ import { priceFormatter } from '@utils/formatters'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { UUID } from '@core/types/types'
 import { useSearchStore } from '@store/searchStore'
+import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
 
 export interface GetProductsItemVM {
   uuid: UUID
@@ -22,7 +23,7 @@ export interface GetProductsVM {
   headers: Array<Header>
   items: Array<GetProductsItemVM>
   hasMore: boolean
-  currentSearch: string | undefined
+  currentSearch: SearchProductsFilters | undefined
   searchError: string | undefined
   isLoading: boolean
 }
