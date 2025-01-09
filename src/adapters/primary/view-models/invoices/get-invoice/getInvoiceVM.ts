@@ -5,6 +5,7 @@ import { Order, OrderLine } from '@core/entities/order'
 import { Invoice } from '@core/entities/invoice'
 import { HashTable } from '@core/types/types'
 import { Delivery } from '@core/entities/delivery'
+import { addTaxToPrice } from '@utils/price'
 
 export interface TableVM<T> {
   headers: Array<Header>
@@ -216,8 +217,9 @@ const getOrderLinesTable = (
   return {
     headers: orderLinesHeaders,
     items: orderLines.filter(preparedLinesFilter).map((line) => {
-      const unitAmountWithTax =
+      const unitAmountWithTax = Math.round(
         line.unitAmount + (line.unitAmount * line.percentTaxRate) / 100
+      )
       return {
         reference: line.ean13,
         name: line.name,
@@ -232,7 +234,6 @@ const getOrderLinesTable = (
     })
   }
 }
-
 const getRefundOrderLinesTable = (
   orderLines: Array<OrderLine>
 ): TableVM<OrderLineVM> => {
@@ -270,8 +271,9 @@ const getRefundOrderLinesTable = (
   return {
     headers: orderLinesHeaders,
     items: orderLines.filter(refundLinesFilter).map((line) => {
-      const unitAmountWithTax =
-        line.unitAmount + (line.unitAmount * line.percentTaxRate) / 100
+      const unitAmountWithTax = Math.round(
+        addTaxToPrice(line.unitAmount, line.percentTaxRate)
+      )
       return {
         reference: line.ean13,
         name: line.name,
@@ -365,6 +367,16 @@ const getTotals = (orderLines: Array<OrderLine>, delivery: Delivery) => {
   const linesTotal = linesPrepared.reduce((acc: number, line: OrderLine) => {
     return acc + line.preparedQuantity * line.unitAmount
   }, 0)
+  const linesTotalWithTax = linesPrepared.reduce(
+    (acc: number, line: OrderLine) => {
+      return (
+        acc +
+        Math.round(addTaxToPrice(line.unitAmount, line.percentTaxRate)) *
+          line.preparedQuantity
+      )
+    },
+    0
+  )
   const refundLines = orderLines.filter(refundLinesFilter)
   const totalRefund = refundLines.reduce((acc: number, line: OrderLine) => {
     return (
@@ -388,9 +400,7 @@ const getTotals = (orderLines: Array<OrderLine>, delivery: Delivery) => {
     totalRefund: formatter.format(totalRefund / 100),
     deliveryPrice:
       delivery.price === 0 ? 'Gratuit' : formatter.format(delivery.price / 100),
-    totalWithTax: formatter.format(
-      (totalWithoutTax + totalTax + delivery.price) / 100
-    )
+    totalWithTax: formatter.format((linesTotalWithTax + delivery.price) / 100)
   }
 }
 

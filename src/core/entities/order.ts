@@ -103,18 +103,12 @@ export interface AnonymousOrder extends BaseOrder {
 
 export type Order = CustomerOrder | AnonymousOrder
 
-// export const getTotalWithoutTax = (lines: Array<OrderLine>) => {
-//   return lines.reduce((acc: number, line: OrderLine) => {
-//     return acc + line.preparedQuantity * line.unitAmount
-//   }, 0)
-// }
-
 export const getTotalWithTax = (order: Order): number => {
   const totalLine = order.lines.reduce((acc: number, line: OrderLine) => {
     return (
       acc +
       (line.expectedQuantity *
-        addTaxToPrice(line.unitAmount, line.percentTaxRate)) /
+        Math.round(addTaxToPrice(line.unitAmount, line.percentTaxRate))) /
         100
     )
   }, 0)
