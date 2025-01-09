@@ -156,7 +156,7 @@ const getDetailPreparationLineVM = (
     lines: order.lines
       .map((line): DetailPreparationLineVM => {
         const unitPrice =
-          addTaxToPrice(line.unitAmount, line.percentTaxRate) / 100
+          Math.round(addTaxToPrice(line.unitAmount, line.percentTaxRate)) / 100
         const quantity = line.expectedQuantity
         return {
           reference: line.ean13,
