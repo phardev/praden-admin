@@ -2,4 +2,5 @@ import { PromotionCode } from '@core/usecases/promotion-codes/promotion-code-lis
 
 export interface PromotionCodeGateway {
   list(): Promise<Array<PromotionCode>>
+  getByCode(code: string): Promise<PromotionCode>
 }

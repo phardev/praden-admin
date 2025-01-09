@@ -1,0 +1,173 @@
+import { usePromotionStore } from '@store/promotionStore'
+import { useFormStore } from '@store/formStore'
+import { ReductionType } from '@core/entities/promotion'
+import {
+  Field,
+  PromotionProductItemVM,
+  TypeChoiceVM
+} from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { Product } from '@core/entities/product'
+import {
+  FormFieldsReader,
+  FormInitializer
+} from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import { PromotionCodeFormVM } from './promotionCodeFormVM'
+import { usePromotionCodeStore } from '@store/promotionCodeStore'
+import { PromotionScope } from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+import { UUID } from '@core/types/types'
+
+export interface PromotionScopeChoiceVM {
+  scope: PromotionScope
+  text: string
+}
+
+export type AvailableDeliveryMethodsVM = Array<{ uuid: UUID; name: string }>
+
+export class ExistingPromotionCodeFormInitializer implements FormInitializer {
+  protected readonly key: string
+  protected formStore: any
+  protected promotionCodeStore: any
+
+  constructor(key: string) {
+    this.key = key
+    this.formStore = useFormStore()
+    this.promotionCodeStore = usePromotionCodeStore()
+  }
+
+  init() {
+    let promotionCode = this.promotionCodeStore.current
+    if (promotionCode) {
+      promotionCode = JSON.parse(JSON.stringify(promotionCode))
+    }
+    this.formStore.set(this.key, {
+      code: promotionCode ? promotionCode.code : '',
+      reductionType: promotionCode
+        ? promotionCode.reductionType
+        : ReductionType.Fixed,
+      scope: promotionCode ? promotionCode.scope : PromotionScope.Products,
+      startDate: promotionCode ? promotionCode.startDate : undefined,
+      endDate: promotionCode ? promotionCode.endDate : undefined,
+      amount: promotionCode
+        ? promotionCode.reductionType === ReductionType.Fixed
+          ? (promotionCode.amount / 100).toString()
+          : promotionCode.amount.toString()
+        : undefined,
+      maximumUsage: promotionCode.conditions.maximumUsage,
+      minimumAmount: promotionCode.conditions.minimumAmount
+        ? (promotionCode.conditions.minimumAmount / 100).toString()
+        : undefined,
+      deliveryMethodUuid: promotionCode.conditions.deliveryMethodUuid
+    })
+  }
+}
+
+export class PromotionCodeFormFieldsReader extends FormFieldsReader {
+  constructor(key: string) {
+    super(key)
+  }
+
+  getAvailableTypeChoices(): Array<TypeChoiceVM> {
+    return Object.values(ReductionType).map((type) => {
+      const text = this.getTypeText(type)
+      return {
+        type,
+        text
+      }
+    })
+  }
+
+  getAvailableScopeChoices(): Array<PromotionScopeChoiceVM> {
+    return Object.values(PromotionScope).map((scope) => {
+      const text = this.getScopeText(scope)
+      return {
+        scope,
+        text
+      }
+    })
+  }
+
+  private getTypeText(type: ReductionType): string {
+    if (type === ReductionType.Percentage) {
+      return 'Pourcentage'
+    }
+    return 'Euros'
+  }
+
+  private getScopeText(scope: PromotionScope): string {
+    if (scope === PromotionScope.Products) {
+      return 'Produits'
+    }
+    return 'Livraison'
+  }
+}
+
+export class PromotionCodeFormGetVM extends PromotionCodeFormVM {
+  protected readonly key: string
+  protected formStore: any
+
+  constructor(
+    initializer: ExistingPromotionCodeFormInitializer,
+    fieldReader: PromotionCodeFormFieldsReader
+  ) {
+    super(fieldReader)
+    initializer.init()
+  }
+
+  get(fieldName: string): any {
+    return this.createField(fieldName)
+  }
+
+  private createField<T>(fieldName: string): Field<T> {
+    return {
+      value: this.fieldsReader.get(fieldName),
+      canEdit: false
+    }
+  }
+
+  getAvailableTypeChoices(): Array<TypeChoiceVM> {
+    return this.fieldsReader.getAvailableTypeChoices()
+  }
+
+  getAvailableScopeChoices(): Array<PromotionScopeChoiceVM> {
+    return this.fieldsReader.getAvailableScopeChoices()
+  }
+
+  getAvailableProducts(): Field<Array<PromotionProductItemVM>> {
+    return {
+      value: [],
+      canEdit: false
+    }
+  }
+
+  getProducts(): Field<Array<PromotionProductItemVM>> {
+    const promotionStore = usePromotionStore()
+    const promotion = promotionStore.current
+    const value = promotion.products.map((product: Product) => {
+      return {
+        uuid: product.uuid,
+        name: product.name,
+        reference: product.ean13,
+        categories: product.categories.map((c) => c.name),
+        laboratory: product.laboratory ? product.laboratory.name : ''
+      }
+    })
+    return {
+      value,
+      canEdit: false
+    }
+  }
+
+  getCanValidate(): boolean {
+    return false
+  }
+
+  getDisplayValidate(): boolean {
+    return false
+  }
+}
+
+export const promotionCodeFormGetVM = (key: string): PromotionCodeFormGetVM => {
+  const initializer = new ExistingPromotionCodeFormInitializer(key)
+  const reader = new PromotionCodeFormFieldsReader(key)
+  return new PromotionCodeFormGetVM(initializer, reader)
+}

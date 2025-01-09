@@ -21,6 +21,7 @@ tab-group.border-b.border-gray-200(as="div")
         :headers="group.table.headers"
         :items="group.table.items"
         :is-loading="promotionCodesVm.isLoading"
+        item-key="code"
         @clicked="clicked"
       )
         template(#startDate="{ item }")
@@ -43,8 +44,8 @@ defineProps({
   }
 })
 
-const clicked = (uuid: string) => {
+const clicked = (code: string) => {
   const router = useRouter()
-  router.push(`/promotion-codes/get/${uuid}`)
+  router.push(`/promotion-codes/get/${code}`)
 }
 </script>

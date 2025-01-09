@@ -50,7 +50,6 @@ describe('Promotion code listing', () => {
       expect(promotionCodeStore.isLoading).toBe(false)
     })
   })
-
   const givenExistingPromotionCodes = (
     ...promotionCodes: Array<PromotionCode>
   ) => {
