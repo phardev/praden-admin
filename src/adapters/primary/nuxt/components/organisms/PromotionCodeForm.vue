@@ -181,8 +181,7 @@ const codeChanged = (code: string) => {
 }
 
 const amountChanged = (amount: string) => {
-  if (currentVM?.value?.get('amount').canEdit)
-    currentVM.value.set('amount', amount)
+  currentVM.value.set('amount', amount)
 }
 
 const startDateChanged = (date: number) => {
@@ -199,6 +198,22 @@ const endDateChanged = (date: number) => {
 
 const clearEndDate = () => {
   currentVM.value.set('endDate', undefined)
+}
+
+const maximumUsageChanged = (value: string) => {
+  currentVM.value.set('maximumUsage', value)
+}
+
+const minimumAmountChanged = (value: string) => {
+  currentVM.value.set('minimumAmount', value)
+}
+
+const deliveryMethodChanged = (uuid: string) => {
+  currentVM.value.set('deliveryMethodUuid', uuid)
+}
+
+const clearDeliveryMethod = () => {
+  currentVM.value.set('deliveryMethodUuid', undefined)
 }
 
 const getReductionTypeIcon = (type: ReductionType) => {

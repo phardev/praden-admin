@@ -76,28 +76,11 @@ export class PromotionCodeFormFieldsReader extends FormFieldsReader {
     })
   }
 
-  getAvailableScopeChoices(): Array<PromotionScopeChoiceVM> {
-    return Object.values(PromotionScope).map((scope) => {
-      const text = this.getScopeText(scope)
-      return {
-        scope,
-        text
-      }
-    })
-  }
-
   private getTypeText(type: ReductionType): string {
     if (type === ReductionType.Percentage) {
       return 'Pourcentage'
     }
     return 'Euros'
-  }
-
-  private getScopeText(scope: PromotionScope): string {
-    if (scope === PromotionScope.Products) {
-      return 'Produits'
-    }
-    return 'Livraison'
   }
 }
 
@@ -126,10 +109,6 @@ export class PromotionCodeFormGetVM extends PromotionCodeFormVM {
 
   getAvailableTypeChoices(): Array<TypeChoiceVM> {
     return this.fieldsReader.getAvailableTypeChoices()
-  }
-
-  getAvailableScopeChoices(): Array<PromotionScopeChoiceVM> {
-    return this.fieldsReader.getAvailableScopeChoices()
   }
 
   getAvailableProducts(): Field<Array<PromotionProductItemVM>> {

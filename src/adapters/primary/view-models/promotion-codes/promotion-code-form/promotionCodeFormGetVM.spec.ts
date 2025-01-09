@@ -70,7 +70,7 @@ describe('Promotion code form get VM', () => {
     describe('VM initialization', () => {
       const basicFields = [
         { field: 'code' },
-        { field: 'type' },
+        { field: 'reductionType' },
         { field: 'scope' },
         { field: 'amount' },
         { field: 'startDate' },

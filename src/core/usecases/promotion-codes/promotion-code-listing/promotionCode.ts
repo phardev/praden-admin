@@ -1,6 +1,8 @@
 import { ReductionType } from '@core/entities/promotion'
 import { Timestamp, UUID } from '@core/types/types'
 
+export type CreatePromotionCodeDTO = Omit<PromotionCode, 'uuid' | 'currentUses'>
+
 export enum PromotionScope {
   Products = 'PRODUCTS',
   Delivery = 'DELIVERY'
