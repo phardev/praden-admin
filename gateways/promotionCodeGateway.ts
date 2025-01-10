@@ -5,7 +5,7 @@ import { InMemoryPromotionCodeGateway } from '@core/usecases/promotion-codes/pro
 
 const uuidGenerator = new FakeUuidGenerator()
 uuidGenerator.setNext('abc123')
-const promotionCodeGateway = new InMemoryPromotionCodeGateway()
+const promotionCodeGateway = new InMemoryPromotionCodeGateway(uuidGenerator)
 promotionCodeGateway.feedWith(...Object.values(promotionCodes))
 
 export const usePromotionCodeGateway = () => {

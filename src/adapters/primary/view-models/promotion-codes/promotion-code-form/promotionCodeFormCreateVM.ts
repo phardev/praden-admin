@@ -120,7 +120,7 @@ export class PromotionCodeFormCreateVM extends PromotionCodeFormVM {
     }
     const minimumAmount = this.fieldsReader.get('minimumAmount')
     if (minimumAmount) {
-      res.conditions.minimumAmount = +minimumAmount
+      res.conditions.minimumAmount = +minimumAmount * 100
     }
     const deliveryMethodUuid = this.fieldsReader.get('deliveryMethodUuid')
     if (deliveryMethodUuid) {

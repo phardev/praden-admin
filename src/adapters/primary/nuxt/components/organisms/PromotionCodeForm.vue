@@ -7,7 +7,7 @@ div(v-if="!currentVM")
   .pb-4
     .h-4.bg-gray-200.rounded.animate-pulse.mb-2(class='w-1/4')
     .h-32.bg-gray-200.rounded.animate-pulse
-UForm(v-else)
+UForm(v-else :state="currentVM")
   UAccordion(
     multiple
     size="xl"
@@ -112,7 +112,7 @@ UForm(v-else)
         )
       UFormGroup.pb-4(label="Montant minimum (€)" name="minimumAmount")
         ft-currency-input(
-          :model-value="currentVM.get('minimumAmount').value"
+          v-model="currentVM.get('minimumAmount').value"
           :disabled="!currentVM.get('minimumAmount').canEdit"
           @update:model-value="minimumAmountChanged"
         )
@@ -181,7 +181,8 @@ const codeChanged = (code: string) => {
 }
 
 const amountChanged = (amount: string) => {
-  currentVM.value.set('amount', amount)
+  if (currentVM?.value?.get('amount').canEdit)
+    currentVM.value.set('amount', amount)
 }
 
 const startDateChanged = (date: number) => {
@@ -205,7 +206,8 @@ const maximumUsageChanged = (value: string) => {
 }
 
 const minimumAmountChanged = (value: string) => {
-  currentVM.value.set('minimumAmount', value)
+  if (currentVM?.value?.get('minimumAmount').canEdit)
+    currentVM.value.set('minimumAmount', value)
 }
 
 const deliveryMethodChanged = (uuid: string) => {

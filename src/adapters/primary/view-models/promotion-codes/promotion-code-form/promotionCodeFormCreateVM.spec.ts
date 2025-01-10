@@ -208,7 +208,7 @@ describe('Promotion code form create VM', () => {
   })
 
   describe('DTO', () => {
-    it('should return the dto', () => {
+    it('should return the dto for percentage reduction', () => {
       const expectedDto: CreatePromotionCodeDTO = {
         code: 'TEST_CODE',
         reductionType: ReductionType.Percentage,
@@ -218,7 +218,7 @@ describe('Promotion code form create VM', () => {
         endDate: 74182963,
         conditions: {
           maximumUsage: 25,
-          minimumAmount: 50,
+          minimumAmount: 5000,
           deliveryMethodUuid: express.uuid
         }
       }
@@ -229,7 +229,32 @@ describe('Promotion code form create VM', () => {
       vm.set('startDate', expectedDto.startDate)
       vm.set('endDate', expectedDto.endDate)
       vm.set('maximumUsage', expectedDto.conditions.maximumUsage.toString())
-      vm.set('minimumAmount', expectedDto.conditions.minimumAmount.toString())
+      vm.set('minimumAmount', '50')
+      vm.set('deliveryMethodUuid', expectedDto.conditions.deliveryMethodUuid)
+      expect(vm.getDto()).toStrictEqual(expectedDto)
+    })
+    it('should return the dto for fixed reduction', () => {
+      const expectedDto: CreatePromotionCodeDTO = {
+        code: 'TEST_CODE',
+        reductionType: ReductionType.Fixed,
+        scope: PromotionScope.Products,
+        amount: 1000,
+        startDate: 741852963,
+        endDate: 9638271,
+        conditions: {
+          maximumUsage: 42,
+          minimumAmount: 10000,
+          deliveryMethodUuid: express.uuid
+        }
+      }
+      vm.set('code', expectedDto.code)
+      vm.set('reductionType', expectedDto.reductionType)
+      vm.set('scope', expectedDto.scope)
+      vm.set('amount', '10')
+      vm.set('startDate', expectedDto.startDate)
+      vm.set('endDate', expectedDto.endDate)
+      vm.set('maximumUsage', expectedDto.conditions.maximumUsage.toString())
+      vm.set('minimumAmount', '100')
       vm.set('deliveryMethodUuid', expectedDto.conditions.deliveryMethodUuid)
       expect(vm.getDto()).toStrictEqual(expectedDto)
     })

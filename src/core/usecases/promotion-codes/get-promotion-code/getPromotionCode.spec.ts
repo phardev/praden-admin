@@ -9,6 +9,7 @@ import {
 import { getPromotionCode } from '@core/usecases/promotion-codes/get-promotion-code/getPromotionCode'
 import { usePromotionCodeStore } from '@store/promotionCodeStore'
 import { PromotionCodeDoesNotExistsError } from '@core/errors/PromotionCodeDoesNotExistsError'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 
 describe('Get promotion code', () => {
   let promotionCodeStore: any
@@ -17,7 +18,9 @@ describe('Get promotion code', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     promotionCodeStore = usePromotionCodeStore()
-    promotionCodeGateway = new InMemoryPromotionCodeGateway()
+    promotionCodeGateway = new InMemoryPromotionCodeGateway(
+      new FakeUuidGenerator()
+    )
   })
 
   describe('The promotion code exists', () => {

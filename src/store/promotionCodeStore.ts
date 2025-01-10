@@ -22,6 +22,9 @@ export const usePromotionCodeStore = defineStore('PromotionCodeStore', {
     setCurrent(promotionCode: PromotionCode) {
       this.current = JSON.parse(JSON.stringify(promotionCode))
     },
+    create(promotionCode: PromotionCode) {
+      this.items.push(promotionCode)
+    },
     edit(promotionCode: PromotionCode) {
       const index = this.items.findIndex((b) => b.uuid === promotionCode.uuid)
       this.items.splice(index, 1)

@@ -8,6 +8,7 @@ import {
   deliveryPromotionCode,
   newSitePromotionCode
 } from '@utils/testData/promotionCodes'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 
 describe('Promotion code listing', () => {
   let promotionCodeStore: any
@@ -15,7 +16,9 @@ describe('Promotion code listing', () => {
 
   beforeEach(() => {
     setActivePinia(createPinia())
-    promotionCodeGateway = new InMemoryPromotionCodeGateway()
+    promotionCodeGateway = new InMemoryPromotionCodeGateway(
+      new FakeUuidGenerator()
+    )
     promotionCodeStore = usePromotionCodeStore()
   })
 
