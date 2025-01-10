@@ -10,6 +10,7 @@ import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import { TableVM } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 import { HashTable } from '@core/types/types'
 import { useProductStore } from '@store/productStore'
+import { addTaxToPrice } from '@utils/price'
 
 export interface GetPreparationsItemVM {
   reference: string
@@ -40,8 +41,8 @@ export const computeTotalWithTaxForOrder = (order: Order) => {
   const total = order.lines.reduce((acc: number, line: OrderLine) => {
     return (
       acc +
-      line.unitAmount * line.expectedQuantity +
-      (line.unitAmount * line.expectedQuantity * line.percentTaxRate) / 100
+      Math.round(addTaxToPrice(line.unitAmount, line.percentTaxRate)) *
+        line.expectedQuantity
     )
   }, 0)
   const delivery = order.deliveries[0]
