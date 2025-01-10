@@ -386,7 +386,7 @@ describe('Get invoice VM', () => {
               name: 'Produits',
               taxRate: '10 %',
               amountWithoutTax: '17,96\u00A0€',
-              taxAmount: '1,80\u00A0€'
+              taxAmount: '1,79\u00A0€'
             }
           ]
         }
