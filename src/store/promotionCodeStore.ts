@@ -26,8 +26,9 @@ export const usePromotionCodeStore = defineStore('PromotionCodeStore', {
       this.items.push(promotionCode)
     },
     edit(promotionCode: PromotionCode) {
-      const index = this.items.findIndex((b) => b.uuid === promotionCode.uuid)
-      this.items.splice(index, 1)
+      this.items = this.items.map((pc) => {
+        return pc.uuid === promotionCode.uuid ? promotionCode : pc
+      })
     },
     delete(promotionCode: PromotionCode) {
       const index = this.items.findIndex((b) => b.uuid === promotionCode.uuid)
