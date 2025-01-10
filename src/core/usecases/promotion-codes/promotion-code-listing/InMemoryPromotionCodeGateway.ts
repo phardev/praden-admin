@@ -41,7 +41,9 @@ export class InMemoryPromotionCodeGateway implements PromotionCodeGateway {
     if (index < 0) {
       throw new PromotionCodeDoesNotExistsError(code)
     }
-    this.verifyThatPromotionCodeWithSameCodeDoesNotAlreadyExists(dto.code)
+    if (code !== dto.code) {
+      this.verifyThatPromotionCodeWithSameCodeDoesNotAlreadyExists(dto.code)
+    }
     this.promotionCodes[index] = Object.assign(this.promotionCodes[index], dto)
     return Promise.resolve(
       JSON.parse(JSON.stringify(this.promotionCodes[index]))

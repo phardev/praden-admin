@@ -6,7 +6,10 @@ import {
   PromotionScopeChoiceVM
 } from './promotionCodeFormGetVM'
 import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
-import { PromotionScope } from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+import {
+  CreatePromotionCodeDTO,
+  PromotionScope
+} from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
 
 export abstract class PromotionCodeFormVM {
   protected fieldsReader: PromotionCodeFormFieldsReader
@@ -44,6 +47,53 @@ export abstract class PromotionCodeFormVM {
         text
       }
     })
+  }
+
+  getCanValidate(): boolean {
+    const code = this.fieldsReader.get('code')
+    if (!code || !code.length) return false
+    if (!this.fieldsReader.get('amount')) return false
+    return true
+  }
+
+  getDto(): CreatePromotionCodeDTO {
+    let amount = +this.fieldsReader.get('amount')
+    const reductionType = this.fieldsReader.get('reductionType')
+    if (reductionType === ReductionType.Fixed) {
+      amount *= 100
+    }
+    const res: CreatePromotionCodeDTO = {
+      code: this.fieldsReader.get('code'),
+      scope: this.fieldsReader.get('scope'),
+      reductionType,
+      amount,
+      conditions: {}
+    }
+    const startDate = this.fieldsReader.get('startDate')
+    if (startDate) {
+      res.startDate = startDate
+    }
+    const endDate = this.fieldsReader.get('endDate')
+    if (endDate) {
+      res.endDate = endDate
+    }
+    const maximumUsage = this.fieldsReader.get('maximumUsage')
+    if (maximumUsage) {
+      res.conditions.maximumUsage = +maximumUsage
+    }
+    const minimumAmount = this.fieldsReader.get('minimumAmount')
+    if (minimumAmount) {
+      res.conditions.minimumAmount = +minimumAmount * 100
+    }
+    const deliveryMethodUuid = this.fieldsReader.get('deliveryMethodUuid')
+    if (deliveryMethodUuid) {
+      res.conditions.deliveryMethodUuid = deliveryMethodUuid
+    }
+    return res
+  }
+
+  getDisplayValidate(): boolean {
+    return true
   }
 
   private getTypeText(type: ReductionType): string {

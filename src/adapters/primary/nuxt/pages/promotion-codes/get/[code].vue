@@ -27,6 +27,6 @@ onMounted(async () => {
 })
 
 const edit = () => {
-  // router.push(`/promotions/edit/${promotionUuid}`)
+  router.push(`/promotion-codes/edit/${code}`)
 }
 </script>

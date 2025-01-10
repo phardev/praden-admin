@@ -32,6 +32,7 @@ describe('Promotion code edition', () => {
     beforeEach(async () => {
       givenExistingPromotionCodes(fifteenPercentPromotionCode)
       dto = {
+        code: fifteenPercentPromotionCode.code,
         amount: 250,
         conditions: {
           minimumAmount: 6000

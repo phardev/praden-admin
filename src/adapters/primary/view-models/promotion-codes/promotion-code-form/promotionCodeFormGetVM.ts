@@ -1,12 +1,9 @@
-import { usePromotionStore } from '@store/promotionStore'
 import { useFormStore } from '@store/formStore'
 import { ReductionType } from '@core/entities/promotion'
 import {
   Field,
-  PromotionProductItemVM,
   TypeChoiceVM
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { Product } from '@core/entities/product'
 import {
   FormFieldsReader,
   FormInitializer
@@ -103,35 +100,6 @@ export class PromotionCodeFormGetVM extends PromotionCodeFormVM {
   private createField<T>(fieldName: string): Field<T> {
     return {
       value: this.fieldsReader.get(fieldName),
-      canEdit: false
-    }
-  }
-
-  getAvailableTypeChoices(): Array<TypeChoiceVM> {
-    return this.fieldsReader.getAvailableTypeChoices()
-  }
-
-  getAvailableProducts(): Field<Array<PromotionProductItemVM>> {
-    return {
-      value: [],
-      canEdit: false
-    }
-  }
-
-  getProducts(): Field<Array<PromotionProductItemVM>> {
-    const promotionStore = usePromotionStore()
-    const promotion = promotionStore.current
-    const value = promotion.products.map((product: Product) => {
-      return {
-        uuid: product.uuid,
-        name: product.name,
-        reference: product.ean13,
-        categories: product.categories.map((c) => c.name),
-        laboratory: product.laboratory ? product.laboratory.name : ''
-      }
-    })
-    return {
-      value,
       canEdit: false
     }
   }
