@@ -8,6 +8,7 @@ import {
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import {
   dolodent,
+  productWithDecimalPrice,
   productWithoutLaboratory,
   ultraLevure
 } from '@utils/testData/products'
@@ -111,7 +112,7 @@ describe('Product form get VM', () => {
     {
       product: dolodent,
       expectedIsActive: true,
-      expectedPriceWithoutTax: '5',
+      expectedPriceWithoutTax: '5.00',
       expectedPriceWithTax: '5.50',
       expectedLocations: {
         [zoneGeo.uuid]: 'DD02'
@@ -148,8 +149,43 @@ describe('Product form get VM', () => {
     {
       product: productWithoutLaboratory,
       expectedIsActive: true,
-      expectedPriceWithoutTax: '5.9',
+      expectedPriceWithoutTax: '5.90',
       expectedPriceWithTax: '6.49',
+      expectedLocations: {},
+      expectedWeight: '0.12',
+      promotion: undefined,
+      expectedPromotion: undefined,
+      availableLocations: [zoneGeo, magasin],
+      expectedAvailableLocations: [
+        {
+          uuid: zoneGeo.uuid,
+          name: zoneGeo.name
+        },
+        {
+          uuid: magasin.uuid,
+          name: magasin.name
+        }
+      ],
+      availableCategories: [minceur],
+      expectedAvailableCategories: [
+        {
+          uuid: minceur.uuid,
+          name: minceur.name
+        }
+      ],
+      availableLaboratories: [anaca3],
+      expectedAvailableLaboratories: [
+        {
+          uuid: anaca3.uuid,
+          name: anaca3.name
+        }
+      ]
+    },
+    {
+      product: productWithDecimalPrice,
+      expectedIsActive: true,
+      expectedPriceWithoutTax: '3.33',
+      expectedPriceWithTax: '3.99',
       expectedLocations: {},
       expectedWeight: '0.12',
       promotion: undefined,
