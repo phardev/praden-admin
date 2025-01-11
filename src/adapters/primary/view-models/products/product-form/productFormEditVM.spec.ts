@@ -106,7 +106,7 @@ describe('Product form edit VM', () => {
     {
       product: dolodent,
       status: dolodent.status,
-      expectedPriceWithoutTax: '5',
+      expectedPriceWithoutTax: '5.00',
       expectedPriceWithTax: '5.50',
       expectedLocations: {
         [zoneGeo.uuid]: 'DD02'
