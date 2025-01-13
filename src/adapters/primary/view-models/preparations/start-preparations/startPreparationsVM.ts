@@ -34,6 +34,7 @@ export interface PreparationLineDetailVM {
   createdDate: string
   deliveryPrice: string
   deliveryAddress: AddressVM
+  billingAddress: AddressVM
   lines: Array<DetailPreparationLineVM>
   totalWithTax: string
 }
@@ -153,6 +154,7 @@ const getDetailPreparationLineVM = (
     deliveryPrice:
       delivery.price > 0 ? formatter.format(delivery.price / 100) : 'Gratuit',
     deliveryAddress: getDeliveryAddressVM(order),
+    billingAddress: getBillingAddressVM(order),
     lines: order.lines
       .map((line): DetailPreparationLineVM => {
         const unitPrice =
@@ -175,4 +177,15 @@ const getDetailPreparationLineVM = (
     detail.clientMessage = order.customerMessage
   }
   return detail
+}
+
+export const getBillingAddressVM = (order: Order): AddressVM => {
+  return {
+    name: `${order.billingAddress.firstname} ${order.billingAddress.lastname}`,
+    address: order.billingAddress.address,
+    city: order.billingAddress.city,
+    zip: order.billingAddress.zip,
+    country: order.billingAddress.country,
+    phone: order.contact?.phone ?? ''
+  }
 }

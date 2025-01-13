@@ -115,6 +115,14 @@ describe('Start preparations VM', () => {
                   country: 'Plop',
                   phone: '0123456789'
                 },
+                billingAddress: {
+                  name: 'Jean Bon',
+                  address: '10 rue des peupliers',
+                  city: 'PlopLand',
+                  zip: '12345',
+                  country: 'Plop',
+                  phone: '0123456789'
+                },
                 lines: [
                   {
                     reference: dolodent.ean13,
@@ -162,6 +170,14 @@ describe('Start preparations VM', () => {
                 createdDate: '5 févr. 2023',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
+                  name: "Jeanne D'arc",
+                  address: '12 avenue du bois',
+                  city: 'Boisville',
+                  zip: '54321',
+                  country: 'France',
+                  phone: '9876543210'
+                },
+                billingAddress: {
                   name: "Jeanne D'arc",
                   address: '12 avenue du bois',
                   city: 'Boisville',
@@ -234,6 +250,14 @@ describe('Start preparations VM', () => {
                   country: 'Plop',
                   phone: '0123456789'
                 },
+                billingAddress: {
+                  name: 'Jean Bon',
+                  address: '10 rue des peupliers',
+                  city: 'PlopLand',
+                  zip: '12345',
+                  country: 'Plop',
+                  phone: '0123456789'
+                },
                 lines: [
                   {
                     reference: calmosine.ean13,
@@ -295,6 +319,14 @@ describe('Start preparations VM', () => {
                   country: 'Plop',
                   phone: '0123456789'
                 },
+                billingAddress: {
+                  name: 'Jean Bon',
+                  address: '10 rue des peupliers',
+                  city: 'PlopLand',
+                  zip: '12345',
+                  country: 'Plop',
+                  phone: '0123456789'
+                },
                 lines: [
                   {
                     reference: dolodent.ean13,
@@ -342,6 +374,14 @@ describe('Start preparations VM', () => {
                 createdDate: '5 févr. 2023',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
+                  name: "Jeanne D'arc",
+                  address: '12 avenue du bois',
+                  city: 'Boisville',
+                  zip: '54321',
+                  country: 'France',
+                  phone: '9876543210'
+                },
+                billingAddress: {
                   name: "Jeanne D'arc",
                   address: '12 avenue du bois',
                   city: 'Boisville',
@@ -407,6 +447,14 @@ describe('Start preparations VM', () => {
                 country: 'France',
                 phone: '9876543210'
               },
+              billingAddress: {
+                name: "Jeanne D'arc",
+                address: '12 avenue du bois',
+                city: 'Boisville',
+                zip: '54321',
+                country: 'France',
+                phone: '9876543210'
+              },
               lines: [
                 {
                   reference: dolodent.ean13,
@@ -450,6 +498,14 @@ describe('Start preparations VM', () => {
               deliveryPrice: '5,00\u00A0€',
               deliveryAddress: {
                 name: 'Jeanne NameWithé',
+                address: '12 avenue du bois',
+                city: 'Boisville',
+                zip: '54321',
+                country: 'France',
+                phone: '9876543210'
+              },
+              billingAddress: {
+                name: "Jeanne D'arc",
                 address: '12 avenue du bois',
                 city: 'Boisville',
                 zip: '54321',
@@ -500,6 +556,14 @@ describe('Start preparations VM', () => {
               deliveryPrice: 'Gratuit',
               clientMessage: orderWithCustomerMessage.customerMessage,
               deliveryAddress: {
+                name: 'Jean Bon',
+                address: '10 rue des peupliers',
+                city: 'PlopLand',
+                zip: '12345',
+                country: 'Plop',
+                phone: '0123456789'
+              },
+              billingAddress: {
                 name: 'Jean Bon',
                 address: '10 rue des peupliers',
                 city: 'PlopLand',
@@ -569,6 +633,14 @@ describe('Start preparations VM', () => {
                   country: 'Plop',
                   phone: '0123456789'
                 },
+                billingAddress: {
+                  name: 'Jean Bon',
+                  address: '10 rue des peupliers',
+                  city: 'PlopLand',
+                  zip: '12345',
+                  country: 'Plop',
+                  phone: '0123456789'
+                },
                 lines: [
                   {
                     reference: dolodent.ean13,
@@ -590,6 +662,14 @@ describe('Start preparations VM', () => {
                 createdDate: '5 févr. 2023',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
+                  name: "Jeanne D'arc",
+                  address: '12 avenue du bois',
+                  city: 'Boisville',
+                  zip: '54321',
+                  country: 'France',
+                  phone: '9876543210'
+                },
+                billingAddress: {
                   name: "Jeanne D'arc",
                   address: '12 avenue du bois',
                   city: 'Boisville',
@@ -667,6 +747,14 @@ describe('Start preparations VM', () => {
                   country: 'Plop',
                   phone: '0123456789'
                 },
+                billingAddress: {
+                  name: 'Jean Bon',
+                  address: '10 rue des peupliers',
+                  city: 'PlopLand',
+                  zip: '12345',
+                  country: 'Plop',
+                  phone: '0123456789'
+                },
                 lines: [
                   {
                     reference: dolodent.ean13,
@@ -688,6 +776,14 @@ describe('Start preparations VM', () => {
                 createdDate: '5 févr. 2023',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
+                  name: "Jeanne D'arc",
+                  address: '12 avenue du bois',
+                  city: 'Boisville',
+                  zip: '54321',
+                  country: 'France',
+                  phone: '9876543210'
+                },
+                billingAddress: {
                   name: "Jeanne D'arc",
                   address: '12 avenue du bois',
                   city: 'Boisville',
