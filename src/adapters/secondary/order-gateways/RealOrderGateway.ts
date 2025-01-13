@@ -27,6 +27,8 @@ export abstract class RealGateway {
           value.forEach((item, index) => {
             formData.append(`${key}[${index}]`, item)
           })
+        } else if (value instanceof File) {
+          formData.append(key, value)
         } else if (typeof value === 'object' && value !== null) {
           for (const subKey in value) {
             if (value.hasOwnProperty(subKey)) {
