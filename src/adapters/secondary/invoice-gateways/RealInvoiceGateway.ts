@@ -42,7 +42,7 @@ export class RealInvoiceGateway implements InvoiceGateway {
   }
 
   private convertToOrder(data: any): Order {
-    const copy = JSON.parse(data)
+    const copy = typeof data === 'string' ? JSON.parse(data) : data
     copy.lines = copy.lines.map((l: any) => {
       const res: OrderLine = {
         productUuid: l.productUuid,
