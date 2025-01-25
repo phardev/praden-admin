@@ -17,6 +17,7 @@ div.hidden.printme.mx-2
           :text="order.reference"
         )
         h1.text-xl {{ order.createdDate }}
+        h1.text-xl(v-if="order.pickingDate") Date de retrait {{ order.pickingDate }}
       client-only
         .qr-container
           vueQr(

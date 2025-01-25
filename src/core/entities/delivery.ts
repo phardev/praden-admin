@@ -1,4 +1,5 @@
 import { Address, Contact, DeliveryMethod } from '@core/entities/order'
+import { Timestamp } from '@core/types/types'
 
 export enum DeliveryStatus {
   Created,
@@ -12,6 +13,7 @@ export interface Delivery {
   price: number
   pickupId?: string
   trackingNumber?: string
+  pickingDate?: Timestamp
   method: DeliveryMethod
   weight: number
   sender: {
