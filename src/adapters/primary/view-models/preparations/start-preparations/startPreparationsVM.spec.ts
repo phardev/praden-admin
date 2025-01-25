@@ -106,6 +106,7 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
+                pickingDate: '20/01/2025 12:42',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
                   name: 'Jean Bon',
@@ -168,6 +169,7 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',
+                pickingDate: '13/02/2025 16:15',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
                   name: "Jeanne D'arc",
@@ -310,6 +312,7 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
+                pickingDate: '20/01/2025 12:42',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
                   name: 'Jean Bon',
@@ -372,6 +375,7 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',
+                pickingDate: '13/02/2025 16:15',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
                   name: "Jeanne D'arc",
@@ -624,6 +628,7 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
+                pickingDate: '20/01/2025 12:42',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
                   name: 'Jean Bon',
@@ -660,6 +665,7 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',
+                pickingDate: '13/02/2025 16:15',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
                   name: "Jeanne D'arc",
@@ -738,6 +744,7 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
+                pickingDate: '20/01/2025 12:42',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
                   name: 'Jean Bon',
@@ -774,6 +781,7 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',
+                pickingDate: '13/02/2025 16:15',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
                   name: "Jeanne D'arc",

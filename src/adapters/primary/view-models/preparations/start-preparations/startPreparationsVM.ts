@@ -31,6 +31,7 @@ export interface PreparationLineDetailVM {
   deliveryMethodName: string
   clientLastname: string
   clientMessage?: string
+  pickingDate?: string
   createdDate: string
   deliveryPrice: string
   deliveryAddress: AddressVM
@@ -175,6 +176,20 @@ const getDetailPreparationLineVM = (
   }
   if (order.customerMessage) {
     detail.clientMessage = order.customerMessage
+  }
+  if (delivery.pickingDate) {
+    const options = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }
+    detail.pickingDate = timestampToLocaleString(
+      delivery.pickingDate,
+      'fr-FR',
+      options
+    )
   }
   return detail
 }
