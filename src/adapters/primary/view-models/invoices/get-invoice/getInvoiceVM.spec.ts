@@ -218,6 +218,23 @@ describe('Get invoice VM', () => {
       }
       expectVMToMatch(expected)
     })
+    it('should display payment type', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        payment: {
+          type: 'e-Transaction',
+          amount: '33,70\u00A0€'
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should display delivery method name', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        deliveryMethod: {
+          name: 'click & collect'
+        }
+      }
+      expectVMToMatch(expected)
+    })
   })
   describe('There is another current invoice', () => {
     const invoice: Invoice = {
@@ -449,6 +466,13 @@ describe('Get invoice VM', () => {
           totalRefund: '',
           deliveryPrice: '',
           totalWithTax: ''
+        },
+        payment: {
+          type: '',
+          amount: ''
+        },
+        deliveryMethod: {
+          name: ''
         }
       }
       expect(getInvoiceVM()).toStrictEqual(expectedVM)
@@ -511,6 +535,14 @@ describe('Get invoice VM', () => {
           totalRefund: '-5,50\u00A0€',
           deliveryPrice: '5,00\u00A0€',
           totalWithTax: '10,50\u00A0€'
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should display delivery method name', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        deliveryMethod: {
+          name: 'Livraison en point relai'
         }
       }
       expectVMToMatch(expected)
