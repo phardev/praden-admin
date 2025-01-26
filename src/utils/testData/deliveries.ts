@@ -10,6 +10,7 @@ export const deliveryOrderToPrepare1: Delivery = {
   uuid: 'delivery-order-to-prepare-1',
   price: 0,
   method: clickAndCollect,
+  pickingDate: 1737376937000,
   weight: 1234,
   sender: {
     contact: {
@@ -39,6 +40,7 @@ export const deliveryOrderToPrepare2: Delivery = {
   uuid: 'delivery-order-to-prepare-2',
   price: 0,
   method: clickAndCollect,
+  pickingDate: 1739463340000,
   weight: 1200,
   sender: {
     contact: {
@@ -99,6 +101,7 @@ export const deliveryOrderPrepared1: Delivery = {
   uuid: 'delivery-order-prepared-1',
   price: 0,
   method: clickAndCollect,
+  pickingDate: 1737330137000,
   weight: 1500,
   sender: {
     contact: {
@@ -128,6 +131,7 @@ export const deliveryOrderDelivered1: Delivery = {
   uuid: 'delivery-order-delivered-1',
   price: 0,
   method: clickAndCollect,
+  pickingDate: 1737330137000,
   weight: 1500,
   sender: {
     contact: {
@@ -157,6 +161,7 @@ export const deliveryOrderDelivered2: Delivery = {
   uuid: 'delivery-order-delivered-2',
   price: 0,
   method: clickAndCollect,
+  pickingDate: 1737376937000,
   weight: 2200,
   sender: {
     contact: {

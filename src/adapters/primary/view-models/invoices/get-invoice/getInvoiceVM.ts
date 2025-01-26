@@ -68,6 +68,17 @@ export interface GetInvoiceVM {
   refundOrderLinesTable: TableVM<OrderLineVM>
   taxDetailsTable: TableVM<TaxDetailLineVM>
   totals: TotalsVM
+  payment: PaymentVM
+  deliveryMethod: DeliveryMethodVM
+}
+
+interface DeliveryMethodVM {
+  name: string
+}
+
+interface PaymentVM {
+  type: string
+  amount: string
 }
 
 interface InvoiceLine {
@@ -101,6 +112,13 @@ const emptyVM = (): GetInvoiceVM => {
       totalRefund: '',
       deliveryPrice: '',
       totalWithTax: ''
+    },
+    payment: {
+      type: '',
+      amount: ''
+    },
+    deliveryMethod: {
+      name: ''
     }
   }
 }
@@ -369,6 +387,7 @@ export const getInvoiceVM = (): GetInvoiceVM => {
 
   const preparedInvoiceLines = getPreparedInvoiceLines(invoice.data.lines)
   const refoundedInvoiceLines = getRefoundedInvoiceLines(invoice.data.lines)
+  const formatter = priceFormatter('fr-FR', 'EUR')
 
   return {
     logo: 'http://praden-logo.svg',
@@ -397,7 +416,14 @@ export const getInvoiceVM = (): GetInvoiceVM => {
       preparedInvoiceLines,
       refoundedInvoiceLines,
       invoice.data.deliveries[0]
-    )
+    ),
+    payment: {
+      type: 'e-Transaction',
+      amount: formatter.format(invoice.data.payment.amount / 100)
+    },
+    deliveryMethod: {
+      name: invoice.data.deliveries[0].method.name
+    }
   }
 }
 

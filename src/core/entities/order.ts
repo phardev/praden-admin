@@ -42,6 +42,7 @@ export enum PaymentStatus {
 
 export interface Payment {
   status: PaymentStatus
+  amount?: number
 }
 
 export interface Contact {
