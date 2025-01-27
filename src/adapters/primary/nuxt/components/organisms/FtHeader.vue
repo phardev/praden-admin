@@ -32,7 +32,7 @@ const menu = {
         {
           name: 'Ma boutique',
           icon: 'ion:cart-outline',
-          href: 'https://2f440074.praden-restart.pages.dev/'
+          href: 'https://pharmacieagnespraden.com/'
         }
       ]
     }
