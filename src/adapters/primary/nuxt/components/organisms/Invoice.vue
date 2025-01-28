@@ -1,4 +1,5 @@
 <template lang="pug">
+.invoice-component
   .page-footer.hidden.printme
     .footer.text-center.w-full.text-xs.font-light
       div {{ invoiceVM.supplierAddress.name }} - {{ invoiceVM.supplierAddress.address }}
