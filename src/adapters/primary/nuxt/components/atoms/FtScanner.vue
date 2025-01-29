@@ -16,7 +16,20 @@ const emit = defineEmits<{
 }>()
 
 const scanned = () => {
-  emit('scanned', model.value)
+  const ean13Length = 13
+  if (model.value.length > ean13Length) {
+    scanGS1()
+  } else {
+    emit('scanned', model.value)
+  }
   model.value = ''
+}
+
+const scanGS1 = () => {
+  const ean13Regex = /010(\d{13})/
+  const ean13Match = model.value.match(ean13Regex)
+  if (ean13Match) {
+    emit('scanned', ean13Match[1])
+  }
 }
 </script>
