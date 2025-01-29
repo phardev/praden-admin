@@ -119,6 +119,9 @@ export const getTotalWithTax = (order: Order): number => {
 }
 
 export const getDeliveryStatus = (order: Order): DeliveryStatus => {
+  if (!order.deliveries.length) {
+    return DeliveryStatus.Created
+  }
   return order.deliveries[0].status
 }
 

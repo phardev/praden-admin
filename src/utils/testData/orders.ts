@@ -1885,3 +1885,49 @@ export const orderWithoutPayment: AnonymousOrder = {
   messages: [],
   customerMessage: 'Special message'
 }
+
+export const orderWithoutDelivery: AnonymousOrder = {
+  uuid: 'order-with-customer-message',
+  lines: [
+    {
+      productUuid: dolodent.uuid,
+      name: dolodent.name,
+      ean13: dolodent.ean13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      locations: dolodent.locations,
+      status: OrderLineStatus.Created,
+      updatedAt: 1674273279000
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
+  },
+  payment: {
+    status: PaymentStatus.Payed,
+    amount: 3370
+  },
+  invoiceNumber: '2023-00021',
+  createdAt: 1674273279000,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  deliveries: [],
+  messages: []
+}
