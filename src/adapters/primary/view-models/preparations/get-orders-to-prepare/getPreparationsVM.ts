@@ -48,6 +48,9 @@ export const computeTotalWithTaxForOrder = (order: Order) => {
     )
   }, 0)
   const delivery = order.deliveries[0]
+  if (!delivery) {
+    return total
+  }
   const deliveryPrice = delivery.price
   return total + deliveryPrice
 }

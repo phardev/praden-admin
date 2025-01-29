@@ -1,4 +1,4 @@
-import { OrderLineStatus, Order, PaymentStatus } from '@core/entities/order'
+import { Order, OrderLineStatus, PaymentStatus } from '@core/entities/order'
 import { useOrderStore } from '@store/orderStore'
 import { createPinia, setActivePinia } from 'pinia'
 import { getOrdersVM, GetOrdersVM } from './getOrdersVM'
@@ -6,9 +6,11 @@ import { Header } from '@adapters/primary/view-models/preparations/get-orders-to
 import {
   orderNotPayed1,
   orderPrepared1,
-  orderToPrepare1
+  orderToPrepare1,
+  orderWithoutDelivery
 } from '@utils/testData/orders'
 import { useSearchStore } from '@store/searchStore'
+import { DeliveryStatus } from '@core/entities/delivery'
 
 const expectedHeaders: Array<Header> = [
   {
@@ -154,6 +156,28 @@ describe('Get orders VM', () => {
         }
         expectVMToMatch(expectedVM)
       })
+    })
+  })
+
+  describe('An order does not have delivery', () => {
+    it('should get it with default delivery', () => {
+      givenExistingOrders(orderWithoutDelivery)
+      const expectedVM: Partial<GetOrdersVM> = {
+        items: [
+          {
+            reference: orderWithoutDelivery.uuid,
+            href: `/orders/${orderWithoutDelivery.uuid}`,
+            client: 'J. Bon',
+            createdDate: '21 janv. 2023',
+            createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
+            status: OrderLineStatus.Created,
+            total: '11,00\u00A0€',
+            paymentStatus: orderWithoutDelivery.payment.status,
+            deliveryStatus: DeliveryStatus.Created
+          }
+        ]
+      }
+      expectVMToMatch(expectedVM)
     })
   })
 
