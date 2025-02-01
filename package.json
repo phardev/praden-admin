@@ -57,6 +57,7 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.19",
+    "@highcanfly-club/up2pay": "^0.9.15",
     "@mdi/font": "^7.4.47",
     "@pinia/nuxt": "^0.4.11",
     "@unhead/shared": "^1.8.20",
