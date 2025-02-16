@@ -57,6 +57,9 @@ export const computeTotalWithTaxForOrder = (order: Order) => {
 
 const clickAndCollectFilter = (o: Order) => {
   const delivery = o.deliveries[0]
+  if (!delivery) {
+    return false
+  }
   return (
     delivery.method.type === DeliveryType.ClickAndCollect &&
     o.lines.every((l: OrderLine) => l.status === OrderLineStatus.Created)
@@ -65,6 +68,9 @@ const clickAndCollectFilter = (o: Order) => {
 
 const deliveryFilter = (o: Order) => {
   const delivery = o.deliveries[0]
+  if (!delivery) {
+    return false
+  }
   return (
     delivery.method.type === DeliveryType.Delivery &&
     o.lines.every((l: OrderLine) => l.status === OrderLineStatus.Created)

@@ -58,6 +58,8 @@ invoice.hidden.printme.mx-2
     @remove-product="removeProduct"
     @change-quantity="changeProductQuantity"
     @change-reference="changeProductReference"
+    @validate-preparation="validate"
+    @cancel-preparation="cancel"
   )
 </template>
 
@@ -139,12 +141,14 @@ const changeProductReference = (oldReference: string, newReference: string) => {
 const router = useRouter()
 
 const validate = async () => {
+  closeActionsModal()
   await validatePreparation(useOrderGateway(), useInvoiceGateway())
   window.print()
   router.push('/preparations')
 }
 
 const cancel = async () => {
+  closeActionsModal()
   await cancelPreparation(useOrderGateway(), useInvoiceGateway())
   window.print()
   router.push('/preparations')

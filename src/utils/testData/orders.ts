@@ -1887,7 +1887,7 @@ export const orderWithoutPayment: AnonymousOrder = {
 }
 
 export const orderWithoutDelivery: AnonymousOrder = {
-  uuid: 'order-with-customer-message',
+  uuid: 'order-without-delivery',
   lines: [
     {
       productUuid: dolodent.uuid,

@@ -14,7 +14,8 @@ import {
   orderToPrepare3,
   orderWaitingForRestock,
   orderWithMissingProduct1,
-  orderWithMissingProduct2
+  orderWithMissingProduct2,
+  orderWithoutDelivery
 } from '@utils/testData/orders'
 import { Stock } from '@core/entities/product'
 import { chamomilla, dolodent } from '@utils/testData/products'
@@ -265,6 +266,33 @@ describe('Get orders to prepare VM', () => {
   describe('There is some preparations to cancel', () => {
     it('should list all of them', () => {
       preparationStore.items = [orderToCancel]
+      const expectedVM: Partial<GetPreparationsVM> = {
+        items: {
+          'À annuler': {
+            count: 1,
+            canSelect: false,
+            table: {
+              headers: expectedHeaders,
+              items: [
+                {
+                  reference: orderToCancel.uuid,
+                  href: `/preparations/${orderToCancel.uuid}`,
+                  client: 'J. Bon',
+                  createdDate: '24 janv. 2023',
+                  createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
+                  total: '18,50\u00A0€'
+                }
+              ]
+            }
+          }
+        }
+      }
+      expectVMToMatch(expectedVM)
+    })
+  })
+  describe('There is some preparations without delivery', () => {
+    it('should not list them', () => {
+      preparationStore.items = [orderToCancel, orderWithoutDelivery]
       const expectedVM: Partial<GetPreparationsVM> = {
         items: {
           'À annuler': {
