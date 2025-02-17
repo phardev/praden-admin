@@ -533,8 +533,8 @@ describe('Get invoice VM', () => {
           totalWithoutTax: '5,00\u00A0€',
           totalTax: '0,50\u00A0€',
           totalRefund: '-5,50\u00A0€',
-          deliveryPrice: '5,00\u00A0€',
-          totalWithTax: '10,50\u00A0€'
+          deliveryPrice: '6,00\u00A0€',
+          totalWithTax: '11,50\u00A0€'
         }
       }
       expectVMToMatch(expected)
