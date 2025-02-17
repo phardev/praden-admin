@@ -51,7 +51,7 @@ export const computeTotalWithTaxForOrder = (order: Order) => {
   if (!delivery) {
     return total
   }
-  const deliveryPrice = delivery.price
+  const deliveryPrice = Math.round(addTaxToPrice(delivery.price, 20))
   return total + deliveryPrice
 }
 

@@ -362,14 +362,19 @@ const getTotals = (
     0
   )
   const totalWithoutTax = linesTotal
+  const deliveryPriceWithTax = Math.round(addTaxToPrice(delivery.price, 20))
   return {
     linesTotal: formatter.format(linesTotal / 100),
     totalWithoutTax: formatter.format(totalWithoutTax / 100),
     totalTax: formatter.format(totalTax / 100),
     totalRefund: formatter.format(totalRefund / 100),
     deliveryPrice:
-      delivery.price === 0 ? 'Gratuit' : formatter.format(delivery.price / 100),
-    totalWithTax: formatter.format((linesTotalWithTax + delivery.price) / 100)
+      delivery.price === 0
+        ? 'Gratuit'
+        : formatter.format(deliveryPriceWithTax / 100),
+    totalWithTax: formatter.format(
+      (linesTotalWithTax + deliveryPriceWithTax) / 100
+    )
   }
 }
 
