@@ -155,6 +155,14 @@ describe('Get invoice VM', () => {
       }
       expectVMToMatch(expected)
     })
+    it('should get the customer email address', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        customer: {
+          email: 'jeanbon@anotheremail.com'
+        }
+      }
+      expectVMToMatch(expected)
+    })
     it('should get summary', () => {
       const expected: Partial<GetInvoiceVM> = {
         summaryTable: {
@@ -304,6 +312,14 @@ describe('Get invoice VM', () => {
       }
       expectVMToMatch(expected)
     })
+    it('should get the customer email address', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        customer: {
+          email: 'jeannedarc@email.com'
+        }
+      }
+      expectVMToMatch(expected)
+    })
     it('should get summary', () => {
       const expected: Partial<GetInvoiceVM> = {
         summaryTable: {
@@ -419,6 +435,9 @@ describe('Get invoice VM', () => {
         invoiceNumber: '',
         createdDate: '',
         createdDatetime: new Date('01/01/1970'),
+        customer: {
+          email: ''
+        },
         supplierAddress: {
           name: '',
           address: '',

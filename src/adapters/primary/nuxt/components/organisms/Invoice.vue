@@ -21,7 +21,7 @@
                 div.text-xl Facture
                 time.text-contrast(:datetime="invoiceVM.createdDatetime") {{ invoiceVM.createdDate }}
                 div.text-contrast {{ invoiceVM.invoiceNumber }}
-            div.flex.items-end.justify-between
+            div.flex.items-start.justify-between
               div.shrink.w-72
                 div {{ invoiceVM.supplierAddress.name }}
                 div {{ invoiceVM.supplierAddress.address }}
@@ -35,6 +35,7 @@
                 div {{ invoiceVM.deliveryAddress.zip }}
                 div {{ invoiceVM.deliveryAddress.city }}
                 div {{ invoiceVM.deliveryAddress.phone }}
+                div {{ invoiceVM.customer.email }}
               div
                 div.text-lg.mb-2 Adresse de facturation
                 div {{ invoiceVM.billingAddress.name }}
