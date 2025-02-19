@@ -55,6 +55,10 @@ interface TotalsVM {
   totalWithTax: string
 }
 
+interface CustomerVM {
+  email: string
+}
+
 export interface GetInvoiceVM {
   logo: string
   invoiceNumber: string
@@ -70,6 +74,7 @@ export interface GetInvoiceVM {
   totals: TotalsVM
   payment: PaymentVM
   deliveryMethod: DeliveryMethodVM
+  customer: CustomerVM
 }
 
 interface DeliveryMethodVM {
@@ -98,6 +103,9 @@ const emptyVM = (): GetInvoiceVM => {
     invoiceNumber: '',
     createdDate: '',
     createdDatetime: new Date('01/01/1970'),
+    customer: {
+      email: ''
+    },
     supplierAddress: emptyAddressVM(),
     deliveryAddress: emptyAddressVM(),
     billingAddress: emptyAddressVM(),
@@ -402,6 +410,9 @@ export const getInvoiceVM = (): GetInvoiceVM => {
       'fr-FR',
       dateFormatOptions
     ),
+    customer: {
+      email: invoice.data.contact.email
+    },
     createdDatetime: new Date(invoice.createdAt),
     supplierAddress: getSupplierAddress(),
     deliveryAddress: getDeliveryAddressVM(invoice.data),
