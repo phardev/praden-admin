@@ -28,7 +28,6 @@
                 div {{ invoiceVM.supplierAddress.zip }}
                 div {{ invoiceVM.supplierAddress.city }}
                 div {{ invoiceVM.supplierAddress.phone }}
-                div {{ invoiceVM.customer.email }}
               div
                 div.text-lg.mb-2 Adresse de livraison
                 div {{ invoiceVM.deliveryAddress.name }}
