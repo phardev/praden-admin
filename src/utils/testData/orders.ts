@@ -1931,3 +1931,101 @@ export const orderWithoutDelivery: AnonymousOrder = {
   deliveries: [],
   messages: []
 }
+
+export const orderCanceled: AnonymousOrder = {
+  uuid: 'CANCELED',
+  lines: [
+    {
+      productUuid: dolodent.uuid,
+      name: dolodent.name,
+      ean13: dolodent.ean13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      locations: dolodent.locations,
+      status: OrderLineStatus.Canceled,
+      updatedAt: 1674573778456
+    },
+    {
+      productUuid: dolodent.uuid,
+      name: dolodent.name,
+      ean13: dolodent.ean13,
+      expectedQuantity: -2,
+      preparedQuantity: 0,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      locations: dolodent.locations,
+      status: OrderLineStatus.Canceled,
+      updatedAt: 1674573778456
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
+  },
+  payment: {
+    status: PaymentStatus.Payed,
+    amount: 3370
+  },
+  invoiceNumber: '2023-00022',
+  createdAt: 1674573678456,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  deliveries: [
+    {
+      uuid: 'delivery-order-canceled',
+      price: 599,
+      method: deliveryInRelayPoint,
+      weight: 987,
+      pickupId: '123456',
+      trackingNumber: 'Canceled-123456',
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345',
+          country: 'Plop'
+        }
+      },
+      status: DeliveryStatus.Created
+    }
+  ],
+  messages: [
+    {
+      content: MessageContent.AskToClient,
+      sentAt: 1674573878456
+    },
+    {
+      content: MessageContent.PartialShip,
+      sentAt: 1674684178456
+    }
+  ]
+}

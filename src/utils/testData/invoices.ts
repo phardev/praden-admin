@@ -3,6 +3,7 @@ import {
   elodieDurandOrder2,
   lucasLefevreOrder1,
   lucasLefevreOrder2,
+  orderCanceled,
   orderDelivered1,
   orderDelivered2,
   orderPartiallyShipped1,
@@ -97,5 +98,11 @@ export const lucasLefevreOrder2Invoice: Invoice = {
 export const orderWithCustomerMessageInvoice: Invoice = {
   id: orderWithCustomerMessage.invoiceNumber,
   data: orderWithCustomerMessage,
+  createdAt: 1674273599954
+}
+
+export const orderCanceledInvoice: Invoice = {
+  id: orderCanceled.invoiceNumber,
+  data: orderCanceled,
   createdAt: 1674273599954
 }
