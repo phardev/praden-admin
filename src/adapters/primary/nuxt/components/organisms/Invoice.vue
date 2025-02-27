@@ -66,7 +66,7 @@
                 div
                   div.flex.justify-between.items-center
                     div.bg-contrast.px-2.py-2(class="w-1/2") Moyen de paiement
-                    div {{ invoiceVM.payment.type }} {{ invoiceVM.totals.totalWithTax }}
+                    div {{ invoiceVM.payment.type }} {{ invoiceVM.payment.amount }}
                   div.flex.justify-between.items-center
                     div.bg-contrast.px-2.py-2(class="w-1/2") Transporteur
                     div {{ invoiceVM.deliveryMethod.name }}
