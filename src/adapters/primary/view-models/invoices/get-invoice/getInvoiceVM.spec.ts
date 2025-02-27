@@ -6,6 +6,7 @@ import {
 } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 import { Invoice } from '@core/entities/invoice'
 import {
+  orderCanceled,
   orderDelivered1,
   orderDelivered2,
   orderPartiallyShipped1,
@@ -422,6 +423,30 @@ describe('Get invoice VM', () => {
               taxAmount: '1,79\u00A0€'
             }
           ]
+        }
+      }
+      expectVMToMatch(expected)
+    })
+  })
+
+  describe('There is all products canceled', () => {
+    const invoice: Invoice = {
+      id: orderCanceled.invoiceNumber,
+      data: orderCanceled,
+      createdAt: 1675564422539
+    }
+    beforeEach(() => {
+      invoiceStore.current = invoice
+    })
+    it('should also cancel the delivery', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        totals: {
+          linesTotal: '0,00\u00A0€',
+          totalWithoutTax: '0,00\u00A0€',
+          totalTax: '0,00\u00A0€',
+          totalRefund: '-18,19\u00A0€',
+          deliveryPrice: '0,00\u00A0€',
+          totalWithTax: '0,00\u00A0€'
         }
       }
       expectVMToMatch(expected)

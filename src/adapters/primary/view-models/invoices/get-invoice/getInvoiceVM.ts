@@ -356,7 +356,7 @@ const getTotals = (
     },
     0
   )
-  const totalRefund = refoundedInvoiceLines.reduce(
+  let totalRefund = refoundedInvoiceLines.reduce(
     (acc: number, line: InvoiceLine) => {
       return acc + line.totalWithTax
     },
@@ -370,7 +370,11 @@ const getTotals = (
     0
   )
   const totalWithoutTax = linesTotal
-  const deliveryPriceWithTax = Math.round(addTaxToPrice(delivery.price, 20))
+  let deliveryPriceWithTax = Math.round(addTaxToPrice(delivery.price, 20))
+  if (totalWithoutTax === 0) {
+    totalRefund += -deliveryPriceWithTax
+    deliveryPriceWithTax = 0
+  }
   return {
     linesTotal: formatter.format(linesTotal / 100),
     totalWithoutTax: formatter.format(totalWithoutTax / 100),
