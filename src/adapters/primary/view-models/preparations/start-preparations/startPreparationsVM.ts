@@ -143,6 +143,7 @@ const getDetailPreparationLineVM = (
 ): PreparationLineDetailVM => {
   const delivery = order.deliveries[0]
   const formatter = priceFormatter('fr-FR', 'EUR')
+  const deliveryPriceWithTax = addTaxToPrice(delivery.price, 20)
 
   const detail: PreparationLineDetailVM = {
     href: `${origin}/preparations/${order.uuid}`,
@@ -153,7 +154,9 @@ const getDetailPreparationLineVM = (
       .replace(/[\u0300-\u036f]/g, ''),
     createdDate: timestampToLocaleString(order.createdAt, 'fr-FR'),
     deliveryPrice:
-      delivery.price > 0 ? formatter.format(delivery.price / 100) : 'Gratuit',
+      delivery.price > 0
+        ? formatter.format(deliveryPriceWithTax / 100)
+        : 'Gratuit',
     deliveryAddress: getDeliveryAddressVM(order),
     billingAddress: getBillingAddressVM(order),
     lines: order.lines
