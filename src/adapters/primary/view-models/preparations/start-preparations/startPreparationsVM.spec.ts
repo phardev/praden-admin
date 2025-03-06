@@ -442,7 +442,7 @@ describe('Start preparations VM', () => {
               deliveryMethodName: orderToPrepare3.deliveries[0].method.name,
               clientLastname: orderToPrepare3.deliveryAddress.lastname,
               createdDate: '5 févr. 2023',
-              deliveryPrice: '5,00\u00A0€',
+              deliveryPrice: '6,00\u00A0€',
               deliveryAddress: {
                 name: "Jeanne D'arc",
                 address: '12 avenue du bois',
@@ -470,7 +470,7 @@ describe('Start preparations VM', () => {
                   totalPrice: '5,50\u00A0€'
                 }
               ],
-              totalWithTax: '10,50\u00A0€'
+              totalWithTax: '11,50\u00A0€'
             }
           ]
         }
@@ -499,7 +499,7 @@ describe('Start preparations VM', () => {
               deliveryMethodName: orderToPrepare3.deliveries[0].method.name,
               clientLastname: 'NameWithe',
               createdDate: '5 févr. 2023',
-              deliveryPrice: '5,00\u00A0€',
+              deliveryPrice: '6,00\u00A0€',
               deliveryAddress: {
                 name: 'Jeanne NameWithé',
                 address: '12 avenue du bois',
@@ -527,7 +527,7 @@ describe('Start preparations VM', () => {
                   totalPrice: '5,50\u00A0€'
                 }
               ],
-              totalWithTax: '10,50\u00A0€'
+              totalWithTax: '11,50\u00A0€'
             }
           ]
         }

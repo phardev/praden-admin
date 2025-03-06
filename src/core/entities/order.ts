@@ -114,7 +114,7 @@ export const getTotalWithTax = (order: Order): number => {
     )
   }, 0)
   const delivery = order.deliveries[0]
-  const deliveryPrice = delivery.price / 100
+  const deliveryPrice = addTaxToPrice(delivery.price, 20) / 100
   return totalLine + deliveryPrice
 }
 
