@@ -22,24 +22,27 @@ export const editLaboratory = async (
   productGateway: ProductGateway
 ) => {
   const laboratoryStore = useLaboratoryStore()
-  laboratoryStore.startLoading()
-  const { productsAdded, productsRemoved, ...laboratoryDto } = dto
-  const edited = await laboratoryGateway.edit(uuid, laboratoryDto)
-  laboratoryStore.edit(edited)
-  const productStore = useProductStore()
-  if (productsAdded) {
-    const products = await productGateway.bulkEdit(
-      { laboratory: edited },
-      productsAdded
-    )
-    productStore.list(products)
+  try {
+    laboratoryStore.startLoading()
+    const { productsAdded, productsRemoved, ...laboratoryDto } = dto
+    const edited = await laboratoryGateway.edit(uuid, laboratoryDto)
+    laboratoryStore.edit(edited)
+    const productStore = useProductStore()
+    if (productsAdded) {
+      const products = await productGateway.bulkEdit(
+        { laboratory: edited },
+        productsAdded
+      )
+      productStore.list(products)
+    }
+    if (productsRemoved) {
+      const products = await productGateway.bulkEdit(
+        { laboratory: null },
+        productsRemoved
+      )
+      productStore.list(products)
+    }
+  } finally {
+    laboratoryStore.stopLoading()
   }
-  if (productsRemoved) {
-    const products = await productGateway.bulkEdit(
-      { laboratory: null },
-      productsRemoved
-    )
-    productStore.list(products)
-  }
-  laboratoryStore.stopLoading()
 }

@@ -1,6 +1,6 @@
-export default defineNuxtPlugin(() => {
+export default defineNuxtPlugin(async () => {
   if (process.server) {
-    const crypto = require('crypto')
-    global.crypto = crypto
+    const cryptoModule = await import('crypto')
+    global.crypto = cryptoModule.default || cryptoModule
   }
 })

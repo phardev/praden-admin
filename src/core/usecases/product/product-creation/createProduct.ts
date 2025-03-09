@@ -17,8 +17,11 @@ export const createProduct = async (
   productGateway: ProductGateway
 ) => {
   const productStore = useProductStore()
-  productStore.startLoading()
-  const created = await productGateway.create(dto)
-  productStore.add(created)
-  productStore.stopLoading()
+  try {
+    productStore.startLoading()
+    const created = await productGateway.create(dto)
+    productStore.add(created)
+  } finally {
+    productStore.stopLoading()
+  }
 }

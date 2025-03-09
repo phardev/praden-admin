@@ -20,16 +20,19 @@ export const createLaboratory = async (
   productGateway: ProductGateway
 ) => {
   const laboratoryStore = useLaboratoryStore()
-  laboratoryStore.startLoading()
-  const created = await laboratoryGateway.create(dto)
-  laboratoryStore.add(created)
-  const productStore = useProductStore()
-  if (dto.productsAdded.length) {
-    const products = await productGateway.bulkEdit(
-      { laboratory: created },
-      dto.productsAdded
-    )
-    productStore.list(products)
+  try {
+    laboratoryStore.startLoading()
+    const created = await laboratoryGateway.create(dto)
+    laboratoryStore.add(created)
+    const productStore = useProductStore()
+    if (dto.productsAdded.length) {
+      const products = await productGateway.bulkEdit(
+        { laboratory: created },
+        dto.productsAdded
+      )
+      productStore.list(products)
+    }
+  } finally {
+    laboratoryStore.stopLoading()
   }
-  laboratoryStore.stopLoading()
 }
