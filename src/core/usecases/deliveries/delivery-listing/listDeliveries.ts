@@ -3,8 +3,11 @@ import { useDeliveryStore } from '@store/deliveryStore'
 
 export const listDeliveries = async (deliveryGateway: DeliveryGateway) => {
   const deliveryStore = useDeliveryStore()
-  deliveryStore.startLoading()
-  const deliveries = await deliveryGateway.list()
-  deliveryStore.list(deliveries)
-  deliveryStore.stopLoading()
+  try {
+    deliveryStore.startLoading()
+    const deliveries = await deliveryGateway.list()
+    deliveryStore.list(deliveries)
+  } finally {
+    deliveryStore.stopLoading()
+  }
 }

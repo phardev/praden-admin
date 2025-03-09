@@ -20,24 +20,26 @@ export const editCategory = async (
   productGateway: ProductGateway
 ): Promise<void> => {
   const categoryStore = useCategoryStore()
-  categoryStore.startLoading()
-  const edited = await categoryGateway.edit(uuid, dto)
-  categoryStore.edit(edited)
-  const productStore = useProductStore()
-  if (dto.productsAdded) {
-    const products = await productGateway.addProductsToCategory(
-      edited,
-      dto.productsAdded
-    )
-    productStore.list(products)
+  try {
+    categoryStore.startLoading()
+    const edited = await categoryGateway.edit(uuid, dto)
+    categoryStore.edit(edited)
+    const productStore = useProductStore()
+    if (dto.productsAdded) {
+      const products = await productGateway.addProductsToCategory(
+        edited,
+        dto.productsAdded
+      )
+      productStore.list(products)
+    }
+    if (dto.productsRemoved) {
+      const products = await productGateway.removeProductsFromCategory(
+        edited,
+        dto.productsRemoved
+      )
+      productStore.list(products)
+    }
+  } finally {
+    categoryStore.stopLoading()
   }
-  if (dto.productsRemoved) {
-    const products = await productGateway.removeProductsFromCategory(
-      edited,
-      dto.productsRemoved
-    )
-    productStore.list(products)
-  }
-  categoryStore.stopLoading()
-  return Promise.resolve()
 }

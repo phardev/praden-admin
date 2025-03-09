@@ -9,13 +9,16 @@ export const cancelPreparation = async (
   invoiceGateway: InvoiceGateway
 ) => {
   const preparationStore = usePreparationStore()
-  preparationStore.startLoading()
-  const preparation = preparationStore.current
-  if (!preparation) throw new NoPreparationSelectedError()
-  const canceled = await orderGateway.cancelPreparation(preparation)
-  preparationStore.remove(canceled.uuid)
-  const invoice = await invoiceGateway.create(canceled)
-  const invoiceStore = useInvoiceStore()
-  invoiceStore.set(invoice)
-  preparationStore.stopLoading()
+  try {
+    preparationStore.startLoading()
+    const preparation = preparationStore.current
+    if (!preparation) throw new NoPreparationSelectedError()
+    const canceled = await orderGateway.cancelPreparation(preparation)
+    preparationStore.remove(canceled.uuid)
+    const invoice = await invoiceGateway.create(canceled)
+    const invoiceStore = useInvoiceStore()
+    invoiceStore.set(invoice)
+  } finally {
+    preparationStore.stopLoading()
+  }
 }

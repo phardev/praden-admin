@@ -7,8 +7,11 @@ export const getCategory = async (
   categoryGateway: CategoryGateway
 ) => {
   const categoryStore = useCategoryStore()
-  categoryStore.startLoading()
-  const category = await categoryGateway.getByUuid(uuid)
-  categoryStore.setCurrentCategory(category)
-  categoryStore.stopLoading()
+  try {
+    categoryStore.startLoading()
+    const category = await categoryGateway.getByUuid(uuid)
+    categoryStore.setCurrentCategory(category)
+  } finally {
+    categoryStore.stopLoading()
+  }
 }
