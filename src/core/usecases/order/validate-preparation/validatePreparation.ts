@@ -8,8 +8,8 @@ export const validatePreparation = async (
   orderGateway: OrderGateway,
   invoiceGateway: InvoiceGateway
 ) => {
+  const preparationStore = usePreparationStore()
   try {
-    const preparationStore = usePreparationStore()
     preparationStore.startLoading()
     const preparation = preparationStore.current
     if (!preparation) throw new NoPreparationSelectedError()

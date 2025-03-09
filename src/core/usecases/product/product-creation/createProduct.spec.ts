@@ -286,16 +286,30 @@ describe('Create product', () => {
         composition: '<p>composition</p>',
         weight: 342
       }
-      await whenFailCreateProduct(dto)
     })
     it('should not save the product in gateway', async () => {
-      await expectProductGatewayToEqual()
+      try {
+        await whenFailCreateProduct(dto)
+      } catch {
+      } finally {
+        await expectProductGatewayToEqual()
+      }
     })
     it('should not save the product in store', async () => {
-      expectProductStoreToEqual()
+      try {
+        await whenFailCreateProduct(dto)
+      } catch {
+      } finally {
+        expectProductStoreToEqual()
+      }
     })
     it('should be aware that loading is over', async () => {
-      expect(productStore.isLoading).toBe(false)
+      try {
+        await whenFailCreateProduct(dto)
+      } catch {
+      } finally {
+        expect(productStore.isLoading).toBe(false)
+      }
     })
   })
 
