@@ -10,6 +10,7 @@ div.flex.min-h-screen
       NuxtErrorBoundary(@error="getError")
         template(#error="{ clearError }")
           ft-alert.max-w-xl.mr-10.mt-5.ml-auto(
+            v-if="errorTitle"
             :error-title="errorTitle"
             :error-message="errorMessage"
             @dismiss="clearError"
@@ -26,6 +27,15 @@ const { t } = useI18n()
 
 const errorMessage = ref(undefined)
 const errorTitle = ref(undefined)
+
+const route = useRoute()
+watch(
+  () => route.fullPath,
+  () => {
+    errorTitle.value = undefined
+    errorMessage.value = undefined
+  }
+)
 
 const getError = (err) => {
   if (err.response) {
