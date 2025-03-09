@@ -61,6 +61,9 @@ const getError = (err) => {
   } else {
     errorTitle.value = t('error.unknown')
   }
+  if (process.client) {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 }
 
 const translateValidationErrors = (errors: unknown): string => {
