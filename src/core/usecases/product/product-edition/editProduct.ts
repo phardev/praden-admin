@@ -16,8 +16,11 @@ export const editProduct = async (
   productGateway: ProductGateway
 ): Promise<void> => {
   const productStore = useProductStore()
-  productStore.startLoading()
-  const edited = await productGateway.edit(uuid, dto)
-  productStore.edit(edited)
-  productStore.stopLoading()
+  try {
+    productStore.startLoading()
+    const edited = await productGateway.edit(uuid, dto)
+    productStore.edit(edited)
+  } finally {
+    productStore.stopLoading()
+  }
 }

@@ -5,8 +5,11 @@ export const listLaboratories = async (
   laboratoryGateway: LaboratoryGateway
 ) => {
   const store = useLaboratoryStore()
-  store.startLoading()
-  const res = await laboratoryGateway.list()
-  store.list(res)
-  store.stopLoading()
+  try {
+    store.startLoading()
+    const res = await laboratoryGateway.list()
+    store.list(res)
+  } finally {
+    store.stopLoading()
+  }
 }

@@ -12,13 +12,16 @@ export const getProduct = async (
   dateProvider: DateProvider
 ): Promise<void> => {
   const productStore = useProductStore()
-  productStore.startLoading()
-  const product = await productGateway.getByUuid(uuid)
-  const promotions = await promotionGateway.getPromotionsForProduct(uuid)
-  const activePromotions = promotions.filter((p) =>
-    isPromotionInProgress(p, dateProvider.now())
-  )
-  const promotion = activePromotions[0] || undefined
-  productStore.setCurrent({ product, promotion })
-  productStore.stopLoading()
+  try {
+    productStore.startLoading()
+    const product = await productGateway.getByUuid(uuid)
+    const promotions = await promotionGateway.getPromotionsForProduct(uuid)
+    const activePromotions = promotions.filter((p) =>
+      isPromotionInProgress(p, dateProvider.now())
+    )
+    const promotion = activePromotions[0] || undefined
+    productStore.setCurrent({ product, promotion })
+  } finally {
+    productStore.stopLoading()
+  }
 }

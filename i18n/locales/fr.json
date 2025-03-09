@@ -1,0 +1,26 @@
+{
+  "name": "plop",
+  "validation": {
+    "name": {
+      "required": "Le nom est requis."
+    },
+    "ean13": {
+      "required": "Le code EAN-13 est requis.",
+      "unique": "Le code EAN-13 existe déjà."
+    },
+    "priceWithoutTax": {
+      "required": "Le prix HT est requis."
+    },
+    "percentTaxRate": {
+      "required": "Le taux de TVA est requis."
+    },
+    "default": "Une erreur de validation est survenue."
+  },
+  "error": {
+    "badRequest": "La requête est invalide. Veuillez vérifier vos données.",
+    "unauthorized": "Non autorisé. Veuillez vous connecter.",
+    "notFound": "L'élément recherché n'a pas été trouvé.",
+    "internal": "Erreur interne du serveur. Veuillez réessayer plus tard.",
+    "unknown": "Une erreur inattendue est survenue. Veuillez réessayer."
+  }
+}

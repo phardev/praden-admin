@@ -17,12 +17,14 @@ import { Category } from '@core/entities/category'
 import { Location } from '@core/entities/location'
 import { UUID } from '@core/types/types'
 import { avene, gilbert } from '@utils/testData/laboratories'
+import { InMemoryFailProductGateway } from '@core/usecases/product/product-creation/inMemoryFailProductGateway'
 
 describe('Create product', () => {
   let productStore: any
   let categoryStore: any
   let locationStore: any
   let productGateway: InMemoryProductGateway
+  let failProductGateway: InMemoryFailProductGateway
   let locationGateway: InMemoryLocationGateway
   const uuidGenerator = new FakeUuidGenerator()
   let uuid: UUID
@@ -261,6 +263,42 @@ describe('Create product', () => {
     })
   })
 
+  describe('Error', () => {
+    const errorMessage = 'failed to create product'
+    beforeEach(async () => {
+      failProductGateway = new InMemoryFailProductGateway()
+      failProductGateway.feedErrorMessageWith(errorMessage)
+      dto = {
+        name: 'Created product',
+        status: ProductStatus.Active,
+        cip7: '1234567',
+        cip13: '1234567890123',
+        ean13: '1234567890123',
+        images: [new File(['data1'], 'File 1', { type: 'image/png' })],
+        categoryUuids: [mum.uuid],
+        priceWithoutTax: 100,
+        percentTaxRate: 10,
+        locations: { [zoneGeo.uuid]: 'product-location' },
+        availableStock: 12,
+        laboratory: avene,
+        description: '<p>description</p>',
+        instructionsForUse: '<p>instructions For Use</p>',
+        composition: '<p>composition</p>',
+        weight: 342
+      }
+      await whenFailCreateProduct(dto)
+    })
+    it('should not save the product in gateway', async () => {
+      await expectProductGatewayToEqual()
+    })
+    it('should not save the product in store', async () => {
+      expectProductStoreToEqual()
+    })
+    it('should be aware that loading is over', async () => {
+      expect(productStore.isLoading).toBe(false)
+    })
+  })
+
   const givenThereIsExistingProducts = (...products: Array<Product>) => {
     productGateway.feedWith(...products)
     productStore.items = products
@@ -278,6 +316,11 @@ describe('Create product', () => {
   const whenCreateProduct = async (dto: CreateProductDTO) => {
     await createProduct(dto, productGateway)
   }
+
+  const whenFailCreateProduct = async (dto: CreateProductDTO) => {
+    await createProduct(dto, failProductGateway)
+  }
+
   const expectProductStoreToEqual = (...products: Array<Product>) => {
     expect(productStore.items).toStrictEqual(products)
   }

@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@nuxt/ui": "^2.17.0",
+    "@nuxtjs/i18n": "^9.3.0",
     "@nuxtjs/stylelint-module": "^5.2.0",
     "@tailwindcss/typography": "^0.5.12",
     "@types/jest": "^29.5.12",

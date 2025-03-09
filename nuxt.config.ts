@@ -56,6 +56,7 @@ export default defineNuxtConfig({
     'nuxt-icon',
     '@vueuse/nuxt',
     '@nuxt/ui',
+    '@nuxtjs/i18n',
     'nuxt-tiptap-editor',
     '@nuxtjs/stylelint-module'
   ],
@@ -80,6 +81,18 @@ export default defineNuxtConfig({
   ],
 
   ssr: false,
+  i18n: {
+    locales: [
+      {
+        code: 'fr',
+        iso: 'fr-FR',
+        file: 'fr.json',
+        name: 'Français'
+      }
+    ],
+    defaultLocale: 'fr',
+    langDir: 'locales/'
+  },
 
   vite: {
     define: {

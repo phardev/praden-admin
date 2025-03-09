@@ -3,9 +3,13 @@ import * as products from '@utils/testData/products'
 import { isLocalEnv } from '@utils/env'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { InMemoryTimeoutProductGateway } from '@adapters/secondary/product-gateways/InMemoryTimeoutProductGateway'
+import { InMemoryFailProductGateway } from '@core/usecases/product/product-creation/inMemoryFailProductGateway'
 
 export const useProductGateway = () => {
   if (isLocalEnv()) {
+    const failGateway = new InMemoryFailProductGateway()
+    failGateway.feedErrorMessageWith('pouet')
+    return failGateway
     return inMemory.getInstance()
   }
   const { BACKEND_URL } = useRuntimeConfig().public
