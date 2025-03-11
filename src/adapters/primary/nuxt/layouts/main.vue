@@ -82,23 +82,30 @@ const translateValidationErrors = (errors: unknown): string => {
           .join('\n')
       }
     }
-    // If not a unique constraint error, just return the original error string.
     return errors
   }
 
   return errors
     .map((error) => {
-      // Expect error string in the format "field: ValidationMessage"
       const parts = error.split(':').map((p) => p.trim())
       if (parts.length === 2) {
-        const [field, validation] = parts
-        // Build a translation key like "validation.name.required"
-        const key = `validation.${field}.${validation.toLowerCase()}`
-        const translated = t(key)
-        // If the translation key is missing, fallback to a default message
-        return translated !== key ? translated : t('validation.default')
+        const field = parts[0]
+        const message = parts[1].toLowerCase()
+        let validationType = ''
+        let params: Record<string, any> = {}
+        if (message.includes('required')) {
+          validationType = 'required'
+        } else if (message.includes('must be greater than')) {
+          validationType = 'gt'
+          const m = message.match(/must be greater than (\d+)/i)
+          if (m) {
+            params.min = m[1]
+          }
+        }
+        const translationKey = `validation.${field}.${validationType}`
+        const translation = t(translationKey, params)
+        return translation !== translationKey ? translation : error
       }
-      // Fallback if not in the expected format
       return error
     })
     .join('\n')

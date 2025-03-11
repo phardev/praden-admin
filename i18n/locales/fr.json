@@ -14,7 +14,10 @@
     "percentTaxRate": {
       "required": "Le taux de TVA est requis."
     },
-    "default": "Une erreur de validation est survenue."
+    "weight": {
+      "required": "Le poids est requis.",
+      "gt": "Le poids doit être supérieur à {min}."
+    }
   },
   "error": {
     "badRequest": "La requête est invalide. Veuillez vérifier vos données.",
