@@ -16,7 +16,17 @@ export class RealLaboratoryGateway
 
   async list(): Promise<Array<Laboratory>> {
     const res = await axiosWithBearer.get(`${this.baseUrl}/laboratories`)
-    return res.data.items
+    return res.data.items.sort((a: Laboratory, b: Laboratory) => {
+      const nameA = a.name.toLowerCase()
+      const nameB = b.name.toLowerCase()
+      if (nameA < nameB) {
+        return -1
+      }
+      if (nameA > nameB) {
+        return 1
+      }
+      return 0
+    })
   }
   async getByUuid(uuid: UUID): Promise<Laboratory> {
     const res = await axiosWithBearer.get(
