@@ -180,6 +180,7 @@ describe('Product form edit VM', () => {
           { field: 'cip13', expected: product.cip13 },
           { field: 'ean13', expected: product.ean13 },
           { field: 'images', expected: product.images },
+          { field: 'removedImages', expected: [] },
           { field: 'percentTaxRate', expected: product.percentTaxRate },
           { field: 'availableStock', expected: product.availableStock },
           { field: 'laboratory', expected: product.laboratory.uuid },
@@ -390,6 +391,22 @@ describe('Product form edit VM', () => {
     })
   })
 
+  describe('Remove image', () => {
+    const product = dolodent
+    beforeEach(() => {
+      productStore.current = {
+        product
+      }
+      vm = productFormEditVM(key)
+    })
+    describe('Images are already saved', () => {
+      it('should remove saved displayed images', async () => {
+        await vm.removeImage(dolodent.images[0])
+        expect(vm.get('images').value).toStrictEqual([])
+      })
+    })
+  })
+
   describe('DTO', () => {
     const product = dolodent
     beforeEach(() => {
@@ -418,6 +435,7 @@ describe('Product form edit VM', () => {
           categoryUuids: [...product.categories.map((c) => c.uuid), 'abc123'],
           laboratory: avene,
           miniature: newMiniature,
+          removedImages: [],
           newImages,
           priceWithoutTax: 1200,
           percentTaxRate: 5,
@@ -434,7 +452,7 @@ describe('Product form edit VM', () => {
         vm.set('cip13', expectedDTO.cip13)
         vm.set('ean13', expectedDTO.ean13)
         await vm.set('miniature', newMiniature)
-        await vm.set('images', newImages)
+        await vm.set('newImages', newImages)
         vm.toggleCategory('abc123')
         vm.set('laboratory', expectedDTO.laboratory.uuid)
         vm.set('priceWithoutTax', '12')
@@ -468,6 +486,7 @@ describe('Product form edit VM', () => {
           categoryUuids: [...product.categories.map((c) => c.uuid), 'abc123'],
           laboratory: avene,
           miniature: newMiniature,
+          removedImages: [],
           newImages,
           priceWithoutTax: 1200,
           percentTaxRate: 5,
@@ -485,7 +504,7 @@ describe('Product form edit VM', () => {
         vm.set('cip13', expectedDTO.cip13)
         vm.set('ean13', expectedDTO.ean13)
         await vm.set('miniature', newMiniature)
-        await vm.set('images', newImages)
+        await vm.set('newImages', newImages)
         vm.toggleCategory('abc123')
         vm.set('laboratory', expectedDTO.laboratory.uuid)
         vm.set('priceWithoutTax', '12')
@@ -497,6 +516,59 @@ describe('Product form edit VM', () => {
         vm.set('composition', expectedDTO.composition)
         vm.set('weight', '1.2')
         vm.set('maxQuantityForOrder', '12')
+        expect(vm.getDto()).toStrictEqual(expectedDTO)
+      })
+    })
+    describe('For a dto with removed images', () => {
+      it('should prepare the dto', async () => {
+        const newImages = [
+          new File(['data1'], 'File 1', { type: 'image/png' }),
+          new File(['data2'], 'File 2', { type: 'image/jpeg' }),
+          new File(['data3'], 'File 3', { type: 'image/gif' })
+        ]
+        const newMiniature = new File(['data1'], 'MINIATURE', {
+          type: 'image/png'
+        })
+        const expectedDTO: EditProductDTO = {
+          name: 'test',
+          status: ProductStatus.Inactive,
+          cip7: '1234567',
+          cip13: '1234567890123',
+          ean13: '1234567890123',
+          categoryUuids: [...product.categories.map((c) => c.uuid), 'abc123'],
+          laboratory: avene,
+          miniature: newMiniature,
+          removedImages: [dolodent.images[0]],
+          newImages,
+          priceWithoutTax: 1200,
+          percentTaxRate: 5,
+          locations: product.locations,
+          availableStock: 21,
+          description: '<p>description</p>',
+          instructionsForUse: '<p>instructionsForUse</p>',
+          composition: '<p>composition</p>',
+          weight: 1200,
+          maxQuantityForOrder: 12
+        }
+        vm.toggleIsActive()
+        vm.set('name', expectedDTO.name)
+        vm.set('cip7', expectedDTO.cip7)
+        vm.set('cip13', expectedDTO.cip13)
+        vm.set('ean13', expectedDTO.ean13)
+        await vm.set('miniature', newMiniature)
+        await vm.set('newImages', newImages)
+        vm.toggleCategory('abc123')
+        vm.set('laboratory', expectedDTO.laboratory.uuid)
+        vm.set('priceWithoutTax', '12')
+        vm.set('percentTaxRate', '5')
+        vm.set('locations', expectedDTO.locations)
+        vm.set('availableStock', '21')
+        vm.set('description', expectedDTO.description)
+        vm.set('instructionsForUse', expectedDTO.instructionsForUse)
+        vm.set('composition', expectedDTO.composition)
+        vm.set('weight', '1.2')
+        vm.set('maxQuantityForOrder', '12')
+        vm.removeImage(dolodent.images[0])
         expect(vm.getDto()).toStrictEqual(expectedDTO)
       })
     })
