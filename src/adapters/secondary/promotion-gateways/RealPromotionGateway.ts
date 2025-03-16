@@ -65,6 +65,16 @@ export class RealPromotionGateway
 
   async list(): Promise<Array<Promotion>> {
     const res = await axiosWithBearer.get(`${this.baseUrl}/promotions/`)
-    return Promise.resolve(res.data.items)
+    return res.data.items.sort((a: Promotion, b: Promotion) => {
+      const nameA = a.name.toLowerCase()
+      const nameB = b.name.toLowerCase()
+      if (nameA < nameB) {
+        return -1
+      }
+      if (nameA > nameB) {
+        return 1
+      }
+      return 0
+    })
   }
 }
