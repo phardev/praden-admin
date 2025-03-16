@@ -52,7 +52,7 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
       percentTaxRate: this.setPercentTaxRate.bind(this),
       priceWithTax: this.setPriceWithTax.bind(this),
       miniature: this.setMiniature.bind(this),
-      images: this.setImages.bind(this),
+      newImages: this.setNewImages.bind(this),
       locations: this.setLocations.bind(this)
     }
   }
@@ -121,7 +121,7 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
     super.set('newMiniature', miniature)
   }
 
-  async setImages(newImages: Array<File>): Promise<void> {
+  async setNewImages(newImages: Array<File>): Promise<void> {
     super.set('newImages', newImages)
     const images = this.fieldsReader.get('images')
     for (const image of newImages) {
@@ -227,6 +227,23 @@ export class ProductFormCreateVM extends ProductFormVM {
 
   async set(fieldName: string, value: any): Promise<void> {
     await this.fieldsWriter.set(fieldName, value)
+  }
+
+  async removeImage(data: string) {
+    const images = this.fieldsReader.get('images')
+    if (images.find((i) => i === data)) {
+      const updated = images.filter((image) => image !== data)
+      await this.set('images', updated)
+    }
+    const newImages = this.fieldsReader.get('newImages')
+    const newImagesData = []
+    for (const file of newImages) {
+      newImagesData.push(await getFileContent(file))
+    }
+    const index = newImagesData.findIndex((i) => i === data)
+    if (index >= 0) {
+      newImages.splice(index, 1)
+    }
   }
 
   getAvailableCategories(): CreateProductCategoriesVM {
