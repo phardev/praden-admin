@@ -125,6 +125,7 @@ export class ExistingProductFormInitializer implements FormInitializer {
       miniature: product.miniature,
       newMiniature: undefined,
       newImages: [],
+      removedImages: [],
       images: product.images || [],
       initialImages: JSON.parse(JSON.stringify(product.images || [])),
       description: product.description,

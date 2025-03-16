@@ -18,6 +18,7 @@ import { UUID } from '@core/types/types'
 import { useLaboratoryStore } from '@store/laboratoryStore'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { ProductStatus } from '@core/entities/product'
+import { getFileContent } from '@utils/file'
 
 export class ProductFormEditVM extends ProductFormVM {
   private fieldsReader: ProductFormFieldsReader
@@ -65,6 +66,25 @@ export class ProductFormEditVM extends ProductFormVM {
     await this.fieldsWriter.set(fieldName, value)
   }
 
+  async removeImage(data: string) {
+    const images = this.fieldsReader.get('images')
+    if (images.find((i) => i === data)) {
+      const removedImages = this.fieldsReader.get('removedImages')
+      removedImages.push(data)
+      const updated = images.filter((image) => image !== data)
+      await this.set('images', updated)
+    }
+    const newImages = this.fieldsReader.get('newImages')
+    const newImagesData = []
+    for (const file of newImages) {
+      newImagesData.push(await getFileContent(file))
+    }
+    const index = newImagesData.findIndex((i) => i === data)
+    if (index >= 0) {
+      newImages.splice(index, 1)
+    }
+  }
+
   getAvailableCategories(): CreateProductCategoriesVM {
     return this.fieldsReader.getAvailableCategories()
   }
@@ -102,6 +122,7 @@ export class ProductFormEditVM extends ProductFormVM {
       categoryUuids: this.fieldsReader.get('categoryUuids'),
       laboratory,
       miniature: this.fieldsReader.get('newMiniature'),
+      removedImages: this.fieldsReader.get('removedImages'),
       newImages: this.fieldsReader.get('newImages'),
       priceWithoutTax,
       percentTaxRate,
