@@ -26,3 +26,13 @@ export const percentFormatter = (n: number) => {
     maximumFractionDigits: 2
   }).format(n / 100)
 }
+
+export const formatCurrency = (value: number, includeSymbol = true): string => {
+  const formatter = new Intl.NumberFormat('fr-FR', {
+    style: includeSymbol ? 'currency' : 'decimal',
+    currency: 'EUR',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })
+  return formatter.format(value)
+}
