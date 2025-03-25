@@ -56,7 +56,7 @@
           .flex.justify-center.items-center.h-64
             UIcon.animate-spin.h-8.w-8(name='i-heroicons-arrow-path')
         div(v-else)
-          .grid.grid-cols-1.gap-4.mb-8(class='md:grid-cols-3')
+          .grid.grid-cols-1.gap-4.mb-8(class='md:grid-cols-5')
             UCard(v-for='(stat, index) in statsCards' :key='index')
               template(#header)
                 .text-center
@@ -80,6 +80,20 @@
               template(#default)
                 .h-80
                   MonthlyTurnoverChart(:data='dashboard.monthlySales')
+            UCard
+              template(#header)
+                h3.text-lg.font-medium
+                  | {{ $t('dashboard.monthlyCanceledTurnover') }}
+              template(#default)
+                .h-80
+                  MonthlyCanceledTurnoverChart(:data='dashboard.monthlySales')
+            UCard
+              template(#header)
+                h3.text-lg.font-medium
+                  | {{ $t('dashboard.monthlyDeliveryPrice') }}
+              template(#default)
+                .h-80
+                  MonthlyDeliveryPriceChart(:data='dashboard.monthlySales')
           UCard.mt-16
             template(#header)
               h3.text-lg.font-medium
@@ -116,6 +130,16 @@ const statsCards = computed(() => [
     description: t('dashboard.revenue')
   },
   {
+    title: t('dashboard.canceledTurnover'),
+    value: formatCurrency(dashboard.value.totalSales.canceledTurnover),
+    description: t('dashboard.canceledRevenue')
+  },
+  {
+    title: t('dashboard.deliveryPrice'),
+    value: formatCurrency(dashboard.value.totalSales.deliveryPrice),
+    description: t('dashboard.deliveryRevenue')
+  },
+  {
     title: t('dashboard.averageBasket'),
     value: formatCurrency(dashboard.value.totalSales.averageBasketValue),
     description: t('dashboard.perOrder')
@@ -136,7 +160,6 @@ const topProductsColumns = [
 const fetchDashboardData = async () => {
   isLoading.value = true
   try {
-    // Create params object with only defined values
     const params: Record<string, any> = {}
 
     if (productLimit.value) {
