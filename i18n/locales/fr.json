@@ -25,5 +25,28 @@
     "notFound": "L'élément recherché n'a pas été trouvé.",
     "internal": "Erreur interne du serveur. Veuillez réessayer plus tard.",
     "unknown": "Une erreur inattendue est survenue. Veuillez réessayer."
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "selectDateRange": "Sélectionner une période",
+    "productLimit": "Nombre de produits",
+    "refresh": "Actualiser",
+    "totalSales": "Ventes totales",
+    "orders": "commandes",
+    "totalTurnover": "Chiffre d'affaires",
+    "revenue": "de revenus",
+    "canceledTurnover": "Chiffre d'affaires annulé",
+    "canceledRevenue": "de revenus annulés",
+    "deliveryPrice": "Frais de livraison",
+    "deliveryRevenue": "de revenus",
+    "averageBasket": "Panier moyen",
+    "perOrder": "par commande",
+    "monthlySales": "Ventes mensuelles",
+    "monthlyTurnover": "Chiffre d'affaires mensuel",
+    "monthlyCanceledTurnover": "Chiffre d'affaires annulé mensuel",
+    "monthlyDeliveryPrice": "Frais de livraison mensuel",
+    "topProducts": "Produits les plus vendus",
+    "productName": "Nom du produit",
+    "orderCount": "Nombre de commandes"
   }
 }
