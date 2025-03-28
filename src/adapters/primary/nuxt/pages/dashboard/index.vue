@@ -159,8 +159,6 @@ const topProductsColumns = [
 const fetchFilteredDashboardData = async () => {
   const params: Record<string, any> = {}
 
-  console.log('startDate: ', startDate.value)
-
   if (productLimit.value) {
     params.productLimit = productLimit.value
   }
