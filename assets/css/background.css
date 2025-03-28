@@ -24,18 +24,18 @@
   }
 
   .bg-light {
-    @apply bg-gray2
+    @apply bg-gray2;
   }
 
   .bg-neutral {
-    @apply bg-gray3
+    @apply bg-gray3;
   }
 
   .bg-error {
-    @apply bg-tomato9
+    @apply bg-tomato9;
   }
 
   .bg-warning {
-    @apply bg-orange5
+    @apply bg-orange5;
   }
 }
