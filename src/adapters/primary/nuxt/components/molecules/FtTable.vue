@@ -3,11 +3,11 @@
   .px-4(class='sm:px-6 lg:px-8')
   div(class='sm:flex sm:items-center')
     div(class='sm:flex-auto')
-      h1.text-2xl.font-semibold.text-default
+      h1.text-2xl.font-semibold.text-default(:class="{'mb-10': hasTitleSlot && !hasSearchSlot}")
         slot(name="title")
   div(:class="{'mt-4': hasSearchSlot}")
     slot(name="search")
-  .-mx-4.mt-10.ring-1.ring-light(class='sm:-mx-6 md:mx-0 md:rounded-lg')
+  .-mx-4.ring-1.ring-light(class='sm:-mx-6 md:mx-0 md:rounded-lg')
     div(class="overflow-y-auto" style="max-height: 400px;")
       table.min-w-full.divide-y.divide-light
         thead.bg-contrast
@@ -97,6 +97,7 @@ const props = defineProps({
 const slots = useSlots()
 
 const hasSearchSlot = computed(() => !!slots.search)
+const hasTitleSlot = computed(() => !!slots.title)
 
 const emit = defineEmits<{
   (e: 'clicked', value: any): void

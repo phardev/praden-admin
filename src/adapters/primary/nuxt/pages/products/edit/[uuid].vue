@@ -15,7 +15,6 @@ import { listProducts } from '@core/usecases/product/product-listing/listProduct
 import { getProduct } from '@core/usecases/product/get-product/getProduct'
 import { productFormEditVM } from '@adapters/primary/view-models/products/product-form/productFormEditVM'
 import { editProduct } from '@core/usecases/product/product-edition/editProduct'
-import { useLocationGateway } from '../../../../../../../gateways/locationGateway'
 import { usePromotionGateway } from '../../../../../../../gateways/promotionGateway'
 import { useDateProvider } from '../../../../../../../gateways/dateProvider'
 
@@ -45,12 +44,7 @@ onMounted(async () => {
 })
 
 const validate = async () => {
-  await editProduct(
-    productUuid,
-    vm.value.getDto(),
-    useProductGateway(),
-    useLocationGateway()
-  )
+  await editProduct(productUuid, vm.value.getDto(), useProductGateway())
   router.push('/products/')
 }
 </script>

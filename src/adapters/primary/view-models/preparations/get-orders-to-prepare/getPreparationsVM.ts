@@ -1,15 +1,16 @@
 import { usePreparationStore } from '@store/preparationStore'
 import {
-  OrderLineStatus,
   DeliveryType,
   MessageContent,
   Order,
-  OrderLine
+  OrderLine,
+  OrderLineStatus
 } from '@core/entities/order'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import { TableVM } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 import { HashTable } from '@core/types/types'
 import { useProductStore } from '@store/productStore'
+import { addTaxToPrice } from '@utils/price'
 
 export interface GetPreparationsItemVM {
   reference: string
@@ -17,6 +18,8 @@ export interface GetPreparationsItemVM {
   client: string
   createdDate: string
   createdDatetime: Date
+  pickingDate?: string
+  pickingDatetime?: Date
   total: string
 }
 
@@ -40,17 +43,23 @@ export const computeTotalWithTaxForOrder = (order: Order) => {
   const total = order.lines.reduce((acc: number, line: OrderLine) => {
     return (
       acc +
-      line.unitAmount * line.expectedQuantity +
-      (line.unitAmount * line.expectedQuantity * line.percentTaxRate) / 100
+      Math.round(addTaxToPrice(line.unitAmount, line.percentTaxRate)) *
+        line.expectedQuantity
     )
   }, 0)
   const delivery = order.deliveries[0]
-  const deliveryPrice = delivery.price
+  if (!delivery) {
+    return total
+  }
+  const deliveryPrice = Math.round(addTaxToPrice(delivery.price, 20))
   return total + deliveryPrice
 }
 
 const clickAndCollectFilter = (o: Order) => {
   const delivery = o.deliveries[0]
+  if (!delivery) {
+    return false
+  }
   return (
     delivery.method.type === DeliveryType.ClickAndCollect &&
     o.lines.every((l: OrderLine) => l.status === OrderLineStatus.Created)
@@ -59,6 +68,9 @@ const clickAndCollectFilter = (o: Order) => {
 
 const deliveryFilter = (o: Order) => {
   const delivery = o.deliveries[0]
+  if (!delivery) {
+    return false
+  }
   return (
     delivery.method.type === DeliveryType.Delivery &&
     o.lines.every((l: OrderLine) => l.status === OrderLineStatus.Created)
@@ -121,19 +133,27 @@ export const getPreparationsVMHeaders: Array<Header> = [
   }
 ]
 
+const getClickAndCollectPreparationsVMHeaders = [
+  ...getPreparationsVMHeaders,
+  {
+    name: 'Date de retrait',
+    value: 'pickingDate'
+  }
+]
+
 export const filterPreparationsByGroup = (
   groups: any
 ): HashTable<GetPreparationsGroupVM> => {
   const preparationStore = usePreparationStore()
   const orders = preparationStore.items
-  const headers = getPreparationsVMHeaders
   const formatter = priceFormatter('fr-FR', 'EUR')
   const res: HashTable<GetPreparationsGroupVM> = {}
   groups.forEach((group: any) => {
     const filteredItems = orders.filter(group.filter)
     const items = filteredItems.map((o: Order) => {
+      const delivery = o.deliveries[0]
       const total = computeTotalWithTaxForOrder(o)
-      return {
+      const res: GetPreparationsItemVM = {
         reference: o.uuid,
         href: `/preparations/${o.uuid}`,
         client: `${o.deliveryAddress.firstname[0]}. ${o.deliveryAddress.lastname}`,
@@ -141,12 +161,31 @@ export const filterPreparationsByGroup = (
         createdDatetime: new Date(o.createdAt),
         total: formatter.format(total / 100)
       }
+      if (
+        delivery.method.type === DeliveryType.ClickAndCollect &&
+        delivery.pickingDate
+      ) {
+        const options = {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        }
+        res.pickingDate = timestampToLocaleString(
+          delivery.pickingDate,
+          'fr-FR',
+          options
+        )
+        res.pickingDatetime = new Date(delivery.pickingDate)
+      }
+      return res
     })
     res[group.name] = {
       count: items.length,
       canSelect: group.canSelect,
       table: {
-        headers,
+        headers: group.headers,
         items
       }
     }
@@ -159,32 +198,38 @@ export const getPreparationsVM = (): GetPreparationsVM => {
     {
       name: 'Click & Collect',
       filter: clickAndCollectFilter,
-      canSelect: true
+      canSelect: true,
+      headers: getClickAndCollectPreparationsVMHeaders
     },
     {
       name: 'Colissimo',
       filter: deliveryFilter,
-      canSelect: true
+      canSelect: true,
+      headers: getPreparationsVMHeaders
     },
     {
       name: 'À terminer',
       filter: toContinueFilter,
-      canSelect: true
+      canSelect: true,
+      headers: getPreparationsVMHeaders
     },
     {
       name: 'À completer',
       filter: toCompleteFilter,
-      canSelect: false
+      canSelect: false,
+      headers: getPreparationsVMHeaders
     },
     {
       name: 'À expedier',
       filter: toShipFilter,
-      canSelect: false
+      canSelect: false,
+      headers: getPreparationsVMHeaders
     },
     {
       name: 'À annuler',
       filter: toCancelFilter,
-      canSelect: false
+      canSelect: false,
+      headers: getPreparationsVMHeaders
     }
   ]
   const preparationStore = usePreparationStore()

@@ -1,6 +1,7 @@
 import {
   filterPreparationsByGroup,
   GetPreparationsVM,
+  getPreparationsVMHeaders,
   isStockAvailable
 } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { MessageContent, Order } from '@core/entities/order'
@@ -26,12 +27,14 @@ export const getWaitingPreparationsVM = (): GetPreparationsVM => {
     {
       name: 'En attente de réponse client',
       filter: waitingClientAnswerFilter,
-      canSelect: false
+      canSelect: false,
+      headers: getPreparationsVMHeaders
     },
     {
       name: 'En attente de réapprovisionnement',
       filter: waitingReplenishmentFilter,
-      canSelect: false
+      canSelect: false,
+      headers: getPreparationsVMHeaders
     }
   ]
   const preparationStore = usePreparationStore()

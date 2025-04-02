@@ -82,7 +82,7 @@ describe('Get orders to prepare VM', () => {
                   client: "J. D'arc",
                   createdDate: '21 janv. 2023',
                   createdDatetime: new Date('2023-01-21T03:59:59.954Z'),
-                  total: '19,76\u00A0€'
+                  total: '19,75\u00A0€'
                 }
               ]
             }

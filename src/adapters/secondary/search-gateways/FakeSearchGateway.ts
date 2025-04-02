@@ -8,6 +8,7 @@ import { Timestamp } from '@core/types/types'
 import { SearchCustomersDTO } from '@core/usecases/customers/customer-searching/searchCustomer'
 import { Customer } from '@core/entities/customer'
 import { useCustomerStore } from '@store/customerStore'
+import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
 
 export class FakeSearchGateway implements SearchGateway {
   private items: Array<any> = []
@@ -19,23 +20,29 @@ export class FakeSearchGateway implements SearchGateway {
     this.customerStore = useCustomerStore()
   }
 
-  searchProducts(query: string): Promise<Array<Product>> {
+  searchProducts(filters: SearchProductsFilters): Promise<Array<Product>> {
     const products = this.items.filter((i) => isProduct(i))
     const res = products.filter((p) => {
-      const isCategoryNameMatching = p.categories.some((c) =>
-        c.name.includesWithoutCase(query)
-      )
-      const isNameMatching = p.name.includesWithoutCase(query)
-      const isLaboratoryMatching = p.laboratory
-        ? p.laboratory.name.includesWithoutCase(query)
-        : false
-      const isCip13Matching = p.cip13.includes(query)
-      return (
-        isNameMatching ||
-        isLaboratoryMatching ||
-        isCategoryNameMatching ||
-        isCip13Matching
-      )
+      if (filters.query) {
+        const query = filters.query
+        const isCategoryNameMatching = p.categories.some((c) =>
+          c.name.includesWithoutCase(query)
+        )
+        const isNameMatching = p.name.includesWithoutCase(query)
+        const isLaboratoryMatching = p.laboratory
+          ? p.laboratory.name.includesWithoutCase(query)
+          : false
+        const isCip13Matching = p.cip13.includes(query)
+        return (
+          isNameMatching ||
+          isLaboratoryMatching ||
+          isCategoryNameMatching ||
+          isCip13Matching
+        )
+      }
+      if (filters.status) {
+        return p.status === filters.status
+      }
     })
     return Promise.resolve(res)
   }

@@ -5,6 +5,7 @@ import { Order, OrderLine } from '@core/entities/order'
 import { Invoice } from '@core/entities/invoice'
 import { HashTable } from '@core/types/types'
 import { Delivery } from '@core/entities/delivery'
+import { addTaxToPrice } from '@utils/price'
 
 export interface TableVM<T> {
   headers: Array<Header>
@@ -54,6 +55,10 @@ interface TotalsVM {
   totalWithTax: string
 }
 
+interface CustomerVM {
+  email: string
+}
+
 export interface GetInvoiceVM {
   logo: string
   invoiceNumber: string
@@ -67,6 +72,29 @@ export interface GetInvoiceVM {
   refundOrderLinesTable: TableVM<OrderLineVM>
   taxDetailsTable: TableVM<TaxDetailLineVM>
   totals: TotalsVM
+  payment: PaymentVM
+  deliveryMethod: DeliveryMethodVM
+  customer: CustomerVM
+}
+
+interface DeliveryMethodVM {
+  name: string
+}
+
+interface PaymentVM {
+  type: string
+  amount: string
+}
+
+interface InvoiceLine {
+  reference: string
+  name: string
+  taxRate: number
+  unitAmountWithoutTax: number
+  unitAmountWithTax: number
+  quantity: number
+  totalWithoutTax: number
+  totalWithTax: number
 }
 
 const emptyVM = (): GetInvoiceVM => {
@@ -75,6 +103,9 @@ const emptyVM = (): GetInvoiceVM => {
     invoiceNumber: '',
     createdDate: '',
     createdDatetime: new Date('01/01/1970'),
+    customer: {
+      email: ''
+    },
     supplierAddress: emptyAddressVM(),
     deliveryAddress: emptyAddressVM(),
     billingAddress: emptyAddressVM(),
@@ -89,6 +120,13 @@ const emptyVM = (): GetInvoiceVM => {
       totalRefund: '',
       deliveryPrice: '',
       totalWithTax: ''
+    },
+    payment: {
+      type: '',
+      amount: ''
+    },
+    deliveryMethod: {
+      name: ''
     }
   }
 }
@@ -180,7 +218,7 @@ const getSummaryTable = (invoice: Invoice): TableVM<SummaryValueVM> => {
 }
 
 const getOrderLinesTable = (
-  orderLines: Array<OrderLine>
+  invoiceLines: Array<InvoiceLine>
 ): TableVM<OrderLineVM> => {
   const orderLinesHeaders: Array<Header> = [
     {
@@ -215,84 +253,25 @@ const getOrderLinesTable = (
   const formatter = priceFormatter('fr-FR', 'EUR')
   return {
     headers: orderLinesHeaders,
-    items: orderLines.filter(preparedLinesFilter).map((line) => {
-      const unitAmountWithTax =
-        line.unitAmount + (line.unitAmount * line.percentTaxRate) / 100
+    items: invoiceLines.map((line) => {
       return {
-        reference: line.ean13,
+        reference: line.reference,
         name: line.name,
-        taxRate: `${line.percentTaxRate} %`,
-        unitAmountWithoutTax: formatter.format(line.unitAmount / 100),
-        unitAmountWithTax: formatter.format(unitAmountWithTax / 100),
-        quantity: line.preparedQuantity,
-        totalWithTax: formatter.format(
-          (unitAmountWithTax * line.preparedQuantity) / 100
-        )
+        taxRate: `${line.taxRate} %`,
+        unitAmountWithoutTax: formatter.format(line.unitAmountWithoutTax / 100),
+        unitAmountWithTax: formatter.format(line.unitAmountWithTax / 100),
+        quantity: line.quantity,
+        totalWithTax: formatter.format(line.totalWithTax / 100)
       }
     })
   }
 }
 
-const getRefundOrderLinesTable = (
-  orderLines: Array<OrderLine>
-): TableVM<OrderLineVM> => {
-  const orderLinesHeaders: Array<Header> = [
-    {
-      name: 'Référence',
-      value: 'reference'
-    },
-    {
-      name: 'Produit',
-      value: 'name'
-    },
-    {
-      name: 'Taux de taxe',
-      value: 'taxRate'
-    },
-    {
-      name: 'Prix unitaire (HT)',
-      value: 'unitAmountWithoutTax'
-    },
-    {
-      name: 'Prix unitaire (TTC)',
-      value: 'unitAmountWithTax'
-    },
-    {
-      name: 'Quantité',
-      value: 'quantity'
-    },
-    {
-      name: 'Total (TTC)',
-      value: 'totalWithTax'
-    }
-  ]
-  const formatter = priceFormatter('fr-FR', 'EUR')
-  return {
-    headers: orderLinesHeaders,
-    items: orderLines.filter(refundLinesFilter).map((line) => {
-      const unitAmountWithTax =
-        line.unitAmount + (line.unitAmount * line.percentTaxRate) / 100
-      return {
-        reference: line.ean13,
-        name: line.name,
-        taxRate: `${line.percentTaxRate} %`,
-        unitAmountWithoutTax: formatter.format(-line.unitAmount / 100),
-        unitAmountWithTax: formatter.format(-unitAmountWithTax / 100),
-        quantity: line.expectedQuantity,
-        totalWithTax: formatter.format(
-          (unitAmountWithTax * line.expectedQuantity) / 100
-        )
-      }
-    })
-  }
-}
-
-const getTotalGroupedByTax = (orderLines: Array<OrderLine>) => {
-  return orderLines.reduce((acc: HashTable<any>, line: OrderLine) => {
-    const taxRate = line.percentTaxRate
-    const amountWithoutTax = line.unitAmount * line.expectedQuantity
-    const taxAmount =
-      (line.unitAmount / 100) * line.percentTaxRate * line.expectedQuantity
+const getTotalGroupedByTax = (orderLines: Array<InvoiceLine>) => {
+  return orderLines.reduce((acc: HashTable<any>, line: InvoiceLine) => {
+    const taxRate = line.taxRate
+    const amountWithoutTax = line.totalWithoutTax
+    const taxAmount = line.totalWithTax - line.totalWithoutTax
     if (acc[taxRate]) {
       acc[taxRate].amountWithoutTax += amountWithoutTax
       acc[taxRate].taxAmount += taxAmount
@@ -309,7 +288,7 @@ const getTotalGroupedByTax = (orderLines: Array<OrderLine>) => {
 }
 
 const getTaxDetailsTable = (
-  orderLines: Array<OrderLine>
+  invoiceLines: Array<InvoiceLine>
 ): TableVM<TaxDetailLineVM> => {
   const headers: Array<Header> = [
     {
@@ -330,7 +309,7 @@ const getTaxDetailsTable = (
     }
   ]
   const formatter = priceFormatter('fr-FR', 'EUR')
-  const groupedByTaxRate = getTotalGroupedByTax(orderLines)
+  const groupedByTaxRate = getTotalGroupedByTax(invoiceLines)
   const orderedTaxRate = Object.keys(groupedByTaxRate).sort((a, b) => {
     return a.localeCompare(b, undefined, {
       numeric: true,
@@ -359,21 +338,31 @@ const refundLinesFilter = (line: OrderLine) => {
   return line.expectedQuantity < 0
 }
 
-const getTotals = (orderLines: Array<OrderLine>, delivery: Delivery) => {
+const getTotals = (
+  preparedInvoiceLines: Array<InvoiceLine>,
+  refoundedInvoiceLines: Array<InvoiceLine>,
+  delivery: Delivery
+) => {
   const formatter = priceFormatter('fr-FR', 'EUR')
-  const linesPrepared = orderLines.filter(preparedLinesFilter)
-  const linesTotal = linesPrepared.reduce((acc: number, line: OrderLine) => {
-    return acc + line.preparedQuantity * line.unitAmount
-  }, 0)
-  const refundLines = orderLines.filter(refundLinesFilter)
-  const totalRefund = refundLines.reduce((acc: number, line: OrderLine) => {
-    return (
-      acc +
-      line.expectedQuantity * line.unitAmount +
-      (line.percentTaxRate * line.unitAmount * line.expectedQuantity) / 100
-    )
-  }, 0)
-  const groupedByTax = getTotalGroupedByTax(orderLines)
+  const linesTotal = preparedInvoiceLines.reduce(
+    (acc: number, line: InvoiceLine) => {
+      return acc + line.totalWithoutTax
+    },
+    0
+  )
+  const linesTotalWithTax = preparedInvoiceLines.reduce(
+    (acc: number, line: InvoiceLine) => {
+      return acc + line.totalWithTax
+    },
+    0
+  )
+  let totalRefund = refoundedInvoiceLines.reduce(
+    (acc: number, line: InvoiceLine) => {
+      return acc + line.totalWithTax
+    },
+    0
+  )
+  const groupedByTax = getTotalGroupedByTax(preparedInvoiceLines)
   const totalTax = Object.keys(groupedByTax).reduce(
     (acc: number, taxLine: any) => {
       return acc + groupedByTax[taxLine].taxAmount
@@ -381,15 +370,22 @@ const getTotals = (orderLines: Array<OrderLine>, delivery: Delivery) => {
     0
   )
   const totalWithoutTax = linesTotal
+  let deliveryPriceWithTax = Math.round(addTaxToPrice(delivery.price, 20))
+  if (totalWithoutTax === 0) {
+    totalRefund += -deliveryPriceWithTax
+    deliveryPriceWithTax = 0
+  }
   return {
     linesTotal: formatter.format(linesTotal / 100),
     totalWithoutTax: formatter.format(totalWithoutTax / 100),
     totalTax: formatter.format(totalTax / 100),
     totalRefund: formatter.format(totalRefund / 100),
     deliveryPrice:
-      delivery.price === 0 ? 'Gratuit' : formatter.format(delivery.price / 100),
+      delivery.price === 0
+        ? 'Gratuit'
+        : formatter.format(deliveryPriceWithTax / 100),
     totalWithTax: formatter.format(
-      (totalWithoutTax + totalTax + delivery.price) / 100
+      (linesTotalWithTax + deliveryPriceWithTax) / 100
     )
   }
 }
@@ -406,6 +402,10 @@ export const getInvoiceVM = (): GetInvoiceVM => {
     day: 'numeric'
   }
 
+  const preparedInvoiceLines = getPreparedInvoiceLines(invoice.data.lines)
+  const refoundedInvoiceLines = getRefoundedInvoiceLines(invoice.data.lines)
+  const formatter = priceFormatter('fr-FR', 'EUR')
+
   return {
     logo: 'http://praden-logo.svg',
     invoiceNumber: invoice.id,
@@ -414,6 +414,9 @@ export const getInvoiceVM = (): GetInvoiceVM => {
       'fr-FR',
       dateFormatOptions
     ),
+    customer: {
+      email: invoice.data.contact.email
+    },
     createdDatetime: new Date(invoice.createdAt),
     supplierAddress: getSupplierAddress(),
     deliveryAddress: getDeliveryAddressVM(invoice.data),
@@ -426,9 +429,60 @@ export const getInvoiceVM = (): GetInvoiceVM => {
       phone: invoice.data.contact.phone
     },
     summaryTable: getSummaryTable(invoice),
-    orderLinesTable: getOrderLinesTable(invoice.data.lines),
-    refundOrderLinesTable: getRefundOrderLinesTable(invoice.data.lines),
-    taxDetailsTable: getTaxDetailsTable(invoice.data.lines),
-    totals: getTotals(invoice.data.lines, invoice.data.deliveries[0])
+    orderLinesTable: getOrderLinesTable(preparedInvoiceLines),
+    refundOrderLinesTable: getOrderLinesTable(refoundedInvoiceLines),
+    taxDetailsTable: getTaxDetailsTable(preparedInvoiceLines),
+    totals: getTotals(
+      preparedInvoiceLines,
+      refoundedInvoiceLines,
+      invoice.data.deliveries[0]
+    ),
+    payment: {
+      type: 'e-Transaction',
+      amount: formatter.format(invoice.data.payment.amount / 100)
+    },
+    deliveryMethod: {
+      name: invoice.data.deliveries[0].method.name
+    }
   }
+}
+
+const getPreparedInvoiceLines = (
+  orderLines: Array<OrderLine>
+): Array<InvoiceLine> => {
+  return orderLines.filter(preparedLinesFilter).map((line) => {
+    const unitAmountWithTax = Math.round(
+      addTaxToPrice(line.unitAmount, line.percentTaxRate)
+    )
+    return {
+      reference: line.ean13,
+      name: line.name,
+      taxRate: line.percentTaxRate,
+      unitAmountWithoutTax: line.unitAmount,
+      quantity: line.preparedQuantity,
+      unitAmountWithTax,
+      totalWithoutTax: line.unitAmount * line.preparedQuantity,
+      totalWithTax: unitAmountWithTax * line.preparedQuantity
+    }
+  })
+}
+
+const getRefoundedInvoiceLines = (
+  orderLines: Array<OrderLine>
+): Array<InvoiceLine> => {
+  return orderLines.filter(refundLinesFilter).map((line) => {
+    const unitAmountWithTax = Math.round(
+      addTaxToPrice(line.unitAmount, line.percentTaxRate)
+    )
+    return {
+      reference: line.ean13,
+      name: line.name,
+      taxRate: line.percentTaxRate,
+      unitAmountWithoutTax: line.unitAmount * -1,
+      quantity: line.expectedQuantity,
+      unitAmountWithTax: unitAmountWithTax * -1,
+      totalWithoutTax: line.unitAmount * line.expectedQuantity,
+      totalWithTax: unitAmountWithTax * line.expectedQuantity
+    }
+  })
 }

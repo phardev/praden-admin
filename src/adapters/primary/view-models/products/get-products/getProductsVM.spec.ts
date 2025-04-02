@@ -9,6 +9,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import { useProductStore } from '@store/productStore'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { useSearchStore } from '@store/searchStore'
+import { ProductStatus } from '@core/entities/product'
 
 describe('Get products VM', () => {
   let productStore: any
@@ -157,7 +158,10 @@ describe('Get products VM', () => {
       describe('There is a search result', () => {
         beforeEach(() => {
           searchStore.set(key, [dolodent])
-          searchStore.setFilter(key, 'dol')
+          searchStore.setFilter(key, {
+            query: 'dol',
+            status: ProductStatus.Active
+          })
         })
         it('should list only the search result', () => {
           expectedVM = {
@@ -175,7 +179,10 @@ describe('Get products VM', () => {
                 isActive: true
               }
             ],
-            currentSearch: 'dol'
+            currentSearch: {
+              query: 'dol',
+              status: ProductStatus.Active
+            }
           }
           expectVMToMatch(expectedVM)
         })

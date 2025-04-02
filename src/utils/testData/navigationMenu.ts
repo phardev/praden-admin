@@ -5,6 +5,16 @@ export const fullMenu: NavigationMenu = {
   title: 'Pharmacie Agnes Praden',
   sections: [
     {
+      title: 'Statistiques',
+      links: [
+        {
+          name: 'Tableau de bord',
+          icon: 'akar-icons:statistic-up',
+          href: '/dashboard'
+        }
+      ]
+    },
+    {
       title: 'Catalogue',
       links: [
         {

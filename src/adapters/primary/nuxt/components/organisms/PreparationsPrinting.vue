@@ -17,6 +17,7 @@ div.hidden.printme.mx-2
           :text="order.reference"
         )
         h1.text-xl {{ order.createdDate }}
+        h1.text-xl(v-if="order.pickingDate") Date de retrait {{ order.pickingDate }}
       client-only
         .qr-container
           vueQr(
@@ -30,6 +31,13 @@ div.hidden.printme.mx-2
         div {{ order.deliveryAddress.zip }}
         div {{ order.deliveryAddress.city }}
         div {{ order.deliveryAddress.phone }}
+      div.grow
+        div.text-lg.mb-2 Adresse de facturation
+        div {{ order.billingAddress.name }}
+        div {{ order.billingAddress.address }}
+        div {{ order.billingAddress.zip }}
+        div {{ order.billingAddress.city }}
+        div {{ order.billingAddress.phone }}
       ft-barcode(
         :code="order.clientLastname"
         :width="1"

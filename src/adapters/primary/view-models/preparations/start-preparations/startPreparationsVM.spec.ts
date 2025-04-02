@@ -106,8 +106,17 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
+                pickingDate: '20/01/2025 12:42',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
+                  name: 'Jean Bon',
+                  address: '10 rue des peupliers',
+                  city: 'PlopLand',
+                  zip: '12345',
+                  country: 'Plop',
+                  phone: '0123456789'
+                },
+                billingAddress: {
                   name: 'Jean Bon',
                   address: '10 rue des peupliers',
                   city: 'PlopLand',
@@ -160,8 +169,17 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',
+                pickingDate: '13/02/2025 16:15',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
+                  name: "Jeanne D'arc",
+                  address: '12 avenue du bois',
+                  city: 'Boisville',
+                  zip: '54321',
+                  country: 'France',
+                  phone: '9876543210'
+                },
+                billingAddress: {
                   name: "Jeanne D'arc",
                   address: '12 avenue du bois',
                   city: 'Boisville',
@@ -234,6 +252,14 @@ describe('Start preparations VM', () => {
                   country: 'Plop',
                   phone: '0123456789'
                 },
+                billingAddress: {
+                  name: 'Jean Bon',
+                  address: '10 rue des peupliers',
+                  city: 'PlopLand',
+                  zip: '12345',
+                  country: 'Plop',
+                  phone: '0123456789'
+                },
                 lines: [
                   {
                     reference: calmosine.ean13,
@@ -286,8 +312,17 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
+                pickingDate: '20/01/2025 12:42',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
+                  name: 'Jean Bon',
+                  address: '10 rue des peupliers',
+                  city: 'PlopLand',
+                  zip: '12345',
+                  country: 'Plop',
+                  phone: '0123456789'
+                },
+                billingAddress: {
                   name: 'Jean Bon',
                   address: '10 rue des peupliers',
                   city: 'PlopLand',
@@ -340,8 +375,17 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',
+                pickingDate: '13/02/2025 16:15',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
+                  name: "Jeanne D'arc",
+                  address: '12 avenue du bois',
+                  city: 'Boisville',
+                  zip: '54321',
+                  country: 'France',
+                  phone: '9876543210'
+                },
+                billingAddress: {
                   name: "Jeanne D'arc",
                   address: '12 avenue du bois',
                   city: 'Boisville',
@@ -398,8 +442,16 @@ describe('Start preparations VM', () => {
               deliveryMethodName: orderToPrepare3.deliveries[0].method.name,
               clientLastname: orderToPrepare3.deliveryAddress.lastname,
               createdDate: '5 févr. 2023',
-              deliveryPrice: '5,00\u00A0€',
+              deliveryPrice: '6,00\u00A0€',
               deliveryAddress: {
+                name: "Jeanne D'arc",
+                address: '12 avenue du bois',
+                city: 'Boisville',
+                zip: '54321',
+                country: 'France',
+                phone: '9876543210'
+              },
+              billingAddress: {
                 name: "Jeanne D'arc",
                 address: '12 avenue du bois',
                 city: 'Boisville',
@@ -418,7 +470,7 @@ describe('Start preparations VM', () => {
                   totalPrice: '5,50\u00A0€'
                 }
               ],
-              totalWithTax: '10,50\u00A0€'
+              totalWithTax: '11,50\u00A0€'
             }
           ]
         }
@@ -447,9 +499,17 @@ describe('Start preparations VM', () => {
               deliveryMethodName: orderToPrepare3.deliveries[0].method.name,
               clientLastname: 'NameWithe',
               createdDate: '5 févr. 2023',
-              deliveryPrice: '5,00\u00A0€',
+              deliveryPrice: '6,00\u00A0€',
               deliveryAddress: {
                 name: 'Jeanne NameWithé',
+                address: '12 avenue du bois',
+                city: 'Boisville',
+                zip: '54321',
+                country: 'France',
+                phone: '9876543210'
+              },
+              billingAddress: {
+                name: "Jeanne D'arc",
                 address: '12 avenue du bois',
                 city: 'Boisville',
                 zip: '54321',
@@ -467,7 +527,7 @@ describe('Start preparations VM', () => {
                   totalPrice: '5,50\u00A0€'
                 }
               ],
-              totalWithTax: '10,50\u00A0€'
+              totalWithTax: '11,50\u00A0€'
             }
           ]
         }
@@ -500,6 +560,14 @@ describe('Start preparations VM', () => {
               deliveryPrice: 'Gratuit',
               clientMessage: orderWithCustomerMessage.customerMessage,
               deliveryAddress: {
+                name: 'Jean Bon',
+                address: '10 rue des peupliers',
+                city: 'PlopLand',
+                zip: '12345',
+                country: 'Plop',
+                phone: '0123456789'
+              },
+              billingAddress: {
                 name: 'Jean Bon',
                 address: '10 rue des peupliers',
                 city: 'PlopLand',
@@ -560,8 +628,17 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
+                pickingDate: '20/01/2025 12:42',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
+                  name: 'Jean Bon',
+                  address: '10 rue des peupliers',
+                  city: 'PlopLand',
+                  zip: '12345',
+                  country: 'Plop',
+                  phone: '0123456789'
+                },
+                billingAddress: {
                   name: 'Jean Bon',
                   address: '10 rue des peupliers',
                   city: 'PlopLand',
@@ -588,8 +665,17 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',
+                pickingDate: '13/02/2025 16:15',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
+                  name: "Jeanne D'arc",
+                  address: '12 avenue du bois',
+                  city: 'Boisville',
+                  zip: '54321',
+                  country: 'France',
+                  phone: '9876543210'
+                },
+                billingAddress: {
                   name: "Jeanne D'arc",
                   address: '12 avenue du bois',
                   city: 'Boisville',
@@ -658,8 +744,17 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
+                pickingDate: '20/01/2025 12:42',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
+                  name: 'Jean Bon',
+                  address: '10 rue des peupliers',
+                  city: 'PlopLand',
+                  zip: '12345',
+                  country: 'Plop',
+                  phone: '0123456789'
+                },
+                billingAddress: {
                   name: 'Jean Bon',
                   address: '10 rue des peupliers',
                   city: 'PlopLand',
@@ -686,8 +781,17 @@ describe('Start preparations VM', () => {
                 deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',
+                pickingDate: '13/02/2025 16:15',
                 deliveryPrice: 'Gratuit',
                 deliveryAddress: {
+                  name: "Jeanne D'arc",
+                  address: '12 avenue du bois',
+                  city: 'Boisville',
+                  zip: '54321',
+                  country: 'France',
+                  phone: '9876543210'
+                },
+                billingAddress: {
                   name: "Jeanne D'arc",
                   address: '12 avenue du bois',
                   city: 'Boisville',

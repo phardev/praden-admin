@@ -6,6 +6,7 @@ import {
 } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 import { Invoice } from '@core/entities/invoice'
 import {
+  orderCanceled,
   orderDelivered1,
   orderDelivered2,
   orderPartiallyShipped1,
@@ -155,6 +156,14 @@ describe('Get invoice VM', () => {
       }
       expectVMToMatch(expected)
     })
+    it('should get the customer email address', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        customer: {
+          email: 'jeanbon@anotheremail.com'
+        }
+      }
+      expectVMToMatch(expected)
+    })
     it('should get summary', () => {
       const expected: Partial<GetInvoiceVM> = {
         summaryTable: {
@@ -214,6 +223,23 @@ describe('Get invoice VM', () => {
           totalTax: '1,00\u00A0€',
           deliveryPrice: 'Gratuit',
           totalWithTax: '11,00\u00A0€'
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should display payment type', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        payment: {
+          type: 'e-Transaction',
+          amount: '33,70\u00A0€'
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should display delivery method name', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        deliveryMethod: {
+          name: 'click & collect'
         }
       }
       expectVMToMatch(expected)
@@ -283,6 +309,14 @@ describe('Get invoice VM', () => {
           zip: '54321',
           country: 'France',
           phone: '9876543210'
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should get the customer email address', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        customer: {
+          email: 'jeannedarc@email.com'
         }
       }
       expectVMToMatch(expected)
@@ -386,9 +420,33 @@ describe('Get invoice VM', () => {
               name: 'Produits',
               taxRate: '10 %',
               amountWithoutTax: '17,96\u00A0€',
-              taxAmount: '1,80\u00A0€'
+              taxAmount: '1,79\u00A0€'
             }
           ]
+        }
+      }
+      expectVMToMatch(expected)
+    })
+  })
+
+  describe('There is all products canceled', () => {
+    const invoice: Invoice = {
+      id: orderCanceled.invoiceNumber,
+      data: orderCanceled,
+      createdAt: 1675564422539
+    }
+    beforeEach(() => {
+      invoiceStore.current = invoice
+    })
+    it('should also cancel the delivery', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        totals: {
+          linesTotal: '0,00\u00A0€',
+          totalWithoutTax: '0,00\u00A0€',
+          totalTax: '0,00\u00A0€',
+          totalRefund: '-18,19\u00A0€',
+          deliveryPrice: '0,00\u00A0€',
+          totalWithTax: '0,00\u00A0€'
         }
       }
       expectVMToMatch(expected)
@@ -402,6 +460,9 @@ describe('Get invoice VM', () => {
         invoiceNumber: '',
         createdDate: '',
         createdDatetime: new Date('01/01/1970'),
+        customer: {
+          email: ''
+        },
         supplierAddress: {
           name: '',
           address: '',
@@ -449,6 +510,13 @@ describe('Get invoice VM', () => {
           totalRefund: '',
           deliveryPrice: '',
           totalWithTax: ''
+        },
+        payment: {
+          type: '',
+          amount: ''
+        },
+        deliveryMethod: {
+          name: ''
         }
       }
       expect(getInvoiceVM()).toStrictEqual(expectedVM)
@@ -509,8 +577,16 @@ describe('Get invoice VM', () => {
           totalWithoutTax: '5,00\u00A0€',
           totalTax: '0,50\u00A0€',
           totalRefund: '-5,50\u00A0€',
-          deliveryPrice: '5,00\u00A0€',
-          totalWithTax: '10,50\u00A0€'
+          deliveryPrice: '6,00\u00A0€',
+          totalWithTax: '11,50\u00A0€'
+        }
+      }
+      expectVMToMatch(expected)
+    })
+    it('should display delivery method name', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        deliveryMethod: {
+          name: 'Livraison en point relai'
         }
       }
       expectVMToMatch(expected)

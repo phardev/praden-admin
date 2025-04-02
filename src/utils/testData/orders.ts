@@ -64,7 +64,8 @@ export const orderToPrepare1: AnonymousOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00006',
   createdAt: 1674273279000,
@@ -121,7 +122,8 @@ export const orderToPrepare2: AnonymousOrder = {
     country: 'France'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00007',
   createdAt: 1675565972527,
@@ -166,7 +168,8 @@ export const orderToPrepare3: AnonymousOrder = {
     country: 'France'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00008',
   createdAt: 1675565972527,
@@ -211,7 +214,8 @@ export const orderPrepared1: AnonymousOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00005',
   createdAt: 1675564420539,
@@ -256,7 +260,8 @@ export const orderInPreparation1: AnonymousOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00004',
   createdAt: 1675564420539,
@@ -351,7 +356,8 @@ export const orderDelivered1: AnonymousOrder = {
     country: 'France'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00001',
   createdAt: 1674273599954,
@@ -408,7 +414,8 @@ export const orderDelivered2: AnonymousOrder = {
     country: 'France'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00002',
   createdAt: 1674273599954,
@@ -465,7 +472,8 @@ export const orderWithMissingProduct1: AnonymousOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00003',
   createdAt: 1674573678456,
@@ -531,7 +539,8 @@ export const orderWithMissingProduct2: AnonymousOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00015',
   createdAt: 1674573678456,
@@ -616,7 +625,8 @@ export const orderToCancel: AnonymousOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00016',
   createdAt: 1674573678456,
@@ -774,7 +784,8 @@ export const orderSaved1: AnonymousOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   createdAt: 1674273789000,
   contact: {
@@ -847,7 +858,8 @@ export const orderWaitingForClientAnswer1: AnonymousOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   createdAt: 1674273789000,
   contact: {
@@ -937,7 +949,8 @@ export const orderWaitingForClientAnswer2: AnonymousOrder = {
     country: 'France'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   createdAt: 1674273599954,
   contact: {
@@ -1015,7 +1028,8 @@ export const orderWaitingForRestock: AnonymousOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   createdAt: 1674273789000,
   contact: {
@@ -1109,7 +1123,8 @@ export const orderPartiallyShipped1: AnonymousOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00009',
   createdAt: 1674573678456,
@@ -1206,7 +1221,8 @@ export const orderVFASF: AnonymousOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00017',
   createdAt: 1674273279000,
@@ -1280,7 +1296,8 @@ export const orderXUKIJ: AnonymousOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00018',
   createdAt: 1674273279000,
@@ -1366,7 +1383,8 @@ export const orderWithProductWithoutLocation: AnonymousOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00019',
   createdAt: 1674273279000,
@@ -1453,7 +1471,8 @@ export const elodieDurandOrder1: CustomerOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00012',
   createdAt: 1674273279000,
@@ -1536,7 +1555,8 @@ export const elodieDurandOrder2: CustomerOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00020',
   createdAt: 1674273279000,
@@ -1607,7 +1627,8 @@ export const lucasLefevreOrder1: CustomerOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00013',
   createdAt: 1674373279000,
@@ -1678,7 +1699,8 @@ export const lucasLefevreOrder2: CustomerOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00014',
   createdAt: 1674473279000,
@@ -1750,7 +1772,8 @@ export const orderWithCustomerMessage: AnonymousOrder = {
     country: 'Plop'
   },
   payment: {
-    status: PaymentStatus.Payed
+    status: PaymentStatus.Payed,
+    amount: 3370
   },
   invoiceNumber: '2023-00021',
   createdAt: 1674273279000,
@@ -1861,4 +1884,148 @@ export const orderWithoutPayment: AnonymousOrder = {
   ],
   messages: [],
   customerMessage: 'Special message'
+}
+
+export const orderWithoutDelivery: AnonymousOrder = {
+  uuid: 'order-without-delivery',
+  lines: [
+    {
+      productUuid: dolodent.uuid,
+      name: dolodent.name,
+      ean13: dolodent.ean13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      locations: dolodent.locations,
+      status: OrderLineStatus.Created,
+      updatedAt: 1674273279000
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
+  },
+  payment: {
+    status: PaymentStatus.Payed,
+    amount: 3370
+  },
+  invoiceNumber: '2023-00021',
+  createdAt: 1674273279000,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  deliveries: [],
+  messages: []
+}
+
+export const orderCanceled: AnonymousOrder = {
+  uuid: 'CANCELED',
+  lines: [
+    {
+      productUuid: dolodent.uuid,
+      name: dolodent.name,
+      ean13: dolodent.ean13,
+      expectedQuantity: 2,
+      preparedQuantity: 0,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      locations: dolodent.locations,
+      status: OrderLineStatus.Canceled,
+      updatedAt: 1674573778456
+    },
+    {
+      productUuid: dolodent.uuid,
+      name: dolodent.name,
+      ean13: dolodent.ean13,
+      expectedQuantity: -2,
+      preparedQuantity: 0,
+      unitAmount: dolodent.priceWithoutTax,
+      percentTaxRate: dolodent.percentTaxRate,
+      locations: dolodent.locations,
+      status: OrderLineStatus.Canceled,
+      updatedAt: 1674573778456
+    }
+  ],
+  deliveryAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
+  },
+  billingAddress: {
+    firstname: 'Jean',
+    lastname: 'Bon',
+    address: '10 rue des peupliers',
+    city: 'PlopLand',
+    zip: '12345',
+    country: 'Plop'
+  },
+  payment: {
+    status: PaymentStatus.Payed,
+    amount: 3370
+  },
+  invoiceNumber: '2023-00022',
+  createdAt: 1674573678456,
+  contact: {
+    email: 'jeanbon@anotheremail.com',
+    phone: '0123456789'
+  },
+  deliveries: [
+    {
+      uuid: 'delivery-order-canceled',
+      price: 599,
+      method: deliveryInRelayPoint,
+      weight: 987,
+      pickupId: '123456',
+      trackingNumber: 'Canceled-123456',
+      sender: {
+        contact: {
+          email: praden.contact.email,
+          phone: praden.contact.phone
+        },
+        address: praden.address
+      },
+      receiver: {
+        contact: {
+          email: 'jeanbon@anotheremail.com',
+          phone: '0123456789'
+        },
+        address: {
+          firstname: 'Jean',
+          lastname: 'Bon',
+          address: '10 rue des peupliers',
+          city: 'PlopLand',
+          zip: '12345',
+          country: 'Plop'
+        }
+      },
+      status: DeliveryStatus.Created
+    }
+  ],
+  messages: [
+    {
+      content: MessageContent.AskToClient,
+      sentAt: 1674573878456
+    },
+    {
+      content: MessageContent.PartialShip,
+      sentAt: 1674684178456
+    }
+  ]
 }

@@ -5,23 +5,11 @@
     },
     "baseUrl": ".",
     "paths": {
-      "@adapters/*": [
-        "src/adapters/*"
-      ],
-      "@core/*": [
-        "src/core/*"
-      ],
-      "@store/*": [
-        "src/store/*"
-      ],
-      "@utils/*": [
-        "src/utils/*"
-      ],
+      "@adapters/*": ["src/adapters/*"],
+      "@core/*": ["src/core/*"],
+      "@store/*": ["src/store/*"],
+      "@utils/*": ["src/utils/*"]
     },
-    "types": [
-      "jest",
-      "node",
-      "jsdom"
-    ]
+    "types": ["jest", "node", "jsdom"]
   }
 }

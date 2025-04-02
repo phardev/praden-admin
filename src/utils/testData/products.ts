@@ -196,3 +196,21 @@ export const productWithoutLaboratory: Product = {
   weight: 120,
   isMedicine: false
 }
+
+export const productWithDecimalPrice: Product = {
+  uuid: 'product-withDecimalPrice',
+  status: ProductStatus.Active,
+  name: 'Product with decimal price',
+  images: ['https://fakeimg.pl/300/'],
+  categories: [baby],
+  miniature: '',
+  cip7: '0637218',
+  cip13: 'cip13-0637218312823',
+  ean13: '0637218312823',
+  priceWithoutTax: 332.5,
+  percentTaxRate: 20,
+  locations: {},
+  availableStock: 23,
+  weight: 120,
+  isMedicine: false
+}

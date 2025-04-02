@@ -9,14 +9,17 @@ export const listOrdersToPrepare = async (
   productGateway: ProductGateway
 ) => {
   const preparationStore = usePreparationStore()
-  preparationStore.startLoading()
-  const orders = await orderGateway.listOrdersToPrepare()
-  const productUuids = getUniqueProductUuids(orders)
-  const products = await productGateway.batch(productUuids)
-  const productStore = useProductStore()
-  productStore.list(products)
-  preparationStore.list(orders)
-  preparationStore.stopLoading()
+  try {
+    preparationStore.startLoading()
+    const orders = await orderGateway.listOrdersToPrepare()
+    const productUuids = getUniqueProductUuids(orders)
+    const products = await productGateway.batch(productUuids)
+    const productStore = useProductStore()
+    productStore.list(products)
+    preparationStore.list(orders)
+  } finally {
+    preparationStore.stopLoading()
+  }
 }
 
 const getUniqueProductUuids = (orders: Array<Order>): Array<string> => {

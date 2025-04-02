@@ -20,16 +20,19 @@ export const createCategory = async (
   productGateway: ProductGateway
 ): Promise<void> => {
   const categoryStore = useCategoryStore()
-  categoryStore.startLoading()
-  const created = await categoryGateway.create(dto)
-  categoryStore.add(created)
-  const productStore = useProductStore()
-  const products = await productGateway.batch(dto.productsAdded)
-  for (const product of products) {
-    const editedProduct = await productGateway.edit(product.uuid, {
-      categoryUuids: [...product.categories.map((c) => c.uuid), created.uuid]
-    })
-    productStore.edit(editedProduct)
+  try {
+    categoryStore.startLoading()
+    const created = await categoryGateway.create(dto)
+    categoryStore.add(created)
+    const productStore = useProductStore()
+    const products = await productGateway.batch(dto.productsAdded)
+    for (const product of products) {
+      const editedProduct = await productGateway.edit(product.uuid, {
+        categoryUuids: [...product.categories.map((c) => c.uuid), created.uuid]
+      })
+      productStore.edit(editedProduct)
+    }
+  } finally {
+    categoryStore.stopLoading()
   }
-  categoryStore.stopLoading()
 }

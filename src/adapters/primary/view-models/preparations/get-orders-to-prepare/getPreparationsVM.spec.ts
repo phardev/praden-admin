@@ -14,7 +14,8 @@ import {
   orderToPrepare3,
   orderWaitingForRestock,
   orderWithMissingProduct1,
-  orderWithMissingProduct2
+  orderWithMissingProduct2,
+  orderWithoutDelivery
 } from '@utils/testData/orders'
 import { Stock } from '@core/entities/product'
 import { chamomilla, dolodent } from '@utils/testData/products'
@@ -42,6 +43,14 @@ describe('Get orders to prepare VM', () => {
     }
   ]
 
+  const expectedClickAndCollectHeaders = [
+    ...expectedHeaders,
+    {
+      name: 'Date de retrait',
+      value: 'pickingDate'
+    }
+  ]
+
   beforeEach(() => {
     setActivePinia(createPinia())
     preparationStore = usePreparationStore()
@@ -61,7 +70,7 @@ describe('Get orders to prepare VM', () => {
             count: 2,
             canSelect: true,
             table: {
-              headers: expectedHeaders,
+              headers: expectedClickAndCollectHeaders,
               items: [
                 {
                   reference: orderToPrepare1.uuid,
@@ -69,7 +78,9 @@ describe('Get orders to prepare VM', () => {
                   client: 'J. Bon',
                   createdDate: '21 janv. 2023',
                   createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
-                  total: '11,00\u00A0€'
+                  total: '11,00\u00A0€',
+                  pickingDate: '20/01/2025 12:42',
+                  pickingDatetime: new Date('2025-01-20T12:42:17.000Z')
                 },
                 {
                   reference: orderToPrepare2.uuid,
@@ -77,7 +88,9 @@ describe('Get orders to prepare VM', () => {
                   client: "J. D'arc",
                   createdDate: '5 févr. 2023',
                   createdDatetime: new Date('2023-02-05T02:59:32.527Z'),
-                  total: '15,00\u00A0€'
+                  total: '15,00\u00A0€',
+                  pickingDate: '13/02/2025 16:15',
+                  pickingDatetime: new Date('2025-02-13T16:15:40.000Z')
                 }
               ]
             }
@@ -104,7 +117,7 @@ describe('Get orders to prepare VM', () => {
                   client: "J. D'arc",
                   createdDate: '5 févr. 2023',
                   createdDatetime: new Date('2023-02-05T02:59:32.527Z'),
-                  total: '10,50\u00A0€'
+                  total: '11,50\u00A0€'
                 }
               ]
             }
@@ -202,7 +215,7 @@ describe('Get orders to prepare VM', () => {
                   client: 'J. Bon',
                   createdDate: '21 janv. 2023',
                   createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
-                  total: '13,79\u00A0€'
+                  total: '13,80\u00A0€'
                 }
               ]
             }
@@ -232,7 +245,7 @@ describe('Get orders to prepare VM', () => {
                   client: 'J. Bon',
                   createdDate: '24 janv. 2023',
                   createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
-                  total: '36,00\u00A0€'
+                  total: '37,19\u00A0€'
                 },
                 {
                   reference: orderWithMissingProduct2.uuid,
@@ -240,7 +253,7 @@ describe('Get orders to prepare VM', () => {
                   client: 'J. Bon',
                   createdDate: '24 janv. 2023',
                   createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
-                  total: '36,00\u00A0€'
+                  total: '37,19\u00A0€'
                 }
               ]
             }
@@ -267,7 +280,34 @@ describe('Get orders to prepare VM', () => {
                   client: 'J. Bon',
                   createdDate: '24 janv. 2023',
                   createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
-                  total: '18,50\u00A0€'
+                  total: '20,00\u00A0€'
+                }
+              ]
+            }
+          }
+        }
+      }
+      expectVMToMatch(expectedVM)
+    })
+  })
+  describe('There is some preparations without delivery', () => {
+    it('should not list them', () => {
+      preparationStore.items = [orderToCancel, orderWithoutDelivery]
+      const expectedVM: Partial<GetPreparationsVM> = {
+        items: {
+          'À annuler': {
+            count: 1,
+            canSelect: false,
+            table: {
+              headers: expectedHeaders,
+              items: [
+                {
+                  reference: orderToCancel.uuid,
+                  href: `/preparations/${orderToCancel.uuid}`,
+                  client: 'J. Bon',
+                  createdDate: '24 janv. 2023',
+                  createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
+                  total: '20,00\u00A0€'
                 }
               ]
             }
@@ -298,7 +338,7 @@ describe('Get orders to prepare VM', () => {
           count: 0,
           canSelect: true,
           table: {
-            headers: expectedHeaders,
+            headers: expectedClickAndCollectHeaders,
             items: []
           }
         },

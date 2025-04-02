@@ -7,8 +7,11 @@ export const markDeliveryAsDelivered = async (
   deliveryGateway: DeliveryGateway
 ) => {
   const deliveryStore = useDeliveryStore()
-  deliveryStore.startLoading()
-  const delivered = await deliveryGateway.markAsDelivered(uuid)
-  deliveryStore.edit(delivered)
-  deliveryStore.stopLoading()
+  try {
+    deliveryStore.startLoading()
+    const delivered = await deliveryGateway.markAsDelivered(uuid)
+    deliveryStore.edit(delivered)
+  } finally {
+    deliveryStore.stopLoading()
+  }
 }

@@ -16,6 +16,6 @@
   }
 
   .button-hover {
-    @apply hover:bg-primary7 hover:text-colored
+    @apply hover:bg-primary7 hover:text-colored;
   }
 }

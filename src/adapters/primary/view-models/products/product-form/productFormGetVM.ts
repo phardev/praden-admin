@@ -113,7 +113,7 @@ export class ExistingProductFormInitializer implements FormInitializer {
       cip7: product.cip7,
       cip13: product.cip13,
       ean13: product.ean13,
-      priceWithoutTax: (product.priceWithoutTax / 100).toString(),
+      priceWithoutTax: (product.priceWithoutTax / 100).toFixed(2),
       percentTaxRate: product.percentTaxRate,
       priceWithTax:
         addTaxToPrice(product.priceWithoutTax / 100, product.percentTaxRate)
@@ -125,6 +125,7 @@ export class ExistingProductFormInitializer implements FormInitializer {
       miniature: product.miniature,
       newMiniature: undefined,
       newImages: [],
+      removedImages: [],
       images: product.images || [],
       initialImages: JSON.parse(JSON.stringify(product.images || [])),
       description: product.description,

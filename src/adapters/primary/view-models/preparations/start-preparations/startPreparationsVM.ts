@@ -31,9 +31,11 @@ export interface PreparationLineDetailVM {
   deliveryMethodName: string
   clientLastname: string
   clientMessage?: string
+  pickingDate?: string
   createdDate: string
   deliveryPrice: string
   deliveryAddress: AddressVM
+  billingAddress: AddressVM
   lines: Array<DetailPreparationLineVM>
   totalWithTax: string
 }
@@ -141,6 +143,7 @@ const getDetailPreparationLineVM = (
 ): PreparationLineDetailVM => {
   const delivery = order.deliveries[0]
   const formatter = priceFormatter('fr-FR', 'EUR')
+  const deliveryPriceWithTax = addTaxToPrice(delivery.price, 20)
 
   const detail: PreparationLineDetailVM = {
     href: `${origin}/preparations/${order.uuid}`,
@@ -151,12 +154,15 @@ const getDetailPreparationLineVM = (
       .replace(/[\u0300-\u036f]/g, ''),
     createdDate: timestampToLocaleString(order.createdAt, 'fr-FR'),
     deliveryPrice:
-      delivery.price > 0 ? formatter.format(delivery.price / 100) : 'Gratuit',
+      delivery.price > 0
+        ? formatter.format(deliveryPriceWithTax / 100)
+        : 'Gratuit',
     deliveryAddress: getDeliveryAddressVM(order),
+    billingAddress: getBillingAddressVM(order),
     lines: order.lines
       .map((line): DetailPreparationLineVM => {
         const unitPrice =
-          addTaxToPrice(line.unitAmount, line.percentTaxRate) / 100
+          Math.round(addTaxToPrice(line.unitAmount, line.percentTaxRate)) / 100
         const quantity = line.expectedQuantity
         return {
           reference: line.ean13,
@@ -174,5 +180,30 @@ const getDetailPreparationLineVM = (
   if (order.customerMessage) {
     detail.clientMessage = order.customerMessage
   }
+  if (delivery.pickingDate) {
+    const options = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }
+    detail.pickingDate = timestampToLocaleString(
+      delivery.pickingDate,
+      'fr-FR',
+      options
+    )
+  }
   return detail
+}
+
+export const getBillingAddressVM = (order: Order): AddressVM => {
+  return {
+    name: `${order.billingAddress.firstname} ${order.billingAddress.lastname}`,
+    address: order.billingAddress.address,
+    city: order.billingAddress.city,
+    zip: order.billingAddress.zip,
+    country: order.billingAddress.country,
+    phone: order.contact?.phone ?? ''
+  }
 }

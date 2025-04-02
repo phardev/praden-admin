@@ -3,8 +3,11 @@ import { useOrderStore } from '@store/orderStore'
 
 export const listOrders = async (orderGateway: OrderGateway) => {
   const orderStore = useOrderStore()
-  orderStore.startLoading()
-  const orders = await orderGateway.list()
-  orderStore.list(orders)
-  orderStore.stopLoading()
+  try {
+    orderStore.startLoading()
+    const orders = await orderGateway.list()
+    orderStore.list(orders)
+  } finally {
+    orderStore.stopLoading()
+  }
 }

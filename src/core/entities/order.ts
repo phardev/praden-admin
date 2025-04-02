@@ -42,6 +42,7 @@ export enum PaymentStatus {
 
 export interface Payment {
   status: PaymentStatus
+  amount?: number
 }
 
 export interface Contact {
@@ -103,27 +104,24 @@ export interface AnonymousOrder extends BaseOrder {
 
 export type Order = CustomerOrder | AnonymousOrder
 
-// export const getTotalWithoutTax = (lines: Array<OrderLine>) => {
-//   return lines.reduce((acc: number, line: OrderLine) => {
-//     return acc + line.preparedQuantity * line.unitAmount
-//   }, 0)
-// }
-
 export const getTotalWithTax = (order: Order): number => {
   const totalLine = order.lines.reduce((acc: number, line: OrderLine) => {
     return (
       acc +
       (line.expectedQuantity *
-        addTaxToPrice(line.unitAmount, line.percentTaxRate)) /
+        Math.round(addTaxToPrice(line.unitAmount, line.percentTaxRate))) /
         100
     )
   }, 0)
   const delivery = order.deliveries[0]
-  const deliveryPrice = delivery.price / 100
+  const deliveryPrice = addTaxToPrice(delivery.price, 20) / 100
   return totalLine + deliveryPrice
 }
 
 export const getDeliveryStatus = (order: Order): DeliveryStatus => {
+  if (!order.deliveries.length) {
+    return DeliveryStatus.Created
+  }
   return order.deliveries[0].status
 }
 

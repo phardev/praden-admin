@@ -4,6 +4,8 @@ ft-modal(v-model="model")
     ft-button.button-solid.h-24.col-span-2.text-lg(@click="openRemoveProduct") Retirer un produit
     ft-button.button-solid.h-24.col-span-2.text-lg(@click="openChangeQuantity") Changer la quantité
     ft-button.button-solid.h-24.col-span-2.text-lg(@click="openChangeReference") Modifier la référence
+    ft-button.button-solid.h-24.col-span-2.text-lg(@click="validatePreparation") Valider la préparation
+    ft-button.button-solid.h-24.col-span-2.text-lg(@click="cancelPreparation") Annuler la préparation
 
   ft-remove-product-modal(
     v-model="isRemoveProductOpened"
@@ -37,6 +39,8 @@ const emit = defineEmits<{
   (e: 'removeProduct', value: string): void
   (e: 'changeQuantity', cip13: string, quantity: number): void
   (e: 'changeReference', oldReference: string, newReference: number): void
+  (e: 'validatePreparation'): void
+  (e: 'cancelPreparation'): void
 }>()
 
 const isRemoveProductOpened = ref(false)
@@ -74,5 +78,13 @@ const openChangeReference = () => {
 const changeReference = (oldReference: string, newReference: number) => {
   isChangeReferenceOpened.value = false
   emit('changeReference', oldReference, newReference)
+}
+
+const validatePreparation = () => {
+  emit('validatePreparation')
+}
+
+const cancelPreparation = () => {
+  emit('cancelPreparation')
 }
 </script>
