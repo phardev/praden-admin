@@ -1,4 +1,4 @@
-import { InMemoryPromotionCodeGateway } from '@core/usecases/promotion-codes/promotion-code-listing/InMemoryPromotionCodeGateway'
+import { InMemoryPromotionCodeGateway } from '@adapters/secondary/promotion-code-gateways/InMemoryPromotionCodeGateway'
 import { usePromotionCodeStore } from '@store/promotionCodeStore'
 import { createPinia, setActivePinia } from 'pinia'
 import {

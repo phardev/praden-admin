@@ -1,5 +1,5 @@
 import { createPinia, setActivePinia } from 'pinia'
-import { InMemoryPromotionCodeGateway } from '@core/usecases/promotion-codes/promotion-code-listing/InMemoryPromotionCodeGateway'
+import { InMemoryPromotionCodeGateway } from '@adapters/secondary/promotion-code-gateways/InMemoryPromotionCodeGateway'
 import { PromotionCode } from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
 import {
   limitedInTimePromotionCode,
