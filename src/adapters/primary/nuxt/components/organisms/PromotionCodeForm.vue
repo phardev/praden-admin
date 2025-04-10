@@ -1,12 +1,24 @@
 <template lang="pug">
-div(v-if="!currentVM")
+div(v-if="!currentVM || currentVM.isLoading()")
   .space-y-6
-  .pb-4
-    .h-4.bg-gray-200.rounded.animate-pulse.mb-2(class='w-1/4')
-    .h-10.bg-gray-200.rounded.animate-pulse
-  .pb-4
-    .h-4.bg-gray-200.rounded.animate-pulse.mb-2(class='w-1/4')
-    .h-32.bg-gray-200.rounded.animate-pulse
+    .pb-4
+      .h-20.bg-gray-200.rounded.animate-pulse
+    .pb-4
+      .h-20.bg-gray-200.rounded.animate-pulse
+    .pb-4
+      .h-4.bg-gray-200.rounded.animate-pulse.mb-2(class='w-1/4')
+      .h-10.bg-gray-200.rounded.animate-pulse
+    .pb-4
+      .h-8.bg-gray-200.rounded.animate-pulse.mb-2(class='w-1/4')
+    .pb-4
+      .h-4.bg-gray-200.rounded.animate-pulse.mb-2(class='w-1/4')
+      .h-10.bg-gray-200.rounded.animate-pulse
+    .pb-4
+      .h-4.bg-gray-200.rounded.animate-pulse.mb-2(class='w-1/4')
+      .h-10.bg-gray-200.rounded.animate-pulse
+    .pb-4
+      .h-4.bg-gray-200.rounded.animate-pulse.mb-2(class='w-1/4')
+      .h-10.bg-gray-200.rounded.animate-pulse
 UForm(v-else :state="currentVM")
   UAccordion(
     multiple

@@ -46,7 +46,14 @@ export class NewPromotionCodeFormInitializer implements FormInitializer {
   init() {
     this.formStore.set(this.key, {
       scope: PromotionScope.Products,
-      reductionType: ReductionType.Fixed
+      reductionType: ReductionType.Fixed,
+      code: '',
+      amount: undefined,
+      startDate: undefined,
+      endDate: undefined,
+      maximumUsage: undefined,
+      minimumAmount: undefined,
+      deliveryMethodUuid: undefined
     })
   }
 }

@@ -10,6 +10,7 @@ import {
   CreatePromotionCodeDTO,
   PromotionScope
 } from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+import { usePromotionCodeStore } from '@store/promotionCodeStore'
 
 export abstract class PromotionCodeFormVM {
   protected fieldsReader: PromotionCodeFormFieldsReader
@@ -94,6 +95,11 @@ export abstract class PromotionCodeFormVM {
 
   getDisplayValidate(): boolean {
     return true
+  }
+
+  isLoading(): boolean {
+    const promotionCodeStore = usePromotionCodeStore()
+    return promotionCodeStore.isLoading
   }
 
   private getTypeText(type: ReductionType): string {
