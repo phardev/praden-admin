@@ -7,7 +7,8 @@ import {
   orderNotPayed1,
   orderPrepared1,
   orderToPrepare1,
-  orderWithoutDelivery
+  orderWithoutDelivery,
+  orderWithPromotionCode
 } from '@utils/testData/orders'
 import { useSearchStore } from '@store/searchStore'
 import { DeliveryStatus } from '@core/entities/delivery'
@@ -100,6 +101,26 @@ describe('Get orders VM', () => {
               total: '11,00\u00A0€',
               paymentStatus: orderNotPayed1.payment.status,
               deliveryStatus: orderNotPayed1.deliveries[0].status
+            }
+          ]
+        }
+        expectVMToMatch(expectedVM)
+      })
+
+      it('should apply promotion code discount to total', () => {
+        givenExistingOrders(orderWithPromotionCode)
+        const expectedVM: Partial<GetOrdersVM> = {
+          items: [
+            {
+              reference: orderWithPromotionCode.uuid,
+              href: `/orders/${orderWithPromotionCode.uuid}`,
+              client: 'J. Bon',
+              createdDate: '21 janv. 2023',
+              createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
+              status: OrderLineStatus.Created,
+              total: '6,00\u00A0€',
+              paymentStatus: orderWithPromotionCode.payment.status,
+              deliveryStatus: orderWithPromotionCode.deliveries[0].status
             }
           ]
         }

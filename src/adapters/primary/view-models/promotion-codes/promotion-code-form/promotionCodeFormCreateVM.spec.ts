@@ -64,7 +64,7 @@ describe('Promotion code form create VM', () => {
   describe('Promotion code VM', () => {
     describe('VM initialization', () => {
       const expected = {
-        code: undefined,
+        code: '',
         scope: PromotionScope.Products,
         reductionType: ReductionType.Fixed,
         amount: undefined,

@@ -81,6 +81,12 @@ export interface Message {
   sentAt: Timestamp
 }
 
+export interface PromotionCode {
+  uuid: string
+  code: string
+  discount: number
+}
+
 export interface BaseOrder {
   uuid: string
   lines: Array<OrderLine>
@@ -92,6 +98,7 @@ export interface BaseOrder {
   messages: Array<Message>
   invoiceNumber?: string
   customerMessage?: string
+  promotionCode?: PromotionCode
 }
 
 export interface CustomerOrder extends BaseOrder {
@@ -115,7 +122,14 @@ export const getTotalWithTax = (order: Order): number => {
   }, 0)
   const delivery = order.deliveries[0]
   const deliveryPrice = addTaxToPrice(delivery.price, 20) / 100
-  return totalLine + deliveryPrice
+
+  let total = totalLine + deliveryPrice
+
+  if (order.promotionCode) {
+    total = Math.max(0, total - order.promotionCode.discount / 100)
+  }
+
+  return total
 }
 
 export const getDeliveryStatus = (order: Order): DeliveryStatus => {

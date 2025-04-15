@@ -9,3 +9,6 @@ dist
 .env
 .stylelintcache
 .nuxt.config.ts
+
+# windsurf rules
+.windsurfrules
