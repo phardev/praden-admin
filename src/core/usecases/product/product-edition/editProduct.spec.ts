@@ -49,6 +49,7 @@ describe('Product edition', () => {
         }
         expectedProduct = {
           ...product,
+          flags: { arePromotionsAllowed: true },
           name: dto.name
         }
         expectedProducts = [chamomilla, ultraLevure, expectedProduct]
@@ -69,6 +70,7 @@ describe('Product edition', () => {
         }
         expectedProduct = {
           ...product,
+          flags: { arePromotionsAllowed: true },
           priceWithoutTax: 55
         }
         expectedProducts = [chamomilla, ultraLevure, expectedProduct]
@@ -90,6 +92,7 @@ describe('Product edition', () => {
         }
         expectedProduct = {
           ...product,
+          flags: { arePromotionsAllowed: true },
           percentTaxRate: 10.5
         }
         expectedProducts = [chamomilla, ultraLevure, expectedProduct]
@@ -114,6 +117,7 @@ describe('Product edition', () => {
           }
           expectedProduct = {
             ...product,
+            flags: { arePromotionsAllowed: true },
             categories: [mum]
           }
           await whenEditProduct(product.uuid, dto)
@@ -137,6 +141,7 @@ describe('Product edition', () => {
           }
           expectedProduct = {
             ...product,
+            flags: { arePromotionsAllowed: true },
             locations: {
               ...ultraLevure.locations,
               ...dto.locations
@@ -162,6 +167,7 @@ describe('Product edition', () => {
         givenEditingProductIs(dolodent)
         expectedProduct = {
           ...product,
+          flags: { arePromotionsAllowed: true },
           images: [
             ...product.images,
             'data:image/png;base64,ZGF0YTE=',

@@ -7,6 +7,7 @@ export type EditProductDTO = Partial<
   Omit<CreateProductDTO, 'images'> & {
     images: Array<string>
     newImages: Array<File>
+    removedImages: Array<string>
   }
 >
 

@@ -62,7 +62,8 @@ describe('Create product', () => {
           description: '<p>description</p>',
           instructionsForUse: '<p>instructions For Use</p>',
           composition: '<p>composition</p>',
-          weight: 342
+          weight: 342,
+          flags: { arePromotionsAllowed: true }
         }
         expectedProduct = {
           uuid,
@@ -82,9 +83,15 @@ describe('Create product', () => {
           description: dto.description,
           instructionsForUse: dto.instructionsForUse,
           composition: dto.composition,
-          weight: dto.weight
+          weight: dto.weight,
+          isMedicine: false,
+          flags: { arePromotionsAllowed: true }
         }
         await whenCreateProduct(dto)
+      })
+
+      it('should create a product with flags', async () => {
+        expect(productStore.items[0]).toStrictEqual(expectedProduct)
       })
       it('should save the product in product gateway', async () => {
         await expectProductGatewayToEqual(expectedProduct)
@@ -122,7 +129,9 @@ describe('Create product', () => {
           instructionsForUse: '<p>another instructions For Use</p>',
           composition: '<p>another composition</p>',
           weight: 60,
-          maxQuantityForOrder: 12
+          maxQuantityForOrder: 12,
+
+          flags: { arePromotionsAllowed: true }
         }
         expectedProduct = {
           uuid,
@@ -147,7 +156,10 @@ describe('Create product', () => {
           instructionsForUse: dto.instructionsForUse,
           composition: dto.composition,
           weight: dto.weight,
-          maxQuantityForOrder: dto.maxQuantityForOrder
+          maxQuantityForOrder: dto.maxQuantityForOrder,
+          isMedicine: false,
+
+          flags: { arePromotionsAllowed: true }
         }
         await whenCreateProduct(dto)
       })
@@ -184,7 +196,9 @@ describe('Create product', () => {
         instructionsForUse: '<p>another instructions For Use</p>',
         composition: '<p>another composition</p>',
         weight: 60,
-        maxQuantityForOrder: 12
+        maxQuantityForOrder: 12,
+
+        flags: { arePromotionsAllowed: true }
       }
       const expectedProduct: Product = {
         uuid,
@@ -209,7 +223,10 @@ describe('Create product', () => {
         instructionsForUse: dto.instructionsForUse,
         composition: dto.composition,
         weight: dto.weight,
-        maxQuantityForOrder: dto.maxQuantityForOrder
+        maxQuantityForOrder: dto.maxQuantityForOrder,
+        isMedicine: false,
+
+        flags: { arePromotionsAllowed: true }
       }
       beforeEach(async () => {
         givenThereIsExistingProducts(dolodent, hemoclar)
@@ -284,7 +301,8 @@ describe('Create product', () => {
         description: '<p>description</p>',
         instructionsForUse: '<p>instructions For Use</p>',
         composition: '<p>composition</p>',
-        weight: 342
+        weight: 342,
+        flags: { arePromotionsAllowed: true }
       }
     })
     it('should not save the product in gateway', async () => {

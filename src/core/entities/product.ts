@@ -31,7 +31,7 @@ export interface Product {
   weight: number
   maxQuantityForOrder?: number
   isMedicine: boolean
-  isPromotionable: boolean
+  flags: Record<string, boolean>
 }
 
 export interface ProductWithPromotion {

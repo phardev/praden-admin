@@ -7,6 +7,10 @@
     :headers="productsVM.headers"
     :items="productsVM.items"
     :is-loading="productsVM.isLoading"
+    :selectable="true"
+    :selection="productSelector.get()"
+    @item-selected="productSelector.toggleSelect"
+    @select-all="productSelector.toggleSelectAll"
     @clicked="productSelected"
   )
     template(#title) Produits
@@ -30,9 +34,19 @@
           )
     template(#name="{ item }")
       .font-medium.text-default {{ item.name }}
+  .mt-4.flex.gap-4
+    ft-button.button-solid.text-base(
+      :disabled="!productSelector.get().length"
+      @click="openBulkEditDialog"
+    ) Modifier la sélection
   InfiniteLoading(@infinite="load")
     template(#complete)
       div
+  ft-bulk-edit-product-modal(
+    v-model="isBulkEditProductModalOpened"
+    @close="isBulkEditProductModalOpened = false"
+    @submit="handleBulkEdit"
+  )
 </template>
 
 <script lang="ts" setup>
@@ -48,17 +62,31 @@ import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 import InfiniteLoading from 'v3-infinite-loading'
 import 'v3-infinite-loading/lib/style.css'
 import { ProductStatus } from '@core/entities/product'
+import { useSelection } from '../../composables/useSelection'
+import { bulkEditProduct } from '@core/usecases/product/product-edition/bulkEditProduct'
 
 definePageMeta({ layout: 'main' })
 
 const productGateway = useProductGateway()
 const limit = 25
 let offset = 0
+const productSelector = useSelection()
+const isBulkEditProductModalOpened = ref(false)
+
+const handleBulkEdit = async (dto: { arePromotionsAllowed: boolean }) => {
+  isBulkEditProductModalOpened.value = false
+  await bulkEditProduct({ productGateway })({
+    uuids: productSelector.get(),
+    dto: { flags: { arePromotionsAllowed: dto.arePromotionsAllowed } }
+  })
+  productSelector.clear()
+}
 
 onMounted(() => {
   const categoryStore = useCategoryStore()
   categoryStore.items = [dents, diarrhee]
   listCategories(useCategoryGateway())
+  productSelector.clear()
 })
 
 const router = useRouter()
@@ -121,6 +149,10 @@ const clearProductStatus = () => {
 
 const productSelected = (uuid: string) => {
   router.push(`/products/get/${uuid}`)
+}
+
+const openBulkEditDialog = () => {
+  isBulkEditProductModalOpened.value = true
 }
 </script>
 

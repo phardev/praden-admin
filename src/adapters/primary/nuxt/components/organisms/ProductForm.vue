@@ -46,6 +46,13 @@ UForm(v-else)
           :disabled="!currentVM.get('isActive').canEdit"
           @click="toggleIsActive"
         )
+      UFormGroup.pb-4(label="Autoriser les promotions" name="arePromotionsAllowed")
+        UToggle(
+          size="xl"
+          :model-value="currentVM.get('arePromotionsAllowed').value"
+          :disabled="!currentVM.get('arePromotionsAllowed').canEdit"
+          @update:model-value="val => currentVM.set('arePromotionsAllowed', val)"
+        )
       UFormGroup.pb-4(label="Nom" name="name")
         ft-text-field(
           :model-value="currentVM.get('name').value"
