@@ -44,6 +44,7 @@
       div
   ft-bulk-edit-product-modal(
     v-model="isBulkEditProductModalOpened"
+    :selected-count="productSelector.get().length"
     @close="isBulkEditProductModalOpened = false"
     @submit="handleBulkEdit"
   )
