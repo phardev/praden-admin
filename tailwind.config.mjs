@@ -1,14 +1,17 @@
-module.exports = {
+import { join } from 'path'
+import typography from '@tailwindcss/typography'
+
+export default {
   darkMode: 'class',
   content: [
-    './assets/**/*.{vue,js,css}',
-    './src/adapters/primary/nuxt/components/**/*.{vue,js}',
-    './src/adapters/primary/nuxt/layouts/**/*.vue',
-    './src/adapters/primary/nuxt/pages/**/*.vue',
-    './src/adapters/primary/nuxt/plugins/**/*.{js,ts}',
-    './nuxt.config.{js,ts}'
+    join(__dirname, './assets/**/*.{vue,js,css}'),
+    join(__dirname, './src/adapters/primary/nuxt/components/**/*.{vue,js}'),
+    join(__dirname, './src/adapters/primary/nuxt/layouts/**/*.vue'),
+    join(__dirname, './src/adapters/primary/nuxt/pages/**/*.vue'),
+    join(__dirname, './src/adapters/primary/nuxt/plugins/**/*.{js,ts}'),
+    join(__dirname, './nuxt.config.{js,ts}')
   ],
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [typography],
   corePlugins: {
     container: false
   },
@@ -43,7 +46,6 @@ module.exports = {
         primary10: 'var(--color-primary10)',
         primary11: 'var(--color-primary11)',
         primary12: 'var(--color-primary12)',
-
         gray1: '#fbfdfc',
         gray2: '#f8faf9',
         gray3: '#f1f4f3',
@@ -56,7 +58,6 @@ module.exports = {
         gray10: '#808784',
         gray11: '#6a716e',
         gray12: '#111c18',
-
         tomato1: '#fffcfc',
         tomato2: '#fff8f7',
         tomato3: '#fff0ee',
@@ -69,7 +70,6 @@ module.exports = {
         tomato10: '#db4324',
         tomato11: '#ca3214',
         tomato12: '#341711',
-
         grass1: '#fbfefb',
         grass2: '#f3fcf3',
         grass3: '#ebf9eb',
@@ -82,7 +82,6 @@ module.exports = {
         grass10: '#3d9a50',
         grass11: '#297c3b',
         grass12: '#1b311e',
-
         orange1: '#fefcfb',
         orange2: '#fef8f4',
         orange3: '#fff1e7',

@@ -3,10 +3,10 @@ ft-modal(v-model="model" @close="emit('close')")
   UCard
     template(#header)
       .flex.items-center.gap-2
-        UIcon(name="i-heroicons-pencil-square" class="text-primary text-2xl")
+        icon(name="i-heroicons-pencil-square" class="text-primary text-2xl")
         span.text-xl.font-bold Modifier plusieurs produits
     .mb-2.flex.items-center.gap-2.bg-primary-100.text-primary-800.rounded.p-3
-      UIcon(name="i-heroicons-information-circle" class="text-lg")
+      icon(name="i-heroicons-information-circle" class="text-lg")
       span.text-base.font-medium {{ productCountText }}
     UForm(class="space-y-4" @submit="submit")
       UFormGroup.pb-4(label="Autoriser les promotions pour tous" name="arePromotionsAllowed")

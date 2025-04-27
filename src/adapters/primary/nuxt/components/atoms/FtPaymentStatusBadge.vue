@@ -1,5 +1,8 @@
 <template lang="pug">
-UBadge.uppercase.py-2.px-4(:color="colors[status]" :ui="{ rounded: 'rounded-full' }") {{ texts[status] }}
+UBadge.uppercase.py-2.px-4(
+  :color="colors[status]"
+  :ui="{ rounded: 'rounded-full' }"
+) {{ texts[status] }}
 </template>
 
 <script setup>

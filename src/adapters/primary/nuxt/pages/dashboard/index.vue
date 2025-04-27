@@ -1,5 +1,5 @@
 <template lang="pug">
-.dashboard-container
+.dashboard-container.p-4.mx-auto
   UCard.mb-4
     template(#header)
       .flex.justify-between.items-center
@@ -54,7 +54,7 @@
     template(#default)
       div(v-if='isLoading')
         .flex.justify-center.items-center.h-64
-          UIcon.animate-spin.h-8.w-8(name='i-heroicons-arrow-path')
+          icon.animate-spin.h-8.w-8(name='i-heroicons-arrow-path')
       div(v-else)
         .grid.grid-cols-1.gap-4.mb-8(class='md:grid-cols-5')
           UCard(v-for='(stat, index) in statsCards' :key='index')
@@ -186,9 +186,3 @@ const clearEndDate = () => {
   endDate.value = null
 }
 </script>
-
-<style scoped>
-.dashboard-container {
-  @apply p-4 mx-auto;
-}
-</style>

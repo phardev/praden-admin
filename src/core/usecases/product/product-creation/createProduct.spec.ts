@@ -309,6 +309,7 @@ describe('Create product', () => {
       try {
         await whenFailCreateProduct(dto)
       } catch {
+        /* For testing purpose */
       } finally {
         await expectProductGatewayToEqual()
       }
@@ -317,6 +318,7 @@ describe('Create product', () => {
       try {
         await whenFailCreateProduct(dto)
       } catch {
+        /* For testing purpose */
       } finally {
         expectProductStoreToEqual()
       }
@@ -325,6 +327,7 @@ describe('Create product', () => {
       try {
         await whenFailCreateProduct(dto)
       } catch {
+        /* For testing purpose */
       } finally {
         expect(productStore.isLoading).toBe(false)
       }

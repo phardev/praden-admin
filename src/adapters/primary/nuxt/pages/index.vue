@@ -16,7 +16,7 @@
       template(#header)
         .flex.items-center.justify-between
           h2.text-lg.font-semibold Tableau de bord
-          UIcon(name="i-akar-icons:statistic-up" class="text-2xl text-primary")
+          icon(name="i-akar-icons:statistic-up" class="text-2xl text-primary")
       template(#default)
         p.text-sm.text-gray-600.mb-4 Consultez les statistiques de vente et les performances de la pharmacie.
         UButton(color="primary" variant="soft" block icon="i-heroicons-arrow-right" label="Accéder" @click.stop="navigateTo('/dashboard')")
@@ -27,7 +27,7 @@
       template(#header)
         .flex.items-center.justify-between
           h2.text-lg.font-semibold Produits
-          UIcon(name="i-fluent-mdl2:product-catalog" class="text-2xl text-primary")
+          icon(name="i-fluent-mdl2:product-catalog" class="text-2xl text-primary")
       template(#default)
         p.text-sm.text-gray-600.mb-4 Gérez votre catalogue de produits, prix et disponibilité.
         UButton(color="primary" variant="soft" block icon="i-heroicons-arrow-right" label="Accéder" @click.stop="navigateTo('/products')")
@@ -38,7 +38,7 @@
       template(#header)
         .flex.items-center.justify-between
           h2.text-lg.font-semibold Préparations
-          UIcon(name="i-akar-icons:shipping-box-01" class="text-2xl text-primary")
+          icon(name="i-akar-icons:shipping-box-01" class="text-2xl text-primary")
       template(#default)
         p.text-sm.text-gray-600.mb-4 Suivez et gérez les préparations de commandes en cours.
         UButton(color="primary" variant="soft" block icon="i-heroicons-arrow-right" label="Accéder" @click.stop="navigateTo('/preparations')")
@@ -49,7 +49,7 @@
       template(#header)
         .flex.items-center.justify-between
           h2.text-lg.font-semibold Commandes
-          UIcon(name="i-material-symbols:orders-outline" class="text-2xl text-primary")
+          icon(name="i-material-symbols:orders-outline" class="text-2xl text-primary")
       template(#default)
         p.text-sm.text-gray-600.mb-4 Consultez l'historique des commandes et leur statut.
         UButton(color="primary" variant="soft" block icon="i-heroicons-arrow-right" label="Accéder" @click.stop="navigateTo('/orders')")
@@ -60,7 +60,7 @@
     template(#default)
       div(v-if="isLoading")
         .flex.justify-center.items-center.py-12
-          UIcon.animate-spin.h-8.w-8(name="i-heroicons-arrow-path")
+          icon.animate-spin.h-8.w-8(name="i-heroicons-arrow-path")
           span.ml-2 Chargement des données...
       .grid.grid-cols-1.gap-4(v-else class="md:grid-cols-4")
         .stat-item.text-center
