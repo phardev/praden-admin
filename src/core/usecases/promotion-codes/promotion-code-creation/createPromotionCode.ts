@@ -1,5 +1,5 @@
-import { CreatePromotionCodeDTO } from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
-import { PromotionCodeGateway } from '@core/usecases/promotion-codes/promotion-code-listing/promotionCodeGateway'
+import { CreatePromotionCodeDTO } from '@core/entities/promotionCode'
+import { PromotionCodeGateway } from '@core/gateways/promotionCodeGateway'
 import { usePromotionCodeStore } from '@store/promotionCodeStore'
 
 export const createPromotionCode = async (

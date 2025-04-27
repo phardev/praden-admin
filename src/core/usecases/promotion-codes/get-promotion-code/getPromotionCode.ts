@@ -1,4 +1,4 @@
-import { PromotionCodeGateway } from '@core/usecases/promotion-codes/promotion-code-listing/promotionCodeGateway'
+import { PromotionCodeGateway } from '@core/gateways/promotionCodeGateway'
 import { usePromotionCodeStore } from '@store/promotionCodeStore'
 
 export const getPromotionCode = async (

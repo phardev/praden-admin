@@ -5,7 +5,7 @@ import {
   CreatePromotionCodeDTO,
   PromotionCode,
   PromotionScope
-} from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+} from '@core/entities/promotionCode'
 import { UUID } from '@core/types/types'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { ReductionType } from '@core/entities/promotion'

@@ -1,9 +1,9 @@
 import {
   CreatePromotionCodeDTO,
   PromotionCode
-} from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+} from '@core/entities/promotionCode'
 import { RealGateway } from '../order-gateways/RealOrderGateway'
-import { PromotionCodeGateway } from '@core/usecases/promotion-codes/promotion-code-listing/promotionCodeGateway'
+import { PromotionCodeGateway } from '@core/gateways/promotionCodeGateway'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { EditPromotionCodeDTO } from '@core/usecases/promotion-codes/promotion-code-edition/editPromotionCode'
 
@@ -30,7 +30,7 @@ export class RealPromotionCodeGateway
   async create(dto: CreatePromotionCodeDTO): Promise<PromotionCode> {
     const res = await axiosWithBearer.post(
       `${this.baseUrl}/promotion-codes`,
-      JSON.stringify(dto),
+      this.createBody(dto),
       {
         headers: {
           'Content-Type': 'application/json'
@@ -43,7 +43,7 @@ export class RealPromotionCodeGateway
   async edit(code: string, dto: EditPromotionCodeDTO): Promise<PromotionCode> {
     const res = await axiosWithBearer.patch(
       `${this.baseUrl}/promotion-codes/${code}`,
-      JSON.stringify(dto),
+      this.createBody(dto),
       {
         headers: {
           'Content-Type': 'application/json'
@@ -51,5 +51,17 @@ export class RealPromotionCodeGateway
       }
     )
     return Promise.resolve(res.data)
+  }
+
+  private createBody(
+    dto: CreatePromotionCodeDTO | EditPromotionCodeDTO
+  ): object {
+    return {
+      ...dto,
+      conditions: {
+        ...dto.conditions,
+        productUuids: dto.conditions.products.map((p) => p.uuid)
+      }
+    }
   }
 }

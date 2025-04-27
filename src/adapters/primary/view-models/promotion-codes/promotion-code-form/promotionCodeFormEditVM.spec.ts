@@ -28,7 +28,7 @@ import {
   CreatePromotionCodeDTO,
   PromotionCode,
   PromotionScope
-} from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+} from '@core/entities/promotionCode'
 import { DeliveryMethod } from '@core/entities/order'
 import { PromotionScopeChoiceVM } from '@adapters/primary/view-models/promotion-codes/promotion-code-form/promotionCodeFormGetVM'
 

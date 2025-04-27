@@ -8,7 +8,7 @@ import { ReductionType } from '@core/entities/promotion'
 import {
   CreatePromotionCodeDTO,
   PromotionScope
-} from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+} from '@core/entities/promotionCode'
 import { PromotionScopeChoiceVM } from '@adapters/primary/view-models/promotion-codes/promotion-code-form/promotionCodeFormGetVM'
 import {
   clickAndCollect,

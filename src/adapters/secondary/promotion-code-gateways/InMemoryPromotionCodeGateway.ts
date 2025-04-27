@@ -2,8 +2,8 @@ import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import {
   CreatePromotionCodeDTO,
   PromotionCode
-} from '../../../core/usecases/promotion-codes/promotion-code-listing/promotionCode'
-import { PromotionCodeGateway } from '../../../core/usecases/promotion-codes/promotion-code-listing/promotionCodeGateway'
+} from '../../../core/entities/promotionCode'
+import { PromotionCodeGateway } from '../../../core/gateways/promotionCodeGateway'
 import { PromotionCodeDoesNotExistsError } from '@core/errors/PromotionCodeDoesNotExistsError'
 import { EditPromotionCodeDTO } from '@core/usecases/promotion-codes/promotion-code-edition/editPromotionCode'
 import { PromotionCodeWithSameCodeAlreadyExistsError } from '@core/errors/PromotionCodeWithSameCodeAlreadyExistsError'

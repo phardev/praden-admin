@@ -8,7 +8,11 @@ import {
 import { PromotionCodeFormFieldsReader } from './promotionCodeFormGetVM'
 import { PromotionCodeFormVM } from './promotionCodeFormVM'
 import { Field } from '../../promotions/promotion-form/promotionFormCreateVM'
-import { PromotionScope } from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+import { PromotionScope } from '@core/entities/promotionCode'
+import { useProductStore } from '@store/productStore'
+import { UUID } from '@core/types/types'
+import { Product } from '@core/entities/product'
+import { useSearchStore } from '@store/searchStore'
 
 export class PromotionCodeFormFieldsWriter extends FormFieldsWriter {
   protected fieldsReader: PromotionCodeFormFieldsReader
@@ -26,6 +30,30 @@ export class PromotionCodeFormFieldsWriter extends FormFieldsWriter {
     const handler =
       this.fieldHandlers[fieldName] || super.set.bind(this, fieldName)
     handler(value)
+  }
+
+  addProducts(uuids: Array<UUID>) {
+    const products = this.fieldsReader.get('products')
+    const productStore = useProductStore()
+    const searchStore = useSearchStore()
+    const searchResult = searchStore.get(this.key)
+    const alreadyAdded = products.map((p) => p.uuid)
+    uuids
+      .filter((uuid) => !alreadyAdded.includes(uuid))
+      .forEach((uuid) => {
+        let product = productStore.getByUuid(uuid)
+        if (!product) {
+          product = searchResult.find((p) => p.uuid === uuid)
+        }
+        products.push(product)
+      })
+    super.set('products', products)
+  }
+
+  removeProducts(uuids: Array<UUID>) {
+    let products = this.fieldsReader.get('products')
+    products = products.filter((p: Product) => !uuids.includes(p.uuid))
+    super.set('products', products)
   }
 
   private setReductionType(type: ReductionType): void {
@@ -53,7 +81,8 @@ export class NewPromotionCodeFormInitializer implements FormInitializer {
       endDate: undefined,
       maximumUsage: undefined,
       minimumAmount: undefined,
-      deliveryMethodUuid: undefined
+      deliveryMethodUuid: undefined,
+      products: []
     })
   }
 }
@@ -73,6 +102,37 @@ export class PromotionCodeFormCreateVM extends PromotionCodeFormVM {
     this.key = key
     initializer.init()
     this.fieldsWriter = fieldsWriter
+  }
+
+  getAvailableProducts() {
+    const productStore = useProductStore()
+    const allProducts: Array<Product> = productStore.items
+    const searchStore = useSearchStore()
+    const filteredProducts: Array<Product> = searchStore.get(this.key)
+    const addedProducts = this.fieldsReader.get('products')
+    const res = (filteredProducts || allProducts).filter(
+      (p) => !addedProducts.map((p) => p.uuid).includes(p.uuid)
+    )
+    return {
+      value: res.map((p: Product) => {
+        return {
+          uuid: p.uuid,
+          name: p.name,
+          reference: p.ean13,
+          categories: p.categories.map((c) => c.name),
+          laboratory: p.laboratory ? p.laboratory.name : ''
+        }
+      }),
+      canEdit: true
+    }
+  }
+
+  addProducts(uuids: Array<UUID>) {
+    this.fieldsWriter.addProducts(uuids)
+  }
+
+  removeProducts(uuids: Array<UUID>) {
+    this.fieldsWriter.removeProducts(uuids)
   }
 
   get(fieldName: string): any {

@@ -6,7 +6,7 @@ import {
   isPromotionCodeInProgress,
   isPromotionCodeStarted,
   PromotionCode
-} from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+} from '@core/entities/promotionCode'
 import { ReductionType } from '@core/entities/promotion'
 import {
   percentFormatter,

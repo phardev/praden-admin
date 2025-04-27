@@ -1,4 +1,4 @@
-import { PromotionCode } from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+import { PromotionCode } from '@core/entities/promotionCode'
 import { defineStore } from 'pinia'
 
 export const usePromotionCodeStore = defineStore('PromotionCodeStore', {

@@ -1,5 +1,8 @@
 import { ReductionType } from '@core/entities/promotion'
-import { TypeChoiceVM } from '../../promotions/promotion-form/promotionFormCreateVM'
+import {
+  Field,
+  TypeChoiceVM
+} from '../../promotions/promotion-form/promotionFormCreateVM'
 import {
   AvailableDeliveryMethodsVM,
   PromotionCodeFormFieldsReader,
@@ -9,8 +12,19 @@ import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
 import {
   CreatePromotionCodeDTO,
   PromotionScope
-} from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+} from '@core/entities/promotionCode'
 import { usePromotionCodeStore } from '@store/promotionCodeStore'
+import { Product } from '@core/entities/product'
+import { UUID } from '@core/types/types'
+import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
+
+export interface PromotionCodeProductItemVM {
+  uuid: UUID
+  name: string
+  reference: string
+  categories: Array<string>
+  laboratory: string
+}
 
 export abstract class PromotionCodeFormVM {
   protected fieldsReader: PromotionCodeFormFieldsReader
@@ -48,6 +62,44 @@ export abstract class PromotionCodeFormVM {
         text
       }
     })
+  }
+
+  getProductsHeaders(): Array<Header> {
+    return [
+      {
+        name: 'Nom',
+        value: 'name'
+      },
+      {
+        name: 'Référence',
+        value: 'reference'
+      },
+      {
+        name: 'Catégorie',
+        value: 'category'
+      },
+      {
+        name: 'Laboratoire',
+        value: 'laboratory'
+      }
+    ]
+  }
+
+  getProducts(): Field<Array<PromotionCodeProductItemVM>> {
+    const addedProducts = this.fieldsReader.get('products')
+    const value = addedProducts.map((product: Product) => {
+      return {
+        uuid: product.uuid,
+        name: product.name,
+        reference: product.ean13,
+        categories: product.categories.map((c) => c.name),
+        laboratory: product.laboratory ? product.laboratory.name : ''
+      }
+    })
+    return {
+      value,
+      canEdit: true
+    }
   }
 
   getCanValidate(): boolean {
@@ -89,6 +141,10 @@ export abstract class PromotionCodeFormVM {
     const deliveryMethodUuid = this.fieldsReader.get('deliveryMethodUuid')
     if (deliveryMethodUuid) {
       res.conditions.deliveryMethodUuid = deliveryMethodUuid
+    }
+    const products = this.fieldsReader.get('products')
+    if (products.length) {
+      res.conditions.products = products
     }
     return res
   }

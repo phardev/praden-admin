@@ -2,10 +2,7 @@ import { InMemoryPromotionCodeGateway } from '@adapters/secondary/promotion-code
 import { createPinia, setActivePinia } from 'pinia'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { usePromotionCodeStore } from '@store/promotionCodeStore'
-import {
-  PromotionCode,
-  PromotionScope
-} from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+import { PromotionCode, PromotionScope } from '@core/entities/promotionCode'
 import {
   fifteenPercentPromotionCode,
   tenEuroFixedPromotionCode

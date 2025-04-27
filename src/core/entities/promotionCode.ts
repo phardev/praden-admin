@@ -1,5 +1,6 @@
 import { ReductionType } from '@core/entities/promotion'
 import { Timestamp, UUID } from '@core/types/types'
+import { Product } from './product'
 
 export type CreatePromotionCodeDTO = Omit<PromotionCode, 'uuid' | 'currentUses'>
 
@@ -24,6 +25,7 @@ export interface PromotionCodeConditions {
   minimumAmount?: number
   maximumUsage?: number
   deliveryMethodUuid?: UUID
+  products?: Array<Product>
 }
 
 export const isPromotionCodeStarted = (

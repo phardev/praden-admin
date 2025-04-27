@@ -2,15 +2,19 @@ import { useFormStore } from '@store/formStore'
 import { ReductionType } from '@core/entities/promotion'
 import {
   Field,
+  PromotionProductItemVM,
   TypeChoiceVM
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import {
   FormFieldsReader,
   FormInitializer
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
-import { PromotionCodeFormVM } from './promotionCodeFormVM'
+import {
+  PromotionCodeFormVM,
+  PromotionCodeProductItemVM
+} from './promotionCodeFormVM'
 import { usePromotionCodeStore } from '@store/promotionCodeStore'
-import { PromotionScope } from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+import { PromotionScope } from '@core/entities/promotionCode'
 import { UUID } from '@core/types/types'
 
 export interface PromotionScopeChoiceVM {
@@ -53,7 +57,11 @@ export class ExistingPromotionCodeFormInitializer implements FormInitializer {
       minimumAmount: promotionCode.conditions.minimumAmount
         ? (promotionCode.conditions.minimumAmount / 100).toString()
         : undefined,
-      deliveryMethodUuid: promotionCode.conditions.deliveryMethodUuid
+      deliveryMethodUuid: promotionCode.conditions.deliveryMethodUuid,
+      products:
+        promotionCode && promotionCode.conditions.products
+          ? promotionCode.conditions.products
+          : []
     })
   }
 }
@@ -91,6 +99,20 @@ export class PromotionCodeFormGetVM extends PromotionCodeFormVM {
   ) {
     super(fieldReader)
     initializer.init()
+  }
+
+  getAvailableProducts(): Field<Array<PromotionProductItemVM>> {
+    return {
+      value: [],
+      canEdit: false
+    }
+  }
+
+  getProducts(): Field<Array<PromotionCodeProductItemVM>> {
+    return {
+      ...super.getProducts(),
+      canEdit: false
+    }
   }
 
   get(fieldName: string): any {

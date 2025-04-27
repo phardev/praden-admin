@@ -14,10 +14,7 @@ import {
   limitedPromotionCode,
   tenEuroFixedPromotionCode
 } from '@utils/testData/promotionCodes'
-import {
-  PromotionCode,
-  PromotionScope
-} from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+import { PromotionCode, PromotionScope } from '@core/entities/promotionCode'
 import {
   PromotionCodeFormGetVM,
   promotionCodeFormGetVM,

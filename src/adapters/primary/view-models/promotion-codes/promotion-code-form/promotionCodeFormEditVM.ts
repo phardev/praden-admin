@@ -5,6 +5,9 @@ import {
   PromotionCodeFormFieldsReader
 } from './promotionCodeFormGetVM'
 import { PromotionCodeFormFieldsWriter } from '@adapters/primary/view-models/promotion-codes/promotion-code-form/promotionCodeFormCreateVM'
+import { useProductStore } from '@store/productStore'
+import { Product } from '@core/entities/product'
+import { useSearchStore } from '@store/searchStore'
 
 export class PromotionCodeFormEditVM extends PromotionCodeFormVM {
   protected readonly key: string
@@ -21,6 +24,37 @@ export class PromotionCodeFormEditVM extends PromotionCodeFormVM {
     this.key = key
     initializer.init()
     this.fieldsWriter = fieldWriter
+  }
+
+  getAvailableProducts() {
+    const productStore = useProductStore()
+    const allProducts: Array<Product> = productStore.items
+    const searchStore = useSearchStore()
+    const filteredProducts: Array<Product> = searchStore.get(this.key)
+    const addedProducts = this.fieldsReader.get('products')
+    const res = (filteredProducts || allProducts).filter(
+      (p) => !addedProducts.map((p) => p.uuid).includes(p.uuid)
+    )
+    return {
+      value: res.map((p: Product) => {
+        return {
+          uuid: p.uuid,
+          name: p.name,
+          reference: p.ean13,
+          categories: p.categories.map((c) => c.name),
+          laboratory: p.laboratory ? p.laboratory.name : ''
+        }
+      }),
+      canEdit: true
+    }
+  }
+
+  addProducts(cip13: Array<string>) {
+    this.fieldsWriter.addProducts(cip13)
+  }
+
+  removeProducts(cip13: Array<string>) {
+    this.fieldsWriter.removeProducts(cip13)
   }
 
   get(fieldName: string): any {

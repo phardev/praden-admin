@@ -1,9 +1,7 @@
 import { ReductionType } from '@core/entities/promotion'
-import {
-  PromotionCode,
-  PromotionScope
-} from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+import { PromotionCode, PromotionScope } from '@core/entities/promotionCode'
 import { deliveryInRelayPoint } from '@utils/testData/deliveryMethods'
+import { hemoclar } from './products'
 
 export const newSitePromotionCode: PromotionCode = {
   uuid: 'new-site-promotion-code',
@@ -80,5 +78,17 @@ export const deliveryPromotionCode: PromotionCode = {
   amount: 100,
   conditions: {
     deliveryMethodUuid: deliveryInRelayPoint.uuid
+  }
+}
+
+export const productRestrictedPromotionCode: PromotionCode = {
+  uuid: 'product-restricted-promotion-code',
+  code: 'PRODUCT_RESTRICTED',
+  currentUses: 0,
+  reductionType: ReductionType.Percentage,
+  scope: PromotionScope.Products,
+  amount: 10,
+  conditions: {
+    products: [hemoclar]
   }
 }

@@ -142,23 +142,76 @@ UForm(v-else :state="currentVM")
         )
           template(#option="{ option: laboratory }")
             span {{ laboratory.name }}
-  div.flex.flex-row-reverse.mt-4
-    ft-button.button-solid.px-6.text-xl(
-      v-if="currentVM.getDisplayValidate()"
-      :disabled="!currentVM.getCanValidate()"
-      @click.prevent="validate"
-    ) Valider
+  ft-text-field(
+    v-if="currentVM.get('products').canEdit"
+    v-model="search"
+    placeholder="Rechercher par nom, référence, catégorie, laboratoire"
+    for="search"
+    type='text'
+    name='search'
+    @input="searchChanged"
+  ) Rechercher un produit
+  div.flex.gap-12.mt-4
+    div.flex-1(
+      v-if="currentVM.get('products').canEdit"
+    )
+      ft-table(
+        :headers="currentVM.getProductsHeaders()"
+        :items="currentVM.getAvailableProducts().value"
+        :selectable="true"
+        :selection="availableProductSelector.get()"
+        @item-selected="availableProductSelector.toggleSelect"
+        @select-all="availableProductSelector.toggleSelectAll"
+      )
+        template(#title) Tous les produits
+    div.flex.flex-col.justify-center.gap-6.mt-20(
+      v-if="currentVM.get('products').canEdit"
+    )
+      ft-button.button-solid(
+        @click="addProducts"
+      )
+        icon.icon-lg(name="ic:baseline-keyboard-arrow-right")
+      ft-button.button-default(
+        @click="removeProducts"
+      )
+        icon.icon-lg.rotate-180(name="ic:baseline-keyboard-arrow-right")
+    div.flex-1
+      ft-table(
+        :headers="currentVM.getProductsHeaders()"
+        :items="currentVM.getProducts().value"
+        :selectable="currentVM.getProducts().canEdit"
+        :selection="addedProductSelector.get()"
+        @item-selected="addedProductSelector.toggleSelect"
+        @select-all="addedProductSelector.toggleSelectAll"
+      )
+        template(#title) Produits éligibles
+
+div.flex.flex-row-reverse.mt-4
+  ft-button.button-solid.px-6.text-xl(
+    v-if="currentVM.getDisplayValidate()"
+    :disabled="!currentVM.getCanValidate()"
+    @click.prevent="validate"
+  ) Valider
 </template>
 
 <script lang="ts" setup>
+import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'
+import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
+import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 import { ReductionType } from '@core/entities/promotion'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import { PromotionScope } from '@core/usecases/promotion-codes/promotion-code-listing/promotionCode'
+import { PromotionScope } from '@core/entities/promotionCode'
 import { listDeliveryMethods } from '@core/usecases/delivery-methods/delivery-method-listing/listDeliveryMethods'
 import { useDeliveryMethodGateway } from '../../../../../../gateways/deliveryMethodGateway'
 
 definePageMeta({ layout: 'main' })
+
+const search = ref('')
+const router = useRouter()
+const routeName = router.currentRoute.value.name
+const availableProductSelector = useSelection()
+const addedProductSelector = useSelection()
 
 onMounted(() => {
   listDeliveryMethods(useDeliveryMethodGateway())
@@ -238,6 +291,30 @@ const getScopeIcon = (scope: PromotionScope) => {
   return scope === PromotionScope.Products
     ? 'fluent-mdl2:product-catalog'
     : 'material-symbols-light:delivery-truck-speed-outline'
+}
+
+let debounceTimer
+const minimumQueryLength = 3
+
+const searchChanged = (e: any) => {
+  if (debounceTimer) clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(() => {
+    const filters = {
+      query: e.target.value,
+      minimumQueryLength
+    }
+    searchProducts(routeName, filters, useSearchGateway())
+  }, 300)
+}
+
+const addProducts = () => {
+  currentVM.value.addProducts(availableProductSelector.get())
+  availableProductSelector.clear()
+}
+
+const removeProducts = () => {
+  currentVM.value.removeProducts(addedProductSelector.get())
+  addedProductSelector.clear()
 }
 
 const emit = defineEmits<{
