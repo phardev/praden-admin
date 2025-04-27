@@ -36,6 +36,11 @@ export const fullMenu: NavigationMenu = {
           name: 'Promotions',
           icon: 'uil:euro-circle',
           href: '/promotions'
+        },
+        {
+          name: 'Codes promotion',
+          icon: 'ic:outline-discount',
+          href: '/promotion-codes'
         }
       ]
     },

@@ -134,7 +134,10 @@ export class ProductFormEditVM extends ProductFormVM {
       weight: +this.fieldsReader.get('weight') * 1000,
       maxQuantityForOrder: this.fieldsReader.get('maxQuantityForOrder')
         ? +this.fieldsReader.get('maxQuantityForOrder')
-        : undefined
+        : undefined,
+      flags: {
+        arePromotionsAllowed: this.fieldsReader.get('arePromotionsAllowed')
+      }
     }
   }
 

@@ -47,7 +47,8 @@ describe('Product form create VM', () => {
       instructionsForUse: '',
       composition: '',
       weight: '',
-      maxQuantityForOrder: ''
+      maxQuantityForOrder: '',
+      arePromotionsAllowed: true
     }
     describe.each([
       { field: 'name', expected: expected.name },
@@ -205,7 +206,8 @@ describe('Product form create VM', () => {
           instructionsForUse: '<p>instructionsForUse</p>',
           composition: '<p>composition</p>',
           weight: 1200,
-          maxQuantityForOrder: 12
+          maxQuantityForOrder: 12,
+          flags: { arePromotionsAllowed: true }
         }
         vm.set('name', expectedDTO.name)
         vm.set('cip7', expectedDTO.cip7)
@@ -226,6 +228,7 @@ describe('Product form create VM', () => {
         vm.set('composition', expectedDTO.composition)
         vm.set('weight', '1.2')
         vm.set('maxQuantityForOrder', '12')
+
         expect(vm.getDto()).toStrictEqual(expectedDTO)
       })
     })
@@ -260,7 +263,8 @@ describe('Product form create VM', () => {
           instructionsForUse: '<p>instructionsForUse</p>',
           composition: '<p>composition</p>',
           weight: 1200,
-          maxQuantityForOrder: 12
+          maxQuantityForOrder: 12,
+          flags: { arePromotionsAllowed: true }
         }
         vm.toggleIsActive()
         vm.set('name', expectedDTO.name)
@@ -316,7 +320,8 @@ describe('Product form create VM', () => {
           instructionsForUse: '<p>instructionsForUse</p>',
           composition: '<p>composition</p>',
           weight: 1200,
-          maxQuantityForOrder: 12
+          maxQuantityForOrder: 12,
+          flags: { arePromotionsAllowed: true }
         }
         vm.set('name', expectedDTO.name)
         vm.set('cip7', expectedDTO.cip7)
@@ -368,7 +373,8 @@ describe('Product form create VM', () => {
           instructionsForUse: '<p>instructionsForUse</p>',
           composition: '<p>composition</p>',
           weight: 1200,
-          maxQuantityForOrder: undefined
+          maxQuantityForOrder: undefined,
+          flags: { arePromotionsAllowed: true }
         }
         vm.set('name', expectedDTO.name)
         vm.set('cip7', expectedDTO.cip7)

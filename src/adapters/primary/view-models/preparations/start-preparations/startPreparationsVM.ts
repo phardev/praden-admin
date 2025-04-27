@@ -38,6 +38,10 @@ export interface PreparationLineDetailVM {
   billingAddress: AddressVM
   lines: Array<DetailPreparationLineVM>
   totalWithTax: string
+  promotionCode?: {
+    code: string
+    discount: string
+  }
 }
 
 export interface StartPreparationsVM {
@@ -193,6 +197,12 @@ const getDetailPreparationLineVM = (
       'fr-FR',
       options
     )
+  }
+  if (order.promotionCode) {
+    detail.promotionCode = {
+      code: order.promotionCode.code,
+      discount: formatter.format((order.promotionCode.discount / 100) * -1)
+    }
   }
   return detail
 }

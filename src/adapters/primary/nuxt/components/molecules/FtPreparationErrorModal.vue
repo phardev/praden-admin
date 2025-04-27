@@ -1,5 +1,5 @@
 <template lang="pug">
-ft-modal(v-model="model")
+ft-modal(v-model="model" @close="emit('close')")
   div.flex.flex-col.items-center.justify-center.gap-4
     icon.icon-2xl.text-error(name="material-symbols:error-circle-rounded-outline-sharp")
     h2.text-2xl Erreur
@@ -18,16 +18,6 @@ defineProps({
     type: String,
     default: () => {
       return ''
-    }
-  }
-})
-
-defineShortcuts({
-  escape: {
-    usingInput: true,
-    whenever: [model],
-    handler: () => {
-      close()
     }
   }
 })

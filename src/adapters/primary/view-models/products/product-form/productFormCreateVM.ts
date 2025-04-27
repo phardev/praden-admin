@@ -173,7 +173,8 @@ export class NewProductFormInitializer implements FormInitializer {
       instructionsForUse: '',
       composition: '',
       weight: '',
-      maxQuantityForOrder: ''
+      maxQuantityForOrder: '',
+      arePromotionsAllowed: true
     })
   }
 }
@@ -294,7 +295,10 @@ export class ProductFormCreateVM extends ProductFormVM {
       weight: +this.fieldsReader.get('weight') * 1000,
       maxQuantityForOrder: this.fieldsReader.get('maxQuantityForOrder')
         ? +this.fieldsReader.get('maxQuantityForOrder')
-        : undefined
+        : undefined,
+      flags: {
+        arePromotionsAllowed: this.fieldsReader.get('arePromotionsAllowed')
+      }
     }
   }
 

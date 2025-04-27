@@ -10,7 +10,8 @@ import {
   orderToPrepare2,
   orderToPrepare3,
   orderWithCustomerMessage,
-  orderWithProductWithoutLocation
+  orderWithProductWithoutLocation,
+  orderWithPromotionCode
 } from '@utils/testData/orders'
 import {
   calmosine,
@@ -65,6 +66,7 @@ describe('Start preparations VM', () => {
         orderToPrepare2,
         orderWithProductWithoutLocation,
         orderToPrepare3,
+        orderWithPromotionCode,
         orderWithCustomerMessage
       ]
     })
@@ -587,6 +589,67 @@ describe('Start preparations VM', () => {
                 }
               ],
               totalWithTax: '11,00\u00A0€'
+            }
+          ]
+        }
+        expect(vm).toStrictEqual(expectedVM)
+      })
+      it('should apply promotion code discount to total for order if there is a promotion code', () => {
+        preparationsStore.selected = [orderWithPromotionCode.uuid]
+        const vm = getStartPreparationsVM(origin)
+        const expectedVM: StartPreparationsVM = {
+          globalHeaders,
+          detailHeaders,
+          global: [
+            {
+              reference: dolodent.ean13,
+              name: dolodent.name,
+              locations: dolodent.locations,
+              quantity: 2
+            }
+          ],
+          detail: [
+            {
+              href: `${origin}/preparations/${orderWithPromotionCode.uuid}`,
+              reference: orderWithPromotionCode.uuid,
+              deliveryMethodName:
+                orderWithPromotionCode.deliveries[0].method.name,
+              clientLastname: orderWithPromotionCode.deliveryAddress.lastname,
+              createdDate: '21 janv. 2023',
+              deliveryPrice: 'Gratuit',
+              pickingDate: '20/01/2025 12:42',
+              promotionCode: {
+                code: 'DISCOUNT10',
+                discount: '-5,00\u00A0€'
+              },
+              deliveryAddress: {
+                name: 'Jean Bon',
+                address: '10 rue des peupliers',
+                city: 'PlopLand',
+                zip: '12345',
+                country: 'Plop',
+                phone: '0123456789'
+              },
+              billingAddress: {
+                name: 'Jean Bon',
+                address: '10 rue des peupliers',
+                city: 'PlopLand',
+                zip: '12345',
+                country: 'Plop',
+                phone: '0123456789'
+              },
+              lines: [
+                {
+                  reference: dolodent.ean13,
+                  name: dolodent.name,
+                  locations: dolodent.locations,
+                  quantity: 2,
+                  unitPrice: '5,50\u00A0€',
+                  taxRate: '10 %',
+                  totalPrice: '11,00\u00A0€'
+                }
+              ],
+              totalWithTax: '6,00\u00A0€'
             }
           ]
         }
