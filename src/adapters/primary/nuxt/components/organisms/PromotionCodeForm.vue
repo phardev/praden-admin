@@ -122,7 +122,7 @@ UForm(v-else :state="currentVM")
           :disabled="!currentVM.get('maximumUsage').canEdit"
           @update:model-value="maximumUsageChanged"
         )
-      UFormGroup.pb-4(label="Montant minimum (€)" name="minimumAmount")
+      UFormGroup.pb-4(label="Montant minimum total de la commande (hors médicaments et produits non-eligible aux promotions)(€)" name="minimumAmount")
         ft-currency-input(
           v-model="currentVM.get('minimumAmount').value"
           :disabled="!currentVM.get('minimumAmount').canEdit"
@@ -184,7 +184,7 @@ UForm(v-else :state="currentVM")
         @item-selected="addedProductSelector.toggleSelect"
         @select-all="addedProductSelector.toggleSelectAll"
       )
-        template(#title) Produits éligibles
+        template(#title) Produits requis dans le panier
 
 div.flex.flex-row-reverse.mt-4
   ft-button.button-solid.px-6.text-xl(
