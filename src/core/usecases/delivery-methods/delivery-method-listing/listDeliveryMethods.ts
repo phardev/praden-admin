@@ -1,4 +1,4 @@
-import { DeliveryMethodGateway } from '@core/usecases/delivery-methods/delivery-method-listing/deliveryMethodGateway'
+import { DeliveryMethodGateway } from '@core/gateways/deliveryMethodGateway'
 import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
 
 export const listDeliveryMethods = async (

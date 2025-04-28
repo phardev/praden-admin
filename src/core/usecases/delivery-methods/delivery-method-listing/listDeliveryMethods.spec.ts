@@ -1,5 +1,5 @@
 import { DeliveryMethod } from '@core/entities/order'
-import { InMemoryDeliveryMethodGateway } from '@core/usecases/delivery-methods/delivery-method-listing/inMemoryDeliveryMethodGateway'
+import { InMemoryDeliveryMethodGateway } from '@adapters/secondary/delivery-method-gateways/inMemoryDeliveryMethodGateway'
 import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
 import {
   clickAndCollect,

@@ -1,5 +1,5 @@
 import { DeliveryMethod } from '@core/entities/order'
-import { DeliveryMethodGateway } from './deliveryMethodGateway'
+import { DeliveryMethodGateway } from '../../../core/gateways/deliveryMethodGateway'
 
 export class InMemoryDeliveryMethodGateway implements DeliveryMethodGateway {
   private deliveryMethods: Array<DeliveryMethod> = []

@@ -17,6 +17,7 @@ import { usePromotionCodeStore } from '@store/promotionCodeStore'
 import { Product } from '@core/entities/product'
 import { UUID } from '@core/types/types'
 import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
+import { DeliveryMethod } from '@core/entities/order'
 
 export interface PromotionCodeProductItemVM {
   uuid: UUID
@@ -46,7 +47,7 @@ export abstract class PromotionCodeFormVM {
   getAvailableDeliveryMethods(): AvailableDeliveryMethodsVM {
     const deliveryMethodStore = useDeliveryMethodStore()
     const deliveryMethods = deliveryMethodStore.items
-    return deliveryMethods.map((deliveryMethod) => {
+    return deliveryMethods.map((deliveryMethod: DeliveryMethod) => {
       return {
         uuid: deliveryMethod.uuid,
         name: deliveryMethod.name
