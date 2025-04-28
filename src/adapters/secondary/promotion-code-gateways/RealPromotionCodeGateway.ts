@@ -62,7 +62,7 @@ export class RealPromotionCodeGateway
         ...dto.conditions,
         productUuids: dto.conditions.products
           ? dto.conditions.products.map((p) => p.uuid)
-          : []
+          : undefined
       }
     }
   }
