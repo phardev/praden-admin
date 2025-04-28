@@ -1,10 +1,13 @@
 <template lang="pug">
   .category-tree-node
     ul
-      li(v-for="item in items" :key="item.data.uuid")
+      li(
+        v-for="item in items"
+        :key="item.data.uuid"
+      )
         .list-item(@click="toggle(item)")
           .flex.justify-between.items-center.p-2.cursor-pointer.bg-hover(
-            :class="{ 'parent-selected': hasSelectedChild(item) }"
+            :class="{ 'parent-selected bg-contrast': hasSelectedChild(item) }"
           )
             div.flex.items-center.justify-center.space-x-4
               ft-checkbox(
@@ -22,7 +25,10 @@
                 name="mdi-eye-outline"
                 @click.prevent="view(item.data.uuid)"
               ) Voir
-              span(v-if="item.children.length" class="ml-4")
+              span(
+                v-if="item.children.length"
+                class="ml-4"
+              )
                 icon.icon-md(
                   v-if="isOpen(item.data.uuid)"
                   name="material-symbols-light:keyboard-arrow-up"
@@ -32,7 +38,10 @@
                   name="material-symbols-light:keyboard-arrow-down"
                 )
         transition(name="slide-fade")
-          ul(v-if="isOpen(item.data.uuid)" class="pl-6")
+          ul(
+            v-if="isOpen(item.data.uuid)"
+            class="pl-6"
+          )
             FtCategoryTreeNode(
               :items="item.children"
               :open-items="openItems"
@@ -148,8 +157,6 @@ const hasSelectedChild = (item) => {
 <style scoped>
 .parent-selected {
   font-weight: bold;
-
-  @apply bg-contrast;
 }
 
 .slide-fade-enter-active,

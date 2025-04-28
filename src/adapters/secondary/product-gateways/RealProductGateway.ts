@@ -24,6 +24,9 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     } else if (dto.laboratory) {
       data.laboratoryUuid = dto.laboratory.uuid
     }
+    if (dto.flags) {
+      data.flags = dto.flags
+    }
     const res = await axiosWithBearer.patch(
       `${this.baseUrl}/products/bulk-edit`,
       data
@@ -139,10 +142,13 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
   }
 
   async edit(uuid: UUID, dto: EditProductDTO): Promise<Product> {
-    const { laboratory, ...productDto } = dto
+    const { laboratory, flags, ...productDto } = dto
     const formData = this.createFormData(productDto)
     if (laboratory) {
       formData.append('laboratoryUuid', laboratory.uuid)
+    }
+    if (flags.arePromotionsAllowed) {
+      formData.append('arePromotionsAllowed', 'on')
     }
     const res = await axiosWithBearer.patch(
       `${this.baseUrl}/products/edit/${uuid}`,
@@ -157,8 +163,11 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
   }
 
   async create(dto: CreateProductDTO): Promise<Product> {
-    const { laboratory, ...productDto } = dto
+    const { laboratory, flags, ...productDto } = dto
     const formData = this.createFormData(productDto)
+    if (flags.arePromotionsAllowed) {
+      formData.append('arePromotionsAllowed', 'on')
+    }
     if (laboratory) {
       formData.append('laboratoryUuid', laboratory.uuid)
     }

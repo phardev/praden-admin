@@ -1,7 +1,20 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 import { fileURLToPath } from 'url'
+import path from 'path'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
+  experimental: {
+    watcher: {
+      ignored: [
+        '**/.nuxt/types/**',
+        '**/.output/**',
+        '**/node_modules/**',
+        '**/coverage/**'
+      ]
+    }
+  },
   runtimeConfig: {
     public: {
       ENV: process.env.NUXT_PUBLIC_ENV,
@@ -57,8 +70,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxt/ui',
     '@nuxtjs/i18n',
-    'nuxt-tiptap-editor',
-    '@nuxtjs/stylelint-module'
+    'nuxt-tiptap-editor'
   ],
 
   tiptap: {
@@ -82,6 +94,9 @@ export default defineNuxtConfig({
 
   ssr: false,
   i18n: {
+    bundle: {
+      optimizeTranslationDirective: false
+    },
     locales: [
       {
         code: 'fr',
@@ -98,7 +113,19 @@ export default defineNuxtConfig({
     define: {
       'process.env.DEBUG': false
     },
-    optimizeDeps: { exclude: ['fsevents'] }
+    optimizeDeps: { exclude: ['fsevents'] },
+    server: {
+      watch: {
+        ignored: [
+          path.resolve(__dirname, '.nuxt/types/**'),
+          '**/types/**',
+          '**/.output/**',
+          '**/.nuxt/**',
+          '**/node_modules/**',
+          '**/coverage/**'
+        ]
+      }
+    }
   },
 
   colorMode: {
@@ -123,6 +150,5 @@ export default defineNuxtConfig({
     },
     ignoreFiles: ['coverage/*']
   },
-
   compatibilityDate: '2024-10-17'
 })

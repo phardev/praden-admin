@@ -56,7 +56,9 @@ export class InMemoryProductGateway implements ProductGateway {
       description: dto.description,
       instructionsForUse: dto.instructionsForUse,
       composition: dto.composition,
-      weight: dto.weight
+      weight: dto.weight,
+      flags: dto.flags,
+      isMedicine: false
     }
     if (dto.maxQuantityForOrder) {
       product.maxQuantityForOrder = dto.maxQuantityForOrder

@@ -15,5 +15,5 @@
     ],
     "no-descending-specificity": null
   },
-  "ignoreFiles": ["coverage/*"]
+  "ignoreFiles": ["coverage/*", "node_modules/*", ".nuxt/*", ".output/*"]
 }

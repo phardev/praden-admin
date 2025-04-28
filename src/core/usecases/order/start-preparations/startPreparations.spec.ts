@@ -111,7 +111,9 @@ describe('Start preparations', () => {
       it('should stop loading', async () => {
         try {
           await whenStartPreparationForOrders('not-exists')
-        } catch (e: any) {}
+        } catch {
+          /* For testing purpose */
+        }
         expect(preparationStore.isLoading).toBe(false)
       })
     })

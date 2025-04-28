@@ -83,6 +83,9 @@
                 div.flex.items-center.justify-around.p-2.border-t.border-light
                   div(class="w-1/2") Livraison
                   div.text-right(class="w-1/2") {{ invoiceVM.totals.deliveryPrice }}
+                div.flex.items-center.justify-around.p-2.border-t.border-light(v-if="invoiceVM.totals.promotionCode")
+                  div(class="w-1/2") Remise {{ invoiceVM.totals.promotionCode.code }}
+                  div.text-right(class="w-1/2") {{ invoiceVM.totals.promotionCode.discount }}
                 div.flex.items-center.justify-around.p-2.border-t.border-light(v-if="invoiceVM.refundOrderLinesTable.items.length")
                   div(class="w-1/2") Total remboursé (TTC)
                   div.text-right(class="w-1/2") {{ invoiceVM.totals.totalRefund }}

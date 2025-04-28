@@ -52,6 +52,7 @@ interface TotalsVM {
   totalTax: string
   totalRefund?: string
   deliveryPrice: string
+  promotionCode?: { code: string; discount: string }
   totalWithTax: string
 }
 
@@ -341,7 +342,8 @@ const refundLinesFilter = (line: OrderLine) => {
 const getTotals = (
   preparedInvoiceLines: Array<InvoiceLine>,
   refoundedInvoiceLines: Array<InvoiceLine>,
-  delivery: Delivery
+  delivery: Delivery,
+  promotionCode?: { code: string; discount: number }
 ) => {
   const formatter = priceFormatter('fr-FR', 'EUR')
   const linesTotal = preparedInvoiceLines.reduce(
@@ -375,7 +377,7 @@ const getTotals = (
     totalRefund += -deliveryPriceWithTax
     deliveryPriceWithTax = 0
   }
-  return {
+  const res: TotalsVM = {
     linesTotal: formatter.format(linesTotal / 100),
     totalWithoutTax: formatter.format(totalWithoutTax / 100),
     totalTax: formatter.format(totalTax / 100),
@@ -388,6 +390,16 @@ const getTotals = (
       (linesTotalWithTax + deliveryPriceWithTax) / 100
     )
   }
+  if (promotionCode) {
+    res.promotionCode = {
+      code: promotionCode.code,
+      discount: formatter.format((promotionCode.discount / 100) * -1)
+    }
+    res.totalWithTax = formatter.format(
+      (linesTotalWithTax + deliveryPriceWithTax - promotionCode.discount) / 100
+    )
+  }
+  return res
 }
 
 export const getInvoiceVM = (): GetInvoiceVM => {
@@ -435,7 +447,8 @@ export const getInvoiceVM = (): GetInvoiceVM => {
     totals: getTotals(
       preparedInvoiceLines,
       refoundedInvoiceLines,
-      invoice.data.deliveries[0]
+      invoice.data.deliveries[0],
+      invoice.data.promotionCode
     ),
     payment: {
       type: 'e-Transaction',

@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
-    "compilerOptions": {
-      "target": "es2021"
-    },
+    "target": "es2021",
     "baseUrl": ".",
     "paths": {
       "@adapters/*": ["src/adapters/*"],

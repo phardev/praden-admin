@@ -25,9 +25,7 @@ defineProps({
   }
 })
 
-const emit = defineEmits<{
-  (e: 'dismiss'): void
-}>()
+const emit = defineEmits(['dismiss'])
 
 const dismiss = () => {
   console.log('dismiss')

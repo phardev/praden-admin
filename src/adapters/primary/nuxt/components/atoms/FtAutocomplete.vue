@@ -17,9 +17,7 @@ UInputMenu(
 <script lang="ts" setup>
 const model = defineModel({ type: String })
 
-const emit = defineEmits<{
-  (e: 'clear'): void
-}>()
+const emit = defineEmits(['clear'])
 
 const clear = async () => {
   emit('clear')

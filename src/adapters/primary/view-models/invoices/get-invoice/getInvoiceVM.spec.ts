@@ -14,6 +14,7 @@ import {
 } from '@utils/testData/orders'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { anaca3Minceur, dolodent } from '@utils/testData/products'
+import { orderWithPromotionCodeInvoice } from '@utils/testData/invoices'
 
 describe('Get invoice VM', () => {
   let invoiceStore: any
@@ -587,6 +588,34 @@ describe('Get invoice VM', () => {
       const expected: Partial<GetInvoiceVM> = {
         deliveryMethod: {
           name: 'Livraison en point relai'
+        }
+      }
+      expectVMToMatch(expected)
+    })
+  })
+
+  describe('There is a current invoice with promotion code', () => {
+    const invoice: Invoice = JSON.parse(
+      JSON.stringify(orderWithPromotionCodeInvoice)
+    )
+    beforeEach(() => {
+      invoice.data.lines[0].preparedQuantity =
+        invoice.data.lines[0].expectedQuantity
+      invoiceStore.current = invoice
+    })
+    it('should compute total with promotion code', () => {
+      const expected: Partial<GetInvoiceVM> = {
+        totals: {
+          linesTotal: '10,00\u00A0€',
+          totalWithoutTax: '10,00\u00A0€',
+          totalTax: '1,00\u00A0€',
+          totalRefund: '0,00\u00A0€',
+          deliveryPrice: 'Gratuit',
+          promotionCode: {
+            code: 'DISCOUNT10',
+            discount: '-5,00\u00A0€'
+          },
+          totalWithTax: '6,00\u00A0€'
         }
       }
       expectVMToMatch(expected)

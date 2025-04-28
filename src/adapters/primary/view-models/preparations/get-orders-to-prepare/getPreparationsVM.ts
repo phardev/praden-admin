@@ -49,10 +49,16 @@ export const computeTotalWithTaxForOrder = (order: Order) => {
   }, 0)
   const delivery = order.deliveries[0]
   if (!delivery) {
-    return total
+    return order.promotionCode
+      ? Math.max(0, total - order.promotionCode.discount)
+      : total
   }
   const deliveryPrice = Math.round(addTaxToPrice(delivery.price, 20))
-  return total + deliveryPrice
+  const totalWithDelivery = total + deliveryPrice
+
+  return order.promotionCode
+    ? Math.max(0, totalWithDelivery - order.promotionCode.discount)
+    : totalWithDelivery
 }
 
 const clickAndCollectFilter = (o: Order) => {

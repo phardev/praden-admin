@@ -13,6 +13,7 @@ import {
   orderWithMissingProduct1,
   orderWithMissingProduct2,
   orderWithProductWithoutLocation,
+  orderWithPromotionCode,
   orderXUKIJ
 } from '@utils/testData/orders'
 import { Invoice } from '@core/entities/invoice'
@@ -104,5 +105,11 @@ export const orderWithCustomerMessageInvoice: Invoice = {
 export const orderCanceledInvoice: Invoice = {
   id: orderCanceled.invoiceNumber,
   data: orderCanceled,
+  createdAt: 1674273599954
+}
+
+export const orderWithPromotionCodeInvoice: Invoice = {
+  id: orderWithPromotionCode.invoiceNumber,
+  data: orderWithPromotionCode,
   createdAt: 1674273599954
 }

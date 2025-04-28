@@ -11,8 +11,6 @@ export const startPreparations = async (orderGateway: OrderGateway) => {
     )
     orders.forEach((order) => preparationStore.update(order))
     preparationStore.clearSelection()
-  } catch (e: any) {
-    throw e
   } finally {
     preparationStore.stopLoading()
   }
