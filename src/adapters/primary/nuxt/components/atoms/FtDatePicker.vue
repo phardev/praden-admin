@@ -3,6 +3,7 @@ VCalendarDatePicker(
   v-model="date"
   v-bind="{ ...attrs, ...$attrs }"
   locale="fr"
+  @dayclick="onDayClick"
 )
 </template>
 
@@ -48,5 +49,10 @@ const attrs = {
   color: 'primary',
   'is-dark': { selector: 'html', darkClass: 'dark' },
   'first-day-of-week': 2
+}
+const onDayClick = (day: any, event: MouseEvent) => {
+  if (event?.target instanceof HTMLElement) {
+    event.target.blur()
+  }
 }
 </script>
