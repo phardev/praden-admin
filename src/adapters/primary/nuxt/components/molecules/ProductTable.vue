@@ -20,4 +20,6 @@ ft-table(
       :model-value="item.isActive"
       :disabled="true"
     )
+  template(#arePromotionsAllowed="{ item }")
+    FtPromotionAllowedBadge(:allowed="item.arePromotionsAllowed")
 </template>

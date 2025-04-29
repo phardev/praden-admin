@@ -60,7 +60,7 @@ export const ultraLevure: Product = {
   composition: '<p>ultralevure composition</p>',
   weight: 12,
   maxQuantityForOrder: 6,
-  isMedicine: false,
+  isMedicine: true,
   flags: { arePromotionsAllowed: true }
 }
 
@@ -275,7 +275,7 @@ export const productWithForbiddenPromotion: Product = {
   percentTaxRate: 20,
   locations: {},
   availableStock: 23,
-  laboratory: null,
+  laboratory: sanofiAventis,
   description: '<p>product with forbidden promotion description</p>',
   instructionsForUse: '<p>instructions</p>',
   composition: '<p>composition</p>',
