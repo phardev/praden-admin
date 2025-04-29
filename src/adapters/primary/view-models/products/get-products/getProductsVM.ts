@@ -17,6 +17,7 @@ export interface GetProductsItemVM {
   priceWithTax: string
   availableStock: number
   isActive: boolean
+  arePromotionsAllowed: boolean
 }
 
 export interface GetProductsVM {
@@ -74,6 +75,10 @@ export const getProductsVM = (key: string): GetProductsVM => {
     {
       name: 'Statut',
       value: 'isActive'
+    },
+    {
+      name: 'Promotions',
+      value: 'arePromotionsAllowed'
     }
   ]
   return {
@@ -91,7 +96,8 @@ export const getProductsVM = (key: string): GetProductsVM => {
         priceWithoutTax: formatter.format(p.priceWithoutTax / 100),
         priceWithTax: formatter.format(priceWithTax / 100),
         availableStock: p.availableStock,
-        isActive: p.status === ProductStatus.Active
+        isActive: p.status === ProductStatus.Active,
+        arePromotionsAllowed: p.flags?.arePromotionsAllowed && !p.isMedicine
       }
     }),
     currentSearch: searchFilter,

@@ -1,6 +1,7 @@
 import { GetProductsVM, getProductsVM } from './getProductsVM'
 import {
   dolodent,
+  productWithForbiddenPromotion,
   productWithoutCategory,
   productWithoutLaboratory,
   ultraLevure
@@ -53,6 +54,10 @@ describe('Get products VM', () => {
     {
       name: 'Statut',
       value: 'isActive'
+    },
+    {
+      name: 'Promotions',
+      value: 'arePromotionsAllowed'
     }
   ]
 
@@ -88,7 +93,8 @@ describe('Get products VM', () => {
               priceWithoutTax: '5,90\u00A0€',
               priceWithTax: '6,49\u00A0€',
               availableStock: productWithoutCategory.availableStock,
-              isActive: true
+              isActive: true,
+              arePromotionsAllowed: true
             }
           ]
         }
@@ -112,7 +118,8 @@ describe('Get products VM', () => {
               priceWithoutTax: '5,90\u00A0€',
               priceWithTax: '6,49\u00A0€',
               availableStock: productWithoutCategory.availableStock,
-              isActive: true
+              isActive: true,
+              arePromotionsAllowed: true
             }
           ]
         }
@@ -135,7 +142,8 @@ describe('Get products VM', () => {
               priceWithoutTax: '5,00\u00A0€',
               priceWithTax: '5,50\u00A0€',
               availableStock: dolodent.availableStock,
-              isActive: true
+              isActive: true,
+              arePromotionsAllowed: false
             },
             {
               uuid: ultraLevure.uuid,
@@ -147,7 +155,47 @@ describe('Get products VM', () => {
               priceWithoutTax: '4,32\u00A0€',
               priceWithTax: '4,75\u00A0€',
               availableStock: ultraLevure.availableStock,
-              isActive: false
+              isActive: false,
+              arePromotionsAllowed: false
+            }
+          ]
+        }
+        expectVMToMatch(expectedVM)
+      })
+    })
+    describe('Products are not eligible to promotion', () => {
+      it('should list all of them', () => {
+        productStore.items = [dolodent, productWithForbiddenPromotion]
+        expectedVM = {
+          headers: expectedHeaders,
+          items: [
+            {
+              uuid: dolodent.uuid,
+              name: dolodent.name,
+              img: dolodent.miniature,
+              reference: dolodent.ean13,
+              laboratory: dolodent.laboratory.name,
+              categories: dolodent.categories.map((c) => c.name),
+              priceWithoutTax: '5,00\u00A0€',
+              priceWithTax: '5,50\u00A0€',
+              availableStock: dolodent.availableStock,
+              isActive: true,
+              arePromotionsAllowed: false
+            },
+            {
+              uuid: productWithForbiddenPromotion.uuid,
+              name: productWithForbiddenPromotion.name,
+              img: productWithForbiddenPromotion.miniature,
+              reference: productWithForbiddenPromotion.ean13,
+              laboratory: productWithForbiddenPromotion.laboratory.name,
+              categories: productWithForbiddenPromotion.categories.map(
+                (c) => c.name
+              ),
+              priceWithoutTax: '3,33\u00A0€',
+              priceWithTax: '3,99\u00A0€',
+              availableStock: productWithForbiddenPromotion.availableStock,
+              isActive: true,
+              arePromotionsAllowed: false
             }
           ]
         }
@@ -176,7 +224,8 @@ describe('Get products VM', () => {
                 priceWithoutTax: '5,00\u00A0€',
                 priceWithTax: '5,50\u00A0€',
                 availableStock: dolodent.availableStock,
-                isActive: true
+                isActive: true,
+                arePromotionsAllowed: false
               }
             ],
             currentSearch: {
@@ -205,7 +254,8 @@ describe('Get products VM', () => {
                 priceWithoutTax: '4,32\u00A0€',
                 priceWithTax: '4,75\u00A0€',
                 availableStock: ultraLevure.availableStock,
-                isActive: false
+                isActive: false,
+                arePromotionsAllowed: false
               }
             ]
           }
