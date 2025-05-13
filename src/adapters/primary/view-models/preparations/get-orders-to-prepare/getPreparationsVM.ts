@@ -152,6 +152,13 @@ export const filterPreparationsByGroup = (
 ): HashTable<GetPreparationsGroupVM> => {
   const preparationStore = usePreparationStore()
   const orders = preparationStore.items
+  const options = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  }
   const formatter = priceFormatter('fr-FR', 'EUR')
   const res: HashTable<GetPreparationsGroupVM> = {}
   groups.forEach((group: any) => {
@@ -163,7 +170,7 @@ export const filterPreparationsByGroup = (
         reference: o.uuid,
         href: `/preparations/${o.uuid}`,
         client: `${o.deliveryAddress.firstname[0]}. ${o.deliveryAddress.lastname}`,
-        createdDate: timestampToLocaleString(o.createdAt, 'fr-FR'),
+        createdDate: timestampToLocaleString(o.createdAt, 'fr-FR', options),
         createdDatetime: new Date(o.createdAt),
         total: formatter.format(total / 100)
       }

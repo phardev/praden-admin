@@ -68,11 +68,18 @@ const headers: Array<Header> = [
 const getOrderItemVM = (order: Order): GetOrdersItemVM => {
   const formatter = priceFormatter('fr-FR', 'EUR')
   const total = computeTotalWithTaxForOrder(order)
+  const options = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  }
   return {
     reference: order.uuid,
     href: `/orders/${order.uuid}`,
     client: `${order.deliveryAddress.firstname[0]}. ${order.deliveryAddress.lastname}`,
-    createdDate: timestampToLocaleString(order.createdAt, 'fr-FR'),
+    createdDate: timestampToLocaleString(order.createdAt, 'fr-FR', options),
     createdDatetime: new Date(order.createdAt),
     status: getOrderStatus(order),
     total: formatter.format(total / 100),
