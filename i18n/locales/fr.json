@@ -48,5 +48,8 @@
     "topProducts": "Produits les plus vendus",
     "productName": "Nom du produit",
     "orderCount": "Nombre de commandes"
+  },
+  "preparations": {
+    "refresh": "Actualiser"
   }
 }
