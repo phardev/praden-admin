@@ -1,4 +1,7 @@
 <template lang="pug">
+.flex.flex-row-reverse
+  ft-button(icon='i-heroicons-arrow-path' size="xl" :loading='preparationsVm.isLoading' @click='fetchOrdersToPrepare')
+    | {{ $t('preparations.refresh') }}
 tab-group.border-b.border-gray-200(as="div")
   tab-list.-mb-px.flex.space-x-4
     tab.w-full.rounded-md.border-neutral-light.py-2.pl-3.pr-10.text-base.outline-0.cursor-pointer(
@@ -58,7 +61,7 @@ definePageMeta({ layout: 'main' })
 
 onMounted(() => {
   listLocations(useLocationGateway())
-  listOrdersToPrepare(useOrderGateway(), useProductGateway())
+  fetchOrdersToPrepare()
 })
 
 defineProps({
@@ -69,6 +72,10 @@ defineProps({
     }
   }
 })
+
+const fetchOrdersToPrepare = () => {
+  listOrdersToPrepare(useOrderGateway(), useProductGateway())
+}
 
 const ordersSelectedVM = computed(() => {
   return getSelectedPreparationsVM()
