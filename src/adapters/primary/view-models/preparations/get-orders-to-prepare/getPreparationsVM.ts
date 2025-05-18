@@ -13,6 +13,7 @@ import { useProductStore } from '@store/productStore'
 import { addTaxToPrice } from '@utils/price'
 
 export interface GetPreparationsItemVM {
+  uuid: string
   reference: string
   href: string
   client: string
@@ -167,7 +168,8 @@ export const filterPreparationsByGroup = (
       const delivery = o.deliveries[0]
       const total = computeTotalWithTaxForOrder(o)
       const res: GetPreparationsItemVM = {
-        reference: o.uuid,
+        uuid: o.uuid,
+        reference: o.reference,
         href: `/preparations/${o.uuid}`,
         client: `${o.deliveryAddress.firstname[0]}. ${o.deliveryAddress.lastname}`,
         createdDate: timestampToLocaleString(o.createdAt, 'fr-FR', options),

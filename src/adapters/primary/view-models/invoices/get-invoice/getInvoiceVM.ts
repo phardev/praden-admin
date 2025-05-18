@@ -207,7 +207,7 @@ const getSummaryTable = (invoice: Invoice): TableVM<SummaryValueVM> => {
           'fr-FR',
           dateFormatOptions
         ),
-        orderReference: invoice.data.uuid,
+        orderReference: invoice.data.reference,
         orderDate: timestampToLocaleString(
           invoice.data.createdAt,
           'fr-FR',

@@ -151,7 +151,7 @@ const getDetailPreparationLineVM = (
 
   const detail: PreparationLineDetailVM = {
     href: `${origin}/preparations/${order.uuid}`,
-    reference: order.uuid,
+    reference: order.reference,
     deliveryMethodName: delivery.method.name,
     clientLastname: order.deliveryAddress.lastname
       .normalize('NFD')

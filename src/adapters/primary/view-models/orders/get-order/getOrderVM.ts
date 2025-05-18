@@ -33,6 +33,7 @@ export interface OrderDeliveriesItemVM {
 }
 
 export interface GetOrderVM {
+  uuid: UUID
   reference: string
   customer: OrderCustomerVM
   deliveryAddress: AddressVM
@@ -82,7 +83,8 @@ export const getOrderVM = (): GetOrderVM => {
   const customer = getCustomerInformations(currentOrder)
   const deliveryStatus = getDeliveryStatus(currentOrder)
   const res: GetOrderVM = {
-    reference: currentOrder.uuid,
+    uuid: currentOrder.uuid,
+    reference: currentOrder.reference,
     customer: {
       firstname: customer.firstname,
       lastname: customer.lastname,
@@ -165,6 +167,7 @@ const emptyVM = (): GetOrderVM => {
       country: ''
     },
     reference: '',
+    uuid: '',
     deliveriesHeaders: orderDeliveriesHeaders,
     deliveries: [],
     orderStatus: OrderLineStatus.Created,

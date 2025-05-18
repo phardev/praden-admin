@@ -74,7 +74,8 @@ describe('Get order VM', () => {
       it('should return the order vm', () => {
         givenCurrentOrderIs(orderToPrepare1)
         const expectedVM: Partial<GetOrderVM> = {
-          reference: orderToPrepare1.uuid,
+          uuid: orderToPrepare1.uuid,
+          reference: orderToPrepare1.reference,
           customer: {
             firstname: orderToPrepare1.deliveryAddress.firstname,
             lastname: orderToPrepare1.deliveryAddress.lastname,
@@ -99,7 +100,8 @@ describe('Get order VM', () => {
       it('should return the order vm for another order', () => {
         givenCurrentOrderIs(orderWithMissingProduct1)
         const expectedVM: Partial<GetOrderVM> = {
-          reference: orderWithMissingProduct1.uuid,
+          uuid: orderWithMissingProduct1.uuid,
+          reference: orderWithMissingProduct1.reference,
           customer: {
             firstname: orderWithMissingProduct1.deliveryAddress.firstname,
             lastname: orderWithMissingProduct1.deliveryAddress.lastname,
@@ -131,7 +133,8 @@ describe('Get order VM', () => {
         it('should return the order vm', () => {
           givenCurrentOrderIs(elodieDurandOrder1)
           const expectedVM: Partial<GetOrderVM> = {
-            reference: elodieDurandOrder1.uuid,
+            uuid: elodieDurandOrder1.uuid,
+            reference: elodieDurandOrder1.reference,
             customer: {
               firstname: elodieDurand.firstname,
               lastname: elodieDurand.lastname,
@@ -156,7 +159,8 @@ describe('Get order VM', () => {
         it('should return the order vm for another order', () => {
           givenCurrentOrderIs(lucasLefevreOrder2)
           const expectedVM: Partial<GetOrderVM> = {
-            reference: lucasLefevreOrder2.uuid,
+            uuid: lucasLefevreOrder2.uuid,
+            reference: lucasLefevreOrder2.reference,
             customer: {
               firstname: lucasLefevre.firstname,
               lastname: lucasLefevre.lastname,
@@ -183,7 +187,8 @@ describe('Get order VM', () => {
         it('should return the order vm with empty client informations', () => {
           givenCurrentOrderIs(lucasLefevreOrder2)
           const expectedVM: Partial<GetOrderVM> = {
-            reference: lucasLefevreOrder2.uuid,
+            uuid: lucasLefevreOrder2.uuid,
+            reference: lucasLefevreOrder2.reference,
             customer: {
               firstname: '',
               lastname: '',
@@ -211,7 +216,8 @@ describe('Get order VM', () => {
       it('should return the order vm', () => {
         givenCurrentOrderIs(orderPrepared1)
         const expectedVM: Partial<GetOrderVM> = {
-          reference: orderPrepared1.uuid,
+          uuid: orderPrepared1.uuid,
+          reference: orderPrepared1.reference,
           invoiceNumber: orderPrepared1.invoiceNumber,
           customer: {
             firstname: orderPrepared1.deliveryAddress.firstname,
@@ -237,7 +243,8 @@ describe('Get order VM', () => {
       it('should return the order vm for another order', () => {
         givenCurrentOrderIs(orderWithMissingProduct1)
         const expectedVM: Partial<GetOrderVM> = {
-          reference: orderWithMissingProduct1.uuid,
+          uuid: orderWithMissingProduct1.uuid,
+          reference: orderWithMissingProduct1.reference,
           customer: {
             firstname: orderWithMissingProduct1.deliveryAddress.firstname,
             lastname: orderWithMissingProduct1.deliveryAddress.lastname,
@@ -267,7 +274,8 @@ describe('Get order VM', () => {
         order.deliveries[0].trackingNumber = 'tracking'
         givenCurrentOrderIs(order)
         const expectedVM: Partial<GetOrderVM> = {
-          reference: order.uuid,
+          uuid: order.uuid,
+          reference: order.reference,
           invoiceNumber: order.invoiceNumber,
           customer: {
             firstname: order.deliveryAddress.firstname,
@@ -294,7 +302,8 @@ describe('Get order VM', () => {
       it('should return the order vm for another order', () => {
         givenCurrentOrderIs(orderWithMissingProduct1)
         const expectedVM: Partial<GetOrderVM> = {
-          reference: orderWithMissingProduct1.uuid,
+          uuid: orderWithMissingProduct1.uuid,
+          reference: orderWithMissingProduct1.reference,
           customer: {
             firstname: orderWithMissingProduct1.deliveryAddress.firstname,
             lastname: orderWithMissingProduct1.deliveryAddress.lastname,
@@ -322,7 +331,8 @@ describe('Get order VM', () => {
       it('should return the order vm', () => {
         givenCurrentOrderIs(orderWithCustomerMessage)
         const expectedVM: Partial<GetOrderVM> = {
-          reference: orderWithCustomerMessage.uuid,
+          uuid: orderWithCustomerMessage.uuid,
+          reference: orderWithCustomerMessage.reference,
           customer: {
             firstname: orderWithCustomerMessage.deliveryAddress.firstname,
             lastname: orderWithCustomerMessage.deliveryAddress.lastname,
@@ -349,7 +359,8 @@ describe('Get order VM', () => {
       it('should return the order vm for another order', () => {
         givenCurrentOrderIs(orderWithMissingProduct1)
         const expectedVM: Partial<GetOrderVM> = {
-          reference: orderWithMissingProduct1.uuid,
+          uuid: orderWithMissingProduct1.uuid,
+          reference: orderWithMissingProduct1.reference,
           customer: {
             firstname: orderWithMissingProduct1.deliveryAddress.firstname,
             lastname: orderWithMissingProduct1.deliveryAddress.lastname,
@@ -377,7 +388,8 @@ describe('Get order VM', () => {
       it('should return the order vm with waiting for payment', () => {
         givenCurrentOrderIs(orderWithoutPayment)
         const expectedVM: Partial<GetOrderVM> = {
-          reference: orderWithoutPayment.uuid,
+          uuid: orderWithoutPayment.uuid,
+          reference: orderWithoutPayment.reference,
           customer: {
             firstname: orderWithoutPayment.deliveryAddress.firstname,
             lastname: orderWithoutPayment.deliveryAddress.lastname,
@@ -427,6 +439,7 @@ describe('Get order VM', () => {
         phone: ''
       },
       reference: '',
+      uuid: '',
       orderStatus: OrderLineStatus.Created,
       deliveryStatus: DeliveryStatus.Created,
       deliveriesHeaders: expectedDeliveryHeaders,

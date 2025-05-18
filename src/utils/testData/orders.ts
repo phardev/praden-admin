@@ -32,7 +32,8 @@ import {
 import { DeliveryStatus } from '@core/entities/delivery'
 
 export const orderToPrepare1: AnonymousOrder = {
-  uuid: 'XIKOKI',
+  uuid: 'order-to-prepare-1-uuid',
+  reference: 'XIKOKI',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -78,7 +79,8 @@ export const orderToPrepare1: AnonymousOrder = {
 }
 
 export const orderToPrepare2: AnonymousOrder = {
-  uuid: 'FHEIRF',
+  uuid: 'order-to-prepare-2-uuid',
+  reference: 'FHEIRF',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -136,7 +138,8 @@ export const orderToPrepare2: AnonymousOrder = {
 }
 
 export const orderToPrepare3: AnonymousOrder = {
-  uuid: 'DIJFPE',
+  uuid: 'order-to-prepare-3-uuid',
+  reference: 'DIJFPE',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -182,7 +185,8 @@ export const orderToPrepare3: AnonymousOrder = {
 }
 
 export const orderPrepared1: AnonymousOrder = {
-  uuid: 'JOURJL',
+  uuid: 'order-prepared-1-uuid',
+  reference: 'JOURJL',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -228,7 +232,8 @@ export const orderPrepared1: AnonymousOrder = {
 }
 
 export const orderInPreparation1: AnonymousOrder = {
-  uuid: 'UTRIEL',
+  uuid: 'order-in-preparation-1-uuid',
+  reference: 'UTRIEL',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -312,7 +317,8 @@ export const orderInPreparation1: AnonymousOrder = {
 }
 
 export const orderDelivered1: AnonymousOrder = {
-  uuid: 'HGFRIW',
+  uuid: 'order-delivered-1-uuid',
+  reference: 'HGFRIW',
   lines: [
     {
       productUuid: anaca3Minceur.uuid,
@@ -370,7 +376,8 @@ export const orderDelivered1: AnonymousOrder = {
 }
 
 export const orderDelivered2: AnonymousOrder = {
-  uuid: 'GJIRLK',
+  uuid: 'order-delivered-2-uuid',
+  reference: 'GJIRLK',
   lines: [
     {
       productUuid: ultraLevure.uuid,
@@ -428,7 +435,8 @@ export const orderDelivered2: AnonymousOrder = {
 }
 
 export const orderWithMissingProduct1: AnonymousOrder = {
-  uuid: 'DKOWDW',
+  uuid: 'order-with-missing-product-1-uuid',
+  reference: 'DKOWDW',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -495,7 +503,8 @@ export const orderWithMissingProduct1: AnonymousOrder = {
 }
 
 export const orderWithMissingProduct2: AnonymousOrder = {
-  uuid: 'DJEIWLQ',
+  uuid: 'order-with-missing-product-2-uuid',
+  reference: 'DJEIWLQ',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -593,7 +602,8 @@ export const orderWithMissingProduct2: AnonymousOrder = {
 }
 
 export const orderToCancel: AnonymousOrder = {
-  uuid: 'JFIJLJ',
+  uuid: 'order-to-cancel-uuid',
+  reference: 'JFIJLJ',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -679,7 +689,8 @@ export const orderToCancel: AnonymousOrder = {
 }
 
 export const orderNotPayed1: AnonymousOrder = {
-  uuid: 'ADKEWR',
+  uuid: 'order-not-payed-1-uuid',
+  reference: 'ADKEWR',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -752,7 +763,8 @@ export const orderNotPayed1: AnonymousOrder = {
 }
 
 export const orderSaved1: AnonymousOrder = {
-  uuid: 'FKEROFE',
+  uuid: 'order-saved-1-uuid',
+  reference: 'FKEROFE',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -826,7 +838,8 @@ export const orderSaved1: AnonymousOrder = {
 }
 
 export const orderWaitingForClientAnswer1: AnonymousOrder = {
-  uuid: 'ZJOFRW',
+  uuid: 'order-waiting-for-client-answer-1-uuid',
+  reference: 'ZJOFRW',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -905,7 +918,8 @@ export const orderWaitingForClientAnswer1: AnonymousOrder = {
 }
 
 export const orderWaitingForClientAnswer2: AnonymousOrder = {
-  uuid: 'LOPFRE',
+  uuid: 'order-waiting-for-client-answer-2-uuid',
+  reference: 'LOPFRE',
   lines: [
     {
       productUuid: ultraLevure.uuid,
@@ -996,7 +1010,8 @@ export const orderWaitingForClientAnswer2: AnonymousOrder = {
 }
 
 export const orderWaitingForRestock: AnonymousOrder = {
-  uuid: 'EUIWQK',
+  uuid: 'order-waiting-for-restock-uuid',
+  reference: 'EUIWQK',
   lines: [
     {
       productUuid: chamomilla.uuid,
@@ -1079,7 +1094,8 @@ export const orderWaitingForRestock: AnonymousOrder = {
 }
 
 export const orderPartiallyShipped1: AnonymousOrder = {
-  uuid: 'PIDWJK',
+  uuid: 'order-partially-shipped-1-uuid',
+  reference: 'PIDWJK',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -1177,7 +1193,8 @@ export const orderPartiallyShipped1: AnonymousOrder = {
 }
 
 export const orderVFASF: AnonymousOrder = {
-  uuid: 'VFASF',
+  uuid: 'order-vfasf-uuid',
+  reference: 'VFASF',
   lines: [
     {
       productUuid: calmosine.uuid,
@@ -1264,7 +1281,8 @@ export const orderVFASF: AnonymousOrder = {
 }
 
 export const orderXUKIJ: AnonymousOrder = {
-  uuid: 'XUKIJ',
+  uuid: 'order-xukij-uuid',
+  reference: 'XUKIJ',
   lines: [
     {
       productUuid: calmosine.uuid,
@@ -1339,7 +1357,8 @@ export const orderXUKIJ: AnonymousOrder = {
 }
 
 export const orderWithProductWithoutLocation: AnonymousOrder = {
-  uuid: 'WITHOUTLOCATION',
+  uuid: 'order-without-location-uuid',
+  reference: 'WITHOUTLOCATION',
   lines: [
     {
       productUuid: productWithoutLocation.uuid,
@@ -1426,7 +1445,8 @@ export const orderWithProductWithoutLocation: AnonymousOrder = {
 }
 
 export const elodieDurandOrder1: CustomerOrder = {
-  uuid: 'ELODIEABC',
+  uuid: 'elodie-durand-order-1-uuid',
+  reference: 'ELODIEABC',
   customerUuid: elodieDurand.uuid,
   lines: [
     {
@@ -1510,7 +1530,8 @@ export const elodieDurandOrder1: CustomerOrder = {
 }
 
 export const elodieDurandOrder2: CustomerOrder = {
-  uuid: 'ELODIEDEF',
+  uuid: 'elodie-durand-order-2-uuid',
+  reference: 'ELODIEDEF',
   customerUuid: elodieDurand.uuid,
   lines: [
     {
@@ -1594,7 +1615,8 @@ export const elodieDurandOrder2: CustomerOrder = {
 }
 
 export const lucasLefevreOrder1: CustomerOrder = {
-  uuid: 'LUCASABC',
+  uuid: 'lucas-lefevre-order-1-uuid',
+  reference: 'LUCASABC',
   customerUuid: lucasLefevre.uuid,
   lines: [
     {
@@ -1666,7 +1688,8 @@ export const lucasLefevreOrder1: CustomerOrder = {
 }
 
 export const lucasLefevreOrder2: CustomerOrder = {
-  uuid: 'LUCASDEF',
+  uuid: 'lucas-lefevre-order-2-uuid',
+  reference: 'LUCASDEF',
   customerUuid: lucasLefevre.uuid,
   lines: [
     {
@@ -1740,7 +1763,8 @@ export const lucasLefevreOrder2: CustomerOrder = {
 }
 
 export const orderWithCustomerMessage: AnonymousOrder = {
-  uuid: 'order-with-customer-message',
+  uuid: 'order-with-customer-message-uuid',
+  reference: 'WITHCUSTOMERMESSAGE',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -1816,7 +1840,8 @@ export const orderWithCustomerMessage: AnonymousOrder = {
 }
 
 export const orderWithoutPayment: AnonymousOrder = {
-  uuid: 'order-without-payment',
+  uuid: 'order-without-payment-uuid',
+  reference: 'WITHOUTPAYMENT',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -1887,7 +1912,8 @@ export const orderWithoutPayment: AnonymousOrder = {
 }
 
 export const orderWithoutDelivery: AnonymousOrder = {
-  uuid: 'order-without-delivery',
+  uuid: 'order-without-delivery-uuid',
+  reference: 'WITHOUTDELIVERY',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -1933,7 +1959,8 @@ export const orderWithoutDelivery: AnonymousOrder = {
 }
 
 export const orderCanceled: AnonymousOrder = {
-  uuid: 'CANCELED',
+  uuid: 'order-canceled-uuid',
+  reference: 'CANCELED',
   lines: [
     {
       productUuid: dolodent.uuid,
@@ -2031,7 +2058,8 @@ export const orderCanceled: AnonymousOrder = {
 }
 
 export const orderWithPromotionCode: AnonymousOrder = {
-  uuid: 'PROMO123',
+  uuid: 'order-with-promotion-code-uuid',
+  reference: 'PROMO123',
   lines: [
     {
       productUuid: dolodent.uuid,

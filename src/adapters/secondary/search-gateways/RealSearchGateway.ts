@@ -108,7 +108,7 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
 
   private applyQueryFilters(order: Order, query: string): boolean {
     const normalize = (str: string): string =>
-      str.normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+      str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 
     const queryNormalized = normalize(query)
 
@@ -119,6 +119,7 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
     const reversedFullnameNormalized = normalize(reversedFullname)
     return !(
       !queryRegex.test(order.uuid) &&
+      !queryRegex.test(order.reference) &&
       !queryRegex.test(fullnameNormalized) &&
       !queryRegex.test(reversedFullnameNormalized)
     )

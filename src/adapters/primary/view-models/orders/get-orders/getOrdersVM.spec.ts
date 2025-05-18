@@ -70,7 +70,8 @@ describe('Get orders VM', () => {
         const expectedVM: Partial<GetOrdersVM> = {
           items: [
             {
-              reference: orderToPrepare1.uuid,
+              uuid: orderToPrepare1.uuid,
+              reference: orderToPrepare1.reference,
               href: `/orders/${orderToPrepare1.uuid}`,
               client: 'J. Bon',
               createdDate: '21 janv. 2023, 03:54',
@@ -81,7 +82,8 @@ describe('Get orders VM', () => {
               deliveryStatus: orderToPrepare1.deliveries[0].status
             },
             {
-              reference: orderPrepared1.uuid,
+              uuid: orderPrepared1.uuid,
+              reference: orderPrepared1.reference,
               href: `/orders/${orderPrepared1.uuid}`,
               client: 'J. Bon',
               createdDate: '5 févr. 2023, 02:33',
@@ -92,7 +94,8 @@ describe('Get orders VM', () => {
               deliveryStatus: orderPrepared1.deliveries[0].status
             },
             {
-              reference: orderNotPayed1.uuid,
+              uuid: orderNotPayed1.uuid,
+              reference: orderNotPayed1.reference,
               href: `/orders/${orderNotPayed1.uuid}`,
               client: 'J. Bon',
               createdDate: '21 janv. 2023, 04:03',
@@ -112,7 +115,8 @@ describe('Get orders VM', () => {
         const expectedVM: Partial<GetOrdersVM> = {
           items: [
             {
-              reference: orderWithPromotionCode.uuid,
+              uuid: orderWithPromotionCode.uuid,
+              reference: orderWithPromotionCode.reference,
               href: `/orders/${orderWithPromotionCode.uuid}`,
               client: 'J. Bon',
               createdDate: '21 janv. 2023, 03:54',
@@ -133,7 +137,8 @@ describe('Get orders VM', () => {
         const expectedVM: Partial<GetOrdersVM> = {
           items: [
             {
-              reference: orderToPrepare1.uuid,
+              uuid: orderToPrepare1.uuid,
+              reference: orderToPrepare1.reference,
               href: `/orders/${orderToPrepare1.uuid}`,
               client: 'J. Bon',
               createdDate: '21 janv. 2023, 03:54',
@@ -144,7 +149,8 @@ describe('Get orders VM', () => {
               deliveryStatus: orderToPrepare1.deliveries[0].status
             },
             {
-              reference: orderNotPayed1.uuid,
+              uuid: orderNotPayed1.uuid,
+              reference: orderNotPayed1.reference,
               href: `/orders/${orderNotPayed1.uuid}`,
               client: 'J. Bon',
               createdDate: '21 janv. 2023, 04:03',
@@ -186,7 +192,8 @@ describe('Get orders VM', () => {
       const expectedVM: Partial<GetOrdersVM> = {
         items: [
           {
-            reference: orderWithoutDelivery.uuid,
+            uuid: orderWithoutDelivery.uuid,
+            reference: orderWithoutDelivery.reference,
             href: `/orders/${orderWithoutDelivery.uuid}`,
             client: 'J. Bon',
             createdDate: '21 janv. 2023, 03:54',

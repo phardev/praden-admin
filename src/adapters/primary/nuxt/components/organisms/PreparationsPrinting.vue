@@ -9,7 +9,7 @@ div.hidden.printme.mx-2
     div.flex
       div.grow
         h1.text-xl {{ order.deliveryMethodName }}
-        h1.text-xl Commande
+        h1.text-xl Commande {{ order.reference }}
         ft-barcode.w-5(
           :code="order.reference"
           :width="1"

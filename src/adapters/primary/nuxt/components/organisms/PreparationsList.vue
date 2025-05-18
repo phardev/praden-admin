@@ -27,7 +27,7 @@ tab-group.border-b.border-gray-200(as="div")
         :selectable="group.canSelect"
         :selection="ordersSelectedVM.items"
         :is-loading="preparationsVm.isLoading"
-        item-key="reference"
+        item-key="uuid"
         @item-selected="select"
         @select-all="selectAll(group.table.items)"
       )
@@ -86,7 +86,7 @@ const select = (selected: any) => {
 }
 
 const selectAll = (selected: Array<any>) => {
-  toggleSelectAllPreparations(selected.map((s) => s.reference))
+  toggleSelectAllPreparations(selected.map((s) => s.uuid))
 }
 
 const resetSelection = () => {

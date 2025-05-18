@@ -69,7 +69,8 @@ describe('Get orders to prepare VM', () => {
               headers: expectedHeaders,
               items: [
                 {
-                  reference: orderWaitingForClientAnswer1.uuid,
+                  uuid: orderWaitingForClientAnswer1.uuid,
+                  reference: orderWaitingForClientAnswer1.reference,
                   href: `/preparations/${orderWaitingForClientAnswer1.uuid}`,
                   client: 'J. Bon',
                   createdDate: '21 janv. 2023, 04:03',
@@ -77,7 +78,8 @@ describe('Get orders to prepare VM', () => {
                   total: '11,00\u00A0€'
                 },
                 {
-                  reference: orderWaitingForClientAnswer2.uuid,
+                  uuid: orderWaitingForClientAnswer2.uuid,
+                  reference: orderWaitingForClientAnswer2.reference,
                   href: `/preparations/${orderWaitingForClientAnswer2.uuid}`,
                   client: "J. D'arc",
                   createdDate: '21 janv. 2023, 03:59',
@@ -107,7 +109,8 @@ describe('Get orders to prepare VM', () => {
               headers: expectedHeaders,
               items: [
                 {
-                  reference: orderInPreparation1.uuid,
+                  uuid: orderInPreparation1.uuid,
+                  reference: orderInPreparation1.reference,
                   href: `/preparations/${orderInPreparation1.uuid}`,
                   client: 'J. Bon',
                   createdDate: '5 févr. 2023, 02:33',

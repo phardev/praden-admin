@@ -17,6 +17,7 @@ export enum PreparationStatus {
 }
 
 export interface GetPreparationLineVM {
+  uuid: string
   reference: string
   name: string
   expectedQuantity: number
@@ -115,6 +116,7 @@ export const getPreparationVM = (): GetPreparationVM => {
   const preparation = preparationStore.current
   if (!preparation) {
     return {
+      uuid: '',
       reference: '',
       headers: [],
       lines: [],
@@ -158,7 +160,8 @@ export const getPreparationVM = (): GetPreparationVM => {
   })
   const error = preparationStore.error
   const res: GetPreparationVM = {
-    reference: preparation.uuid,
+    uuid: preparation.uuid,
+    reference: preparation.reference,
     headers,
     lines,
     messages: getMessagesVM(preparation.messages),

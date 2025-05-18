@@ -104,7 +104,7 @@ describe('Start preparations VM', () => {
             detail: [
               {
                 href: `${origin}/preparations/${orderToPrepare1.uuid}`,
-                reference: orderToPrepare1.uuid,
+                reference: orderToPrepare1.reference,
                 deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
@@ -167,7 +167,7 @@ describe('Start preparations VM', () => {
             detail: [
               {
                 href: `${anotherOrigin}/preparations/${orderToPrepare2.uuid}`,
-                reference: orderToPrepare2.uuid,
+                reference: orderToPrepare2.reference,
                 deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',
@@ -239,7 +239,7 @@ describe('Start preparations VM', () => {
             detail: [
               {
                 href: `${anotherOrigin}/preparations/${orderWithProductWithoutLocation.uuid}`,
-                reference: orderWithProductWithoutLocation.uuid,
+                reference: orderWithProductWithoutLocation.reference,
                 deliveryMethodName:
                   orderWithProductWithoutLocation.deliveries[0].method.name,
                 clientLastname:
@@ -310,7 +310,7 @@ describe('Start preparations VM', () => {
             detail: [
               {
                 href: `${origin}/preparations/${orderToPrepare1.uuid}`,
-                reference: orderToPrepare1.uuid,
+                reference: orderToPrepare1.reference,
                 deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
@@ -373,7 +373,7 @@ describe('Start preparations VM', () => {
             detail: [
               {
                 href: `${anotherOrigin}/preparations/${orderToPrepare2.uuid}`,
-                reference: orderToPrepare2.uuid,
+                reference: orderToPrepare2.reference,
                 deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',
@@ -440,7 +440,7 @@ describe('Start preparations VM', () => {
           detail: [
             {
               href: `${anotherOrigin}/preparations/${orderToPrepare3.uuid}`,
-              reference: orderToPrepare3.uuid,
+              reference: orderToPrepare3.reference,
               deliveryMethodName: orderToPrepare3.deliveries[0].method.name,
               clientLastname: orderToPrepare3.deliveryAddress.lastname,
               createdDate: '5 févr. 2023',
@@ -497,7 +497,7 @@ describe('Start preparations VM', () => {
           detail: [
             {
               href: `${anotherOrigin}/preparations/${orderToPrepare3.uuid}`,
-              reference: orderToPrepare3.uuid,
+              reference: orderToPrepare3.reference,
               deliveryMethodName: orderToPrepare3.deliveries[0].method.name,
               clientLastname: 'NameWithe',
               createdDate: '5 févr. 2023',
@@ -554,7 +554,7 @@ describe('Start preparations VM', () => {
           detail: [
             {
               href: `${anotherOrigin}/preparations/${orderWithCustomerMessage.uuid}`,
-              reference: orderWithCustomerMessage.uuid,
+              reference: orderWithCustomerMessage.reference,
               deliveryMethodName:
                 orderWithCustomerMessage.deliveries[0].method.name,
               clientLastname: orderWithCustomerMessage.deliveryAddress.lastname,
@@ -611,7 +611,7 @@ describe('Start preparations VM', () => {
           detail: [
             {
               href: `${origin}/preparations/${orderWithPromotionCode.uuid}`,
-              reference: orderWithPromotionCode.uuid,
+              reference: orderWithPromotionCode.reference,
               deliveryMethodName:
                 orderWithPromotionCode.deliveries[0].method.name,
               clientLastname: orderWithPromotionCode.deliveryAddress.lastname,
@@ -687,7 +687,7 @@ describe('Start preparations VM', () => {
             detail: [
               {
                 href: `${origin}/preparations/${orderToPrepare1.uuid}`,
-                reference: orderToPrepare1.uuid,
+                reference: orderToPrepare1.reference,
                 deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
@@ -724,7 +724,7 @@ describe('Start preparations VM', () => {
               },
               {
                 href: `${origin}/preparations/${orderToPrepare2.uuid}`,
-                reference: orderToPrepare2.uuid,
+                reference: orderToPrepare2.reference,
                 deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',
@@ -803,7 +803,7 @@ describe('Start preparations VM', () => {
             detail: [
               {
                 href: `${origin}/preparations/${orderToPrepare1.uuid}`,
-                reference: orderToPrepare1.uuid,
+                reference: orderToPrepare1.reference,
                 deliveryMethodName: orderToPrepare1.deliveries[0].method.name,
                 clientLastname: orderToPrepare1.deliveryAddress.lastname,
                 createdDate: '21 janv. 2023',
@@ -840,7 +840,7 @@ describe('Start preparations VM', () => {
               },
               {
                 href: `${origin}/preparations/${orderToPrepare2.uuid}`,
-                reference: orderToPrepare2.uuid,
+                reference: orderToPrepare2.reference,
                 deliveryMethodName: orderToPrepare2.deliveries[0].method.name,
                 clientLastname: orderToPrepare2.deliveryAddress.lastname,
                 createdDate: '5 févr. 2023',

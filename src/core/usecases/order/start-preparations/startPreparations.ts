@@ -6,6 +6,7 @@ export const startPreparations = async (orderGateway: OrderGateway) => {
   try {
     preparationStore.startLoading()
     const ordersUuids = preparationStore.selected
+    console.log('orderUuids: ', ordersUuids)
     const orders = await Promise.all(
       ordersUuids.map((uuid) => orderGateway.startPreparation(uuid))
     )

@@ -173,7 +173,7 @@ describe('Get invoice VM', () => {
             {
               invoiceNumber: orderPrepared1.invoiceNumber,
               invoiceDate: '05/02/2023',
-              orderReference: orderPrepared1.uuid,
+              orderReference: orderPrepared1.reference,
               orderDate: '05/02/2023'
             }
           ]
@@ -330,7 +330,7 @@ describe('Get invoice VM', () => {
             {
               invoiceNumber: orderDelivered1.invoiceNumber,
               invoiceDate: '21/01/2023',
-              orderReference: orderDelivered1.uuid,
+              orderReference: orderDelivered1.reference,
               orderDate: '21/01/2023'
             }
           ]

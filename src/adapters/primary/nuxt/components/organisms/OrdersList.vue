@@ -3,7 +3,7 @@ ft-table(
   :headers="vm.headers"
   :items="vm.items"
   :is-loading="vm.isLoading"
-  item-key="reference"
+  item-key="uuid"
   @clicked="clicked"
 )
   template(#reference="{ item }")

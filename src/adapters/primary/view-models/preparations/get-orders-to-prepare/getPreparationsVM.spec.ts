@@ -73,7 +73,8 @@ describe('Get orders to prepare VM', () => {
               headers: expectedClickAndCollectHeaders,
               items: [
                 {
-                  reference: orderToPrepare1.uuid,
+                  uuid: orderToPrepare1.uuid,
+                  reference: orderToPrepare1.reference,
                   href: `/preparations/${orderToPrepare1.uuid}`,
                   client: 'J. Bon',
                   createdDate: '21 janv. 2023, 03:54',
@@ -83,7 +84,8 @@ describe('Get orders to prepare VM', () => {
                   pickingDatetime: new Date('2025-01-20T12:42:17.000Z')
                 },
                 {
-                  reference: orderToPrepare2.uuid,
+                  uuid: orderToPrepare2.uuid,
+                  reference: orderToPrepare2.reference,
                   href: `/preparations/${orderToPrepare2.uuid}`,
                   client: "J. D'arc",
                   createdDate: '5 févr. 2023, 02:59',
@@ -112,7 +114,8 @@ describe('Get orders to prepare VM', () => {
               headers: expectedHeaders,
               items: [
                 {
-                  reference: orderToPrepare3.uuid,
+                  uuid: orderToPrepare3.uuid,
+                  reference: orderToPrepare3.reference,
                   href: `/preparations/${orderToPrepare3.uuid}`,
                   client: "J. D'arc",
                   createdDate: '5 févr. 2023, 02:59',
@@ -139,7 +142,8 @@ describe('Get orders to prepare VM', () => {
               headers: expectedHeaders,
               items: [
                 {
-                  reference: orderSaved1.uuid,
+                  uuid: orderSaved1.uuid,
+                  reference: orderSaved1.reference,
                   href: `/preparations/${orderSaved1.uuid}`,
                   client: 'J. Bon',
                   createdDate: '21 janv. 2023, 04:03',
@@ -170,7 +174,8 @@ describe('Get orders to prepare VM', () => {
               headers: expectedHeaders,
               items: [
                 {
-                  reference: orderInPreparation1.uuid,
+                  uuid: orderInPreparation1.uuid,
+                  reference: orderInPreparation1.reference,
                   href: `/preparations/${orderInPreparation1.uuid}`,
                   client: 'J. Bon',
                   createdDate: '5 févr. 2023, 02:33',
@@ -210,7 +215,8 @@ describe('Get orders to prepare VM', () => {
               headers: expectedHeaders,
               items: [
                 {
-                  reference: order.uuid,
+                  uuid: order.uuid,
+                  reference: order.reference,
                   href: `/preparations/${order.uuid}`,
                   client: 'J. Bon',
                   createdDate: '21 janv. 2023, 04:03',
@@ -240,7 +246,8 @@ describe('Get orders to prepare VM', () => {
               headers: expectedHeaders,
               items: [
                 {
-                  reference: orderWithMissingProduct1.uuid,
+                  uuid: orderWithMissingProduct1.uuid,
+                  reference: orderWithMissingProduct1.reference,
                   href: `/preparations/${orderWithMissingProduct1.uuid}`,
                   client: 'J. Bon',
                   createdDate: '24 janv. 2023, 15:21',
@@ -248,7 +255,8 @@ describe('Get orders to prepare VM', () => {
                   total: '37,19\u00A0€'
                 },
                 {
-                  reference: orderWithMissingProduct2.uuid,
+                  uuid: orderWithMissingProduct2.uuid,
+                  reference: orderWithMissingProduct2.reference,
                   href: `/preparations/${orderWithMissingProduct2.uuid}`,
                   client: 'J. Bon',
                   createdDate: '24 janv. 2023, 15:21',
@@ -275,7 +283,8 @@ describe('Get orders to prepare VM', () => {
               headers: expectedHeaders,
               items: [
                 {
-                  reference: orderToCancel.uuid,
+                  uuid: orderToCancel.uuid,
+                  reference: orderToCancel.reference,
                   href: `/preparations/${orderToCancel.uuid}`,
                   client: 'J. Bon',
                   createdDate: '24 janv. 2023, 15:21',
@@ -302,7 +311,8 @@ describe('Get orders to prepare VM', () => {
               headers: expectedHeaders,
               items: [
                 {
-                  reference: orderToCancel.uuid,
+                  uuid: orderToCancel.uuid,
+                  reference: orderToCancel.reference,
                   href: `/preparations/${orderToCancel.uuid}`,
                   client: 'J. Bon',
                   createdDate: '24 janv. 2023, 15:21',

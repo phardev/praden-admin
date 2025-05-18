@@ -58,7 +58,8 @@ describe('Get preparation VM', () => {
       it('should get the preparation vm for a preparation', () => {
         givenCurrentPreparationIs(orderToPrepare1)
         const expectedVM: GetPreparationVM = {
-          reference: orderToPrepare1.uuid,
+          uuid: orderToPrepare1.uuid,
+          reference: orderToPrepare1.reference,
           headers,
           lines: [
             {
@@ -81,7 +82,8 @@ describe('Get preparation VM', () => {
       it('should get the preparation vm for another preparation', () => {
         givenCurrentPreparationIs(orderToPrepare2)
         const expectedVM: GetPreparationVM = {
-          reference: orderToPrepare2.uuid,
+          uuid: orderToPrepare2.uuid,
+          reference: orderToPrepare2.reference,
           headers,
           lines: [
             {
@@ -115,7 +117,8 @@ describe('Get preparation VM', () => {
         order.lines[0].preparedQuantity = 2
         givenCurrentPreparationIs(order)
         const expectedVM: Partial<GetPreparationVM> = {
-          reference: orderToPrepare1.uuid,
+          uuid: orderToPrepare1.uuid,
+          reference: orderToPrepare1.reference,
           headers,
           lines: [
             {
@@ -139,7 +142,8 @@ describe('Get preparation VM', () => {
         order.lines[1].preparedQuantity = 1
         givenCurrentPreparationIs(order)
         const expectedVM: Partial<GetPreparationVM> = {
-          reference: orderToPrepare2.uuid,
+          uuid: orderToPrepare2.uuid,
+          reference: orderToPrepare2.reference,
           headers,
           lines: [
             {
@@ -169,7 +173,8 @@ describe('Get preparation VM', () => {
         order.lines[0].preparedQuantity = 3
         givenCurrentPreparationIs(order)
         const expectedVM: Partial<GetPreparationVM> = {
-          reference: orderToPrepare1.uuid,
+          uuid: orderToPrepare1.uuid,
+          reference: orderToPrepare1.reference,
           headers,
           lines: [
             {
@@ -194,7 +199,8 @@ describe('Get preparation VM', () => {
         order.lines[0].preparedQuantity = order.lines[0].expectedQuantity
         givenCurrentPreparationIs(order)
         const expectedVM: Partial<GetPreparationVM> = {
-          reference: orderSaved1.uuid,
+          uuid: orderSaved1.uuid,
+          reference: orderSaved1.reference,
           headers,
           lines: [
             {
@@ -222,6 +228,8 @@ describe('Get preparation VM', () => {
         givenCurrentPreparationIs(orderToPrepare1)
         givenThereIsAnError(error)
         const expectedVM: Partial<GetPreparationVM> = {
+          uuid: orderToPrepare1.uuid,
+          reference: orderToPrepare1.reference,
           error
         }
         expectVMToMatch(expectedVM)
@@ -325,6 +333,7 @@ describe('Get preparation VM', () => {
   describe('There is no current preparation', () => {
     it('should return an empty vm', () => {
       const emptyVM: GetPreparationVM = {
+        uuid: '',
         reference: '',
         headers: [],
         lines: [],
@@ -342,7 +351,8 @@ describe('Get preparation VM', () => {
     it('should get the preparation vm with the customer message', () => {
       givenCurrentPreparationIs(orderWithCustomerMessage)
       const expectedVM: GetPreparationVM = {
-        reference: orderWithCustomerMessage.uuid,
+        uuid: orderWithCustomerMessage.uuid,
+        reference: orderWithCustomerMessage.reference,
         headers,
         lines: [
           {

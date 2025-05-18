@@ -90,11 +90,12 @@ export class FakeSearchGateway implements SearchGateway {
   }
 
   private ordersQueryMatch = (order: Order, query: string): boolean => {
-    const isReferenceMatching = order.uuid.includesWithoutCase(query)
+    const isUuidMatching = order.uuid.includesWithoutCase(query)
+    const isReferenceMatching = order.reference.includesWithoutCase(query)
     const fullName =
       order.deliveryAddress.firstname + ' ' + order.deliveryAddress.lastname
     const isClientNameMatching = fullName.includesWithoutCase(query)
-    return isReferenceMatching || isClientNameMatching
+    return isUuidMatching || isReferenceMatching || isClientNameMatching
   }
 
   private ordersDateMatch = (

@@ -16,6 +16,7 @@ import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrd
 import { DeliveryStatus } from '@core/entities/delivery'
 
 export interface GetOrdersItemVM {
+  uuid: string
   reference: string
   href: string
   client: string
@@ -76,7 +77,8 @@ const getOrderItemVM = (order: Order): GetOrdersItemVM => {
     minute: '2-digit'
   }
   return {
-    reference: order.uuid,
+    uuid: order.uuid,
+    reference: order.reference,
     href: `/orders/${order.uuid}`,
     client: `${order.deliveryAddress.firstname[0]}. ${order.deliveryAddress.lastname}`,
     createdDate: timestampToLocaleString(order.createdAt, 'fr-FR', options),

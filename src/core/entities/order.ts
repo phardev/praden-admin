@@ -89,6 +89,7 @@ export interface PromotionCode {
 
 export interface BaseOrder {
   uuid: string
+  reference: string
   lines: Array<OrderLine>
   deliveryAddress: Address
   billingAddress: Address
