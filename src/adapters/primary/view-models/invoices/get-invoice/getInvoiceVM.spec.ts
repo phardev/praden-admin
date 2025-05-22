@@ -15,6 +15,7 @@ import {
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { anaca3Minceur, dolodent } from '@utils/testData/products'
 import { orderWithPromotionCodeInvoice } from '@utils/testData/invoices'
+import { PromotionCode } from '@core/entities/order'
 
 describe('Get invoice VM', () => {
   let invoiceStore: any
@@ -436,21 +437,51 @@ describe('Get invoice VM', () => {
       data: orderCanceled,
       createdAt: 1675564422539
     }
-    beforeEach(() => {
-      invoiceStore.current = invoice
-    })
-    it('should also cancel the delivery', () => {
-      const expected: Partial<GetInvoiceVM> = {
-        totals: {
-          linesTotal: '0,00\u00A0€',
-          totalWithoutTax: '0,00\u00A0€',
-          totalTax: '0,00\u00A0€',
-          totalRefund: '-18,19\u00A0€',
-          deliveryPrice: '0,00\u00A0€',
-          totalWithTax: '0,00\u00A0€'
+    describe('Without promotion code', () => {
+      beforeEach(() => {
+        invoiceStore.current = invoice
+      })
+      it('should also cancel the delivery', () => {
+        const expected: Partial<GetInvoiceVM> = {
+          totals: {
+            linesTotal: '0,00\u00A0€',
+            totalWithoutTax: '0,00\u00A0€',
+            totalTax: '0,00\u00A0€',
+            totalRefund: '-18,19\u00A0€',
+            deliveryPrice: '0,00\u00A0€',
+            totalWithTax: '0,00\u00A0€'
+          }
         }
+        expectVMToMatch(expected)
+      })
+    })
+    describe('With promotion code', () => {
+      const promotionCode: PromotionCode = {
+        uuid: 'promo-uuid-1',
+        code: 'DISCOUNT10',
+        discount: 500
       }
-      expectVMToMatch(expected)
+      beforeEach(() => {
+        invoice.data.promotionCode = promotionCode
+        invoiceStore.current = invoice
+      })
+      it('should also cancel the promotion code', () => {
+        const expected: Partial<GetInvoiceVM> = {
+          totals: {
+            linesTotal: '0,00\u00A0€',
+            totalWithoutTax: '0,00\u00A0€',
+            totalTax: '0,00\u00A0€',
+            totalRefund: '-13,19\u00A0€',
+            deliveryPrice: '0,00\u00A0€',
+            promotionCode: {
+              code: 'DISCOUNT10',
+              discount: '-5,00\u00A0€'
+            },
+            totalWithTax: '0,00\u00A0€'
+          }
+        }
+        expectVMToMatch(expected)
+      })
     })
   })
 
@@ -530,67 +561,97 @@ describe('Get invoice VM', () => {
       data: orderPartiallyShipped1,
       createdAt: 1675564421539
     }
-    beforeEach(() => {
-      invoiceStore.current = invoice
-    })
-    it('should display only prepared quantity', () => {
-      const expected: Partial<GetInvoiceVM> = {
-        orderLinesTable: {
-          headers: orderLinesHeaders,
-          items: [
-            {
-              reference: dolodent.ean13,
-              name: dolodent.name,
-              taxRate: '10 %',
-              unitAmountWithoutTax: '5,00\u00A0€',
-              unitAmountWithTax: '5,50\u00A0€',
-              quantity: 1,
-              totalWithTax: '5,50\u00A0€'
-            }
-          ]
+    describe('Without promotion code', () => {
+      beforeEach(() => {
+        invoiceStore.current = invoice
+      })
+      it('should display only prepared quantity', () => {
+        const expected: Partial<GetInvoiceVM> = {
+          orderLinesTable: {
+            headers: orderLinesHeaders,
+            items: [
+              {
+                reference: dolodent.ean13,
+                name: dolodent.name,
+                taxRate: '10 %',
+                unitAmountWithoutTax: '5,00\u00A0€',
+                unitAmountWithTax: '5,50\u00A0€',
+                quantity: 1,
+                totalWithTax: '5,50\u00A0€'
+              }
+            ]
+          }
         }
-      }
-      expectVMToMatch(expected)
-    })
-    it('should display refund lines', () => {
-      const expected: Partial<GetInvoiceVM> = {
-        refundOrderLinesTable: {
-          headers: orderLinesHeaders,
-          items: [
-            {
-              reference: dolodent.ean13,
-              name: dolodent.name,
-              taxRate: '10 %',
-              unitAmountWithoutTax: '-5,00\u00A0€',
-              unitAmountWithTax: '-5,50\u00A0€',
-              quantity: -1,
-              totalWithTax: '-5,50\u00A0€'
-            }
-          ]
+        expectVMToMatch(expected)
+      })
+      it('should display refund lines', () => {
+        const expected: Partial<GetInvoiceVM> = {
+          refundOrderLinesTable: {
+            headers: orderLinesHeaders,
+            items: [
+              {
+                reference: dolodent.ean13,
+                name: dolodent.name,
+                taxRate: '10 %',
+                unitAmountWithoutTax: '-5,00\u00A0€',
+                unitAmountWithTax: '-5,50\u00A0€',
+                quantity: -1,
+                totalWithTax: '-5,50\u00A0€'
+              }
+            ]
+          }
         }
-      }
-      expectVMToMatch(expected)
-    })
-    it('should compute total with refund', () => {
-      const expected: Partial<GetInvoiceVM> = {
-        totals: {
-          linesTotal: '5,00\u00A0€',
-          totalWithoutTax: '5,00\u00A0€',
-          totalTax: '0,50\u00A0€',
-          totalRefund: '-5,50\u00A0€',
-          deliveryPrice: '6,00\u00A0€',
-          totalWithTax: '11,50\u00A0€'
+        expectVMToMatch(expected)
+      })
+      it('should compute total with refund', () => {
+        const expected: Partial<GetInvoiceVM> = {
+          totals: {
+            linesTotal: '5,00\u00A0€',
+            totalWithoutTax: '5,00\u00A0€',
+            totalTax: '0,50\u00A0€',
+            totalRefund: '-5,50\u00A0€',
+            deliveryPrice: '6,00\u00A0€',
+            totalWithTax: '11,50\u00A0€'
+          }
         }
-      }
-      expectVMToMatch(expected)
-    })
-    it('should display delivery method name', () => {
-      const expected: Partial<GetInvoiceVM> = {
-        deliveryMethod: {
-          name: 'Livraison en point relai'
+        expectVMToMatch(expected)
+      })
+      it('should display delivery method name', () => {
+        const expected: Partial<GetInvoiceVM> = {
+          deliveryMethod: {
+            name: 'Livraison en point relai'
+          }
         }
+        expectVMToMatch(expected)
+      })
+    })
+    describe('With promotion code', () => {
+      const promotionCode: PromotionCode = {
+        uuid: 'promo-uuid-1',
+        code: 'DISCOUNT10',
+        discount: 500
       }
-      expectVMToMatch(expected)
+      beforeEach(() => {
+        invoice.data.promotionCode = promotionCode
+        invoiceStore.current = invoice
+      })
+      it('should also cancel the promotion code', () => {
+        const expected: Partial<GetInvoiceVM> = {
+          totals: {
+            linesTotal: '5,00\u00A0€',
+            totalWithoutTax: '5,00\u00A0€',
+            totalTax: '0,50\u00A0€',
+            totalRefund: '-5,50\u00A0€',
+            deliveryPrice: '6,00\u00A0€',
+            promotionCode: {
+              code: 'DISCOUNT10',
+              discount: '-5,00\u00A0€'
+            },
+            totalWithTax: '6,50\u00A0€'
+          }
+        }
+        expectVMToMatch(expected)
+      })
     })
   })
 
