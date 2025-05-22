@@ -395,8 +395,15 @@ const getTotals = (
       code: promotionCode.code,
       discount: formatter.format((promotionCode.discount / 100) * -1)
     }
+    if (totalWithoutTax === 0) {
+      totalRefund += promotionCode.discount
+    }
+    res.totalRefund = formatter.format(totalRefund / 100)
     res.totalWithTax = formatter.format(
-      (linesTotalWithTax + deliveryPriceWithTax - promotionCode.discount) / 100
+      Math.max(
+        linesTotalWithTax + deliveryPriceWithTax - promotionCode.discount,
+        0
+      ) / 100
     )
   }
   return res
