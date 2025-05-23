@@ -145,7 +145,7 @@
         template(#default)
           .h-80
             MonthlyCanceledTurnoverChart(:data="dashboard.monthlySales")
-      UCard
+      UCard(v-if="!areProductFiltersApplied")
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.monthlyDeliveryPrice') }}
         template(#default)
