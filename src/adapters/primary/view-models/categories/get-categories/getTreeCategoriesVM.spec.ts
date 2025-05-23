@@ -28,7 +28,7 @@ describe('Get tree categories VM', () => {
           data: {
             uuid: mum.uuid,
             name: mum.name,
-            miniature: mum.miniature
+            miniature: mum.miniature!
           },
           children: []
         }
@@ -42,7 +42,7 @@ describe('Get tree categories VM', () => {
           data: {
             uuid: mum.uuid,
             name: mum.name,
-            miniature: mum.miniature
+            miniature: mum.miniature!
           },
           children: []
         },
@@ -50,7 +50,7 @@ describe('Get tree categories VM', () => {
           data: {
             uuid: dents.uuid,
             name: dents.name,
-            miniature: dents.miniature
+            miniature: dents.miniature!
           },
           children: []
         },
@@ -58,7 +58,7 @@ describe('Get tree categories VM', () => {
           data: {
             uuid: minceur.uuid,
             name: minceur.name,
-            miniature: minceur.miniature
+            miniature: minceur.miniature!
           },
           children: []
         }
@@ -75,14 +75,14 @@ describe('Get tree categories VM', () => {
           data: {
             uuid: mum.uuid,
             name: mum.name,
-            miniature: mum.miniature
+            miniature: mum.miniature!
           },
           children: [
             {
               data: {
                 uuid: baby.uuid,
                 name: baby.name,
-                miniature: baby.miniature
+                miniature: baby.miniature!
               },
               children: []
             }
@@ -153,21 +153,21 @@ describe('Get tree categories VM', () => {
           data: {
             uuid: rootCategory1.uuid,
             name: rootCategory1.name,
-            miniature: rootCategory1.miniature
+            miniature: rootCategory1.miniature!
           },
           children: [
             {
               data: {
                 uuid: childCategory1.uuid,
                 name: childCategory1.name,
-                miniature: childCategory1.miniature
+                miniature: childCategory1.miniature!
               },
               children: [
                 {
                   data: {
                     uuid: grandChildCategory1.uuid,
                     name: grandChildCategory1.name,
-                    miniature: grandChildCategory1.miniature
+                    miniature: grandChildCategory1.miniature!
                   },
                   children: []
                 }
@@ -177,14 +177,14 @@ describe('Get tree categories VM', () => {
               data: {
                 uuid: childCategory2.uuid,
                 name: childCategory2.name,
-                miniature: childCategory2.miniature
+                miniature: childCategory2.miniature!
               },
               children: [
                 {
                   data: {
                     uuid: grandChildCategory2.uuid,
                     name: grandChildCategory2.name,
-                    miniature: grandChildCategory2.miniature
+                    miniature: grandChildCategory2.miniature!
                   },
                   children: []
                 }
@@ -196,7 +196,7 @@ describe('Get tree categories VM', () => {
           data: {
             uuid: rootCategory2.uuid,
             name: rootCategory2.name,
-            miniature: rootCategory2.miniature
+            miniature: rootCategory2.miniature!
           },
           children: []
         }

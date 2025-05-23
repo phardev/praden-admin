@@ -56,7 +56,7 @@ describe('Cancel preparation', () => {
       let expectedInvoiceNumber: string
       let expectedInvoice: Invoice
       beforeEach(() => {
-        expectedInvoiceNumber = order.invoiceNumber
+        expectedInvoiceNumber = order.invoiceNumber!
         expectedInvoice = {
           id: expectedInvoiceNumber,
           data: expectedOrder,

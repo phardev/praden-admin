@@ -24,7 +24,7 @@ const anaca3VM: PromotionProductItemVM = {
   name: anaca3Minceur.name,
   reference: anaca3Minceur.ean13,
   categories: anaca3Minceur.categories.map((c) => c.name),
-  laboratory: anaca3Minceur.laboratory.name
+  laboratory: anaca3Minceur.laboratory!.name
 }
 
 const ultraLevureVM: PromotionProductItemVM = {
@@ -32,7 +32,7 @@ const ultraLevureVM: PromotionProductItemVM = {
   name: ultraLevure.name,
   reference: ultraLevure.ean13,
   categories: ultraLevure.categories.map((c) => c.name),
-  laboratory: ultraLevure.laboratory.name
+  laboratory: ultraLevure.laboratory!.name
 }
 
 const dolodentVM: PromotionProductItemVM = {
@@ -40,7 +40,7 @@ const dolodentVM: PromotionProductItemVM = {
   name: dolodent.name,
   reference: dolodent.ean13,
   categories: dolodent.categories.map((c) => c.name),
-  laboratory: dolodent.laboratory.name
+  laboratory: dolodent.laboratory!.name
 }
 
 const availableTypeChoices: Array<TypeChoiceVM> = [
@@ -108,13 +108,15 @@ describe('Promotion form create VM', () => {
       describe.each(basicFields)('Basic fields initialization', ({ field }) => {
         it(`should initialize ${field}"`, () => {
           const expectedField: Field<any> = {
-            value: expectedFields[field],
+            value: expectedFields[field as keyof typeof expectedFields],
             canEdit: true
           }
           expect(vm.get(field)).toStrictEqual(expectedField)
         })
         it(`should save the ${field} value in form store`, () => {
-          expect(formStore.get(key)[field]).toStrictEqual(expectedFields[field])
+          expect(
+            formStore.get(key)[field as keyof typeof expectedFields]
+          ).toStrictEqual(expectedFields[field as keyof typeof expectedFields])
         })
       })
     })

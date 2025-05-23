@@ -26,6 +26,17 @@ export class RealDashboardGateway
     if (params.endDate) {
       queryParams.append('endDate', params.endDate.toISOString())
     }
+    if (params.laboratoryUuid) {
+      queryParams.append('laboratoryUuid', params.laboratoryUuid)
+    }
+
+    if (params.categoryUuid) {
+      queryParams.append('categoryUuid', params.categoryUuid)
+    }
+
+    if (params.promotionOnly) {
+      queryParams.append('promotionOnly', params.promotionOnly.toString())
+    }
 
     const url = `${this.baseUrl}/dashboard${
       queryParams.toString() ? '?' + queryParams.toString() : ''

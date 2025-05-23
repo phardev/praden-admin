@@ -88,13 +88,15 @@ describe('Promotion code form create VM', () => {
       describe.each(fields)('For promotion code', ({ field }) => {
         it(`should initialize ${field}"`, () => {
           const expectedField: Field<any> = {
-            value: expected[field],
+            value: expected[field as keyof typeof expected],
             canEdit: true
           }
           expect(vm.get(field)).toStrictEqual(expectedField)
         })
         it(`should save the ${field} value in form store`, () => {
-          expect(formStore.get(key)[field]).toStrictEqual(expected[field])
+          expect(formStore.get(key)[field]).toStrictEqual(
+            expected[field as keyof typeof expected]
+          )
         })
       })
       describe('Delivery method choices', () => {
@@ -228,7 +230,7 @@ describe('Promotion code form create VM', () => {
       vm.set('amount', expectedDto.amount.toString())
       vm.set('startDate', expectedDto.startDate)
       vm.set('endDate', expectedDto.endDate)
-      vm.set('maximumUsage', expectedDto.conditions.maximumUsage.toString())
+      vm.set('maximumUsage', expectedDto.conditions.maximumUsage!.toString())
       vm.set('minimumAmount', '50')
       vm.set('deliveryMethodUuid', expectedDto.conditions.deliveryMethodUuid)
       expect(vm.getDto()).toStrictEqual(expectedDto)
@@ -253,7 +255,7 @@ describe('Promotion code form create VM', () => {
       vm.set('amount', '10')
       vm.set('startDate', expectedDto.startDate)
       vm.set('endDate', expectedDto.endDate)
-      vm.set('maximumUsage', expectedDto.conditions.maximumUsage.toString())
+      vm.set('maximumUsage', expectedDto.conditions.maximumUsage!.toString())
       vm.set('minimumAmount', '100')
       vm.set('deliveryMethodUuid', expectedDto.conditions.deliveryMethodUuid)
       expect(vm.getDto()).toStrictEqual(expectedDto)

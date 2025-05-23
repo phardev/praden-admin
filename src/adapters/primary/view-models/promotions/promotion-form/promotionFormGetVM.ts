@@ -89,7 +89,6 @@ export class PromotionFormFieldsReader extends FormFieldsReader {
 }
 
 export class PromotionFormGetVM extends PromotionFormVM {
-  protected readonly key: string
   protected formStore: any
 
   constructor(
@@ -111,7 +110,7 @@ export class PromotionFormGetVM extends PromotionFormVM {
     }
   }
 
-  getAvailableTypeChoices(): Array<TypeChoiceVM> {
+  override getAvailableTypeChoices(): Array<TypeChoiceVM> {
     return this.fieldsReader.getAvailableTypeChoices()
   }
 
@@ -122,9 +121,9 @@ export class PromotionFormGetVM extends PromotionFormVM {
     }
   }
 
-  getProducts(): Field<Array<PromotionProductItemVM>> {
+  override getProducts(): Field<Array<PromotionProductItemVM>> {
     const promotionStore = usePromotionStore()
-    const promotion = promotionStore.current
+    const promotion = promotionStore.current!
     const value = promotion.products.map((product: Product) => {
       return {
         uuid: product.uuid,

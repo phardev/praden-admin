@@ -70,7 +70,7 @@ export const updateFieldsTests = (
   key: string
 ) => {
   let formStore: any
-  let vm: CustomerFormCreateVM
+  let vm: CustomerFormCreateVM | CustomerFormEditVM
   beforeEach(() => {
     formStore = useFormStore()
     vm = getVM()

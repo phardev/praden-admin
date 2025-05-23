@@ -12,6 +12,7 @@ export const praden: Shop = {
     lastname: '',
     address: '123 rue de praden',
     city: 'Praden City',
-    zip: '12345'
+    zip: '12345',
+    country: 'France'
   }
 }

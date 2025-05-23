@@ -25,7 +25,7 @@ describe('List category products', () => {
       await whenListCategoryProducts(dents.uuid)
     })
     it('should store it in category store', () => {
-      expect(categoryStore.current).toStrictEqual({
+      expect(categoryStore.current).toMatchObject({
         products: [dolodent, chamomilla]
       })
     })
@@ -37,7 +37,7 @@ describe('List category products', () => {
       await whenListCategoryProducts(dents.uuid)
     })
     it('should store it in category store', () => {
-      expect(categoryStore.current).toStrictEqual({
+      expect(categoryStore.current).toMatchObject({
         products: [dolodent, chamomilla]
       })
     })

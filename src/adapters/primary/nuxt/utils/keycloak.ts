@@ -1,5 +1,9 @@
+import Keycloak from 'keycloak-js'
+
 export const getToken = async (): Promise<string | null> => {
-  const { $keycloak, $keycloakReady } = useNuxtApp()
+  const nuxtApp = useNuxtApp()
+  const $keycloak = nuxtApp.$keycloak as Keycloak
+  const $keycloakReady = nuxtApp.$keycloakReady as Promise<void>
 
   try {
     await $keycloakReady

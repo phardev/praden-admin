@@ -15,7 +15,7 @@ export const useCustomerStore = defineStore('CustomerStore', {
     getByUuid: (state) => {
       return (uuid: UUID): Customer => {
         const customer = state.items.find((c) => c.uuid === uuid)
-        return customer
+        return customer!
       }
     }
   },

@@ -79,6 +79,6 @@ describe('Get customer', () => {
   }
 
   const whenGetCustomer = async (uuid: UUID) => {
-    await getCustomer(uuid, customerGateway, orderGateway)
+    await getCustomer(uuid, customerGateway)
   }
 })

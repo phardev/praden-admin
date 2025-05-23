@@ -51,7 +51,9 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
       }
     )
     return Promise.resolve(
-      res.data.items.sort((a, b) => b.availableStock - a.availableStock)
+      res.data.items.sort(
+        (a: any, b: any) => b.availableStock - a.availableStock
+      )
     )
   }
 
@@ -72,7 +74,9 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
       }
     )
     return Promise.resolve(
-      res.data.items.sort((a, b) => b.availableStock - a.availableStock)
+      res.data.items.sort(
+        (a: Product, b: Product) => b.availableStock - a.availableStock
+      )
     )
   }
 
@@ -91,7 +95,9 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
       }
     )
     return Promise.resolve(
-      res.data.items.sort((a, b) => b.availableStock - a.availableStock)
+      res.data.items.sort(
+        (a: Product, b: Product) => b.availableStock - a.availableStock
+      )
     )
   }
 
@@ -100,7 +106,9 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
       `${this.baseUrl}/laboratories/${uuid}/products`
     )
     return Promise.resolve(
-      res.data.items.sort((a, b) => b.availableStock - a.availableStock)
+      res.data.items.sort(
+        (a: Product, b: Product) => b.availableStock - a.availableStock
+      )
     )
   }
 
@@ -115,7 +123,9 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
       }
     )
     return Promise.resolve(
-      res.data.items.sort((a, b) => b.availableStock - a.availableStock)
+      res.data.items.sort(
+        (a: Product, b: Product) => b.availableStock - a.availableStock
+      )
     )
   }
 
@@ -127,7 +137,9 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
       }
     })
     return Promise.resolve(
-      res.data.items.sort((a, b) => b.availableStock - a.availableStock)
+      res.data.items.sort(
+        (a: Product, b: Product) => b.availableStock - a.availableStock
+      )
     )
   }
 
@@ -147,7 +159,7 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     if (laboratory) {
       formData.append('laboratoryUuid', laboratory.uuid)
     }
-    if (flags.arePromotionsAllowed) {
+    if (flags?.arePromotionsAllowed) {
       formData.append('arePromotionsAllowed', 'on')
     }
     const res = await axiosWithBearer.patch(

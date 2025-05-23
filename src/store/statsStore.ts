@@ -4,7 +4,7 @@ import { Dashboard } from '@core/entities/dashboard'
 export const useStatsStore = defineStore('StatsStore', {
   state: () => {
     return {
-      dashboard: undefined as Dashboard
+      dashboard: undefined as Dashboard | undefined
     }
   },
   actions: {

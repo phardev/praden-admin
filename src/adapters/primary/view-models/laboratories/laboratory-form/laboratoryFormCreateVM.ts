@@ -31,7 +31,7 @@ export class LaboratoryFormFieldsWriter extends FormFieldsWriter {
     }
   }
 
-  async set(fieldName: string, value: any): Promise<any> {
+  override async set(fieldName: string, value: any): Promise<any> {
     const handler =
       this.fieldHandlers[fieldName] || super.set.bind(this, fieldName)
     await handler(value)
@@ -42,7 +42,7 @@ export class LaboratoryFormFieldsWriter extends FormFieldsWriter {
     const productStore = useProductStore()
     const searchStore = useSearchStore()
     const searchResult = searchStore.get(this.key)
-    const alreadyAdded = products.map((p) => p.uuid)
+    const alreadyAdded = products.map((p: Product) => p.uuid)
     uuids
       .filter((uuid) => !alreadyAdded.includes(uuid))
       .forEach((uuid) => {

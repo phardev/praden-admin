@@ -262,7 +262,8 @@ describe('Create product', () => {
         description: '<p>description</p>',
         instructionsForUse: '<p>instructions For Use</p>',
         composition: '<p>composition</p>',
-        weight: 342
+        weight: 342,
+        flags: { arePromotionsAllowed: true }
       }
     })
     it('should be aware during loading', async () => {

@@ -57,7 +57,7 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
     }
   }
 
-  async set(fieldName: string, value: any): Promise<any> {
+  override async set(fieldName: string, value: any): Promise<any> {
     const handler =
       this.fieldHandlers[fieldName] || super.set.bind(this, fieldName)
     await handler(value)
@@ -66,7 +66,7 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
   private setPriceWithoutTax(priceWithoutTax: string | undefined): void {
     super.set('priceWithoutTax', priceWithoutTax)
     const taxRate = this.fieldsReader.get('percentTaxRate')
-    if (taxRate) {
+    if (taxRate && priceWithoutTax) {
       const newPriceWithTax = addTaxToPrice(+priceWithoutTax, taxRate).toFixed(
         2
       )
@@ -82,7 +82,7 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
     super.set('percentTaxRate', percentTaxRate)
     const priceWithoutTax = this.fieldsReader.get('priceWithoutTax')
     const priceWithTax = this.fieldsReader.get('priceWithTax')
-    if (priceWithTax && !priceWithoutTax) {
+    if (priceWithTax && percentTaxRate && !priceWithoutTax) {
       const newPriceWithoutTax = removeTaxFromPrice(
         +priceWithTax,
         +percentTaxRate
@@ -90,7 +90,7 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
       if (newPriceWithoutTax !== this.fieldsReader.get('priceWithoutTax')) {
         this.formStore.set(this.key, { priceWithoutTax: newPriceWithoutTax })
       }
-    } else if (priceWithoutTax) {
+    } else if (priceWithoutTax && percentTaxRate) {
       const newPriceWithTax = addTaxToPrice(
         +priceWithoutTax,
         +percentTaxRate
@@ -104,7 +104,7 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
   private setPriceWithTax(priceWithTax: string | undefined): void {
     super.set('priceWithTax', priceWithTax)
     const taxRate = this.fieldsReader.get('percentTaxRate')
-    if (taxRate) {
+    if (taxRate && priceWithTax) {
       const newPriceWithoutTax = removeTaxFromPrice(
         +priceWithTax,
         taxRate
@@ -232,8 +232,8 @@ export class ProductFormCreateVM extends ProductFormVM {
 
   async removeImage(data: string) {
     const images = this.fieldsReader.get('images')
-    if (images.find((i) => i === data)) {
-      const updated = images.filter((image) => image !== data)
+    if (images.find((i: string) => i === data)) {
+      const updated = images.filter((image: string) => image !== data)
       await this.set('images', updated)
     }
     const newImages = this.fieldsReader.get('newImages')
@@ -262,13 +262,13 @@ export class ProductFormCreateVM extends ProductFormVM {
   getDto(): CreateProductDTO {
     const priceWithoutTax = this.fieldsReader.get('priceWithoutTax')
       ? parseFloat(this.fieldsReader.get('priceWithoutTax')) * 100
-      : undefined
+      : 0
     const percentTaxRate = this.fieldsReader.get('percentTaxRate')
       ? parseFloat(this.fieldsReader.get('percentTaxRate'))
-      : undefined
+      : 0
     const availableStock = this.fieldsReader.get('availableStock')
       ? parseInt(this.fieldsReader.get('availableStock'))
-      : undefined
+      : 0
     const laboratoryStore = useLaboratoryStore()
     const laboratory = laboratoryStore.getByUuid(
       this.fieldsReader.get('laboratory')

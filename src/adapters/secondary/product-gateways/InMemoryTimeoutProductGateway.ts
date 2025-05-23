@@ -14,7 +14,7 @@ export class InMemoryTimeoutProductGateway extends InMemoryProductGateway {
     this.timeoutInMs = timeoutInMs
   }
 
-  async list(limit: number, offset: number): Promise<Array<Product>> {
+  override async list(limit: number, offset: number): Promise<Array<Product>> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.list(limit, offset))
@@ -22,7 +22,7 @@ export class InMemoryTimeoutProductGateway extends InMemoryProductGateway {
     })
   }
 
-  async count(): Promise<number> {
+  override async count(): Promise<number> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.count())
@@ -30,7 +30,7 @@ export class InMemoryTimeoutProductGateway extends InMemoryProductGateway {
     })
   }
 
-  async batch(uuids: Array<UUID>): Promise<Array<Product>> {
+  override async batch(uuids: Array<UUID>): Promise<Array<Product>> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.batch(uuids))
@@ -38,7 +38,7 @@ export class InMemoryTimeoutProductGateway extends InMemoryProductGateway {
     })
   }
 
-  async create(dto: CreateProductDTO): Promise<Product> {
+  override async create(dto: CreateProductDTO): Promise<Product> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.create(dto))
@@ -46,7 +46,7 @@ export class InMemoryTimeoutProductGateway extends InMemoryProductGateway {
     })
   }
 
-  async edit(uuid: UUID, dto: EditProductDTO): Promise<Product> {
+  override async edit(uuid: UUID, dto: EditProductDTO): Promise<Product> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.edit(uuid, dto))
@@ -54,7 +54,10 @@ export class InMemoryTimeoutProductGateway extends InMemoryProductGateway {
     })
   }
 
-  bulkEdit(dto: EditProductDTO, uuids: Array<UUID>): Promise<Array<Product>> {
+  override bulkEdit(
+    dto: EditProductDTO,
+    uuids: Array<UUID>
+  ): Promise<Array<Product>> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.bulkEdit(dto, uuids))
@@ -62,7 +65,7 @@ export class InMemoryTimeoutProductGateway extends InMemoryProductGateway {
     })
   }
 
-  getByUuid(uuid: UUID): Promise<Product> {
+  override getByUuid(uuid: UUID): Promise<Product> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.getByUuid(uuid))
@@ -70,15 +73,19 @@ export class InMemoryTimeoutProductGateway extends InMemoryProductGateway {
     })
   }
 
-  getByCategoryUuid(categoryUuid: UUID): Promise<Array<Product>> {
+  override getByCategoryUuid(
+    limit: number,
+    offset: number,
+    categoryUuid: UUID
+  ): Promise<Array<Product>> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(super.getByCategoryUuid(categoryUuid))
+        resolve(super.getByCategoryUuid(limit, offset, categoryUuid))
       }, this.timeoutInMs)
     })
   }
 
-  getByLaboratoryUuid(laboratoryUuid: UUID): Promise<Array<Product>> {
+  override getByLaboratoryUuid(laboratoryUuid: UUID): Promise<Array<Product>> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.getByLaboratoryUuid(laboratoryUuid))
@@ -86,7 +93,7 @@ export class InMemoryTimeoutProductGateway extends InMemoryProductGateway {
     })
   }
 
-  addProductsToCategory(
+  override addProductsToCategory(
     category: Category,
     productUuids: Array<UUID>
   ): Promise<Array<Product>> {
@@ -97,7 +104,7 @@ export class InMemoryTimeoutProductGateway extends InMemoryProductGateway {
     })
   }
 
-  removeProductsFromCategory(
+  override removeProductsFromCategory(
     category: Category,
     productUuids: Array<UUID>
   ): Promise<Array<Product>> {

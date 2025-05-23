@@ -6,7 +6,7 @@ export const useProductStore = defineStore('ProductStore', {
     return {
       items: [] as Array<Product>,
       stock: {} as Stock,
-      current: undefined as ProductWithPromotion,
+      current: undefined as ProductWithPromotion | undefined,
       hasMore: false as boolean,
       isLoading: false
     }

@@ -1,7 +1,7 @@
 import { useInvoiceStore } from '@store/invoiceStore'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { Order, OrderLine } from '@core/entities/order'
+import { isAnonymousOrder, Order, OrderLine } from '@core/entities/order'
 import { Invoice } from '@core/entities/invoice'
 import { HashTable } from '@core/types/types'
 import { Delivery } from '@core/entities/delivery'
@@ -169,7 +169,7 @@ export const getDeliveryAddressVM = (order: Order): AddressVM => {
     city: order.deliveryAddress.city,
     zip: order.deliveryAddress.zip,
     country: order.deliveryAddress.country,
-    phone: order.contact?.phone ?? ''
+    phone: isAnonymousOrder(order) ? order.contact.phone : ''
   }
 }
 
@@ -434,7 +434,7 @@ export const getInvoiceVM = (): GetInvoiceVM => {
       dateFormatOptions
     ),
     customer: {
-      email: invoice.data.contact.email
+      email: isAnonymousOrder(invoice.data) ? invoice.data.contact.email : ''
     },
     createdDatetime: new Date(invoice.createdAt),
     supplierAddress: getSupplierAddress(),
@@ -445,7 +445,7 @@ export const getInvoiceVM = (): GetInvoiceVM => {
       city: invoice.data.billingAddress.city,
       zip: invoice.data.billingAddress.zip,
       country: invoice.data.billingAddress.country,
-      phone: invoice.data.contact.phone
+      phone: isAnonymousOrder(invoice.data) ? invoice.data.contact.phone : ''
     },
     summaryTable: getSummaryTable(invoice),
     orderLinesTable: getOrderLinesTable(preparedInvoiceLines),
@@ -459,7 +459,7 @@ export const getInvoiceVM = (): GetInvoiceVM => {
     ),
     payment: {
       type: 'e-Transaction',
-      amount: formatter.format(invoice.data.payment.amount / 100)
+      amount: formatter.format(invoice.data.payment!.amount! / 100)
     },
     deliveryMethod: {
       name: invoice.data.deliveries[0].method.name

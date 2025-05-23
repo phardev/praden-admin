@@ -260,7 +260,7 @@ describe('Search orders', () => {
     expect(searchStore.get(url)).toStrictEqual(expectedRes)
   }
 
-  const expectCurrentFilterToBe = (currentFilter) => {
+  const expectCurrentFilterToBe = (currentFilter: Partial<SearchOrdersDTO>) => {
     expect(searchStore.getFilter(url)).toStrictEqual(currentFilter)
   }
 })

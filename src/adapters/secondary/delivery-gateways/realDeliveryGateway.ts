@@ -21,7 +21,7 @@ export class RealDeliveryGateway
       `${this.baseUrl}/deliveries`,
       filters
     )
-    return res.data.map((d) => {
+    return res.data.map((d: any) => {
       return this.convertToDelivery(d)
     })
   }
@@ -30,7 +30,7 @@ export class RealDeliveryGateway
     const res = await axiosWithBearer.post(`${this.baseUrl}/deliveries/ship`, {
       uuids
     })
-    return res.data.map((d) => {
+    return res.data.map((d: any) => {
       return this.convertToDelivery(d)
     })
   }

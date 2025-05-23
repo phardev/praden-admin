@@ -6,7 +6,11 @@ export class InMemoryNavigationMenuGateway implements NavigationMenuGateway {
 
   get(): Promise<NavigationMenu> {
     if (!this.menu) {
-      return Promise.resolve(undefined)
+      return Promise.resolve({
+        logo: '',
+        title: '',
+        sections: []
+      })
     }
     return Promise.resolve(JSON.parse(JSON.stringify(this.menu)))
   }

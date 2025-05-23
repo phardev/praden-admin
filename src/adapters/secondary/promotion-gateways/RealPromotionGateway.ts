@@ -43,7 +43,7 @@ export class RealPromotionGateway
   async edit(uuid: UUID, promotion: EditPromotionDTO): Promise<Promotion> {
     const realDto = JSON.parse(JSON.stringify(promotion))
     delete realDto.products
-    realDto.productUuids = promotion.products.map((p) => p.uuid)
+    realDto.productUuids = promotion.products?.map((p) => p.uuid)
     const formData = this.createFormData(realDto)
     formData.append('uuid', uuid)
     const res = await axiosWithBearer.patch(

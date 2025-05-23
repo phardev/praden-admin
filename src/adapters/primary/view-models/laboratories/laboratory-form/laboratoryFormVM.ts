@@ -68,7 +68,8 @@ export abstract class LaboratoryFormVM {
     const filteredProducts: Array<Product> = searchStore.get(this.key)
     const addedProducts = this.fieldsReader.get('products')
     const res = (filteredProducts || allProducts).filter(
-      (p) => !addedProducts.map((p) => p.uuid).includes(p.uuid)
+      (p: Product) =>
+        !addedProducts.map((p: Product) => p.uuid).includes(p.uuid)
     )
     return {
       value: res.map((p: Product) => {

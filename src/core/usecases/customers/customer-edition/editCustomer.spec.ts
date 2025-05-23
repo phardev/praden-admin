@@ -16,7 +16,7 @@ import {
 } from '@core/usecases/customers/customer-edition/editCustomer'
 
 describe('Customer Edition', () => {
-  let customerStore
+  let customerStore: any
   let customerGateway: InMemoryCustomerGateway
 
   beforeEach(() => {

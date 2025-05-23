@@ -54,7 +54,7 @@ export class FakeSearchGateway implements SearchGateway {
 
   searchOrders(dto: SearchOrdersDTO): Promise<Array<Order>> {
     const orders = this.orderStore.items
-    const res = orders.filter((o) => {
+    const res = orders.filter((o: any) => {
       const queryMatch = dto.query ? this.ordersQueryMatch(o, dto.query) : true
       const dateMatch = this.ordersDateMatch(
         o.createdAt,
@@ -109,8 +109,11 @@ export class FakeSearchGateway implements SearchGateway {
 
   searchCustomers(dto: SearchCustomersDTO): Promise<Array<Customer>> {
     const customers = this.customerStore.items
-    const res = customers.filter((c) => {
-      return this.customerQueryMatch(c, dto.query)
+    if (!dto.query) {
+      return Promise.resolve(customers)
+    }
+    const res = customers.filter((c: Customer) => {
+      return this.customerQueryMatch(c, dto.query!)
     })
     return Promise.resolve(res)
   }
