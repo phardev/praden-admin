@@ -30,6 +30,10 @@ export class RealDashboardGateway
       queryParams.append('laboratoryUuid', params.laboratoryUuid)
     }
 
+    if (params.categoryUuid) {
+      queryParams.append('categoryUuid', params.categoryUuid)
+    }
+
     const url = `${this.baseUrl}/dashboard${
       queryParams.toString() ? '?' + queryParams.toString() : ''
     }`

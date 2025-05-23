@@ -153,6 +153,18 @@ describe('GetDashboard', () => {
     })
   })
 
+  it('should filter top products based on category uuid', async () => {
+    params = {
+      categoryUuid: 'product-3-category-2'
+    }
+    await whenGetDashboardData()
+    expect(statsStore.dashboard).toStrictEqual({
+      monthlySales: mockData.monthlySales,
+      totalSales: mockData.totalSales,
+      topProducts: [mockData.topProducts[2]]
+    })
+  })
+
   const whenGetDashboardData = async () => {
     await getDashboard(params, dashboardGateway)
   }

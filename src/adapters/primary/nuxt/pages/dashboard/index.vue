@@ -5,13 +5,22 @@
       .flex.justify-between.items-center
         h2.text-xl.font-bold {{ $t('dashboard.title') }}
         UForm.flex.gap-4
+          UFormGroup.pb-4(label="Catégorie" name="category")
+            FtAutocomplete(
+              v-model="category"
+              :options="categoriesVM.items"
+              option-attribute="name"
+              value-key="uuid"
+              :search="categorySearch"
+              @clear="clearCategory"
+            )
           UFormGroup.pb-4(label="Laboratoire" name="laboratory")
             FtAutocomplete(
               v-model="laboratory"
               :options="laboratoriesVM.items"
               option-attribute="name"
               value-key="uuid"
-              :search="accentInsensitiveSearch"
+              :search="laboratorySearch"
               @clear="clearLaboratory"
             )
           UFormGroup.pb-4(label="Date de début" name="startDate")
@@ -111,8 +120,8 @@
             UTable(:columns='topProductsColumns' :rows='dashboard.topProducts')
               template(#categories-data="{ row }")
                 div(v-if="row.categories && row.categories.length")
-                  div.mb-1(v-for="category in row.categories" :key="category.uuid")
-                    UBadge(variant="subtle" :label="category.name")
+                  div.mb-1(v-for="categoryItem in row.categories" :key="categoryItem.uuid")
+                    UBadge(variant="subtle" :label="categoryItem.name")
                 div(v-else)
               template(#laboratory-data="{ row }")
                 span {{ row.laboratory ? row.laboratory.name : '' }}
@@ -123,8 +132,11 @@ import { format } from 'date-fns'
 import { formatCurrency } from '@/src/utils/formatters'
 import { useDashboardData } from '../../composables/useDashboardData'
 import { listLaboratories } from '@core/usecases/laboratories/laboratory-listing/listLaboratories'
+import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { getLaboratoriesVM } from '@/src/adapters/primary/view-models/laboratories/get-laboratories/getLaboratoriesVM'
+import { getCategoriesVM } from '@/src/adapters/primary/view-models/categories/get-categories/getCategoriesVM'
 import { useLaboratoryGateway } from '@/gateways/laboratoryGateway'
+import { useCategoryGateway } from '@/gateways/categoryGateway'
 import { fr } from 'date-fns/locale'
 
 definePageMeta({ layout: 'main' })
@@ -137,9 +149,14 @@ const productLimit = ref(50)
 const startDate = ref<number | null>(null)
 const endDate = ref<number | null>(null)
 const laboratory = ref<string | null>(null)
+const category = ref<string | null>(null)
 
 const laboratoriesVM = computed(() => {
   return getLaboratoriesVM()
+})
+
+const categoriesVM = computed(() => {
+  return getCategoriesVM()
 })
 
 const statsCards = computed(() => [
@@ -208,11 +225,16 @@ const fetchFilteredDashboardData = async () => {
     params.laboratoryUuid = laboratory.value ? laboratory.value.uuid : null
   }
 
+  if (category.value) {
+    params.categoryUuid = category.value ? category.value.uuid : null
+  }
+
   await fetchDashboardData(params)
 }
 
 onMounted(() => {
   listLaboratories(useLaboratoryGateway())
+  listCategories(useCategoryGateway())
   fetchFilteredDashboardData()
 })
 
@@ -228,6 +250,10 @@ const clearLaboratory = () => {
   laboratory.value = null
 }
 
+const clearCategory = () => {
+  category.value = null
+}
+
 const normalizeText = (text: string): string => {
   return text
     .normalize('NFD')
@@ -235,7 +261,21 @@ const normalizeText = (text: string): string => {
     .toLowerCase()
 }
 
-const accentInsensitiveSearch = (query: string) => {
+const categorySearch = (query: string) => {
+  if (!query || !categoriesVM.value.items) {
+    return categoriesVM.value.items || []
+  }
+
+  const normalizedQuery = normalizeText(query)
+
+  return categoriesVM.value.items.filter((option) => {
+    const optionName = option.name || ''
+    const normalizedName = normalizeText(optionName)
+    return normalizedName.includes(normalizedQuery)
+  })
+}
+
+const laboratorySearch = (query: string) => {
   if (!query || !laboratoriesVM.value.items) {
     return laboratoriesVM.value.items || []
   }

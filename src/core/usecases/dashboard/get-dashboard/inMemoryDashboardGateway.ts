@@ -25,16 +25,21 @@ export class InMemoryDashboardGateway implements DashboardGateway {
     let filteredTopProducts = this.mockData.topProducts
 
     if (params.laboratoryUuid) {
-      filteredTopProducts = this.mockData.topProducts.filter(
+      filteredTopProducts = filteredTopProducts.filter(
         (product) => product.laboratory.uuid === params.laboratoryUuid
       )
     }
 
-    if (params.productLimit) {
-      filteredTopProducts = this.mockData.topProducts.slice(
-        0,
-        params.productLimit
+    if (params.categoryUuid) {
+      filteredTopProducts = filteredTopProducts.filter((product) =>
+        product.categories.some(
+          (category) => category.uuid === params.categoryUuid
+        )
       )
+    }
+
+    if (params.productLimit) {
+      filteredTopProducts = filteredTopProducts.slice(0, params.productLimit)
     }
 
     let filteredMonthlySales = [...this.mockData.monthlySales]
