@@ -34,6 +34,10 @@ export class RealDashboardGateway
       queryParams.append('categoryUuid', params.categoryUuid)
     }
 
+    if (params.promotionOnly) {
+      queryParams.append('promotionOnly', params.promotionOnly.toString())
+    }
+
     const url = `${this.baseUrl}/dashboard${
       queryParams.toString() ? '?' + queryParams.toString() : ''
     }`

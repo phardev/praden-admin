@@ -26,10 +26,16 @@
     "internal": "Erreur interne du serveur. Veuillez réessayer plus tard.",
     "unknown": "Une erreur inattendue est survenue. Veuillez réessayer."
   },
+  "common": {
+    "showFilters": "Afficher les filtres",
+    "hideFilters": "Masquer les filtres",
+    "reset": "Réinitialiser"
+  },
   "dashboard": {
     "title": "Tableau de bord",
     "selectDateRange": "Sélectionner une période",
     "productLimit": "Nombre de produits",
+    "promotionOnly": "Produits en promotion uniquement",
     "refresh": "Actualiser",
     "totalSales": "Ventes totales",
     "orders": "commandes",

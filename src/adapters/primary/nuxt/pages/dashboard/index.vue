@@ -1,130 +1,169 @@
 <template lang="pug">
 .dashboard-container.p-4.mx-auto
-  UCard.mb-4
-    template(#header)
-      .flex.justify-between.items-center
-        h2.text-xl.font-bold {{ $t('dashboard.title') }}
-        UForm.flex.gap-4
-          UFormGroup.pb-4(label="Catégorie" name="category")
+  .flex.flex-col.justify-between.items-start.gap-4.mb-4(class="md:flex-row md:items-center")
+    h2.text-xl.font-bold.text-primary-700 {{ $t('dashboard.title') }}
+    UButton.ml-auto(class="md:hidden" color="gray" variant="ghost" icon="i-heroicons-adjustments-horizontal" @click="toggleFilters")
+      | {{ showFilters ? $t('common.hideFilters') : $t('common.showFilters') }}
+
+  UCard.mb-6.shadow-sm.bg-gray-50(v-show="showFilters || isLargeScreen")
+    .p-3
+      UForm
+        .grid.grid-cols-1.gap-3(class="md:grid-cols-2 lg:grid-cols-4")
+          UFormGroup(label="Catégorie" name="category")
             FtAutocomplete(
               v-model="category"
               :options="categoriesVM.items"
               option-attribute="name"
               value-key="uuid"
               :search="categorySearch"
+              placeholder="Toutes les catégories"
+              class="w-full"
               @clear="clearCategory"
             )
-          UFormGroup.pb-4(label="Laboratoire" name="laboratory")
+          UFormGroup(label="Laboratoire" name="laboratory")
             FtAutocomplete(
               v-model="laboratory"
               :options="laboratoriesVM.items"
               option-attribute="name"
               value-key="uuid"
               :search="laboratorySearch"
+              placeholder="Tous les laboratoires"
+              class="w-full"
               @clear="clearLaboratory"
             )
-          UFormGroup.pb-4(label="Date de début" name="startDate")
-            UPopover(:popper="{ placement: 'bottom-start' }")
-              UButton(
-                icon="i-heroicons-calendar-days-20-solid"
-                :label="startDate ? format(startDate, 'd MMMM yyy', { locale: fr }) : 'Choisissez une date'"
-              )
-                template(#trailing)
-                  UButton(
-                    v-show="startDate"
-                    color="white"
-                    variant="link"
-                    icon="i-heroicons-x-mark-20-solid"
-                    :padded="false"
-                    @click.prevent="clearStartDate"
-                  )
-              template(#panel="{ close }")
-                ft-date-picker(
-                  v-model="startDate"
-                  @close="close"
-                )
-          UFormGroup.pb-4(label="Date de fin" name="endDate")
-            UPopover(:popper="{ placement: 'bottom-start' }")
-              UButton(
-                icon="i-heroicons-calendar-days-20-solid"
-                :label="endDate ? format(endDate, 'd MMMM yyy', { locale: fr }) : 'Choisissez une date'"
-              )
-                template(#trailing)
-                  UButton(
-                    v-show="endDate"
-                    color="white"
-                    variant="link"
-                    icon="i-heroicons-x-mark-20-solid"
-                    :padded="false"
-                    @click.prevent="clearEndDate"
-                  )
-              template(#panel="{ close }")
-                ft-date-picker(
-                  v-model="endDate"
-                  :is-end-date="true"
-                  @close="close"
-                )
 
-          UFormGroup.pb-4(:label="$t('dashboard.productLimit')" name="productLimit")
-            UInput(v-model.number='productLimit' type='number' :min='1' :max='100')
-          FtButton(icon='i-heroicons-arrow-path' :loading='isLoading' @click='fetchFilteredDashboardData')
+          .col-span-1(class="md:col-span-2")
+            .grid.grid-cols-1.gap-3(class="sm:grid-cols-2")
+              UFormGroup(label="Date de début" name="startDate")
+                UPopover(:popper="{ placement: 'bottom-start' }")
+                  UButton(
+                    icon="i-heroicons-calendar-days-20-solid"
+                    :label="startDate ? format(startDate, 'd MMM yyyy', { locale: fr }) : $t('dashboard.selectDateRange')"
+                    class="w-full flex justify-between text-sm"
+                    color="primary"
+                    variant="soft"
+                    size="sm"
+                  )
+                    template(#trailing)
+                      UButton(
+                        v-show="startDate"
+                        color="primary"
+                        variant="link"
+                        icon="i-heroicons-x-mark-20-solid"
+                        :padded="false"
+                        @click.prevent="clearStartDate"
+                      )
+                  template(#panel="{ close }")
+                    ft-date-picker(
+                      v-model="startDate"
+                      @close="close"
+                    )
+              UFormGroup(label="Date de fin" name="endDate")
+                UPopover(:popper="{ placement: 'bottom-start' }")
+                  UButton(
+                    icon="i-heroicons-calendar-days-20-solid"
+                    :label="endDate ? format(endDate, 'd MMM yyyy', { locale: fr }) : $t('dashboard.selectDateRange')"
+                    class="w-full flex justify-between text-sm"
+                    color="primary"
+                    variant="soft"
+                    size="sm"
+                  )
+                    template(#trailing)
+                      UButton(
+                        v-show="endDate"
+                        color="primary"
+                        variant="link"
+                        icon="i-heroicons-x-mark-20-solid"
+                        :padded="false"
+                        @click.prevent="clearEndDate"
+                      )
+                  template(#panel="{ close }")
+                    ft-date-picker(
+                      v-model="endDate"
+                      :is-end-date="true"
+                      @close="close"
+                    )
+          UFormGroup(:label="$t('dashboard.productLimit')" name="productLimit")
+            UInput(
+              v-model.number="productLimit"
+              type="number"
+              :min="1"
+              :max="100"
+              class="w-full"
+            )
+          UFormGroup(label="Filtres" name="filters")
+            .flex.items-center
+              UCheckbox(v-model="promotionOnly" color="primary" name="promotionOnly")
+              span.ml-2.text-sm {{ $t('dashboard.promotionOnly') }}
+        .flex.justify-end.mt-3
+          UButton(
+            color="gray"
+            variant="soft"
+            icon="i-heroicons-x-mark"
+            class="mr-2"
+            size="sm"
+            @click="resetFilters"
+          )
+            | {{ $t('common.reset') }}
+          UButton(
+            color="primary"
+            icon="i-heroicons-arrow-path"
+            :loading="isLoading"
+            size="sm"
+            @click="fetchFilteredDashboardData"
+          )
             | {{ $t('dashboard.refresh') }}
-    template(#default)
-      div(v-if='isLoading')
-        .flex.justify-center.items-center.h-64
-          icon.animate-spin.h-8.w-8(name='i-heroicons-arrow-path')
-      div(v-else)
-        .grid.grid-cols-1.gap-4.mb-8(class='md:grid-cols-5')
-          UCard(v-for='(stat, index) in statsCards' :key='index')
-            template(#header)
-              .text-center
-                h3.text-lg.font-medium {{ stat.title }}
-            template(#default)
-              .text-center
-                p.text-3xl.font-bold {{ stat.value }}
-                p.text-sm.text-gray-500 {{ stat.description }}
-        .grid.grid-cols-1.gap-6.mb-8(class='lg:grid-cols-2')
-          UCard
-            template(#header)
-              h3.text-lg.font-medium
-                | {{ $t('dashboard.monthlySales') }}
-            template(#default)
-              .h-80
-                MonthlySalesChart(:data='dashboard.monthlySales')
-          UCard
-            template(#header)
-              h3.text-lg.font-medium
-                | {{ $t('dashboard.monthlyTurnover') }}
-            template(#default)
-              .h-80
-                MonthlyTurnoverChart(:data='dashboard.monthlySales')
-          UCard
-            template(#header)
-              h3.text-lg.font-medium
-                | {{ $t('dashboard.monthlyCanceledTurnover') }}
-            template(#default)
-              .h-80
-                MonthlyCanceledTurnoverChart(:data='dashboard.monthlySales')
-          UCard
-            template(#header)
-              h3.text-lg.font-medium
-                | {{ $t('dashboard.monthlyDeliveryPrice') }}
-            template(#default)
-              .h-80
-                MonthlyDeliveryPriceChart(:data='dashboard.monthlySales')
-        UCard.mt-16
-          template(#header)
-            h3.text-lg.font-medium
-              | {{ $t('dashboard.topProducts.title') }}
-          template(#default)
-            UTable(:columns='topProductsColumns' :rows='dashboard.topProducts')
-              template(#categories-data="{ row }")
-                div(v-if="row.categories && row.categories.length")
-                  div.mb-1(v-for="categoryItem in row.categories" :key="categoryItem.uuid")
-                    UBadge(variant="subtle" :label="categoryItem.name")
-                div(v-else)
-              template(#laboratory-data="{ row }")
-                span {{ row.laboratory ? row.laboratory.name : '' }}
+  .flex.justify-center.items-center.h-64(v-if="isLoading")
+    icon.animate-spin.h-8.w-8(name="i-heroicons-arrow-path")
+  .dashboard-content(v-else)
+    .grid.grid-cols-1.gap-4.mb-8(class="md:grid-cols-5")
+      UCard(v-for="(stat, index) in statsCards" :key="index")
+        template(#header)
+          .text-center
+            h3.text-lg.font-medium {{ stat.title }}
+        template(#default)
+          .text-center
+            p.text-3xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
+            p.text-sm.text-gray-500 {{ stat.description }}
+
+    .grid.grid-cols-1.gap-6.mb-8(class="lg:grid-cols-2")
+      UCard
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.monthlySales') }}
+        template(#default)
+          .h-80
+            MonthlySalesChart(:data="dashboard.monthlySales")
+      UCard
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.monthlyTurnover') }}
+        template(#default)
+          .h-80
+            MonthlyTurnoverChart(:data="dashboard.monthlySales")
+      UCard
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.monthlyCanceledTurnover') }}
+        template(#default)
+          .h-80
+            MonthlyCanceledTurnoverChart(:data="dashboard.monthlySales")
+      UCard
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.monthlyDeliveryPrice') }}
+        template(#default)
+          .h-80
+            MonthlyDeliveryPriceChart(:data="dashboard.monthlySales")
+
+    UCard.mt-16
+      template(#header)
+        h3.text-lg.font-medium {{ $t('dashboard.topProducts.title') }}
+      template(#default)
+        UTable(:columns="topProductsColumns" :rows="dashboard.topProducts")
+          template(#categories-data="{ row }")
+            div(v-if="row.categories && row.categories.length")
+              div.mb-1(v-for="categoryItem in row.categories" :key="categoryItem.uuid")
+                UBadge(variant="subtle" :label="categoryItem.name")
+            div(v-else)
+          template(#laboratory-data="{ row }")
+            span {{ row.laboratory ? row.laboratory.name : '' }}
 </template>
 
 <script lang="ts" setup>
@@ -150,6 +189,9 @@ const startDate = ref<number | null>(null)
 const endDate = ref<number | null>(null)
 const laboratory = ref<string | null>(null)
 const category = ref<string | null>(null)
+const promotionOnly = ref(false)
+const showFilters = ref(false)
+const isLargeScreen = ref(false)
 
 const laboratoriesVM = computed(() => {
   return getLaboratoriesVM()
@@ -159,31 +201,38 @@ const categoriesVM = computed(() => {
   return getCategoriesVM()
 })
 
+const areProductFiltersApplied = ref(false)
+
 const statsCards = computed(() => [
   {
     title: t('dashboard.totalSales'),
     value: dashboard.value.totalSales.count.toLocaleString(),
-    description: t('dashboard.orders')
+    description: t('dashboard.orders'),
+    isApplicableWithProductFilters: true
   },
   {
     title: t('dashboard.totalTurnover'),
     value: formatCurrency(dashboard.value.totalSales.turnover),
-    description: t('dashboard.revenue')
+    description: t('dashboard.revenue'),
+    isApplicableWithProductFilters: true
   },
   {
     title: t('dashboard.canceledTurnover'),
     value: formatCurrency(dashboard.value.totalSales.canceledTurnover),
-    description: t('dashboard.canceledRevenue')
+    description: t('dashboard.canceledRevenue'),
+    isApplicableWithProductFilters: true
   },
   {
     title: t('dashboard.deliveryPrice'),
     value: formatCurrency(dashboard.value.totalSales.deliveryPrice),
-    description: t('dashboard.deliveryRevenue')
+    description: t('dashboard.deliveryRevenue'),
+    isApplicableWithProductFilters: false
   },
   {
     title: t('dashboard.averageBasket'),
     value: formatCurrency(dashboard.value.totalSales.averageBasketValue),
-    description: t('dashboard.perOrder')
+    description: t('dashboard.perOrder'),
+    isApplicableWithProductFilters: false
   }
 ])
 
@@ -229,13 +278,44 @@ const fetchFilteredDashboardData = async () => {
     params.categoryUuid = category.value ? category.value.uuid : null
   }
 
+  if (promotionOnly.value) {
+    params.promotionOnly = promotionOnly.value
+  }
+
   await fetchDashboardData(params)
+  areProductFiltersApplied.value =
+    laboratory.value || category.value || promotionOnly.value
+}
+
+const toggleFilters = () => {
+  showFilters.value = !showFilters.value
+}
+
+const resetFilters = () => {
+  productLimit.value = 50
+  startDate.value = null
+  endDate.value = null
+  laboratory.value = null
+  category.value = null
+  promotionOnly.value = false
+  fetchFilteredDashboardData()
+}
+
+const updateScreenSize = () => {
+  isLargeScreen.value = window.innerWidth >= 768
 }
 
 onMounted(() => {
   listLaboratories(useLaboratoryGateway())
   listCategories(useCategoryGateway())
   fetchFilteredDashboardData()
+
+  updateScreenSize()
+  window.addEventListener('resize', updateScreenSize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateScreenSize)
 })
 
 const clearStartDate = () => {

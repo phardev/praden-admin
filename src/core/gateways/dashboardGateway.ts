@@ -6,6 +6,7 @@ export interface DashboardParams {
   endDate?: Date
   laboratoryUuid?: string
   categoryUuid?: string
+  promotionOnly?: boolean
 }
 
 export interface DashboardGateway {
