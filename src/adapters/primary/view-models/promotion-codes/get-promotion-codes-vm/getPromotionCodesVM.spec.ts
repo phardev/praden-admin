@@ -58,7 +58,7 @@ describe('Get promotion codes VM', () => {
 
     describe('Promotion codes in progress', () => {
       it('should list all of them', () => {
-        givenNowIs(limitedInTimePromotionCode.startDate + 1)
+        givenNowIs(limitedInTimePromotionCode.startDate! + 1)
         const expectedVM: Partial<GetPromotionCodesVM> = {
           items: {
             'En cours': {
@@ -107,7 +107,7 @@ describe('Get promotion codes VM', () => {
     })
     describe('Promotion codes not started', () => {
       it('should list all of them', () => {
-        givenNowIs(limitedInTimePromotionCode.startDate - 1)
+        givenNowIs(limitedInTimePromotionCode.startDate! - 1)
         promotionCodeStore.items = [limitedInTimePromotionCode]
         const expectedVM: Partial<GetPromotionCodesVM> = {
           items: {
@@ -136,7 +136,7 @@ describe('Get promotion codes VM', () => {
     })
     describe('Promotion codes already ended', () => {
       it('should list all of them', () => {
-        givenNowIs(limitedInTimePromotionCode.endDate + 1)
+        givenNowIs(limitedInTimePromotionCode.endDate! + 1)
         promotionCodeStore.items = [limitedInTimePromotionCode]
         const expectedVM: Partial<GetPromotionCodesVM> = {
           items: {

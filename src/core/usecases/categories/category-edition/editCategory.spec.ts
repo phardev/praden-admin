@@ -17,9 +17,9 @@ import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InM
 import { useProductStore } from '@store/productStore'
 
 describe('Category Edition', () => {
-  let categoryStore
+  let categoryStore: any
   let categoryGateway: InMemoryCategoryGateway
-  let productStore
+  let productStore: any
   let productGateway: InMemoryProductGateway
 
   beforeEach(() => {
@@ -92,7 +92,13 @@ describe('Category Edition', () => {
     describe('The parent category does not exists', () => {
       it('should throw an error', async () => {
         await expect(
-          whenEditCategory(dents.uuid, { parentUuid: 'not-exists' })
+          whenEditCategory(dents.uuid, {
+            parentUuid: 'not-exists',
+            name: dents.name,
+            description: dents.description,
+            productsAdded: [],
+            productsRemoved: []
+          })
         ).rejects.toThrow(ParentCategoryDoesNotExistsError)
       })
     })
@@ -101,7 +107,10 @@ describe('Category Edition', () => {
       beforeEach(async () => {
         givenExistingProducts(dolodent, calmosine)
         const dto: EditCategoryDTO = {
-          productsAdded: [dolodent.uuid, calmosine.uuid]
+          name: minceur.name,
+          description: minceur.description,
+          productsAdded: [dolodent.uuid, calmosine.uuid],
+          productsRemoved: []
         }
         await whenEditCategory(minceur.uuid, dto)
         expectedProducts = [
@@ -127,7 +136,10 @@ describe('Category Edition', () => {
       beforeEach(async () => {
         givenExistingProducts(anaca3Minceur)
         const dto: EditCategoryDTO = {
-          productsRemoved: [anaca3Minceur.uuid]
+          name: minceur.name,
+          description: minceur.description,
+          productsRemoved: [anaca3Minceur.uuid],
+          productsAdded: []
         }
         await whenEditCategory(minceur.uuid, dto)
         expectedProducts = [
@@ -148,7 +160,12 @@ describe('Category Edition', () => {
   describe('The category does not exists', () => {
     it('should throw an error', async () => {
       await expect(
-        whenEditCategory('NotExists', { name: 'NewName' })
+        whenEditCategory('NotExists', {
+          name: 'NewName',
+          description: 'NewDescription',
+          productsAdded: [],
+          productsRemoved: []
+        })
       ).rejects.toThrow(CategoryDoesNotExistsError)
     })
   })

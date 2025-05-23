@@ -10,25 +10,33 @@ gateway.feedWith({
       month: '2025-01',
       count: 200,
       turnover: 1000000,
-      averageBasketValue: 5000
+      averageBasketValue: 5000,
+      canceledTurnover: 0,
+      deliveryPrice: 0
     },
     {
       month: '2025-02',
       count: 300,
       turnover: 1500000,
-      averageBasketValue: 5000
+      averageBasketValue: 5000,
+      canceledTurnover: 0,
+      deliveryPrice: 0
     },
     {
       month: '2025-03',
       count: 500,
       turnover: 2000000,
-      averageBasketValue: 4000
+      averageBasketValue: 4000,
+      canceledTurnover: 0,
+      deliveryPrice: 0
     }
   ],
   totalSales: {
     count: 1000,
     turnover: 4500000,
-    averageBasketValue: 4500
+    averageBasketValue: 4500,
+    canceledTurnover: 0,
+    deliveryPrice: 0
   },
   topProducts: [
     {

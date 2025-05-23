@@ -183,7 +183,7 @@ describe('Product form edit VM', () => {
           { field: 'removedImages', expected: [] },
           { field: 'percentTaxRate', expected: product.percentTaxRate },
           { field: 'availableStock', expected: product.availableStock },
-          { field: 'laboratory', expected: product.laboratory.uuid },
+          { field: 'laboratory', expected: product.laboratory!.uuid },
           { field: 'description', expected: product.description },
           { field: 'instructionsForUse', expected: product.instructionsForUse },
           { field: 'composition', expected: product.composition },
@@ -455,7 +455,7 @@ describe('Product form edit VM', () => {
         await vm.set('miniature', newMiniature)
         await vm.set('newImages', newImages)
         vm.toggleCategory('abc123')
-        vm.set('laboratory', expectedDTO.laboratory.uuid)
+        vm.set('laboratory', expectedDTO.laboratory!.uuid)
         vm.set('priceWithoutTax', '12')
         vm.set('percentTaxRate', '5')
         vm.set('locations', expectedDTO.locations)
@@ -508,7 +508,7 @@ describe('Product form edit VM', () => {
         await vm.set('miniature', newMiniature)
         await vm.set('newImages', newImages)
         vm.toggleCategory('abc123')
-        vm.set('laboratory', expectedDTO.laboratory.uuid)
+        vm.set('laboratory', expectedDTO.laboratory!.uuid)
         vm.set('priceWithoutTax', '12')
         vm.set('percentTaxRate', '5')
         vm.set('locations', expectedDTO.locations)
@@ -562,7 +562,7 @@ describe('Product form edit VM', () => {
         await vm.set('miniature', newMiniature)
         await vm.set('newImages', newImages)
         vm.toggleCategory('abc123')
-        vm.set('laboratory', expectedDTO.laboratory.uuid)
+        vm.set('laboratory', expectedDTO.laboratory!.uuid)
         vm.set('priceWithoutTax', '12')
         vm.set('percentTaxRate', '5')
         vm.set('locations', expectedDTO.locations)

@@ -72,7 +72,6 @@ export class RealInvoiceGateway implements InvoiceGateway {
     if (status === 'CREATED') return OrderLineStatus.Created
     if (status === 'PROCESSING') return OrderLineStatus.Started
     if (status === 'SHIPPED') return OrderLineStatus.Prepared
-    if (status === 'DELIVERED') return OrderLineStatus.Delivered
     if (status === 'CANCELED') return OrderLineStatus.Canceled
     return OrderLineStatus.Created
   }

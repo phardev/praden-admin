@@ -1,6 +1,7 @@
 import { usePreparationStore } from '@store/preparationStore'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
+import { isAnonymousOrder } from '@core/entities/order'
 import {
   AddressVM,
   getDeliveryAddressVM
@@ -214,6 +215,6 @@ export const getBillingAddressVM = (order: Order): AddressVM => {
     city: order.billingAddress.city,
     zip: order.billingAddress.zip,
     country: order.billingAddress.country,
-    phone: order.contact?.phone ?? ''
+    phone: isAnonymousOrder(order) ? order.contact.phone : ''
   }
 }

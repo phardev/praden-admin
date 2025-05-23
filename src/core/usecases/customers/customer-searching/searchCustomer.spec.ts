@@ -140,7 +140,9 @@ describe('Customer searching', () => {
     expect(searchStore.get(url)).toStrictEqual(expectedRes)
   }
 
-  const expectCurrentFilterToBe = (currentFilter) => {
+  const expectCurrentFilterToBe = (
+    currentFilter: Partial<SearchCustomersDTO>
+  ) => {
     expect(searchStore.getFilter(url)).toStrictEqual(currentFilter)
   }
 })

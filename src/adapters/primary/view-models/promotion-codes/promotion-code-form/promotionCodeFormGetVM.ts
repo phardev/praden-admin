@@ -90,7 +90,6 @@ export class PromotionCodeFormFieldsReader extends FormFieldsReader {
 }
 
 export class PromotionCodeFormGetVM extends PromotionCodeFormVM {
-  protected readonly key: string
   protected formStore: any
 
   constructor(
@@ -108,7 +107,7 @@ export class PromotionCodeFormGetVM extends PromotionCodeFormVM {
     }
   }
 
-  getProducts(): Field<Array<PromotionCodeProductItemVM>> {
+  override getProducts(): Field<Array<PromotionCodeProductItemVM>> {
     return {
       ...super.getProducts(),
       canEdit: false
@@ -126,11 +125,11 @@ export class PromotionCodeFormGetVM extends PromotionCodeFormVM {
     }
   }
 
-  getCanValidate(): boolean {
+  override getCanValidate(): boolean {
     return false
   }
 
-  getDisplayValidate(): boolean {
+  override getDisplayValidate(): boolean {
     return false
   }
 }

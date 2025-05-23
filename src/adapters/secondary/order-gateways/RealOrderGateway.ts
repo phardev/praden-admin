@@ -49,6 +49,11 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
     super(baseUrl)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  batch(uuids: Array<UUID>): Promise<Array<Order>> {
+    throw new Error('Method not implemented.')
+  }
+
   async askHowToFinish(preparation: Order): Promise<Order> {
     const res = await axiosWithBearer.post(
       `${this.baseUrl}/preparations/${preparation.uuid}/ask-how-to-finish/`
@@ -153,7 +158,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
       delete l.location
     })
     copy.messages = data.messages
-      .sort((m1, m2) => m1.updatedAt - m2.updatedAt)
+      .sort((m1: any, m2: any) => m1.updatedAt - m2.updatedAt)
       .map((m: any) => {
         return {
           content: m.data.type,

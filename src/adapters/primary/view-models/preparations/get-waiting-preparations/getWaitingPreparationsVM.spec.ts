@@ -65,6 +65,7 @@ describe('Get orders to prepare VM', () => {
         items: {
           'En attente de réponse client': {
             count: 2,
+            canSelect: false,
             table: {
               headers: expectedHeaders,
               items: [
@@ -87,7 +88,8 @@ describe('Get orders to prepare VM', () => {
               ]
             }
           }
-        }
+        },
+        isLoading: false
       }
       expectVMToMatch(expectedVM)
     })
@@ -103,6 +105,7 @@ describe('Get orders to prepare VM', () => {
         items: {
           'En attente de réapprovisionnement': {
             count: 1,
+            canSelect: false,
             table: {
               headers: expectedHeaders,
               items: [

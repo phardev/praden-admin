@@ -13,7 +13,7 @@ export class InMemoryTimoutCategoryGateway extends InMemoryCategoryGateway {
     this.timeoutInMs = timeoutInMs
   }
 
-  list(): Promise<Array<Category>> {
+  override list(): Promise<Array<Category>> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.list())
@@ -21,7 +21,7 @@ export class InMemoryTimoutCategoryGateway extends InMemoryCategoryGateway {
     })
   }
 
-  create(dto: CreateCategoryDTO): Promise<Category> {
+  override create(dto: CreateCategoryDTO): Promise<Category> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.create(dto))
@@ -29,7 +29,7 @@ export class InMemoryTimoutCategoryGateway extends InMemoryCategoryGateway {
     })
   }
 
-  edit(uuid: UUID, dto: Partial<EditCategoryDTO>): Promise<Category> {
+  override edit(uuid: UUID, dto: Partial<EditCategoryDTO>): Promise<Category> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.edit(uuid, dto))
@@ -37,7 +37,7 @@ export class InMemoryTimoutCategoryGateway extends InMemoryCategoryGateway {
     })
   }
 
-  getByUuid(uuid: UUID): Promise<Category> {
+  override getByUuid(uuid: UUID): Promise<Category> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.getByUuid(uuid))

@@ -58,7 +58,7 @@ describe('Validate preparation', () => {
       let expectedInvoiceNumber: string
       let expectedInvoice: Invoice
       beforeEach(() => {
-        expectedInvoiceNumber = order.invoiceNumber
+        expectedInvoiceNumber = order.invoiceNumber!
         const expectedOrder: Order = JSON.parse(JSON.stringify(order))
         expectedOrder.lines[0].status = OrderLineStatus.Prepared
         expectedOrder.lines[0].updatedAt = now
@@ -107,7 +107,7 @@ describe('Validate preparation', () => {
       let expectedInvoiceNumber: string
       let expectedInvoice: Invoice
       beforeEach(() => {
-        expectedInvoiceNumber = order.invoiceNumber
+        expectedInvoiceNumber = order.invoiceNumber!
         const expectedOrder: Order = JSON.parse(JSON.stringify(order))
         expectedOrder.lines[0].status = OrderLineStatus.Prepared
         expectedOrder.lines[1].status = OrderLineStatus.Prepared
@@ -167,7 +167,7 @@ describe('Validate preparation', () => {
         let expectedInvoiceNumber: string
         let expectedInvoice: Invoice
         beforeEach(() => {
-          expectedInvoiceNumber = order.invoiceNumber
+          expectedInvoiceNumber = order.invoiceNumber!
           expectedInvoice = {
             id: expectedInvoiceNumber,
             data: expectedOrder,

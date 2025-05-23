@@ -230,14 +230,16 @@ describe('Promotion code form get VM', () => {
             ({ field }) => {
               it(`should initialize ${field}"`, () => {
                 const expectedField: Field<any> = {
-                  value: expectedFields[field],
+                  value: expectedFields[field as keyof typeof expectedFields],
                   canEdit: false
                 }
                 expect(vm.get(field)).toStrictEqual(expectedField)
               })
               it(`should save the ${field} value in form store`, () => {
-                expect(formStore.get(key)[field]).toStrictEqual(
-                  expectedFields[field]
+                expect(
+                  formStore.get(key)[field as keyof typeof expectedFields]
+                ).toStrictEqual(
+                  expectedFields[field as keyof typeof expectedFields]
                 )
               })
             }

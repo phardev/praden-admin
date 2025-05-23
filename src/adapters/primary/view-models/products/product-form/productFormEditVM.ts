@@ -68,10 +68,10 @@ export class ProductFormEditVM extends ProductFormVM {
 
   async removeImage(data: string) {
     const images = this.fieldsReader.get('images')
-    if (images.find((i) => i === data)) {
+    if (images.find((i: string) => i === data)) {
       const removedImages = this.fieldsReader.get('removedImages')
       removedImages.push(data)
-      const updated = images.filter((image) => image !== data)
+      const updated = images.filter((image: string) => image !== data)
       await this.set('images', updated)
     }
     const newImages = this.fieldsReader.get('newImages')

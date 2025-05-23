@@ -7,6 +7,20 @@ import { Dashboard } from '@core/entities/dashboard'
 export class InMemoryDashboardGateway implements DashboardGateway {
   private mockData: Dashboard
 
+  constructor() {
+    this.mockData = {
+      monthlySales: [],
+      totalSales: {
+        count: 0,
+        turnover: 0,
+        averageBasketValue: 0,
+        canceledTurnover: 0,
+        deliveryPrice: 0
+      },
+      topProducts: []
+    }
+  }
+
   async getDashboardData(params: DashboardParams): Promise<Dashboard> {
     const filteredTopProducts = params.productLimit
       ? this.mockData.topProducts.slice(0, params.productLimit)
@@ -40,7 +54,9 @@ export class InMemoryDashboardGateway implements DashboardGateway {
       totalSales: {
         count: totalCount,
         turnover: totalTurnover,
-        averageBasketValue
+        averageBasketValue,
+        canceledTurnover: 0,
+        deliveryPrice: 0
       },
       topProducts: filteredTopProducts
     }

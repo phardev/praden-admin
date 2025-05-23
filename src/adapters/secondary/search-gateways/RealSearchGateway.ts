@@ -30,7 +30,9 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
       filters
     )
     return Promise.resolve(
-      res.data.items.sort((a, b) => b.availableStock - a.availableStock)
+      res.data.items.sort(
+        (a: Product, b: Product) => b.availableStock - a.availableStock
+      )
     )
   }
 
@@ -57,9 +59,13 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
     const body = {
       startDate: dto.startDate,
       endDate: dto.endDate,
-      paymentStatus: paymentStatusMap[dto.paymentStatus],
+      paymentStatus: dto.paymentStatus
+        ? paymentStatusMap[dto.paymentStatus]
+        : undefined,
       customerUuid: dto.customerUuid,
-      deliveryStatus: deliveryStatusMap[dto.deliveryStatus]
+      deliveryStatus: dto.deliveryStatus
+        ? deliveryStatusMap[dto.deliveryStatus]
+        : undefined
     }
     const orderStore = useOrderStore()
     let orders = orderStore.items
@@ -168,7 +174,7 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
       delete l.location
     })
     copy.messages = data.messages
-      .sort((m1, m2) => m1.updatedAt - m2.updatedAt)
+      .sort((m1: any, m2: any) => m1.updatedAt - m2.updatedAt)
       .map((m: any) => {
         return {
           content: m.data.type,

@@ -69,22 +69,22 @@ const productWithoutLaboratoryVM: LaboratoryProductItemVM = {
 
 const availableAnaca3VM: LaboratoryAvailableProductItemVM = {
   ...anaca3VM,
-  laboratory: anaca3Minceur.laboratory.name
+  laboratory: anaca3Minceur.laboratory!.name
 }
 
 const availableCalmosineVM: LaboratoryAvailableProductItemVM = {
   ...calmosineVM,
-  laboratory: calmosine.laboratory.name
+  laboratory: calmosine.laboratory!.name
 }
 
 const availableDolodentVM: LaboratoryAvailableProductItemVM = {
   ...dolodentVM,
-  laboratory: dolodent.laboratory.name
+  laboratory: dolodent.laboratory!.name
 }
 
 const availableChamomillaVM: LaboratoryAvailableProductItemVM = {
   ...chamomillaVM,
-  laboratory: chamomilla.laboratory.name
+  laboratory: chamomilla.laboratory!.name
 }
 
 const availableProductWithoutLaboratoryVM: LaboratoryAvailableProductItemVM = {

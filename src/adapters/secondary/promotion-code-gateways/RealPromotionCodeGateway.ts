@@ -60,7 +60,7 @@ export class RealPromotionCodeGateway
       ...dto,
       conditions: {
         ...dto.conditions,
-        productUuids: dto.conditions.products
+        productUuids: dto.conditions?.products
           ? dto.conditions.products.map((p) => p.uuid)
           : undefined
       }

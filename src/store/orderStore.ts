@@ -14,7 +14,7 @@ export const useOrderStore = defineStore('OrderStore', {
     getByUuid: (state) => {
       return (uuid: UUID): Order => {
         const order = state.items.find((p) => p.uuid === uuid)
-        return order
+        return order!
       }
     }
   },
@@ -32,9 +32,6 @@ export const useOrderStore = defineStore('OrderStore', {
       this.items = this.items.map((i) => {
         return i.uuid === order.uuid ? order : i
       })
-    },
-    clearSelection() {
-      this.selected = []
     },
     startLoading() {
       this.isLoading = true

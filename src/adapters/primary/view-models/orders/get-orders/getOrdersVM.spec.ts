@@ -77,7 +77,7 @@ describe('Get orders VM', () => {
               createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
               status: OrderLineStatus.Created,
               total: '11,00\u00A0€',
-              paymentStatus: orderToPrepare1.payment.status,
+              paymentStatus: orderToPrepare1.payment!.status,
               deliveryStatus: orderToPrepare1.deliveries[0].status
             },
             {
@@ -88,7 +88,7 @@ describe('Get orders VM', () => {
               createdDatetime: new Date('2023-02-05T02:33:40.539Z'),
               status: OrderLineStatus.Prepared,
               total: '11,00\u00A0€',
-              paymentStatus: orderPrepared1.payment.status,
+              paymentStatus: orderPrepared1.payment!.status,
               deliveryStatus: orderPrepared1.deliveries[0].status
             },
             {
@@ -99,7 +99,7 @@ describe('Get orders VM', () => {
               createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
               status: OrderLineStatus.Created,
               total: '11,00\u00A0€',
-              paymentStatus: orderNotPayed1.payment.status,
+              paymentStatus: orderNotPayed1.payment!.status,
               deliveryStatus: orderNotPayed1.deliveries[0].status
             }
           ]
@@ -119,7 +119,7 @@ describe('Get orders VM', () => {
               createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
               status: OrderLineStatus.Created,
               total: '6,00\u00A0€',
-              paymentStatus: orderWithPromotionCode.payment.status,
+              paymentStatus: orderWithPromotionCode.payment!.status,
               deliveryStatus: orderWithPromotionCode.deliveries[0].status
             }
           ]
@@ -140,7 +140,7 @@ describe('Get orders VM', () => {
               createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
               status: OrderLineStatus.Created,
               total: '11,00\u00A0€',
-              paymentStatus: orderToPrepare1.payment.status,
+              paymentStatus: orderToPrepare1.payment!.status,
               deliveryStatus: orderToPrepare1.deliveries[0].status
             },
             {
@@ -151,7 +151,7 @@ describe('Get orders VM', () => {
               createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
               status: OrderLineStatus.Created,
               total: '11,00\u00A0€',
-              paymentStatus: orderNotPayed1.payment.status,
+              paymentStatus: orderNotPayed1.payment!.status,
               deliveryStatus: orderNotPayed1.deliveries[0].status
             }
           ]
@@ -193,7 +193,7 @@ describe('Get orders VM', () => {
             createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
             status: OrderLineStatus.Created,
             total: '11,00\u00A0€',
-            paymentStatus: orderWithoutDelivery.payment.status,
+            paymentStatus: orderWithoutDelivery.payment!.status,
             deliveryStatus: DeliveryStatus.Created
           }
         ]

@@ -10,7 +10,7 @@ import {
 } from '@core/usecases/customers/customer-creation/createCustomer'
 
 describe('Create customer', () => {
-  let customerStore
+  let customerStore: any
   const uuidGenerator: FakeUuidGenerator = new FakeUuidGenerator()
   let customerGateway: InMemoryCustomerGateway
 
