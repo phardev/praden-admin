@@ -19,97 +19,97 @@ import {
 import { Invoice } from '@core/entities/invoice'
 
 export const orderDelivered1Invoice: Invoice = {
-  id: orderDelivered1.invoiceNumber,
+  id: orderDelivered1.invoiceNumber!,
   data: orderDelivered1,
   createdAt: 1674273599954
 }
 
 export const orderDelivered2Invoice: Invoice = {
-  id: orderDelivered2.invoiceNumber,
+  id: orderDelivered2.invoiceNumber!,
   data: orderDelivered2,
   createdAt: 1674273599954
 }
 
 export const orderWithMissingProduct1Invoice: Invoice = {
-  id: orderWithMissingProduct1.invoiceNumber,
+  id: orderWithMissingProduct1.invoiceNumber!,
   data: orderWithMissingProduct1,
   createdAt: 1674273599954
 }
 
 export const orderWithMissingProduct2Invoice: Invoice = {
-  id: orderWithMissingProduct2.invoiceNumber,
+  id: orderWithMissingProduct2.invoiceNumber!,
   data: orderWithMissingProduct2,
   createdAt: 1674273599954
 }
 
 export const orderToCancelInvoice: Invoice = {
-  id: orderToCancel.invoiceNumber,
+  id: orderToCancel.invoiceNumber!,
   data: orderToCancel,
   createdAt: 1674273599954
 }
 
 export const orderPartiallyShipped1Invoice: Invoice = {
-  id: orderPartiallyShipped1.invoiceNumber,
+  id: orderPartiallyShipped1.invoiceNumber!,
   data: orderPartiallyShipped1,
   createdAt: 1674273599954
 }
 
 export const orderVFASFInvoice: Invoice = {
-  id: orderVFASF.invoiceNumber,
+  id: orderVFASF.invoiceNumber!,
   data: orderVFASF,
   createdAt: 1674273599954
 }
 
 export const orderXUKIJInvoice: Invoice = {
-  id: orderXUKIJ.invoiceNumber,
+  id: orderXUKIJ.invoiceNumber!,
   data: orderXUKIJ,
   createdAt: 1674273599954
 }
 
 export const orderWithProductWithoutLocationInvoice: Invoice = {
-  id: orderWithProductWithoutLocation.invoiceNumber,
+  id: orderWithProductWithoutLocation.invoiceNumber!,
   data: orderWithProductWithoutLocation,
   createdAt: 1674273599954
 }
 
 export const elodieDurandOrder1Invoice: Invoice = {
-  id: elodieDurandOrder1.invoiceNumber,
+  id: elodieDurandOrder1.invoiceNumber!,
   data: elodieDurandOrder1,
   createdAt: 1674273599954
 }
 
 export const elodieDurandOrder2Invoice: Invoice = {
-  id: elodieDurandOrder2.invoiceNumber,
+  id: elodieDurandOrder2.invoiceNumber!,
   data: elodieDurandOrder2,
   createdAt: 1674273599954
 }
 
 export const lucasLefevreOrder1Invoice: Invoice = {
-  id: lucasLefevreOrder1.invoiceNumber,
+  id: lucasLefevreOrder1.invoiceNumber!,
   data: lucasLefevreOrder1,
   createdAt: 1674273599954
 }
 
 export const lucasLefevreOrder2Invoice: Invoice = {
-  id: lucasLefevreOrder2.invoiceNumber,
+  id: lucasLefevreOrder2.invoiceNumber!,
   data: lucasLefevreOrder2,
   createdAt: 1674273599954
 }
 
 export const orderWithCustomerMessageInvoice: Invoice = {
-  id: orderWithCustomerMessage.invoiceNumber,
+  id: orderWithCustomerMessage.invoiceNumber!,
   data: orderWithCustomerMessage,
   createdAt: 1674273599954
 }
 
 export const orderCanceledInvoice: Invoice = {
-  id: orderCanceled.invoiceNumber,
+  id: orderCanceled.invoiceNumber!,
   data: orderCanceled,
   createdAt: 1674273599954
 }
 
 export const orderWithPromotionCodeInvoice: Invoice = {
-  id: orderWithPromotionCode.invoiceNumber,
+  id: orderWithPromotionCode.invoiceNumber!,
   data: orderWithPromotionCode,
   createdAt: 1674273599954
 }

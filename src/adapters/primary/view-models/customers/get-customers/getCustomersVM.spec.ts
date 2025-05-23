@@ -12,7 +12,6 @@ import {
   sophieMartinez
 } from '@utils/testData/customers'
 import { Customer } from '@core/entities/customer'
-import { GetOrdersVM } from '@adapters/primary/view-models/orders/get-orders/getOrdersVM'
 import { useSearchStore } from '@store/searchStore'
 
 const expectedHeaders: Array<Header> = [
@@ -113,7 +112,7 @@ describe('Get customers VM', () => {
   }
 
   const expectVMToMatch = (expectedVM: Partial<GetCustomersVM>) => {
-    const emptyVM: GetOrdersVM = {
+    const emptyVM: GetCustomersVM = {
       headers: expectedHeaders,
       items: [],
       isLoading: false,

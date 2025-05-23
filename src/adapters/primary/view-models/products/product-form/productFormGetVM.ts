@@ -109,7 +109,7 @@ export class ExistingProductFormInitializer implements FormInitializer {
       name: product.name,
       status: product.status,
       isActive: isProductActive(product),
-      categoryUuids: product.categories.map((c) => c.uuid),
+      categoryUuids: product.categories.map((c: Category) => c.uuid),
       cip7: product.cip7,
       cip13: product.cip13,
       ean13: product.ean13,
@@ -135,17 +135,6 @@ export class ExistingProductFormInitializer implements FormInitializer {
       maxQuantityForOrder: product.maxQuantityForOrder,
       isMedicine: product.isMedicine,
       arePromotionsAllowed: product.flags.arePromotionsAllowed
-    })
-  }
-
-  private getProductLocations(locations: object): Array<any> {
-    const allLocations = this.locationStore.items
-    return allLocations.sort(sortLocationByOrder).map((location) => {
-      return {
-        uuid: location.uuid,
-        label: location.name,
-        value: locations[location.uuid]
-      }
     })
   }
 }

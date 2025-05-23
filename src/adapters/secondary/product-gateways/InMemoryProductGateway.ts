@@ -35,7 +35,7 @@ export class InMemoryProductGateway implements ProductGateway {
 
   async create(dto: CreateProductDTO): Promise<Product> {
     const images: Array<string> = []
-    for (const image of dto.images) {
+    for (const image of dto.images || []) {
       images.push(await getFileContent(image))
     }
     const product: Product = {

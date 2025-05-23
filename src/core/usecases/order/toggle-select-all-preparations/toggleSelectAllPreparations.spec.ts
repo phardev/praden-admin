@@ -28,7 +28,7 @@ describe('Toggle select all preparations', () => {
         preparationStore.selected = [orderToPrepare1.uuid]
       })
       it('should unselect all preparations', () => {
-        toggleSelectAllPreparations()
+        toggleSelectAllPreparations([])
         expect(preparationStore.selected).toStrictEqual([])
       })
     })

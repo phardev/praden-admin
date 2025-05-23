@@ -24,7 +24,7 @@ const anaca3VM: CategoryProductItemVM = {
   name: anaca3Minceur.name,
   reference: anaca3Minceur.ean13,
   categories: anaca3Minceur.categories.map((c) => c.name),
-  laboratory: anaca3Minceur.laboratory.name
+  laboratory: anaca3Minceur.laboratory!.name
 }
 
 const calmosineVM: CategoryProductItemVM = {
@@ -32,7 +32,7 @@ const calmosineVM: CategoryProductItemVM = {
   name: calmosine.name,
   reference: calmosine.ean13,
   categories: calmosine.categories.map((c) => c.name),
-  laboratory: calmosine.laboratory.name
+  laboratory: calmosine.laboratory!.name
 }
 
 const productWithoutLaboratoryVM: CategoryProductItemVM = {

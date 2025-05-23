@@ -34,7 +34,7 @@ describe('Search products', () => {
       await whenSearchForProducts()
     })
     it('should return an empty array', async () => {
-      expectSearchResultToBeUndefined()
+      expectSearchResultToBeEmpty()
     })
     it('should save the search', () => {
       expectCurrentFiltersToEqual({})
@@ -50,7 +50,7 @@ describe('Search products', () => {
       await whenSearchForProducts()
     })
     it('should save the result for another url', () => {
-      expectSearchResultToBeUndefined()
+      expectSearchResultToBeEmpty()
     })
     it('should save the search for another url', () => {
       expectCurrentFiltersToEqual({})
@@ -179,7 +179,7 @@ describe('Search products', () => {
             expectErrorToBe('query is too short')
           })
           it('should not have a result', () => {
-            expectSearchResultToBeUndefined()
+            expectSearchResultToBeEmpty()
           })
           it('should save the search query', () => {
             expectCurrentFiltersToEqual({
@@ -201,7 +201,7 @@ describe('Search products', () => {
             expectErrorToBe('query is too short')
           })
           it('should not have a result', () => {
-            expectSearchResultToBeUndefined()
+            expectSearchResultToBeEmpty()
           })
           it('should save the search query', () => {
             expectCurrentFiltersToEqual({
@@ -245,7 +245,7 @@ describe('Search products', () => {
           expectErrorToBe(undefined)
         })
         it('should not have result', () => {
-          expectSearchResultToBeUndefined()
+          expectSearchResultToBeEmpty()
         })
         it('should save the search query', () => {
           expectCurrentFiltersToEqual({
@@ -299,8 +299,8 @@ describe('Search products', () => {
     expect(searchStore.get(url)).toStrictEqual(expectedRes)
   }
 
-  const expectSearchResultToBeUndefined = () => {
-    expect(searchStore.get(url)).toStrictEqual(undefined)
+  const expectSearchResultToBeEmpty = () => {
+    expect(searchStore.get(url)).toStrictEqual([])
   }
 
   const expectCurrentFiltersToEqual = (

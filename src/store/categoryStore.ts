@@ -44,15 +44,23 @@ export const useCategoryStore = defineStore('CategoryStore', {
     addProducts(products: Array<Product>) {
       if (!this.current) {
         this.current = {
+          category: {
+            uuid: '',
+            name: '',
+            description: '',
+            parentUuid: undefined,
+            miniature: undefined,
+            image: undefined
+          },
           products: []
         }
       }
       const toPush = products.filter(
         (product) =>
-          !this.current.products.map((p) => p.uuid).includes(product.uuid)
+          !this.current!.products.map((p) => p.uuid).includes(product.uuid)
       )
       if (toPush.length) {
-        this.current.products.push(...toPush)
+        this.current!.products.push(...toPush)
       }
     }
   }

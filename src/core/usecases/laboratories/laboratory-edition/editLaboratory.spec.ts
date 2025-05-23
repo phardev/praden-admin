@@ -39,7 +39,7 @@ describe('Laboratory edition', () => {
         }
         expectedLaboratory = {
           ...avene,
-          name: dto.name
+          name: dto.name!
         }
         await whenEditLaboratory(avene.uuid)
       })

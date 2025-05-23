@@ -21,7 +21,7 @@ export class BannerFormFieldsWriter extends FormFieldsWriter {
     }
   }
 
-  async set(fieldName: string, value: any): Promise<any> {
+  override async set(fieldName: string, value: any): Promise<any> {
     const handler =
       this.fieldHandlers[fieldName] || super.set.bind(this, fieldName)
     await handler(value)

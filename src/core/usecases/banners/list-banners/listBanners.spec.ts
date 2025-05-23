@@ -4,6 +4,7 @@ import { useBannerStore } from '@store/bannerStore'
 import { listBanners } from '@core/usecases/banners/list-banners/listBanners'
 import { banner1, banner2, banner3 } from '@utils/testData/banners'
 import { InMemoryBannerGateway } from '@adapters/secondary/banner-gateways/inMemoryBannerGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 
 describe('List banners', () => {
   let bannerStore: any
@@ -12,7 +13,7 @@ describe('List banners', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     bannerStore = useBannerStore()
-    bannerGateway = new InMemoryBannerGateway()
+    bannerGateway = new InMemoryBannerGateway(new FakeUuidGenerator())
   })
   describe('There is no banners', () => {
     it('should list nothing', async () => {

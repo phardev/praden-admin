@@ -9,7 +9,7 @@ export const usePreparationStore = defineStore('PreparationStore', {
       items: [] as Array<Order>,
       selected: [] as Array<UUID>,
       current: undefined as Order | undefined,
-      error: undefined,
+      error: undefined as PreparationError | undefined,
       isLoading: false
     }
   },
@@ -17,7 +17,7 @@ export const usePreparationStore = defineStore('PreparationStore', {
     getByUuid: (state) => {
       return (uuid: UUID): Order => {
         const order = state.items.find((p) => p.uuid === uuid)
-        return order
+        return order!
       }
     }
   },

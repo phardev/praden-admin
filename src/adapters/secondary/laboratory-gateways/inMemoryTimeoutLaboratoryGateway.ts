@@ -13,7 +13,7 @@ export class InMemoryTimeoutLaboratoryGateway extends InMemoryLaboratoryGateway 
     this.timeoutInMs = timeoutInMs
   }
 
-  list(): Promise<Array<Laboratory>> {
+  override list(): Promise<Array<Laboratory>> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.list())
@@ -21,7 +21,7 @@ export class InMemoryTimeoutLaboratoryGateway extends InMemoryLaboratoryGateway 
     })
   }
 
-  getByUuid(uuid: UUID): Promise<Laboratory> {
+  override getByUuid(uuid: UUID): Promise<Laboratory> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.getByUuid(uuid))
@@ -29,7 +29,7 @@ export class InMemoryTimeoutLaboratoryGateway extends InMemoryLaboratoryGateway 
     })
   }
 
-  async create(dto: CreateLaboratoryDTO): Promise<Laboratory> {
+  override async create(dto: CreateLaboratoryDTO): Promise<Laboratory> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.create(dto))
@@ -37,7 +37,7 @@ export class InMemoryTimeoutLaboratoryGateway extends InMemoryLaboratoryGateway 
     })
   }
 
-  async edit(uuid: UUID, dto: EditLaboratoryDTO): Promise<Laboratory> {
+  override async edit(uuid: UUID, dto: EditLaboratoryDTO): Promise<Laboratory> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.edit(uuid, dto))

@@ -4,7 +4,8 @@ import {
   OrderLineStatus,
   Message,
   MessageContent,
-  Order
+  Order,
+  OrderLine
 } from '@core/entities/order'
 import { timestampToLocaleString } from '@utils/formatters'
 import { HashTable } from '@core/types/types'
@@ -51,9 +52,7 @@ const canValidate = (
   return areAllLinesPrepared || canDoPartialShip
 }
 
-export const getLineStatus = (
-  line: GetPreparationLineVM
-): PreparationStatus => {
+export const getLineStatus = (line: OrderLine): PreparationStatus => {
   if (line.expectedQuantity < line.preparedQuantity)
     return PreparationStatus.ErrorTooMuchQuantity
   return line.expectedQuantity === line.preparedQuantity
@@ -147,15 +146,17 @@ export const getPreparationVM = (): GetPreparationVM => {
       value: 'status'
     }
   ]
-  const lines: Array<GetPreparationLineVM> = preparation.lines.map((line) => {
-    return {
-      reference: line.ean13,
-      name: line.name,
-      expectedQuantity: line.expectedQuantity,
-      preparedQuantity: line.preparedQuantity,
-      status: getLineStatus(line)
+  const lines: Array<GetPreparationLineVM> = preparation.lines.map(
+    (line: OrderLine) => {
+      return {
+        reference: line.ean13,
+        name: line.name,
+        expectedQuantity: line.expectedQuantity,
+        preparedQuantity: line.preparedQuantity,
+        status: getLineStatus(line)
+      }
     }
-  })
+  )
   const error = preparationStore.error
   const res: GetPreparationVM = {
     reference: preparation.uuid,

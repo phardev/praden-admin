@@ -11,7 +11,7 @@ export class InMemoryTimoutOrderGateway extends InMemoryOrderGateway {
     this.timeoutInMs = timeoutInMs
   }
 
-  list(): Promise<Array<Order>> {
+  override list(): Promise<Array<Order>> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.list())
@@ -19,7 +19,7 @@ export class InMemoryTimoutOrderGateway extends InMemoryOrderGateway {
     })
   }
 
-  listOrdersToPrepare(): Promise<Array<Order>> {
+  override listOrdersToPrepare(): Promise<Array<Order>> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.listOrdersToPrepare())
@@ -27,7 +27,7 @@ export class InMemoryTimoutOrderGateway extends InMemoryOrderGateway {
     })
   }
 
-  startPreparation(uuid: UUID): Promise<Order> {
+  override startPreparation(uuid: UUID): Promise<Order> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.startPreparation(uuid))
@@ -35,7 +35,7 @@ export class InMemoryTimoutOrderGateway extends InMemoryOrderGateway {
     })
   }
 
-  getByUuid(uuid: UUID): Promise<Order> {
+  override getByUuid(uuid: UUID): Promise<Order> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.getByUuid(uuid))
@@ -43,7 +43,7 @@ export class InMemoryTimoutOrderGateway extends InMemoryOrderGateway {
     })
   }
 
-  async validatePreparation(preparation: Order): Promise<Order> {
+  override async validatePreparation(preparation: Order): Promise<Order> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.validatePreparation(preparation))
@@ -51,7 +51,7 @@ export class InMemoryTimoutOrderGateway extends InMemoryOrderGateway {
     })
   }
 
-  async savePreparation(preparation: Order): Promise<Order> {
+  override async savePreparation(preparation: Order): Promise<Order> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.savePreparation(preparation))
@@ -59,7 +59,7 @@ export class InMemoryTimoutOrderGateway extends InMemoryOrderGateway {
     })
   }
 
-  async askHowToFinish(order: Order): Promise<Order> {
+  override async askHowToFinish(order: Order): Promise<Order> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.askHowToFinish(order))
@@ -67,7 +67,7 @@ export class InMemoryTimoutOrderGateway extends InMemoryOrderGateway {
     })
   }
 
-  async cancelPreparation(preparation: Order): Promise<Order> {
+  override async cancelPreparation(preparation: Order): Promise<Order> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.cancelPreparation(preparation))

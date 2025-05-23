@@ -27,7 +27,7 @@ export const useSearchStore = defineStore('SearchStore', {
     }
   },
   actions: {
-    set(key: string, value: Array<any> | undefined) {
+    set(key: string, value: Array<any>) {
       this.items[key] = value
     },
     setFilter(key: string, value: any) {

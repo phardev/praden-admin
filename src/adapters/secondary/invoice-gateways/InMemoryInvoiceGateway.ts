@@ -15,12 +15,15 @@ export class InMemoryInvoiceGateway implements InvoiceGateway {
     const invoice = this.invoices.find(
       (invoice) => invoice.id === invoiceNumber
     )
+    if (!invoice) {
+      throw new Error(`Invoice ${invoiceNumber} not found`)
+    }
     return Promise.resolve(invoice)
   }
 
   create(order: Order): Promise<Invoice> {
     const invoice: Invoice = {
-      id: order.invoiceNumber,
+      id: order.invoiceNumber!,
       data: order,
       createdAt: this.dateProvider.now()
     }

@@ -50,7 +50,7 @@ describe('Product edition', () => {
         expectedProduct = {
           ...product,
           flags: { arePromotionsAllowed: true },
-          name: dto.name
+          name: dto.name!
         }
         expectedProducts = [chamomilla, ultraLevure, expectedProduct]
         await whenEditProduct(product.uuid, dto)

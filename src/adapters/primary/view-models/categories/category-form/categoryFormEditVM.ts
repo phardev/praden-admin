@@ -63,7 +63,7 @@ export class CategoryFormEditVM extends CategoryFormVM {
     const productStore = useProductStore()
     const searchStore = useSearchStore()
     const searchResult = searchStore.get(this.key)
-    const alreadyAdded = products.map((p) => p.uuid)
+    const alreadyAdded = products.map((p: Product) => p.uuid)
     uuids
       .filter((uuid) => !alreadyAdded.includes(uuid))
       .forEach((uuid) => {
@@ -87,10 +87,10 @@ export class CategoryFormEditVM extends CategoryFormVM {
     )
     const productsUuids = products.map((p: Product) => p.uuid)
     const productsAdded = productsUuids.filter(
-      (uuid) => !initialProductsUuids.includes(uuid)
+      (uuid: UUID) => !initialProductsUuids.includes(uuid)
     )
     const productsRemoved = initialProductsUuids.filter(
-      (uuid) => !productsUuids.includes(uuid)
+      (uuid: UUID) => !productsUuids.includes(uuid)
     )
     return {
       name: this.fieldsReader.get('name'),

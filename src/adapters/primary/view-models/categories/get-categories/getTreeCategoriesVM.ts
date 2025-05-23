@@ -1,5 +1,6 @@
 import { useCategoryStore } from '@store/categoryStore'
 import { UUID } from '@core/types/types'
+import { Category } from '@core/entities/category'
 
 export interface TreeNode<T> {
   data: T
@@ -22,12 +23,12 @@ export interface CategoriesVM {
 const getChildren = (uuid: UUID): TreeCategoriesVM => {
   const categoryStore = useCategoryStore()
   const categories = categoryStore.items.filter((c) => c.parentUuid === uuid)
-  return categories.map((c) => {
+  return categories.map((c: Category) => {
     return {
       data: {
         uuid: c.uuid,
         name: c.name,
-        miniature: c.miniature
+        miniature: c.miniature || ''
       },
       children: getChildren(c.uuid)
     }
@@ -44,7 +45,7 @@ export const getTreeCategoriesVM = (): CategoriesVM => {
         data: {
           uuid: c.uuid,
           name: c.name,
-          miniature: c.miniature
+          miniature: c.miniature || ''
         },
         children: getChildren(c.uuid)
       }

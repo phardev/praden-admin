@@ -17,7 +17,11 @@ describe('Navigation menu get', () => {
   describe('There is no navigation menu', () => {
     it('should have nothing', async () => {
       await whenGetNavigationMenu()
-      expectCurrentMenuToBe(undefined)
+      expectCurrentMenuToBe({
+        sections: [],
+        logo: '',
+        title: ''
+      })
     })
   })
 

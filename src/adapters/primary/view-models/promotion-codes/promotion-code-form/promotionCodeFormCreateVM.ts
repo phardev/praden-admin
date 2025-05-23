@@ -26,7 +26,7 @@ export class PromotionCodeFormFieldsWriter extends FormFieldsWriter {
     }
   }
 
-  set(fieldName: string, value: any): void {
+  override set(fieldName: string, value: any): void {
     const handler =
       this.fieldHandlers[fieldName] || super.set.bind(this, fieldName)
     handler(value)
@@ -37,7 +37,7 @@ export class PromotionCodeFormFieldsWriter extends FormFieldsWriter {
     const productStore = useProductStore()
     const searchStore = useSearchStore()
     const searchResult = searchStore.get(this.key)
-    const alreadyAdded = products.map((p) => p.uuid)
+    const alreadyAdded = products.map((p: Product) => p.uuid)
     uuids
       .filter((uuid) => !alreadyAdded.includes(uuid))
       .forEach((uuid) => {
@@ -111,7 +111,8 @@ export class PromotionCodeFormCreateVM extends PromotionCodeFormVM {
     const filteredProducts: Array<Product> = searchStore.get(this.key)
     const addedProducts = this.fieldsReader.get('products')
     const res = (filteredProducts || allProducts).filter(
-      (p) => !addedProducts.map((p) => p.uuid).includes(p.uuid)
+      (p: Product) =>
+        !addedProducts.map((p: Product) => p.uuid).includes(p.uuid)
     )
     return {
       value: res.map((p: Product) => {

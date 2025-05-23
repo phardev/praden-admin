@@ -5,7 +5,7 @@ export const usePromotionCodeStore = defineStore('PromotionCodeStore', {
   state: () => {
     return {
       items: [] as Array<PromotionCode>,
-      current: undefined as PromotionCode,
+      current: undefined as PromotionCode | undefined,
       isLoading: false
     }
   },
@@ -33,9 +33,6 @@ export const usePromotionCodeStore = defineStore('PromotionCodeStore', {
     delete(promotionCode: PromotionCode) {
       const index = this.items.findIndex((b) => b.uuid === promotionCode.uuid)
       this.items.splice(index, 1)
-      this.items.forEach((b, i) => {
-        b.order = i
-      })
     }
   }
 })

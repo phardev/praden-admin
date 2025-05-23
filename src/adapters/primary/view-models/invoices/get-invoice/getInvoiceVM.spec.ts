@@ -92,7 +92,7 @@ describe('Get invoice VM', () => {
   })
   describe('There is a current invoice', () => {
     const invoice: Invoice = {
-      id: orderPrepared1.invoiceNumber,
+      id: orderPrepared1.invoiceNumber!,
       data: orderPrepared1,
       createdAt: 1675564421539
     }
@@ -172,7 +172,7 @@ describe('Get invoice VM', () => {
           headers: summaryHeader,
           items: [
             {
-              invoiceNumber: orderPrepared1.invoiceNumber,
+              invoiceNumber: orderPrepared1.invoiceNumber!,
               invoiceDate: '05/02/2023',
               orderReference: orderPrepared1.uuid,
               orderDate: '05/02/2023'
@@ -249,7 +249,7 @@ describe('Get invoice VM', () => {
   })
   describe('There is another current invoice', () => {
     const invoice: Invoice = {
-      id: orderDelivered1.invoiceNumber,
+      id: orderDelivered1.invoiceNumber!,
       data: orderDelivered1,
       createdAt: 1674275599954
     }
@@ -329,7 +329,7 @@ describe('Get invoice VM', () => {
           headers: summaryHeader,
           items: [
             {
-              invoiceNumber: orderDelivered1.invoiceNumber,
+              invoiceNumber: orderDelivered1.invoiceNumber!,
               invoiceDate: '21/01/2023',
               orderReference: orderDelivered1.uuid,
               orderDate: '21/01/2023'
@@ -406,7 +406,7 @@ describe('Get invoice VM', () => {
 
   describe('There is multiple products with the same tax rate', () => {
     const invoice: Invoice = {
-      id: orderDelivered2.invoiceNumber,
+      id: orderDelivered2.invoiceNumber!,
       data: orderDelivered2,
       createdAt: 1675564422539
     }
@@ -433,7 +433,7 @@ describe('Get invoice VM', () => {
 
   describe('There is all products canceled', () => {
     const invoice: Invoice = {
-      id: orderCanceled.invoiceNumber,
+      id: orderCanceled.invoiceNumber!,
       data: orderCanceled,
       createdAt: 1675564422539
     }
@@ -557,7 +557,7 @@ describe('Get invoice VM', () => {
 
   describe('The order is partially prepared', () => {
     const invoice: Invoice = {
-      id: orderPartiallyShipped1.invoiceNumber,
+      id: orderPartiallyShipped1.invoiceNumber!,
       data: orderPartiallyShipped1,
       createdAt: 1675564421539
     }
