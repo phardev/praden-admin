@@ -22,9 +22,20 @@ export class InMemoryDashboardGateway implements DashboardGateway {
   }
 
   async getDashboardData(params: DashboardParams): Promise<Dashboard> {
-    const filteredTopProducts = params.productLimit
-      ? this.mockData.topProducts.slice(0, params.productLimit)
-      : this.mockData.topProducts
+    let filteredTopProducts = this.mockData.topProducts
+
+    if (params.laboratoryUuid) {
+      filteredTopProducts = this.mockData.topProducts.filter(
+        (product) => product.laboratory.uuid === params.laboratoryUuid
+      )
+    }
+
+    if (params.productLimit) {
+      filteredTopProducts = this.mockData.topProducts.slice(
+        0,
+        params.productLimit
+      )
+    }
 
     let filteredMonthlySales = [...this.mockData.monthlySales]
 

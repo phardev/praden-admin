@@ -42,17 +42,51 @@ gateway.feedWith({
     {
       productUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
       name: 'Modilac Expert Riz 3 Lait dès 12 mois 800 g',
-      count: 52
+      count: 52,
+      categories: [
+        {
+          uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+          name: 'Modilac'
+        }
+      ],
+      laboratory: {
+        uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+        name: 'Modilac'
+      }
     },
     {
       productUuid: '88362b96-80f7-452b-9ef0-7b85b90d7609',
       name: 'Product 2',
-      count: 45
+      count: 45,
+      categories: [
+        {
+          uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+          name: 'Product 2 Category'
+        }
+      ],
+      laboratory: {
+        uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+        name: 'Product 2 Laboratory'
+      }
     },
     {
       productUuid: '99362b96-80f7-452b-9ef0-7b85b90d7610',
       name: 'Product 3',
-      count: 38
+      count: 38,
+      categories: [
+        {
+          uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+          name: 'Product 3 Category'
+        },
+        {
+          uuid: '67362b96-80f7-452b-9ef0-7b85b90d7602',
+          name: 'Product 3 Category-2'
+        }
+      ],
+      laboratory: {
+        uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+        name: 'Product 3 Laboratory'
+      }
     }
   ]
 })

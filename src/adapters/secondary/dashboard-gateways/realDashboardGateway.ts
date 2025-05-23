@@ -26,6 +26,9 @@ export class RealDashboardGateway
     if (params.endDate) {
       queryParams.append('endDate', params.endDate.toISOString())
     }
+    if (params.laboratoryUuid) {
+      queryParams.append('laboratoryUuid', params.laboratoryUuid)
+    }
 
     const url = `${this.baseUrl}/dashboard${
       queryParams.toString() ? '?' + queryParams.toString() : ''

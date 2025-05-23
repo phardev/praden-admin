@@ -5,6 +5,15 @@
       .flex.justify-between.items-center
         h2.text-xl.font-bold {{ $t('dashboard.title') }}
         UForm.flex.gap-4
+          UFormGroup.pb-4(label="Laboratoire" name="laboratory")
+            FtAutocomplete(
+              v-model="laboratory"
+              :options="laboratoriesVM.items"
+              option-attribute="name"
+              value-key="uuid"
+              :search="accentInsensitiveSearch"
+              @clear="clearLaboratory"
+            )
           UFormGroup.pb-4(label="Date de début" name="startDate")
             UPopover(:popper="{ placement: 'bottom-start' }")
               UButton(
@@ -97,15 +106,26 @@
         UCard.mt-16
           template(#header)
             h3.text-lg.font-medium
-              | {{ $t('dashboard.topProducts') }}
+              | {{ $t('dashboard.topProducts.title') }}
           template(#default)
             UTable(:columns='topProductsColumns' :rows='dashboard.topProducts')
+              template(#categories-data="{ row }")
+                div(v-if="row.categories && row.categories.length")
+                  div.mb-1(v-for="category in row.categories" :key="category.uuid")
+                    UBadge(variant="subtle" :label="category.name")
+                div(v-else)
+              template(#laboratory-data="{ row }")
+                span {{ row.laboratory ? row.laboratory.name : '' }}
 </template>
 
 <script lang="ts" setup>
 import { format } from 'date-fns'
 import { formatCurrency } from '@/src/utils/formatters'
 import { useDashboardData } from '../../composables/useDashboardData'
+import { listLaboratories } from '@core/usecases/laboratories/laboratory-listing/listLaboratories'
+import { getLaboratoriesVM } from '@/src/adapters/primary/view-models/laboratories/get-laboratories/getLaboratoriesVM'
+import { useLaboratoryGateway } from '@/gateways/laboratoryGateway'
+import { fr } from 'date-fns/locale'
 
 definePageMeta({ layout: 'main' })
 
@@ -116,6 +136,11 @@ const { isLoading, dashboard, fetchDashboardData } = useDashboardData()
 const productLimit = ref(50)
 const startDate = ref<number | null>(null)
 const endDate = ref<number | null>(null)
+const laboratory = ref<string | null>(null)
+
+const laboratoriesVM = computed(() => {
+  return getLaboratoriesVM()
+})
 
 const statsCards = computed(() => [
   {
@@ -148,11 +173,19 @@ const statsCards = computed(() => [
 const topProductsColumns = [
   {
     key: 'name',
-    label: t('dashboard.productName')
+    label: t('dashboard.topProducts.productName')
+  },
+  {
+    key: 'categories',
+    label: t('dashboard.topProducts.categories')
+  },
+  {
+    key: 'laboratory',
+    label: t('dashboard.topProducts.laboratory')
   },
   {
     key: 'count',
-    label: t('dashboard.orderCount')
+    label: t('dashboard.topProducts.orderCount')
   }
 ]
 
@@ -171,10 +204,15 @@ const fetchFilteredDashboardData = async () => {
     params.endDate = new Date(endDate.value)
   }
 
+  if (laboratory.value) {
+    params.laboratoryUuid = laboratory.value ? laboratory.value.uuid : null
+  }
+
   await fetchDashboardData(params)
 }
 
 onMounted(() => {
+  listLaboratories(useLaboratoryGateway())
   fetchFilteredDashboardData()
 })
 
@@ -184,5 +222,30 @@ const clearStartDate = () => {
 
 const clearEndDate = () => {
   endDate.value = null
+}
+
+const clearLaboratory = () => {
+  laboratory.value = null
+}
+
+const normalizeText = (text: string): string => {
+  return text
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+}
+
+const accentInsensitiveSearch = (query: string) => {
+  if (!query || !laboratoriesVM.value.items) {
+    return laboratoriesVM.value.items || []
+  }
+
+  const normalizedQuery = normalizeText(query)
+
+  return laboratoriesVM.value.items.filter((option) => {
+    const optionName = option.name || ''
+    const normalizedName = normalizeText(optionName)
+    return normalizedName.includes(normalizedQuery)
+  })
 }
 </script>

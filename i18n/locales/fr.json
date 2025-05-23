@@ -45,9 +45,13 @@
     "monthlyTurnover": "Chiffre d'affaires mensuel",
     "monthlyCanceledTurnover": "Chiffre d'affaires annulé mensuel",
     "monthlyDeliveryPrice": "Frais de livraison mensuel",
-    "topProducts": "Produits les plus vendus",
-    "productName": "Nom du produit",
-    "orderCount": "Nombre de commandes"
+    "topProducts": {
+      "title": "Produits les plus vendus",
+      "productName": "Nom du produit",
+      "categories": "Catégories",
+      "laboratory": "Laboratoire",
+      "orderCount": "Nombre de boites vendues"
+    }
   },
   "preparations": {
     "refresh": "Actualiser"

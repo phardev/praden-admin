@@ -52,19 +52,53 @@ describe('GetDashboard', () => {
       },
       topProducts: [
         {
-          productUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+          productUuid: 'product-1',
           name: 'Modilac Expert Riz 3 Lait dès 12 mois 800 g',
-          count: 52
+          count: 52,
+          categories: [
+            {
+              uuid: 'modilac-category',
+              name: 'Modilac'
+            }
+          ],
+          laboratory: {
+            uuid: 'modilac-laboratory',
+            name: 'Laboratory 1'
+          }
         },
         {
-          productUuid: '88362b96-80f7-452b-9ef0-7b85b90d7609',
+          productUuid: 'product-2',
           name: 'Product 2',
-          count: 45
+          count: 45,
+          categories: [
+            {
+              uuid: 'product-2-category',
+              name: 'Product 2 Category'
+            }
+          ],
+          laboratory: {
+            uuid: 'product-2-laboratory',
+            name: 'Product 2 Laboratory'
+          }
         },
         {
-          productUuid: '99362b96-80f7-452b-9ef0-7b85b90d7610',
+          productUuid: 'product-3',
           name: 'Product 3',
-          count: 38
+          count: 38,
+          categories: [
+            {
+              uuid: 'product-3-category',
+              name: 'Product 3 Category'
+            },
+            {
+              uuid: 'product-3-category-2',
+              name: 'Product 3 Category-2'
+            }
+          ],
+          laboratory: {
+            uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+            name: 'Product 3 Laboratory'
+          }
         }
       ]
     }
@@ -104,6 +138,18 @@ describe('GetDashboard', () => {
         deliveryPrice: mockData.monthlySales[1].deliveryPrice
       },
       topProducts: mockData.topProducts
+    })
+  })
+
+  it('should filter monthly sales based on laboratory uuid', async () => {
+    params = {
+      laboratoryUuid: 'modilac-laboratory'
+    }
+    await whenGetDashboardData()
+    expect(statsStore.dashboard).toStrictEqual({
+      monthlySales: mockData.monthlySales,
+      totalSales: mockData.totalSales,
+      topProducts: [mockData.topProducts[0]]
     })
   })
 

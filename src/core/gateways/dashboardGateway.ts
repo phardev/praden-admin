@@ -4,6 +4,7 @@ export interface DashboardParams {
   productLimit?: number
   startDate?: Date
   endDate?: Date
+  laboratoryUuid?: string
 }
 
 export interface DashboardGateway {

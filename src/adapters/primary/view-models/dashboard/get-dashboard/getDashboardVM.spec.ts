@@ -42,12 +42,36 @@ describe('getDashboardVM', () => {
         {
           productUuid: '123',
           name: 'Product A',
-          count: 50
+          count: 50,
+          categories: [
+            {
+              uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+              name: 'Product A Category'
+            },
+            {
+              uuid: '67362b96-80f7-452b-9ef0-7b85b90d7602',
+              name: 'Product A Category-2'
+            }
+          ],
+          laboratory: {
+            uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+            name: 'Product A Laboratory'
+          }
         },
         {
           productUuid: '456',
           name: 'Product B',
-          count: 30
+          count: 30,
+          categories: [
+            {
+              uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+              name: 'Product B Category'
+            }
+          ],
+          laboratory: {
+            uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+            name: 'Product B Laboratory'
+          }
         }
       ]
     }
