@@ -162,7 +162,11 @@ export const filterPreparationsByGroup = (
   const formatter = priceFormatter('fr-FR', 'EUR')
   const res: HashTable<GetPreparationsGroupVM> = {}
   groups.forEach((group: any) => {
-    const filteredItems = orders.filter(group.filter)
+    const filteredItems = orders.filter(group.filter).sort((a, b) => {
+      const aDate = a.createdAt
+      const bDate = b.createdAt
+      return aDate - bDate
+    })
     const items = filteredItems.map((o: Order) => {
       const delivery = o.deliveries[0]
       const total = computeTotalWithTaxForOrder(o)
@@ -215,7 +219,7 @@ export const getPreparationsVM = (): GetPreparationsVM => {
       headers: getClickAndCollectPreparationsVMHeaders
     },
     {
-      name: 'Colissimo',
+      name: 'Domicile / Relais',
       filter: deliveryFilter,
       canSelect: true,
       headers: getPreparationsVMHeaders

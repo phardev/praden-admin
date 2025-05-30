@@ -105,7 +105,7 @@ describe('Get orders to prepare VM', () => {
       preparationStore.items = [orderToPrepare3]
       const expectedVM: Partial<GetPreparationsVM> = {
         items: {
-          Colissimo: {
+          'Domicile / Relais': {
             count: 1,
             canSelect: true,
             table: {
@@ -342,7 +342,7 @@ describe('Get orders to prepare VM', () => {
             items: []
           }
         },
-        Colissimo: {
+        'Domicile / Relais': {
           count: 0,
           canSelect: true,
           table: {
