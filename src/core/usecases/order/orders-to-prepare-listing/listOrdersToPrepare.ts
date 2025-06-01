@@ -8,21 +8,26 @@ export const listOrdersToPrepare = async (
   orderGateway: OrderGateway,
   productGateway: ProductGateway
 ) => {
-  const orders = await orderGateway.listOrdersToPrepare()
-  const productsCip13 = getUniqueProductsCip13(orders)
-  const products = await productGateway.batch(productsCip13)
-  const productStore = useProductStore()
-  productStore.list(products)
   const preparationStore = usePreparationStore()
-  preparationStore.list(orders)
+  try {
+    preparationStore.startLoading()
+    const orders = await orderGateway.listOrdersToPrepare()
+    const productUuids = getUniqueProductUuids(orders)
+    const products = await productGateway.batch(productUuids)
+    const productStore = useProductStore()
+    productStore.list(products)
+    preparationStore.list(orders)
+  } finally {
+    preparationStore.stopLoading()
+  }
 }
 
-const getUniqueProductsCip13 = (orders: Array<Order>): Array<string> => {
-  const cip13Set: Set<string> = new Set()
+const getUniqueProductUuids = (orders: Array<Order>): Array<string> => {
+  const uuidsSet: Set<string> = new Set()
   orders.forEach((order) => {
     order.lines.forEach((line) => {
-      cip13Set.add(line.cip13)
+      uuidsSet.add(line.productUuid)
     })
   })
-  return Array.from(cip13Set)
+  return Array.from(uuidsSet)
 }

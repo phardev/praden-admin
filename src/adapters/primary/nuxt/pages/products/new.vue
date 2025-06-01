@@ -13,6 +13,7 @@ import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
 import { productFormCreateVM } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import { useProductGateway } from '../../../../../../gateways/productGateway'
 import { createProduct } from '@core/usecases/product/product-creation/createProduct'
+import { useLocationGateway } from '../../../../../../gateways/locationGateway'
 
 definePageMeta({ layout: 'main' })
 
@@ -23,9 +24,12 @@ onMounted(() => {
 const router = useRouter()
 const routeName = router.currentRoute.value.name
 const vm = ref(productFormCreateVM(routeName))
-
 const validate = async () => {
-  await createProduct(vm.value.getDto(), useProductGateway())
+  await createProduct(
+    vm.value.getDto(),
+    useProductGateway(),
+    useLocationGateway()
+  )
   router.push('/products/')
 }
 </script>

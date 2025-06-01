@@ -33,14 +33,15 @@ describe('Create promotion', () => {
   describe('Simple promotion', () => {
     const promotion: CreatePromotionDTO = {
       name: 'PromoTest',
-      products: [dolodent.cip13],
+      products: [dolodent],
       type: ReductionType.Percentage,
       amount: 10
     }
     const uuid = 'abc123'
     const expectedPromotion: Promotion = {
       ...promotion,
-      uuid
+      uuid,
+      products: [dolodent]
     }
     describe('Without previous promotions', () => {
       beforeEach(async () => {
@@ -75,13 +76,14 @@ describe('Create promotion', () => {
       const uuid = 'def456'
       const promotion: CreatePromotionDTO = {
         name: 'PromoTest2',
-        products: [calmosine.cip13, chamomilla.cip13, anaca3Minceur.cip13],
+        products: [calmosine, chamomilla, anaca3Minceur],
         type: ReductionType.Fixed,
         amount: 100
       }
       const expectedPromotion: Promotion = {
         ...promotion,
-        uuid
+        uuid,
+        products: [calmosine, chamomilla, anaca3Minceur]
       }
       const expectedPromotions = [
         promotionPercentageDolodent,
@@ -115,7 +117,7 @@ describe('Create promotion', () => {
     it('should throw an error if percentage is > 100%', async () => {
       const promotion: CreatePromotionDTO = {
         name: 'PromoTest',
-        products: [dolodent.cip13],
+        products: [dolodent],
         type: ReductionType.Percentage,
         amount: 101
       }

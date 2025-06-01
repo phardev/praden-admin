@@ -8,7 +8,7 @@ import {
   orderWithMissingProduct1,
   orderWithMissingProduct2
 } from '@utils/testData/orders'
-import { DeliveryStatus, Order } from '@core/entities/order'
+import { OrderLineStatus, Order } from '@core/entities/order'
 import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { Invoice } from '@core/entities/invoice'
@@ -47,7 +47,7 @@ describe('Validate preparation', () => {
     })
     it('should save it', async () => {
       const expectedOrder: Order = JSON.parse(JSON.stringify(order))
-      expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Shipped
+      expectedOrder.lines[0].status = OrderLineStatus.Prepared
       expectedOrder.lines[0].updatedAt = now
       expect(await orderGateway.list()).toStrictEqual([expectedOrder])
     })
@@ -58,9 +58,9 @@ describe('Validate preparation', () => {
       let expectedInvoiceNumber: string
       let expectedInvoice: Invoice
       beforeEach(() => {
-        expectedInvoiceNumber = order.payment.invoiceNumber
+        expectedInvoiceNumber = order.invoiceNumber!
         const expectedOrder: Order = JSON.parse(JSON.stringify(order))
-        expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Shipped
+        expectedOrder.lines[0].status = OrderLineStatus.Prepared
         expectedOrder.lines[0].updatedAt = now
         expectedInvoice = {
           id: expectedInvoiceNumber,
@@ -93,8 +93,8 @@ describe('Validate preparation', () => {
     })
     it('should save it', async () => {
       const expectedOrder: Order = JSON.parse(JSON.stringify(order))
-      expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Shipped
-      expectedOrder.lines[1].deliveryStatus = DeliveryStatus.Shipped
+      expectedOrder.lines[0].status = OrderLineStatus.Prepared
+      expectedOrder.lines[1].status = OrderLineStatus.Prepared
       expect(await orderGateway.list()).toStrictEqual([
         expectedOrder,
         orderToPrepare1
@@ -107,10 +107,10 @@ describe('Validate preparation', () => {
       let expectedInvoiceNumber: string
       let expectedInvoice: Invoice
       beforeEach(() => {
-        expectedInvoiceNumber = order.payment.invoiceNumber
+        expectedInvoiceNumber = order.invoiceNumber!
         const expectedOrder: Order = JSON.parse(JSON.stringify(order))
-        expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Shipped
-        expectedOrder.lines[1].deliveryStatus = DeliveryStatus.Shipped
+        expectedOrder.lines[0].status = OrderLineStatus.Prepared
+        expectedOrder.lines[1].status = OrderLineStatus.Prepared
         expectedInvoice = {
           id: expectedInvoiceNumber,
           data: expectedOrder,
@@ -138,19 +138,20 @@ describe('Validate preparation', () => {
         dateProvider.feedWith(now)
         givenThereIsExistingOrders(order)
         expectedOrder = JSON.parse(JSON.stringify(order))
-        expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Shipped
+        expectedOrder.lines[0].status = OrderLineStatus.Prepared
         expectedOrder.lines[0].updatedAt = now
-        expectedOrder.lines[1].deliveryStatus = DeliveryStatus.Canceled
+        expectedOrder.lines[1].status = OrderLineStatus.Canceled
         expectedOrder.lines[1].updatedAt = now
         expectedOrder.lines[2] = {
+          productUuid: ultraLevure.uuid,
           name: ultraLevure.name,
-          cip13: ultraLevure.cip13,
+          ean13: ultraLevure.ean13,
           expectedQuantity: -4,
           preparedQuantity: 0,
           unitAmount: ultraLevure.priceWithoutTax,
           percentTaxRate: ultraLevure.percentTaxRate,
-          location: ultraLevure.location,
-          deliveryStatus: DeliveryStatus.Canceled,
+          locations: ultraLevure.locations,
+          status: OrderLineStatus.Canceled,
           updatedAt: now
         }
         givenThereIsAPreparationSelected(order)
@@ -166,7 +167,7 @@ describe('Validate preparation', () => {
         let expectedInvoiceNumber: string
         let expectedInvoice: Invoice
         beforeEach(() => {
-          expectedInvoiceNumber = order.payment.invoiceNumber
+          expectedInvoiceNumber = order.invoiceNumber!
           expectedInvoice = {
             id: expectedInvoiceNumber,
             data: expectedOrder,
@@ -194,34 +195,59 @@ describe('Validate preparation', () => {
       })
       it('should save it and create new lines for missing products', async () => {
         const expectedOrder: Order = JSON.parse(JSON.stringify(order))
-        expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Shipped
+        expectedOrder.lines[0].status = OrderLineStatus.Prepared
         expectedOrder.lines[0].updatedAt = now
-        expectedOrder.lines[1].deliveryStatus = DeliveryStatus.Shipped
+        expectedOrder.lines[1].status = OrderLineStatus.Prepared
         expectedOrder.lines[1].updatedAt = now
         expectedOrder.lines[2] = {
+          productUuid: dolodent.uuid,
           name: dolodent.name,
-          cip13: dolodent.cip13,
+          ean13: dolodent.ean13,
           expectedQuantity: -1,
           preparedQuantity: 0,
           unitAmount: dolodent.priceWithoutTax,
           percentTaxRate: dolodent.percentTaxRate,
-          location: dolodent.location,
-          deliveryStatus: DeliveryStatus.Canceled,
+          locations: dolodent.locations,
+          status: OrderLineStatus.Canceled,
           updatedAt: now
         }
         expectedOrder.lines[3] = {
+          productUuid: ultraLevure.uuid,
           name: ultraLevure.name,
-          cip13: ultraLevure.cip13,
+          ean13: ultraLevure.ean13,
           expectedQuantity: -2,
           preparedQuantity: 0,
           unitAmount: ultraLevure.priceWithoutTax,
           percentTaxRate: ultraLevure.percentTaxRate,
-          location: ultraLevure.location,
-          deliveryStatus: DeliveryStatus.Canceled,
+          locations: ultraLevure.locations,
+          status: OrderLineStatus.Canceled,
           updatedAt: now
         }
         expect(await orderGateway.list()).toStrictEqual([expectedOrder])
       })
+    })
+  })
+
+  describe('Loading', () => {
+    const order: Order = JSON.parse(JSON.stringify(orderWithMissingProduct2))
+    beforeEach(() => {
+      now = 1234567894321
+      dateProvider.feedWith(now)
+      givenThereIsExistingOrders(order)
+      givenThereIsAPreparationSelected(order)
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = preparationStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenValidatePreparation()
+    })
+    it('should be aware that loading is over', async () => {
+      await whenValidatePreparation()
+      expect(preparationStore.isLoading).toBe(false)
     })
   })
 

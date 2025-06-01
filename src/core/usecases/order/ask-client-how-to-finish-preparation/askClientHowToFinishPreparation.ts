@@ -6,11 +6,16 @@ export const askClientHowToFinishPreparation = async (
   orderGateway: OrderGateway
 ) => {
   const preparationStore = usePreparationStore()
-  const currentPreparation = preparationStore.current
-  if (!currentPreparation) throw new NoPreparationSelectedError()
-  const preparation = await orderGateway.askHowToFinish(
-    JSON.parse(JSON.stringify(currentPreparation))
-  )
-  preparationStore.update(preparation)
-  preparationStore.setCurrent(preparation)
+  try {
+    preparationStore.startLoading()
+    const currentPreparation = preparationStore.current
+    if (!currentPreparation) throw new NoPreparationSelectedError()
+    const preparation = await orderGateway.askHowToFinish(
+      JSON.parse(JSON.stringify(currentPreparation))
+    )
+    preparationStore.update(preparation)
+    preparationStore.setCurrent(preparation)
+  } finally {
+    preparationStore.stopLoading()
+  }
 }

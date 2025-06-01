@@ -1,27 +1,18 @@
 {
+  "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
-    "compilerOptions": {
-      "target": "es2021"
-    },
+    "target": "es2021",
+    "moduleResolution": "nodenext",
+    "verbatimModuleSyntax": false,
     "baseUrl": ".",
     "paths": {
-      "@adapters/*": [
-        "src/adapters/*"
-      ],
-      "@core/*": [
-        "src/core/*"
-      ],
-      "@store/*": [
-        "src/store/*"
-      ],
-      "@utils/*": [
-        "src/utils/*"
-      ],
+      "@adapters/*": ["src/adapters/*"],
+      "@core/*": ["src/core/*"],
+      "@store/*": ["src/store/*"],
+      "@utils/*": ["src/utils/*"]
     },
-    "types": [
-      "jest",
-      "node",
-      "jsdom"
-    ]
-  }
+    "types": ["vitest/globals", "node", "@types/jsdom", "@nuxt/schema"],
+    "module": "NodeNext"
+  },
+  "include": [".nuxt/types", "types", "src", "utils", "vitest.config.mjs"]
 }

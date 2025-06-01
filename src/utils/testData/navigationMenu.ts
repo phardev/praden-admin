@@ -5,12 +5,27 @@ export const fullMenu: NavigationMenu = {
   title: 'Pharmacie Agnes Praden',
   sections: [
     {
+      title: 'Statistiques',
+      links: [
+        {
+          name: 'Tableau de bord',
+          icon: 'akar-icons:statistic-up',
+          href: '/dashboard'
+        }
+      ]
+    },
+    {
       title: 'Catalogue',
       links: [
         {
           name: 'Produits',
           icon: 'fluent-mdl2:product-catalog',
           href: '/products'
+        },
+        {
+          name: 'Laboratoires',
+          icon: 'mdi:beaker-outline',
+          href: '/laboratories'
         },
         {
           name: 'Catégories',
@@ -21,6 +36,11 @@ export const fullMenu: NavigationMenu = {
           name: 'Promotions',
           icon: 'uil:euro-circle',
           href: '/promotions'
+        },
+        {
+          name: 'Codes promotion',
+          icon: 'ic:outline-discount',
+          href: '/promotion-codes'
         }
       ]
     },
@@ -31,6 +51,21 @@ export const fullMenu: NavigationMenu = {
           name: 'Clients',
           icon: 'material-symbols:person-outline-rounded',
           href: '/customers'
+        },
+        {
+          name: 'SAV',
+          icon: 'streamline:interface-help-customer-support-2-customer-headphones-headset-help-microphone-phone-person-support',
+          href: '/after-sales'
+        }
+      ]
+    },
+    {
+      title: 'Logistique',
+      links: [
+        {
+          name: 'Livraisons',
+          icon: 'material-symbols-light:delivery-truck-speed-outline',
+          href: '/deliveries'
         }
       ]
     },
@@ -46,6 +81,31 @@ export const fullMenu: NavigationMenu = {
           name: 'Préparations en attente',
           icon: 'pajamas:status-waiting',
           href: '/waitingPreparations'
+        },
+        {
+          name: 'Commandes',
+          icon: 'material-symbols:orders-outline',
+          href: '/orders'
+        }
+      ]
+    },
+    {
+      title: 'Boutique',
+      links: [
+        {
+          name: 'Bannières',
+          icon: 'material-symbols:add-photo-alternate-outline',
+          href: '/banners'
+        }
+      ]
+    },
+    {
+      title: 'Administration',
+      links: [
+        {
+          name: 'Recherche',
+          icon: 'material-symbols:search-rounded',
+          href: '/research'
         }
       ]
     }

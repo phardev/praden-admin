@@ -24,22 +24,25 @@ export class InMemoryCategoryGateway implements CategoryGateway {
       throw new ParentCategoryDoesNotExistsError(dto.parentUuid)
     }
     const category: Category = {
-      ...dto,
-      uuid: this.uuidGenerator.generate()
+      uuid: this.uuidGenerator.generate(),
+      name: dto.name,
+      description: dto.description
     }
     this.categories.push(category)
     return Promise.resolve(category)
   }
 
-  edit(uuid: UUID, category: Partial<EditCategoryDTO>): Promise<Category> {
+  edit(uuid: UUID, dto: Partial<EditCategoryDTO>): Promise<Category> {
     if (!this.categoryExists(uuid)) {
       throw new CategoryDoesNotExistsError(uuid)
     }
-    if (category.parentUuid && !this.categoryExists(category.parentUuid)) {
+    if (dto.parentUuid && !this.categoryExists(dto.parentUuid)) {
       throw new ParentCategoryDoesNotExistsError(uuid)
     }
     const index = this.categories.findIndex((c) => c.uuid === uuid)
-    this.categories[index] = Object.assign(this.categories[index], category)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { productsAdded, productsRemoved, ...categoryDTO } = dto
+    this.categories[index] = Object.assign(this.categories[index], categoryDTO)
     return Promise.resolve(this.categories[index])
   }
 

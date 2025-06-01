@@ -1,8 +1,11 @@
 <template lang="pug">
+.flex.flex-row-reverse
+  ft-button(icon='i-heroicons-arrow-path' size="xl" :loading='preparationsVm.isLoading' @click='fetchOrdersToPrepare')
+    | {{ $t('preparations.refresh') }}
 tab-group.border-b.border-gray-200(as="div")
   tab-list.-mb-px.flex.space-x-4
     tab.w-full.rounded-md.border-neutral-light.py-2.pl-3.pr-10.text-base.outline-0.cursor-pointer(
-      v-for="(group, tabIndex) in Object.keys(preparationsVm)"
+      v-for="(group, tabIndex) in Object.keys(preparationsVm.items)"
       v-slot="{ selected }"
       :key="tabIndex"
       as="div"
@@ -13,16 +16,17 @@ tab-group.border-b.border-gray-200(as="div")
       )
         div {{ group }}
           span.hidden.ml-3.rounded-full.text-xs.font-medium(
-            v-if="preparationsVm[group].count"
+            v-if="preparationsVm.items[group].count"
             :class="[selected ? 'bg-contrast text-colored' : 'bg-light text-contrast', 'py-0.5 px-2.5 md:inline-block']"
-          ) {{ preparationsVm[group].count }}
-  tab-panels(v-for="(group, index) in Object.values(preparationsVm)" :key="index")
+          ) {{ preparationsVm.items[group].count }}
+  tab-panels(v-for="(group, index) in Object.values(preparationsVm.items)" :key="index")
     tab-panel.mt-4
       ft-table(
         :headers="group.table.headers"
         :items="group.table.items"
         :selectable="group.canSelect"
         :selection="ordersSelectedVM.items"
+        :is-loading="preparationsVm.isLoading"
         item-key="reference"
         @item-selected="select"
         @select-all="selectAll(group.table.items)"
@@ -36,7 +40,7 @@ tab-group.border-b.border-gray-200(as="div")
         ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
           v-if="ordersSelectedVM.items.length > 0"
           @click="start"
-        ) Commencer les préparations
+        ) {{ index < 2 ? 'Commencer les préparations' : 'Imprimer les BL' }}
 </template>
 
 <script lang="ts" setup>
@@ -50,11 +54,14 @@ import { resetPreparationSelection } from '@core/usecases/order/reset-preparatio
 import { useProductGateway } from '../../../../../../gateways/productGateway'
 import { useOrderGateway } from '../../../../../../gateways/orderGateway'
 import { useEmailGateway } from '../../../../../../gateways/emailGateway'
+import { listLocations } from '@core/usecases/locations/location-listing/listLocations'
+import { useLocationGateway } from '../../../../../../gateways/locationGateway'
 
 definePageMeta({ layout: 'main' })
 
 onMounted(() => {
-  listOrdersToPrepare(useOrderGateway(), useProductGateway())
+  listLocations(useLocationGateway())
+  fetchOrdersToPrepare()
 })
 
 defineProps({
@@ -65,6 +72,10 @@ defineProps({
     }
   }
 })
+
+const fetchOrdersToPrepare = () => {
+  listOrdersToPrepare(useOrderGateway(), useProductGateway())
+}
 
 const ordersSelectedVM = computed(() => {
   return getSelectedPreparationsVM()

@@ -6,61 +6,168 @@ import { UUID } from '@core/types/types'
 import { ProductDoesNotExistsError } from '@core/errors/ProductDoesNotExistsError'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
+import { useCategoryStore } from '@store/categoryStore'
+import { Category } from '@core/entities/category'
 
 export class InMemoryProductGateway implements ProductGateway {
   private products: Array<Product> = []
+  private categoryStore: any
   private uuidGenerator: UuidGenerator
 
   constructor(uuidGenerator: UuidGenerator) {
     this.uuidGenerator = uuidGenerator
+    this.categoryStore = useCategoryStore()
   }
 
-  async list(): Promise<Array<Product>> {
-    return Promise.resolve(JSON.parse(JSON.stringify(this.products)))
+  async list(limit: number, offset: number): Promise<Array<Product>> {
+    const res = this.products.slice(offset, offset + limit)
+    return Promise.resolve(JSON.parse(JSON.stringify(res)))
   }
 
-  async batch(cip13s: Array<string>): Promise<Array<Product>> {
-    const res = this.products.filter((p) => cip13s.includes(p.cip13))
+  async count(): Promise<number> {
+    return Promise.resolve(this.products.length)
+  }
+
+  async batch(uuids: Array<UUID>): Promise<Array<Product>> {
+    const res = this.products.filter((p) => uuids.includes(p.uuid))
     return Promise.resolve(JSON.parse(JSON.stringify(res)))
   }
 
   async create(dto: CreateProductDTO): Promise<Product> {
     const images: Array<string> = []
-    for (const image of dto.images) {
+    for (const image of dto.images || []) {
       images.push(await getFileContent(image))
     }
     const product: Product = {
       uuid: this.uuidGenerator.generate(),
+      status: dto.status,
+      categories: [],
       name: dto.name,
       cip7: dto.cip7,
       cip13: dto.cip13,
       ean13: dto.ean13,
       miniature: '',
       images,
-      categoryUuid: dto.categoryUuid,
-      priceWithoutTax: parseFloat(dto.priceWithoutTax) * 100,
-      percentTaxRate: parseFloat(dto.percentTaxRate),
-      location: dto.location,
-      availableStock: parseInt(dto.availableStock),
+      priceWithoutTax: dto.priceWithoutTax,
+      percentTaxRate: dto.percentTaxRate,
+      locations: dto.locations,
+      availableStock: dto.availableStock,
       laboratory: dto.laboratory,
       description: dto.description,
       instructionsForUse: dto.instructionsForUse,
-      composition: dto.composition
+      composition: dto.composition,
+      weight: dto.weight,
+      flags: dto.flags,
+      isMedicine: false
     }
+    if (dto.maxQuantityForOrder) {
+      product.maxQuantityForOrder = dto.maxQuantityForOrder
+    }
+    dto.categoryUuids.forEach((uuid) => {
+      const category = this.categoryStore.getByUuid(uuid)
+      if (category) {
+        product.categories.push(category)
+      }
+    })
     this.products.push(product)
     return Promise.resolve(product)
   }
 
-  edit(uuid: UUID, dto: EditProductDTO): Promise<Product> {
+  async edit(uuid: UUID, dto: EditProductDTO): Promise<Product> {
     const index = this.products.findIndex((c) => c.uuid === uuid)
+    if (dto.locations) {
+      Object.assign(this.products[index].locations, dto.locations)
+      delete dto.locations
+    }
+    if (dto.newImages) {
+      const newImages: Array<string> = []
+      for (const image of dto.newImages) {
+        newImages.push(await getFileContent(image))
+      }
+      Array.prototype.push.apply(this.products[index].images, newImages)
+      delete dto.newImages
+    }
+    if (dto.categoryUuids) {
+      this.products[index].categories = []
+      dto.categoryUuids.forEach((uuid) => {
+        const category = this.categoryStore.getByUuid(uuid)
+        if (category) {
+          this.products[index].categories.push(category)
+        }
+      })
+      delete dto.categoryUuids
+    }
     this.products[index] = Object.assign(this.products[index], dto)
     return Promise.resolve(JSON.parse(JSON.stringify(this.products[index])))
+  }
+
+  bulkEdit(dto: EditProductDTO, uuids: Array<UUID>): Promise<Array<Product>> {
+    const promises = uuids.map((uuid) => this.edit(uuid, dto))
+    return Promise.all(promises)
   }
 
   getByUuid(uuid: UUID): Promise<Product> {
     const res = this.products.find((p) => p.uuid === uuid)
     if (!res) throw new ProductDoesNotExistsError(uuid)
     return Promise.resolve(JSON.parse(JSON.stringify(res)))
+  }
+
+  getByCategoryUuid(
+    limit: number,
+    offset: number,
+    categoryUuid: UUID
+  ): Promise<Array<Product>> {
+    return Promise.resolve(
+      this.products
+        .filter((p) => p.categories.some((c) => c.uuid === categoryUuid))
+        .slice(offset, offset + limit)
+    )
+  }
+
+  getByLaboratoryUuid(laboratoryUuid: UUID): Promise<Array<Product>> {
+    return Promise.resolve(
+      this.products.filter(
+        (p) => p.laboratory && p.laboratory.uuid === laboratoryUuid
+      )
+    )
+  }
+
+  addProductsToCategory(
+    category: Category,
+    productUuids: Array<UUID>
+  ): Promise<Array<Product>> {
+    this.products.forEach((product) => {
+      if (productUuids.includes(product.uuid)) {
+        product.categories.push(category)
+      }
+    })
+    return Promise.resolve(
+      JSON.parse(
+        JSON.stringify(
+          this.products.filter((p) => productUuids.includes(p.uuid))
+        )
+      )
+    )
+  }
+
+  removeProductsFromCategory(
+    category: Category,
+    productUuids: Array<UUID>
+  ): Promise<Array<Product>> {
+    this.products.forEach((product) => {
+      if (productUuids.includes(product.uuid)) {
+        product.categories = product.categories.filter(
+          (c) => c.uuid !== category.uuid
+        )
+      }
+    })
+    return Promise.resolve(
+      JSON.parse(
+        JSON.stringify(
+          this.products.filter((p) => productUuids.includes(p.uuid))
+        )
+      )
+    )
   }
 
   feedWith(...products: Array<Product>) {

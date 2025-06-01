@@ -1,5 +1,5 @@
 import { createPinia, setActivePinia } from 'pinia'
-import { DeliveryStatus, Order } from '@core/entities/order'
+import { OrderLineStatus, Order } from '@core/entities/order'
 import { orderToCancel } from '@utils/testData/orders'
 import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
@@ -35,13 +35,13 @@ describe('Cancel preparation', () => {
       givenCurrentPreparationIs(order)
       expectedOrder = JSON.parse(JSON.stringify(order))
       expectedOrder.lines[0].preparedQuantity = 0
-      expectedOrder.lines[0].deliveryStatus = DeliveryStatus.Canceled
+      expectedOrder.lines[0].status = OrderLineStatus.Canceled
       expectedOrder.lines[0].updatedAt = now
       expectedOrder.lines[1] = {
         ...expectedOrder.lines[0],
         expectedQuantity: -2,
         preparedQuantity: 0,
-        deliveryStatus: DeliveryStatus.Canceled,
+        status: OrderLineStatus.Canceled,
         updatedAt: now
       }
       await whenCancelPreparation()
@@ -56,7 +56,7 @@ describe('Cancel preparation', () => {
       let expectedInvoiceNumber: string
       let expectedInvoice: Invoice
       beforeEach(() => {
-        expectedInvoiceNumber = order.payment.invoiceNumber
+        expectedInvoiceNumber = order.invoiceNumber!
         expectedInvoice = {
           id: expectedInvoiceNumber,
           data: expectedOrder,
@@ -71,6 +71,25 @@ describe('Cancel preparation', () => {
       it('should save the invoice in store', async () => {
         expect(invoiceStore.current).toStrictEqual(expectedInvoice)
       })
+    })
+  })
+  describe('Loading', () => {
+    beforeEach(() => {
+      givenPreparationsExists(orderToCancel)
+      givenCurrentPreparationIs(orderToCancel)
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = preparationStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenCancelPreparation()
+    })
+    it('should be aware that loading is over', async () => {
+      await whenCancelPreparation()
+      expect(preparationStore.isLoading).toBe(false)
     })
   })
   describe('There is no current preparation', () => {

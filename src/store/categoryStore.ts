@@ -1,11 +1,20 @@
 import { defineStore } from 'pinia'
-import { Category } from '@core/entities/category'
+import { Category, CategoryWithProducts } from '@core/entities/category'
+import { Product } from '@core/entities/product'
 
 export const useCategoryStore = defineStore('CategoryStore', {
   state: () => {
     return {
       items: [] as Array<Category>,
-      current: undefined as Category | undefined
+      current: undefined as CategoryWithProducts | undefined,
+      isLoading: false
+    }
+  },
+  getters: {
+    getByUuid: (state) => {
+      return (uuid: string): Category | undefined => {
+        return state.items.find((c) => c.uuid === uuid)
+      }
     }
   },
   actions: {
@@ -20,8 +29,39 @@ export const useCategoryStore = defineStore('CategoryStore', {
         return c.uuid === category.uuid ? category : c
       })
     },
-    setCurrent(category: Category) {
-      this.current = JSON.parse(JSON.stringify(category))
+    setCurrentCategory(category: Category) {
+      this.current = {
+        category: JSON.parse(JSON.stringify(category)),
+        products: []
+      }
+    },
+    startLoading() {
+      this.isLoading = true
+    },
+    stopLoading() {
+      this.isLoading = false
+    },
+    addProducts(products: Array<Product>) {
+      if (!this.current) {
+        this.current = {
+          category: {
+            uuid: '',
+            name: '',
+            description: '',
+            parentUuid: undefined,
+            miniature: undefined,
+            image: undefined
+          },
+          products: []
+        }
+      }
+      const toPush = products.filter(
+        (product) =>
+          !this.current!.products.map((p) => p.uuid).includes(product.uuid)
+      )
+      if (toPush.length) {
+        this.current!.products.push(...toPush)
+      }
     }
   }
 })

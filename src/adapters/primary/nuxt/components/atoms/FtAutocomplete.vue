@@ -1,8 +1,9 @@
 <template lang="pug">
 UInputMenu(
-  v-model="model"
   v-bind="$attrs"
+  v-model="model"
   size="lg"
+  :close-on-select="true"
 )
   template(#trailing)
     UButton(
@@ -11,17 +12,16 @@ UInputMenu(
       variant="link"
       icon="i-heroicons-x-mark-20-solid"
       :padded="false"
-      @click="clear"
+      @click.stop="clear"
     )
 </template>
 <script lang="ts" setup>
 const model = defineModel({ type: String })
 
-const emit = defineEmits<{
-  (e: 'clear'): void
-}>()
+const emit = defineEmits(['clear'])
 
-const clear = async () => {
+const clear = () => {
+  model.value = null
   emit('clear')
 }
 </script>

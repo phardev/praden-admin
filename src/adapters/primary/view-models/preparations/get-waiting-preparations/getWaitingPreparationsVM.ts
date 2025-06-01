@@ -1,9 +1,11 @@
 import {
   filterPreparationsByGroup,
   GetPreparationsVM,
+  getPreparationsVMHeaders,
   isStockAvailable
 } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { MessageContent, Order } from '@core/entities/order'
+import { usePreparationStore } from '@store/preparationStore'
 
 const waitingClientAnswerFilter = (o: Order) => {
   if (!o.messages.length) return false
@@ -24,12 +26,21 @@ export const getWaitingPreparationsVM = (): GetPreparationsVM => {
   const groups = [
     {
       name: 'En attente de réponse client',
-      filter: waitingClientAnswerFilter
+      filter: waitingClientAnswerFilter,
+      canSelect: false,
+      headers: getPreparationsVMHeaders
     },
     {
       name: 'En attente de réapprovisionnement',
-      filter: waitingReplenishmentFilter
+      filter: waitingReplenishmentFilter,
+      canSelect: false,
+      headers: getPreparationsVMHeaders
     }
   ]
-  return filterPreparationsByGroup(groups)
+  const preparationStore = usePreparationStore()
+  const isLoading = preparationStore.isLoading
+  return {
+    items: filterPreparationsByGroup(groups),
+    isLoading
+  }
 }

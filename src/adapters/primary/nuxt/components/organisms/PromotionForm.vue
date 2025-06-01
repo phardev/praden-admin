@@ -75,6 +75,7 @@ div(v-if="currentVM")
         template(#panel="{ close }")
           ft-date-picker(
             v-model="currentVM.get('endDate').value"
+            :is-end-date="true"
             @update:model-value="endDateChanged"
             @close="close"
           )
@@ -96,7 +97,6 @@ div(v-if="currentVM")
         :items="currentVM.getAvailableProducts().value"
         :selectable="true"
         :selection="availableProductSelector.get()"
-        item-key="reference"
         @item-selected="availableProductSelector.toggleSelect"
         @select-all="availableProductSelector.toggleSelectAll"
       )
@@ -118,7 +118,6 @@ div(v-if="currentVM")
         :items="currentVM.getProducts().value"
         :selectable="currentVM.getProducts().canEdit"
         :selection="addedProductSelector.get()"
-        item-key="reference"
         @item-selected="addedProductSelector.toggleSelect"
         @select-all="addedProductSelector.toggleSelectAll"
       )
@@ -166,8 +165,18 @@ const amountChanged = (amount: string) => {
     currentVM.value.set('amount', amount)
 }
 
+let debounceTimer
+const minimumQueryLength = 3
+
 const searchChanged = (e: any) => {
-  searchProducts(routeName, e.target.value, useSearchGateway())
+  if (debounceTimer) clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(() => {
+    const filters = {
+      query: e.target.value,
+      minimumQueryLength
+    }
+    searchProducts(routeName, filters, useSearchGateway())
+  }, 300)
 }
 
 const startDateChanged = (date: number) => {

@@ -10,7 +10,8 @@ import {
   orderPrepared1,
   orderToPrepare1,
   orderToPrepare2,
-  orderWithMissingProduct1
+  orderWithMissingProduct1,
+  orderWithoutPayment
 } from '@utils/testData/orders'
 import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
@@ -18,6 +19,7 @@ import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InM
 import { useProductStore } from '@store/productStore'
 import { Product, Stock } from '@core/entities/product'
 import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 
 describe('List orders to prepare', () => {
   let preparationStore: any
@@ -30,7 +32,7 @@ describe('List orders to prepare', () => {
     preparationStore = usePreparationStore()
     productStore = useProductStore()
     orderGateway = new InMemoryOrderGateway(new FakeDateProvider())
-    productGateway = new InMemoryProductGateway()
+    productGateway = new InMemoryProductGateway(new FakeUuidGenerator())
   })
 
   describe('There is no orders to prepare', () => {
@@ -84,7 +86,7 @@ describe('List orders to prepare', () => {
       expectPreparationStoreToContains()
     })
     it('should not list orders if they are not payed', async () => {
-      givenExistingOrders(orderNotPayed1)
+      givenExistingOrders(orderNotPayed1, orderWithoutPayment)
       await whenListOrdersToPrepare()
       expectPreparationStoreToContains()
     })
@@ -108,6 +110,21 @@ describe('List orders to prepare', () => {
         orderToPrepare2,
         orderWithMissingProduct1
       )
+    })
+  })
+  describe('Loading', () => {
+    it('should be aware during loading', async () => {
+      const unsubscribe = preparationStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenListOrdersToPrepare()
+    })
+    it('should be aware when loading is done', async () => {
+      await whenListOrdersToPrepare()
+      expect(preparationStore.isLoading).toBe(false)
     })
   })
 

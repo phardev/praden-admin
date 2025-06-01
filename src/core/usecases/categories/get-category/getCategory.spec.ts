@@ -6,6 +6,7 @@ import { useCategoryStore } from '@store/categoryStore'
 import { CategoryDoesNotExistsError } from '@core/errors/CategoryDoesNotExistsError'
 import { dents } from '@utils/testData/categories'
 import { getCategory } from '@core/usecases/categories/get-category/getCategory'
+import { dolodent } from '@utils/testData/products'
 
 describe('Get category', () => {
   let categoryStore: any
@@ -22,7 +23,23 @@ describe('Get category', () => {
       await whenGetCategory(dents.uuid)
     })
     it('should store it in category store', () => {
-      expect(categoryStore.current).toStrictEqual(dents)
+      expect(categoryStore.current).toStrictEqual({
+        category: dents,
+        products: []
+      })
+    })
+  })
+  describe('There is some products already loaded', () => {
+    beforeEach(async () => {
+      categoryStore.current = { products: [dolodent] }
+      categoryGateway.feedWith(dents)
+      await whenGetCategory(dents.uuid)
+    })
+    it('should store the category and reset products', () => {
+      expect(categoryStore.current).toStrictEqual({
+        category: dents,
+        products: []
+      })
     })
   })
   describe('The category does not exists', () => {
@@ -32,6 +49,25 @@ describe('Get category', () => {
       )
     })
   })
+  describe('Loading', () => {
+    beforeEach(() => {
+      categoryGateway.feedWith(dents)
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = categoryStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenGetCategory(dents.uuid)
+    })
+    it('should be aware that loading is over', async () => {
+      await whenGetCategory(dents.uuid)
+      expect(categoryStore.isLoading).toBe(false)
+    })
+  })
+
   const whenGetCategory = async (uuid: UUID) => {
     await getCategory(uuid, categoryGateway)
   }

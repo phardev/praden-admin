@@ -6,11 +6,8 @@ import {
   PromotionProductItemVM,
   TypeChoiceVM
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { useProductStore } from '@store/productStore'
 import { Product } from '@core/entities/product'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { Category } from '@core/entities/category'
-import { useCategoryStore } from '@store/categoryStore'
 import {
   FormFieldsReader,
   FormInitializer
@@ -92,7 +89,6 @@ export class PromotionFormFieldsReader extends FormFieldsReader {
 }
 
 export class PromotionFormGetVM extends PromotionFormVM {
-  protected readonly key: string
   protected formStore: any
 
   constructor(
@@ -114,7 +110,7 @@ export class PromotionFormGetVM extends PromotionFormVM {
     }
   }
 
-  getAvailableTypeChoices(): Array<TypeChoiceVM> {
+  override getAvailableTypeChoices(): Array<TypeChoiceVM> {
     return this.fieldsReader.getAvailableTypeChoices()
   }
 
@@ -125,20 +121,16 @@ export class PromotionFormGetVM extends PromotionFormVM {
     }
   }
 
-  getProducts(): Field<Array<PromotionProductItemVM>> {
-    const addedProducts = this.fieldsReader.get('products')
-    const productStore = useProductStore()
-    const allProducts: Array<Product> = productStore.items
-    const categoryStore = useCategoryStore()
-    const categories: Array<Category> = categoryStore.items
-    const value = addedProducts.map((cip13: string) => {
-      const p: Product = allProducts.find((p) => p.cip13 === cip13)
-      const c: Category = categories.find((c) => c.uuid === p.categoryUuid)
+  override getProducts(): Field<Array<PromotionProductItemVM>> {
+    const promotionStore = usePromotionStore()
+    const promotion = promotionStore.current!
+    const value = promotion.products.map((product: Product) => {
       return {
-        name: p.name,
-        reference: p.cip13,
-        category: c.name,
-        laboratory: p.laboratory
+        uuid: product.uuid,
+        name: product.name,
+        reference: product.ean13,
+        categories: product.categories.map((c) => c.name),
+        laboratory: product.laboratory ? product.laboratory.name : ''
       }
     })
     return {

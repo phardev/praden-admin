@@ -62,30 +62,34 @@ describe('Get orders to prepare VM', () => {
         orderWaitingForClientAnswer2
       ]
       const expectedVM: GetPreparationsVM = {
-        'En attente de réponse client': {
-          count: 2,
-          table: {
-            headers: expectedHeaders,
-            items: [
-              {
-                reference: orderWaitingForClientAnswer1.uuid,
-                href: `/preparations/${orderWaitingForClientAnswer1.uuid}`,
-                client: 'J. Bon',
-                createdDate: '21 janv. 2023',
-                createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
-                total: '11,00\u00A0€'
-              },
-              {
-                reference: orderWaitingForClientAnswer2.uuid,
-                href: `/preparations/${orderWaitingForClientAnswer2.uuid}`,
-                client: "J. D'arc",
-                createdDate: '21 janv. 2023',
-                createdDatetime: new Date('2023-01-21T03:59:59.954Z'),
-                total: '19,76\u00A0€'
-              }
-            ]
+        items: {
+          'En attente de réponse client': {
+            count: 2,
+            canSelect: false,
+            table: {
+              headers: expectedHeaders,
+              items: [
+                {
+                  reference: orderWaitingForClientAnswer2.uuid,
+                  href: `/preparations/${orderWaitingForClientAnswer2.uuid}`,
+                  client: "J. D'arc",
+                  createdDate: '21 janv. 2023, 03:59',
+                  createdDatetime: new Date('2023-01-21T03:59:59.954Z'),
+                  total: '19,75\u00A0€'
+                },
+                {
+                  reference: orderWaitingForClientAnswer1.uuid,
+                  href: `/preparations/${orderWaitingForClientAnswer1.uuid}`,
+                  client: 'J. Bon',
+                  createdDate: '21 janv. 2023, 04:03',
+                  createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
+                  total: '11,00\u00A0€'
+                }
+              ]
+            }
           }
-        }
+        },
+        isLoading: false
       }
       expectVMToMatch(expectedVM)
     })
@@ -93,25 +97,28 @@ describe('Get orders to prepare VM', () => {
   describe('There is some preparations waiting for replenishment', () => {
     it('should list all of them if stock is not available', () => {
       const stock: Stock = {
-        [dolodent.cip13]: 1
+        [dolodent.ean13]: 1
       }
       givenStockIs(stock)
       preparationStore.items = [orderInPreparation1]
-      const expectedVM: GetPreparationsVM = {
-        'En attente de réapprovisionnement': {
-          count: 1,
-          table: {
-            headers: expectedHeaders,
-            items: [
-              {
-                reference: orderInPreparation1.uuid,
-                href: `/preparations/${orderInPreparation1.uuid}`,
-                client: 'J. Bon',
-                createdDate: '5 févr. 2023',
-                createdDatetime: new Date('2023-02-05T02:33:40.539Z'),
-                total: '11,00\u00A0€'
-              }
-            ]
+      const expectedVM: Partial<GetPreparationsVM> = {
+        items: {
+          'En attente de réapprovisionnement': {
+            count: 1,
+            canSelect: false,
+            table: {
+              headers: expectedHeaders,
+              items: [
+                {
+                  reference: orderInPreparation1.uuid,
+                  href: `/preparations/${orderInPreparation1.uuid}`,
+                  client: 'J. Bon',
+                  createdDate: '5 févr. 2023, 02:33',
+                  createdDatetime: new Date('2023-02-05T02:33:40.539Z'),
+                  total: '11,00\u00A0€'
+                }
+              ]
+            }
           }
         }
       }
@@ -119,7 +126,7 @@ describe('Get orders to prepare VM', () => {
     })
     it('should not list if stock is available', () => {
       const stock: Stock = {
-        [dolodent.cip13]: 100
+        [dolodent.ean13]: 100
       }
       givenStockIs(stock)
       preparationStore.items = [orderInPreparation1]
@@ -130,7 +137,7 @@ describe('Get orders to prepare VM', () => {
       order.lines[0].preparedQuantity = 1
       order.lines[0].expectedQuantity = 2
       const stock: Stock = {
-        [chamomilla.cip13]: 1
+        [chamomilla.ean13]: 1
       }
       givenStockIs(stock)
       preparationStore.items = [order]
@@ -142,22 +149,27 @@ describe('Get orders to prepare VM', () => {
     productStore.stock = stock
   }
 
-  const expectVMToMatch = (expectedVM: GetPreparationsVM) => {
+  const expectVMToMatch = (expectedVM: Partial<GetPreparationsVM>) => {
     const emptyVM: GetPreparationsVM = {
-      'En attente de réponse client': {
-        count: 0,
-        table: {
-          headers: expectedHeaders,
-          items: []
+      items: {
+        'En attente de réponse client': {
+          count: 0,
+          canSelect: false,
+          table: {
+            headers: expectedHeaders,
+            items: []
+          }
+        },
+        'En attente de réapprovisionnement': {
+          count: 0,
+          canSelect: false,
+          table: {
+            headers: expectedHeaders,
+            items: []
+          }
         }
       },
-      'En attente de réapprovisionnement': {
-        count: 0,
-        table: {
-          headers: expectedHeaders,
-          items: []
-        }
-      }
+      isLoading: false
     }
     expect(getWaitingPreparationsVM()).toMatchObject({
       ...emptyVM,

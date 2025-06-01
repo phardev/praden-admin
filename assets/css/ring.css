@@ -8,6 +8,6 @@
   }
 
   .ring-neutral {
-    @apply ring-gray8
+    @apply ring-gray8;
   }
 }

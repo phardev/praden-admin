@@ -28,6 +28,25 @@ describe('Get preparation', () => {
       expectCurrentPreparationToBe(orderToPrepare2)
     })
   })
+  describe('Loading', () => {
+    beforeEach(() => {
+      givenPreparationExists(orderToPrepare2)
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = preparationStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenGetPreparation(orderToPrepare2.uuid)
+    })
+    it('should be aware that loading is over', async () => {
+      await whenGetPreparation(orderToPrepare2.uuid)
+      expect(preparationStore.isLoading).toBe(false)
+    })
+  })
+
   describe('The preparation does not exists', () => {
     it('should throw an error', async () => {
       await expect(whenGetPreparation('NotExists')).rejects.toThrow(

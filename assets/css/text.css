@@ -24,26 +24,30 @@
   }
 
   .text-error {
-    @apply text-tomato10
+    @apply text-tomato10;
   }
 
   .text-warning {
-    @apply text-orange9
+    @apply text-orange9;
   }
 
   .text-success {
-    @apply text-grass8
+    @apply text-grass8;
   }
 
   .text-link {
-    @apply text-contrast hover:text-primary11
+    @apply text-contrast hover:text-primary11 cursor-pointer;
+  }
+
+  .text-page-title {
+    @apply text-default text-3xl font-semibold;
   }
 
   .text-title {
-    @apply text-default text-3xl font-semibold mb-8
+    @apply text-page-title mb-8;
   }
 
   .text-subtitle {
-    @apply text-default text-xl font-semibold
+    @apply text-default text-xl font-semibold;
   }
 }

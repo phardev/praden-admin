@@ -1,5 +1,7 @@
 import { Timestamp, UUID } from '@core/types/types'
 import { addTaxToPrice } from '@utils/price'
+import { Promotion } from '@core/entities/promotion'
+import { Delivery, DeliveryStatus } from '@core/entities/delivery'
 
 export interface Address {
   firstname: string
@@ -7,37 +9,40 @@ export interface Address {
   address: string
   city: string
   zip: string
+  country: string
   appartement?: string
 }
 
-export enum DeliveryStatus {
+export enum OrderLineStatus {
   Created,
-  Processing,
-  Shipped,
-  Delivered,
+  Started,
+  Prepared,
   Canceled
 }
 
 export interface OrderLine {
+  productUuid: UUID
   name: string
-  cip13: string
+  ean13: string
   unitAmount: number
   expectedQuantity: number
   preparedQuantity: number
-  location: string
+  locations: object
   percentTaxRate: number
-  deliveryStatus: DeliveryStatus
+  status: OrderLineStatus
+  promotion?: Promotion
   updatedAt: Timestamp
 }
 
 export enum PaymentStatus {
   WaitingForPayment,
-  Payed
+  Payed,
+  Rejected
 }
 
 export interface Payment {
-  invoiceNumber?: string
   status: PaymentStatus
+  amount?: number
 }
 
 export interface Contact {
@@ -46,8 +51,14 @@ export interface Contact {
 }
 
 export enum DeliveryType {
-  ClickAndCollect,
-  Delivery
+  ClickAndCollect = 'CLICKANDCOLLECT',
+  Delivery = 'DELIVERY'
+}
+
+export interface PriceWeightRange {
+  minWeight: number
+  maxWeight: number
+  price: number
 }
 
 export interface DeliveryMethod {
@@ -55,11 +66,7 @@ export interface DeliveryMethod {
   name: string
   description: string
   type: DeliveryType
-  price: number
-}
-
-export interface OrderDelivery {
-  method: DeliveryMethod
+  priceRanges: Array<PriceWeightRange>
 }
 
 export enum MessageContent {
@@ -74,32 +81,69 @@ export interface Message {
   sentAt: Timestamp
 }
 
-export interface Order {
+export interface PromotionCode {
+  uuid: string
+  code: string
+  discount: number
+}
+
+export interface BaseOrder {
   uuid: string
   lines: Array<OrderLine>
   deliveryAddress: Address
-  payment: Payment
+  billingAddress: Address
+  payment?: Payment
   createdAt: Timestamp
-  contact: Contact
-  delivery: OrderDelivery
+  deliveries: Array<Delivery>
   messages: Array<Message>
+  invoiceNumber?: string
+  customerMessage?: string
+  promotionCode?: PromotionCode
 }
 
-// export const getTotalWithoutTax = (lines: Array<OrderLine>) => {
-//   return lines.reduce((acc: number, line: OrderLine) => {
-//     return acc + line.preparedQuantity * line.unitAmount
-//   }, 0)
-// }
+export interface CustomerOrder extends BaseOrder {
+  customerUuid: UUID
+}
+
+export interface AnonymousOrder extends BaseOrder {
+  contact: Contact
+}
+
+export type Order = CustomerOrder | AnonymousOrder
 
 export const getTotalWithTax = (order: Order): number => {
   const totalLine = order.lines.reduce((acc: number, line: OrderLine) => {
     return (
       acc +
       (line.expectedQuantity *
-        addTaxToPrice(line.unitAmount, line.percentTaxRate)) /
+        Math.round(addTaxToPrice(line.unitAmount, line.percentTaxRate))) /
         100
     )
   }, 0)
-  const deliveryPrice = order.delivery.method.price / 100
-  return totalLine + deliveryPrice
+  const delivery = order.deliveries[0]
+  const deliveryPrice = addTaxToPrice(delivery.price, 20) / 100
+
+  let total = totalLine + deliveryPrice
+
+  if (order.promotionCode) {
+    total = Math.max(0, total - order.promotionCode.discount / 100)
+  }
+
+  return total
+}
+
+export const getDeliveryStatus = (order: Order): DeliveryStatus => {
+  if (!order.deliveries.length) {
+    return DeliveryStatus.Created
+  }
+  return order.deliveries[0].status
+}
+
+export const getOrderStatus = (order: Order): OrderLineStatus => {
+  const statuses = order.lines.map((l) => l.status)
+  return Math.min(...statuses)
+}
+
+export const isAnonymousOrder = (order: Order): order is AnonymousOrder => {
+  return (order as CustomerOrder).customerUuid === undefined
 }

@@ -5,6 +5,8 @@ import {
 import { useFormStore } from '@store/formStore'
 import { useCustomerStore } from '@store/customerStore'
 import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { OrderLineStatus, PaymentStatus } from '@core/entities/order'
+import { DeliveryStatus } from '@core/entities/delivery'
 
 export class ExistingCustomerFormInitializer implements FormInitializer {
   protected readonly key: string
@@ -29,6 +31,17 @@ export class ExistingCustomerFormInitializer implements FormInitializer {
       phone: customer.phone
     })
   }
+}
+
+export interface CustomerOrderItemVM {
+  reference: string
+  href: string
+  createdDate: string
+  createdDatetime: Date
+  orderStatus: OrderLineStatus
+  deliveryStatus: DeliveryStatus
+  total: string
+  paymentStatus: PaymentStatus
 }
 
 export class CustomerFormFieldsReader extends FormFieldsReader {

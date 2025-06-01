@@ -1,0 +1,65 @@
+{
+  "name": "plop",
+  "validation": {
+    "name": {
+      "required": "Le nom est requis."
+    },
+    "ean13": {
+      "required": "Le code EAN-13 est requis.",
+      "unique": "Le code EAN-13 existe déjà."
+    },
+    "priceWithoutTax": {
+      "required": "Le prix HT est requis."
+    },
+    "percentTaxRate": {
+      "required": "Le taux de TVA est requis."
+    },
+    "weight": {
+      "required": "Le poids est requis.",
+      "gt": "Le poids doit être supérieur à {min}."
+    }
+  },
+  "error": {
+    "badRequest": "La requête est invalide. Veuillez vérifier vos données.",
+    "unauthorized": "Non autorisé. Veuillez vous connecter.",
+    "notFound": "L'élément recherché n'a pas été trouvé.",
+    "internal": "Erreur interne du serveur. Veuillez réessayer plus tard.",
+    "unknown": "Une erreur inattendue est survenue. Veuillez réessayer."
+  },
+  "common": {
+    "showFilters": "Afficher les filtres",
+    "hideFilters": "Masquer les filtres",
+    "reset": "Réinitialiser"
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "selectDateRange": "Sélectionner une période",
+    "productLimit": "Nombre de produits",
+    "promotionOnly": "Produits en promotion uniquement",
+    "refresh": "Actualiser",
+    "totalSales": "Ventes totales",
+    "orders": "commandes",
+    "totalTurnover": "Chiffre d'affaires total",
+    "revenue": "de revenus",
+    "canceledTurnover": "Chiffre d'affaires annulé",
+    "canceledRevenue": "de revenus annulés",
+    "deliveryPrice": "Frais de livraison",
+    "deliveryRevenue": "de revenus",
+    "averageBasket": "Panier moyen",
+    "perOrder": "par commande",
+    "monthlySales": "Ventes mensuelles",
+    "monthlyTurnover": "Chiffre d'affaires mensuel",
+    "monthlyCanceledTurnover": "Chiffre d'affaires annulé mensuel",
+    "monthlyDeliveryPrice": "Frais de livraison mensuel",
+    "topProducts": {
+      "title": "Produits les plus vendus",
+      "productName": "Nom du produit",
+      "categories": "Catégories",
+      "laboratory": "Laboratoire",
+      "orderCount": "Nombre de boites vendues"
+    }
+  },
+  "preparations": {
+    "refresh": "Actualiser"
+  }
+}

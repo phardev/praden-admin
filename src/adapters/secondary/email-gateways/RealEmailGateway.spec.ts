@@ -35,14 +35,14 @@ describe('Real email gateway', () => {
           },
           lines: [
             {
-              img: 'http://productA.png',
+              miniature: 'http://productA.png',
               name: 'ProductA',
               unitPrice: '1,00\u00A0€',
               quantity: 2,
               total: '2,00\u00A0€'
             },
             {
-              img: 'http://productB.png',
+              miniature: 'http://productB.png',
               name: 'ProductB',
               unitPrice: '2,50\u00A0€',
               quantity: 3,
@@ -131,14 +131,14 @@ describe('Real email gateway', () => {
           },
           lines: [
             {
-              img: 'another-http://productA.png',
+              miniature: 'another-http://productA.png',
               name: 'another-ProductA',
               unitPrice: '2,00\u00A0€',
               quantity: 3,
               total: '6,00\u00A0€'
             },
             {
-              img: 'another-http://productB.png',
+              miniature: 'another-http://productB.png',
               name: 'another-ProductB',
               unitPrice: '2,50\u00A0€',
               quantity: 1,

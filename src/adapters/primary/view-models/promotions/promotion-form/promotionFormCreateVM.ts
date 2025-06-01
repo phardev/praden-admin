@@ -4,14 +4,13 @@ import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
 import { useFormStore } from '@store/formStore'
 import { PromotionFormFieldsReader } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
-import { useCategoryStore } from '@store/categoryStore'
-import { Category } from '@core/entities/category'
 import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import {
   FieldHandler,
   FormFieldsWriter
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import { PromotionFormVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormVM'
+import { UUID } from '@core/types/types'
 
 export interface TypeChoiceVM {
   type: ReductionType
@@ -19,9 +18,10 @@ export interface TypeChoiceVM {
 }
 
 export interface PromotionProductItemVM {
+  uuid: UUID
   name: string
   reference: string
-  category: string
+  categories: Array<string>
   laboratory: string
 }
 
@@ -42,7 +42,7 @@ export class PromotionFormFieldsWriter extends FormFieldsWriter {
     }
   }
 
-  set(fieldName: string, value: any): void {
+  override set(fieldName: string, value: any): void {
     const handler =
       this.fieldHandlers[fieldName] || super.set.bind(this, fieldName)
     handler(value)
@@ -53,16 +53,27 @@ export class PromotionFormFieldsWriter extends FormFieldsWriter {
     super.set('type', type)
   }
 
-  addProducts(cip13: Array<string>) {
+  addProducts(uuids: Array<UUID>) {
     const products = this.fieldsReader.get('products')
-    const productsSet = new Set(products)
-    cip13.forEach((item) => productsSet.add(item))
-    super.set('products', [...productsSet])
+    const productStore = useProductStore()
+    const searchStore = useSearchStore()
+    const searchResult = searchStore.get(this.key)
+    const alreadyAdded = products.map((p: Product) => p.uuid)
+    uuids
+      .filter((uuid) => !alreadyAdded.includes(uuid))
+      .forEach((uuid) => {
+        let product = productStore.getByUuid(uuid)
+        if (!product) {
+          product = searchResult.find((p) => p.uuid === uuid)
+        }
+        products.push(product)
+      })
+    super.set('products', products)
   }
 
-  removeProducts(cip13: Array<string>) {
+  removeProducts(uuids: Array<UUID>) {
     let products = this.fieldsReader.get('products')
-    products = products.filter((p: string) => !cip13.includes(p))
+    products = products.filter((p: Product) => !uuids.includes(p.uuid))
     super.set('products', products)
   }
 }
@@ -127,30 +138,29 @@ export class PromotionFormCreateVM extends PromotionFormVM {
     const filteredProducts: Array<Product> = searchStore.get(this.key)
     const addedProducts = this.fieldsReader.get('products')
     const res = (filteredProducts || allProducts).filter(
-      (p) => !addedProducts.includes(p.cip13)
+      (p: Product) =>
+        !addedProducts.map((p: Product) => p.uuid).includes(p.uuid)
     )
-    const categoryStore = useCategoryStore()
-    const categories: Array<Category> = categoryStore.items
     return {
       value: res.map((p: Product) => {
-        const c: Category = categories.find((c) => c.uuid === p.categoryUuid)
         return {
+          uuid: p.uuid,
           name: p.name,
-          reference: p.cip13,
-          category: c.name,
-          laboratory: p.laboratory
+          reference: p.ean13,
+          categories: p.categories.map((c) => c.name),
+          laboratory: p.laboratory ? p.laboratory.name : ''
         }
       }),
       canEdit: true
     }
   }
 
-  addProducts(cip13: Array<string>) {
-    this.fieldsWriter.addProducts(cip13)
+  addProducts(uuids: Array<UUID>) {
+    this.fieldsWriter.addProducts(uuids)
   }
 
-  removeProducts(cip13: Array<string>) {
-    this.fieldsWriter.removeProducts(cip13)
+  removeProducts(uuids: Array<UUID>) {
+    this.fieldsWriter.removeProducts(uuids)
   }
 
   getCanValidate(): boolean {

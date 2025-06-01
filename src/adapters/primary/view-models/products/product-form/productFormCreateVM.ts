@@ -7,10 +7,21 @@ import { addTaxToPrice, removeTaxFromPrice } from '@utils/price'
 import { useProductStore } from '@store/productStore'
 import {
   FormInitializer,
-  ProductFormFieldsReader
+  ProductFormFieldsReader,
+  ProductFormVM
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import { useLocationStore } from '@store/locationStore'
+import { Location } from '@core/entities/location'
+import { UUID } from '@core/types/types'
+import { Laboratory } from '@core/entities/laboratory'
+import { useLaboratoryStore } from '@store/laboratoryStore'
+import { ProductStatus } from '@core/entities/product'
 
 export type CreateProductCategoriesVM = Array<Pick<Category, 'uuid' | 'name'>>
+export type CreateProductLocationsVM = Array<Pick<Location, 'uuid' | 'name'>>
+export type CreateProductLaboratoriesVM = Array<
+  Pick<Laboratory, 'uuid' | 'name'>
+>
 
 export type FieldHandler = (value: any) => void | Promise<void>
 
@@ -40,11 +51,13 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
       priceWithoutTax: this.setPriceWithoutTax.bind(this),
       percentTaxRate: this.setPercentTaxRate.bind(this),
       priceWithTax: this.setPriceWithTax.bind(this),
-      newImages: this.setNewImages.bind(this)
+      miniature: this.setMiniature.bind(this),
+      newImages: this.setNewImages.bind(this),
+      locations: this.setLocations.bind(this)
     }
   }
 
-  async set(fieldName: string, value: any): Promise<any> {
+  override async set(fieldName: string, value: any): Promise<any> {
     const handler =
       this.fieldHandlers[fieldName] || super.set.bind(this, fieldName)
     await handler(value)
@@ -53,7 +66,7 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
   private setPriceWithoutTax(priceWithoutTax: string | undefined): void {
     super.set('priceWithoutTax', priceWithoutTax)
     const taxRate = this.fieldsReader.get('percentTaxRate')
-    if (taxRate) {
+    if (taxRate && priceWithoutTax) {
       const newPriceWithTax = addTaxToPrice(+priceWithoutTax, taxRate).toFixed(
         2
       )
@@ -69,7 +82,7 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
     super.set('percentTaxRate', percentTaxRate)
     const priceWithoutTax = this.fieldsReader.get('priceWithoutTax')
     const priceWithTax = this.fieldsReader.get('priceWithTax')
-    if (priceWithTax && !priceWithoutTax) {
+    if (priceWithTax && percentTaxRate && !priceWithoutTax) {
       const newPriceWithoutTax = removeTaxFromPrice(
         +priceWithTax,
         +percentTaxRate
@@ -77,7 +90,7 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
       if (newPriceWithoutTax !== this.fieldsReader.get('priceWithoutTax')) {
         this.formStore.set(this.key, { priceWithoutTax: newPriceWithoutTax })
       }
-    } else if (priceWithoutTax) {
+    } else if (priceWithoutTax && percentTaxRate) {
       const newPriceWithTax = addTaxToPrice(
         +priceWithoutTax,
         +percentTaxRate
@@ -91,7 +104,7 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
   private setPriceWithTax(priceWithTax: string | undefined): void {
     super.set('priceWithTax', priceWithTax)
     const taxRate = this.fieldsReader.get('percentTaxRate')
-    if (taxRate) {
+    if (taxRate && priceWithTax) {
       const newPriceWithoutTax = removeTaxFromPrice(
         +priceWithTax,
         taxRate
@@ -100,6 +113,12 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
         super.set('priceWithoutTax', newPriceWithoutTax)
       }
     }
+  }
+
+  async setMiniature(miniature: File): Promise<void> {
+    const data = await getFileContent(miniature)
+    super.set('miniature', data)
+    super.set('newMiniature', miniature)
   }
 
   async setNewImages(newImages: Array<File>): Promise<void> {
@@ -111,42 +130,56 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
     }
     super.set('images', images)
   }
+
+  setLocations(location: any): void {
+    if (location.uuid) {
+      const locations = this.fieldsReader.get('locations')
+      locations[location.uuid] = location.value
+      super.set('locations', locations)
+    }
+  }
 }
 
 export class NewProductFormInitializer implements FormInitializer {
   protected readonly key: string
   protected formStore: any
   protected productStore: any
+  protected locationStore: any
 
   constructor(key: string) {
     this.key = key
     this.formStore = useFormStore()
     this.productStore = useProductStore()
+    this.locationStore = useLocationStore()
   }
 
   init() {
     this.formStore.set(this.key, {
       name: '',
-      categoryUuid: undefined,
+      isActive: true,
+      categoryUuids: [],
       cip7: '',
       cip13: '',
       ean13: '',
       priceWithoutTax: undefined,
       percentTaxRate: undefined,
       priceWithTax: undefined,
-      laboratory: '',
-      location: '',
+      laboratory: undefined,
+      locations: {},
       availableStock: '',
       newImages: [],
       images: [],
       description: '',
       instructionsForUse: '',
-      composition: ''
+      composition: '',
+      weight: '',
+      maxQuantityForOrder: '',
+      arePromotionsAllowed: true
     })
   }
 }
 
-export class ProductFormCreateVM {
+export class ProductFormCreateVM extends ProductFormVM {
   private fieldsReader: ProductFormFieldsReader
   private fieldsWriter: ProductFormFieldsWriter
 
@@ -155,6 +188,7 @@ export class ProductFormCreateVM {
     fieldsReader: ProductFormFieldsReader,
     fieldsWriter: ProductFormFieldsWriter
   ) {
+    super()
     initializer.init()
     this.fieldsReader = fieldsReader
     this.fieldsWriter = fieldsWriter
@@ -162,6 +196,27 @@ export class ProductFormCreateVM {
 
   get(fieldName: string): any {
     return this.createField(fieldName)
+  }
+
+  async setMiniature(miniature: File): Promise<void> {
+    const data = await getFileContent(miniature)
+    await this.fieldsWriter.set('miniature', data)
+  }
+
+  toggleIsActive(): void {
+    const isActive = this.fieldsReader.get('isActive')
+    this.fieldsWriter.set('isActive', !isActive)
+  }
+
+  toggleCategory(uuid: UUID): void {
+    const categoryUuids = this.fieldsReader.get('categoryUuids')
+    const index = categoryUuids.indexOf(uuid)
+    if (index < 0) {
+      categoryUuids.push(uuid)
+    } else {
+      categoryUuids.splice(index, 1)
+    }
+    this.fieldsWriter.set('categoryUuids', categoryUuids)
   }
 
   private createField<T>(fieldName: string): Field<T> {
@@ -175,27 +230,80 @@ export class ProductFormCreateVM {
     await this.fieldsWriter.set(fieldName, value)
   }
 
+  async removeImage(data: string) {
+    const images = this.fieldsReader.get('images')
+    if (images.find((i: string) => i === data)) {
+      const updated = images.filter((image: string) => image !== data)
+      await this.set('images', updated)
+    }
+    const newImages = this.fieldsReader.get('newImages')
+    const newImagesData = []
+    for (const file of newImages) {
+      newImagesData.push(await getFileContent(file))
+    }
+    const index = newImagesData.findIndex((i) => i === data)
+    if (index >= 0) {
+      newImages.splice(index, 1)
+    }
+  }
+
   getAvailableCategories(): CreateProductCategoriesVM {
     return this.fieldsReader.getAvailableCategories()
   }
 
+  getAvailableLocations(): CreateProductLocationsVM {
+    return this.fieldsReader.getAvailableLocations()
+  }
+
+  getAvailableLaboratories(): CreateProductLaboratoriesVM {
+    return this.fieldsReader.getAvailableLaboratories()
+  }
+
   getDto(): CreateProductDTO {
+    const priceWithoutTax = this.fieldsReader.get('priceWithoutTax')
+      ? parseFloat(this.fieldsReader.get('priceWithoutTax')) * 100
+      : 0
+    const percentTaxRate = this.fieldsReader.get('percentTaxRate')
+      ? parseFloat(this.fieldsReader.get('percentTaxRate'))
+      : 0
+    const availableStock = this.fieldsReader.get('availableStock')
+      ? parseInt(this.fieldsReader.get('availableStock'))
+      : 0
+    const laboratoryStore = useLaboratoryStore()
+    const laboratory = laboratoryStore.getByUuid(
+      this.fieldsReader.get('laboratory')
+    )
     return {
       name: this.fieldsReader.get('name'),
+      status: this.fieldsReader.get('isActive')
+        ? ProductStatus.Active
+        : ProductStatus.Inactive,
       cip7: this.fieldsReader.get('cip7'),
       cip13: this.fieldsReader.get('cip13'),
       ean13: this.fieldsReader.get('ean13'),
-      categoryUuid: this.fieldsReader.get('categoryUuid'),
-      laboratory: this.fieldsReader.get('laboratory'),
+      categoryUuids: this.fieldsReader.get('categoryUuids'),
+      laboratory,
+      miniature: this.fieldsReader.get('newMiniature'),
       images: this.fieldsReader.get('newImages'),
-      priceWithoutTax: this.fieldsReader.get('priceWithoutTax'),
-      percentTaxRate: this.fieldsReader.get('percentTaxRate').toString(),
-      location: this.fieldsReader.get('location'),
-      availableStock: this.fieldsReader.get('availableStock'),
+      priceWithoutTax,
+      percentTaxRate,
+      locations: this.fieldsReader.get('locations'),
+      availableStock,
       description: this.fieldsReader.get('description'),
       instructionsForUse: this.fieldsReader.get('instructionsForUse'),
-      composition: this.fieldsReader.get('composition')
+      composition: this.fieldsReader.get('composition'),
+      weight: +this.fieldsReader.get('weight') * 1000,
+      maxQuantityForOrder: this.fieldsReader.get('maxQuantityForOrder')
+        ? +this.fieldsReader.get('maxQuantityForOrder')
+        : undefined,
+      flags: {
+        arePromotionsAllowed: this.fieldsReader.get('arePromotionsAllowed')
+      }
     }
+  }
+
+  getPromotion(): undefined {
+    return undefined
   }
 
   getDisplayValidate(): boolean {

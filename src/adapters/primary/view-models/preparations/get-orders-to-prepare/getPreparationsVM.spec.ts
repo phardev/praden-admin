@@ -14,7 +14,8 @@ import {
   orderToPrepare3,
   orderWaitingForRestock,
   orderWithMissingProduct1,
-  orderWithMissingProduct2
+  orderWithMissingProduct2,
+  orderWithoutDelivery
 } from '@utils/testData/orders'
 import { Stock } from '@core/entities/product'
 import { chamomilla, dolodent } from '@utils/testData/products'
@@ -42,6 +43,14 @@ describe('Get orders to prepare VM', () => {
     }
   ]
 
+  const expectedClickAndCollectHeaders = [
+    ...expectedHeaders,
+    {
+      name: 'Date de retrait',
+      value: 'pickingDate'
+    }
+  ]
+
   beforeEach(() => {
     setActivePinia(createPinia())
     preparationStore = usePreparationStore()
@@ -55,30 +64,36 @@ describe('Get orders to prepare VM', () => {
   describe('There is some orders to prepare in click & collect', () => {
     it('should list all of them', () => {
       preparationStore.items = [orderToPrepare1, orderToPrepare2]
-      const expectedVM: GetPreparationsVM = {
-        'Click & Collect': {
-          count: 2,
-          canSelect: true,
-          table: {
-            headers: expectedHeaders,
-            items: [
-              {
-                reference: orderToPrepare1.uuid,
-                href: `/preparations/${orderToPrepare1.uuid}`,
-                client: 'J. Bon',
-                createdDate: '21 janv. 2023',
-                createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
-                total: '11,00\u00A0€'
-              },
-              {
-                reference: orderToPrepare2.uuid,
-                href: `/preparations/${orderToPrepare2.uuid}`,
-                client: "J. D'arc",
-                createdDate: '5 févr. 2023',
-                createdDatetime: new Date('2023-02-05T02:59:32.527Z'),
-                total: '15,00\u00A0€'
-              }
-            ]
+      const expectedVM: Partial<GetPreparationsVM> = {
+        items: {
+          'Click & Collect': {
+            count: 2,
+            canSelect: true,
+            table: {
+              headers: expectedClickAndCollectHeaders,
+              items: [
+                {
+                  reference: orderToPrepare1.uuid,
+                  href: `/preparations/${orderToPrepare1.uuid}`,
+                  client: 'J. Bon',
+                  createdDate: '21 janv. 2023, 03:54',
+                  createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
+                  total: '11,00\u00A0€',
+                  pickingDate: '20/01/2025 12:42',
+                  pickingDatetime: new Date('2025-01-20T12:42:17.000Z')
+                },
+                {
+                  reference: orderToPrepare2.uuid,
+                  href: `/preparations/${orderToPrepare2.uuid}`,
+                  client: "J. D'arc",
+                  createdDate: '5 févr. 2023, 02:59',
+                  createdDatetime: new Date('2023-02-05T02:59:32.527Z'),
+                  total: '15,00\u00A0€',
+                  pickingDate: '13/02/2025 16:15',
+                  pickingDatetime: new Date('2025-02-13T16:15:40.000Z')
+                }
+              ]
+            }
           }
         }
       }
@@ -88,22 +103,24 @@ describe('Get orders to prepare VM', () => {
   describe('There is some orders to prepare in delivery', () => {
     it('should list all of them', () => {
       preparationStore.items = [orderToPrepare3]
-      const expectedVM: GetPreparationsVM = {
-        Colissimo: {
-          count: 1,
-          canSelect: true,
-          table: {
-            headers: expectedHeaders,
-            items: [
-              {
-                reference: orderToPrepare3.uuid,
-                href: `/preparations/${orderToPrepare3.uuid}`,
-                client: "J. D'arc",
-                createdDate: '5 févr. 2023',
-                createdDatetime: new Date('2023-02-05T02:59:32.527Z'),
-                total: '11,49\u00A0€'
-              }
-            ]
+      const expectedVM: Partial<GetPreparationsVM> = {
+        items: {
+          'Domicile / Relais': {
+            count: 1,
+            canSelect: true,
+            table: {
+              headers: expectedHeaders,
+              items: [
+                {
+                  reference: orderToPrepare3.uuid,
+                  href: `/preparations/${orderToPrepare3.uuid}`,
+                  client: "J. D'arc",
+                  createdDate: '5 févr. 2023, 02:59',
+                  createdDatetime: new Date('2023-02-05T02:59:32.527Z'),
+                  total: '11,50\u00A0€'
+                }
+              ]
+            }
           }
         }
       }
@@ -113,22 +130,24 @@ describe('Get orders to prepare VM', () => {
   describe('There is some preparations to finish', () => {
     it('should list all of them', () => {
       preparationStore.items = [orderSaved1]
-      const expectedVM: GetPreparationsVM = {
-        'À terminer': {
-          count: 1,
-          canSelect: false,
-          table: {
-            headers: expectedHeaders,
-            items: [
-              {
-                reference: orderSaved1.uuid,
-                href: `/preparations/${orderSaved1.uuid}`,
-                client: 'J. Bon',
-                createdDate: '21 janv. 2023',
-                createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
-                total: '11,00\u00A0€'
-              }
-            ]
+      const expectedVM: Partial<GetPreparationsVM> = {
+        items: {
+          'À terminer': {
+            count: 1,
+            canSelect: true,
+            table: {
+              headers: expectedHeaders,
+              items: [
+                {
+                  reference: orderSaved1.uuid,
+                  href: `/preparations/${orderSaved1.uuid}`,
+                  client: 'J. Bon',
+                  createdDate: '21 janv. 2023, 04:03',
+                  createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
+                  total: '11,00\u00A0€'
+                }
+              ]
+            }
           }
         }
       }
@@ -138,26 +157,28 @@ describe('Get orders to prepare VM', () => {
   describe('There is some preparations to complete', () => {
     it('should list all of them if stock is available', () => {
       const stock: Stock = {
-        [dolodent.cip13]: 50
+        [dolodent.ean13]: 50
       }
       givenStockIs(stock)
       preparationStore.items = [orderInPreparation1]
-      const expectedVM: GetPreparationsVM = {
-        'À completer': {
-          count: 1,
-          canSelect: false,
-          table: {
-            headers: expectedHeaders,
-            items: [
-              {
-                reference: orderInPreparation1.uuid,
-                href: `/preparations/${orderInPreparation1.uuid}`,
-                client: 'J. Bon',
-                createdDate: '5 févr. 2023',
-                createdDatetime: new Date('2023-02-05T02:33:40.539Z'),
-                total: '11,00\u00A0€'
-              }
-            ]
+      const expectedVM: Partial<GetPreparationsVM> = {
+        items: {
+          'À completer': {
+            count: 1,
+            canSelect: false,
+            table: {
+              headers: expectedHeaders,
+              items: [
+                {
+                  reference: orderInPreparation1.uuid,
+                  href: `/preparations/${orderInPreparation1.uuid}`,
+                  client: 'J. Bon',
+                  createdDate: '5 févr. 2023, 02:33',
+                  createdDatetime: new Date('2023-02-05T02:33:40.539Z'),
+                  total: '11,00\u00A0€'
+                }
+              ]
+            }
           }
         }
       }
@@ -165,7 +186,7 @@ describe('Get orders to prepare VM', () => {
     })
     it('should not list if stock is not available', () => {
       const stock: Stock = {
-        [chamomilla.cip13]: 1
+        [chamomilla.ean13]: 1
       }
       givenStockIs(stock)
       preparationStore.items = [orderWaitingForRestock]
@@ -176,26 +197,28 @@ describe('Get orders to prepare VM', () => {
       order.lines[0].preparedQuantity = 1
       order.lines[0].expectedQuantity = 2
       const stock: Stock = {
-        [chamomilla.cip13]: 1
+        [chamomilla.ean13]: 1
       }
       givenStockIs(stock)
       preparationStore.items = [order]
-      const expectedVM: GetPreparationsVM = {
-        'À completer': {
-          count: 1,
-          canSelect: false,
-          table: {
-            headers: expectedHeaders,
-            items: [
-              {
-                reference: order.uuid,
-                href: `/preparations/${order.uuid}`,
-                client: 'J. Bon',
-                createdDate: '21 janv. 2023',
-                createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
-                total: '13,79\u00A0€'
-              }
-            ]
+      const expectedVM: Partial<GetPreparationsVM> = {
+        items: {
+          'À completer': {
+            count: 1,
+            canSelect: false,
+            table: {
+              headers: expectedHeaders,
+              items: [
+                {
+                  reference: order.uuid,
+                  href: `/preparations/${order.uuid}`,
+                  client: 'J. Bon',
+                  createdDate: '21 janv. 2023, 04:03',
+                  createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
+                  total: '13,80\u00A0€'
+                }
+              ]
+            }
           }
         }
       }
@@ -208,30 +231,32 @@ describe('Get orders to prepare VM', () => {
         orderWithMissingProduct1,
         orderWithMissingProduct2
       ]
-      const expectedVM: GetPreparationsVM = {
-        'À expedier': {
-          count: 2,
-          canSelect: false,
-          table: {
-            headers: expectedHeaders,
-            items: [
-              {
-                reference: orderWithMissingProduct1.uuid,
-                href: `/preparations/${orderWithMissingProduct1.uuid}`,
-                client: 'J. Bon',
-                createdDate: '24 janv. 2023',
-                createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
-                total: '36,00\u00A0€'
-              },
-              {
-                reference: orderWithMissingProduct2.uuid,
-                href: `/preparations/${orderWithMissingProduct2.uuid}`,
-                client: 'J. Bon',
-                createdDate: '24 janv. 2023',
-                createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
-                total: '36,00\u00A0€'
-              }
-            ]
+      const expectedVM: Partial<GetPreparationsVM> = {
+        items: {
+          'À expedier': {
+            count: 2,
+            canSelect: false,
+            table: {
+              headers: expectedHeaders,
+              items: [
+                {
+                  reference: orderWithMissingProduct1.uuid,
+                  href: `/preparations/${orderWithMissingProduct1.uuid}`,
+                  client: 'J. Bon',
+                  createdDate: '24 janv. 2023, 15:21',
+                  createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
+                  total: '37,19\u00A0€'
+                },
+                {
+                  reference: orderWithMissingProduct2.uuid,
+                  href: `/preparations/${orderWithMissingProduct2.uuid}`,
+                  client: 'J. Bon',
+                  createdDate: '24 janv. 2023, 15:21',
+                  createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
+                  total: '37,19\u00A0€'
+                }
+              ]
+            }
           }
         }
       }
@@ -241,24 +266,62 @@ describe('Get orders to prepare VM', () => {
   describe('There is some preparations to cancel', () => {
     it('should list all of them', () => {
       preparationStore.items = [orderToCancel]
-      const expectedVM: GetPreparationsVM = {
-        'À annuler': {
-          count: 1,
-          canSelect: false,
-          table: {
-            headers: expectedHeaders,
-            items: [
-              {
-                reference: orderToCancel.uuid,
-                href: `/preparations/${orderToCancel.uuid}`,
-                client: 'J. Bon',
-                createdDate: '24 janv. 2023',
-                createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
-                total: '16,99\u00A0€'
-              }
-            ]
+      const expectedVM: Partial<GetPreparationsVM> = {
+        items: {
+          'À annuler': {
+            count: 1,
+            canSelect: false,
+            table: {
+              headers: expectedHeaders,
+              items: [
+                {
+                  reference: orderToCancel.uuid,
+                  href: `/preparations/${orderToCancel.uuid}`,
+                  client: 'J. Bon',
+                  createdDate: '24 janv. 2023, 15:21',
+                  createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
+                  total: '20,00\u00A0€'
+                }
+              ]
+            }
           }
         }
+      }
+      expectVMToMatch(expectedVM)
+    })
+  })
+  describe('There is some preparations without delivery', () => {
+    it('should not list them', () => {
+      preparationStore.items = [orderToCancel, orderWithoutDelivery]
+      const expectedVM: Partial<GetPreparationsVM> = {
+        items: {
+          'À annuler': {
+            count: 1,
+            canSelect: false,
+            table: {
+              headers: expectedHeaders,
+              items: [
+                {
+                  reference: orderToCancel.uuid,
+                  href: `/preparations/${orderToCancel.uuid}`,
+                  client: 'J. Bon',
+                  createdDate: '24 janv. 2023, 15:21',
+                  createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
+                  total: '20,00\u00A0€'
+                }
+              ]
+            }
+          }
+        }
+      }
+      expectVMToMatch(expectedVM)
+    })
+  })
+  describe('Loading', () => {
+    it('should be aware when loading', () => {
+      preparationStore.isLoading = true
+      const expectedVM: Partial<GetPreparationsVM> = {
+        isLoading: true
       }
       expectVMToMatch(expectedVM)
     })
@@ -268,56 +331,59 @@ describe('Get orders to prepare VM', () => {
     productStore.stock = stock
   }
 
-  const expectVMToMatch = (expectedVM: GetPreparationsVM) => {
+  const expectVMToMatch = (expectedVM: Partial<GetPreparationsVM>) => {
     const emptyVM: GetPreparationsVM = {
-      'Click & Collect': {
-        count: 0,
-        canSelect: true,
-        table: {
-          headers: expectedHeaders,
-          items: []
+      items: {
+        'Click & Collect': {
+          count: 0,
+          canSelect: true,
+          table: {
+            headers: expectedClickAndCollectHeaders,
+            items: []
+          }
+        },
+        'Domicile / Relais': {
+          count: 0,
+          canSelect: true,
+          table: {
+            headers: expectedHeaders,
+            items: []
+          }
+        },
+        'À terminer': {
+          count: 0,
+          canSelect: true,
+          table: {
+            headers: expectedHeaders,
+            items: []
+          }
+        },
+        'À completer': {
+          count: 0,
+          canSelect: false,
+          table: {
+            headers: expectedHeaders,
+            items: []
+          }
+        },
+        'À expedier': {
+          count: 0,
+          canSelect: false,
+          table: {
+            headers: expectedHeaders,
+            items: []
+          }
+        },
+        'À annuler': {
+          count: 0,
+          canSelect: false,
+          table: {
+            headers: expectedHeaders,
+            items: []
+          }
         }
       },
-      Colissimo: {
-        count: 0,
-        canSelect: true,
-        table: {
-          headers: expectedHeaders,
-          items: []
-        }
-      },
-      'À terminer': {
-        count: 0,
-        canSelect: false,
-        table: {
-          headers: expectedHeaders,
-          items: []
-        }
-      },
-      'À completer': {
-        count: 0,
-        canSelect: false,
-        table: {
-          headers: expectedHeaders,
-          items: []
-        }
-      },
-      'À expedier': {
-        count: 0,
-        canSelect: false,
-        table: {
-          headers: expectedHeaders,
-          items: []
-        }
-      },
-      'À annuler': {
-        count: 0,
-        canSelect: false,
-        table: {
-          headers: expectedHeaders,
-          items: []
-        }
-      }
+      isLoading: false
     }
     expect(getPreparationsVM()).toMatchObject({ ...emptyVM, ...expectedVM })
   }

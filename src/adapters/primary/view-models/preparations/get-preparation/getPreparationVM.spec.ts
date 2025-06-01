@@ -4,7 +4,8 @@ import {
   orderToPrepare1,
   orderToPrepare2,
   orderWithMissingProduct1,
-  orderSaved1
+  orderSaved1,
+  orderWithCustomerMessage
 } from '@utils/testData/orders'
 import { Order } from '@core/entities/order'
 import { createPinia, setActivePinia } from 'pinia'
@@ -15,7 +16,10 @@ import {
   PreparationStatus
 } from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
 import { dolodent, ultraLevure } from '@utils/testData/products'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import {
+  GetPreparationsVM,
+  Header
+} from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import {
   PreparationError,
   PreparationErrorType
@@ -58,7 +62,7 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               expectedQuantity: 2,
               preparedQuantity: 0,
@@ -69,7 +73,8 @@ describe('Get preparation VM', () => {
           canValidate: false,
           canCancel: false,
           canAskHowToFinish: false,
-          error: undefined
+          error: undefined,
+          isLoading: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -80,14 +85,14 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               expectedQuantity: 1,
               preparedQuantity: 0,
               status: PreparationStatus.NotPrepared
             },
             {
-              reference: ultraLevure.cip13,
+              reference: ultraLevure.ean13,
               name: ultraLevure.name,
               expectedQuantity: 2,
               preparedQuantity: 0,
@@ -98,7 +103,8 @@ describe('Get preparation VM', () => {
           canValidate: false,
           canCancel: false,
           canAskHowToFinish: false,
-          error: undefined
+          error: undefined,
+          isLoading: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -113,7 +119,7 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               expectedQuantity: 2,
               preparedQuantity: 2,
@@ -137,14 +143,14 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               expectedQuantity: 1,
               preparedQuantity: 1,
               status: PreparationStatus.Prepared
             },
             {
-              reference: ultraLevure.cip13,
+              reference: ultraLevure.ean13,
               name: ultraLevure.name,
               expectedQuantity: 2,
               preparedQuantity: 1,
@@ -167,7 +173,7 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               expectedQuantity: 2,
               preparedQuantity: 3,
@@ -192,7 +198,7 @@ describe('Get preparation VM', () => {
           headers,
           lines: [
             {
-              reference: dolodent.cip13,
+              reference: dolodent.ean13,
               name: dolodent.name,
               expectedQuantity: 2,
               preparedQuantity: 2,
@@ -325,9 +331,48 @@ describe('Get preparation VM', () => {
         messages: [],
         canValidate: false,
         canCancel: false,
-        canAskHowToFinish: false
+        canAskHowToFinish: false,
+        isLoading: false
       }
       expect(getPreparationVM()).toStrictEqual(emptyVM)
+    })
+  })
+
+  describe('There is a preparation with a customer message', () => {
+    it('should get the preparation vm with the customer message', () => {
+      givenCurrentPreparationIs(orderWithCustomerMessage)
+      const expectedVM: GetPreparationVM = {
+        reference: orderWithCustomerMessage.uuid,
+        headers,
+        lines: [
+          {
+            reference: dolodent.ean13,
+            name: dolodent.name,
+            expectedQuantity: 2,
+            preparedQuantity: 0,
+            status: PreparationStatus.NotPrepared
+          }
+        ],
+        messages: [],
+        customerMessage: orderWithCustomerMessage.customerMessage,
+        canValidate: false,
+        canCancel: false,
+        canAskHowToFinish: false,
+        error: undefined,
+        isLoading: false
+      }
+      expect(getPreparationVM()).toStrictEqual(expectedVM)
+    })
+  })
+
+  describe('Loading', () => {
+    it('should be aware when loading', () => {
+      givenCurrentPreparationIs(orderToPrepare1)
+      preparationStore.isLoading = true
+      const expectedVM: Partial<GetPreparationsVM> = {
+        isLoading: true
+      }
+      expectVMToMatch(expectedVM)
     })
   })
 

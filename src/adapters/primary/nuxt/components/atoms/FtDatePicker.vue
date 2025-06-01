@@ -3,6 +3,7 @@ VCalendarDatePicker(
   v-model="date"
   v-bind="{ ...attrs, ...$attrs }"
   locale="fr"
+  @dayclick="onDayClick"
 )
 </template>
 
@@ -20,6 +21,10 @@ const props = defineProps({
       DatePickerDate | DatePickerRangeObject | null
     >,
     default: null
+  },
+  isEndDate: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -29,6 +34,9 @@ const date = computed({
   get: () => props.modelValue,
   set: (value) => {
     const tmp = new Date(value)
+    if (props.isEndDate) {
+      tmp.setHours(23, 59, 59, 999)
+    }
     const timestamp = tmp.getTime()
     emit('update:model-value', timestamp)
     emit('close')
@@ -41,5 +49,10 @@ const attrs = {
   color: 'primary',
   'is-dark': { selector: 'html', darkClass: 'dark' },
   'first-day-of-week': 2
+}
+const onDayClick = (day: any, event: MouseEvent) => {
+  if (event?.target instanceof HTMLElement) {
+    event.target.blur()
+  }
 }
 </script>

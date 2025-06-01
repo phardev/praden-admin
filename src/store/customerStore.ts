@@ -1,17 +1,35 @@
 import { defineStore } from 'pinia'
 
 import { Customer } from '@core/entities/customer'
+import { UUID } from '@core/types/types'
 
 export const useCustomerStore = defineStore('CustomerStore', {
   state: () => {
     return {
       items: [] as Array<Customer>,
-      current: undefined as Customer | undefined
+      current: undefined as Customer | undefined,
+      hasMore: false as boolean
+    }
+  },
+  getters: {
+    getByUuid: (state) => {
+      return (uuid: UUID): Customer => {
+        const customer = state.items.find((c) => c.uuid === uuid)
+        return customer!
+      }
     }
   },
   actions: {
     list(customers: Array<Customer>) {
-      this.items = customers
+      customers.forEach((c) => {
+        const existingCustomer = this.items.find((item) => item.uuid === c.uuid)
+        if (existingCustomer) {
+          this.edit(c)
+        } else {
+          this.items.push(c)
+        }
+      })
+      this.hasMore = customers.length > 0
     },
     add(customer: Customer) {
       this.items.push(customer)

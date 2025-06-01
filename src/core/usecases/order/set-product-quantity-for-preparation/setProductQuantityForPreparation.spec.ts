@@ -15,7 +15,7 @@ describe('Set product quantity for preparation', () => {
   describe('There is no current preparation', () => {
     it('should throw an error', () => {
       expect(() =>
-        whenChangeProductQuantityForPreparation(dolodent.cip13, 2)
+        whenChangeProductQuantityForPreparation(dolodent.ean13, 2)
       ).toThrow(NoPreparationSelectedError)
     })
   })
@@ -25,7 +25,7 @@ describe('Set product quantity for preparation', () => {
         givenCurrentPreparationIs(orderToPrepare1)
         const expectedOrder = JSON.parse(JSON.stringify(orderToPrepare1))
         expectedOrder.lines[0].preparedQuantity = 1
-        whenChangeProductQuantityForPreparation(dolodent.cip13, 1)
+        whenChangeProductQuantityForPreparation(dolodent.ean13, 1)
         expectCurrentPreparationToBe(expectedOrder)
       })
       it('should set the prepared quantity to 5', () => {
@@ -33,7 +33,7 @@ describe('Set product quantity for preparation', () => {
         givenCurrentPreparationIs(order)
         const expectedOrder = JSON.parse(JSON.stringify(order))
         expectedOrder.lines[0].preparedQuantity = 5
-        whenChangeProductQuantityForPreparation(dolodent.cip13, 5)
+        whenChangeProductQuantityForPreparation(dolodent.ean13, 5)
         expectCurrentPreparationToBe(expectedOrder)
       })
     })
@@ -44,7 +44,7 @@ describe('Set product quantity for preparation', () => {
       givenCurrentPreparationIs(orderToPrepare2)
       const expectedOrder = JSON.parse(JSON.stringify(orderToPrepare2))
       expectedOrder.lines[1].preparedQuantity = 1
-      whenChangeProductQuantityForPreparation(ultraLevure.cip13, 1)
+      whenChangeProductQuantityForPreparation(ultraLevure.ean13, 1)
       expectCurrentPreparationToBe(expectedOrder)
     })
   })
@@ -52,7 +52,7 @@ describe('Set product quantity for preparation', () => {
   describe('The product is not in the preparation', () => {
     it('should do nothing', () => {
       givenCurrentPreparationIs(orderToPrepare1)
-      whenChangeProductQuantityForPreparation(ultraLevure.cip13, 1)
+      whenChangeProductQuantityForPreparation(ultraLevure.ean13, 1)
       expectCurrentPreparationToBe(orderToPrepare1)
     })
   })
@@ -62,7 +62,7 @@ describe('Set product quantity for preparation', () => {
       const order = JSON.parse(JSON.stringify(orderToPrepare1))
       order.lines[0].preparedQuantity = order.lines[0].expectedQuantity
       givenCurrentPreparationIs(order)
-      whenChangeProductQuantityForPreparation(dolodent.cip13, 123)
+      whenChangeProductQuantityForPreparation(dolodent.ean13, 123)
       const expectedOrder = JSON.parse(JSON.stringify(order))
       expectedOrder.lines[0].preparedQuantity = 123
       expectCurrentPreparationToBe(expectedOrder)
@@ -74,10 +74,10 @@ describe('Set product quantity for preparation', () => {
   }
 
   const whenChangeProductQuantityForPreparation = (
-    cip13: string,
+    ean13: string,
     quantity: number
   ) => {
-    setProductQuantityForPreparation(cip13, quantity)
+    setProductQuantityForPreparation(ean13, quantity)
   }
 
   const expectCurrentPreparationToBe = (order: Order) => {

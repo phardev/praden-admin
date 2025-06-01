@@ -10,7 +10,7 @@ import {
 } from '@core/usecases/customers/customer-creation/createCustomer'
 
 describe('Create customer', () => {
-  let customerStore
+  let customerStore: any
   const uuidGenerator: FakeUuidGenerator = new FakeUuidGenerator()
   let customerGateway: InMemoryCustomerGateway
 
@@ -74,6 +74,6 @@ describe('Create customer', () => {
   }
 
   const expectGatewayToContains = async (...categories: Array<Customer>) => {
-    expect(await customerGateway.list()).toStrictEqual(categories)
+    expect(await customerGateway.list(100, 0)).toStrictEqual(categories)
   }
 })

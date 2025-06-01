@@ -1,10 +1,11 @@
 import { usePreparationStore } from '@store/preparationStore'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import {
-  DeliveryStatus,
+  OrderLineStatus,
   Message,
   MessageContent,
-  Order
+  Order,
+  OrderLine
 } from '@core/entities/order'
 import { timestampToLocaleString } from '@utils/formatters'
 import { HashTable } from '@core/types/types'
@@ -29,10 +30,12 @@ export interface GetPreparationVM {
   headers: Array<Header>
   lines: Array<GetPreparationLineVM>
   messages: Array<any>
+  customerMessage?: string
   canValidate: boolean
   canCancel: boolean
   canAskHowToFinish: boolean
   error?: PreparationError
+  isLoading: boolean
 }
 
 const canValidate = (
@@ -49,7 +52,7 @@ const canValidate = (
   return areAllLinesPrepared || canDoPartialShip
 }
 
-const getLineStatus = (line: GetPreparationLineVM): PreparationStatus => {
+export const getLineStatus = (line: OrderLine): PreparationStatus => {
   if (line.expectedQuantity < line.preparedQuantity)
     return PreparationStatus.ErrorTooMuchQuantity
   return line.expectedQuantity === line.preparedQuantity
@@ -73,7 +76,7 @@ const getMessageContent = (content: MessageContent): string => {
   return messages[content]
 }
 
-const getMessages = (
+export const getMessagesVM = (
   messages: Array<Message>
 ): Array<GetPreparationMessagesVM> => {
   return messages.map((message) => {
@@ -99,9 +102,7 @@ const canAskHowToFinish = (
     return false
   }
   if (
-    preparation.lines.every(
-      (line) => line.deliveryStatus === DeliveryStatus.Created
-    )
+    preparation.lines.every((line) => line.status === OrderLineStatus.Created)
   )
     return false
   const messages = preparation.messages
@@ -119,7 +120,8 @@ export const getPreparationVM = (): GetPreparationVM => {
       messages: [],
       canValidate: false,
       canCancel: false,
-      canAskHowToFinish: false
+      canAskHowToFinish: false,
+      isLoading: false
     }
   }
   const headers: Array<Header> = [
@@ -144,24 +146,31 @@ export const getPreparationVM = (): GetPreparationVM => {
       value: 'status'
     }
   ]
-  const lines: Array<GetPreparationLineVM> = preparation.lines.map((line) => {
-    return {
-      reference: line.cip13,
-      name: line.name,
-      expectedQuantity: line.expectedQuantity,
-      preparedQuantity: line.preparedQuantity,
-      status: getLineStatus(line)
+  const lines: Array<GetPreparationLineVM> = preparation.lines.map(
+    (line: OrderLine) => {
+      return {
+        reference: line.ean13,
+        name: line.name,
+        expectedQuantity: line.expectedQuantity,
+        preparedQuantity: line.preparedQuantity,
+        status: getLineStatus(line)
+      }
     }
-  })
+  )
   const error = preparationStore.error
-  return {
+  const res: GetPreparationVM = {
     reference: preparation.uuid,
     headers,
     lines,
-    messages: getMessages(preparation.messages),
+    messages: getMessagesVM(preparation.messages),
     canValidate: canValidate(lines, preparation.messages),
     canCancel: canCancel(preparation.messages),
     canAskHowToFinish: canAskHowToFinish(lines, preparation),
-    error
+    error,
+    isLoading: preparationStore.isLoading
   }
+  if (preparation.customerMessage) {
+    res.customerMessage = preparation.customerMessage
+  }
+  return res
 }

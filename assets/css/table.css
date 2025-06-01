@@ -1,5 +1,5 @@
 @layer components {
   .table-line {
-    @apply hover:bg-primary2
+    @apply hover:bg-primary2 cursor-pointer;
   }
 }

@@ -6,8 +6,6 @@ import {
   ExistingPromotionFormInitializer,
   PromotionFormFieldsReader
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
-import { useCategoryStore } from '@store/categoryStore'
-import { Category } from '@core/entities/category'
 import { PromotionFormVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormVM'
 import {
   Field,
@@ -53,18 +51,17 @@ export class PromotionFormEditVM extends PromotionFormVM {
     const filteredProducts: Array<Product> = searchStore.get(this.key)
     const addedProducts = this.fieldsReader.get('products')
     const res = (filteredProducts || allProducts).filter(
-      (p) => !addedProducts.includes(p.cip13)
+      (p: Product) =>
+        !addedProducts.map((p: Product) => p.uuid).includes(p.uuid)
     )
-    const categoryStore = useCategoryStore()
-    const categories: Array<Category> = categoryStore.items
     return {
       value: res.map((p: Product) => {
-        const c: Category = categories.find((c) => c.uuid === p.categoryUuid)
         return {
+          uuid: p.uuid,
           name: p.name,
-          reference: p.cip13,
-          category: c.name,
-          laboratory: p.laboratory
+          reference: p.ean13,
+          categories: p.categories.map((c) => c.name),
+          laboratory: p.laboratory ? p.laboratory.name : ''
         }
       }),
       canEdit: true
@@ -107,7 +104,7 @@ export class PromotionFormEditVM extends PromotionFormVM {
   }
 }
 
-export const promotionFormEditVM = (key: string) => {
+export const promotionFormEditVM = (key: string): PromotionFormEditVM => {
   const initializer = new ExistingPromotionFormInitializer(key)
   const reader = new PromotionFormFieldsReader(key)
   const writer = new PromotionFormFieldsWriter(key, reader)

@@ -1,31 +1,52 @@
 import { defineStore } from 'pinia'
-import { Product, Stock } from '@core/entities/product'
+import { Product, ProductWithPromotion, Stock } from '@core/entities/product'
 
 export const useProductStore = defineStore('ProductStore', {
   state: () => {
     return {
       items: [] as Array<Product>,
       stock: {} as Stock,
-      current: undefined as Product
+      current: undefined as ProductWithPromotion | undefined,
+      hasMore: false as boolean,
+      isLoading: false
+    }
+  },
+  getters: {
+    getByUuid: (state) => {
+      return (uuid: string): Product | undefined => {
+        return state.items.find((c) => c.uuid === uuid)
+      }
     }
   },
   actions: {
     list(products: Array<Product>) {
-      this.items = products
-      this.items.forEach((i) => {
-        this.stock[i.cip13] = i.availableStock
+      products.forEach((p) => {
+        const existingProduct = this.items.find((item) => item.uuid === p.uuid)
+        if (existingProduct) {
+          this.edit(p)
+        } else {
+          this.items.push(p)
+        }
+        this.stock[p.ean13] = p.availableStock
       })
+      this.hasMore = products.length > 0
     },
     add(product: Product) {
       this.items.push(product)
     },
-    setCurrent(product: Product) {
+    setCurrent(product: ProductWithPromotion) {
       this.current = JSON.parse(JSON.stringify(product))
     },
     edit(product: Product) {
       this.items = this.items.map((c) => {
         return c.uuid === product.uuid ? product : c
       })
+    },
+    startLoading() {
+      this.isLoading = true
+    },
+    stopLoading() {
+      this.isLoading = false
     }
   }
 })

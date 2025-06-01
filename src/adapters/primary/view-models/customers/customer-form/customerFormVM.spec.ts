@@ -6,7 +6,7 @@ import {
   CustomerFormGetVM,
   customerFormGetVM
 } from '@adapters/primary/view-models/customers/customer-form/customerFormGetVM'
-import { elodieDurand, sophieMartinez } from '@utils/testData/customers'
+import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
 import {
   CustomerFormCreateVM,
   customerFormCreateVM
@@ -70,7 +70,7 @@ export const updateFieldsTests = (
   key: string
 ) => {
   let formStore: any
-  let vm: CustomerFormCreateVM
+  let vm: CustomerFormCreateVM | CustomerFormEditVM
   beforeEach(() => {
     formStore = useFormStore()
     vm = getVM()
@@ -119,7 +119,7 @@ describe('Customer form', () => {
   describe('Customer form get VM', () => {
     let vm: CustomerFormGetVM
     const key = 'get-customer-form'
-    const customer = sophieMartinez
+    const customer = lucasLefevre
     beforeEach(() => {
       customerStore.current = customer
       vm = customerFormGetVM(key)

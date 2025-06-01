@@ -9,11 +9,16 @@ export const validatePreparation = async (
   invoiceGateway: InvoiceGateway
 ) => {
   const preparationStore = usePreparationStore()
-  const preparation = preparationStore.current
-  if (!preparation) throw new NoPreparationSelectedError()
-  const validated = await orderGateway.validatePreparation(preparation)
-  preparationStore.remove(validated.uuid)
-  const invoice = await invoiceGateway.create(validated)
-  const invoiceStore = useInvoiceStore()
-  invoiceStore.set(invoice)
+  try {
+    preparationStore.startLoading()
+    const preparation = preparationStore.current
+    if (!preparation) throw new NoPreparationSelectedError()
+    const validated = await orderGateway.validatePreparation(preparation)
+    preparationStore.remove(validated.uuid)
+    const invoice = await invoiceGateway.create(validated)
+    const invoiceStore = useInvoiceStore()
+    invoiceStore.set(invoice)
+  } finally {
+    preparationStore.stopLoading()
+  }
 }

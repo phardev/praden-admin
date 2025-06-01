@@ -1,18 +1,22 @@
 import { GetProductsVM, getProductsVM } from './getProductsVM'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import {
+  dolodent,
+  productWithForbiddenPromotion,
+  productWithoutCategory,
+  productWithoutLaboratory,
+  ultraLevure
+} from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
 import { useProductStore } from '@store/productStore'
-import { useCategoryStore } from '@store/categoryStore'
-import { dents, diarrhee } from '@utils/testData/categories'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { useSearchStore } from '@store/searchStore'
+import { ProductStatus } from '@core/entities/product'
 
 describe('Get products VM', () => {
   let productStore: any
-  let categoryStore: any
   let searchStore: any
-  let vm: GetProductsVM
   const key = 'list-products'
+  let expectedVM: Partial<GetProductsVM>
 
   const expectedHeaders: Array<Header> = [
     {
@@ -28,8 +32,12 @@ describe('Get products VM', () => {
       value: 'reference'
     },
     {
-      name: 'Catégorie',
-      value: 'category'
+      name: 'Laboratoire',
+      value: 'laboratory'
+    },
+    {
+      name: 'Catégories',
+      value: 'categories'
     },
     {
       name: 'Prix HT',
@@ -42,149 +50,269 @@ describe('Get products VM', () => {
     {
       name: 'Stock',
       value: 'availableStock'
+    },
+    {
+      name: 'Statut',
+      value: 'isActive'
+    },
+    {
+      name: 'Promotions',
+      value: 'arePromotionsAllowed'
     }
   ]
 
   beforeEach(() => {
     setActivePinia(createPinia())
     productStore = useProductStore()
-    categoryStore = useCategoryStore()
     searchStore = useSearchStore()
   })
 
   describe('There is no products', () => {
     it('should list nothing', () => {
-      vm = whenGetProductsVM(key)
-      const expectedVM = {
+      expectedVM = {
         headers: expectedHeaders,
-        items: []
+        items: [],
+        currentSearch: undefined
       }
-      expect(vm).toStrictEqual(expectedVM)
+      expectVMToMatch(expectedVM)
     })
   })
   describe('There is some products', () => {
-    beforeEach(() => {
-      productStore.items = [dolodent, ultraLevure]
-    })
-    describe('Categories are not loaded', () => {
-      it('should list all of them', () => {
-        categoryStore.items = []
-        vm = whenGetProductsVM(key)
-        const expectedVM = {
-          headers: expectedHeaders,
+    describe('Product does not have category', () => {
+      it('should list all of them with empty name', () => {
+        productStore.items = [productWithoutCategory]
+        expectedVM = {
           items: [
             {
-              uuid: dolodent.uuid,
-              name: dolodent.name,
-              img: dolodent.miniature,
-              reference: dolodent.cip13,
-              category: '',
-              priceWithoutTax: '5,00\u00A0€',
-              priceWithTax: '5,50\u00A0€',
-              availableStock: dolodent.availableStock
-            },
-            {
-              uuid: ultraLevure.uuid,
-              name: ultraLevure.name,
-              img: ultraLevure.miniature,
-              reference: ultraLevure.cip13,
-              category: '',
-              priceWithoutTax: '4,32\u00A0€',
-              priceWithTax: '4,75\u00A0€',
-              availableStock: ultraLevure.availableStock
+              uuid: productWithoutCategory.uuid,
+              name: productWithoutCategory.name,
+              img: productWithoutCategory.miniature,
+              reference: productWithoutCategory.ean13,
+              laboratory: productWithoutCategory.laboratory!.name,
+              categories: [],
+              priceWithoutTax: '5,90\u00A0€',
+              priceWithTax: '6,49\u00A0€',
+              availableStock: productWithoutCategory.availableStock,
+              isActive: true,
+              arePromotionsAllowed: true
             }
           ]
         }
-        expect(vm).toStrictEqual(expectedVM)
+        expectVMToMatch(expectedVM)
       })
     })
-    describe('Categories are loaded', () => {
+    describe('Product does not have laboratory', () => {
+      it('should list all of them with empty name', () => {
+        productStore.items = [productWithoutLaboratory]
+        expectedVM = {
+          items: [
+            {
+              uuid: productWithoutLaboratory.uuid,
+              name: productWithoutLaboratory.name,
+              img: productWithoutLaboratory.miniature,
+              reference: productWithoutLaboratory.ean13,
+              laboratory: '',
+              categories: productWithoutLaboratory.categories.map(
+                (c) => c.name
+              ),
+              priceWithoutTax: '5,90\u00A0€',
+              priceWithTax: '6,49\u00A0€',
+              availableStock: productWithoutCategory.availableStock,
+              isActive: true,
+              arePromotionsAllowed: true
+            }
+          ]
+        }
+        expectVMToMatch(expectedVM)
+      })
+    })
+    describe('There is category', () => {
       it('should list all of them', () => {
-        categoryStore.items = [dents, diarrhee]
-        vm = whenGetProductsVM(key)
-        const expectedVM = {
+        productStore.items = [dolodent, ultraLevure]
+        expectedVM = {
           headers: expectedHeaders,
           items: [
             {
               uuid: dolodent.uuid,
               name: dolodent.name,
               img: dolodent.miniature,
-              reference: dolodent.cip13,
-              category: 'Dents',
+              reference: dolodent.ean13,
+              laboratory: dolodent.laboratory!.name,
+              categories: dolodent.categories.map((c) => c.name),
               priceWithoutTax: '5,00\u00A0€',
               priceWithTax: '5,50\u00A0€',
-              availableStock: dolodent.availableStock
+              availableStock: dolodent.availableStock,
+              isActive: true,
+              arePromotionsAllowed: false
             },
             {
               uuid: ultraLevure.uuid,
               name: ultraLevure.name,
               img: ultraLevure.miniature,
-              reference: ultraLevure.cip13,
-              category: 'Diarrhée',
+              reference: ultraLevure.ean13,
+              laboratory: ultraLevure.laboratory!.name,
+              categories: ultraLevure.categories.map((c) => c.name),
               priceWithoutTax: '4,32\u00A0€',
               priceWithTax: '4,75\u00A0€',
-              availableStock: ultraLevure.availableStock
+              availableStock: ultraLevure.availableStock,
+              isActive: false,
+              arePromotionsAllowed: false
             }
           ]
         }
-        expect(vm).toStrictEqual(expectedVM)
+        expectVMToMatch(expectedVM)
+      })
+    })
+    describe('Products are not eligible to promotion', () => {
+      it('should list all of them', () => {
+        productStore.items = [dolodent, productWithForbiddenPromotion]
+        expectedVM = {
+          headers: expectedHeaders,
+          items: [
+            {
+              uuid: dolodent.uuid,
+              name: dolodent.name,
+              img: dolodent.miniature,
+              reference: dolodent.ean13,
+              laboratory: dolodent.laboratory!.name,
+              categories: dolodent.categories.map((c) => c.name),
+              priceWithoutTax: '5,00\u00A0€',
+              priceWithTax: '5,50\u00A0€',
+              availableStock: dolodent.availableStock,
+              isActive: true,
+              arePromotionsAllowed: false
+            },
+            {
+              uuid: productWithForbiddenPromotion.uuid,
+              name: productWithForbiddenPromotion.name,
+              img: productWithForbiddenPromotion.miniature,
+              reference: productWithForbiddenPromotion.ean13,
+              laboratory: productWithForbiddenPromotion.laboratory!.name,
+              categories: productWithForbiddenPromotion.categories.map(
+                (c) => c.name
+              ),
+              priceWithoutTax: '3,33\u00A0€',
+              priceWithTax: '3,99\u00A0€',
+              availableStock: productWithForbiddenPromotion.availableStock,
+              isActive: true,
+              arePromotionsAllowed: false
+            }
+          ]
+        }
+        expectVMToMatch(expectedVM)
       })
     })
     describe('Search', () => {
       describe('There is a search result', () => {
         beforeEach(() => {
-          categoryStore.items = [dents, diarrhee]
           searchStore.set(key, [dolodent])
-          vm = whenGetProductsVM(key)
+          searchStore.setFilter(key, {
+            query: 'dol',
+            status: ProductStatus.Active
+          })
         })
         it('should list only the search result', () => {
-          const expectedVM = {
-            headers: expectedHeaders,
+          expectedVM = {
             items: [
               {
                 uuid: dolodent.uuid,
                 name: dolodent.name,
                 img: dolodent.miniature,
-                reference: dolodent.cip13,
-                category: 'Dents',
+                reference: dolodent.ean13,
+                laboratory: dolodent.laboratory!.name,
+                categories: dolodent.categories.map((c) => c.name),
                 priceWithoutTax: '5,00\u00A0€',
                 priceWithTax: '5,50\u00A0€',
-                availableStock: dolodent.availableStock
+                availableStock: dolodent.availableStock,
+                isActive: true,
+                arePromotionsAllowed: false
               }
-            ]
+            ],
+            currentSearch: {
+              query: 'dol',
+              status: ProductStatus.Active
+            }
           }
-          expect(vm).toStrictEqual(expectedVM)
+          expectVMToMatch(expectedVM)
         })
       })
       describe('There is another search result', () => {
         beforeEach(() => {
-          categoryStore.items = [dents, diarrhee]
           searchStore.set(key, [ultraLevure])
-          vm = whenGetProductsVM(key)
         })
         it('should list only the search result', () => {
-          const expectedVM = {
+          expectedVM = {
             headers: expectedHeaders,
             items: [
               {
                 uuid: ultraLevure.uuid,
                 name: ultraLevure.name,
                 img: ultraLevure.miniature,
-                reference: ultraLevure.cip13,
-                category: 'Diarrhée',
+                reference: ultraLevure.ean13,
+                laboratory: ultraLevure.laboratory!.name,
+                categories: ultraLevure.categories.map((c) => c.name),
                 priceWithoutTax: '4,32\u00A0€',
                 priceWithTax: '4,75\u00A0€',
-                availableStock: ultraLevure.availableStock
+                availableStock: ultraLevure.availableStock,
+                isActive: false,
+                arePromotionsAllowed: false
               }
             ]
           }
-          expect(vm).toStrictEqual(expectedVM)
+          expectVMToMatch(expectedVM)
         })
+      })
+    })
+    describe('Are all products listed ?', () => {
+      it('should inform that there is more items', () => {
+        productStore.hasMore = false
+        expectedVM = {
+          hasMore: false
+        }
+        expectVMToMatch(expectedVM)
+      })
+      it('should inform that there is still items', () => {
+        productStore.hasMore = true
+        expectedVM = {
+          hasMore: true
+        }
+        expectVMToMatch(expectedVM)
       })
     })
   })
 
-  const whenGetProductsVM = (key: string): GetProductsVM => {
-    return getProductsVM(key)
+  describe('There is an error in search', () => {
+    beforeEach(() => {
+      searchStore.setError(key, 'dol')
+    })
+    it('should display the error', () => {
+      expectedVM = {
+        searchError:
+          'Veuillez saisir au moins 3 caractères pour lancer la recherche.'
+      }
+      expectVMToMatch(expectedVM)
+    })
+  })
+
+  describe('Loading', () => {
+    it('should be aware during loading', () => {
+      productStore.isLoading = true
+      expectedVM = {
+        isLoading: true
+      }
+      expectVMToMatch(expectedVM)
+    })
+  })
+
+  const expectVMToMatch = (expectedVM: Partial<GetProductsVM>) => {
+    const emptyVM: GetProductsVM = {
+      headers: expectedHeaders,
+      items: [],
+      hasMore: false,
+      currentSearch: undefined,
+      searchError: undefined,
+      isLoading: false
+    }
+    expect(getProductsVM(key)).toMatchObject({ ...emptyVM, ...expectedVM })
   }
 })

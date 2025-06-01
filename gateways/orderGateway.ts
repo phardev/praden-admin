@@ -1,11 +1,11 @@
 import { RealOrderGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
 import { RealDateProvider } from '@adapters/secondary/date-providers/RealDateProvider'
 import * as orders from '@utils/testData/orders'
 
 import { isLocalEnv } from '@utils/env'
+import { InMemoryTimoutOrderGateway } from '@adapters/secondary/order-gateways/InMemoryTimeoutOrderGateway'
 
-const orderGateway = new InMemoryOrderGateway(new RealDateProvider())
+const orderGateway = new InMemoryTimoutOrderGateway(500, new RealDateProvider())
 orderGateway.feedWith(...Object.values(orders))
 
 export const useOrderGateway = () => {
