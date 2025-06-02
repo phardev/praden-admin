@@ -56,12 +56,14 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
       [DeliveryStatus.Shipped]: 'SHIPPED',
       [DeliveryStatus.Delivered]: 'DELIVERED'
     }
+
     const body = {
       startDate: dto.startDate,
       endDate: dto.endDate,
-      paymentStatus: dto.paymentStatus
-        ? paymentStatusMap[dto.paymentStatus]
-        : undefined,
+      paymentStatus:
+        dto.paymentStatus !== undefined
+          ? paymentStatusMap[dto.paymentStatus]
+          : undefined,
       customerUuid: dto.customerUuid,
       deliveryStatus: dto.deliveryStatus
         ? deliveryStatusMap[dto.deliveryStatus]
@@ -72,8 +74,8 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
     if (
       body.startDate ||
       body.endDate ||
-      body.paymentStatus ||
-      body.deliveryStatus ||
+      body.paymentStatus !== undefined ||
+      body.deliveryStatus !== undefined ||
       body.customerUuid
     ) {
       const res = await axiosWithBearer.post(
@@ -205,6 +207,7 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
   private getPaymentStatus(status: string): PaymentStatus {
     if (status === 'WAITINGFORPAYMENT') return PaymentStatus.WaitingForPayment
     if (status === 'PAYED') return PaymentStatus.Payed
+    if (status === 'REJECTED') return PaymentStatus.Rejected
     return PaymentStatus.WaitingForPayment
   }
 }
