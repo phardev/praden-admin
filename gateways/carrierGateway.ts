@@ -1,7 +1,7 @@
 import * as carriers from '@utils/testData/carriers'
 import { RealCarrierGateway } from '@adapters/secondary/carrier-gateways/realCarrierGateway'
 import { isLocalEnv } from '@utils/env'
-import { InMemoryCarrierGateway } from '@adapters/secondary/carrier-gateways/inMemoryCarrierGateway'
+import { InMemoryCarrierGateway } from '@adapters/secondary/carrier-gateways/InMemoryCarrierGateway'
 
 const carrierGateway = new InMemoryCarrierGateway()
 carrierGateway.feedWith(...Object.values(carriers))
