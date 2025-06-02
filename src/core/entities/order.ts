@@ -2,6 +2,7 @@ import { Timestamp, UUID } from '@core/types/types'
 import { addTaxToPrice } from '@utils/price'
 import { Promotion } from '@core/entities/promotion'
 import { Delivery, DeliveryStatus } from '@core/entities/delivery'
+import { Carrier } from './carrier'
 
 export interface Address {
   firstname: string
@@ -66,6 +67,7 @@ export interface DeliveryMethod {
   name: string
   description: string
   type: DeliveryType
+  carrier: Carrier
   priceRanges: Array<PriceWeightRange>
 }
 
