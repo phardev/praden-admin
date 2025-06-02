@@ -1,7 +1,9 @@
-import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
 import { useDeliveryStore } from '@store/deliveryStore'
-import { UUID } from '@core/types/types'
-import { DeliveryStatus } from '@core/entities/delivery'
+import { HashTable, UUID } from '@core/types/types'
+import { Delivery, DeliveryStatus } from '@core/entities/delivery'
+import { TableVM } from '../../invoices/get-invoice/getInvoiceVM'
+import { useCarrierStore } from '@store/carrierStore'
+import { CarrierType } from '@core/entities/carrier'
 
 export interface GetDeliveriesItemsVM {
   uuid: UUID
@@ -12,9 +14,13 @@ export interface GetDeliveriesItemsVM {
   status: DeliveryStatus
 }
 
+export interface GetDeliveriesGroupVM {
+  count: number
+  table: TableVM<GetDeliveriesItemsVM>
+}
+
 export interface GetDeliveriesVM {
-  headers: Array<Header>
-  items: Array<GetDeliveriesItemsVM>
+  items: HashTable<GetDeliveriesGroupVM>
   isLoading: boolean
 }
 
@@ -42,11 +48,35 @@ export const getDeliveriesVM = (): GetDeliveriesVM => {
     }
   ]
 
+  const carrierStore = useCarrierStore()
+
+  const carriers = carrierStore.items
+  const deliveryCarriers = carriers.filter((c) => c.type !== CarrierType.None)
+
+  const groups = deliveryCarriers.map((c) => {
+    return {
+      name: c.name,
+      filter: (d: Delivery) => d.method.carrier.type === c.type,
+      headers
+    }
+  })
+
   const deliveryStore = useDeliveryStore()
 
   return {
-    headers,
-    items: deliveryStore.items.map((d) => {
+    items: filterDeliveriesByCarrier(groups),
+    isLoading: deliveryStore.isLoading
+  }
+}
+
+export const filterDeliveriesByCarrier = (
+  groups: any
+): HashTable<GetDeliveriesGroupVM> => {
+  const deliveryStore = useDeliveryStore()
+  const res: HashTable<GetDeliveriesGroupVM> = {}
+  groups.forEach((group: any) => {
+    const filteredItems = deliveryStore.items.filter(group.filter)
+    const items = filteredItems.map((d: Delivery) => {
       return {
         uuid: d.uuid,
         method: d.method.name,
@@ -55,7 +85,18 @@ export const getDeliveriesVM = (): GetDeliveriesVM => {
         weight: d.weight / 1000,
         status: d.status
       }
-    }),
-    isLoading: deliveryStore.isLoading
-  }
+    })
+    group.items = {
+      count: items.length,
+      table: {
+        headers: group.headers,
+        items
+      }
+    }
+    res[group.name] = {
+      count: group.items.count,
+      table: group.items.table
+    }
+  })
+  return res
 }

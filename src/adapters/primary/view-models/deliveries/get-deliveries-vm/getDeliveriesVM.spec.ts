@@ -1,15 +1,18 @@
 import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
 import { createPinia, setActivePinia } from 'pinia'
 import { useDeliveryStore } from '@store/deliveryStore'
-import { getDeliveriesVM } from './getDeliveriesVM'
+import { GetDeliveriesVM, getDeliveriesVM } from './getDeliveriesVM'
 import {
   deliveryOrderDelivered2,
   deliveryOrderToPrepare1,
   deliveryOrderToPrepare3
 } from '@utils/testData/deliveries'
+import { useCarrierStore } from '@store/carrierStore'
+import { colissimo, dpd, pharmacy } from '@utils/testData/carriers'
 
 describe('Get deliveries VM', () => {
   let deliveryStore: any
+  let carrierStore: any
 
   const expectedHeaders: Array<Header> = [
     {
@@ -37,14 +40,30 @@ describe('Get deliveries VM', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     deliveryStore = useDeliveryStore()
+    carrierStore = useCarrierStore()
+    carrierStore.items = [pharmacy, colissimo, dpd]
   })
 
   describe('There is no delivery', () => {
     it('should list nothing', () => {
       const vm = getDeliveriesVM()
       const expectedVM = {
-        headers: expectedHeaders,
-        items: [],
+        items: {
+          Colissimo: {
+            count: 0,
+            table: {
+              headers: expectedHeaders,
+              items: []
+            }
+          },
+          Dpd: {
+            count: 0,
+            table: {
+              headers: expectedHeaders,
+              items: []
+            }
+          }
+        },
         isLoading: false
       }
       expect(vm).toStrictEqual(expectedVM)
@@ -59,36 +78,43 @@ describe('Get deliveries VM', () => {
         deliveryOrderDelivered2
       ]
     })
-    it('should list nothing', () => {
+    it('should list them', () => {
       const vm = getDeliveriesVM()
-      const expectedVM = {
-        headers: expectedHeaders,
-        items: [
-          {
-            uuid: deliveryOrderToPrepare1.uuid,
-            method: deliveryOrderToPrepare1.method.name,
-            client: 'Jean Bon',
-            trackingNumber: '',
-            weight: 1.234,
-            status: deliveryOrderToPrepare1.status
+      const expectedVM: GetDeliveriesVM = {
+        items: {
+          Colissimo: {
+            count: 1,
+            table: {
+              headers: expectedHeaders,
+              items: [
+                {
+                  uuid: deliveryOrderToPrepare3.uuid,
+                  method: deliveryOrderToPrepare3.method.name,
+                  client: "Jeanne D'arc",
+                  trackingNumber: deliveryOrderToPrepare3.trackingNumber!,
+                  weight: 1.5,
+                  status: deliveryOrderToPrepare3.status
+                }
+              ]
+            }
           },
-          {
-            uuid: deliveryOrderToPrepare3.uuid,
-            method: deliveryOrderToPrepare3.method.name,
-            client: "Jeanne D'arc",
-            trackingNumber: deliveryOrderToPrepare3.trackingNumber,
-            weight: 1.5,
-            status: deliveryOrderToPrepare3.status
-          },
-          {
-            uuid: deliveryOrderDelivered2.uuid,
-            method: deliveryOrderDelivered2.method.name,
-            client: "Jeanne D'arc",
-            trackingNumber: '',
-            weight: 2.2,
-            status: deliveryOrderDelivered2.status
+          Dpd: {
+            count: 1,
+            table: {
+              headers: expectedHeaders,
+              items: [
+                {
+                  uuid: deliveryOrderDelivered2.uuid,
+                  method: deliveryOrderDelivered2.method.name,
+                  client: "Jeanne D'arc",
+                  trackingNumber: '',
+                  weight: 2.2,
+                  status: deliveryOrderDelivered2.status
+                }
+              ]
+            }
           }
-        ],
+        },
         isLoading: false
       }
       expect(vm).toStrictEqual(expectedVM)

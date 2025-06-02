@@ -12,28 +12,50 @@ div.hidden.printme.mx-2
       p.mr-0 Signature
       canvas.w-64.h-24.border.border-opposite
 
-.section.no-printme
-  ft-table(
-    :headers="deliveriesVM.headers"
-    :is-loading="deliveriesVM.isLoading"
-    :items="deliveriesVM.items"
-    :selectable="true"
-    :selection="selection.get()"
-    @item-selected="selection.toggleSelect"
-    @select-all="selection.toggleSelectAll"
-  )
-    template(#title) Livraisons
-    template(#status="{ item }")
-      ft-delivery-status-badge(:status="item.status")
-  div.flex.flex-row-reverse.gap-4
-    ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
-      variant="outline"
-      @click="validateShipping"
-    ) Valider l'expedition
-    ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
-      variant="outline"
-      @click="printResume"
-    ) Imprimer récapitulatif
+.section.no-printme(v-if="deliveriesVM && deliveriesVM.items")
+  .flex.flex-row-reverse
+    ft-button(icon='i-heroicons-arrow-path' size="xl" :loading='deliveriesVM.isLoading' @click='() => listDeliveries(useDeliveryGateway())')
+      | {{ $t('deliveries.refresh') }}
+  tab-group.border-b.border-gray-200(as="div" @change="onTabChange")
+    tab-list.-mb-px.flex.space-x-4
+      tab.w-full.rounded-md.border-neutral-light.py-2.pl-3.pr-10.text-base.outline-0.cursor-pointer(
+        v-for="(groupName, tabIndex) in sortedGroupNames"
+        v-slot="{ selected }"
+        :key="tabIndex"
+        as="div"
+      )
+        div.whitespace-nowrap.flex.py-4.px-1.border-b-2.font-medium.text-sm(
+          :class="[selected ? 'border-default text-colored' : 'border-transparent text-light-contrast hover:text-contrast hover-border-neutral-light']"
+        )
+          div {{ groupName }}
+            span.hidden.ml-3.rounded-full.text-xs.font-medium(
+              v-if="deliveriesVM.items[groupName].count"
+              :class="[selected ? 'bg-contrast text-colored' : 'bg-light text-contrast', 'py-0.5 px-2.5 md:inline-block']"
+            ) {{ deliveriesVM.items[groupName].count }}
+    tab-panels
+      tab-panel.mt-4(v-for="(groupName) in sortedGroupNames" :key="groupName")
+        ft-table(
+          :headers="deliveriesVM.items[groupName].table.headers"
+          :items="deliveriesVM.items[groupName].table.items"
+          :selectable="true"
+          :selection="selectedUuids"
+          :is-loading="deliveriesVM.isLoading"
+          item-key="uuid"
+          @item-selected="selection.toggleSelect"
+          @select-all="selection.toggleSelectAll(deliveriesVM.items[groupName].table.items)"
+        )
+          template(#title) {{ $t('deliveries.title') }}
+          template(#status="{ item }")
+            ft-delivery-status-badge(:status="item.status")
+        div.w-full.flex.flex-row-reverse.gap-4
+          ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
+            v-if="selection.get().length > 0"
+            @click="validateShipping"
+          ) {{ $t('deliveries.validateShipping') }}
+          ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
+            v-if="selection.get().length > 0"
+            @click="printResume"
+          ) {{ $t('deliveries.printSummary') }}
 </template>
 
 <script lang="ts" setup>
@@ -43,11 +65,15 @@ import { getDeliveriesVM } from '@adapters/primary/view-models/deliveries/get-de
 import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'
 import { shipDeliveries } from '@core/usecases/deliveries/delivery-shipping/shipDeliveries'
 import { useDateProvider } from '../../../../../../gateways/dateProvider'
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
 import { timestampToLocaleString } from '@utils/formatters'
+import { listCarriers } from '@core/usecases/carriers/carrier-listing/listCarriers'
+import { useCarrierGateway } from '../../../../../../gateways/carrierGateway'
 
 definePageMeta({ layout: 'main' })
 
 onMounted(() => {
+  listCarriers(useCarrierGateway())
   listDeliveries(useDeliveryGateway())
 })
 
@@ -73,8 +99,11 @@ const toPrintHeader = [
 ]
 
 const toPrint = computed(() => {
-  const items = deliveriesVM.value.items.filter((item) =>
-    selection.get().includes(item.uuid)
+  const allItems = Object.values(deliveriesVM.value.items ?? {}).flatMap(
+    (group) => group.table.items
+  )
+  const items = allItems.filter((item) =>
+    selectedUuids.value.includes(item.uuid)
   )
   return {
     headers: toPrintHeader,
@@ -85,12 +114,33 @@ const toPrint = computed(() => {
 
 const selection = useSelection()
 
+const sortedGroupNames = computed(() =>
+  Object.keys(deliveriesVM.value.items ?? {}).sort((a, b) => a.localeCompare(b))
+)
+
+const selectedUuids = computed(() => {
+  const sel = selection.get()
+  if (
+    sel.length > 0 &&
+    typeof sel[0] === 'object' &&
+    sel[0] !== null &&
+    'uuid' in sel[0]
+  ) {
+    return sel.map((item) => item.uuid)
+  }
+  return sel
+})
+
+const onTabChange = () => {
+  selection.clear()
+}
+
 const printResume = () => {
   window.print()
 }
 
 const validateShipping = async () => {
-  await shipDeliveries(selection.get(), useDeliveryGateway())
+  await shipDeliveries(selectedUuids.value, useDeliveryGateway())
   selection.clear()
 }
 </script>
