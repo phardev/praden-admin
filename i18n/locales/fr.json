@@ -61,5 +61,11 @@
   },
   "preparations": {
     "refresh": "Actualiser"
+  },
+  "deliveries": {
+    "title": "Livraisons",
+    "refresh": "Actualiser",
+    "printSummary": "Imprimer récapitulatif",
+    "validateShipping": "Valider l'expédition"
   }
 }

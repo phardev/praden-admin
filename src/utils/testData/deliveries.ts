@@ -1,6 +1,7 @@
 import {
   clickAndCollect,
-  deliveryInRelayPoint
+  deliveryInRelayPoint,
+  deliveryInRelayPointDPD
 } from '@utils/testData/deliveryMethods'
 import { praden } from '@utils/testData/shop'
 
@@ -160,7 +161,7 @@ export const deliveryOrderDelivered1: Delivery = {
 export const deliveryOrderDelivered2: Delivery = {
   uuid: 'delivery-order-delivered-2',
   price: 0,
-  method: clickAndCollect,
+  method: deliveryInRelayPointDPD,
   pickingDate: 1737376937000,
   weight: 2200,
   sender: {
