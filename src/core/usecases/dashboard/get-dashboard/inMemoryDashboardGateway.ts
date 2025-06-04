@@ -17,7 +17,8 @@ export class InMemoryDashboardGateway implements DashboardGateway {
         canceledTurnover: 0,
         deliveryPrice: 0
       },
-      topProducts: []
+      topProducts: [],
+      ordersByDeliveryMethod: []
     }
   }
 
@@ -74,7 +75,8 @@ export class InMemoryDashboardGateway implements DashboardGateway {
         canceledTurnover: 0,
         deliveryPrice: 0
       },
-      topProducts: filteredTopProducts
+      topProducts: filteredTopProducts,
+      ordersByDeliveryMethod: this.mockData.ordersByDeliveryMethod
     }
   }
 

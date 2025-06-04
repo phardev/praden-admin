@@ -100,6 +100,28 @@ describe('GetDashboard', () => {
             name: 'Product 3 Laboratory'
           }
         }
+      ],
+      ordersByDeliveryMethod: [
+        {
+          deliveryMethodUuid: '505209a2-7acb-4891-b933-e084d786d7ea',
+          deliveryMethodName: 'Livraison en point relais Colissimo',
+          count: 1154
+        },
+        {
+          deliveryMethodUuid: '570bdcfa-b704-4ed2-9fc0-175d687c1d8d',
+          deliveryMethodName: 'Retrait en pharmacie',
+          count: 316
+        },
+        {
+          deliveryMethodUuid: 'b5f26b31-ad03-4aaf-af89-395471795066',
+          deliveryMethodName: 'Livraison à domicile Colissimo',
+          count: 160
+        },
+        {
+          deliveryMethodUuid: 'e667e186-8b06-44fb-bde5-5842e6006dd4',
+          deliveryMethodName: 'Livraison en point relais DPD',
+          count: 10
+        }
       ]
     }
     dashboardGateway.feedWith(mockData)
@@ -110,6 +132,13 @@ describe('GetDashboard', () => {
     expect(statsStore.dashboard).toStrictEqual(mockData)
   })
 
+  it('should include orders by delivery method in dashboard data', async () => {
+    await whenGetDashboardData()
+    expect(statsStore.dashboard.ordersByDeliveryMethod).toStrictEqual(
+      mockData.ordersByDeliveryMethod
+    )
+  })
+
   it('should limit the number of top products based on productLimit parameter', async () => {
     params = {
       productLimit: 2
@@ -118,7 +147,8 @@ describe('GetDashboard', () => {
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: mockData.monthlySales,
       totalSales: mockData.totalSales,
-      topProducts: [mockData.topProducts[0], mockData.topProducts[1]]
+      topProducts: [mockData.topProducts[0], mockData.topProducts[1]],
+      ordersByDeliveryMethod: mockData.ordersByDeliveryMethod
     })
   })
 
@@ -137,7 +167,8 @@ describe('GetDashboard', () => {
         canceledTurnover: mockData.monthlySales[1].canceledTurnover,
         deliveryPrice: mockData.monthlySales[1].deliveryPrice
       },
-      topProducts: mockData.topProducts
+      topProducts: mockData.topProducts,
+      ordersByDeliveryMethod: mockData.ordersByDeliveryMethod
     })
   })
 
@@ -149,7 +180,8 @@ describe('GetDashboard', () => {
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: mockData.monthlySales,
       totalSales: mockData.totalSales,
-      topProducts: [mockData.topProducts[0]]
+      topProducts: [mockData.topProducts[0]],
+      ordersByDeliveryMethod: mockData.ordersByDeliveryMethod
     })
   })
 
@@ -161,7 +193,8 @@ describe('GetDashboard', () => {
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: mockData.monthlySales,
       totalSales: mockData.totalSales,
-      topProducts: [mockData.topProducts[2]]
+      topProducts: [mockData.topProducts[2]],
+      ordersByDeliveryMethod: mockData.ordersByDeliveryMethod
     })
   })
 
