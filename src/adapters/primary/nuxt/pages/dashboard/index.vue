@@ -139,18 +139,24 @@
         template(#default)
           .h-80
             MonthlyTurnoverChart(:data="dashboard.monthlySales")
-      UCard
+      UCard(v-if="!areProductFiltersApplied")
         template(#header)
-          h3.text-lg.font-medium {{ $t('dashboard.monthlyCanceledTurnover') }}
+          h3.text-lg.font-medium {{ $t('dashboard.deliveryMethodsDistribution') }}
         template(#default)
           .h-80
-            MonthlyCanceledTurnoverChart(:data="dashboard.monthlySales")
+            DeliveryMethodsPieChart(:data="dashboard.ordersByDeliveryMethod")
       UCard(v-if="!areProductFiltersApplied")
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.monthlyDeliveryPrice') }}
         template(#default)
           .h-80
             MonthlyDeliveryPriceChart(:data="dashboard.monthlySales")
+      UCard
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.monthlyCanceledTurnover') }}
+        template(#default)
+          .h-80
+            MonthlyCanceledTurnoverChart(:data="dashboard.monthlySales")
 
     UCard.mt-16
       template(#header)
@@ -177,6 +183,7 @@ import { getCategoriesVM } from '@/src/adapters/primary/view-models/categories/g
 import { useLaboratoryGateway } from '@/gateways/laboratoryGateway'
 import { useCategoryGateway } from '@/gateways/categoryGateway'
 import { fr } from 'date-fns/locale'
+import DeliveryMethodsPieChart from '../../components/molecules/DeliveryMethodsPieChart.vue'
 
 definePageMeta({ layout: 'main' })
 
