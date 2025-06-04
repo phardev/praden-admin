@@ -1,4 +1,9 @@
-import { MonthlySales, TopProduct, TotalSales } from '@core/entities/dashboard'
+import {
+  MonthlySales,
+  OrderByDeliveryMethod,
+  TopProduct,
+  TotalSales
+} from '@core/entities/dashboard'
 import { useStatsStore } from '@store/statsStore'
 
 export interface MonthlySalesVM
@@ -27,6 +32,7 @@ export interface DashboardVM {
   monthlySales: MonthlySalesVM[]
   totalSales: TotalSalesVM
   topProducts: TopProduct[]
+  ordersByDeliveryMethod: OrderByDeliveryMethod[]
 }
 
 export const getDashboardVM = (): DashboardVM => {
@@ -42,7 +48,8 @@ export const getDashboardVM = (): DashboardVM => {
         deliveryPrice: 0,
         averageBasketValue: 0
       },
-      topProducts: []
+      topProducts: [],
+      ordersByDeliveryMethod: []
     }
   }
   return {
@@ -60,6 +67,7 @@ export const getDashboardVM = (): DashboardVM => {
       deliveryPrice: dashboard.totalSales.deliveryPrice / 100,
       averageBasketValue: dashboard.totalSales.averageBasketValue / 100
     },
-    topProducts: dashboard.topProducts
+    topProducts: dashboard.topProducts,
+    ordersByDeliveryMethod: dashboard.ordersByDeliveryMethod
   }
 }

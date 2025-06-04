@@ -51,6 +51,7 @@
     "monthlyTurnover": "Chiffre d'affaires mensuel",
     "monthlyCanceledTurnover": "Chiffre d'affaires annulé mensuel",
     "monthlyDeliveryPrice": "Frais de livraison mensuel",
+    "deliveryMethodsDistribution": "Répartition des modes de livraison",
     "topProducts": {
       "title": "Produits les plus vendus",
       "productName": "Nom du produit",

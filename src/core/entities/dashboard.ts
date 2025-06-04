@@ -35,8 +35,15 @@ export interface TopProduct {
   laboratory: TopProductLaboratory
 }
 
+export interface OrderByDeliveryMethod {
+  deliveryMethodUuid: UUID
+  deliveryMethodName: string
+  count: number
+}
+
 export interface Dashboard {
   monthlySales: MonthlySales[]
   totalSales: TotalSales
   topProducts: TopProduct[]
+  ordersByDeliveryMethod: OrderByDeliveryMethod[]
 }

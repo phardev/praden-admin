@@ -73,6 +73,18 @@ describe('getDashboardVM', () => {
             name: 'Product B Laboratory'
           }
         }
+      ],
+      ordersByDeliveryMethod: [
+        {
+          deliveryMethodUuid: '505209a2-7acb-4891-b933-e084d786d7ea',
+          deliveryMethodName: 'Livraison en point relais Colissimo',
+          count: 1154
+        },
+        {
+          deliveryMethodUuid: '570bdcfa-b704-4ed2-9fc0-175d687c1d8d',
+          deliveryMethodName: 'Retrait en pharmacie',
+          count: 316
+        }
       ]
     }
 
@@ -96,7 +108,8 @@ describe('getDashboardVM', () => {
         averageBasketValue: mockDashboard.totalSales.averageBasketValue / 100,
         deliveryPrice: mockDashboard.totalSales.deliveryPrice / 100
       },
-      topProducts: mockDashboard.topProducts
+      topProducts: mockDashboard.topProducts,
+      ordersByDeliveryMethod: mockDashboard.ordersByDeliveryMethod
     })
   })
 
@@ -112,7 +125,8 @@ describe('getDashboardVM', () => {
         averageBasketValue: 0,
         deliveryPrice: 0
       },
-      topProducts: []
+      topProducts: [],
+      ordersByDeliveryMethod: []
     })
   })
 })
