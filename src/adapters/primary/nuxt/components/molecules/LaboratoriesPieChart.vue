@@ -1,6 +1,5 @@
 <template lang="pug">
 div
-  .text-lg.font-semibold.mb-2 Produits vendus par laboratoire
   PieChart(:data="data" :config="pieChartConfig")
 </template>
 
