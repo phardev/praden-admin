@@ -1,5 +1,6 @@
 <template lang="pug">
 div
+  .text-lg.font-semibold.mb-2 Produits vendus par laboratoire
   PieChart(:data="data" :config="pieChartConfig")
 </template>
 
@@ -22,6 +23,7 @@ const pieChartConfig = {
   countField: 'count',
   topCount: 12,
   otherLabel: 'Autres',
-  innerRadius: 0.5
+  innerRadius: 0.5,
+  tooltipLabel: 'Produits vendus'
 }
 </script>

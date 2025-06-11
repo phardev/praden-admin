@@ -19,6 +19,7 @@ interface PieChartConfig {
   topCount?: number
   otherLabel?: string
   innerRadius?: number
+  tooltipLabel?: string
 }
 
 const props = defineProps<{
@@ -193,7 +194,9 @@ const createChart = () => {
         .html(
           `
           <strong>${d.data.name}</strong><br>
-          Nombre de commandes: ${d.data.count}<br>
+          ${props.config.tooltipLabel || 'Nombre de commandes'}: ${
+            d.data.count
+          }<br>
           Pourcentage: ${(
             (d.data.count /
               processedData.reduce((sum, item) => sum + item.count, 0)) *
