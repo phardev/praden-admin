@@ -85,6 +85,18 @@ describe('getDashboardVM', () => {
           deliveryMethodName: 'Retrait en pharmacie',
           count: 316
         }
+      ],
+      ordersByLaboratory: [
+        {
+          laboratoryUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+          laboratoryName: 'Laboratory A',
+          count: 1154
+        },
+        {
+          laboratoryUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+          laboratoryName: 'Laboratory B',
+          count: 316
+        }
       ]
     }
 
@@ -109,7 +121,8 @@ describe('getDashboardVM', () => {
         deliveryPrice: mockDashboard.totalSales.deliveryPrice / 100
       },
       topProducts: mockDashboard.topProducts,
-      ordersByDeliveryMethod: mockDashboard.ordersByDeliveryMethod
+      ordersByDeliveryMethod: mockDashboard.ordersByDeliveryMethod,
+      ordersByLaboratory: mockDashboard.ordersByLaboratory
     })
   })
 
@@ -126,7 +139,8 @@ describe('getDashboardVM', () => {
         deliveryPrice: 0
       },
       topProducts: [],
-      ordersByDeliveryMethod: []
+      ordersByDeliveryMethod: [],
+      ordersByLaboratory: []
     })
   })
 })

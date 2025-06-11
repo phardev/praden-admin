@@ -41,9 +41,16 @@ export interface OrderByDeliveryMethod {
   count: number
 }
 
+export interface OrderByLaboratory {
+  laboratoryUuid: UUID
+  laboratoryName: string
+  count: number
+}
+
 export interface Dashboard {
   monthlySales: MonthlySales[]
   totalSales: TotalSales
   topProducts: TopProduct[]
   ordersByDeliveryMethod: OrderByDeliveryMethod[]
+  ordersByLaboratory: OrderByLaboratory[]
 }

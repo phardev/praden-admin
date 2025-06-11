@@ -145,6 +145,12 @@
         template(#default)
           .h-80
             DeliveryMethodsPieChart(:data="dashboard.ordersByDeliveryMethod")
+      UCard()
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.laboratoriesDistribution') }}
+        template(#default)
+          .h-80
+            LaboratoriesPieChart(:data="dashboard.ordersByLaboratory")
       UCard(v-if="!areProductFiltersApplied")
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.monthlyDeliveryPrice') }}
@@ -184,6 +190,7 @@ import { useLaboratoryGateway } from '@/gateways/laboratoryGateway'
 import { useCategoryGateway } from '@/gateways/categoryGateway'
 import { fr } from 'date-fns/locale'
 import DeliveryMethodsPieChart from '../../components/molecules/DeliveryMethodsPieChart.vue'
+import LaboratoriesPieChart from '../../components/molecules/LaboratoriesPieChart.vue'
 
 definePageMeta({ layout: 'main' })
 
