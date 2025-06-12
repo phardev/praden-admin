@@ -15,16 +15,22 @@ interface DataItem {
 interface PieChartConfig {
   idField: string
   nameField: string
-  countField: string
+  countField?: string
   topCount?: number
   otherLabel?: string
   innerRadius?: number
   tooltipLabel?: string
+  showBackButton?: boolean
 }
 
 const props = defineProps<{
   data: any[]
   config: PieChartConfig
+}>()
+
+const emit = defineEmits<{
+  'segment-click': [item: any]
+  'center-click': []
 }>()
 
 const chartContainer = ref<HTMLElement | null>(null)
@@ -56,16 +62,14 @@ const createChart = () => {
       `translate(${width / 2 + margin.left},${height / 2 + margin.top})`
     )
 
-  // Normalize data to our internal format
   const normalizeData = (): DataItem[] => {
     return props.data.map((item) => ({
       id: item[props.config.idField],
       name: item[props.config.nameField],
-      count: item[props.config.countField]
+      count: item[props.config.countField || 'countField']
     }))
   }
 
-  // Process data - group smaller items if needed
   const processData = (data: DataItem[]): DataItem[] => {
     if (!props.config.topCount) return data
 
@@ -156,6 +160,38 @@ const createChart = () => {
     : 0
   const arc = d3.arc().innerRadius(innerRadiusValue).outerRadius(radius)
 
+  if (props.config.innerRadius > 0 && props.config.showBackButton) {
+    const buttonGroup = svg.append('g').attr('class', 'center-button')
+
+    buttonGroup
+      .append('circle')
+      .attr('r', innerRadiusValue * 0.7)
+      .attr('fill', '#f8f8f8')
+      .attr('stroke', '#e0e0e0')
+      .attr('stroke-width', 1)
+
+    const iconSize = innerRadiusValue * 0.5
+    buttonGroup
+      .append('path')
+      .attr('d', 'M19 7v4H5.83l3.58-3.59L8 6l-6 6 6 6 1.41-1.41L5.83 13H21V7z')
+      .attr('fill', '#666')
+      .attr(
+        'transform',
+        `translate(${-iconSize / 2}, ${-iconSize / 2}) scale(${iconSize / 24})`
+      )
+
+    const clickHandler = () => {
+      emit('center-click')
+    }
+
+    buttonGroup
+      .append('circle')
+      .attr('r', innerRadiusValue * 0.8)
+      .attr('fill', 'rgba(0, 0, 0, 0)')
+      .style('cursor', 'pointer')
+      .on('click', clickHandler)
+  }
+
   const arcs = svg
     .selectAll('.arc')
     .data(pie(processedData))
@@ -170,6 +206,15 @@ const createChart = () => {
     .attr('stroke', 'white')
     .style('stroke-width', '2px')
     .style('opacity', 0.8)
+    .style('cursor', 'pointer')
+    .on('click', function (event, d) {
+      const originalItem = props.data.find(
+        (item: Record<string, any>) => item[props.config.idField] === d.data.id
+      )
+      if (originalItem) {
+        emit('segment-click', originalItem)
+      }
+    })
     .on('mouseover', function (event, d) {
       d3.select(this).style('opacity', 1)
 

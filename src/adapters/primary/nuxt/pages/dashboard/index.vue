@@ -139,18 +139,24 @@
         template(#default)
           .h-80
             MonthlyTurnoverChart(:data="dashboard.monthlySales")
-      UCard(v-if="!areProductFiltersApplied")
+      UCard()
         template(#header)
-          h3.text-lg.font-medium {{ $t('dashboard.deliveryMethodsDistribution') }}
+          h3.text-lg.font-medium {{ $t('dashboard.categoriesDistribution') }}
         template(#default)
           .h-80
-            DeliveryMethodsPieChart(:data="dashboard.ordersByDeliveryMethod")
+            CategoriesPieChart(:data="dashboard.productQuantitiesByCategory" @select-category="onSelectCategory" @navigate-to-parent="navigateToParentCategory")
       UCard()
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.laboratoriesDistribution') }}
         template(#default)
           .h-80
             LaboratoriesPieChart(:data="dashboard.ordersByLaboratory")
+      UCard(v-if="!areProductFiltersApplied")
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.deliveryMethodsDistribution') }}
+        template(#default)
+          .h-80
+            DeliveryMethodsPieChart(:data="dashboard.ordersByDeliveryMethod")
       UCard(v-if="!areProductFiltersApplied")
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.monthlyDeliveryPrice') }}
@@ -182,15 +188,16 @@
 import { format } from 'date-fns'
 import { formatCurrency } from '@/src/utils/formatters'
 import { useDashboardData } from '../../composables/useDashboardData'
-import { listLaboratories } from '@core/usecases/laboratories/laboratory-listing/listLaboratories'
-import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
-import { getLaboratoriesVM } from '@/src/adapters/primary/view-models/laboratories/get-laboratories/getLaboratoriesVM'
-import { getCategoriesVM } from '@/src/adapters/primary/view-models/categories/get-categories/getCategoriesVM'
-import { useLaboratoryGateway } from '@/gateways/laboratoryGateway'
-import { useCategoryGateway } from '@/gateways/categoryGateway'
+import { getLaboratoriesVM } from '../../../view-models/laboratories/get-laboratories/getLaboratoriesVM'
+import { getCategoriesVM } from '../../../view-models/categories/get-categories/getCategoriesVM'
+import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
+import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
+import { listLaboratories } from '../../../../../core/usecases/laboratories/laboratory-listing/listLaboratories'
+import { listCategories } from '../../../../../core/usecases/categories/list-categories/listCategories'
 import { fr } from 'date-fns/locale'
 import DeliveryMethodsPieChart from '../../components/molecules/DeliveryMethodsPieChart.vue'
 import LaboratoriesPieChart from '../../components/molecules/LaboratoriesPieChart.vue'
+import CategoriesPieChart from '../../components/molecules/CategoriesPieChart.vue'
 
 definePageMeta({ layout: 'main' })
 
@@ -285,11 +292,11 @@ const fetchFilteredDashboardData = async () => {
   }
 
   if (laboratory.value) {
-    params.laboratoryUuid = laboratory.value ? laboratory.value.uuid : null
+    params.laboratoryUuid = laboratory.value
   }
 
   if (category.value) {
-    params.categoryUuid = category.value ? category.value.uuid : null
+    params.categoryUuid = category.value
   }
 
   if (promotionOnly.value) {
@@ -297,6 +304,7 @@ const fetchFilteredDashboardData = async () => {
   }
 
   await fetchDashboardData(params)
+
   areProductFiltersApplied.value =
     laboratory.value || category.value || promotionOnly.value
 }
@@ -348,6 +356,25 @@ const clearCategory = () => {
   category.value = null
 }
 
+const onSelectCategory = (categoryUuid: string) => {
+  category.value = categoryUuid
+  fetchFilteredDashboardData()
+}
+
+const navigateToParentCategory = async () => {
+  if (!category.value) {
+    return
+  }
+  const categoryGateway = useCategoryGateway()
+  const currentCategory = await categoryGateway.getByUuid(category.value)
+  if (currentCategory && currentCategory.parentUuid) {
+    category.value = currentCategory.parentUuid
+  } else {
+    category.value = null
+  }
+  fetchFilteredDashboardData()
+}
+
 const normalizeText = (text: string): string => {
   return text
     .normalize('NFD')
@@ -362,7 +389,7 @@ const categorySearch = (query: string) => {
 
   const normalizedQuery = normalizeText(query)
 
-  return categoriesVM.value.items.filter((option) => {
+  return categoriesVM.value.items.filter((option: { name: string }) => {
     const optionName = option.name || ''
     const normalizedName = normalizeText(optionName)
     return normalizedName.includes(normalizedQuery)
@@ -376,7 +403,7 @@ const laboratorySearch = (query: string) => {
 
   const normalizedQuery = normalizeText(query)
 
-  return laboratoriesVM.value.items.filter((option) => {
+  return laboratoriesVM.value.items.filter((option: { name: string }) => {
     const optionName = option.name || ''
     const normalizedName = normalizeText(optionName)
     return normalizedName.includes(normalizedQuery)

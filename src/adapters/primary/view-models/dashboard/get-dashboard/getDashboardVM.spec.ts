@@ -97,6 +97,20 @@ describe('getDashboardVM', () => {
           laboratoryName: 'Laboratory B',
           count: 316
         }
+      ],
+      productQuantitiesByCategory: [
+        {
+          categoryUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+          categoryName: 'Category A',
+          count: 1154,
+          parentUuid: null
+        },
+        {
+          categoryUuid: '570bdcfa-b704-4ed2-9fc0-175d687c1d8d',
+          categoryName: 'Category B',
+          count: 316,
+          parentUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608'
+        }
       ]
     }
 
@@ -122,7 +136,8 @@ describe('getDashboardVM', () => {
       },
       topProducts: mockDashboard.topProducts,
       ordersByDeliveryMethod: mockDashboard.ordersByDeliveryMethod,
-      ordersByLaboratory: mockDashboard.ordersByLaboratory
+      ordersByLaboratory: mockDashboard.ordersByLaboratory,
+      productQuantitiesByCategory: mockDashboard.productQuantitiesByCategory
     })
   })
 
@@ -140,7 +155,8 @@ describe('getDashboardVM', () => {
       },
       topProducts: [],
       ordersByDeliveryMethod: [],
-      ordersByLaboratory: []
+      ordersByLaboratory: [],
+      productQuantitiesByCategory: []
     })
   })
 })

@@ -2,6 +2,7 @@ import {
   MonthlySales,
   OrderByDeliveryMethod,
   OrderByLaboratory,
+  ProductByCategory,
   TopProduct,
   TotalSales
 } from '@core/entities/dashboard'
@@ -35,6 +36,7 @@ export interface DashboardVM {
   topProducts: TopProduct[]
   ordersByDeliveryMethod: OrderByDeliveryMethod[]
   ordersByLaboratory: OrderByLaboratory[]
+  productQuantitiesByCategory: ProductByCategory[]
 }
 
 export const getDashboardVM = (): DashboardVM => {
@@ -52,7 +54,8 @@ export const getDashboardVM = (): DashboardVM => {
       },
       topProducts: [],
       ordersByDeliveryMethod: [],
-      ordersByLaboratory: []
+      ordersByLaboratory: [],
+      productQuantitiesByCategory: []
     }
   }
   return {
@@ -72,6 +75,7 @@ export const getDashboardVM = (): DashboardVM => {
     },
     topProducts: dashboard.topProducts,
     ordersByDeliveryMethod: dashboard.ordersByDeliveryMethod,
-    ordersByLaboratory: dashboard.ordersByLaboratory
+    ordersByLaboratory: dashboard.ordersByLaboratory,
+    productQuantitiesByCategory: dashboard.productQuantitiesByCategory
   }
 }

@@ -52,7 +52,8 @@
     "monthlyCanceledTurnover": "Chiffre d'affaires annulé mensuel",
     "monthlyDeliveryPrice": "Frais de livraison mensuel",
     "deliveryMethodsDistribution": "Répartition des modes de livraison",
-    "laboratoriesDistribution": "Répartition des commandes par laboratoire",
+    "laboratoriesDistribution": "Répartition des ventes par laboratoire",
+    "categoriesDistribution": "Répartition des ventes par catégorie",
     "topProducts": {
       "title": "Produits les plus vendus",
       "productName": "Nom du produit",

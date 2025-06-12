@@ -47,10 +47,18 @@ export interface OrderByLaboratory {
   count: number
 }
 
+export interface ProductByCategory {
+  categoryUuid: UUID
+  categoryName: string
+  count: number
+  parentUuid?: UUID | null
+}
+
 export interface Dashboard {
   monthlySales: MonthlySales[]
   totalSales: TotalSales
   topProducts: TopProduct[]
   ordersByDeliveryMethod: OrderByDeliveryMethod[]
   ordersByLaboratory: OrderByLaboratory[]
+  productQuantitiesByCategory: ProductByCategory[]
 }
