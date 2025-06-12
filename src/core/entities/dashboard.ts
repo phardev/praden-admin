@@ -48,8 +48,8 @@ export interface OrderByLaboratory {
 }
 
 export interface ProductByCategory {
-  categoryUuid: UUID
-  categoryName: string
+  uuid: UUID
+  name: string
   count: number
   parentUuid?: UUID | null
 }

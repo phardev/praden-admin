@@ -208,8 +208,21 @@ const { isLoading, dashboard, fetchDashboardData } = useDashboardData()
 const productLimit = ref(50)
 const startDate = ref<number | null>(null)
 const endDate = ref<number | null>(null)
-const laboratory = ref<string | null>(null)
-const category = ref<string | null>(null)
+
+interface CategoryItem {
+  uuid: string
+  name: string
+  [key: string]: any
+}
+
+interface LaboratoryItem {
+  uuid: string
+  name: string
+  [key: string]: any
+}
+
+const laboratory = ref<string | LaboratoryItem | null>(null)
+const category = ref<string | CategoryItem | null>(null)
 const promotionOnly = ref(false)
 const showFilters = ref(false)
 const isLargeScreen = ref(false)
@@ -292,11 +305,15 @@ const fetchFilteredDashboardData = async () => {
   }
 
   if (laboratory.value) {
-    params.laboratoryUuid = laboratory.value
+    params.laboratoryUuid =
+      typeof laboratory.value === 'string'
+        ? laboratory.value
+        : laboratory.value.uuid
   }
 
   if (category.value) {
-    params.categoryUuid = category.value
+    params.categoryUuid =
+      typeof category.value === 'string' ? category.value : category.value.uuid
   }
 
   if (promotionOnly.value) {
@@ -306,7 +323,7 @@ const fetchFilteredDashboardData = async () => {
   await fetchDashboardData(params)
 
   areProductFiltersApplied.value =
-    laboratory.value || category.value || promotionOnly.value
+    !!laboratory.value || !!category.value || promotionOnly.value
 }
 
 const toggleFilters = () => {
@@ -356,8 +373,11 @@ const clearCategory = () => {
   category.value = null
 }
 
-const onSelectCategory = (categoryUuid: string) => {
-  category.value = categoryUuid
+const onSelectCategory = (categoryItem: CategoryItem) => {
+  category.value = {
+    uuid: categoryItem.uuid,
+    name: categoryItem.name
+  }
   fetchFilteredDashboardData()
 }
 
@@ -366,9 +386,14 @@ const navigateToParentCategory = async () => {
     return
   }
   const categoryGateway = useCategoryGateway()
-  const currentCategory = await categoryGateway.getByUuid(category.value)
+  const categoryUuid =
+    typeof category.value === 'string' ? category.value : category.value.uuid
+  const currentCategory = await categoryGateway.getByUuid(categoryUuid)
   if (currentCategory && currentCategory.parentUuid) {
-    category.value = currentCategory.parentUuid
+    const parentCategory = await categoryGateway.getByUuid(
+      currentCategory.parentUuid
+    )
+    category.value = parentCategory
   } else {
     category.value = null
   }

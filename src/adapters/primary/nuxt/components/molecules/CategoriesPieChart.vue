@@ -7,8 +7,8 @@ div
 import PieChart from './PieChart.vue'
 
 interface ProductByCategory {
-  categoryUuid: string
-  categoryName: string
+  uuid: string
+  name: string
   parentUuid?: string | null
   count: number
 }
@@ -23,8 +23,8 @@ const emit = defineEmits<{
 }>()
 
 const onCategoryClick = (category: ProductByCategory) => {
-  if (category && category.categoryUuid && props.data.length > 1) {
-    emit('select-category', category.categoryUuid)
+  if (category && props.data.length > 1) {
+    emit('select-category', category)
   }
 }
 
@@ -33,8 +33,8 @@ const onCenterClick = () => {
 }
 
 const pieChartConfig = {
-  idField: 'categoryUuid',
-  nameField: 'categoryName',
+  idField: 'uuid',
+  nameField: 'name',
   countField: 'count',
   topCount: 12,
   otherLabel: 'Autres',

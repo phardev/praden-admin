@@ -112,9 +112,9 @@ const createChart = () => {
     const itemColors = new Map()
 
     if (processedData.length <= baseColors.length) {
-      const sortedItems = [...processedData].sort((a, b) =>
-        a.id.localeCompare(b.id)
-      )
+      const sortedItems = [...processedData].sort((a, b) => {
+        return a.id.localeCompare(b.id)
+      })
 
       sortedItems.forEach((item, index) => {
         // Special color for "Others" category
