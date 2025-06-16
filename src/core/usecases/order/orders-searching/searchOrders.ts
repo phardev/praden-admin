@@ -7,6 +7,7 @@ import { DeliveryStatus } from '@core/entities/delivery'
 
 export interface SearchDTO {
   query?: string
+  minimumQueryLength?: number
 }
 
 export interface SearchOrdersDTO extends SearchDTO {

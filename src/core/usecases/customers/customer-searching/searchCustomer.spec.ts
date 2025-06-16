@@ -126,6 +126,27 @@ describe('Customer searching', () => {
       expectSearchResultToEqual()
     })
   })
+  describe('Query length', () => {
+    describe('The query is not long enough', () => {
+      beforeEach(async () => {
+        dto.query = '76'
+        dto.minimumQueryLength = 3
+        await whenSearchForCustomers(dto)
+      })
+      it('should have an error', () => {
+        expectErrorToBe('query is too short')
+      })
+      it('should not have a result', () => {
+        expectSearchResultToBeEmpty()
+      })
+      it('should save the search query', () => {
+        expectCurrentFilterToBe({
+          query: '76',
+          minimumQueryLength: 3
+        })
+      })
+    })
+  })
 
   const givenExistingCustomers = (...customers: Array<Customer>) => {
     const customerStore = useCustomerStore()
@@ -144,5 +165,13 @@ describe('Customer searching', () => {
     currentFilter: Partial<SearchCustomersDTO>
   ) => {
     expect(searchStore.getFilter(url)).toStrictEqual(currentFilter)
+  }
+
+  const expectSearchResultToBeEmpty = () => {
+    expect(searchStore.get(url)).toStrictEqual([])
+  }
+
+  const expectErrorToBe = (expected: string | undefined) => {
+    expect(searchStore.getError(url)).toStrictEqual(expected)
   }
 })

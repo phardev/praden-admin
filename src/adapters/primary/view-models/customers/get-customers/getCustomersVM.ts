@@ -4,6 +4,7 @@ import { useCustomerStore } from '@store/customerStore'
 import { Customer } from '@core/entities/customer'
 import { SearchCustomersDTO } from '@core/usecases/customers/customer-searching/searchCustomer'
 import { useSearchStore } from '@store/searchStore'
+import { priceFormatter } from '@utils/formatters'
 
 const headers: Array<Header> = [
   {
@@ -21,6 +22,14 @@ const headers: Array<Header> = [
   {
     name: 'Téléphone',
     value: 'phone'
+  },
+  {
+    name: 'Nombre de commandes',
+    value: 'ordersCount'
+  },
+  {
+    name: 'Total des commandes',
+    value: 'ordersTotal'
   }
 ]
 
@@ -30,6 +39,8 @@ export interface GetCustomersItemVM {
   lastname: string
   email: string
   phone: string
+  ordersCount: number
+  ordersTotal: string
 }
 
 export interface GetCustomersVM {
@@ -38,6 +49,7 @@ export interface GetCustomersVM {
   isLoading: boolean
   hasMore: boolean
   currentSearch: SearchCustomersDTO | undefined
+  searchError: string | undefined
 }
 
 export const getCustomersVM = (key: string): GetCustomersVM => {
@@ -45,6 +57,8 @@ export const getCustomersVM = (key: string): GetCustomersVM => {
   const searchStore = useSearchStore()
   const customers = searchStore.get(key) || customerStore.items
   const currentSearch = searchStore.getFilter(key)
+  const formatter = priceFormatter('fr-FR', 'EUR')
+  const searchError = searchStore.getError(key)
   return {
     headers,
     items: customers.map((customer: Customer) => ({
@@ -52,10 +66,15 @@ export const getCustomersVM = (key: string): GetCustomersVM => {
       firstname: customer.firstname,
       lastname: customer.lastname,
       email: customer.email,
-      phone: customer.phone
+      phone: customer.phone,
+      ordersCount: customer.ordersCount,
+      ordersTotal: formatter.format(customer.ordersTotal / 100)
     })),
     isLoading: false,
     hasMore: customerStore.hasMore,
-    currentSearch
+    currentSearch,
+    searchError: searchError
+      ? 'Veuillez saisir au moins 3 caractères pour lancer la recherche.'
+      : undefined
   }
 }
