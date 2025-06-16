@@ -6,4 +6,6 @@ export interface Customer {
   lastname: string
   email: Mail
   phone: string
+  ordersCount: number
+  ordersTotal: number
 }

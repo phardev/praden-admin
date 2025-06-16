@@ -9,8 +9,9 @@
     @clicked="customerSelected"
   )
     template(#title) Clients
+        span.ml-4.text-sm.text-colored (Affichage par défaut top CA)
     template(#search)
-      ft-text-field.flex-grow(
+      ft-text-field.flex-grow.mb-4(
         v-model="search"
         placeholder="Rechercher par nom, email"
         for="search"
@@ -31,11 +32,12 @@ import { useCustomerGateway } from '../../../../../../gateways/customerGateway'
 import { getCustomersVM } from '@adapters/primary/view-models/customers/get-customers/getCustomersVM'
 import { searchCustomers } from '@core/usecases/customers/customer-searching/searchCustomer'
 import { useSearchGateway } from '../../../../../../gateways/searchGateway'
+import { useSearchStore } from '@store/searchStore'
 import InfiniteLoading from 'v3-infinite-loading'
 import 'v3-infinite-loading/lib/style.css'
 
 definePageMeta({ layout: 'main' })
-const limit = 25
+const limit = 100
 let offset = 0
 
 const load = async ($state) => {
@@ -52,7 +54,7 @@ const load = async ($state) => {
   }
 }
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = router.currentRoute.value.name as string
 
 const customersVM = computed(() => {
   return getCustomersVM(routeName)
@@ -64,12 +66,27 @@ const customerSelected = (uuid: string) => {
 
 const search = ref(customersVM.value?.currentSearch?.query || '')
 
+const minimumQueryLength = 3
 let debounceTimer
 
 const searchChanged = (e: any) => {
-  if (debounceTimer) clearTimeout(debounceTimer)
+  if (debounceTimer) {
+    clearTimeout(debounceTimer)
+  }
   debounceTimer = setTimeout(() => {
-    searchCustomers(routeName, { query: e.target.value }, useSearchGateway())
+    const query = e.target.value
+    if (!query) {
+      const searchStore = useSearchStore()
+      searchStore.set(routeName, undefined)
+      searchStore.setFilter(routeName, undefined)
+      searchStore.setError(routeName, undefined)
+    } else {
+      searchCustomers(
+        routeName,
+        { query, minimumQueryLength },
+        useSearchGateway()
+      )
+    }
   }, 300)
 }
 </script>
