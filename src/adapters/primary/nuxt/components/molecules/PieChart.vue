@@ -26,6 +26,7 @@ interface PieChartConfig {
 const props = defineProps<{
   data: any[]
   config: PieChartConfig
+  customColors?: Record<string, string>
 }>()
 
 const emit = defineEmits<{
@@ -111,7 +112,26 @@ const createChart = () => {
   const assignColorsToItems = () => {
     const itemColors = new Map()
 
-    if (processedData.length <= baseColors.length) {
+    // Use custom colors if provided
+    if (props.customColors) {
+      processedData.forEach((item) => {
+        // If a custom color is defined for this item's id, use it
+        if (props.customColors && props.customColors[item.id]) {
+          itemColors.set(item.id, props.customColors[item.id])
+        } else if (item.id === 'others') {
+          // Special color for "Others" category
+          itemColors.set(item.id, '#607D8B')
+        } else {
+          // Fallback to default color assignment
+          const hashCode = item.id.split('').reduce((hash, char) => {
+            return ((hash << 5) - hash + char.charCodeAt(0)) | 0
+          }, 0)
+          const colorIndex = Math.abs(hashCode) % (baseColors.length - 1)
+          itemColors.set(item.id, baseColors[colorIndex])
+        }
+      })
+    } else if (processedData.length <= baseColors.length) {
+      // Default behavior when no custom colors and few data points
       const sortedItems = [...processedData].sort((a, b) => {
         return a.id.localeCompare(b.id)
       })
@@ -125,6 +145,7 @@ const createChart = () => {
         }
       })
     } else {
+      // Default behavior when no custom colors and many data points
       processedData.forEach((item) => {
         if (item.id === 'others') {
           itemColors.set(item.id, '#607D8B')

@@ -163,6 +163,12 @@
         template(#default)
           .h-80
             MonthlyDeliveryPriceChart(:data="dashboard.monthlySales")
+      UCard(v-if="!areDateFiltersApplied")
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.productStockDistribution') }}
+        template(#default)
+          .h-80
+            ProductStockPieChart(:data="dashboard.productStockStats")
       UCard
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.monthlyCanceledTurnover') }}
@@ -198,6 +204,7 @@ import { fr } from 'date-fns/locale'
 import DeliveryMethodsPieChart from '../../components/molecules/DeliveryMethodsPieChart.vue'
 import LaboratoriesPieChart from '../../components/molecules/LaboratoriesPieChart.vue'
 import CategoriesPieChart from '../../components/molecules/CategoriesPieChart.vue'
+import ProductStockPieChart from '../../components/molecules/ProductStockPieChart.vue'
 
 definePageMeta({ layout: 'main' })
 
@@ -236,6 +243,7 @@ const categoriesVM = computed(() => {
 })
 
 const areProductFiltersApplied = ref(false)
+const areDateFiltersApplied = ref(false)
 
 const statsCards = computed(() => [
   {
@@ -324,6 +332,7 @@ const fetchFilteredDashboardData = async () => {
 
   areProductFiltersApplied.value =
     !!laboratory.value || !!category.value || promotionOnly.value
+  areDateFiltersApplied.value = !!startDate.value || !!endDate.value
 }
 
 const toggleFilters = () => {

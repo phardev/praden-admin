@@ -18,7 +18,13 @@ export class InMemoryDashboardGateway implements DashboardGateway {
         deliveryPrice: 0
       },
       topProducts: [],
-      ordersByDeliveryMethod: []
+      ordersByDeliveryMethod: [],
+      ordersByLaboratory: [],
+      productQuantitiesByCategory: [],
+      productStockStats: {
+        inStockCount: 0,
+        outOfStockCount: 0
+      }
     }
   }
 
@@ -76,7 +82,10 @@ export class InMemoryDashboardGateway implements DashboardGateway {
         deliveryPrice: 0
       },
       topProducts: filteredTopProducts,
-      ordersByDeliveryMethod: this.mockData.ordersByDeliveryMethod
+      ordersByDeliveryMethod: this.mockData.ordersByDeliveryMethod,
+      ordersByLaboratory: this.mockData.ordersByLaboratory,
+      productQuantitiesByCategory: this.mockData.productQuantitiesByCategory,
+      productStockStats: this.mockData.productStockStats
     }
   }
 
