@@ -122,6 +122,36 @@ describe('GetDashboard', () => {
           deliveryMethodName: 'Livraison en point relais DPD',
           count: 10
         }
+      ],
+      productStockStats: {
+        inStockCount: 850,
+        outOfStockCount: 150
+      },
+      ordersByLaboratory: [
+        {
+          laboratoryUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+          laboratoryName: 'Laboratory A',
+          count: 500
+        },
+        {
+          laboratoryUuid: '570bdcfa-b704-4ed2-9fc0-175d687c1d8d',
+          laboratoryName: 'Laboratory B',
+          count: 300
+        }
+      ],
+      productQuantitiesByCategory: [
+        {
+          uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+          name: 'Category A',
+          count: 400,
+          parentUuid: null
+        },
+        {
+          uuid: '570bdcfa-b704-4ed2-9fc0-175d687c1d8d',
+          name: 'Category B',
+          count: 200,
+          parentUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608'
+        }
       ]
     }
     dashboardGateway.feedWith(mockData)
@@ -139,6 +169,13 @@ describe('GetDashboard', () => {
     )
   })
 
+  it('should include product stock statistics in dashboard data', async () => {
+    await whenGetDashboardData()
+    expect(statsStore.dashboard.productStockStats).toStrictEqual(
+      mockData.productStockStats
+    )
+  })
+
   it('should limit the number of top products based on productLimit parameter', async () => {
     params = {
       productLimit: 2
@@ -148,7 +185,10 @@ describe('GetDashboard', () => {
       monthlySales: mockData.monthlySales,
       totalSales: mockData.totalSales,
       topProducts: [mockData.topProducts[0], mockData.topProducts[1]],
-      ordersByDeliveryMethod: mockData.ordersByDeliveryMethod
+      ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
+      ordersByLaboratory: mockData.ordersByLaboratory,
+      productQuantitiesByCategory: mockData.productQuantitiesByCategory,
+      productStockStats: mockData.productStockStats
     })
   })
 
@@ -168,7 +208,10 @@ describe('GetDashboard', () => {
         deliveryPrice: mockData.monthlySales[1].deliveryPrice
       },
       topProducts: mockData.topProducts,
-      ordersByDeliveryMethod: mockData.ordersByDeliveryMethod
+      ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
+      ordersByLaboratory: mockData.ordersByLaboratory,
+      productQuantitiesByCategory: mockData.productQuantitiesByCategory,
+      productStockStats: mockData.productStockStats
     })
   })
 
@@ -181,7 +224,10 @@ describe('GetDashboard', () => {
       monthlySales: mockData.monthlySales,
       totalSales: mockData.totalSales,
       topProducts: [mockData.topProducts[0]],
-      ordersByDeliveryMethod: mockData.ordersByDeliveryMethod
+      ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
+      ordersByLaboratory: mockData.ordersByLaboratory,
+      productQuantitiesByCategory: mockData.productQuantitiesByCategory,
+      productStockStats: mockData.productStockStats
     })
   })
 
@@ -194,7 +240,10 @@ describe('GetDashboard', () => {
       monthlySales: mockData.monthlySales,
       totalSales: mockData.totalSales,
       topProducts: [mockData.topProducts[2]],
-      ordersByDeliveryMethod: mockData.ordersByDeliveryMethod
+      ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
+      ordersByLaboratory: mockData.ordersByLaboratory,
+      productQuantitiesByCategory: mockData.productQuantitiesByCategory,
+      productStockStats: mockData.productStockStats
     })
   })
 

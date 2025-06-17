@@ -1,5 +1,10 @@
 import { UUID } from '@core/types/types'
 
+export interface ProductStockStats {
+  inStockCount: number
+  outOfStockCount: number
+}
+
 export interface MonthlySales {
   month: string
   count: number
@@ -61,4 +66,5 @@ export interface Dashboard {
   ordersByDeliveryMethod: OrderByDeliveryMethod[]
   ordersByLaboratory: OrderByLaboratory[]
   productQuantitiesByCategory: ProductByCategory[]
+  productStockStats: ProductStockStats
 }

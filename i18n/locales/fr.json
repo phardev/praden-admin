@@ -54,6 +54,7 @@
     "deliveryMethodsDistribution": "Répartition des modes de livraison",
     "laboratoriesDistribution": "Répartition des ventes par laboratoire",
     "categoriesDistribution": "Répartition des ventes par catégorie",
+    "productStockDistribution": "Répartition des produits par stock disponible",
     "topProducts": {
       "title": "Produits les plus vendus",
       "productName": "Nom du produit",

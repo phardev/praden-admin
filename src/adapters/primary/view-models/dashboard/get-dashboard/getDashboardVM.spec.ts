@@ -100,18 +100,22 @@ describe('getDashboardVM', () => {
       ],
       productQuantitiesByCategory: [
         {
-          categoryUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
-          categoryName: 'Category A',
+          uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+          name: 'Category A',
           count: 1154,
           parentUuid: null
         },
         {
-          categoryUuid: '570bdcfa-b704-4ed2-9fc0-175d687c1d8d',
-          categoryName: 'Category B',
+          uuid: '570bdcfa-b704-4ed2-9fc0-175d687c1d8d',
+          name: 'Category B',
           count: 316,
           parentUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608'
         }
-      ]
+      ],
+      productStockStats: {
+        inStockCount: 750,
+        outOfStockCount: 250
+      }
     }
 
     statsStore.dashboard = mockDashboard
@@ -137,7 +141,8 @@ describe('getDashboardVM', () => {
       topProducts: mockDashboard.topProducts,
       ordersByDeliveryMethod: mockDashboard.ordersByDeliveryMethod,
       ordersByLaboratory: mockDashboard.ordersByLaboratory,
-      productQuantitiesByCategory: mockDashboard.productQuantitiesByCategory
+      productQuantitiesByCategory: mockDashboard.productQuantitiesByCategory,
+      productStockStats: mockDashboard.productStockStats
     })
   })
 
@@ -156,7 +161,11 @@ describe('getDashboardVM', () => {
       topProducts: [],
       ordersByDeliveryMethod: [],
       ordersByLaboratory: [],
-      productQuantitiesByCategory: []
+      productQuantitiesByCategory: [],
+      productStockStats: {
+        inStockCount: 0,
+        outOfStockCount: 0
+      }
     })
   })
 })
