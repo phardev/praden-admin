@@ -3,7 +3,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, onUnmounted } from 'vue'
 import * as d3 from 'd3'
 
 interface DataItem {
