@@ -64,7 +64,15 @@
     }
   },
   "preparations": {
-    "refresh": "Actualiser"
+    "title": "Préparations",
+    "refresh": "Actualiser",
+    "gauge": {
+      "alert": "En retard",
+      "warning": "Attention",
+      "good": "Dans les temps",
+      "onTime": "Dans les temps",
+      "late": "En retard"
+    }
   },
   "deliveries": {
     "title": "Livraisons",

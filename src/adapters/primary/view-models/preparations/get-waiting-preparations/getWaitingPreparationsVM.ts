@@ -7,14 +7,14 @@ import {
 import { MessageContent, Order } from '@core/entities/order'
 import { usePreparationStore } from '@store/preparationStore'
 
-const waitingClientAnswerFilter = (o: Order) => {
+export const waitingClientAnswerFilter = (o: Order) => {
   if (!o.messages.length) return false
   return (
     o.messages[o.messages.length - 1].content === MessageContent.AskToClient
   )
 }
 
-const waitingReplenishmentFilter = (o: Order) => {
+export const waitingReplenishmentFilter = (o: Order) => {
   if (!o.messages.length) return false
   return (
     o.messages[o.messages.length - 1].content ===
