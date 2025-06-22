@@ -7,19 +7,6 @@
     .gauge-smiley.absolute(:style="smileyStyle")
       icon(:name="smileyIcon" :style="{ color: smileyColor, width: smileySize + 'px', height: smileySize + 'px' }")
   .gauge-label.mt-2.text-lg.font-semibold(v-if="label") {{ label }}
-  .gauge-stats.flex.items-center.justify-center.gap-6.mt-3
-    .gauge-stat.flex.items-center.gap-2
-      icon(name="streamline:smiley-emoji-terrified" class="text-red-500" style="width: 1.5em; height: 1.5em;")
-      span.font-medium {{ $t('preparations.gauge.alert') }}
-      span.font-bold {{ alertCount }}
-    .gauge-stat.flex.items-center.gap-2
-      icon(name="streamline:mail-smiley-straight-face-chat-message-indifferent-smiley-emoji-face-poker" class="text-yellow-500" style="width: 1.5em; height: 1.5em;")
-      span.font-medium {{ $t('preparations.gauge.warning') }}
-      span.font-bold {{ warningCount }}
-    .gauge-stat.flex.items-center.gap-2
-      icon(name="streamline:mail-smiley-happy-face-chat-message-smiley-smile-emoji-face-satisfied" class="text-green-500" style="width: 1.5em; height: 1.5em;")
-      span.font-medium {{ $t('preparations.gauge.good') }}
-      span.font-bold {{ goodCount }}
 </template>
 
 <script setup lang="ts">
