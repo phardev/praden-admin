@@ -32,7 +32,14 @@ export const useCustomerStore = defineStore('CustomerStore', {
       this.hasMore = customers.length > 0
     },
     add(customer: Customer) {
-      this.items.push(customer)
+      const existingCustomer = this.items.find(
+        (item) => item.uuid === customer.uuid
+      )
+      if (existingCustomer) {
+        this.edit(customer)
+      } else {
+        this.items.push(customer)
+      }
     },
     edit(customer: Customer) {
       this.items = this.items.map((c) => {

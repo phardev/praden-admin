@@ -53,6 +53,11 @@ export const fullMenu: NavigationMenu = {
           href: '/customers'
         },
         {
+          name: 'Newsletter',
+          icon: 'mdi:email-newsletter',
+          href: '/newsletter-subscriptions'
+        },
+        {
           name: 'SAV',
           icon: 'streamline:interface-help-customer-support-2-customer-headphones-headset-help-microphone-phone-person-support',
           href: '/after-sales'
