@@ -1,4 +1,5 @@
 import { Customer } from '@core/entities/customer'
+import { elodieDurandNewsletterSubscription } from './newsletterSubscriptions'
 
 export const elodieDurand: Customer = {
   uuid: 'customer-elodiedurand',
@@ -7,7 +8,8 @@ export const elodieDurand: Customer = {
   email: 'elodie.durand@example.com',
   phone: '+33612345678',
   ordersCount: 2,
-  ordersTotal: 10000
+  ordersTotal: 10000,
+  newsletterSubscription: elodieDurandNewsletterSubscription
 }
 
 export const lucasLefevre: Customer = {

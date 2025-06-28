@@ -20,6 +20,14 @@
         @input="searchChanged"
       ) Rechercher un client
       p.warning.text-warning(v-if="customersVM.searchError") {{ customersVM.searchError }}
+    template(#newsletterSubscription="{ item }")
+      .flex.items-center.justify-center
+        UToggle(
+          size="xl"
+          :model-value="item.newsletterSubscription"
+          @update:model-value="toggleNewsletterSubscription(item)"
+          @click.stop
+        )
   InfiniteLoading(@infinite="load")
     template(#complete)
       div
@@ -35,6 +43,9 @@ import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 import { useSearchStore } from '@store/searchStore'
 import InfiniteLoading from 'v3-infinite-loading'
 import 'v3-infinite-loading/lib/style.css'
+import { unsubscribeFromNewsletter } from '@core/usecases/newsletter-subscriptions/unsubscribe-from-newsletter/unsubscribe-from-newsletter'
+import { subscribeToNewsletter } from '@core/usecases/newsletter-subscriptions/subscribe-to-newsletter/subscribeToNewsletter'
+import { useNewsletterGateway } from '../../../../../../gateways/newsletterGateway'
 
 definePageMeta({ layout: 'main' })
 const limit = 100
@@ -88,5 +99,15 @@ const searchChanged = (e: any) => {
       )
     }
   }, 300)
+}
+
+const toggleNewsletterSubscription = (item: Customer) => {
+  const newsletterGateway = useNewsletterGateway()
+  const customerGateway = useCustomerGateway()
+  if (item.newsletterSubscription) {
+    unsubscribeFromNewsletter(item.email, newsletterGateway, customerGateway)
+  } else {
+    subscribeToNewsletter(item, newsletterGateway, customerGateway)
+  }
 }
 </script>

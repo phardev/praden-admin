@@ -24,6 +24,10 @@ const headers: Array<Header> = [
     value: 'phone'
   },
   {
+    name: 'Abonnement newsletter',
+    value: 'newsletterSubscription'
+  },
+  {
     name: 'Nombre de commandes',
     value: 'ordersCount'
   },
@@ -39,6 +43,7 @@ export interface GetCustomersItemVM {
   lastname: string
   email: string
   phone: string
+  newsletterSubscription: boolean
   ordersCount: number
   ordersTotal: string
 }
@@ -67,6 +72,7 @@ export const getCustomersVM = (key: string): GetCustomersVM => {
       lastname: customer.lastname,
       email: customer.email,
       phone: customer.phone,
+      newsletterSubscription: !!customer.newsletterSubscription,
       ordersCount: customer.ordersCount,
       ordersTotal: formatter.format(customer.ordersTotal / 100)
     })),
