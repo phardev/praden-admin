@@ -11,7 +11,16 @@ export const searchCustomers = async (
 ): Promise<void> => {
   const searchStore = useSearchStore()
   searchStore.setFilter(from, dto)
-  const searchResult = await searchGateway.searchCustomers(dto)
-  searchStore.set(from, searchResult)
+  if (
+    dto.query &&
+    dto.minimumQueryLength &&
+    dto.query.length < dto.minimumQueryLength
+  ) {
+    searchStore.setError(from, 'query is too short')
+    searchStore.set(from, [])
+  } else {
+    const searchResult = await searchGateway.searchCustomers(dto)
+    searchStore.set(from, searchResult)
+  }
   return Promise.resolve()
 }

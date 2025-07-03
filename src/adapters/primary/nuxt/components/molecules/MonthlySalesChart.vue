@@ -68,14 +68,6 @@ const createChart = async () => {
     .selectAll('text')
     .style('text-anchor', 'middle')
 
-  svg
-    .append('text')
-    .attr('text-anchor', 'middle')
-    .attr('x', width / 2)
-    .attr('y', height + margin.bottom - 10)
-    .text('Mois')
-    .attr('class', 'axis-label')
-
   svg.append('g').call(d3.axisLeft(y))
 
   svg

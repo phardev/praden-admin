@@ -30,6 +30,10 @@ describe('Get orders to prepare VM', () => {
       value: 'client'
     },
     {
+      name: 'Transporteur',
+      value: 'carrier'
+    },
+    {
       name: 'Date',
       value: 'createdDate'
     },

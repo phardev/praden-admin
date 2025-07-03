@@ -34,6 +34,10 @@ describe('Get orders to prepare VM', () => {
       value: 'client'
     },
     {
+      name: 'Transporteur',
+      value: 'carrier'
+    },
+    {
       name: 'Date',
       value: 'createdDate'
     },
@@ -76,6 +80,7 @@ describe('Get orders to prepare VM', () => {
                   reference: orderToPrepare1.uuid,
                   href: `/preparations/${orderToPrepare1.uuid}`,
                   client: 'J. Bon',
+                  carrier: 'Pharmacie',
                   createdDate: '21 janv. 2023, 03:54',
                   createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
                   total: '11,00\u00A0€',
@@ -86,6 +91,7 @@ describe('Get orders to prepare VM', () => {
                   reference: orderToPrepare2.uuid,
                   href: `/preparations/${orderToPrepare2.uuid}`,
                   client: "J. D'arc",
+                  carrier: 'Pharmacie',
                   createdDate: '5 févr. 2023, 02:59',
                   createdDatetime: new Date('2023-02-05T02:59:32.527Z'),
                   total: '15,00\u00A0€',
@@ -115,6 +121,7 @@ describe('Get orders to prepare VM', () => {
                   reference: orderToPrepare3.uuid,
                   href: `/preparations/${orderToPrepare3.uuid}`,
                   client: "J. D'arc",
+                  carrier: 'Colissimo',
                   createdDate: '5 févr. 2023, 02:59',
                   createdDatetime: new Date('2023-02-05T02:59:32.527Z'),
                   total: '11,50\u00A0€'
@@ -142,6 +149,7 @@ describe('Get orders to prepare VM', () => {
                   reference: orderSaved1.uuid,
                   href: `/preparations/${orderSaved1.uuid}`,
                   client: 'J. Bon',
+                  carrier: 'Pharmacie',
                   createdDate: '21 janv. 2023, 04:03',
                   createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
                   total: '11,00\u00A0€'
@@ -173,6 +181,7 @@ describe('Get orders to prepare VM', () => {
                   reference: orderInPreparation1.uuid,
                   href: `/preparations/${orderInPreparation1.uuid}`,
                   client: 'J. Bon',
+                  carrier: 'Pharmacie',
                   createdDate: '5 févr. 2023, 02:33',
                   createdDatetime: new Date('2023-02-05T02:33:40.539Z'),
                   total: '11,00\u00A0€'
@@ -213,6 +222,7 @@ describe('Get orders to prepare VM', () => {
                   reference: order.uuid,
                   href: `/preparations/${order.uuid}`,
                   client: 'J. Bon',
+                  carrier: 'Pharmacie',
                   createdDate: '21 janv. 2023, 04:03',
                   createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
                   total: '13,80\u00A0€'
@@ -243,6 +253,7 @@ describe('Get orders to prepare VM', () => {
                   reference: orderWithMissingProduct1.uuid,
                   href: `/preparations/${orderWithMissingProduct1.uuid}`,
                   client: 'J. Bon',
+                  carrier: 'Colissimo',
                   createdDate: '24 janv. 2023, 15:21',
                   createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
                   total: '37,19\u00A0€'
@@ -251,6 +262,7 @@ describe('Get orders to prepare VM', () => {
                   reference: orderWithMissingProduct2.uuid,
                   href: `/preparations/${orderWithMissingProduct2.uuid}`,
                   client: 'J. Bon',
+                  carrier: 'Colissimo',
                   createdDate: '24 janv. 2023, 15:21',
                   createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
                   total: '37,19\u00A0€'
@@ -278,6 +290,7 @@ describe('Get orders to prepare VM', () => {
                   reference: orderToCancel.uuid,
                   href: `/preparations/${orderToCancel.uuid}`,
                   client: 'J. Bon',
+                  carrier: 'Colissimo',
                   createdDate: '24 janv. 2023, 15:21',
                   createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
                   total: '20,00\u00A0€'
@@ -305,6 +318,7 @@ describe('Get orders to prepare VM', () => {
                   reference: orderToCancel.uuid,
                   href: `/preparations/${orderToCancel.uuid}`,
                   client: 'J. Bon',
+                  carrier: 'Colissimo',
                   createdDate: '24 janv. 2023, 15:21',
                   createdDatetime: new Date('2023-01-24T15:21:18.456Z'),
                   total: '20,00\u00A0€'

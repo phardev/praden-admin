@@ -16,6 +16,7 @@ export interface GetPreparationsItemVM {
   reference: string
   href: string
   client: string
+  carrier: string
   createdDate: string
   createdDatetime: Date
   pickingDate?: string
@@ -130,6 +131,10 @@ export const getPreparationsVMHeaders: Array<Header> = [
     value: 'client'
   },
   {
+    name: 'Transporteur',
+    value: 'carrier'
+  },
+  {
     name: 'Date',
     value: 'createdDate'
   },
@@ -174,6 +179,7 @@ export const filterPreparationsByGroup = (
         reference: o.uuid,
         href: `/preparations/${o.uuid}`,
         client: `${o.deliveryAddress.firstname[0]}. ${o.deliveryAddress.lastname}`,
+        carrier: delivery.method.carrier.name,
         createdDate: timestampToLocaleString(o.createdAt, 'fr-FR', options),
         createdDatetime: new Date(o.createdAt),
         total: formatter.format(total / 100)

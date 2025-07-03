@@ -139,6 +139,18 @@
         template(#default)
           .h-80
             MonthlyTurnoverChart(:data="dashboard.monthlySales")
+      UCard()
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.categoriesDistribution') }}
+        template(#default)
+          .h-80
+            CategoriesPieChart(:data="dashboard.productQuantitiesByCategory" @select-category="onSelectCategory" @navigate-to-parent="navigateToParentCategory")
+      UCard()
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.laboratoriesDistribution') }}
+        template(#default)
+          .h-80
+            LaboratoriesPieChart(:data="dashboard.ordersByLaboratory")
       UCard(v-if="!areProductFiltersApplied")
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.deliveryMethodsDistribution') }}
@@ -151,6 +163,12 @@
         template(#default)
           .h-80
             MonthlyDeliveryPriceChart(:data="dashboard.monthlySales")
+      UCard(v-if="!areDateFiltersApplied")
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.productStockDistribution') }}
+        template(#default)
+          .h-80
+            ProductStockPieChart(:data="dashboard.productStockStats")
       UCard
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.monthlyCanceledTurnover') }}
@@ -176,14 +194,17 @@
 import { format } from 'date-fns'
 import { formatCurrency } from '@/src/utils/formatters'
 import { useDashboardData } from '../../composables/useDashboardData'
-import { listLaboratories } from '@core/usecases/laboratories/laboratory-listing/listLaboratories'
-import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
-import { getLaboratoriesVM } from '@/src/adapters/primary/view-models/laboratories/get-laboratories/getLaboratoriesVM'
-import { getCategoriesVM } from '@/src/adapters/primary/view-models/categories/get-categories/getCategoriesVM'
-import { useLaboratoryGateway } from '@/gateways/laboratoryGateway'
-import { useCategoryGateway } from '@/gateways/categoryGateway'
+import { getLaboratoriesVM } from '../../../view-models/laboratories/get-laboratories/getLaboratoriesVM'
+import { getCategoriesVM } from '../../../view-models/categories/get-categories/getCategoriesVM'
+import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
+import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
+import { listLaboratories } from '../../../../../core/usecases/laboratories/laboratory-listing/listLaboratories'
+import { listCategories } from '../../../../../core/usecases/categories/list-categories/listCategories'
 import { fr } from 'date-fns/locale'
 import DeliveryMethodsPieChart from '../../components/molecules/DeliveryMethodsPieChart.vue'
+import LaboratoriesPieChart from '../../components/molecules/LaboratoriesPieChart.vue'
+import CategoriesPieChart from '../../components/molecules/CategoriesPieChart.vue'
+import ProductStockPieChart from '../../components/molecules/ProductStockPieChart.vue'
 
 definePageMeta({ layout: 'main' })
 
@@ -194,8 +215,21 @@ const { isLoading, dashboard, fetchDashboardData } = useDashboardData()
 const productLimit = ref(50)
 const startDate = ref<number | null>(null)
 const endDate = ref<number | null>(null)
-const laboratory = ref<string | null>(null)
-const category = ref<string | null>(null)
+
+interface CategoryItem {
+  uuid: string
+  name: string
+  [key: string]: any
+}
+
+interface LaboratoryItem {
+  uuid: string
+  name: string
+  [key: string]: any
+}
+
+const laboratory = ref<string | LaboratoryItem | null>(null)
+const category = ref<string | CategoryItem | null>(null)
 const promotionOnly = ref(false)
 const showFilters = ref(false)
 const isLargeScreen = ref(false)
@@ -209,6 +243,7 @@ const categoriesVM = computed(() => {
 })
 
 const areProductFiltersApplied = ref(false)
+const areDateFiltersApplied = ref(false)
 
 const statsCards = computed(() => [
   {
@@ -278,11 +313,15 @@ const fetchFilteredDashboardData = async () => {
   }
 
   if (laboratory.value) {
-    params.laboratoryUuid = laboratory.value ? laboratory.value.uuid : null
+    params.laboratoryUuid =
+      typeof laboratory.value === 'string'
+        ? laboratory.value
+        : laboratory.value.uuid
   }
 
   if (category.value) {
-    params.categoryUuid = category.value ? category.value.uuid : null
+    params.categoryUuid =
+      typeof category.value === 'string' ? category.value : category.value.uuid
   }
 
   if (promotionOnly.value) {
@@ -290,8 +329,10 @@ const fetchFilteredDashboardData = async () => {
   }
 
   await fetchDashboardData(params)
+
   areProductFiltersApplied.value =
-    laboratory.value || category.value || promotionOnly.value
+    !!laboratory.value || !!category.value || promotionOnly.value
+  areDateFiltersApplied.value = !!startDate.value || !!endDate.value
 }
 
 const toggleFilters = () => {
@@ -341,6 +382,33 @@ const clearCategory = () => {
   category.value = null
 }
 
+const onSelectCategory = (categoryItem: CategoryItem) => {
+  category.value = {
+    uuid: categoryItem.uuid,
+    name: categoryItem.name
+  }
+  fetchFilteredDashboardData()
+}
+
+const navigateToParentCategory = async () => {
+  if (!category.value) {
+    return
+  }
+  const categoryGateway = useCategoryGateway()
+  const categoryUuid =
+    typeof category.value === 'string' ? category.value : category.value.uuid
+  const currentCategory = await categoryGateway.getByUuid(categoryUuid)
+  if (currentCategory && currentCategory.parentUuid) {
+    const parentCategory = await categoryGateway.getByUuid(
+      currentCategory.parentUuid
+    )
+    category.value = parentCategory
+  } else {
+    category.value = null
+  }
+  fetchFilteredDashboardData()
+}
+
 const normalizeText = (text: string): string => {
   return text
     .normalize('NFD')
@@ -355,7 +423,7 @@ const categorySearch = (query: string) => {
 
   const normalizedQuery = normalizeText(query)
 
-  return categoriesVM.value.items.filter((option) => {
+  return categoriesVM.value.items.filter((option: { name: string }) => {
     const optionName = option.name || ''
     const normalizedName = normalizeText(optionName)
     return normalizedName.includes(normalizedQuery)
@@ -369,7 +437,7 @@ const laboratorySearch = (query: string) => {
 
   const normalizedQuery = normalizeText(query)
 
-  return laboratoriesVM.value.items.filter((option) => {
+  return laboratoriesVM.value.items.filter((option: { name: string }) => {
     const optionName = option.name || ''
     const normalizedName = normalizeText(optionName)
     return normalizedName.includes(normalizedQuery)

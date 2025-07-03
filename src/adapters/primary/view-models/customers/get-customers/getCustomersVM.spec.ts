@@ -30,6 +30,18 @@ const expectedHeaders: Array<Header> = [
   {
     name: 'Téléphone',
     value: 'phone'
+  },
+  {
+    name: 'Abonnement newsletter',
+    value: 'newsletterSubscription'
+  },
+  {
+    name: 'Nombre de commandes',
+    value: 'ordersCount'
+  },
+  {
+    name: 'Total des commandes',
+    value: 'ordersTotal'
   }
 ]
 
@@ -106,6 +118,18 @@ describe('Get customers VM', () => {
       })
     })
   })
+  describe('There is an error in search', () => {
+    beforeEach(() => {
+      searchStore.setError(key, 'dol')
+    })
+    it('should display the error', () => {
+      const expectedVM: Partial<GetCustomersVM> = {
+        searchError:
+          'Veuillez saisir au moins 3 caractères pour lancer la recherche.'
+      }
+      expectVMToMatch(expectedVM)
+    })
+  })
 
   const givenExistingCustomers = (...customers: Array<Customer>) => {
     customerStore.items = customers
@@ -123,12 +147,19 @@ describe('Get customers VM', () => {
   }
 
   const createCustomerItemVM = (customer: Customer): GetCustomersItemVM => {
+    const formatter = new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'EUR'
+    })
     return {
       uuid: customer.uuid,
       firstname: customer.firstname,
       lastname: customer.lastname,
       email: customer.email,
-      phone: customer.phone
+      phone: customer.phone,
+      newsletterSubscription: !!customer.newsletterSubscription,
+      ordersCount: customer.ordersCount,
+      ordersTotal: formatter.format(customer.ordersTotal / 100)
     }
   }
 })

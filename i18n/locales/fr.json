@@ -52,6 +52,9 @@
     "monthlyCanceledTurnover": "Chiffre d'affaires annulé mensuel",
     "monthlyDeliveryPrice": "Frais de livraison mensuel",
     "deliveryMethodsDistribution": "Répartition des modes de livraison",
+    "laboratoriesDistribution": "Répartition des ventes par laboratoire",
+    "categoriesDistribution": "Répartition des ventes par catégorie",
+    "productStockDistribution": "Répartition des produits par stock disponible",
     "topProducts": {
       "title": "Produits les plus vendus",
       "productName": "Nom du produit",
@@ -61,7 +64,15 @@
     }
   },
   "preparations": {
-    "refresh": "Actualiser"
+    "title": "Préparations",
+    "refresh": "Actualiser",
+    "gauge": {
+      "alert": "En retard",
+      "warning": "Attention",
+      "good": "Dans les temps",
+      "onTime": "Dans les temps",
+      "late": "En retard"
+    }
   },
   "deliveries": {
     "title": "Livraisons",

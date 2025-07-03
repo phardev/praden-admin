@@ -85,7 +85,37 @@ describe('getDashboardVM', () => {
           deliveryMethodName: 'Retrait en pharmacie',
           count: 316
         }
-      ]
+      ],
+      ordersByLaboratory: [
+        {
+          laboratoryUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+          laboratoryName: 'Laboratory A',
+          count: 1154
+        },
+        {
+          laboratoryUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+          laboratoryName: 'Laboratory B',
+          count: 316
+        }
+      ],
+      productQuantitiesByCategory: [
+        {
+          uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+          name: 'Category A',
+          count: 1154,
+          parentUuid: null
+        },
+        {
+          uuid: '570bdcfa-b704-4ed2-9fc0-175d687c1d8d',
+          name: 'Category B',
+          count: 316,
+          parentUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608'
+        }
+      ],
+      productStockStats: {
+        inStockCount: 750,
+        outOfStockCount: 250
+      }
     }
 
     statsStore.dashboard = mockDashboard
@@ -109,7 +139,10 @@ describe('getDashboardVM', () => {
         deliveryPrice: mockDashboard.totalSales.deliveryPrice / 100
       },
       topProducts: mockDashboard.topProducts,
-      ordersByDeliveryMethod: mockDashboard.ordersByDeliveryMethod
+      ordersByDeliveryMethod: mockDashboard.ordersByDeliveryMethod,
+      ordersByLaboratory: mockDashboard.ordersByLaboratory,
+      productQuantitiesByCategory: mockDashboard.productQuantitiesByCategory,
+      productStockStats: mockDashboard.productStockStats
     })
   })
 
@@ -126,7 +159,13 @@ describe('getDashboardVM', () => {
         deliveryPrice: 0
       },
       topProducts: [],
-      ordersByDeliveryMethod: []
+      ordersByDeliveryMethod: [],
+      ordersByLaboratory: [],
+      productQuantitiesByCategory: [],
+      productStockStats: {
+        inStockCount: 0,
+        outOfStockCount: 0
+      }
     })
   })
 })

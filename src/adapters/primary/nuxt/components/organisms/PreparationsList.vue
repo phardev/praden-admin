@@ -1,8 +1,34 @@
 <template lang="pug">
-.flex.flex-row-reverse
-  ft-button(icon='i-heroicons-arrow-path' size="xl" :loading='preparationsVm.isLoading' @click='fetchOrdersToPrepare')
-    | {{ $t('preparations.refresh') }}
-tab-group.border-b.border-gray-200(as="div")
+div
+  .flex.flex-col.items-center
+    .flex.flex-row.items-center.justify-between.w-full.mb-2
+      .text-3xl.font-extrabold.text-gray-900.tracking-tight {{ $t('preparations.title') }}
+      ft-button(icon='i-heroicons-arrow-path' size="md" :loading='preparationsVm.isLoading' @click='fetchOrdersToPrepare')
+        | {{ $t('preparations.refresh') }}
+    .relative.flex.items-center.justify-center.my-2
+      .absolute.inset-0.flex.items-center.justify-center.pointer-events-none
+      preparations-gauge.z-10(
+        :percentage="gaugeVm.percentage"
+        :status="gaugeVm.status"
+        :good-count="gaugeVm.goodCount"
+        :warning-count="gaugeVm.warningCount"
+        :alert-count="gaugeVm.alertCount"
+      )
+    .flex.items-center.justify-center.gap-4.mt-6.flex-wrap
+      div.px-5.py-2.rounded-full.bg-gradient-to-r.from-red-500.to-red-400.text-white.flex.items-center.gap-2.shadow-md.border(class="border-red-300/50 transition-transform hover:scale-105 cursor-pointer")
+        icon(name="streamline:smiley-emoji-terrified" class="text-white animate-wiggle-on-hover" style="width: 1.3em; height: 1.3em;")
+        span.font-medium {{ $t('preparations.gauge.alert') }}
+        span.font-bold {{ gaugeVm.alertCount }}
+      div.px-5.py-2.rounded-full.bg-gradient-to-r.from-yellow-400.to-yellow-300.text-white.flex.items-center.gap-2.shadow-md.border(class="border-yellow-200/50 transition-transform hover:scale-105 cursor-pointer")
+        icon(name="streamline:mail-smiley-straight-face-chat-message-indifferent-smiley-emoji-face-poker" class="text-white animate-wiggle-on-hover" style="width: 1.3em; height: 1.3em;")
+        span.font-medium {{ $t('preparations.gauge.warning') }}
+        span.font-bold {{ gaugeVm.warningCount }}
+      div.px-5.py-2.rounded-full.bg-gradient-to-r.from-green-500.to-green-400.text-white.flex.items-center.gap-2.shadow-md.border(class="border-green-200/50 transition-transform hover:scale-105 cursor-pointer")
+        icon(name="streamline:mail-smiley-happy-face-chat-message-smiley-smile-emoji-face-satisfied" class="text-white animate-wiggle-on-hover" style="width: 1.3em; height: 1.3em;")
+        span.font-medium {{ $t('preparations.gauge.good') }}
+        span.font-bold {{ gaugeVm.goodCount }}
+
+tab-group.border-b.border-gray-200.mt-4(as="div")
   tab-list.-mb-px.flex.space-x-4
     tab.w-full.rounded-md.border-neutral-light.py-2.pl-3.pr-10.text-base.outline-0.cursor-pointer(
       v-for="(group, tabIndex) in Object.keys(preparationsVm.items)"
@@ -56,6 +82,11 @@ import { useOrderGateway } from '../../../../../../gateways/orderGateway'
 import { useEmailGateway } from '../../../../../../gateways/emailGateway'
 import { listLocations } from '@core/usecases/locations/location-listing/listLocations'
 import { useLocationGateway } from '../../../../../../gateways/locationGateway'
+import PreparationsGauge from '../molecules/PreparationsGauge.vue'
+import { getPreparationsGaugeVM } from '@adapters/primary/view-models/preparations/get-preparations-gauge/getPreparationsGaugeVM'
+import { useDateProvider } from '../../../../../../gateways/dateProvider'
+
+const gaugeVm = computed(() => getPreparationsGaugeVM(useDateProvider()))
 
 definePageMeta({ layout: 'main' })
 
