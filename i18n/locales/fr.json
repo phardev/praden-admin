@@ -79,5 +79,15 @@
     "refresh": "Actualiser",
     "printSummary": "Imprimer récapitulatif",
     "validateShipping": "Valider l'expédition"
+  },
+  "reminders": {
+    "title": "Relances",
+    "refresh": "Actualiser",
+    "payment": {
+      "title": "Relances de paiement",
+      "messagesSent": "messages envoyés",
+      "ordersCreated": "commandes créées",
+      "conversionRate": "taux de conversion"
+    }
   }
 }
