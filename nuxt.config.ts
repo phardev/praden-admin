@@ -93,6 +93,16 @@ export default defineNuxtConfig({
   ],
 
   ssr: false,
+  nitro: {
+    preset: 'cloudflare-pages',
+    cloudflare: {
+      pages: {
+        routes: {
+          exclude: ['/api/*']
+        }
+      }
+    }
+  },
   i18n: {
     bundle: {
       optimizeTranslationDirective: false
