@@ -65,7 +65,7 @@ export const fullMenu: NavigationMenu = {
         {
           name: 'SAV',
           icon: 'streamline:interface-help-customer-support-2-customer-headphones-headset-help-microphone-phone-person-support',
-          href: '/after-sales'
+          href: '/support'
         }
       ]
     },

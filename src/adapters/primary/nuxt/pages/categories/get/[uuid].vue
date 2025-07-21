@@ -19,9 +19,9 @@ definePageMeta({ layout: 'main' })
 
 const vm = ref()
 const route = useRoute()
-const categoryUuid = route.params.uuid
+const categoryUuid = route.params.uuid as string
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = router.currentRoute.value.name as string
 
 onMounted(async () => {
   const categoryGateway = useCategoryGateway()

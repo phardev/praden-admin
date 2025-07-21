@@ -29,7 +29,14 @@
   "common": {
     "showFilters": "Afficher les filtres",
     "hideFilters": "Masquer les filtres",
-    "reset": "Réinitialiser"
+    "reset": "Réinitialiser",
+    "updated": "Mis à jour"
+  },
+  "customers": {
+    "viewTitle": "Voir client",
+    "editButton": "Editer client",
+    "ordersHistory": "Historique des commandes",
+    "supportTickets": "Tickets de support"
   },
   "dashboard": {
     "title": "Tableau de bord",
@@ -88,6 +95,77 @@
       "messagesSent": "messages envoyés",
       "ordersCreated": "commandes créées",
       "conversionRate": "taux de conversion"
+    }
+  },
+  "support": {
+    "title": "Support Client",
+    "tickets": {
+      "new": "Nouveaux",
+      "started": "En cours",
+      "resolved": "Résolus",
+      "noTickets": "Aucun ticket"
+    },
+    "noTicketsForCustomer": "Aucun ticket pour ce client",
+    "columns": {
+      "new": "Nouveaux",
+      "started": "En cours",
+      "waiting_for_answer": "En attente de réponse",
+      "resolved": "Résolus"
+    },
+    "priority": {
+      "urgent": "Urgent",
+      "high": "Élevée",
+      "medium": "Moyenne",
+      "low": "Faible"
+    },
+    "status": {
+      "new": "Nouveau",
+      "started": "En cours",
+      "resolved": "Résolu"
+    },
+    "actions": {
+      "reply": "Répondre",
+      "privateNote": "Note privée",
+      "markAsResolved": "Marquer comme résolu",
+      "updatePriority": "Mettre à jour la priorité",
+      "viewOrder": "Voir la commande"
+    },
+    "details": {
+      "conversation": "Conversation",
+      "ticketDetails": "Détails du ticket",
+      "status": "Statut",
+      "priority": "Priorité",
+      "customer": "Client",
+      "createdAt": "Créé le",
+      "updatedAt": "Mis à jour le",
+      "privateNote": "Note privée",
+      "relatedOrder": "Commande liée"
+    },
+    "attachments": {
+      "files": "Fichiers joints",
+      "label": "Pièces jointes"
+    },
+    "modal": {
+      "reply": {
+        "title": "Répondre au ticket",
+        "placeholder": "Votre réponse...",
+        "label": "Réponse",
+        "send": "Envoyer",
+        "cancel": "Annuler"
+      },
+      "privateNote": {
+        "title": "Ajouter une note privée",
+        "placeholder": "Note privée pour l'équipe...",
+        "label": "Note privée",
+        "add": "Ajouter",
+        "cancel": "Annuler"
+      }
+    },
+    "editor": {
+      "tips": {
+        "reply": "Cette réponse sera visible par le client",
+        "privateNote": "Cette note ne sera visible que par l'équipe"
+      }
     }
   }
 }

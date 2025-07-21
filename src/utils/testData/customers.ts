@@ -31,3 +31,23 @@ export const sophieMartinez: Customer = {
   ordersCount: 0,
   ordersTotal: 0
 }
+
+export const pierreBernard: Customer = {
+  uuid: 'customer-pierrebernard',
+  firstname: 'Pierre',
+  lastname: 'Bernard',
+  email: 'pierre.bernard@example.com',
+  phone: '+33654321987',
+  ordersCount: 3,
+  ordersTotal: 15000
+}
+
+export const marcLeblanc: Customer = {
+  uuid: 'customer-marcleblanc',
+  firstname: 'Marc',
+  lastname: 'Leblanc',
+  email: 'marc.leblanc@example.com',
+  phone: '+33676543210',
+  ordersCount: 1,
+  ordersTotal: 7500
+}
