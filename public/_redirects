@@ -1,0 +1,2 @@
+# Fallback for SPA routing - redirect all non-asset requests to the root
+/*    /    200
