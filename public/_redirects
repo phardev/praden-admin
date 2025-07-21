@@ -1,2 +1,15 @@
-# Fallback for SPA routing - redirect all non-asset requests to the root
+# Don't redirect asset files
+/_nuxt/*    /_nuxt/:splat    200
+/assets/*   /assets/:splat   200
+/*.js       /:splat          200
+/*.css      /:splat          200
+/*.png      /:splat          200
+/*.jpg      /:splat          200
+/*.gif      /:splat          200
+/*.svg      /:splat          200
+/*.ico      /:splat          200
+/*.woff     /:splat          200
+/*.woff2    /:splat          200
+
+# Fallback for SPA routing - redirect all other requests to the root
 /*    /    200
