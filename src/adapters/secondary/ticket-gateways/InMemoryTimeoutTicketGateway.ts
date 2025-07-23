@@ -39,6 +39,14 @@ export class InMemoryTimeoutTicketGateway
     })
   }
 
+  override getByOrderUuid(orderUuid: UUID): Promise<Array<Ticket>> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(super.getByOrderUuid(orderUuid))
+      }, this.timeoutInMs)
+    })
+  }
+
   override addReply(ticketUuid: UUID, message: TicketMessage): Promise<Ticket> {
     return new Promise((resolve) => {
       setTimeout(() => {

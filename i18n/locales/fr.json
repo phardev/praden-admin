@@ -38,6 +38,9 @@
     "ordersHistory": "Historique des commandes",
     "supportTickets": "Tickets de support"
   },
+  "orders": {
+    "supportTickets": "Tickets de support"
+  },
   "dashboard": {
     "title": "Tableau de bord",
     "selectDateRange": "Sélectionner une période",
@@ -106,6 +109,7 @@
       "noTickets": "Aucun ticket"
     },
     "noTicketsForCustomer": "Aucun ticket pour ce client",
+    "noTicketsForOrder": "Aucun ticket pour cette commande",
     "columns": {
       "new": "Nouveaux",
       "started": "En cours",

@@ -35,6 +35,11 @@ export class InMemoryTicketGateway implements TicketGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(res)))
   }
 
+  getByOrderUuid(orderUuid: UUID): Promise<Array<Ticket>> {
+    const res = this.tickets.filter((t) => t.orderUuid === orderUuid)
+    return Promise.resolve(JSON.parse(JSON.stringify(res)))
+  }
+
   addReply(ticketUuid: UUID, message: TicketMessage): Promise<Ticket> {
     const ticketIndex = this.tickets.findIndex((t) => t.uuid === ticketUuid)
     if (ticketIndex < 0) throw new TicketDoesNotExistsError(ticketUuid)

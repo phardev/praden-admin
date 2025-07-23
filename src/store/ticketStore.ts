@@ -8,6 +8,7 @@ export const useTicketStore = defineStore('TicketStore', {
       items: [] as Array<Ticket>,
       currentTicket: undefined as Ticket | undefined,
       customerTickets: {} as Record<UUID, Array<Ticket>>,
+      orderTickets: {} as Record<UUID, Array<Ticket>>,
       isLoading: false
     }
   },
@@ -21,6 +22,11 @@ export const useTicketStore = defineStore('TicketStore', {
       return (customerUuid: UUID): Array<Ticket> => {
         return state.customerTickets[customerUuid] || []
       }
+    },
+    getOrderTickets: (state) => {
+      return (orderUuid: UUID): Array<Ticket> => {
+        return state.orderTickets[orderUuid] || []
+      }
     }
   },
   actions: {
@@ -29,6 +35,9 @@ export const useTicketStore = defineStore('TicketStore', {
     },
     setCustomerTickets(customerUuid: UUID, tickets: Array<Ticket>) {
       this.customerTickets[customerUuid] = tickets
+    },
+    setOrderTickets(orderUuid: UUID, tickets: Array<Ticket>) {
+      this.orderTickets[orderUuid] = tickets
     },
     updateTicket(ticket: Ticket) {
       const index = this.items.findIndex((t) => t.uuid === ticket.uuid)

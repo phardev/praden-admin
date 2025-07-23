@@ -63,6 +63,8 @@
           variant="outline"
           @click="printLabel(item)"
         ) Etiquette
+  h2.text-subtitle.mt-8 {{ $t('orders.supportTickets') }}
+  order-tickets-list(:order-uuid="orderUuid")
 
 </template>
 
@@ -76,6 +78,8 @@ import { useCustomerGateway } from '../../../../../../gateways/customerGateway'
 import { printDeliveryLabel } from '@core/usecases/deliveries/delivery-label-printing/printDeliveryLabel'
 import { useDeliveryGateway } from '../../../../../../gateways/deliveryGateway'
 import { markDeliveryAsDelivered } from '@core/usecases/deliveries/mark-delivery-as-delivered/markDeliveryAsDelivered'
+import { useTicketGateway } from '../../../../../../gateways/ticketGateway'
+import { getOrderTickets } from '@core/usecases/support/getOrderTickets'
 
 definePageMeta({ layout: 'main' })
 
@@ -86,6 +90,7 @@ const router = useRouter()
 onMounted(() => {
   getPreparation(orderUuid, useOrderGateway())
   getOrder(orderUuid, useOrderGateway(), useCustomerGateway())
+  getOrderTickets(orderUuid, useTicketGateway())
 })
 
 const preparationVM = computed(() => {
