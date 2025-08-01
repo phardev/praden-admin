@@ -21,14 +21,14 @@ export class RealTicketGateway extends RealGateway implements TicketGateway {
 
   async getByCustomerUuid(customerUuid: UUID): Promise<Array<Ticket>> {
     const res = await axiosWithBearer.get(
-      `${this.baseUrl}/tickets/customer/${customerUuid}`
+      `${this.baseUrl}/customers/${customerUuid}/tickets`
     )
     return Promise.resolve(res.data.items)
   }
 
   async getByOrderUuid(orderUuid: UUID): Promise<Array<Ticket>> {
     const res = await axiosWithBearer.get(
-      `${this.baseUrl}/tickets/order/${orderUuid}`
+      `${this.baseUrl}/orders/${orderUuid}/tickets`
     )
     return Promise.resolve(res.data.items)
   }
