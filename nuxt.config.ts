@@ -102,7 +102,8 @@ export default defineNuxtConfig({
           exclude: ['/api/*']
         }
       }
-    }
+    },
+    compatibilityFlags: ['nodejs_compat']
   },
   i18n: {
     bundle: {
