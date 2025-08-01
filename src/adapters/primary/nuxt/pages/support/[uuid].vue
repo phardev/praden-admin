@@ -52,19 +52,30 @@
               TicketPriorityBadge(:priority="option")
 
         UButton(
+          v-if="ticketDetailsVM.item.status === 'NEW'"
+          icon="i-lucide-play"
+          color="blue"
+          :loading="isStartingTicket"
+          :disabled="isStartingTicket"
+          @click="handleStartTicket"
+        ) {{ $t('support.actions.startTicket') }}
+
+        UButton(
+          v-if="ticketDetailsVM.item.status !== 'NEW' && ticketDetailsVM.item.status !== 'RESOLVED'"
           icon="i-lucide-reply"
           variant="outline"
           @click="toggleReplyEditor"
         ) {{ $t('support.actions.reply') }}
 
         UButton(
+          v-if="ticketDetailsVM.item.status !== 'NEW' && ticketDetailsVM.item.status !== 'RESOLVED'"
           icon="i-lucide-sticky-note"
           variant="outline"
           @click="togglePrivateNoteEditor"
         ) {{ $t('support.actions.privateNote') }}
 
         UButton(
-          v-if="ticketDetailsVM.item.status !== 'RESOLVED'"
+          v-if="ticketDetailsVM.item.status !== 'RESOLVED' && ticketDetailsVM.item.status !== 'NEW'"
           icon="i-lucide-check"
           color="green"
           @click="markAsResolved"
@@ -144,6 +155,31 @@
               )
 
             form(@submit.prevent="submitReply")
+              .mb-4
+                .flex.items-center.justify-between.mb-2
+                  .flex.items-center.gap-2
+                    UIcon(name="i-heroicons-chat-bubble-left-right" class="w-4 h-4")
+                    label.text-sm.font-medium.text-gray-700 {{ $t('support.predefinedAnswers.label') }}
+                  NuxtLink(
+                    to="/support/ticket-predefined-answers"
+                    class="text-sm text-link"
+                  ) {{ $t('support.predefinedAnswers.manage') }}
+
+                USelectMenu(
+                  v-if="ticketPredefinedAnswers.length > 0"
+                  v-model="selectedAnswer"
+                  :searchable="customSearch"
+                  :searchable-placeholder="$t('support.predefinedAnswers.placeholder')"
+                  :options="ticketPredefinedAnswers"
+                  @update:model-value="handlePredefinedAnswerSelect"
+                )
+                  template(#option="{ option }")
+                    .space-y-1
+                      .font-medium {{ option.title }}
+                      .text-sm.text-gray-500.line-clamp-1 {{ option.content.substring(0, 100) + (option.content.length > 100 ? '...' : '') }}
+
+                .text-sm.text-gray-500(v-else) {{ $t('support.predefinedAnswers.empty') }}
+
               UTextarea(
                 v-model="replyContent"
                 :placeholder="$t('support.modal.reply.placeholder')"
@@ -332,28 +368,52 @@ import { getTicketDetails } from '@core/usecases/support/getTicketDetails'
 import { replyToTicket } from '@core/usecases/support/replyToTicket'
 import { addPrivateNoteToTicket } from '@core/usecases/support/addPrivateNoteToTicket'
 import { updateTicketPriority } from '@core/usecases/support/updateTicketPriority'
+import { startTicket } from '@core/usecases/support/startTicket'
 import { resolveTicket } from '@core/usecases/support/resolveTicket'
+import { listTicketPredefinedAnswers } from '@core/usecases/support/ticket-predefined-answers/listTicketPredefinedAnswers'
 import { useTicketGateway } from '../../../../../../gateways/ticketGateway'
+import { useTicketPredefinedAnswerGateway } from '../../../../../../gateways/ticketPredefinedAnswerGateway'
 import { useUuidGenerator } from '../../../../../../gateways/uuidGenerator'
 import { useDateProvider } from '../../../../../../gateways/dateProvider'
 import { getTicketDetailsVM } from '@adapters/primary/view-models/support/get-support-ticket-details/getTicketDetailsVM'
+import { useTicketPredefinedAnswerStore } from '@store/ticketPredefinedAnswerStore'
 import { TicketPriority } from '@core/entities/ticket'
+import '@utils/strings'
 definePageMeta({ layout: 'main' })
 
 const route = useRoute()
-const router = useRouter()
 const ticketUuid = route.params.uuid as string
 const ticketGateway = useTicketGateway()
+const ticketPredefinedAnswerGateway = useTicketPredefinedAnswerGateway()
 const uuidGenerator = useUuidGenerator()
 const dateProvider = useDateProvider()
+const ticketPredefinedAnswerStore = useTicketPredefinedAnswerStore()
 
 const ticketDetailsVM = computed(() => getTicketDetailsVM())
 const selectedPriority = ref('')
+const ticketPredefinedAnswers = computed(
+  () => ticketPredefinedAnswerStore.items
+)
+const selectedAnswer = ref(null)
+
+const customSearch = (query: string) => {
+  if (!query || query.trim() === '') {
+    return ticketPredefinedAnswers.value
+  }
+
+  const normalizedQuery = (query as string).ftNormalize().toLowerCase()
+
+  return ticketPredefinedAnswers.value.filter((option: any) => {
+    const normalizedTitle = (option.title as string).ftNormalize().toLowerCase()
+    return normalizedTitle.includes(normalizedQuery)
+  })
+}
 
 const showReplyEditor = ref(false)
 const showPrivateNoteEditor = ref(false)
 const isSubmittingReply = ref(false)
 const isSubmittingPrivateNote = ref(false)
+const isStartingTicket = ref(false)
 
 const toggleReplyEditor = () => {
   showReplyEditor.value = !showReplyEditor.value
@@ -397,13 +457,9 @@ const replyFileInput = ref<HTMLInputElement>()
 const privateNoteFileInput = ref<HTMLInputElement>()
 
 onMounted(async () => {
-  try {
-    await getTicketDetails(ticketUuid, ticketGateway)
-    selectedPriority.value = ticketDetailsVM.value?.item?.priority || ''
-  } catch (error) {
-    console.error('Error loading ticket details:', error)
-    router.push('/support')
-  }
+  await getTicketDetails(ticketUuid, ticketGateway)
+  selectedPriority.value = ticketDetailsVM.value?.item?.priority || ''
+  listTicketPredefinedAnswers(ticketPredefinedAnswerGateway)
 })
 
 const updatePriority = async () => {
@@ -474,6 +530,17 @@ const submitPrivateNote = async () => {
   }
 }
 
+const handleStartTicket = async () => {
+  isStartingTicket.value = true
+  try {
+    await startTicket(ticketUuid, ticketGateway)
+  } catch (error) {
+    console.error('Error starting ticket:', error)
+  } finally {
+    isStartingTicket.value = false
+  }
+}
+
 const markAsResolved = async () => {
   try {
     await resolveTicket(ticketUuid, ticketGateway)
@@ -520,6 +587,13 @@ const removeReplyFile = (index: number) => {
 
 const removePrivateNoteFile = (index: number) => {
   privateNoteFiles.value.splice(index, 1)
+}
+
+const handlePredefinedAnswerSelect = (answer: any) => {
+  if (answer && answer.content) {
+    replyContent.value = answer.content
+  }
+  selectedAnswer.value = null
 }
 
 const downloadAttachment = (attachment: any) => {

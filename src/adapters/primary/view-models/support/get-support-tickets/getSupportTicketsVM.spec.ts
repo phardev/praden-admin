@@ -10,7 +10,8 @@ import {
   urgentTicket,
   resolvedTicket,
   lowPriorityTicket,
-  waitingForAnswerTicket
+  waitingForAnswerTicket,
+  notWaitingForAnswerTicket
 } from '@utils/testData/tickets'
 
 describe('Get support tickets VM', () => {
@@ -39,7 +40,8 @@ describe('Get support tickets VM', () => {
         urgentTicket,
         resolvedTicket,
         lowPriorityTicket,
-        waitingForAnswerTicket
+        waitingForAnswerTicket,
+        notWaitingForAnswerTicket
       ])
     })
 
@@ -70,7 +72,7 @@ describe('Get support tickets VM', () => {
             ]
           },
           started: {
-            count: 2,
+            count: 3,
             tickets: [
               {
                 uuid: urgentTicket.uuid,
@@ -89,6 +91,16 @@ describe('Get support tickets VM', () => {
                 priority: startedTicket.priority,
                 createdAt: startedTicket.createdAt,
                 firstMessageContent: startedTicket.messages[0].content
+              },
+              {
+                uuid: notWaitingForAnswerTicket.uuid,
+                ticketNumber: notWaitingForAnswerTicket.ticketNumber,
+                subject: notWaitingForAnswerTicket.subject,
+                customerName: `${notWaitingForAnswerTicket.customer.firstname} ${notWaitingForAnswerTicket.customer.lastname}`,
+                priority: notWaitingForAnswerTicket.priority,
+                createdAt: notWaitingForAnswerTicket.createdAt,
+                firstMessageContent:
+                  notWaitingForAnswerTicket.messages[0].content
               }
             ]
           },

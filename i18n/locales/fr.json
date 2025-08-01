@@ -30,7 +30,11 @@
     "showFilters": "Afficher les filtres",
     "hideFilters": "Masquer les filtres",
     "reset": "Réinitialiser",
-    "updated": "Mis à jour"
+    "updated": "Mis à jour",
+    "cancel": "Annuler",
+    "create": "Créer",
+    "update": "Modifier",
+    "delete": "Supprimer"
   },
   "customers": {
     "viewTitle": "Voir client",
@@ -128,6 +132,7 @@
       "resolved": "Résolu"
     },
     "actions": {
+      "startTicket": "Démarrer le ticket",
       "reply": "Répondre",
       "privateNote": "Note privée",
       "markAsResolved": "Marquer comme résolu",
@@ -170,6 +175,40 @@
         "reply": "Cette réponse sera visible par le client",
         "privateNote": "Cette note ne sera visible que par l'équipe"
       }
+    },
+    "ticketPredefinedAnswers": {
+      "title": "Réponses prédéfinies",
+      "description": "Gérez vos réponses prédéfinies pour répondre plus rapidement aux tickets",
+      "create": "Nouvelle réponse",
+      "edit": "Modifier la réponse",
+      "titleColumn": "Titre",
+      "contentColumn": "Contenu",
+      "titleLabel": "Titre de la réponse",
+      "titlePlaceholder": "Ex: Merci pour votre message",
+      "contentLabel": "Contenu de la réponse",
+      "contentPlaceholder": "Saisissez le contenu de votre réponse...",
+      "formDescription": "Créez des réponses réutilisables pour accélérer le traitement des tickets",
+      "empty": {
+        "title": "Aucune réponse prédéfinie",
+        "description": "Créez votre première réponse prédéfinie pour gagner du temps"
+      },
+      "delete": {
+        "title": "Supprimer la réponse",
+        "description": "Cette action est irréversible"
+      },
+      "search": {
+        "placeholder": "Rechercher une réponse par titre ou contenu...",
+        "noResults": {
+          "title": "Aucun résultat trouvé",
+          "description": "Aucune réponse ne correspond à votre recherche"
+        }
+      }
+    },
+    "predefinedAnswers": {
+      "label": "Réponses prédéfinies",
+      "placeholder": "Choisir une réponse prédéfinie",
+      "manage": "Gérer les réponses",
+      "empty": "Aucune réponse prédéfinie disponible"
     }
   }
 }

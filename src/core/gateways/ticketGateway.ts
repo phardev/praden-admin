@@ -9,5 +9,6 @@ export interface TicketGateway {
   addReply(ticketUuid: UUID, message: TicketMessage): Promise<Ticket>
   addPrivateNote(ticketUuid: UUID, note: TicketMessage): Promise<Ticket>
   updatePriority(ticketUuid: UUID, priority: TicketPriority): Promise<Ticket>
+  start(ticketUuid: UUID): Promise<Ticket>
   resolve(ticketUuid: UUID): Promise<Ticket>
 }

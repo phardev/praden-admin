@@ -2,12 +2,14 @@ import * as tickets from '@utils/testData/tickets'
 import { isLocalEnv } from '@utils/env'
 import { RealDateProvider } from '@adapters/secondary/date-providers/RealDateProvider'
 import { InMemoryTimeoutTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTimeoutTicketGateway'
+import { RealTicketGateway } from '@adapters/secondary/ticket-gateways/RealTicketGateway'
 
 export const useTicketGateway = () => {
   if (isLocalEnv()) {
     return inMemory.getInstance()
   }
-  throw new Error('Real ticket gateway not implemented')
+  const { BACKEND_URL } = useRuntimeConfig().public
+  return new RealTicketGateway(BACKEND_URL)
 }
 
 const inMemory = (() => {

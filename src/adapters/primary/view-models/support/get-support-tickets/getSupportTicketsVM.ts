@@ -1,5 +1,10 @@
 import { useTicketStore } from '@store/ticketStore'
-import { Ticket, TicketStatus, TicketPriority } from '@core/entities/ticket'
+import {
+  Ticket,
+  TicketStatus,
+  TicketPriority,
+  TicketMessageType
+} from '@core/entities/ticket'
 import { UUID } from '@core/types/types'
 
 export interface TicketItemVM {
@@ -52,7 +57,10 @@ const isWaitingForAnswer = (ticket: Ticket): boolean => {
   if (ticket.status !== TicketStatus.STARTED || ticket.messages.length === 0) {
     return false
   }
-  const lastMessage = ticket.messages[ticket.messages.length - 1]
+  const withoutPrivateNotes = ticket.messages.filter(
+    (m) => m.type !== TicketMessageType.PRIVATE
+  )
+  const lastMessage = withoutPrivateNotes[withoutPrivateNotes.length - 1]
   return (
     lastMessage.authorName !==
     `${ticket.customer.firstname} ${ticket.customer.lastname}`

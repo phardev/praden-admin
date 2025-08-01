@@ -242,3 +242,46 @@ export const waitingForAnswerTicket: Ticket = {
   updatedAt: 1705842000000,
   orderUuid: orderDelivered1.uuid
 }
+
+export const notWaitingForAnswerTicket: Ticket = {
+  uuid: 'ticket-not-waiting-answer-1',
+  ticketNumber: 'TICKET_2024_0007',
+  subject: 'Problème avec ma commande',
+  description: "Ma commande semble avoir été livrée mais je ne l'ai pas reçue.",
+  status: TicketStatus.STARTED,
+  priority: TicketPriority.MEDIUM,
+  customer: {
+    uuid: marcLeblanc.uuid,
+    email: marcLeblanc.email,
+    firstname: marcLeblanc.firstname,
+    lastname: marcLeblanc.lastname
+  },
+  messages: [
+    {
+      uuid: 'message-waiting-initial',
+      content: "Ma commande semble avoir été livrée mais je ne l'ai pas reçue.",
+      type: TicketMessageType.PUBLIC,
+      sentAt: 1705840000000,
+      authorName: 'Marc Leblanc',
+      attachments: [
+        {
+          filename: 'notification_livraison.jpg',
+          url: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwA=',
+          size: 134567,
+          mimeType: 'image/jpeg'
+        }
+      ]
+    },
+    {
+      uuid: 'not-message-waiting-reply',
+      content: 'Note privée',
+      type: TicketMessageType.PRIVATE,
+      sentAt: 1705842000000,
+      authorName: 'Service Client',
+      attachments: []
+    }
+  ],
+  createdAt: 1705840000000,
+  updatedAt: 1705842000000,
+  orderUuid: orderDelivered1.uuid
+}

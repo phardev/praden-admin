@@ -97,6 +97,21 @@ export class InMemoryTicketGateway implements TicketGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(updatedTicket)))
   }
 
+  start(ticketUuid: UUID): Promise<Ticket> {
+    const ticketIndex = this.tickets.findIndex((t) => t.uuid === ticketUuid)
+    if (ticketIndex < 0) throw new TicketDoesNotExistsError(ticketUuid)
+
+    const ticket = this.tickets[ticketIndex]
+    const updatedTicket = {
+      ...ticket,
+      status: TicketStatus.STARTED,
+      updatedAt: this.dateProvider.now()
+    }
+
+    this.tickets[ticketIndex] = updatedTicket
+    return Promise.resolve(JSON.parse(JSON.stringify(updatedTicket)))
+  }
+
   resolve(ticketUuid: UUID): Promise<Ticket> {
     const ticketIndex = this.tickets.findIndex((t) => t.uuid === ticketUuid)
     if (ticketIndex < 0) throw new TicketDoesNotExistsError(ticketUuid)
