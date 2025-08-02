@@ -1,5 +1,5 @@
 import { TicketGateway } from '@core/gateways/ticketGateway'
-import { Ticket, TicketMessage, TicketPriority } from '@core/entities/ticket'
+import { Ticket, TicketPriority } from '@core/entities/ticket'
 import { UUID } from '@core/types/types'
 import { RealGateway } from '../order-gateways/RealOrderGateway'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
@@ -16,6 +16,7 @@ export class RealTicketGateway extends RealGateway implements TicketGateway {
 
   async getByUuid(uuid: UUID): Promise<Ticket> {
     const res = await axiosWithBearer.get(`${this.baseUrl}/tickets/${uuid}`)
+    console.log(res.data)
     return Promise.resolve(res.data)
   }
 
@@ -33,18 +34,41 @@ export class RealTicketGateway extends RealGateway implements TicketGateway {
     return Promise.resolve(res.data.items)
   }
 
-  async addReply(ticketUuid: UUID, message: TicketMessage): Promise<Ticket> {
+  async addReply(
+    ticketUuid: UUID,
+    content: string,
+    authorName: string,
+    attachments: Array<File> = []
+  ): Promise<Ticket> {
+    const formData = this.createFormData({ content, attachments })
+
     const res = await axiosWithBearer.post(
       `${this.baseUrl}/tickets/${ticketUuid}/reply`,
-      message
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
     )
     return Promise.resolve(res.data)
   }
 
-  async addPrivateNote(ticketUuid: UUID, note: TicketMessage): Promise<Ticket> {
+  async addPrivateNote(
+    ticketUuid: UUID,
+    content: string,
+    authorName: string,
+    attachments: Array<File> = []
+  ): Promise<Ticket> {
+    const formData = this.createFormData({ content, attachments })
     const res = await axiosWithBearer.post(
       `${this.baseUrl}/tickets/${ticketUuid}/notes`,
-      note
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
     )
     return Promise.resolve(res.data)
   }

@@ -1,6 +1,8 @@
 import {
   Ticket,
   TicketMessage,
+  TicketMessageAttachment,
+  TicketMessageType,
   TicketPriority,
   TicketStatus
 } from '@core/entities/ticket'
@@ -9,6 +11,7 @@ import { TicketDoesNotExistsError } from '@core/errors/TicketDoesNotExistsError'
 import { TicketGateway } from '@core/gateways/ticketGateway'
 import { DateProvider } from '@core/gateways/dateProvider'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
+import { getFileContent } from '@utils/file'
 
 export class InMemoryTicketGateway implements TicketGateway {
   private tickets: Array<Ticket> = []
@@ -40,9 +43,34 @@ export class InMemoryTicketGateway implements TicketGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(res)))
   }
 
-  addReply(ticketUuid: UUID, message: TicketMessage): Promise<Ticket> {
+  async addReply(
+    ticketUuid: UUID,
+    content: string,
+    authorName: string,
+    attachments: Array<File> = []
+  ): Promise<Ticket> {
     const ticketIndex = this.tickets.findIndex((t) => t.uuid === ticketUuid)
     if (ticketIndex < 0) throw new TicketDoesNotExistsError(ticketUuid)
+
+    const messageAttachments: Array<TicketMessageAttachment> = []
+    for (const file of attachments) {
+      const fileContent = await getFileContent(file)
+      messageAttachments.push({
+        filename: file.name,
+        url: fileContent,
+        size: file.size,
+        mimeType: file.type
+      })
+    }
+
+    const message: TicketMessage = {
+      uuid: this.uuidGenerator?.generate() || '',
+      content,
+      type: TicketMessageType.PUBLIC,
+      sentAt: this.dateProvider.now(),
+      authorName,
+      attachments: messageAttachments
+    }
 
     const ticket = this.tickets[ticketIndex]
     const updatedTicket = {
@@ -59,9 +87,34 @@ export class InMemoryTicketGateway implements TicketGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(updatedTicket)))
   }
 
-  addPrivateNote(ticketUuid: UUID, note: TicketMessage): Promise<Ticket> {
+  async addPrivateNote(
+    ticketUuid: UUID,
+    content: string,
+    authorName: string,
+    attachments: Array<File> = []
+  ): Promise<Ticket> {
     const ticketIndex = this.tickets.findIndex((t) => t.uuid === ticketUuid)
     if (ticketIndex < 0) throw new TicketDoesNotExistsError(ticketUuid)
+
+    const messageAttachments: Array<TicketMessageAttachment> = []
+    for (const file of attachments) {
+      const fileContent = await getFileContent(file)
+      messageAttachments.push({
+        filename: file.name,
+        url: fileContent,
+        size: file.size,
+        mimeType: file.type
+      })
+    }
+
+    const note: TicketMessage = {
+      uuid: this.uuidGenerator?.generate() || '',
+      content,
+      type: TicketMessageType.PRIVATE,
+      sentAt: this.dateProvider.now(),
+      authorName,
+      attachments: messageAttachments
+    }
 
     const ticket = this.tickets[ticketIndex]
     const updatedTicket = {

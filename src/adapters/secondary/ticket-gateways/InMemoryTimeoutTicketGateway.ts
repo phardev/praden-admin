@@ -1,4 +1,4 @@
-import { Ticket, TicketMessage, TicketPriority } from '@core/entities/ticket'
+import { Ticket, TicketPriority } from '@core/entities/ticket'
 import { UUID } from '@core/types/types'
 import { TicketGateway } from '@core/gateways/ticketGateway'
 import { InMemoryTicketGateway } from './InMemoryTicketGateway'
@@ -47,21 +47,30 @@ export class InMemoryTimeoutTicketGateway
     })
   }
 
-  override addReply(ticketUuid: UUID, message: TicketMessage): Promise<Ticket> {
+  override addReply(
+    ticketUuid: UUID,
+    content: string,
+    authorName: string,
+    attachments: Array<File> = []
+  ): Promise<Ticket> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(super.addReply(ticketUuid, message))
+        resolve(super.addReply(ticketUuid, content, authorName, attachments))
       }, this.timeoutInMs)
     })
   }
 
   override addPrivateNote(
     ticketUuid: UUID,
-    note: TicketMessage
+    content: string,
+    authorName: string,
+    attachments: Array<File> = []
   ): Promise<Ticket> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(super.addPrivateNote(ticketUuid, note))
+        resolve(
+          super.addPrivateNote(ticketUuid, content, authorName, attachments)
+        )
       }, this.timeoutInMs)
     })
   }

@@ -122,9 +122,7 @@ describe('Add private note to ticket', () => {
       ticketUuid,
       content,
       'Opérateur Support',
-      ticketGateway,
-      uuidGenerator,
-      dateProvider
+      ticketGateway
     )
   }
 })
