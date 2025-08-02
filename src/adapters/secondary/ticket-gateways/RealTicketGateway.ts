@@ -16,7 +16,6 @@ export class RealTicketGateway extends RealGateway implements TicketGateway {
 
   async getByUuid(uuid: UUID): Promise<Ticket> {
     const res = await axiosWithBearer.get(`${this.baseUrl}/tickets/${uuid}`)
-    console.log(res.data)
     return Promise.resolve(res.data)
   }
 

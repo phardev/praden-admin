@@ -373,8 +373,6 @@ import { resolveTicket } from '@core/usecases/support/resolveTicket'
 import { listTicketPredefinedAnswers } from '@core/usecases/support/ticket-predefined-answers/listTicketPredefinedAnswers'
 import { useTicketGateway } from '../../../../../../gateways/ticketGateway'
 import { useTicketPredefinedAnswerGateway } from '../../../../../../gateways/ticketPredefinedAnswerGateway'
-import { useUuidGenerator } from '../../../../../../gateways/uuidGenerator'
-import { useDateProvider } from '../../../../../../gateways/dateProvider'
 import { getTicketDetailsVM } from '@adapters/primary/view-models/support/get-support-ticket-details/getTicketDetailsVM'
 import { useTicketPredefinedAnswerStore } from '@store/ticketPredefinedAnswerStore'
 import { TicketPriority } from '@core/entities/ticket'
@@ -385,8 +383,6 @@ const route = useRoute()
 const ticketUuid = route.params.uuid as string
 const ticketGateway = useTicketGateway()
 const ticketPredefinedAnswerGateway = useTicketPredefinedAnswerGateway()
-const uuidGenerator = useUuidGenerator()
-const dateProvider = useDateProvider()
 const ticketPredefinedAnswerStore = useTicketPredefinedAnswerStore()
 
 const ticketDetailsVM = computed(() => getTicketDetailsVM())
@@ -486,8 +482,6 @@ const submitReply = async () => {
       replyContent.value,
       'Service Client',
       ticketGateway,
-      uuidGenerator,
-      dateProvider,
       replyFiles.value
     )
     replyContent.value = ''
@@ -513,8 +507,6 @@ const submitPrivateNote = async () => {
       privateNoteContent.value,
       'Opérateur Support',
       ticketGateway,
-      uuidGenerator,
-      dateProvider,
       privateNoteFiles.value
     )
     privateNoteContent.value = ''
