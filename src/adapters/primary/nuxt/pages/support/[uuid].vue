@@ -10,88 +10,123 @@
           USkeleton(class="h-80 w-full")
 
   div(v-else-if="ticketDetailsVM.item")
-    .flex.items-start.justify-between.mb-6(class="flex-col sm:flex-row gap-4")
-      .flex.items-start.gap-4
-        UButton(
-          icon="i-lucide-arrow-left"
-          variant="ghost"
-          @click="$router.push('/support')"
-        )
+    .support-header.mb-8(class="bg-gray1 rounded-2xl p-6 shadow-whisper border border-gray-100/50")
+      .flex.items-start.justify-between(class="flex-col sm:flex-row gap-6")
+        .flex.items-start.gap-5
+          UButton(
+            icon="i-lucide-arrow-left"
+            variant="soft"
+            color="primary"
+            size="lg"
+            class="rounded-xl hover:scale-105 transition-transform duration-200"
+            @click="$router.push('/support')"
+          )
 
-        div
-          .flex.items-center.gap-3.mb-2
-            h1.text-xl.font-bold.text-gray-900(class="sm:text-2xl") {{ ticketDetailsVM.item.ticketNumber }}
-          h2.text-lg.text-gray-700.font-medium.mb-3 {{ ticketDetailsVM.item.subject }}
+          div.flex-1
+            .flex.items-center.gap-4.mb-3
+              h1(
+                class="text-2xl font-bold text-gray-900 sm:text-3xl"
+              ) {{ ticketDetailsVM.item.ticketNumber }}
 
-          .flex.items-center.gap-6.text-sm.text-gray-500
-            .flex.items-center.gap-2
-              UIcon(name="i-lucide-user" class="w-4 h-4")
-              NuxtLink.text-link(
-                :to="`/customers/get/${ticketDetailsVM.item.customer.uuid}`"
-              ) {{ ticketDetailsVM.item.customer.name }}
-            .flex.items-center.gap-2
-              UIcon(name="i-lucide-clock" class="w-4 h-4")
-              span {{ formatDate(ticketDetailsVM.item.createdAt) }}
-
-      .flex.items-center.gap-3(class="flex-wrap")
-        USelectMenu(
-          v-model="selectedPriority"
-          :options="['LOW', 'MEDIUM', 'HIGH', 'URGENT']"
-          @change="updatePriority"
-        )
-          template(#label)
-            .flex.items-center.gap-2
-              UIcon(name="i-lucide-flag" class="w-4 h-4")
-              span {{ $t('support.details.priority') }}
-              TicketPriorityBadge(
-                v-if="ticketDetailsVM.item && ticketDetailsVM.item.priority"
-                :priority="ticketDetailsVM.item.priority"
+            .mb-4
+              h2.text-xl.text-gray-800.font-semibold.leading-snug.mb-2 {{ ticketDetailsVM.item.subject }}
+              .w-12.h-1(
+                class="bg-customPrimary-500 rounded-full"
               )
-          template(#option="{ option }")
-            .flex.items-center.gap-2
-              TicketPriorityBadge(:priority="option")
 
-        UButton(
-          v-if="ticketDetailsVM.item.status === 'NEW'"
-          icon="i-lucide-play"
-          color="blue"
-          :loading="isStartingTicket"
-          :disabled="isStartingTicket"
-          @click="handleStartTicket"
-        ) {{ $t('support.actions.startTicket') }}
+            .flex.items-center.gap-8.text-sm
+              .flex.items-center.gap-3.font-medium
+                .customer-avatar.w-8.h-8.rounded-full(
+                  class="bg-primary5 flex items-center justify-center"
+                )
+                  UIcon(name="i-lucide-user" class="w-4 h-4 text-primary9")
+                NuxtLink.text-link(
+                  class="font-semibold underline-offset-2 hover:underline transition-colors"
+                  :to="`/customers/get/${ticketDetailsVM.item.customer.uuid}`"
+                ) {{ ticketDetailsVM.item.customer.name }}
+              .flex.items-center.gap-2.text-gray-500.font-medium
+                .w-6.h-6.rounded-full.bg-gray-100.flex.items-center.justify-center
+                  UIcon(name="i-lucide-clock" class="w-3 h-3 text-gray-400")
+                span {{ formatDate(ticketDetailsVM.item.createdAt) }}
 
-        UButton(
-          v-if="ticketDetailsVM.item.status !== 'NEW' && ticketDetailsVM.item.status !== 'RESOLVED'"
-          icon="i-lucide-reply"
-          variant="outline"
-          @click="toggleReplyEditor"
-        ) {{ $t('support.actions.reply') }}
+        .action-panel.flex.items-center.gap-4(class="flex-wrap bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-gray-100/60 shadow-soft")
+          USelectMenu(
+            v-model="selectedPriority"
+            :options="['LOW', 'MEDIUM', 'HIGH', 'URGENT']"
+            class="min-w-fit"
+            @change="updatePriority"
+          )
+            template(#label)
+              .flex.items-center.gap-3.px-1
+                .w-2.h-2.rounded-full(:class="getPriorityDotColor(ticketDetailsVM.item.priority)")
+                span.font-medium.text-gray-700 {{ $t('support.details.priority') }}
+                TicketPriorityBadge(
+                  v-if="ticketDetailsVM.item && ticketDetailsVM.item.priority"
+                  :priority="ticketDetailsVM.item.priority"
+                  class="scale-90"
+                )
+            template(#option="{ option }")
+              .flex.items-center.gap-3
+                .w-2.h-2.rounded-full(:class="getPriorityDotColor(option)")
+                TicketPriorityBadge(:priority="option")
 
-        UButton(
-          v-if="ticketDetailsVM.item.status !== 'NEW' && ticketDetailsVM.item.status !== 'RESOLVED'"
-          icon="i-lucide-sticky-note"
-          variant="outline"
-          @click="togglePrivateNoteEditor"
-        ) {{ $t('support.actions.privateNote') }}
+          .action-buttons.flex.gap-3(class="flex-wrap")
+            UButton(
+              v-if="ticketDetailsVM.item.status === 'NEW'"
+              icon="i-lucide-play"
+              color="blue"
+              size="lg"
+              :loading="isStartingTicket"
+              :disabled="isStartingTicket"
+              class="rounded-xl font-semibold px-6 hover:scale-105 transition-transform duration-200"
+              @click="handleStartTicket"
+            ) {{ $t('support.actions.startTicket') }}
 
-        UButton(
-          v-if="ticketDetailsVM.item.status !== 'RESOLVED' && ticketDetailsVM.item.status !== 'NEW'"
-          icon="i-lucide-check"
-          color="green"
-          @click="markAsResolved"
-        ) {{ $t('support.actions.markAsResolved') }}
+            UButton(
+              v-if="ticketDetailsVM.item.status !== 'NEW' && ticketDetailsVM.item.status !== 'RESOLVED'"
+              icon="i-lucide-reply"
+              variant="soft"
+              color="primary"
+              size="lg"
+              class="rounded-xl font-semibold px-6 hover:scale-105 transition-transform duration-200"
+              @click="toggleReplyEditor"
+            ) {{ $t('support.actions.reply') }}
 
-    .grid(class="grid-cols-1 lg:grid-cols-3 gap-6")
+            UButton(
+              v-if="ticketDetailsVM.item.status !== 'NEW' && ticketDetailsVM.item.status !== 'RESOLVED'"
+              icon="i-lucide-sticky-note"
+              variant="soft"
+              color="amber"
+              size="lg"
+              class="rounded-xl font-semibold px-6 hover:scale-105 transition-transform duration-200"
+              @click="togglePrivateNoteEditor"
+            ) {{ $t('support.actions.privateNote') }}
+
+            UButton(
+              v-if="ticketDetailsVM.item.status !== 'RESOLVED' && ticketDetailsVM.item.status !== 'NEW'"
+              icon="i-lucide-check"
+              color="emerald"
+              size="lg"
+              class="rounded-xl font-semibold px-6 hover:scale-105 transition-transform duration-200 shadow-emerald-200"
+              @click="markAsResolved"
+            ) {{ $t('support.actions.markAsResolved') }}
+
+    .grid(class="grid-cols-1 lg:grid-cols-3 gap-8")
       div(class="lg:col-span-2")
-        UCard
+        UCard.conversation-card(class="shadow-gentle rounded-2xl border-gray-100/60 bg-gray1")
           template(#header)
-            .flex.items-center.gap-2
-              UIcon(name="i-lucide-message-circle" class="w-5 h-5")
-              h2.text-lg.font-semibold {{ $t('support.details.conversation') }}
+            .flex.items-center.gap-4.p-2
+              .conversation-icon.w-10.h-10.rounded-xl(
+                class="bg-customPrimary-500 flex items-center justify-center"
+              )
+                UIcon(name="i-lucide-message-circle" class="w-5 h-5 text-white")
+              .flex-1
+                h2.text-xl.font-bold.text-gray-900 {{ $t('support.details.conversation') }}
               UBadge(
                 :label="ticketDetailsVM.item.messages.length.toString()"
-                variant="subtle"
-                color="gray"
+                variant="soft"
+                color="blue"
+                class="px-3 py-1.5 rounded-xl font-semibold"
               )
 
           .space-y-4(class="max-h-[60vh] overflow-y-auto")
@@ -105,12 +140,12 @@
                 .flex.gap-4
                   .flex-shrink-0
                     .w-10.h-10.rounded-full.flex.items-center.justify-center(
-                      :class="message.type === 'PRIVATE' ? 'bg-amber-100' : message.authorName === ticketDetailsVM.item.customer.name ? 'bg-blue-100' : 'bg-green-100'"
+                      :class="message.type === 'PRIVATE' ? 'bg-amber-100' : message.authorName === ticketDetailsVM.item.customer.name ? 'bg-primary5' : 'bg-green-100'"
                     )
                       UIcon(
                         :name="message.type === 'PRIVATE' ? 'i-lucide-lock' : message.authorName === ticketDetailsVM.item.customer.name ? 'i-lucide-user' : 'i-lucide-headphones'"
                         class="w-5 h-5"
-                        :class="message.type === 'PRIVATE' ? 'text-amber-600' : message.authorName === ticketDetailsVM.item.customer.name ? 'text-blue-600' : 'text-green-600'"
+                        :class="message.type === 'PRIVATE' ? 'text-amber-600' : message.authorName === ticketDetailsVM.item.customer.name ? 'text-primary9' : 'text-green-600'"
                       )
 
                   .flex-1.min-w-0
@@ -596,4 +631,18 @@ const downloadAttachment = (attachment: any) => {
   link.click()
   document.body.removeChild(link)
 }
+
+const getPriorityDotColor = (priority: string) => {
+  const colors = {
+    LOW: 'bg-slate-400',
+    MEDIUM: 'bg-blue-400',
+    HIGH: 'bg-orange-400',
+    URGENT: 'bg-red-400 animate-pulse'
+  }
+  return colors[priority as keyof typeof colors] || 'bg-gray-400'
+}
 </script>
+
+<style scoped>
+@import url('~/assets/css/humanized-support.css');
+</style>

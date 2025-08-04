@@ -22,8 +22,12 @@ export interface KanbanColumn {
   tickets: Array<TicketItemVM>
 }
 
+export interface KanbanColumnWithKey extends KanbanColumn {
+  key: string
+}
+
 export interface GetSupportTicketsVM {
-  columns: Record<string, KanbanColumn>
+  columns: Array<KanbanColumnWithKey>
   isLoading: boolean
 }
 
@@ -80,7 +84,13 @@ export const getSupportTicketsVM = (): GetSupportTicketsVM => {
     (t) => t.status === TicketStatus.RESOLVED
   )
 
-  const columns: Record<string, KanbanColumn> = {
+  const columnOrder = [
+    'new',
+    'started',
+    'waiting_for_answer',
+    'resolved'
+  ] as const
+  const columnData: Record<string, KanbanColumn> = {
     new: {
       count: newTickets.length,
       tickets: sortTicketsByPriority(newTickets).map(mapTicketToVM)
@@ -98,6 +108,11 @@ export const getSupportTicketsVM = (): GetSupportTicketsVM => {
       tickets: sortTicketsByPriority(resolvedTickets).map(mapTicketToVM)
     }
   }
+
+  const columns: Array<KanbanColumnWithKey> = columnOrder.map((key) => ({
+    key,
+    ...columnData[key]
+  }))
 
   return {
     columns,
