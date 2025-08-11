@@ -5,7 +5,8 @@ import {
   orderToPrepare2,
   orderWithMissingProduct1,
   orderSaved1,
-  orderWithCustomerMessage
+  orderWithCustomerMessage,
+  orderToPrepare3
 } from '@utils/testData/orders'
 import { Order } from '@core/entities/order'
 import { createPinia, setActivePinia } from 'pinia'
@@ -69,6 +70,11 @@ describe('Get preparation VM', () => {
               status: PreparationStatus.NotPrepared
             }
           ],
+          deliveries: [
+            {
+              uuid: orderToPrepare1.deliveries[0].uuid
+            }
+          ],
           messages: [],
           canValidate: false,
           canCancel: false,
@@ -79,9 +85,9 @@ describe('Get preparation VM', () => {
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
       it('should get the preparation vm for another preparation', () => {
-        givenCurrentPreparationIs(orderToPrepare2)
+        givenCurrentPreparationIs(orderToPrepare3)
         const expectedVM: GetPreparationVM = {
-          reference: orderToPrepare2.uuid,
+          reference: orderToPrepare3.uuid,
           headers,
           lines: [
             {
@@ -90,13 +96,12 @@ describe('Get preparation VM', () => {
               expectedQuantity: 1,
               preparedQuantity: 0,
               status: PreparationStatus.NotPrepared
-            },
+            }
+          ],
+          deliveries: [
             {
-              reference: ultraLevure.ean13,
-              name: ultraLevure.name,
-              expectedQuantity: 2,
-              preparedQuantity: 0,
-              status: PreparationStatus.NotPrepared
+              uuid: orderToPrepare3.deliveries[0].uuid,
+              trackingNumber: orderToPrepare3.deliveries[0].trackingNumber
             }
           ],
           messages: [],
@@ -157,6 +162,11 @@ describe('Get preparation VM', () => {
               status: PreparationStatus.NotPrepared
             }
           ],
+          deliveries: [
+            {
+              uuid: orderToPrepare2.deliveries[0].uuid
+            }
+          ],
           messages: [],
           canValidate: false,
           canCancel: false,
@@ -178,6 +188,11 @@ describe('Get preparation VM', () => {
               expectedQuantity: 2,
               preparedQuantity: 3,
               status: PreparationStatus.ErrorTooMuchQuantity
+            }
+          ],
+          deliveries: [
+            {
+              uuid: orderToPrepare1.deliveries[0].uuid
             }
           ],
           messages: [],
@@ -203,6 +218,11 @@ describe('Get preparation VM', () => {
               expectedQuantity: 2,
               preparedQuantity: 2,
               status: PreparationStatus.Prepared
+            }
+          ],
+          deliveries: [
+            {
+              uuid: orderSaved1.deliveries[0].uuid
             }
           ],
           messages: [],
@@ -328,6 +348,7 @@ describe('Get preparation VM', () => {
         reference: '',
         headers: [],
         lines: [],
+        deliveries: [],
         messages: [],
         canValidate: false,
         canCancel: false,
@@ -351,6 +372,11 @@ describe('Get preparation VM', () => {
             expectedQuantity: 2,
             preparedQuantity: 0,
             status: PreparationStatus.NotPrepared
+          }
+        ],
+        deliveries: [
+          {
+            uuid: orderWithCustomerMessage.deliveries[0].uuid
           }
         ],
         messages: [],
