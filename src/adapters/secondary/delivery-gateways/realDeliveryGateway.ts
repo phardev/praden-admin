@@ -49,6 +49,16 @@ export class RealDeliveryGateway
     await axiosWithBearer.post(`${this.baseUrl}/deliveries/${uuid}/print-label`)
   }
 
+  async downloadLabel(uuid: UUID): Promise<Blob> {
+    const res = await axiosWithBearer.get(
+      `${this.baseUrl}/deliveries/${uuid}/download-label`,
+      {
+        responseType: 'blob'
+      }
+    )
+    return new Blob([res.data], { type: 'application/pdf' })
+  }
+
   private convertToDelivery(delivery: any) {
     return {
       ...delivery,

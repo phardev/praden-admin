@@ -5,7 +5,8 @@ export const useDeliveryStore = defineStore('DeliveryStore', {
   state: () => {
     return {
       items: [] as Array<Delivery>,
-      isLoading: false
+      isLoading: false,
+      labelBlob: null as Blob | null
     }
   },
   actions: {
@@ -22,6 +23,9 @@ export const useDeliveryStore = defineStore('DeliveryStore', {
     },
     stopLoading() {
       this.isLoading = false
+    },
+    setLabelBlob(blob: Blob | null) {
+      this.labelBlob = blob
     }
   }
 })

@@ -5,5 +5,6 @@ export interface DeliveryGateway {
   list(): Promise<Array<Delivery>>
   ship(uuids: Array<UUID>): Promise<Array<Delivery>>
   printLabel(uuid: UUID): Promise<void>
+  downloadLabel(uuid: UUID): Promise<Blob>
   markAsDelivered(uuid: UUID): Promise<Delivery>
 }

@@ -5,6 +5,7 @@ import { UUID } from '@core/types/types'
 export class InMemoryDeliveryGateway implements DeliveryGateway {
   private deliveries: Array<Delivery> = []
   private printed: Array<UUID> = []
+  private downloaded: Array<UUID> = []
 
   list(): Promise<Array<Delivery>> {
     return Promise.resolve(JSON.parse(JSON.stringify(this.deliveries)))
@@ -27,6 +28,11 @@ export class InMemoryDeliveryGateway implements DeliveryGateway {
     return Promise.resolve()
   }
 
+  downloadLabel(uuid: UUID): Promise<Blob> {
+    this.downloaded.push(uuid)
+    return Promise.resolve(new Blob([uuid], { type: 'application/pdf' }))
+  }
+
   markAsDelivered(uuid: UUID): Promise<Delivery> {
     const index = this.deliveries.findIndex(
       (delivery) => delivery.uuid === uuid
@@ -37,6 +43,10 @@ export class InMemoryDeliveryGateway implements DeliveryGateway {
 
   listPrinted(): Array<UUID> {
     return this.printed
+  }
+
+  listDownloaded(): Array<UUID> {
+    return this.downloaded
   }
 
   feedWith(...deliveries: Array<Delivery>) {
