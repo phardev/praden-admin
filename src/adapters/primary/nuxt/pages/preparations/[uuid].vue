@@ -146,42 +146,48 @@ const router = useRouter()
 const validate = async () => {
   closeActionsModal()
 
-  const newWindow = window.open('about:blank', '_blank')
+  const useManualPrint = false
 
-  if (newWindow) {
-    newWindow.document.write(`
-      <html>
-        <head><title>Génération de l'étiquette...</title></head>
-        <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
-          <h2>Génération de l'étiquette de livraison en cours...</h2>
-          <p>Veuillez patienter pendant la validation de la préparation.</p>
-          <div style="border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 20px auto;"></div>
-          <style>
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-          </style>
-        </body>
-      </html>
-    `)
-  }
+  if (useManualPrint) {
+    const newWindow = window.open('about:blank', '_blank')
 
-  try {
-    await validatePreparation(useOrderGateway(), useInvoiceGateway())
-    await manualPrint(newWindow)
-
-    setTimeout(() => {
-      window.print()
-    }, 100)
-  } catch (error) {
-    console.error('Error during validation:', error)
     if (newWindow) {
-      newWindow.close()
+      newWindow.document.write(`
+        <html>
+          <head><title>Génération de l'étiquette...</title></head>
+          <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
+            <h2>Génération de l'étiquette de livraison en cours...</h2>
+            <p>Veuillez patienter pendant la validation de la préparation.</p>
+            <div style="border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 20px auto;"></div>
+            <style>
+              @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
+            </style>
+          </body>
+        </html>
+      `)
     }
-    return
-  }
 
+    try {
+      await validatePreparation(useOrderGateway(), useInvoiceGateway())
+      await manualPrint(newWindow)
+
+      setTimeout(() => {
+        window.print()
+      }, 100)
+    } catch (error) {
+      console.error('Error during validation:', error)
+      if (newWindow) {
+        newWindow.close()
+      }
+      return
+    }
+  } else {
+    await validatePreparation(useOrderGateway(), useInvoiceGateway())
+    window.print()
+  }
   router.push('/preparations')
 }
 

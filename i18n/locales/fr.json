@@ -29,7 +29,21 @@
   "common": {
     "showFilters": "Afficher les filtres",
     "hideFilters": "Masquer les filtres",
-    "reset": "Réinitialiser"
+    "reset": "Réinitialiser",
+    "updated": "Mis à jour",
+    "cancel": "Annuler",
+    "create": "Créer",
+    "update": "Modifier",
+    "delete": "Supprimer"
+  },
+  "customers": {
+    "viewTitle": "Voir client",
+    "editButton": "Editer client",
+    "ordersHistory": "Historique des commandes",
+    "supportTickets": "Tickets de support"
+  },
+  "orders": {
+    "supportTickets": "Tickets de support"
   },
   "dashboard": {
     "title": "Tableau de bord",
@@ -88,6 +102,113 @@
       "messagesSent": "messages envoyés",
       "ordersCreated": "commandes créées",
       "conversionRate": "taux de conversion"
+    }
+  },
+  "support": {
+    "title": "Support Client",
+    "tickets": {
+      "new": "Nouveaux",
+      "started": "En cours",
+      "resolved": "Résolus",
+      "noTickets": "Aucun ticket"
+    },
+    "noTicketsForCustomer": "Aucun ticket pour ce client",
+    "noTicketsForOrder": "Aucun ticket pour cette commande",
+    "columns": {
+      "new": "Nouveaux",
+      "started": "En cours",
+      "waiting_for_answer": "En attente de réponse",
+      "resolved": "Résolus"
+    },
+    "priority": {
+      "urgent": "Urgent",
+      "high": "Élevée",
+      "medium": "Moyenne",
+      "low": "Faible"
+    },
+    "status": {
+      "new": "Nouveau",
+      "started": "En cours",
+      "resolved": "Résolu"
+    },
+    "actions": {
+      "startTicket": "Démarrer le ticket",
+      "reply": "Répondre",
+      "privateNote": "Note privée",
+      "markAsResolved": "Marquer comme résolu",
+      "updatePriority": "Mettre à jour la priorité",
+      "viewOrder": "Voir la commande"
+    },
+    "details": {
+      "conversation": "Conversation",
+      "ticketDetails": "Détails du ticket",
+      "status": "Statut",
+      "priority": "Priorité",
+      "customer": "Client",
+      "createdAt": "Créé le",
+      "updatedAt": "Mis à jour le",
+      "privateNote": "Note privée",
+      "relatedOrder": "Commande liée"
+    },
+    "attachments": {
+      "files": "Fichiers joints",
+      "label": "Pièces jointes"
+    },
+    "modal": {
+      "reply": {
+        "title": "Répondre au ticket",
+        "placeholder": "Votre réponse...",
+        "label": "Réponse",
+        "send": "Envoyer",
+        "cancel": "Annuler"
+      },
+      "privateNote": {
+        "title": "Ajouter une note privée",
+        "placeholder": "Note privée pour l'équipe...",
+        "label": "Note privée",
+        "add": "Ajouter",
+        "cancel": "Annuler"
+      }
+    },
+    "editor": {
+      "tips": {
+        "reply": "Cette réponse sera visible par le client",
+        "privateNote": "Cette note ne sera visible que par l'équipe"
+      }
+    },
+    "ticketPredefinedAnswers": {
+      "title": "Réponses prédéfinies",
+      "description": "Gérez vos réponses prédéfinies pour répondre plus rapidement aux tickets",
+      "create": "Nouvelle réponse",
+      "edit": "Modifier la réponse",
+      "titleColumn": "Titre",
+      "contentColumn": "Contenu",
+      "titleLabel": "Titre de la réponse",
+      "titlePlaceholder": "Ex: Merci pour votre message",
+      "contentLabel": "Contenu de la réponse",
+      "contentPlaceholder": "Saisissez le contenu de votre réponse...",
+      "formDescription": "Créez des réponses réutilisables pour accélérer le traitement des tickets",
+      "empty": {
+        "title": "Aucune réponse prédéfinie",
+        "description": "Créez votre première réponse prédéfinie pour gagner du temps"
+      },
+      "delete": {
+        "title": "Supprimer la réponse",
+        "description": "Cette action est irréversible"
+      },
+      "search": {
+        "placeholder": "Rechercher une réponse par titre ou contenu...",
+        "noResults": {
+          "title": "Aucun résultat trouvé",
+          "description": "Aucune réponse ne correspond à votre recherche"
+        }
+      }
+    },
+    "predefinedAnswers": {
+      "label": "Réponses prédéfinies",
+      "placeholder": "Choisir une réponse prédéfinie",
+      "manage": "Gérer les réponses",
+      "empty": "Aucune réponse prédéfinie disponible"
     }
   }
 }

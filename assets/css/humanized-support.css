@@ -1,0 +1,298 @@
+/* Humanized Support Pages Design System */
+
+/* Custom Shadow Styles */
+.shadow-whisper {
+  box-shadow: 0 1px 3px rgb(0 0 0 / 4%), 0 4px 12px rgb(0 0 0 / 2%);
+}
+
+.shadow-soft {
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%), 0 8px 24px rgb(0 0 0 / 4%);
+}
+
+.shadow-gentle {
+  box-shadow: 0 4px 16px rgb(0 0 0 / 8%), 0 16px 32px rgb(0 0 0 / 4%);
+}
+
+.shadow-warm {
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%), 0 24px 48px rgb(0 0 0 / 6%);
+}
+
+/* Kanban Board Layout */
+.kanban-board {
+  min-height: 600px;
+}
+
+.kanban-column {
+  /* Responsive column widths */
+  flex: 1;
+  min-width: 280px;
+}
+
+.kanban-content {
+  min-height: 500px;
+}
+
+/* Kanban scrollbar styling */
+.kanban-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.kanban-content::-webkit-scrollbar-track {
+  background: #f8fafc;
+  border-radius: 4px;
+}
+
+.kanban-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.kanban-content::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Responsive breakpoints for optimal viewing */
+@media (width >= 1920px) {
+  .kanban-column {
+    max-width: 450px; /* ~1800px / 4 columns = 450px per column */
+  }
+}
+
+@media (1440px <= width <= 1919px) {
+  .kanban-column {
+    max-width: 340px; /* ~1360px / 4 columns = 340px per column */
+  }
+}
+
+@media (1200px <= width <= 1439px) {
+  .kanban-column {
+    max-width: 280px; /* ~1120px / 4 columns = 280px per column */
+  }
+}
+
+@media (width <= 1199px) {
+  .kanban-board {
+    overflow-x: auto;
+  }
+
+  .kanban-column {
+    min-width: 300px;
+    max-width: 300px;
+    flex-shrink: 0;
+  }
+}
+
+@media (width <= 768px) {
+  .kanban-column {
+    min-width: 280px;
+    max-width: 280px;
+  }
+}
+
+@media (width <= 640px) {
+  .kanban-column {
+    min-width: 260px;
+    max-width: 260px;
+  }
+}
+
+.ticket-card {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.ticket-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 40%),
+    transparent
+  );
+  transition: left 0.6s ease-out;
+  pointer-events: none;
+}
+
+.ticket-card:hover::before {
+  left: 100%;
+}
+
+.rounded-organic-1 {
+  border-radius: 8px 12px 10px 8px;
+}
+
+.rounded-organic-2 {
+  border-radius: 10px 8px 12px 10px;
+}
+
+.rounded-organic-3 {
+  border-radius: 12px 10px 8px 12px;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.02);
+    opacity: 0.9;
+  }
+}
+
+.animate-breathe {
+  animation: breathe 2s ease-in-out infinite;
+}
+
+@keyframes gentle-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.85;
+    transform: scale(1.01);
+  }
+}
+
+.animate-gentle-pulse {
+  animation: gentle-pulse 2s ease-in-out infinite;
+}
+
+.bg-warm-gradient {
+  background: linear-gradient(135deg, #fef7ff 0%, #f8fafc 50%, #f0f9ff 100%);
+}
+
+.bg-support-gradient {
+  background: linear-gradient(135deg, #f0fdf4 0%, #fefffe 50%, #f0f9ff 100%);
+}
+
+.btn-humanized {
+  border-radius: 10px 12px 11px 10px;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+}
+
+.btn-humanized:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
+}
+
+.card-organic {
+  border-radius: 12px 16px 14px 12px;
+  background: linear-gradient(135deg, #fff 0%, #fefefe 50%, #fdfdfd 100%);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card-organic:hover {
+  transform: translateY(-2px) rotate(0.3deg);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 8%);
+}
+
+.text-humanized {
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+
+.text-warm {
+  color: #374151;
+  font-weight: 450;
+}
+
+.priority-urgent {
+  background: linear-gradient(135deg, #fef2f2 0%, #fff 100%);
+  border-left: 3px solid #ef4444;
+}
+
+.priority-high {
+  background: linear-gradient(135deg, #fff7ed 0%, #fff 100%);
+  border-left: 3px solid #f97316;
+}
+
+.priority-medium {
+  background: linear-gradient(135deg, #eff6ff 0%, #fff 100%);
+  border-left: 3px solid #3b82f6;
+}
+
+.priority-low {
+  background: linear-gradient(135deg, #f8fafc 0%, #fff 100%);
+  border-left: 3px solid #64748b;
+}
+
+@keyframes gentle-shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.loading-shimmer {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200px 100%;
+  animation: gentle-shimmer 1.5s infinite;
+}
+
+.interactive-warm {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.interactive-warm:hover {
+  filter: brightness(1.05) saturate(1.1);
+}
+
+@keyframes success-bounce {
+  0% {
+    transform: scale(1);
+  }
+
+  30% {
+    transform: scale(1.15);
+  }
+
+  50% {
+    transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-success {
+  animation: success-bounce 0.6s ease-out;
+}
+
+.space-organic > * + * {
+  margin-top: calc(1rem + 0.2rem * sin(var(--index, 0) * 30deg));
+}
+
+.conversation-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.conversation-scroll::-webkit-scrollbar-track {
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.conversation-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #cbd5e1, #94a3b8);
+  border-radius: 8px;
+}
+
+.conversation-scroll::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #94a3b8, #64748b);
+}

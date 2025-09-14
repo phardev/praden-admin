@@ -68,6 +68,8 @@
           variant="outline"
           @click="downloadLabel(item)"
         ) Télécharger
+  h2.text-subtitle.mt-8 {{ $t('orders.supportTickets') }}
+  order-tickets-list(:order-uuid="orderUuid")
 
 </template>
 
@@ -83,6 +85,8 @@ import { useDeliveryGateway } from '../../../../../../gateways/deliveryGateway'
 import { markDeliveryAsDelivered } from '@core/usecases/deliveries/mark-delivery-as-delivered/markDeliveryAsDelivered'
 import { downloadDeliveryLabel } from '@core/usecases/deliveries/delivery-label-download/downloadDeliveryLabel'
 import { useDeliveryStore } from '@store/deliveryStore'
+import { useTicketGateway } from '../../../../../../gateways/ticketGateway'
+import { getOrderTickets } from '@core/usecases/support/getOrderTickets'
 
 definePageMeta({ layout: 'main' })
 
@@ -94,6 +98,7 @@ const deliveryStore = useDeliveryStore()
 onMounted(() => {
   getPreparation(orderUuid, useOrderGateway())
   getOrder(orderUuid, useOrderGateway(), useCustomerGateway())
+  getOrderTickets(orderUuid, useTicketGateway())
 })
 
 const preparationVM = computed(() => {
