@@ -4,7 +4,8 @@ import {
   TicketMessageAttachment,
   TicketStatus,
   TicketPriority,
-  TicketMessageType
+  TicketMessageType,
+  TicketCustomer
 } from '@core/entities/ticket'
 import { Timestamp, UUID } from '@core/types/types'
 
@@ -13,8 +14,13 @@ export interface TicketMessageVM {
   content: string
   type: TicketMessageType
   sentAt: Timestamp
-  authorName: string
+  author: TicketMessageAuthorVM
   attachments: Array<TicketMessageAttachment>
+}
+
+export interface TicketMessageAuthorVM {
+  uuid: UUID
+  name: string
 }
 
 export interface TicketCustomerVM {
@@ -42,12 +48,19 @@ export interface GetTicketDetailsVM {
   isLoading: boolean
 }
 
-const mapMessageToVM = (message: TicketMessage): TicketMessageVM => ({
+const mapMessageToVM = (
+  message: TicketMessage,
+  customer: TicketCustomer,
+  customerName: string
+): TicketMessageVM => ({
   uuid: message.uuid,
   content: message.content,
   type: message.type,
   sentAt: message.sentAt,
-  authorName: message.authorName,
+  author: {
+    uuid: message.authorUuid,
+    name: message.authorUuid === customer.uuid ? customerName : 'Service Client'
+  },
   attachments: message.attachments
 })
 
@@ -62,6 +75,8 @@ export const getTicketDetailsVM = (): GetTicketDetailsVM => {
     }
   }
 
+  const customerName = `${currentTicket.customer.firstname} ${currentTicket.customer.lastname}`
+
   return {
     item: {
       uuid: currentTicket.uuid,
@@ -73,9 +88,11 @@ export const getTicketDetailsVM = (): GetTicketDetailsVM => {
       customer: {
         uuid: currentTicket.customer.uuid,
         email: currentTicket.customer.email,
-        name: `${currentTicket.customer.firstname} ${currentTicket.customer.lastname}`
+        name: customerName
       },
-      messages: currentTicket.messages.map(mapMessageToVM),
+      messages: currentTicket.messages.map((message) =>
+        mapMessageToVM(message, currentTicket.customer, customerName)
+      ),
       createdAt: currentTicket.createdAt,
       updatedAt: currentTicket.updatedAt,
       orderUuid: currentTicket.orderUuid

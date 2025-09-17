@@ -30,7 +30,7 @@ export interface TicketMessage {
   content: string
   type: TicketMessageType
   sentAt: Timestamp
-  authorName: string
+  authorUuid: UUID
   attachments: Array<TicketMessageAttachment>
 }
 
