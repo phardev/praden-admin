@@ -10,6 +10,7 @@ import {
 import { timestampToLocaleString } from '@utils/formatters'
 import { HashTable } from '@core/types/types'
 import { PreparationError } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
+import { Delivery } from '@core/entities/delivery'
 
 export enum PreparationStatus {
   NotPrepared,
@@ -25,10 +26,16 @@ export interface GetPreparationLineVM {
   status: PreparationStatus
 }
 
+export interface PreparationDeliveryVM {
+  uuid: string
+  trackingNumber?: string
+}
+
 export interface GetPreparationVM {
   reference: string
   headers: Array<Header>
   lines: Array<GetPreparationLineVM>
+  deliveries: Array<PreparationDeliveryVM>
   messages: Array<any>
   customerMessage?: string
   canValidate: boolean
@@ -117,6 +124,7 @@ export const getPreparationVM = (): GetPreparationVM => {
       reference: '',
       headers: [],
       lines: [],
+      deliveries: [],
       messages: [],
       canValidate: false,
       canCancel: false,
@@ -162,6 +170,7 @@ export const getPreparationVM = (): GetPreparationVM => {
     reference: preparation.uuid,
     headers,
     lines,
+    deliveries: getDeliveriesVM(preparation.deliveries),
     messages: getMessagesVM(preparation.messages),
     canValidate: canValidate(lines, preparation.messages),
     canCancel: canCancel(preparation.messages),
@@ -173,4 +182,18 @@ export const getPreparationVM = (): GetPreparationVM => {
     res.customerMessage = preparation.customerMessage
   }
   return res
+}
+
+const getDeliveriesVM = (
+  deliveries: Array<Delivery>
+): Array<PreparationDeliveryVM> => {
+  return deliveries.map((delivery: Delivery) => {
+    const res: PreparationDeliveryVM = {
+      uuid: delivery.uuid
+    }
+    if (delivery.trackingNumber) {
+      res.trackingNumber = delivery.trackingNumber
+    }
+    return res
+  })
 }

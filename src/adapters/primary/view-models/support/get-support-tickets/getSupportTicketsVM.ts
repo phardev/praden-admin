@@ -65,10 +65,7 @@ const isWaitingForAnswer = (ticket: Ticket): boolean => {
     (m) => m.type !== TicketMessageType.PRIVATE
   )
   const lastMessage = withoutPrivateNotes[withoutPrivateNotes.length - 1]
-  return (
-    lastMessage.authorName !==
-    `${ticket.customer.firstname} ${ticket.customer.lastname}`
-  )
+  return lastMessage.authorUuid !== ticket.customer.uuid
 }
 
 export const getSupportTicketsVM = (): GetSupportTicketsVM => {

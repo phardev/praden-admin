@@ -140,12 +140,12 @@
                 .flex.gap-4
                   .flex-shrink-0
                     .w-10.h-10.rounded-full.flex.items-center.justify-center(
-                      :class="message.type === 'PRIVATE' ? 'bg-amber-100' : message.authorName === ticketDetailsVM.item.customer.name ? 'bg-primary5' : 'bg-green-100'"
+                      :class="message.type === 'PRIVATE' ? 'bg-amber-100' : message.author.name === ticketDetailsVM.item.customer.name ? 'bg-primary5' : 'bg-green-100'"
                     )
                       UIcon(
-                        :name="message.type === 'PRIVATE' ? 'i-lucide-lock' : message.authorName === ticketDetailsVM.item.customer.name ? 'i-lucide-user' : 'i-lucide-headphones'"
+                        :name="message.type === 'PRIVATE' ? 'i-lucide-lock' : message.author.name === ticketDetailsVM.item.customer.name ? 'i-lucide-user' : 'i-lucide-headphones'"
                         class="w-5 h-5"
-                        :class="message.type === 'PRIVATE' ? 'text-amber-600' : message.authorName === ticketDetailsVM.item.customer.name ? 'text-primary9' : 'text-green-600'"
+                        :class="message.type === 'PRIVATE' ? 'text-amber-600' : message.author.name === ticketDetailsVM.item.customer.name ? 'text-primary9' : 'text-green-600'"
                       )
 
                   .flex-1.min-w-0
@@ -154,7 +154,7 @@
                     )
                       .flex.items-start.justify-between.mb-3
                         .flex.items-center.gap-2
-                          span.font-medium.text-gray-900 {{ message.authorName }}
+                          span.font-medium.text-gray-900 {{ message.author.name }}
                           UBadge(
                             v-if="message.type === 'PRIVATE'"
                             :label="$t('support.details.privateNote')"

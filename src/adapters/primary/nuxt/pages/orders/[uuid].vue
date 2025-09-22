@@ -63,6 +63,11 @@
           variant="outline"
           @click="printLabel(item)"
         ) Etiquette
+        ft-button.button-default.py-4.px-4(
+          v-if="item.followUrl"
+          variant="outline"
+          @click="downloadLabel(item)"
+        ) Télécharger
   h2.text-subtitle.mt-8 {{ $t('orders.supportTickets') }}
   order-tickets-list(:order-uuid="orderUuid")
 
@@ -78,6 +83,8 @@ import { useCustomerGateway } from '../../../../../../gateways/customerGateway'
 import { printDeliveryLabel } from '@core/usecases/deliveries/delivery-label-printing/printDeliveryLabel'
 import { useDeliveryGateway } from '../../../../../../gateways/deliveryGateway'
 import { markDeliveryAsDelivered } from '@core/usecases/deliveries/mark-delivery-as-delivered/markDeliveryAsDelivered'
+import { downloadDeliveryLabel } from '@core/usecases/deliveries/delivery-label-download/downloadDeliveryLabel'
+import { useDeliveryStore } from '@store/deliveryStore'
 import { useTicketGateway } from '../../../../../../gateways/ticketGateway'
 import { getOrderTickets } from '@core/usecases/support/getOrderTickets'
 
@@ -86,6 +93,7 @@ definePageMeta({ layout: 'main' })
 const route = useRoute()
 const orderUuid = route.params.uuid
 const router = useRouter()
+const deliveryStore = useDeliveryStore()
 
 onMounted(() => {
   getPreparation(orderUuid, useOrderGateway())
@@ -103,6 +111,37 @@ const orderVM = computed(() => {
 
 const printLabel = (delivery) => {
   printDeliveryLabel(delivery.uuid, useDeliveryGateway())
+}
+
+const downloadLabel = async (delivery) => {
+  const newWindow = window.open('about:blank', '_blank')
+
+  if (!newWindow) {
+    return
+  }
+
+  try {
+    const usecase = downloadDeliveryLabel({
+      deliveryGateway: useDeliveryGateway()
+    })
+    await usecase(delivery.uuid)
+
+    const blob = deliveryStore.labelBlob
+    if (blob) {
+      const url = window.URL.createObjectURL(blob)
+
+      newWindow.location.href = url
+
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url)
+      }, 1000)
+    } else {
+      newWindow.close()
+    }
+  } catch (error) {
+    console.error('Error downloading label: ', error)
+    newWindow.close()
+  }
 }
 
 const markAsDelivered = async (delivery) => {

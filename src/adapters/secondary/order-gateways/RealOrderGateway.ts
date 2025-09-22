@@ -6,7 +6,6 @@ import {
   PaymentStatus
 } from '@core/entities/order'
 import type { HashTable, UUID } from '@core/types/types'
-import { zoneGeo } from '@utils/testData/locations'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { DeliveryStatus } from '@core/entities/delivery'
 
@@ -141,7 +140,7 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
         preparedQuantity: l.preparedQuantity,
         unitAmount: l.priceWithoutTax,
         status: this.getOrderLineStatus(l.status),
-        locations: { [zoneGeo.uuid]: l.location },
+        locations: l.locations,
         updatedAt: l.updatedAt
       }
       return res

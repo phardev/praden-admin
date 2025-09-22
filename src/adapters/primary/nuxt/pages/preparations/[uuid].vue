@@ -77,6 +77,9 @@ import { setProductQuantityForPreparation } from '@core/usecases/order/set-produ
 import { changeProductEan13ForPreparation } from '@core/usecases/order/change-product-ean13-for-preparation/changeProductEan13ForPreparation'
 import { clearPreparationError } from '@core/usecases/order/preparation-error-clearing/clearPreparationError'
 import { scanProductToPreparation } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
+import { downloadDeliveryLabel } from '@core/usecases/deliveries/delivery-label-download/downloadDeliveryLabel'
+import { useDeliveryGateway } from '../../../../../../gateways/deliveryGateway'
+import { useDeliveryStore } from '@store/deliveryStore'
 
 definePageMeta({ layout: 'main' })
 
@@ -142,15 +145,103 @@ const router = useRouter()
 
 const validate = async () => {
   closeActionsModal()
-  await validatePreparation(useOrderGateway(), useInvoiceGateway())
-  window.print()
+
+  const useManualPrint = false
+
+  if (useManualPrint) {
+    const newWindow = window.open('about:blank', '_blank')
+
+    if (newWindow) {
+      newWindow.document.write(`
+        <html>
+          <head><title>Génération de l'étiquette...</title></head>
+          <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
+            <h2>Génération de l'étiquette de livraison en cours...</h2>
+            <p>Veuillez patienter pendant la validation de la préparation.</p>
+            <div style="border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 20px auto;"></div>
+            <style>
+              @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
+            </style>
+          </body>
+        </html>
+      `)
+    }
+
+    try {
+      await validatePreparation(useOrderGateway(), useInvoiceGateway())
+      await manualPrint(newWindow)
+
+      setTimeout(() => {
+        window.print()
+      }, 100)
+    } catch (error) {
+      console.error('Error during validation:', error)
+      if (newWindow) {
+        newWindow.close()
+      }
+      return
+    }
+  } else {
+    await validatePreparation(useOrderGateway(), useInvoiceGateway())
+    window.print()
+  }
   router.push('/preparations')
+}
+
+const manualPrint = async (newWindow?: Window | null) => {
+  if (preparationVM.value.deliveries.length === 0) {
+    console.error('No delivery found for this preparation')
+    if (newWindow) newWindow.close()
+    return
+  }
+  if (!preparationVM.value.deliveries[0].trackingNumber) {
+    console.error('No tracking number found for this delivery')
+    if (newWindow) newWindow.close()
+    return
+  }
+
+  if (!newWindow) {
+    console.error('No window available for PDF display')
+    return
+  }
+
+  try {
+    const usecase = downloadDeliveryLabel({
+      deliveryGateway: useDeliveryGateway()
+    })
+    await usecase(preparationVM.value.deliveries[0].uuid)
+
+    const deliveryStore = useDeliveryStore()
+    const blob = deliveryStore.labelBlob
+    if (blob) {
+      const url = window.URL.createObjectURL(blob)
+
+      newWindow.location.href = url
+
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url)
+      }, 1000)
+    } else {
+      console.error('No blob found')
+      newWindow.close()
+    }
+  } catch (error) {
+    console.error('Error downloading label: ', error)
+    newWindow.close()
+  }
 }
 
 const cancel = async () => {
   closeActionsModal()
   await cancelPreparation(useOrderGateway(), useInvoiceGateway())
-  window.print()
+
+  setTimeout(() => {
+    window.print()
+  }, 100)
+
   router.push('/preparations')
 }
 

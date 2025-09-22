@@ -65,7 +65,7 @@ export const startedTicket: Ticket = {
         'Je souhaite être remboursé pour ma dernière commande qui ne me convient pas.',
       type: TicketMessageType.PUBLIC,
       sentAt: 1705838400000,
-      authorName: 'Lucas Lefèvre',
+      authorUuid: lucasLefevre.uuid,
       attachments: [
         {
           filename: 'photo_produit_recu.jpg',
@@ -105,7 +105,7 @@ export const urgentTicket: Ticket = {
         "Ma commande urgente n'est pas arrivée à temps pour un traitement important.",
       type: TicketMessageType.PUBLIC,
       sentAt: 1705924200000,
-      authorName: 'Sophie Martinez',
+      authorUuid: sophieMartinez.uuid,
       attachments: [
         {
           filename: 'ordonnance_medicale.pdf',
@@ -146,7 +146,7 @@ export const resolvedTicket: Ticket = {
       content: 'Pourquoi les frais de livraison sont-ils si élevés ?',
       type: TicketMessageType.PUBLIC,
       sentAt: 1705752000000,
-      authorName: 'Pierre Bernard',
+      authorUuid: pierreBernard.uuid,
       attachments: []
     },
     {
@@ -155,7 +155,7 @@ export const resolvedTicket: Ticket = {
         'Les frais de livraison dépendent du poids et de la destination. Voici le détail...',
       type: TicketMessageType.PUBLIC,
       sentAt: 1705754400000,
-      authorName: 'Service Client',
+      authorUuid: 'admin-uuid',
       attachments: [
         {
           filename: 'grille_tarifs_livraison.pdf',
@@ -191,7 +191,7 @@ export const lowPriorityTicket: Ticket = {
         "Il serait bien d'avoir plus de choix de couleurs pour ce produit.",
       type: TicketMessageType.PUBLIC,
       sentAt: 1705666200000,
-      authorName: 'Élodie Durand',
+      authorUuid: elodieDurand.uuid,
       attachments: []
     }
   ],
@@ -218,7 +218,7 @@ export const waitingForAnswerTicket: Ticket = {
       content: "Ma commande semble avoir été livrée mais je ne l'ai pas reçue.",
       type: TicketMessageType.PUBLIC,
       sentAt: 1705840000000,
-      authorName: 'Marc Leblanc',
+      authorUuid: marcLeblanc.uuid,
       attachments: [
         {
           filename: 'notification_livraison.jpg',
@@ -234,7 +234,7 @@ export const waitingForAnswerTicket: Ticket = {
         'Bonjour Marc, je vais vérifier avec le transporteur. Pouvez-vous me confirmer votre adresse de livraison et avez-vous vérifié auprès de vos voisins ?',
       type: TicketMessageType.PUBLIC,
       sentAt: 1705842000000,
-      authorName: 'Service Client',
+      authorUuid: 'admin-uuid',
       attachments: []
     }
   ],
@@ -262,7 +262,7 @@ export const notWaitingForAnswerTicket: Ticket = {
       content: "Ma commande semble avoir été livrée mais je ne l'ai pas reçue.",
       type: TicketMessageType.PUBLIC,
       sentAt: 1705840000000,
-      authorName: 'Marc Leblanc',
+      authorUuid: marcLeblanc.uuid,
       attachments: [
         {
           filename: 'notification_livraison.jpg',
@@ -277,7 +277,7 @@ export const notWaitingForAnswerTicket: Ticket = {
       content: 'Note privée',
       type: TicketMessageType.PRIVATE,
       sentAt: 1705842000000,
-      authorName: 'Service Client',
+      authorUuid: 'admin-uuid',
       attachments: []
     }
   ],

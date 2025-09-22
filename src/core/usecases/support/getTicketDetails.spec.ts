@@ -5,9 +5,10 @@ import { startedTicket } from '@utils/testData/tickets'
 import { InMemoryTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTicketGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { TicketDoesNotExistsError } from '@core/errors/TicketDoesNotExistsError'
+import { Ticket } from '@core/entities/ticket'
 
 describe('Get ticket details', () => {
-  let ticketStore: any
+  let ticketStore: ReturnType<typeof useTicketStore>
   let ticketGateway: InMemoryTicketGateway
   let dateProvider: FakeDateProvider
 
@@ -42,12 +43,10 @@ describe('Get ticket details', () => {
       givenExistingTickets(startedTicket)
     })
     it('should be aware during loading', async () => {
-      const unsubscribe = ticketStore.$subscribe(
-        (mutation: any, state: any) => {
-          expect(state.isLoading).toBe(true)
-          unsubscribe()
-        }
-      )
+      const unsubscribe = ticketStore.$subscribe((_mutation, state) => {
+        expect(state.isLoading).toBe(true)
+        unsubscribe()
+      })
       await whenGetTicketDetails(startedTicket.uuid)
     })
     it('should be aware that loading is over', async () => {
@@ -56,7 +55,7 @@ describe('Get ticket details', () => {
     })
   })
 
-  const givenExistingTickets = (...tickets: any[]) => {
+  const givenExistingTickets = (...tickets: Ticket[]) => {
     ticketGateway.feedWith(...tickets)
   }
 

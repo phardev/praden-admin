@@ -2,13 +2,14 @@ import { createPinia, setActivePinia } from 'pinia'
 import { useTicketStore } from '@store/ticketStore'
 import {
   getTicketDetailsVM,
-  TicketDetailsVM
+  TicketDetailsVM,
+  TicketMessageVM
 } from '@adapters/primary/view-models/support/get-support-ticket-details/getTicketDetailsVM'
 import { startedTicket } from '@utils/testData/tickets'
 import { TicketMessageType } from '@core/entities/ticket'
 
 describe('Get ticket details VM', () => {
-  let ticketStore: any
+  let ticketStore: ReturnType<typeof useTicketStore>
 
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -33,6 +34,25 @@ describe('Get ticket details VM', () => {
 
     it('should return ticket details', () => {
       const vm = getTicketDetailsVM()
+      const customerName = `${startedTicket.customer.firstname} ${startedTicket.customer.lastname}`
+
+      const expectedMessages: TicketMessageVM[] = startedTicket.messages.map(
+        (message) => ({
+          uuid: message.uuid,
+          content: message.content,
+          type: message.type,
+          sentAt: message.sentAt,
+          author: {
+            uuid: message.authorUuid,
+            name:
+              message.authorUuid === startedTicket.customer.uuid
+                ? customerName
+                : 'Service Client'
+          },
+          attachments: message.attachments
+        })
+      )
+
       const expectedVM: TicketDetailsVM = {
         uuid: startedTicket.uuid,
         ticketNumber: startedTicket.ticketNumber,
@@ -43,9 +63,9 @@ describe('Get ticket details VM', () => {
         customer: {
           uuid: startedTicket.customer.uuid,
           email: startedTicket.customer.email,
-          name: `${startedTicket.customer.firstname} ${startedTicket.customer.lastname}`
+          name: customerName
         },
-        messages: startedTicket.messages,
+        messages: expectedMessages,
         createdAt: startedTicket.createdAt,
         updatedAt: startedTicket.updatedAt,
         orderUuid: startedTicket.orderUuid
@@ -55,7 +75,26 @@ describe('Get ticket details VM', () => {
 
     it('should format messages for display', () => {
       const vm = getTicketDetailsVM()
-      expect(vm?.item?.messages).toStrictEqual(startedTicket.messages)
+      const customerName = `${startedTicket.customer.firstname} ${startedTicket.customer.lastname}`
+
+      const expectedMessages: TicketMessageVM[] = startedTicket.messages.map(
+        (message) => ({
+          uuid: message.uuid,
+          content: message.content,
+          type: message.type,
+          sentAt: message.sentAt,
+          author: {
+            uuid: message.authorUuid,
+            name:
+              message.authorUuid === startedTicket.customer.uuid
+                ? customerName
+                : 'Service Client'
+          },
+          attachments: message.attachments
+        })
+      )
+
+      expect(vm?.item?.messages).toStrictEqual(expectedMessages)
     })
 
     it('should separate public and private messages', () => {
