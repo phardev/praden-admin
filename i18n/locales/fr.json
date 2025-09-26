@@ -34,7 +34,8 @@
     "cancel": "Annuler",
     "create": "Créer",
     "update": "Modifier",
-    "delete": "Supprimer"
+    "delete": "Supprimer",
+    "loading": "Chargement..."
   },
   "customers": {
     "viewTitle": "Voir client",
@@ -210,5 +211,20 @@
       "manage": "Gérer les réponses",
       "empty": "Aucune réponse prédéfinie disponible"
     }
+  },
+  "staff": {
+    "title": "Équipe",
+    "staffList": "Liste des employés",
+    "permissions": "Permissions",
+    "selectRole": "Sélectionner un rôle",
+    "noStaff": "Aucun employé"
+  },
+  "permissions": {
+    "permission": "Permission",
+    "noData": "Aucune donnée disponible",
+    "save": "Enregistrer",
+    "saveChanges": "Enregistrer les modifications",
+    "cancel": "Annuler",
+    "unsavedChanges": "Modifications non enregistrées"
   }
 }

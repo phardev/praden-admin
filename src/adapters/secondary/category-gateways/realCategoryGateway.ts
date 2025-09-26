@@ -16,7 +16,7 @@ export class RealCategoryGateway
 
   async list(): Promise<Array<Category>> {
     const res = await axiosWithBearer.get(`${this.baseUrl}/categories/`)
-    return Promise.resolve(res.data.items)
+    return res.data.items
   }
 
   async create(dto: CreateCategoryDTO): Promise<Category> {
@@ -30,7 +30,7 @@ export class RealCategoryGateway
         }
       }
     )
-    return Promise.resolve(res.data.item)
+    return res.data.item
   }
 
   async edit(uuid: UUID, dto: EditCategoryDTO): Promise<Category> {
@@ -53,11 +53,11 @@ export class RealCategoryGateway
         }
       }
     )
-    return Promise.resolve(res.data.item)
+    return res.data.item
   }
 
   async getByUuid(uuid: UUID): Promise<Category> {
     const res = await axiosWithBearer.get(`${this.baseUrl}/categories/${uuid}`)
-    return Promise.resolve(res.data.item)
+    return res.data.item
   }
 }

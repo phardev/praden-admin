@@ -113,6 +113,11 @@ export const fullMenu: NavigationMenu = {
       title: 'Administration',
       links: [
         {
+          name: 'Staff',
+          icon: 'material-symbols:group-outline',
+          href: '/staff'
+        },
+        {
           name: 'Recherche',
           icon: 'material-symbols:search-rounded',
           href: '/research'

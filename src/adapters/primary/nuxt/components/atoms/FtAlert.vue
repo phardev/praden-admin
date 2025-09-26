@@ -28,7 +28,6 @@ defineProps({
 const emit = defineEmits(['dismiss'])
 
 const dismiss = () => {
-  console.log('dismiss')
   emit('dismiss')
 }
 </script>
