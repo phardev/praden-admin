@@ -225,6 +225,27 @@
     "save": "Enregistrer",
     "saveChanges": "Enregistrer les modifications",
     "cancel": "Annuler",
-    "unsavedChanges": "Modifications non enregistrées"
+    "unsavedChanges": "Modifications non enregistrées",
+    "resources": {
+      "dashboard": "Tableau de bord",
+      "reminders": "Relances",
+      "products": "Produits",
+      "laboratories": "Laboratoires",
+      "categories": "Catégories",
+      "promotions": "Promotions",
+      "promotion-codes": "Codes promotion",
+      "customers": "Clients",
+      "newsletter": "Newsletter",
+      "support": "SAV",
+      "deliveries": "Livraisons",
+      "preparations": "Préparations",
+      "orders": "Commandes",
+      "banners": "Bannières",
+      "staff": "Équipe",
+      "research": "Recherche"
+    }
+  },
+  "systemResources": {
+    "noResources": "Aucune ressource système disponible"
   }
 }

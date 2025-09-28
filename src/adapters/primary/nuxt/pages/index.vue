@@ -10,6 +10,7 @@
 
   .grid.grid-cols-1.gap-6(class="md:grid-cols-2 lg:grid-cols-4")
     UCard.dashboard-card.transition-all.duration-300(
+      v-if="canAccess('/dashboard')"
       class="hover:shadow-lg hover:scale-105 cursor-pointer"
       @click="navigateTo('/dashboard')"
     )
@@ -21,6 +22,7 @@
         p.text-sm.text-gray-600.mb-4 Consultez les statistiques de vente et les performances de la pharmacie.
         UButton(color="primary" variant="soft" block icon="i-heroicons-arrow-right" label="Accéder" @click.stop="navigateTo('/dashboard')")
     UCard.products-card.transition-all.duration-300(
+      v-if="canAccess('/products')"
       class="hover:shadow-lg hover:scale-105 cursor-pointer"
       @click="navigateTo('/products')"
     )
@@ -32,6 +34,7 @@
         p.text-sm.text-gray-600.mb-4 Gérez votre catalogue de produits, prix et disponibilité.
         UButton(color="primary" variant="soft" block icon="i-heroicons-arrow-right" label="Accéder" @click.stop="navigateTo('/products')")
     UCard.preparations-card.transition-all.duration-300(
+      v-if="canAccess('/preparations')"
       class="hover:shadow-lg hover:scale-105 cursor-pointer"
       @click="navigateTo('/preparations')"
     )
@@ -43,6 +46,7 @@
         p.text-sm.text-gray-600.mb-4 Suivez et gérez les préparations de commandes en cours.
         UButton(color="primary" variant="soft" block icon="i-heroicons-arrow-right" label="Accéder" @click.stop="navigateTo('/preparations')")
     UCard.orders-card.transition-all.duration-300(
+      v-if="canAccess('/orders')"
       class="hover:shadow-lg hover:scale-105 cursor-pointer"
       @click="navigateTo('/orders')"
     )
@@ -54,7 +58,7 @@
         p.text-sm.text-gray-600.mb-4 Consultez l'historique des commandes et leur statut.
         UButton(color="primary" variant="soft" block icon="i-heroicons-arrow-right" label="Accéder" @click.stop="navigateTo('/orders')")
 
-  UCard.mt-8
+  UCard.mt-8(v-if="canAccess('/dashboard')")
     template(#header)
       h2.text-xl.font-bold Aperçu rapide du jour
     template(#default)
@@ -87,10 +91,12 @@
 <script lang="ts" setup>
 import { formatCurrency } from '@/src/utils/formatters'
 import { useDashboardData } from '../composables/useDashboardData'
+import { usePermissions } from '../composables/usePermissions'
 
 definePageMeta({ layout: 'main' })
 
 const { isLoading, dashboard, fetchDashboardData } = useDashboardData()
+const { canAccess } = usePermissions()
 
 onMounted(() => {
   const now = new Date()

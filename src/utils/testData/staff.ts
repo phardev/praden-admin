@@ -24,3 +24,16 @@ export const marcMartin: Staff = {
   email: 'marc.martin@praden.com',
   role: assistantRole
 }
+
+export const emailOnlyStaff: Staff = {
+  uuid: 'staff-email-only',
+  email: 'support@praden.com',
+  role: assistantRole
+}
+
+export const firstnameOnlyStaff: Staff = {
+  uuid: 'staff-firstname-only',
+  firstname: 'Alex',
+  email: 'alex@praden.com',
+  role: pharmacistRole
+}

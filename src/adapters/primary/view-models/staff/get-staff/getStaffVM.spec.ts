@@ -1,7 +1,13 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { useStaffStore } from '@store/staffStore'
 import { getStaffVM } from '@adapters/primary/view-models/staff/get-staff/getStaffVM'
-import { johnDoe, janeDupont, marcMartin } from '@utils/testData/staff'
+import {
+  johnDoe,
+  janeDupont,
+  marcMartin,
+  emailOnlyStaff,
+  firstnameOnlyStaff
+} from '@utils/testData/staff'
 
 describe('Get staff VM', () => {
   let staffStore: any
@@ -35,6 +41,7 @@ describe('Get staff VM', () => {
             firstname: johnDoe.firstname,
             lastname: johnDoe.lastname,
             email: johnDoe.email,
+            displayName: 'John Doe',
             roleUuid: johnDoe.role.uuid,
             roleName: johnDoe.role.name
           },
@@ -43,6 +50,7 @@ describe('Get staff VM', () => {
             firstname: janeDupont.firstname,
             lastname: janeDupont.lastname,
             email: janeDupont.email,
+            displayName: 'Jane Dupont',
             roleUuid: janeDupont.role.uuid,
             roleName: janeDupont.role.name
           },
@@ -51,6 +59,7 @@ describe('Get staff VM', () => {
             firstname: marcMartin.firstname,
             lastname: marcMartin.lastname,
             email: marcMartin.email,
+            displayName: 'Marc Martin',
             roleUuid: marcMartin.role.uuid,
             roleName: marcMartin.role.name
           }
@@ -58,6 +67,38 @@ describe('Get staff VM', () => {
         isLoading: false
       }
       expect(vm).toStrictEqual(expectedVM)
+    })
+  })
+
+  describe('Staff with optional firstname/lastname', () => {
+    it('should handle staff with email only', () => {
+      staffStore.items = [emailOnlyStaff]
+      const vm = getStaffVM()
+
+      expect(vm.items[0]).toStrictEqual({
+        uuid: emailOnlyStaff.uuid,
+        firstname: undefined,
+        lastname: undefined,
+        email: emailOnlyStaff.email,
+        displayName: 'support@praden.com',
+        roleUuid: emailOnlyStaff.role.uuid,
+        roleName: emailOnlyStaff.role.name
+      })
+    })
+
+    it('should handle staff with firstname only', () => {
+      staffStore.items = [firstnameOnlyStaff]
+      const vm = getStaffVM()
+
+      expect(vm.items[0]).toStrictEqual({
+        uuid: firstnameOnlyStaff.uuid,
+        firstname: firstnameOnlyStaff.firstname,
+        lastname: undefined,
+        email: firstnameOnlyStaff.email,
+        displayName: 'Alex',
+        roleUuid: firstnameOnlyStaff.role.uuid,
+        roleName: firstnameOnlyStaff.role.name
+      })
     })
   })
 })

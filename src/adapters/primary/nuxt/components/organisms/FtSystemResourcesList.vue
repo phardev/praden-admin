@@ -11,7 +11,7 @@
       :key="resource"
     )
       .flex.items-center.space-x-3
-        span.text-lg.font-medium.text-gray-900 {{ resource }}
+        span.text-lg.font-medium.text-gray-900 {{ $t(`permissions.resources.${resource}`) }}
   .flex.items-center.justify-center.py-12(v-else)
     .text-center
       .text-gray-400.mb-2

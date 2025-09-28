@@ -26,7 +26,7 @@
           td.px-6.py-4.whitespace-nowrap.text-sm.font-medium.text-gray-900
             .flex.items-center.space-x-2
               icon.h-5.w-5.text-gray-400(name="i-heroicons-cog-6-tooth-20-solid")
-              span.capitalize {{ resource.replace('-', ' ') }}
+              span {{ $t(`permissions.resources.${resource}`) }}
           td.px-6.py-4.whitespace-nowrap(
             v-for="role in roles"
             :key="`${resource}-${role.uuid}`"

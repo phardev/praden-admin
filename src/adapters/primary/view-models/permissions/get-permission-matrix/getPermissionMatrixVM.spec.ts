@@ -37,12 +37,21 @@ describe('Get permission matrix view model', () => {
 
       expect(result.permissions['role-admin']).toStrictEqual({
         dashboard: true,
+        reminders: true,
+        products: true,
+        laboratories: true,
+        categories: true,
+        promotions: true,
+        'promotion-codes': true,
+        customers: true,
         newsletter: true,
-        administration: true,
-        'user-management': true,
-        reports: true,
-        analytics: true,
-        settings: true
+        support: true,
+        deliveries: true,
+        preparations: true,
+        orders: true,
+        banners: true,
+        staff: true,
+        research: true
       })
     })
 
@@ -51,12 +60,21 @@ describe('Get permission matrix view model', () => {
 
       expect(result.permissions['role-pharmacist']).toStrictEqual({
         dashboard: true,
+        reminders: true,
+        products: true,
+        laboratories: true,
+        categories: true,
+        promotions: true,
+        'promotion-codes': true,
+        customers: true,
         newsletter: true,
-        administration: false,
-        'user-management': true,
-        reports: true,
-        analytics: true,
-        settings: false
+        support: true,
+        deliveries: true,
+        preparations: true,
+        orders: true,
+        banners: true,
+        staff: false,
+        research: false
       })
     })
 
@@ -65,12 +83,21 @@ describe('Get permission matrix view model', () => {
 
       expect(result.permissions['role-assistant']).toStrictEqual({
         dashboard: true,
+        reminders: true,
+        products: false,
+        laboratories: false,
+        categories: false,
+        promotions: false,
+        'promotion-codes': false,
+        customers: true,
         newsletter: true,
-        administration: false,
-        'user-management': false,
-        reports: false,
-        analytics: false,
-        settings: false
+        support: true,
+        deliveries: false,
+        preparations: true,
+        orders: true,
+        banners: false,
+        staff: false,
+        research: false
       })
     })
 

@@ -1,14 +1,15 @@
 <template lang="pug">
-.dashboard-container.p-4.mx-auto
-  .flex.flex-col.justify-between.items-start.gap-4.mb-4(class="md:flex-row md:items-center")
-    h2.text-xl.font-bold.text-primary-700 {{ $t('dashboard.title') }}
-    UButton.ml-auto(class="md:hidden" color="gray" variant="ghost" icon="i-heroicons-adjustments-horizontal" @click="toggleFilters")
-      | {{ showFilters ? $t('common.hideFilters') : $t('common.showFilters') }}
+div(v-if="permissions.canAccessDashboard")
+  .dashboard-container.p-4.mx-auto
+    .flex.flex-col.justify-between.items-start.gap-4.mb-4(class="md:flex-row md:items-center")
+      h2.text-xl.font-bold.text-primary-700 {{ $t('dashboard.title') }}
+      UButton.ml-auto(class="md:hidden" color="gray" variant="ghost" icon="i-heroicons-adjustments-horizontal" @click="toggleFilters")
+        | {{ showFilters ? $t('common.hideFilters') : $t('common.showFilters') }}
 
-  UCard.mb-6.shadow-sm.bg-gray-50(v-show="showFilters || isLargeScreen")
-    .p-3
-      UForm
-        .grid.grid-cols-1.gap-3(class="md:grid-cols-2 lg:grid-cols-4")
+    UCard.mb-6.shadow-sm.bg-gray-50(v-show="showFilters || isLargeScreen")
+      .p-3
+        UForm
+          .grid.grid-cols-1.gap-3(class="md:grid-cols-2 lg:grid-cols-4")
           UFormGroup(label="Catégorie" name="category")
             FtAutocomplete(
               v-model="category"
@@ -186,8 +187,13 @@
               div.mb-1(v-for="categoryItem in row.categories" :key="categoryItem.uuid")
                 UBadge(variant="subtle" :label="categoryItem.name")
             div(v-else)
+              span.text-gray-400 -
           template(#laboratory-data="{ row }")
             span {{ row.laboratory ? row.laboratory.name : '' }}
+
+div.p-8.text-center(v-else)
+  h2.text-2xl.font-bold.text-red-600.mb-4 Accès refusé
+  p.text-gray-600 Vous n'avez pas l'autorisation d'accéder au tableau de bord.
 </template>
 
 <script lang="ts" setup>
@@ -195,6 +201,7 @@ import { format } from 'date-fns'
 import { formatCurrency } from '@/src/utils/formatters'
 import { useDashboardData } from '../../composables/useDashboardData'
 import { getLaboratoriesVM } from '../../../view-models/laboratories/get-laboratories/getLaboratoriesVM'
+import { getPermissionsVM } from '../../../view-models/permissions/getPermissionsVM'
 import { getCategoriesVM } from '../../../view-models/categories/get-categories/getCategoriesVM'
 import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
@@ -211,6 +218,8 @@ definePageMeta({ layout: 'main' })
 const { t } = useI18n()
 
 const { isLoading, dashboard, fetchDashboardData } = useDashboardData()
+
+const permissions = computed(() => getPermissionsVM())
 
 const productLimit = ref(50)
 const startDate = ref<number | null>(null)

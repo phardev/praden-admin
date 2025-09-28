@@ -11,7 +11,9 @@
       :key="staff.uuid"
     )
       .flex.items-center.space-x-3
-        span.text-lg.font-medium.text-gray-900 {{ staff.firstname }} {{ staff.lastname }}
+        .flex.flex-col
+          span.text-lg.font-medium.text-gray-900 {{ staff.displayName }}
+          span.text-sm.text-gray-500 {{ staff.email }}
       .flex.items-center.space-x-2
         ft-role-select(
           :model-value="staff.roleUuid"
@@ -33,9 +35,10 @@
 <script setup lang="ts">
 interface StaffItem {
   uuid: string
-  firstname: string
-  lastname: string
+  firstname?: string
+  lastname?: string
   email: string
+  displayName: string
   roleUuid: string
   roleName: string
 }
