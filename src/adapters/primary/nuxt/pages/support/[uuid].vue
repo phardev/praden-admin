@@ -72,7 +72,7 @@
 
           .action-buttons.flex.gap-3(class="flex-wrap")
             UButton(
-              v-if="ticketDetailsVM.item.status === 'NEW'"
+              v-if="ticketDetailsVM.item.status === 'NEW' || ticketDetailsVM.item.status === 'RESOLVED'"
               icon="i-lucide-play"
               color="blue"
               size="lg"
