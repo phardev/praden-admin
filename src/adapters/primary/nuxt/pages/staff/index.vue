@@ -25,15 +25,30 @@
         )
       TabPanel.mt-4
         ft-permission-matrix(
-          :system-resources="permissionMatrixVM.systemResources"
-          :roles="permissionMatrixVM.roles"
-          :permissions="permissionEditVM ? permissionEditVM.getCurrentPermissions() : permissionMatrixVM.permissions"
-          :is-loading="permissionMatrixVM.isLoading || isSavingPermissions"
-          :has-changes="permissionEditVM ? permissionEditVM.hasChanges() : false"
+          :system-resources="permissionEditVM.systemResources"
+          :roles="permissionEditVM.roles"
+          :permissions="permissionEditVM.permissions"
+          :is-loading="permissionEditVM.isLoading"
+          :has-changes="permissionEditVM.hasChanges()"
           @permission-changed="handlePermissionChange"
           @save-changes="handleSavePermissions"
           @reset-changes="handleResetChanges"
         )
+
+      TabPanel.mt-4
+        ft-role-list(
+          :items="roleListVM.items"
+          :is-loading="roleListVM.isLoading"
+          @create-role="handleCreateRole"
+          @edit-role="handleEditRole"
+        )
+
+  RoleFormModal(
+    v-model="showRoleModal"
+    :mode="roleModalMode"
+    :role-uuid="selectedRoleUuid"
+    @success="handleRoleFormSuccess"
+  )
 </template>
 
 <script lang="ts" setup>
@@ -47,11 +62,11 @@ import { useRoleGateway } from '../../../../../../gateways/roleGateway'
 import { useSystemResourceGateway } from '../../../../../../gateways/systemResourceGateway'
 import { getStaffVM } from '@adapters/primary/view-models/staff/get-staff/getStaffVM'
 import { getRolesVM } from '@adapters/primary/view-models/roles/get-roles/getRolesVM'
-import { getPermissionMatrixVM } from '@adapters/primary/view-models/permissions/get-permission-matrix/getPermissionMatrixVM'
 import {
   permissionMatrixEditVM,
   PermissionMatrixEditVM
 } from '@adapters/primary/view-models/permissions/permission-matrix-edit/permissionMatrixEditVM'
+import { getRoleListVM } from '@adapters/primary/view-models/roles/get-role-list/getRoleListVM'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
 
 definePageMeta({ layout: 'main' })
@@ -64,13 +79,15 @@ const { t } = useI18n()
 
 const tabs = [
   { label: t('staff.staffList') },
-  { label: t('staff.permissions') }
+  { label: t('staff.permissions') },
+  { label: t('staff.roles') }
 ]
 
-onMounted(() => {
-  listStaff(useStaffGateway())
-  listRoles(useRoleGateway())
-  listSystemResources(useSystemResourceGateway())
+onMounted(async () => {
+  await listStaff(useStaffGateway())
+  await listRoles(useRoleGateway())
+  await listSystemResources(useSystemResourceGateway())
+  permissionEditVM.value = permissionMatrixEditVM()
 })
 
 const staffVM = computed(() => {
@@ -81,29 +98,9 @@ const rolesVM = computed(() => {
   return getRolesVM()
 })
 
-const permissionMatrixVM = computed(() => {
-  return getPermissionMatrixVM()
+const roleListVM = computed(() => {
+  return getRoleListVM()
 })
-
-watch(
-  permissionMatrixVM,
-  (vm) => {
-    if (
-      vm &&
-      vm.roles.length > 0 &&
-      vm.systemResources.length > 0 &&
-      !vm.isLoading
-    ) {
-      if (!permissionEditVM.value) {
-        permissionEditVM.value = permissionMatrixEditVM(
-          vm.permissions,
-          vm.roles
-        )
-      }
-    }
-  },
-  { immediate: true }
-)
 
 const roleOptions = computed(() => {
   return rolesVM.value.items
@@ -172,5 +169,27 @@ const handleResetChanges = () => {
     return
   }
   permissionEditVM.value.reset()
+}
+
+const showRoleModal = ref(false)
+const roleModalMode = ref<'create' | 'edit'>('create')
+const selectedRoleUuid = ref<string | undefined>(undefined)
+
+const handleCreateRole = () => {
+  roleModalMode.value = 'create'
+  selectedRoleUuid.value = undefined
+  showRoleModal.value = true
+}
+
+const handleEditRole = (roleUuid: string) => {
+  roleModalMode.value = 'edit'
+  selectedRoleUuid.value = roleUuid
+  showRoleModal.value = true
+}
+
+const handleRoleFormSuccess = () => {
+  if (permissionEditVM.value) {
+    permissionEditVM.value.refreshFromStore()
+  }
 }
 </script>

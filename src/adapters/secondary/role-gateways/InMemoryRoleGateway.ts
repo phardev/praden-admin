@@ -1,12 +1,33 @@
-import { RoleGateway, EditRoleDTO } from '@core/gateways/roleGateway'
+import {
+  RoleGateway,
+  EditRoleDTO,
+  CreateRoleDTO
+} from '@core/gateways/roleGateway'
 import { Role } from '@core/entities/role'
 import { UUID } from '@core/types/types'
+import { UuidGenerator } from '@core/gateways/uuidGenerator'
 
 export class InMemoryRoleGateway implements RoleGateway {
   private roles: Array<Role> = []
+  private uuidGenerator: UuidGenerator
+
+  constructor(uuidGenerator: UuidGenerator) {
+    this.uuidGenerator = uuidGenerator
+  }
 
   async list(): Promise<Array<Role>> {
-    return this.roles
+    return Promise.resolve(JSON.parse(JSON.stringify(this.roles)))
+  }
+
+  async create(dto: CreateRoleDTO): Promise<Role> {
+    const newRole: Role = {
+      uuid: this.uuidGenerator.generate(),
+      name: dto.name,
+      permissions: dto.permissions
+    }
+
+    this.roles.push(newRole)
+    return Promise.resolve(JSON.parse(JSON.stringify(newRole)))
   }
 
   async edit(roleUuid: UUID, dto: EditRoleDTO): Promise<Role> {
@@ -22,7 +43,7 @@ export class InMemoryRoleGateway implements RoleGateway {
     }
 
     this.roles[roleIndex] = updatedRole
-    return JSON.parse(JSON.stringify(updatedRole))
+    return Promise.resolve(JSON.parse(JSON.stringify(updatedRole)))
   }
 
   feedWith(...roles: Array<Role>) {

@@ -6,6 +6,7 @@ export const listRoles = async (roleGateway: RoleGateway) => {
   try {
     roleStore.startLoading()
     const roles = await roleGateway.list()
+    console.log('list Roles:', roles)
     roleStore.list(roles)
   } finally {
     roleStore.stopLoading()

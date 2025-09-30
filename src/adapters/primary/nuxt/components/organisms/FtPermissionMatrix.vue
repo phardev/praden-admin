@@ -25,17 +25,16 @@
         )
           td.px-6.py-4.whitespace-nowrap.text-sm.font-medium.text-gray-900
             .flex.items-center.space-x-2
-              icon.h-5.w-5.text-gray-400(name="i-heroicons-cog-6-tooth-20-solid")
               span {{ $t(`permissions.resources.${resource}`) }}
           td.px-6.py-4.whitespace-nowrap(
             v-for="role in roles"
             :key="`${resource}-${role.uuid}`"
           )
             .flex.items-center.justify-center
-              UCheckbox(
+              ft-checkbox(
+                :key="`${resource}-${role.uuid}`"
                 :model-value="(permissions[role.uuid] && permissions[role.uuid][resource]) || false"
-                :ui="{ base: 'h-5 w-5', rounded: 'rounded', color: 'ring-primary-500 dark:ring-primary-400 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-400' }"
-                @update:model-value="$emit('permissionChanged', role.uuid, resource, $event)"
+                @click="$emit('permissionChanged', role.uuid, resource, !((permissions[role.uuid] && permissions[role.uuid][resource]) || false))"
               )
   .flex.items-center.justify-center.py-12(v-else)
     .text-center

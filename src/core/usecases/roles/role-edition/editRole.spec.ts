@@ -8,15 +8,17 @@ import {
   EditRoleDTO
 } from '@core/usecases/roles/role-edition/editRole'
 import { UUID } from '@core/types/types'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 
 describe('Role Edition', () => {
   let roleStore: any
   let roleGateway: InMemoryRoleGateway
+  const uuidGenerator = new FakeUuidGenerator()
 
   beforeEach(() => {
     setActivePinia(createPinia())
     roleStore = useRoleStore()
-    roleGateway = new InMemoryRoleGateway()
+    roleGateway = new InMemoryRoleGateway(uuidGenerator)
   })
 
   describe('The role exists', () => {

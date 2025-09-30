@@ -21,6 +21,9 @@ export const useRoleStore = defineStore('RoleStore', {
     list(roles: Array<Role>) {
       this.items = roles
     },
+    create(role: Role) {
+      this.items.push(role)
+    },
     edit(role: Role) {
       this.items = this.items.map((r) => {
         return r.uuid === role.uuid ? role : r
