@@ -21,6 +21,9 @@ export const useStaffStore = defineStore('StaffStore', {
     list(staff: Array<Staff>) {
       this.items = staff
     },
+    add(staff: Staff) {
+      this.items.push(staff)
+    },
     setCurrent(staff: Staff) {
       this.current = staff
     },

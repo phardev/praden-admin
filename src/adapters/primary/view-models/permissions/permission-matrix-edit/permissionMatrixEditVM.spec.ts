@@ -3,6 +3,9 @@ import {
   PermissionMatrixEditVM,
   EditRoleChangeDto
 } from './permissionMatrixEditVM'
+import { createPinia, setActivePinia } from 'pinia'
+import { useRoleStore } from '@store/roleStore'
+import { useSystemResourceStore } from '@store/systemResourceStore'
 
 describe('PermissionMatrixEditVM', () => {
   let vm: PermissionMatrixEditVM
@@ -10,6 +13,11 @@ describe('PermissionMatrixEditVM', () => {
   let roles: Array<{ uuid: string; name: string }>
 
   beforeEach(() => {
+    setActivePinia(createPinia())
+
+    const roleStore = useRoleStore()
+    const systemResourceStore = useSystemResourceStore()
+
     roles = [
       { uuid: 'role-admin', name: 'Administrateur' },
       { uuid: 'role-pharmacist', name: 'Pharmacien' },
@@ -37,7 +45,39 @@ describe('PermissionMatrixEditVM', () => {
       }
     }
 
-    vm = permissionMatrixEditVM(initialPermissions, roles)
+    systemResourceStore.items = [
+      'dashboard',
+      'newsletter',
+      'administration',
+      'user-management'
+    ]
+
+    roleStore.items = [
+      {
+        uuid: 'role-admin',
+        name: 'Administrateur',
+        permissions: [
+          { resource: 'dashboard' },
+          { resource: 'newsletter' },
+          { resource: 'administration' }
+        ]
+      },
+      {
+        uuid: 'role-pharmacist',
+        name: 'Pharmacien',
+        permissions: [
+          { resource: 'dashboard' },
+          { resource: 'user-management' }
+        ]
+      },
+      {
+        uuid: 'role-assistant',
+        name: 'Assistant',
+        permissions: [{ resource: 'dashboard' }]
+      }
+    ]
+
+    vm = permissionMatrixEditVM()
   })
 
   describe('Initial state', () => {

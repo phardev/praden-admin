@@ -220,7 +220,37 @@
     "permissions": "Permissions",
     "selectRole": "Sélectionner un rôle",
     "noStaff": "Aucun employé",
-    "roles": "Rôles"
+    "roles": "Rôles",
+    "management": {
+      "title": "Gestion de l'équipe",
+      "create": "Ajouter un employé",
+      "noStaff": {
+        "title": "Aucun employé",
+        "description": "Ajoutez votre premier employé pour commencer à gérer l'équipe"
+      }
+    },
+    "create": {
+      "title": "Ajouter un employé",
+      "description": "Créez un nouveau compte employé avec un rôle et des permissions",
+      "submit": "Créer l'employé"
+    },
+    "form": {
+      "email": {
+        "label": "Adresse email",
+        "placeholder": "john.doe{'@'}example.com"
+      },
+      "firstname": {
+        "label": "Prénom",
+        "placeholder": "John"
+      },
+      "lastname": {
+        "label": "Nom",
+        "placeholder": "Doe"
+      },
+      "role": {
+        "label": "Rôle"
+      }
+    }
   },
   "roles": {
     "management": {

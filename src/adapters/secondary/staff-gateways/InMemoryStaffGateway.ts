@@ -1,4 +1,4 @@
-import { StaffGateway } from '@core/gateways/staffGateway'
+import { StaffGateway, CreateStaffDTO } from '@core/gateways/staffGateway'
 import { Staff } from '@core/entities/staff'
 import { Role } from '@core/entities/role'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
@@ -15,6 +15,23 @@ export class InMemoryStaffGateway implements StaffGateway {
 
   list(): Promise<Array<Staff>> {
     return JSON.parse(JSON.stringify(this.staff))
+  }
+
+  async create(dto: CreateStaffDTO): Promise<Staff> {
+    const role = this.roles.find((r) => r.uuid === dto.roleUuid)
+    if (!role) {
+      throw new Error(`Role with UUID ${dto.roleUuid} not found`)
+    }
+
+    const newStaff: Staff = {
+      uuid: this.uuidGenerator.generate(),
+      email: dto.email,
+      firstname: dto.firstname,
+      lastname: dto.lastname,
+      role
+    }
+    this.staff.push(newStaff)
+    return JSON.parse(JSON.stringify(newStaff))
   }
 
   async assignRole(staffUuid: UUID, roleUuid: UUID): Promise<Staff> {

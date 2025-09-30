@@ -1,5 +1,5 @@
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import { StaffGateway } from '@core/gateways/staffGateway'
+import { StaffGateway, CreateStaffDTO } from '@core/gateways/staffGateway'
 import { Staff } from '@core/entities/staff'
 import { UUID } from '@core/types/types'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
@@ -12,6 +12,11 @@ export class RealStaffGateway extends RealGateway implements StaffGateway {
   async list(): Promise<Array<Staff>> {
     const res = await axiosWithBearer.get(`${this.baseUrl}/staff`)
     return res.data.items
+  }
+
+  async create(dto: CreateStaffDTO): Promise<Staff> {
+    const res = await axiosWithBearer.post(`${this.baseUrl}/staff`, dto)
+    return res.data.item
   }
 
   async assignRole(staffUuid: UUID, roleUuid: UUID): Promise<Staff> {

@@ -1,5 +1,12 @@
 <template lang="pug">
 .space-y-4
+  .flex.items-center.justify-between
+    h2.text-lg.font-medium.text-gray-900 {{ $t('staff.management.title') }}
+    ft-button(
+      icon="heroicons:plus"
+      @click="$emit('createStaff')"
+    ) {{ $t('staff.management.create') }}
+
   .flex.items-center.justify-center.py-8(v-if="isLoading")
     .text-center
       .text-gray-400.mb-2
@@ -29,7 +36,12 @@
     .text-center
       .text-gray-400.mb-2
         icon.h-12.w-12(name="i-heroicons-users-20-solid")
-      p.text-gray-600 {{ $t('staff.noStaff') }}
+      h3.text-lg.font-medium.text-gray-900.mb-2 {{ $t('staff.management.noStaff.title') }}
+      p.text-gray-600.mb-4 {{ $t('staff.management.noStaff.description') }}
+      ft-button(
+        icon="heroicons:plus"
+        @click="$emit('createStaff')"
+      ) {{ $t('staff.management.create') }}
 </template>
 
 <script setup lang="ts">
@@ -57,5 +69,6 @@ defineProps<{
 
 defineEmits<{
   roleChanged: [staffUuid: string, newRoleUuid: string]
+  createStaff: []
 }>()
 </script>
