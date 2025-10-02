@@ -72,9 +72,20 @@ defineEmits<{
   editRole: [roleUuid: string]
 }>()
 
+const localRoles = ref<Array<RoleItem>>([])
+
+watch(
+  () => props.items,
+  () => {
+    localRoles.value = props.items
+  },
+  { immediate: true }
+)
+
 const rolesModel = computed({
-  get: () => props.items,
+  get: () => localRoles.value,
   set: (v: Array<RoleItem>) => {
+    localRoles.value = v
     reorderRoles(
       v.map((r: RoleItem) => r.uuid),
       useRoleGateway()

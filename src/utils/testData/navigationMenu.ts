@@ -113,7 +113,7 @@ export const fullMenu: NavigationMenu = {
       title: 'Administration',
       links: [
         {
-          name: 'Staff',
+          name: 'Équipe',
           icon: 'material-symbols:group-outline',
           href: '/staff'
         },
