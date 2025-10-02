@@ -2,7 +2,7 @@ import axios from 'axios'
 import { getToken } from '@adapters/primary/nuxt/utils/keycloak'
 
 export const axiosWithBearer = axios.create({
-  timeout: 10000
+  timeout: 30000
 })
 
 axiosWithBearer.interceptors.request.use(
