@@ -28,7 +28,6 @@ export class RealNewsletterGateway
   }
 
   async unsubscribe(email: string): Promise<NewsletterSubscription> {
-    console.log('on unsub: ', email)
     const res = await axiosWithBearer.post(
       `${this.baseUrl}/newsletters/unsubscribe`,
       { email }
