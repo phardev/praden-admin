@@ -3,7 +3,7 @@ import {
   EditRoleDTO,
   CreateRoleDTO
 } from '@core/gateways/roleGateway'
-import { Role } from '@core/entities/role'
+import { Role, sortByOrder } from '@core/entities/role'
 import { UUID } from '@core/types/types'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
 
@@ -19,11 +19,21 @@ export class InMemoryRoleGateway implements RoleGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(this.roles)))
   }
 
+  async reorder(roleUuids: Array<UUID>): Promise<Array<Role>> {
+    for (const uuid of roleUuids) {
+      const i = roleUuids.indexOf(uuid)
+      await this.edit(uuid, { order: i })
+    }
+    this.roles = this.roles.sort(sortByOrder)
+    return Promise.resolve(JSON.parse(JSON.stringify(this.roles)))
+  }
+
   async create(dto: CreateRoleDTO): Promise<Role> {
     const newRole: Role = {
       uuid: this.uuidGenerator.generate(),
       name: dto.name,
-      permissions: dto.permissions
+      permissions: dto.permissions,
+      order: this.roles.length
     }
 
     this.roles.push(newRole)
@@ -38,8 +48,7 @@ export class InMemoryRoleGateway implements RoleGateway {
 
     const updatedRole = {
       ...this.roles[roleIndex],
-      name: dto.name,
-      permissions: dto.permissions
+      ...dto
     }
 
     this.roles[roleIndex] = updatedRole

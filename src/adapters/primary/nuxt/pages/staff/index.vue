@@ -23,6 +23,7 @@
           :role-options="roleOptions"
           @role-changed="handleRoleChange"
           @create-staff="handleCreateStaff"
+          @edit-staff="handleEditStaff"
         )
       TabPanel.mt-4
         ft-permission-matrix(
@@ -53,6 +54,8 @@
 
   StaffFormModal(
     v-model="showStaffModal"
+    :mode="staffModalMode"
+    :staff-uuid="selectedStaffUuid"
     @success="handleStaffFormSuccess"
   )
 </template>
@@ -200,8 +203,18 @@ const handleRoleFormSuccess = () => {
 }
 
 const showStaffModal = ref(false)
+const staffModalMode = ref<'create' | 'edit'>('create')
+const selectedStaffUuid = ref<string | undefined>(undefined)
 
 const handleCreateStaff = () => {
+  staffModalMode.value = 'create'
+  selectedStaffUuid.value = undefined
+  showStaffModal.value = true
+}
+
+const handleEditStaff = (staffUuid: string) => {
+  staffModalMode.value = 'edit'
+  selectedStaffUuid.value = staffUuid
   showStaffModal.value = true
 }
 

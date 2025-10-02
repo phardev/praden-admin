@@ -234,6 +234,11 @@
       "description": "Créez un nouveau compte employé avec un rôle et des permissions",
       "submit": "Créer l'employé"
     },
+    "edit": {
+      "title": "Modifier un employé",
+      "description": "Modifiez les informations et le rôle de l'employé",
+      "submit": "Enregistrer les modifications"
+    },
     "form": {
       "email": {
         "label": "Adresse email",

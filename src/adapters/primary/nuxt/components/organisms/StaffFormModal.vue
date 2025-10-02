@@ -2,9 +2,9 @@
 FtModal(v-model="isOpen" @close="handleClose")
   div(class="max-w-2xl mx-auto")
     .flex.items-center.justify-between.mb-6
-      h2.text-xl.font-semibold.text-gray-900 {{ $t('staff.create.title') }}
+      h2.text-xl.font-semibold.text-gray-900 {{ mode === 'create' ? $t('staff.create.title') : $t('staff.edit.title') }}
 
-    p.text-gray-600.mb-6 {{ $t('staff.create.description') }}
+    p.text-gray-600.mb-6 {{ mode === 'create' ? $t('staff.create.description') : $t('staff.edit.description') }}
 
     div(v-if="modalState.error" class="mb-4 p-4 bg-red-50 border border-red-200 rounded-md")
       p(class="text-red-600") {{ modalState.error }}
@@ -86,22 +86,29 @@ FtModal(v-model="isOpen" @close="handleClose")
           type="submit"
           :disabled="!canValidate"
           :loading="modalState.isSubmitting"
-        ) {{ $t('staff.create.submit') }}
+        ) {{ mode === 'create' ? $t('staff.create.submit') : $t('staff.edit.submit') }}
 </template>
 
 <script setup lang="ts">
 import { staffFormCreateVM } from '@adapters/primary/view-models/staff/staff-form/staffFormCreateVM'
 import { type StaffFormCreateVM } from '@adapters/primary/view-models/staff/staff-form/staffFormCreateVM'
+import { staffFormEditVM } from '@adapters/primary/view-models/staff/staff-form/staffFormEditVM'
+import { type StaffFormEditVM } from '@adapters/primary/view-models/staff/staff-form/staffFormEditVM'
 import { createStaff } from '@core/usecases/staff/staff-creation/createStaff'
+import { editStaff } from '@core/usecases/staff/staff-edition/editStaff'
 import { useStaffGateway } from '~/gateways/staffGateway'
 import { getRolesVM } from '@adapters/primary/view-models/roles/get-roles/getRolesVM'
 
 interface Props {
   modelValue: boolean
+  mode?: 'create' | 'edit'
+  staffUuid?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  modelValue: false
+  modelValue: false,
+  mode: 'create',
+  staffUuid: undefined
 })
 
 const emit = defineEmits<{
@@ -116,7 +123,7 @@ const modalState = reactive({
   error: null as string | null
 })
 
-const currentFormVM = ref<StaffFormCreateVM | null>(null)
+const currentFormVM = ref<StaffFormCreateVM | StaffFormEditVM | null>(null)
 
 const roleOptions = computed(() => {
   const rolesVM = getRolesVM()
@@ -149,7 +156,17 @@ watch(
     modalState.error = null
 
     try {
-      currentFormVM.value = staffFormCreateVM('staff-create-form')
+      if (props.mode === 'edit') {
+        if (!props.staffUuid) {
+          throw new Error('Staff UUID is required for edit mode')
+        }
+        currentFormVM.value = staffFormEditVM(
+          'staff-edit-form',
+          props.staffUuid
+        )
+      } else {
+        currentFormVM.value = staffFormCreateVM('staff-create-form')
+      }
     } catch (error: any) {
       modalState.error = error.message
     } finally {
@@ -189,7 +206,12 @@ const handleSubmit = async () => {
   modalState.isSubmitting = true
   try {
     const dto = currentFormVM.value.getDto()
-    await createStaff(dto, staffGateway)
+
+    if (props.mode === 'edit' && props.staffUuid) {
+      await editStaff(props.staffUuid, dto, staffGateway)
+    } else {
+      await createStaff(dto, staffGateway)
+    }
 
     emit('success')
     handleClose()

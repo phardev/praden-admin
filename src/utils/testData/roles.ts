@@ -4,6 +4,7 @@ import { PermissionResource } from '@core/entities/permissionResource'
 export const adminRole: Role = {
   uuid: 'role-admin',
   name: 'Administrateur',
+  order: 0,
   permissions: [
     { resource: PermissionResource.DASHBOARD },
     { resource: PermissionResource.REMINDERS },
@@ -27,6 +28,7 @@ export const adminRole: Role = {
 export const pharmacistRole: Role = {
   uuid: 'role-pharmacist',
   name: 'Pharmacien',
+  order: 1,
   permissions: [
     { resource: PermissionResource.DASHBOARD },
     { resource: PermissionResource.REMINDERS },
@@ -48,6 +50,7 @@ export const pharmacistRole: Role = {
 export const assistantRole: Role = {
   uuid: 'role-assistant',
   name: 'Assistant',
+  order: 2,
   permissions: [
     { resource: PermissionResource.DASHBOARD },
     { resource: PermissionResource.REMINDERS },

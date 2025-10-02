@@ -32,6 +32,12 @@
           v-if="isAssigningRole"
           name="i-heroicons-arrow-path-20-solid"
         )
+        ft-button(
+          variant="ghost"
+          size="sm"
+          icon="heroicons:pencil"
+          @click="$emit('editStaff', staff.uuid)"
+        )
   .flex.items-center.justify-center.py-12(v-else)
     .text-center
       .text-gray-400.mb-2
@@ -70,5 +76,6 @@ defineProps<{
 defineEmits<{
   roleChanged: [staffUuid: string, newRoleUuid: string]
   createStaff: []
+  editStaff: [staffUuid: string]
 }>()
 </script>

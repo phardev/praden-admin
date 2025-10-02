@@ -5,4 +5,9 @@ export interface Role {
   uuid: UUID
   name: string
   permissions: Array<Permission>
+  order: number
+}
+
+export const sortByOrder = (a: any, b: any): number => {
+  return a.order - b.order
 }

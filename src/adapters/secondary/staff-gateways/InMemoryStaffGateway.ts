@@ -1,4 +1,8 @@
-import { StaffGateway, CreateStaffDTO } from '@core/gateways/staffGateway'
+import {
+  StaffGateway,
+  CreateStaffDTO,
+  EditStaffDTO
+} from '@core/gateways/staffGateway'
 import { Staff } from '@core/entities/staff'
 import { Role } from '@core/entities/role'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
@@ -34,6 +38,29 @@ export class InMemoryStaffGateway implements StaffGateway {
     return JSON.parse(JSON.stringify(newStaff))
   }
 
+  async edit(uuid: UUID, dto: EditStaffDTO): Promise<Staff> {
+    const staffIndex = this.staff.findIndex((s) => s.uuid === uuid)
+    if (staffIndex === -1) {
+      throw new Error(`Staff with UUID ${uuid} not found`)
+    }
+
+    const role = this.roles.find((r) => r.uuid === dto.roleUuid)
+    if (!role) {
+      throw new Error(`Role with UUID ${dto.roleUuid} not found`)
+    }
+
+    const updatedStaff: Staff = {
+      uuid,
+      email: dto.email,
+      firstname: dto.firstname,
+      lastname: dto.lastname,
+      role
+    }
+
+    this.staff[staffIndex] = updatedStaff
+    return JSON.parse(JSON.stringify(updatedStaff))
+  }
+
   async assignRole(staffUuid: UUID, roleUuid: UUID): Promise<Staff> {
     const staffIndex = this.staff.findIndex((s) => s.uuid === staffUuid)
     if (staffIndex === -1) {
@@ -55,6 +82,10 @@ export class InMemoryStaffGateway implements StaffGateway {
   }
 
   feedWith(...staff: Array<Staff>) {
+    this.staff = staff
+  }
+
+  feedWithStaff(...staff: Array<Staff>) {
     this.staff = staff
   }
 

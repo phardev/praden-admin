@@ -19,6 +19,7 @@ describe('RoleFormEditVM', () => {
   const existingRole: Role = {
     uuid: 'role-123',
     name: 'Test Manager',
+    order: 3,
     permissions: [
       { resource: PermissionResource.DASHBOARD },
       { resource: PermissionResource.ORDERS },

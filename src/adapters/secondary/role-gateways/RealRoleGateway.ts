@@ -18,6 +18,13 @@ export class RealRoleGateway extends RealGateway implements RoleGateway {
     return res.data.items
   }
 
+  async reorder(roleUuids: Array<UUID>): Promise<Array<Role>> {
+    const res = await axiosWithBearer.post(`${this.baseUrl}/roles/reorder`, {
+      uuids: roleUuids
+    })
+    return res.data.items
+  }
+
   async create(dto: CreateRoleDTO): Promise<Role> {
     const apiPayload = {
       name: dto.name,
@@ -31,7 +38,7 @@ export class RealRoleGateway extends RealGateway implements RoleGateway {
   async edit(roleUuid: UUID, dto: EditRoleDTO): Promise<Role> {
     const apiPayload = {
       name: dto.name,
-      resources: dto.permissions.map((permission) => permission.resource)
+      resources: dto.permissions?.map((permission) => permission.resource)
     }
 
     const res = await axiosWithBearer.put(

@@ -50,7 +50,8 @@ describe('Role Creation', () => {
       expect(createdRole).toEqual({
         uuid: 'new-role-uuid',
         name: 'Manager',
-        permissions: dto.permissions
+        permissions: dto.permissions,
+        order: 2
       })
     })
 
@@ -62,7 +63,8 @@ describe('Role Creation', () => {
       expect(createdRole).toEqual({
         uuid: 'new-role-uuid',
         name: 'Manager',
-        permissions: dto.permissions
+        permissions: dto.permissions,
+        order: 2
       })
     })
   })
@@ -89,7 +91,8 @@ describe('Role Creation', () => {
       expect(createdRole).toEqual({
         uuid: 'basic-user-uuid',
         name: 'Basic User',
-        permissions: [{ resource: PermissionResource.DASHBOARD }]
+        permissions: [{ resource: PermissionResource.DASHBOARD }],
+        order: 1
       })
     })
   })
@@ -116,7 +119,8 @@ describe('Role Creation', () => {
       expect(createdRole).toEqual({
         uuid: 'no-permissions-uuid',
         name: 'No Permissions Role',
-        permissions: []
+        permissions: [],
+        order: 0
       })
     })
   })
