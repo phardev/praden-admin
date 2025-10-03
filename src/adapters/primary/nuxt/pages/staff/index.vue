@@ -82,7 +82,7 @@ definePageMeta({ layout: 'main' })
 
 const isAssigningRole = ref(false)
 const isSavingPermissions = ref(false)
-const permissionEditVM = ref<PermissionMatrixEditVM | null>(null)
+const permissionEditVM = ref<PermissionMatrixEditVM>(permissionMatrixEditVM())
 
 const { t } = useI18n()
 
@@ -96,7 +96,7 @@ onMounted(async () => {
   await listStaff(useStaffGateway())
   await listRoles(useRoleGateway())
   await listSystemResources(useSystemResourceGateway())
-  permissionEditVM.value = permissionMatrixEditVM()
+  permissionEditVM.value.refreshFromStore()
 })
 
 const staffVM = computed(() => {
@@ -131,20 +131,10 @@ const handlePermissionChange = (
   resource: string,
   hasPermission: boolean
 ) => {
-  if (!permissionEditVM.value) {
-    console.error('Permission edit VM not initialized')
-    return
-  }
-
   permissionEditVM.value.setPermission(roleUuid, resource, hasPermission)
 }
 
 const handleSavePermissions = async () => {
-  if (!permissionEditVM.value) {
-    console.error('Permission edit VM not initialized')
-    return
-  }
-
   if (!permissionEditVM.value.hasChanges()) {
     return
   }
@@ -174,9 +164,6 @@ const handleSavePermissions = async () => {
 }
 
 const handleResetChanges = () => {
-  if (!permissionEditVM.value) {
-    return
-  }
   permissionEditVM.value.reset()
 }
 
@@ -197,9 +184,7 @@ const handleEditRole = (roleUuid: string) => {
 }
 
 const handleRoleFormSuccess = () => {
-  if (permissionEditVM.value) {
-    permissionEditVM.value.refreshFromStore()
-  }
+  permissionEditVM.value.refreshFromStore()
 }
 
 const showStaffModal = ref(false)
