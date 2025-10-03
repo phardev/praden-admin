@@ -127,7 +127,6 @@ const formKey = computed(() => {
 // Reactive computed properties that watch the formStore
 const availablePermissions = computed(() => {
   if (!currentFormVM.value || !formKey.value) return []
-  // Check if the VM has the getAvailablePermissions method
   if ('getAvailablePermissions' in currentFormVM.value) {
     return (currentFormVM.value as any).getAvailablePermissions()
   }
