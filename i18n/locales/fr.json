@@ -34,7 +34,10 @@
     "cancel": "Annuler",
     "create": "Créer",
     "update": "Modifier",
-    "delete": "Supprimer"
+    "delete": "Supprimer",
+    "loading": "Chargement...",
+    "back": "Retour",
+    "edit": "Modifier"
   },
   "customers": {
     "viewTitle": "Voir client",
@@ -210,5 +213,133 @@
       "manage": "Gérer les réponses",
       "empty": "Aucune réponse prédéfinie disponible"
     }
+  },
+  "staff": {
+    "title": "Équipe",
+    "staffList": "Liste des employés",
+    "permissions": "Permissions",
+    "selectRole": "Sélectionner un rôle",
+    "noStaff": "Aucun employé",
+    "roles": "Rôles",
+    "management": {
+      "title": "Gestion de l'équipe",
+      "create": "Ajouter un employé",
+      "noStaff": {
+        "title": "Aucun employé",
+        "description": "Ajoutez votre premier employé pour commencer à gérer l'équipe"
+      }
+    },
+    "create": {
+      "title": "Ajouter un employé",
+      "description": "Créez un nouveau compte employé avec un rôle et des permissions",
+      "submit": "Créer l'employé"
+    },
+    "edit": {
+      "title": "Modifier un employé",
+      "description": "Modifiez les informations et le rôle de l'employé",
+      "submit": "Enregistrer les modifications"
+    },
+    "form": {
+      "email": {
+        "label": "Adresse email",
+        "placeholder": "john.doe{'@'}example.com"
+      },
+      "firstname": {
+        "label": "Prénom",
+        "placeholder": "John"
+      },
+      "lastname": {
+        "label": "Nom",
+        "placeholder": "Doe"
+      },
+      "role": {
+        "label": "Rôle"
+      }
+    }
+  },
+  "roles": {
+    "management": {
+      "title": "Gestion des rôles",
+      "create": "Nouveau rôle",
+      "noRoles": {
+        "title": "Aucun rôle défini",
+        "description": "Créez votre premier rôle pour commencer à gérer les permissions"
+      }
+    },
+    "create": {
+      "title": "Créer un nouveau rôle",
+      "description": "Définissez un nouveau rôle avec des permissions personnalisées",
+      "submit": "Créer le rôle"
+    },
+    "edit": {
+      "title": "Modifier le rôle",
+      "description": "Modifiez les permissions et paramètres du rôle",
+      "submit": "Enregistrer les modifications",
+      "notFound": {
+        "title": "Rôle introuvable",
+        "description": "Le rôle que vous tentez de modifier n'existe pas ou a été supprimé"
+      }
+    },
+    "form": {
+      "name": {
+        "label": "Nom du rôle",
+        "placeholder": "Saisir le nom du rôle",
+        "required": "Le nom du rôle est requis"
+      },
+      "permissions": {
+        "label": "Permissions",
+        "description": "Sélectionnez les permissions accordées à ce rôle",
+        "required": "Au moins une permission doit être sélectionnée"
+      }
+    },
+    "permission": {
+      "singular": "permission",
+      "plural": "permissions"
+    },
+    "notifications": {
+      "created": "Le rôle a été créé avec succès",
+      "updated": "Le rôle a été mis à jour avec succès",
+      "deleted": "Le rôle a été supprimé avec succès",
+      "error": {
+        "create": "Erreur lors de la création du rôle",
+        "update": "Erreur lors de la mise à jour du rôle",
+        "delete": "Erreur lors de la suppression du rôle",
+        "nameExists": "Un rôle avec ce nom existe déjà"
+      }
+    }
+  },
+  "permissions": {
+    "permission": "Permission",
+    "noData": "Aucune donnée disponible",
+    "save": "Enregistrer",
+    "saveChanges": "Enregistrer les modifications",
+    "cancel": "Annuler",
+    "unsavedChanges": "Modifications non enregistrées",
+    "resources": {
+      "dashboard": "Tableau de bord",
+      "reminders": "Relances",
+      "products": "Produits",
+      "laboratories": "Laboratoires",
+      "categories": "Catégories",
+      "promotions": "Promotions",
+      "promotion-codes": "Codes promotion",
+      "customers": "Clients",
+      "newsletter": "Newsletter",
+      "support": "SAV",
+      "deliveries": "Livraisons",
+      "preparations": "Préparations",
+      "orders": "Commandes",
+      "banners": "Bannières",
+      "staff": "Équipe",
+      "research": "Recherche",
+      "invoices": "Factures",
+      "locations": "Emplacements",
+      "delivery-methods": "Modes de livraison",
+      "carriers": "Transporteurs",
+      "roles": "Rôles et permissions"
+    }
+  },
+  "systemResources": {
+    "noResources": "Aucune ressource système disponible"
   }
 }

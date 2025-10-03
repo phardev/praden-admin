@@ -2,6 +2,7 @@ import { getDashboard } from '@core/usecases/dashboard/get-dashboard/getDashboar
 import { getDashboardVM } from '@adapters/primary/view-models/dashboard/get-dashboard/getDashboardVM'
 import { useDashboardGateway } from '../../../../../gateways/dashBoardGateway'
 import { DashboardParams } from '@core/gateways/dashboardGateway'
+import { getPermissionsVM } from '@adapters/primary/view-models/permissions/getPermissionsVM'
 
 export const useDashboardData = () => {
   const isLoading = ref(false)
@@ -13,6 +14,12 @@ export const useDashboardData = () => {
   const fetchDashboardData = async (
     params: DashboardParams = { productLimit: 50 }
   ) => {
+    const permissions = getPermissionsVM()
+
+    if (!permissions.canAccessDashboard) {
+      return
+    }
+
     isLoading.value = true
     try {
       await getDashboard(params, useDashboardGateway())

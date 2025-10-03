@@ -38,7 +38,6 @@ watch(
 )
 
 const getError = (err) => {
-  console.log('error: ', err)
   if (err.response) {
     const status = err.response.status
     switch (status) {
