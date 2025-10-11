@@ -8,4 +8,5 @@ export interface CategoryGateway {
   create(dto: CreateCategoryDTO): Promise<Category>
   edit(uuid: UUID, dto: EditCategoryDTO): Promise<Category>
   getByUuid(uuid: UUID): Promise<Category>
+  reorder(categoryUuids: Array<UUID>): Promise<Array<Category>>
 }

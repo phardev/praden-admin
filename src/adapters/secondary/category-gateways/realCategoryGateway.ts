@@ -60,4 +60,14 @@ export class RealCategoryGateway
     const res = await axiosWithBearer.get(`${this.baseUrl}/categories/${uuid}`)
     return res.data.item
   }
+
+  async reorder(categoryUuids: Array<UUID>): Promise<Array<Category>> {
+    const res = await axiosWithBearer.post(
+      `${this.baseUrl}/categories/reorder`,
+      {
+        uuids: categoryUuids
+      }
+    )
+    return res.data.items
+  }
 }

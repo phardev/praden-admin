@@ -8,6 +8,7 @@ export interface Category {
   parentUuid?: UUID
   miniature?: string
   image?: string
+  order: number
 }
 
 export interface CategoryWithProducts {
