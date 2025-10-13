@@ -103,6 +103,11 @@ export const fullMenu: NavigationMenu = {
       title: 'Boutique',
       links: [
         {
+          name: 'Gestion boutique',
+          icon: 'heroicons:cog-6-tooth',
+          href: '/shop-settings'
+        },
+        {
           name: 'Bannières',
           icon: 'material-symbols:add-photo-alternate-outline',
           href: '/banners'

@@ -6,7 +6,16 @@ export const deleteEmergencyPharmacy = async (
   uuid: UUID,
   emergencyPharmacyGateway: EmergencyPharmacyGateway
 ): Promise<void> => {
-  await emergencyPharmacyGateway.delete(uuid)
   const emergencyPharmacyStore = useEmergencyPharmacyStore()
-  emergencyPharmacyStore.remove(uuid)
+  try {
+    emergencyPharmacyStore.startLoading()
+    await emergencyPharmacyGateway.delete(uuid)
+    emergencyPharmacyStore.remove(uuid)
+    emergencyPharmacyStore.stopLoading()
+  } catch (error) {
+    emergencyPharmacyStore.setError(
+      error instanceof Error ? error.message : 'Unknown error'
+    )
+    throw error
+  }
 }
