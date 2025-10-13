@@ -1,7 +1,7 @@
 <template lang="pug">
 .space-y-2
   draggable(
-    :model-value="categories"
+    v-model="localCategories"
     item-key="uuid"
     handle=".category-item"
     @start="onDragStart"
@@ -19,22 +19,22 @@ import draggable from 'vuedraggable'
 import CategoryOrderItem from '@adapters/primary/nuxt/components/molecules/CategoryOrderItem.vue'
 import type { Category } from '@core/entities/category'
 
-const props = defineProps<{
-  categories: Array<Category>
-}>()
+const categories = defineModel<Array<Category>>({ required: true })
 
-const emit = defineEmits<{
-  (e: 'reorder', oldIndex: number, newIndex: number): void
-}>()
+const localCategories = computed({
+  get: () => categories.value,
+  set: (v) => {
+    categories.value = v
+  }
+})
 
 const draggedUuid = ref<string | null>(null)
 
 const onDragStart = (event: any) => {
-  draggedUuid.value = props.categories[event.oldIndex]?.uuid || null
+  draggedUuid.value = categories.value[event.oldIndex]?.uuid || null
 }
 
-const onDragEnd = (event: any) => {
+const onDragEnd = () => {
   draggedUuid.value = null
-  emit('reorder', event.oldIndex, event.newIndex)
 }
 </script>

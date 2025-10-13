@@ -44,4 +44,12 @@ export class InMemoryTimoutCategoryGateway extends InMemoryCategoryGateway {
       }, this.timeoutInMs)
     })
   }
+
+  override reorder(categoryUuids: Array<UUID>): Promise<Array<Category>> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(super.reorder(categoryUuids))
+      }, this.timeoutInMs)
+    })
+  }
 }

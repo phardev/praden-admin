@@ -13,16 +13,9 @@
     template(#header)
       .flex.items-center.justify-between
         h1.text-2xl.font-bold {{ $t('shopSettings.categoryOrder.title') }}
-        UButton(
-          v-if="reorderVM.hasChanges"
-          color="primary"
-          :label="$t('common.update')"
-          :loading="isSaving"
-          @click="saveOrder"
-        )
 
     template(#default)
-      div(v-if="reorderVM.isLoading")
+      div(v-if="categoryStore.isLoading")
         .flex.justify-center.items-center.py-12
           icon.animate-spin.h-8.w-8(name="i-heroicons-arrow-path")
           span.ml-2 {{ $t('common.loading') }}
@@ -30,54 +23,62 @@
       div(v-else)
         p.text-gray-600.mb-6 {{ $t('shopSettings.categoryOrder.description') }}
 
-        CategoryOrderList(
-          :categories="reorderVM.sortedCategories"
-          @reorder="reorderVM.reorder"
-        )
+        CategoryOrderList(v-model="categories")
 </template>
 
 <script lang="ts" setup>
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { reorderCategories } from '@core/usecases/categories-reorder/reorderCategories'
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
-import { categoryReorderVM } from '@adapters/primary/view-models/categories/category-reorder/categoryReorderVM'
+import { useCategoryStore } from '@store/categoryStore'
 import CategoryOrderList from '@adapters/primary/nuxt/components/organisms/CategoryOrderList.vue'
 
 definePageMeta({ layout: 'main' })
 
 const { t } = useI18n()
-const isSaving = ref(false)
 const categoryGateway = useCategoryGateway()
+const categoryStore = useCategoryStore()
 
 onMounted(async () => {
   await listCategories(categoryGateway)
 })
 
-const reorderVM = computed(() => categoryReorderVM())
+const allCategories = ref([])
 
-const saveOrder = async () => {
-  isSaving.value = true
+watch(
+  () => categoryStore.items,
+  () => {
+    allCategories.value = [...categoryStore.items].sort(
+      (a, b) => a.order - b.order
+    )
+  },
+  { immediate: true }
+)
 
-  try {
-    await reorderCategories(reorderVM.value.getCategoryUuids(), categoryGateway)
+const categories = computed({
+  get: () => allCategories.value,
+  set: async (v) => {
+    allCategories.value = v
+    try {
+      await reorderCategories(
+        v.map((c) => c.uuid),
+        categoryGateway
+      )
 
-    const toast = useToast()
-    toast.add({
-      title: t('shopSettings.categoryOrder.reorderSuccess'),
-      color: 'green'
-    })
-
-    navigateTo('/shop-settings')
-  } catch {
-    const toast = useToast()
-    toast.add({
-      title: t('shopSettings.categoryOrder.reorderError'),
-      color: 'red'
-    })
-  } finally {
-    isSaving.value = false
+      const toast = useToast()
+      toast.add({
+        title: t('shopSettings.categoryOrder.reorderSuccess'),
+        color: 'green'
+      })
+    } catch {
+      const toast = useToast()
+      toast.add({
+        title: t('shopSettings.categoryOrder.reorderError'),
+        color: 'red'
+      })
+    }
   }
-}
+})
 </script>
 
 <style scoped>
