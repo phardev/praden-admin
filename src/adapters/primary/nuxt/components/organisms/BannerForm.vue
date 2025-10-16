@@ -75,6 +75,7 @@ div(v-if="currentVM")
         template(#panel="{ close }")
           ft-date-picker(
             v-model="currentVM.get('endDate').value"
+            :is-end-date="true"
             @update:model-value="endDateChanged"
             @close="close"
           )
