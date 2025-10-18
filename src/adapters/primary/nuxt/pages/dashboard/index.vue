@@ -212,6 +212,7 @@ import DeliveryMethodsPieChart from '../../components/molecules/DeliveryMethodsP
 import LaboratoriesPieChart from '../../components/molecules/LaboratoriesPieChart.vue'
 import CategoriesPieChart from '../../components/molecules/CategoriesPieChart.vue'
 import ProductStockPieChart from '../../components/molecules/ProductStockPieChart.vue'
+import { useUserProfileStore } from '@store/userProfileStore'
 
 definePageMeta({ layout: 'main' })
 
@@ -220,6 +221,7 @@ const { t } = useI18n()
 const { isLoading, dashboard, fetchDashboardData } = useDashboardData()
 
 const permissions = computed(() => getPermissionsVM())
+const userProfileStore = useUserProfileStore()
 
 const productLimit = ref(50)
 const startDate = ref<number | null>(null)
@@ -365,7 +367,17 @@ const updateScreenSize = () => {
 onMounted(() => {
   listLaboratories(useLaboratoryGateway())
   listCategories(useCategoryGateway())
-  fetchFilteredDashboardData()
+
+  const stopWatch = watch(
+    () => userProfileStore.current,
+    (profile) => {
+      if (profile && permissions.value.canAccessDashboard) {
+        fetchFilteredDashboardData()
+        stopWatch()
+      }
+    },
+    { immediate: true }
+  )
 
   updateScreenSize()
   window.addEventListener('resize', updateScreenSize)

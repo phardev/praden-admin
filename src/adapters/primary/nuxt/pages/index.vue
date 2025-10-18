@@ -92,14 +92,18 @@
 import { formatCurrency } from '@/src/utils/formatters'
 import { useDashboardData } from '../composables/useDashboardData'
 import { usePermissions } from '../composables/usePermissions'
+import { useDateProvider } from '../../../../../gateways/dateProvider'
+import { useUserProfileStore } from '@store/userProfileStore'
 
 definePageMeta({ layout: 'main' })
 
 const { isLoading, dashboard, fetchDashboardData } = useDashboardData()
 const { canAccess } = usePermissions()
+const userProfileStore = useUserProfileStore()
 
 onMounted(() => {
-  const now = new Date()
+  const dateProvider = useDateProvider()
+  const now = new Date(dateProvider.now())
   const startOfDay = new Date(
     now.getFullYear(),
     now.getMonth(),
@@ -121,7 +125,17 @@ onMounted(() => {
     endDate: endOfDay,
     productLimit: 0
   }
-  fetchDashboardData(params)
+
+  const stopWatch = watch(
+    () => userProfileStore.current,
+    (profile) => {
+      if (profile && canAccess('/dashboard')) {
+        fetchDashboardData(params)
+        stopWatch()
+      }
+    },
+    { immediate: true }
+  )
 })
 
 const totalSalesCount = computed(
