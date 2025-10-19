@@ -106,6 +106,11 @@ describe('List products', () => {
       await whenListProducts()
       expect(productStore.isLoading).toBe(false)
     })
+    it('should prevent duplicate concurrent requests', async () => {
+      productStore.startLoading()
+      await whenListProducts()
+      expectProductStoreToContains()
+    })
   })
 
   const givenExistingProducts = (...products: Array<Product>) => {
