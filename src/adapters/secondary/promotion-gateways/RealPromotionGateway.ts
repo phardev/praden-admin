@@ -7,6 +7,7 @@ import {
 import { UUID } from '@core/types/types'
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
 
 export class RealPromotionGateway
   extends RealGateway
@@ -63,9 +64,9 @@ export class RealPromotionGateway
     return Promise.resolve(res.data.item)
   }
 
-  async list(): Promise<Array<Promotion>> {
+  async list(): Promise<Array<PromotionListItem>> {
     const res = await axiosWithBearer.get(`${this.baseUrl}/promotions/`)
-    return res.data.items.sort((a: Promotion, b: Promotion) => {
+    return res.data.items.sort((a: PromotionListItem, b: PromotionListItem) => {
       const nameA = a.name.toLowerCase()
       const nameB = b.name.toLowerCase()
       if (nameA < nameB) {
