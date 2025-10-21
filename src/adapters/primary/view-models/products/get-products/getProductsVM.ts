@@ -1,10 +1,11 @@
 import { useProductStore } from '@store/productStore'
-import { Product, ProductStatus } from '@core/entities/product'
+import { ProductStatus } from '@core/entities/product'
 import { priceFormatter } from '@utils/formatters'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { UUID } from '@core/types/types'
 import { useSearchStore } from '@store/searchStore'
 import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 
 export interface GetProductsItemVM {
   uuid: UUID
@@ -83,7 +84,7 @@ export const getProductsVM = (key: string): GetProductsVM => {
   ]
   return {
     headers,
-    items: products.map((p: Product) => {
+    items: products.map((p: ProductListItem) => {
       const priceWithTax =
         p.priceWithoutTax + (p.priceWithoutTax * p.percentTaxRate) / 100
       return {
@@ -97,7 +98,8 @@ export const getProductsVM = (key: string): GetProductsVM => {
         priceWithTax: formatter.format(priceWithTax / 100),
         availableStock: p.availableStock,
         isActive: p.status === ProductStatus.Active,
-        arePromotionsAllowed: p.flags?.arePromotionsAllowed && !p.isMedicine
+        arePromotionsAllowed:
+          (p.flags?.arePromotionsAllowed ?? false) && !p.isMedicine
       }
     }),
     currentSearch: searchFilter,

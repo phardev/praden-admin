@@ -7,6 +7,10 @@ import {
 } from '@core/usecases/product/product-creation/createProduct'
 import { Product, ProductStatus } from '@core/entities/product'
 import { dolodent, hemoclar } from '@utils/testData/products'
+import {
+  dolodentListItem,
+  hemoclarListItem
+} from '@utils/testData/fixtures/products/productListItems'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { reserve, zoneGeo } from '@utils/testData/locations'
 import { InMemoryLocationGateway } from '@adapters/secondary/location-gateways/inMemoryLocationGateway'
@@ -18,6 +22,7 @@ import { Location } from '@core/entities/location'
 import { UUID } from '@core/types/types'
 import { avene, gilbert } from '@utils/testData/laboratories'
 import { InMemoryFailProductGateway } from '@core/usecases/product/product-creation/inMemoryFailProductGateway'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 
 describe('Create product', () => {
   let productStore: any
@@ -91,13 +96,79 @@ describe('Create product', () => {
       })
 
       it('should create a product with flags', async () => {
-        expect(productStore.items[0]).toStrictEqual(expectedProduct)
+        const expectedListItem: ProductListItem = {
+          uuid: expectedProduct.uuid,
+          name: expectedProduct.name,
+          ean13: expectedProduct.ean13,
+          laboratory: expectedProduct.laboratory
+            ? {
+                uuid: expectedProduct.laboratory.uuid,
+                name: expectedProduct.laboratory.name
+              }
+            : undefined,
+          categories: expectedProduct.categories.map((c) => ({
+            uuid: c.uuid,
+            name: c.name
+          })),
+          priceWithoutTax: expectedProduct.priceWithoutTax,
+          percentTaxRate: expectedProduct.percentTaxRate,
+          availableStock: expectedProduct.availableStock,
+          status: expectedProduct.status,
+          flags: expectedProduct.flags,
+          miniature: expectedProduct.miniature,
+          isMedicine: expectedProduct.isMedicine
+        }
+        expect(productStore.items[0]).toStrictEqual(expectedListItem)
       })
       it('should save the product in product gateway', async () => {
-        await expectProductGatewayToEqual(expectedProduct)
+        const expectedListItem: ProductListItem = {
+          uuid: expectedProduct.uuid,
+          name: expectedProduct.name,
+          ean13: expectedProduct.ean13,
+          laboratory: expectedProduct.laboratory
+            ? {
+                uuid: expectedProduct.laboratory.uuid,
+                name: expectedProduct.laboratory.name
+              }
+            : undefined,
+          categories: expectedProduct.categories.map((c) => ({
+            uuid: c.uuid,
+            name: c.name
+          })),
+          priceWithoutTax: expectedProduct.priceWithoutTax,
+          percentTaxRate: expectedProduct.percentTaxRate,
+          availableStock: expectedProduct.availableStock,
+          status: expectedProduct.status,
+          flags: expectedProduct.flags,
+          miniature: expectedProduct.miniature,
+          isMedicine: expectedProduct.isMedicine
+        }
+        await expectProductGatewayToEqual(expectedListItem)
       })
       it('should save the product in product store', () => {
-        expectProductStoreToEqual(expectedProduct)
+        const expectedListItem: ProductListItem = {
+          uuid: expectedProduct.uuid,
+          name: expectedProduct.name,
+          ean13: expectedProduct.ean13,
+          laboratory: expectedProduct.laboratory
+            ? {
+                uuid: expectedProduct.laboratory.uuid,
+                name: expectedProduct.laboratory.name
+              }
+            : undefined,
+          categories: expectedProduct.categories.map((c) => ({
+            uuid: c.uuid,
+            name: c.name
+          })),
+          priceWithoutTax: expectedProduct.priceWithoutTax,
+          percentTaxRate: expectedProduct.percentTaxRate,
+          availableStock: expectedProduct.availableStock,
+          status: expectedProduct.status,
+          flags: expectedProduct.flags,
+          miniature: expectedProduct.miniature,
+          isMedicine: expectedProduct.isMedicine
+        }
+        expectProductStoreToEqual(expectedListItem)
       })
     })
     describe('For another product', () => {
@@ -164,10 +235,62 @@ describe('Create product', () => {
         await whenCreateProduct(dto)
       })
       it('should save the product in product gateway', async () => {
-        await expectProductGatewayToEqual(dolodent, hemoclar, expectedProduct)
+        const expectedListItem: ProductListItem = {
+          uuid: expectedProduct.uuid,
+          name: expectedProduct.name,
+          ean13: expectedProduct.ean13,
+          laboratory: expectedProduct.laboratory
+            ? {
+                uuid: expectedProduct.laboratory.uuid,
+                name: expectedProduct.laboratory.name
+              }
+            : undefined,
+          categories: expectedProduct.categories.map((c) => ({
+            uuid: c.uuid,
+            name: c.name
+          })),
+          priceWithoutTax: expectedProduct.priceWithoutTax,
+          percentTaxRate: expectedProduct.percentTaxRate,
+          availableStock: expectedProduct.availableStock,
+          status: expectedProduct.status,
+          flags: expectedProduct.flags,
+          miniature: expectedProduct.miniature,
+          isMedicine: expectedProduct.isMedicine
+        }
+        await expectProductGatewayToEqual(
+          dolodentListItem,
+          hemoclarListItem,
+          expectedListItem
+        )
       })
       it('should save the product in product store', () => {
-        expectProductStoreToEqual(dolodent, hemoclar, expectedProduct)
+        const expectedListItem: ProductListItem = {
+          uuid: expectedProduct.uuid,
+          name: expectedProduct.name,
+          ean13: expectedProduct.ean13,
+          laboratory: expectedProduct.laboratory
+            ? {
+                uuid: expectedProduct.laboratory.uuid,
+                name: expectedProduct.laboratory.name
+              }
+            : undefined,
+          categories: expectedProduct.categories.map((c) => ({
+            uuid: c.uuid,
+            name: c.name
+          })),
+          priceWithoutTax: expectedProduct.priceWithoutTax,
+          percentTaxRate: expectedProduct.percentTaxRate,
+          availableStock: expectedProduct.availableStock,
+          status: expectedProduct.status,
+          flags: expectedProduct.flags,
+          miniature: expectedProduct.miniature,
+          isMedicine: expectedProduct.isMedicine
+        }
+        expectProductStoreToEqual(
+          dolodentListItem,
+          hemoclarListItem,
+          expectedListItem
+        )
       })
     })
     describe('For a product without category', () => {
@@ -234,10 +357,62 @@ describe('Create product', () => {
         await whenCreateProduct(dto)
       })
       it('should save the product in product gateway', async () => {
-        await expectProductGatewayToEqual(dolodent, hemoclar, expectedProduct)
+        const expectedListItem: ProductListItem = {
+          uuid: expectedProduct.uuid,
+          name: expectedProduct.name,
+          ean13: expectedProduct.ean13,
+          laboratory: expectedProduct.laboratory
+            ? {
+                uuid: expectedProduct.laboratory.uuid,
+                name: expectedProduct.laboratory.name
+              }
+            : undefined,
+          categories: expectedProduct.categories.map((c) => ({
+            uuid: c.uuid,
+            name: c.name
+          })),
+          priceWithoutTax: expectedProduct.priceWithoutTax,
+          percentTaxRate: expectedProduct.percentTaxRate,
+          availableStock: expectedProduct.availableStock,
+          status: expectedProduct.status,
+          flags: expectedProduct.flags,
+          miniature: expectedProduct.miniature,
+          isMedicine: expectedProduct.isMedicine
+        }
+        await expectProductGatewayToEqual(
+          dolodentListItem,
+          hemoclarListItem,
+          expectedListItem
+        )
       })
       it('should save the product in product store', () => {
-        expectProductStoreToEqual(dolodent, hemoclar, expectedProduct)
+        const expectedListItem: ProductListItem = {
+          uuid: expectedProduct.uuid,
+          name: expectedProduct.name,
+          ean13: expectedProduct.ean13,
+          laboratory: expectedProduct.laboratory
+            ? {
+                uuid: expectedProduct.laboratory.uuid,
+                name: expectedProduct.laboratory.name
+              }
+            : undefined,
+          categories: expectedProduct.categories.map((c) => ({
+            uuid: c.uuid,
+            name: c.name
+          })),
+          priceWithoutTax: expectedProduct.priceWithoutTax,
+          percentTaxRate: expectedProduct.percentTaxRate,
+          availableStock: expectedProduct.availableStock,
+          status: expectedProduct.status,
+          flags: expectedProduct.flags,
+          miniature: expectedProduct.miniature,
+          isMedicine: expectedProduct.isMedicine
+        }
+        expectProductStoreToEqual(
+          dolodentListItem,
+          hemoclarListItem,
+          expectedListItem
+        )
       })
     })
   })
@@ -337,7 +512,11 @@ describe('Create product', () => {
 
   const givenThereIsExistingProducts = (...products: Array<Product>) => {
     productGateway.feedWith(...products)
-    productStore.items = products
+    const productToListItemMap: Record<string, ProductListItem> = {
+      [dolodent.uuid]: dolodentListItem,
+      [hemoclar.uuid]: hemoclarListItem
+    }
+    productStore.items = products.map((p) => productToListItemMap[p.uuid])
   }
 
   const givenThereIsExistingCategories = (...categories: Array<Category>) => {
@@ -357,10 +536,12 @@ describe('Create product', () => {
     await createProduct(dto, failProductGateway)
   }
 
-  const expectProductStoreToEqual = (...products: Array<Product>) => {
+  const expectProductStoreToEqual = (...products: Array<ProductListItem>) => {
     expect(productStore.items).toStrictEqual(products)
   }
-  const expectProductGatewayToEqual = async (...products: Array<Product>) => {
+  const expectProductGatewayToEqual = async (
+    ...products: Array<ProductListItem>
+  ) => {
     expect(await productGateway.list(50, 0)).toStrictEqual(products)
   }
 })

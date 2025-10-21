@@ -6,6 +6,7 @@ import { UUID } from '@core/types/types'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { Category } from '@core/entities/category'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 
 export class RealProductGateway extends RealGateway implements ProductGateway {
   constructor(url: string) {
@@ -129,7 +130,7 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     )
   }
 
-  async list(limit: number, offset: number): Promise<Array<Product>> {
+  async list(limit: number, offset: number): Promise<Array<ProductListItem>> {
     const res = await axiosWithBearer.get(`${this.baseUrl}/products`, {
       params: {
         limit,
@@ -138,7 +139,8 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     })
     return Promise.resolve(
       res.data.items.sort(
-        (a: Product, b: Product) => b.availableStock - a.availableStock
+        (a: ProductListItem, b: ProductListItem) =>
+          b.availableStock - a.availableStock
       )
     )
   }

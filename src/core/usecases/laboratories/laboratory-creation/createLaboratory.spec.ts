@@ -9,9 +9,14 @@ import {
 } from '@core/usecases/laboratories/laboratory-creation/createLaboratory'
 import { Laboratory } from '../../../entities/laboratory'
 import { dolodent, hemoclar } from '@utils/testData/products'
+import {
+  dolodentListItem,
+  hemoclarListItem
+} from '@utils/testData/fixtures/products/productListItems'
 import { Product } from '@core/entities/product'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { useProductStore } from '@store/productStore'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 
 describe('Laboratory creation', () => {
   let laboratoryStore: any
@@ -110,11 +115,55 @@ describe('Laboratory creation', () => {
       await whenCreateLaboratory()
     })
     it('should update the products', async () => {
-      await expectProductGatewayToContains(expectedProducts)
+      const expectedListItems = expectedProducts.map((product) => ({
+        uuid: product.uuid,
+        name: product.name,
+        ean13: product.ean13,
+        laboratory: product.laboratory
+          ? {
+              uuid: product.laboratory.uuid,
+              name: product.laboratory.name
+            }
+          : undefined,
+        categories: product.categories.map((c) => ({
+          uuid: c.uuid,
+          name: c.name
+        })),
+        priceWithoutTax: product.priceWithoutTax,
+        percentTaxRate: product.percentTaxRate,
+        availableStock: product.availableStock,
+        status: product.status,
+        flags: product.flags,
+        miniature: product.miniature,
+        isMedicine: product.isMedicine
+      }))
+      await expectProductGatewayToContains(expectedListItems)
     })
 
     it('should save the products in store', () => {
-      expect(productStore.items).toStrictEqual(expectedProducts)
+      const expectedListItems = expectedProducts.map((product) => ({
+        uuid: product.uuid,
+        name: product.name,
+        ean13: product.ean13,
+        laboratory: product.laboratory
+          ? {
+              uuid: product.laboratory.uuid,
+              name: product.laboratory.name
+            }
+          : undefined,
+        categories: product.categories.map((c) => ({
+          uuid: c.uuid,
+          name: c.name
+        })),
+        priceWithoutTax: product.priceWithoutTax,
+        percentTaxRate: product.percentTaxRate,
+        availableStock: product.availableStock,
+        status: product.status,
+        flags: product.flags,
+        miniature: product.miniature,
+        isMedicine: product.isMedicine
+      }))
+      expect(productStore.items).toStrictEqual(expectedListItems)
     })
   })
   describe('Loading', () => {
@@ -149,14 +198,20 @@ describe('Laboratory creation', () => {
 
   const givenExistingProducts = (...products: Array<Product>) => {
     productGateway.feedWith(...JSON.parse(JSON.stringify(products)))
-    productStore.items = JSON.parse(JSON.stringify(products))
+    const productToListItemMap: Record<string, ProductListItem> = {
+      [dolodent.uuid]: dolodentListItem,
+      [hemoclar.uuid]: hemoclarListItem
+    }
+    productStore.items = products.map((p) => productToListItemMap[p.uuid])
   }
 
   const whenCreateLaboratory = async () => {
     await createLaboratory(dto, laboratoryGateway, productGateway)
   }
 
-  const expectProductGatewayToContains = async (expected: Array<Product>) => {
+  const expectProductGatewayToContains = async (
+    expected: Array<ProductListItem>
+  ) => {
     expect(await productGateway.list(50, 0)).toStrictEqual(expected)
   }
 })

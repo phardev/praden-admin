@@ -30,14 +30,14 @@ export const editCategory = async (
         edited,
         dto.productsAdded
       )
-      productStore.list(products)
+      products.forEach((product) => productStore.edit(product))
     }
     if (dto.productsRemoved) {
       const products = await productGateway.removeProductsFromCategory(
         edited,
         dto.productsRemoved
       )
-      productStore.list(products)
+      products.forEach((product) => productStore.edit(product))
     }
   } finally {
     categoryStore.stopLoading()
