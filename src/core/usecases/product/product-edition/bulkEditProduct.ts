@@ -20,7 +20,9 @@ export const bulkEditProduct =
     productStore.startLoading()
     try {
       const updatedProducts = await productGateway.bulkEdit(dto, uuids)
-      productStore.list(updatedProducts)
+      updatedProducts.forEach((product) => {
+        productStore.edit(product)
+      })
     } finally {
       productStore.stopLoading()
     }

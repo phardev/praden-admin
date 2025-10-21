@@ -2,6 +2,11 @@ import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InM
 import { useProductStore } from '@store/productStore'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
+import {
+  chamomillaListItem,
+  dolodentListItem,
+  ultraLevureListItem
+} from '@utils/testData/fixtures/products/productListItems'
 import { Product } from '@core/entities/product'
 import {
   editProduct,
@@ -16,6 +21,7 @@ import { reserve, zoneGeo } from '@utils/testData/locations'
 import { Location } from '@core/entities/location'
 import { InMemoryLocationGateway } from '@adapters/secondary/location-gateways/inMemoryLocationGateway'
 import { useLocationStore } from '@store/locationStore'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 
 describe('Product edition', () => {
   let productStore: any
@@ -26,7 +32,6 @@ describe('Product edition', () => {
   let product: Product
   let dto: EditProductDTO
   let expectedProduct: Product
-  let expectedProducts: Array<Product>
 
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -52,14 +57,20 @@ describe('Product edition', () => {
           flags: { arePromotionsAllowed: true },
           name: dto.name!
         }
-        expectedProducts = [chamomilla, ultraLevure, expectedProduct]
         await whenEditProduct(product.uuid, dto)
       })
       it('should edit the product in the gateway', async () => {
-        await expectProductGatewayToContains(expectedProducts)
+        expect(await productGateway.getByUuid(product.uuid)).toStrictEqual(
+          expectedProduct
+        )
       })
       it('should edit the product in the store', async () => {
-        expect(productStore.items).toStrictEqual(expectedProducts)
+        const expectedDolodent = { ...dolodentListItem, name: 'The new name' }
+        expect(productStore.items).toStrictEqual([
+          chamomillaListItem,
+          ultraLevureListItem,
+          expectedDolodent
+        ])
       })
     })
     describe('Price change', () => {
@@ -73,14 +84,20 @@ describe('Product edition', () => {
           flags: { arePromotionsAllowed: true },
           priceWithoutTax: 55
         }
-        expectedProducts = [chamomilla, ultraLevure, expectedProduct]
         await whenEditProduct(product.uuid, dto)
       })
       it('should edit the product in the gateway', async () => {
-        await expectProductGatewayToContains(expectedProducts)
+        expect(await productGateway.getByUuid(product.uuid)).toStrictEqual(
+          expectedProduct
+        )
       })
       it('should edit the product in the store', async () => {
-        expect(productStore.items).toStrictEqual(expectedProducts)
+        const expectedDolodent = { ...dolodentListItem, priceWithoutTax: 55 }
+        expect(productStore.items).toStrictEqual([
+          chamomillaListItem,
+          ultraLevureListItem,
+          expectedDolodent
+        ])
       })
     })
 
@@ -95,14 +112,20 @@ describe('Product edition', () => {
           flags: { arePromotionsAllowed: true },
           percentTaxRate: 10.5
         }
-        expectedProducts = [chamomilla, ultraLevure, expectedProduct]
         await whenEditProduct(product.uuid, dto)
       })
       it('should edit the product in the gateway', async () => {
-        await expectProductGatewayToContains(expectedProducts)
+        expect(await productGateway.getByUuid(product.uuid)).toStrictEqual(
+          expectedProduct
+        )
       })
       it('should edit the product in the store', async () => {
-        expect(productStore.items).toStrictEqual(expectedProducts)
+        const expectedDolodent = { ...dolodentListItem, percentTaxRate: 10.5 }
+        expect(productStore.items).toStrictEqual([
+          chamomillaListItem,
+          ultraLevureListItem,
+          expectedDolodent
+        ])
       })
     })
     describe('Change category', () => {
@@ -121,10 +144,14 @@ describe('Product edition', () => {
             categories: [mum]
           }
           await whenEditProduct(product.uuid, dto)
+          const expectedChamomilla = {
+            ...chamomillaListItem,
+            categories: [{ uuid: mum.uuid, name: mum.name }]
+          }
           expect(productStore.items).toStrictEqual([
-            expectedProduct,
-            ultraLevure,
-            dolodent
+            expectedChamomilla,
+            ultraLevureListItem,
+            dolodentListItem
           ])
         })
       })
@@ -148,10 +175,13 @@ describe('Product edition', () => {
             }
           }
           await whenEditProduct(product.uuid, dto)
+          const expectedUltraLevure = {
+            ...ultraLevureListItem
+          }
           expect(productStore.items).toStrictEqual([
-            chamomilla,
-            expectedProduct,
-            dolodent
+            chamomillaListItem,
+            expectedUltraLevure,
+            dolodentListItem
           ])
         })
       })
@@ -174,14 +204,26 @@ describe('Product edition', () => {
             'data:image/jpeg;base64,ZGF0YTI='
           ]
         }
-        expectedProducts = [chamomilla, ultraLevure, expectedProduct]
         await whenEditProduct(product.uuid, dto)
       })
       it('should edit the product in the gateway', async () => {
-        await expectProductGatewayToContains(expectedProducts)
+        await expectProductGatewayToContains(
+          chamomillaListItem,
+          ultraLevureListItem,
+          dolodentListItem
+        )
+      })
+      it('should edit the product in the gateway', async () => {
+        expect(await productGateway.getByUuid(product.uuid)).toStrictEqual(
+          expectedProduct
+        )
       })
       it('should edit the product in the store', async () => {
-        expect(productStore.items).toStrictEqual(expectedProducts)
+        expect(productStore.items).toStrictEqual([
+          chamomillaListItem,
+          ultraLevureListItem,
+          dolodentListItem
+        ])
       })
     })
   })
@@ -209,7 +251,12 @@ describe('Product edition', () => {
   })
 
   const givenExistingProducts = (...products: Array<Product>) => {
-    productStore.items = products
+    const productToListItemMap: Record<string, ProductListItem> = {
+      [chamomilla.uuid]: chamomillaListItem,
+      [dolodent.uuid]: dolodentListItem,
+      [ultraLevure.uuid]: ultraLevureListItem
+    }
+    productStore.items = products.map((p) => productToListItemMap[p.uuid])
     productGateway.feedWith(...products)
   }
 
@@ -230,7 +277,9 @@ describe('Product edition', () => {
     await editProduct(uuid, dto, productGateway)
   }
 
-  const expectProductGatewayToContains = async (expected: Array<Product>) => {
+  const expectProductGatewayToContains = async (
+    ...expected: Array<ProductListItem>
+  ) => {
     expect(await productGateway.list(50, 0)).toStrictEqual(expected)
   }
 })

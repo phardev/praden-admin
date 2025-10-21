@@ -8,9 +8,11 @@ import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { useCategoryStore } from '@store/categoryStore'
 import { Category } from '@core/entities/category'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 
 export class InMemoryProductGateway implements ProductGateway {
   private products: Array<Product> = []
+  private productsListItem: Array<ProductListItem> = []
   private categoryStore: any
   private uuidGenerator: UuidGenerator
 
@@ -19,9 +21,34 @@ export class InMemoryProductGateway implements ProductGateway {
     this.categoryStore = useCategoryStore()
   }
 
-  async list(limit: number, offset: number): Promise<Array<Product>> {
-    const res = this.products.slice(offset, offset + limit)
+  async list(limit: number, offset: number): Promise<Array<ProductListItem>> {
+    const res = this.productsListItem.slice(offset, offset + limit)
     return Promise.resolve(JSON.parse(JSON.stringify(res)))
+  }
+
+  private toListItem(product: Product): ProductListItem {
+    return {
+      uuid: product.uuid,
+      name: product.name,
+      ean13: product.ean13,
+      laboratory: product.laboratory
+        ? {
+            uuid: product.laboratory.uuid,
+            name: product.laboratory.name
+          }
+        : undefined,
+      categories: product.categories.map((c) => ({
+        uuid: c.uuid,
+        name: c.name
+      })),
+      priceWithoutTax: product.priceWithoutTax,
+      percentTaxRate: product.percentTaxRate,
+      availableStock: product.availableStock,
+      status: product.status,
+      flags: product.flags,
+      miniature: product.miniature,
+      isMedicine: product.isMedicine
+    }
   }
 
   async count(): Promise<number> {
@@ -70,6 +97,7 @@ export class InMemoryProductGateway implements ProductGateway {
       }
     })
     this.products.push(product)
+    this.productsListItem.push(this.toListItem(product))
     return Promise.resolve(product)
   }
 
@@ -98,6 +126,14 @@ export class InMemoryProductGateway implements ProductGateway {
       delete dto.categoryUuids
     }
     this.products[index] = Object.assign(this.products[index], dto)
+    const listItemIndex = this.productsListItem.findIndex(
+      (p) => p.uuid === uuid
+    )
+    if (listItemIndex >= 0) {
+      this.productsListItem[listItemIndex] = this.toListItem(
+        this.products[index]
+      )
+    }
     return Promise.resolve(JSON.parse(JSON.stringify(this.products[index])))
   }
 
@@ -141,6 +177,11 @@ export class InMemoryProductGateway implements ProductGateway {
         product.categories.push(category)
       }
     })
+    this.productsListItem.forEach((listItem) => {
+      if (productUuids.includes(listItem.uuid)) {
+        listItem.categories.push({ uuid: category.uuid, name: category.name })
+      }
+    })
     return Promise.resolve(
       JSON.parse(
         JSON.stringify(
@@ -161,6 +202,14 @@ export class InMemoryProductGateway implements ProductGateway {
         )
       }
     })
+    // Update productsListItem array
+    this.productsListItem.forEach((listItem) => {
+      if (productUuids.includes(listItem.uuid)) {
+        listItem.categories = listItem.categories.filter(
+          (c) => c.uuid !== category.uuid
+        )
+      }
+    })
     return Promise.resolve(
       JSON.parse(
         JSON.stringify(
@@ -172,5 +221,10 @@ export class InMemoryProductGateway implements ProductGateway {
 
   feedWith(...products: Array<Product>) {
     this.products = JSON.parse(JSON.stringify(products))
+    this.productsListItem = products.map(this.toListItem)
+  }
+
+  feedListItemsWith(...productsListItem: Array<ProductListItem>) {
+    this.productsListItem = productsListItem
   }
 }

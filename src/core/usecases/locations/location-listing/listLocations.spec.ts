@@ -30,6 +30,40 @@ describe('Location listing', () => {
     })
   })
 
+  describe('Loading', () => {
+    beforeEach(() => {
+      locationGateway.feedWith(reserve)
+    })
+    it('should be aware during loading', async () => {
+      const unsubscribe = locationStore.$subscribe(
+        (mutation: any, state: any) => {
+          expect(state.isLoading).toBe(true)
+          unsubscribe()
+        }
+      )
+      await whenListLocations()
+    })
+    it('should be aware that loading is over', async () => {
+      await whenListLocations()
+      expect(locationStore.isLoading).toBe(false)
+    })
+  })
+
+  describe('Request deduplication', () => {
+    beforeEach(() => {
+      locationGateway.feedWith(reserve, zoneGeo)
+    })
+    it('should prevent duplicate concurrent requests', async () => {
+      locationStore.startLoading()
+      await whenListLocations()
+      expect(locationStore.items).toStrictEqual([])
+    })
+    it('should allow request when not loading', async () => {
+      await whenListLocations()
+      expect(locationStore.items).toStrictEqual([reserve, zoneGeo])
+    })
+  })
+
   const givenExistingLocations = (...locations: Array<Location>) => {
     locationGateway.feedWith(...locations)
   }

@@ -49,6 +49,21 @@ describe('Laboratory listing', () => {
     })
   })
 
+  describe('Request deduplication', () => {
+    beforeEach(() => {
+      laboratoryGateway.feedWith(avene, gilbert)
+    })
+    it('should prevent duplicate concurrent requests', async () => {
+      laboratoryStore.startLoading()
+      await whenListLaboratories()
+      expectStoreToEqual()
+    })
+    it('should allow request when not loading', async () => {
+      await whenListLaboratories()
+      expectStoreToEqual(avene, gilbert)
+    })
+  })
+
   const givenExistingLaboratories = (...laboratories: Array<Laboratory>) => {
     laboratoryGateway.feedWith(...laboratories)
   }

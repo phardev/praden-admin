@@ -26,11 +26,11 @@ export const createLaboratory = async (
     laboratoryStore.add(created)
     const productStore = useProductStore()
     if (dto.productsAdded.length) {
-      const products = await productGateway.bulkEdit(
+      const updatedProducts = await productGateway.bulkEdit(
         { laboratory: created },
         dto.productsAdded
       )
-      productStore.list(products)
+      updatedProducts.forEach((product) => productStore.edit(product))
     }
   } finally {
     laboratoryStore.stopLoading()

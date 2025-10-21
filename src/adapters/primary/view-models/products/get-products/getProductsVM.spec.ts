@@ -6,6 +6,13 @@ import {
   productWithoutLaboratory,
   ultraLevure
 } from '@utils/testData/products'
+import {
+  dolodentListItem,
+  productWithForbiddenPromotionListItem,
+  productWithoutCategoryListItem,
+  productWithoutLaboratoryListItem,
+  ultraLevureListItem
+} from '@utils/testData/fixtures/products/productListItems'
 import { createPinia, setActivePinia } from 'pinia'
 import { useProductStore } from '@store/productStore'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
@@ -80,7 +87,7 @@ describe('Get products VM', () => {
   describe('There is some products', () => {
     describe('Product does not have category', () => {
       it('should list all of them with empty name', () => {
-        productStore.items = [productWithoutCategory]
+        productStore.items = [productWithoutCategoryListItem]
         expectedVM = {
           items: [
             {
@@ -103,7 +110,7 @@ describe('Get products VM', () => {
     })
     describe('Product does not have laboratory', () => {
       it('should list all of them with empty name', () => {
-        productStore.items = [productWithoutLaboratory]
+        productStore.items = [productWithoutLaboratoryListItem]
         expectedVM = {
           items: [
             {
@@ -128,7 +135,7 @@ describe('Get products VM', () => {
     })
     describe('There is category', () => {
       it('should list all of them', () => {
-        productStore.items = [dolodent, ultraLevure]
+        productStore.items = [dolodentListItem, ultraLevureListItem]
         expectedVM = {
           headers: expectedHeaders,
           items: [
@@ -165,7 +172,10 @@ describe('Get products VM', () => {
     })
     describe('Products are not eligible to promotion', () => {
       it('should list all of them', () => {
-        productStore.items = [dolodent, productWithForbiddenPromotion]
+        productStore.items = [
+          dolodentListItem,
+          productWithForbiddenPromotionListItem
+        ]
         expectedVM = {
           headers: expectedHeaders,
           items: [
@@ -205,7 +215,7 @@ describe('Get products VM', () => {
     describe('Search', () => {
       describe('There is a search result', () => {
         beforeEach(() => {
-          searchStore.set(key, [dolodent])
+          searchStore.set(key, [dolodentListItem])
           searchStore.setFilter(key, {
             query: 'dol',
             status: ProductStatus.Active
@@ -238,7 +248,7 @@ describe('Get products VM', () => {
       })
       describe('There is another search result', () => {
         beforeEach(() => {
-          searchStore.set(key, [ultraLevure])
+          searchStore.set(key, [ultraLevureListItem])
         })
         it('should list only the search result', () => {
           expectedVM = {

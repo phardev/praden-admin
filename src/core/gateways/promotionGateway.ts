@@ -4,9 +4,10 @@ import {
   Promotion
 } from '@core/entities/promotion'
 import { UUID } from '@core/types/types'
+import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
 
 export interface PromotionGateway {
-  list(): Promise<Array<Promotion>>
+  list(): Promise<Array<PromotionListItem>>
   create(promotion: CreatePromotionDTO): Promise<Promotion>
   edit(uuid: UUID, promotion: EditPromotionDTO): Promise<Promotion>
   getByUuid(uuid: UUID): Promise<Promotion>

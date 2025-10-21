@@ -2,7 +2,17 @@ import { LocationGateway } from '@core/gateways/locationGateway'
 import { useLocationStore } from '@store/locationStore'
 
 export const listLocations = async (locationGateway: LocationGateway) => {
-  const locations = await locationGateway.list()
   const locationStore = useLocationStore()
-  locationStore.list(locations)
+
+  if (locationStore.isLoading) {
+    return
+  }
+
+  try {
+    locationStore.startLoading()
+    const locations = await locationGateway.list()
+    locationStore.list(locations)
+  } finally {
+    locationStore.stopLoading()
+  }
 }

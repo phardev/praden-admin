@@ -1,0 +1,27 @@
+import type { UUID } from '@core/types/types'
+import { ProductStatus } from '@core/entities/product'
+
+export interface ProductListItemLaboratory {
+  uuid: UUID
+  name: string
+}
+
+export interface ProductListItemCategory {
+  uuid: UUID
+  name: string
+}
+
+export interface ProductListItem {
+  uuid: UUID
+  name: string
+  ean13: string
+  laboratory?: ProductListItemLaboratory
+  categories: Array<ProductListItemCategory>
+  priceWithoutTax: number
+  percentTaxRate: number
+  availableStock: number
+  status: ProductStatus
+  flags: Record<string, boolean>
+  miniature: string
+  isMedicine: boolean
+}

@@ -14,11 +14,13 @@ import {
 } from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
 import { promotionPercentageDolodent } from '@utils/testData/promotions'
+import { promotionPercentageDolodentListItem } from '@utils/testData/fixtures/promotions/promotionListItems'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import {
   PromotionNeedsProductError,
   PromotionReductionCannotExceed100Error
 } from '@core/errors/PromotionNeedProductError'
+import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
 
 describe('Create promotion', () => {
   let promotionStore: any
@@ -38,10 +40,12 @@ describe('Create promotion', () => {
       amount: 10
     }
     const uuid = 'abc123'
-    const expectedPromotion: Promotion = {
-      ...promotion,
+    const expectedPromotionListItem: PromotionListItem = {
       uuid,
-      products: [dolodent]
+      name: 'PromoTest',
+      type: ReductionType.Percentage,
+      amount: 10,
+      productCount: 1
     }
     describe('Without previous promotions', () => {
       beforeEach(async () => {
@@ -49,16 +53,18 @@ describe('Create promotion', () => {
         await whenCreatePromotion(promotion)
       })
       it('should create the promotion in promotion gateway', async () => {
-        expect(await promotionGateway.list()).toStrictEqual([expectedPromotion])
+        expect(await promotionGateway.list()).toStrictEqual([
+          expectedPromotionListItem
+        ])
       })
       it('should save the promotion in promotion store', () => {
-        expect(promotionStore.items).toStrictEqual([expectedPromotion])
+        expect(promotionStore.items).toStrictEqual([expectedPromotionListItem])
       })
     })
     describe('With already existing promotions', () => {
-      const expectedPromotions = [
-        promotionPercentageDolodent,
-        expectedPromotion
+      const expectedPromotionListItems = [
+        promotionPercentageDolodentListItem,
+        expectedPromotionListItem
       ]
       beforeEach(async () => {
         givenExistingPromotions(promotionPercentageDolodent)
@@ -66,10 +72,12 @@ describe('Create promotion', () => {
         await whenCreatePromotion(promotion)
       })
       it('should create the promotion in promotion gateway', async () => {
-        expect(await promotionGateway.list()).toStrictEqual(expectedPromotions)
+        expect(await promotionGateway.list()).toStrictEqual(
+          expectedPromotionListItems
+        )
       })
       it('should save the promotion in promotion store', () => {
-        expect(promotionStore.items).toStrictEqual(expectedPromotions)
+        expect(promotionStore.items).toStrictEqual(expectedPromotionListItems)
       })
     })
     describe('With other fields', () => {
@@ -80,14 +88,16 @@ describe('Create promotion', () => {
         type: ReductionType.Fixed,
         amount: 100
       }
-      const expectedPromotion: Promotion = {
-        ...promotion,
+      const expectedPromotionListItem: PromotionListItem = {
         uuid,
-        products: [calmosine, chamomilla, anaca3Minceur]
+        name: 'PromoTest2',
+        type: ReductionType.Fixed,
+        amount: 100,
+        productCount: 3
       }
-      const expectedPromotions = [
-        promotionPercentageDolodent,
-        expectedPromotion
+      const expectedPromotionListItems = [
+        promotionPercentageDolodentListItem,
+        expectedPromotionListItem
       ]
       beforeEach(async () => {
         givenExistingPromotions(promotionPercentageDolodent)
@@ -95,10 +105,12 @@ describe('Create promotion', () => {
         await whenCreatePromotion(promotion)
       })
       it('should create the promotion in promotion gateway', async () => {
-        expect(await promotionGateway.list()).toStrictEqual(expectedPromotions)
+        expect(await promotionGateway.list()).toStrictEqual(
+          expectedPromotionListItems
+        )
       })
       it('should save the promotion in promotion store', () => {
-        expect(promotionStore.items).toStrictEqual(expectedPromotions)
+        expect(promotionStore.items).toStrictEqual(expectedPromotionListItems)
       })
     })
   })
@@ -129,7 +141,15 @@ describe('Create promotion', () => {
 
   const givenExistingPromotions = (...promotions: Array<Promotion>) => {
     promotionGateway.feedWith(...promotions)
-    promotionStore.items = promotions
+    promotionStore.items = promotions.map((p) => ({
+      uuid: p.uuid,
+      name: p.name,
+      type: p.type,
+      amount: p.amount,
+      startDate: p.startDate,
+      endDate: p.endDate,
+      productCount: p.products.length
+    }))
   }
 
   const whenCreatePromotion = async (promotion: CreatePromotionDTO) => {

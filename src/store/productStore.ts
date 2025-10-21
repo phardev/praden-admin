@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { Product, ProductWithPromotion, Stock } from '@core/entities/product'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 
 export const useProductStore = defineStore('ProductStore', {
   state: () => {
     return {
-      items: [] as Array<Product>,
+      items: [] as Array<ProductListItem>,
       stock: {} as Stock,
       current: undefined as ProductWithPromotion | undefined,
       hasMore: false as boolean,
@@ -13,17 +14,19 @@ export const useProductStore = defineStore('ProductStore', {
   },
   getters: {
     getByUuid: (state) => {
-      return (uuid: string): Product | undefined => {
+      return (uuid: string): ProductListItem | undefined => {
         return state.items.find((c) => c.uuid === uuid)
       }
     }
   },
   actions: {
-    list(products: Array<Product>) {
+    list(products: Array<ProductListItem>) {
       products.forEach((p) => {
         const existingProduct = this.items.find((item) => item.uuid === p.uuid)
         if (existingProduct) {
-          this.edit(p)
+          this.items = this.items.map((c) => {
+            return c.uuid === p.uuid ? p : c
+          })
         } else {
           this.items.push(p)
         }
@@ -32,14 +35,14 @@ export const useProductStore = defineStore('ProductStore', {
       this.hasMore = products.length > 0
     },
     add(product: Product) {
-      this.items.push(product)
+      this.items.push(toListItem(product))
     },
     setCurrent(product: ProductWithPromotion) {
       this.current = JSON.parse(JSON.stringify(product))
     },
     edit(product: Product) {
       this.items = this.items.map((c) => {
-        return c.uuid === product.uuid ? product : c
+        return c.uuid === product.uuid ? toListItem(product) : c
       })
     },
     startLoading() {
@@ -50,3 +53,29 @@ export const useProductStore = defineStore('ProductStore', {
     }
   }
 })
+
+const toListItem = (product: Product): ProductListItem => {
+  const listItem: ProductListItem = {
+    uuid: product.uuid,
+    name: product.name,
+    ean13: product.ean13,
+    categories: product.categories.map((c) => ({
+      uuid: c.uuid,
+      name: c.name
+    })),
+    priceWithoutTax: product.priceWithoutTax,
+    percentTaxRate: product.percentTaxRate,
+    availableStock: product.availableStock,
+    status: product.status,
+    flags: product.flags,
+    miniature: product.miniature,
+    isMedicine: product.isMedicine
+  }
+  if (product.laboratory) {
+    listItem.laboratory = {
+      uuid: product.laboratory.uuid,
+      name: product.laboratory.name
+    }
+  }
+  return listItem
+}

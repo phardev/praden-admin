@@ -10,6 +10,11 @@ import { useLaboratoryStore } from '@store/laboratoryStore'
 import { useProductStore } from '@store/productStore'
 import { avene, gilbert, sanofiAventis } from '@utils/testData/laboratories'
 import { dolodent, hemoclar } from '@utils/testData/products'
+import {
+  dolodentListItem,
+  hemoclarListItem
+} from '@utils/testData/fixtures/products/productListItems'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 
 describe('Laboratory edition', () => {
   let laboratoryStore: any
@@ -104,10 +109,54 @@ describe('Laboratory edition', () => {
         await whenEditLaboratory(avene.uuid)
       })
       it('should update the products in gateway', async () => {
-        await expectProductGatewayToContains(expectedProducts)
+        const expectedListItems = expectedProducts.map((product) => ({
+          uuid: product.uuid,
+          name: product.name,
+          ean13: product.ean13,
+          laboratory: product.laboratory
+            ? {
+                uuid: product.laboratory.uuid,
+                name: product.laboratory.name
+              }
+            : undefined,
+          categories: product.categories.map((c) => ({
+            uuid: c.uuid,
+            name: c.name
+          })),
+          priceWithoutTax: product.priceWithoutTax,
+          percentTaxRate: product.percentTaxRate,
+          availableStock: product.availableStock,
+          status: product.status,
+          flags: product.flags,
+          miniature: product.miniature,
+          isMedicine: product.isMedicine
+        }))
+        await expectProductGatewayToContains(expectedListItems)
       })
       it('should update the products in store', () => {
-        expect(productStore.items).toStrictEqual(expectedProducts)
+        const expectedListItems = expectedProducts.map((product) => ({
+          uuid: product.uuid,
+          name: product.name,
+          ean13: product.ean13,
+          laboratory: product.laboratory
+            ? {
+                uuid: product.laboratory.uuid,
+                name: product.laboratory.name
+              }
+            : undefined,
+          categories: product.categories.map((c) => ({
+            uuid: c.uuid,
+            name: c.name
+          })),
+          priceWithoutTax: product.priceWithoutTax,
+          percentTaxRate: product.percentTaxRate,
+          availableStock: product.availableStock,
+          status: product.status,
+          flags: product.flags,
+          miniature: product.miniature,
+          isMedicine: product.isMedicine
+        }))
+        expect(productStore.items).toStrictEqual(expectedListItems)
       })
     })
     describe('Remove some products', () => {
@@ -118,15 +167,65 @@ describe('Laboratory edition', () => {
         }
         expectedLaboratory = gilbert
         const expectedDolodent = JSON.parse(JSON.stringify(dolodent))
-        expectedDolodent.laboratory = null
+        expectedDolodent.laboratory = undefined
         expectedProducts = [expectedDolodent, hemoclar]
         await whenEditLaboratory(gilbert.uuid)
       })
       it('should update the products in gateway', async () => {
-        await expectProductGatewayToContains(expectedProducts)
+        const expectedListItems = expectedProducts.map((product) => {
+          const listItem: ProductListItem = {
+            uuid: product.uuid,
+            name: product.name,
+            ean13: product.ean13,
+            categories: product.categories.map((c) => ({
+              uuid: c.uuid,
+              name: c.name
+            })),
+            priceWithoutTax: product.priceWithoutTax,
+            percentTaxRate: product.percentTaxRate,
+            availableStock: product.availableStock,
+            status: product.status,
+            flags: product.flags,
+            miniature: product.miniature,
+            isMedicine: product.isMedicine
+          }
+          if (product.laboratory) {
+            listItem.laboratory = {
+              uuid: product.laboratory.uuid,
+              name: product.laboratory.name
+            }
+          }
+          return listItem
+        })
+        await expectProductGatewayToContains(expectedListItems)
       })
       it('should update the products in store', () => {
-        expect(productStore.items).toStrictEqual(expectedProducts)
+        const expectedListItems = expectedProducts.map((product) => {
+          const listItem: ProductListItem = {
+            uuid: product.uuid,
+            name: product.name,
+            ean13: product.ean13,
+            categories: product.categories.map((c) => ({
+              uuid: c.uuid,
+              name: c.name
+            })),
+            priceWithoutTax: product.priceWithoutTax,
+            percentTaxRate: product.percentTaxRate,
+            availableStock: product.availableStock,
+            status: product.status,
+            flags: product.flags,
+            miniature: product.miniature,
+            isMedicine: product.isMedicine
+          }
+          if (product.laboratory) {
+            listItem.laboratory = {
+              uuid: product.laboratory.uuid,
+              name: product.laboratory.name
+            }
+          }
+          return listItem
+        })
+        expect(productStore.items).toStrictEqual(expectedListItems)
       })
     })
   })
@@ -155,7 +254,11 @@ describe('Laboratory edition', () => {
 
   const givenExistingProducts = (...products: Array<Product>) => {
     productGateway.feedWith(...JSON.parse(JSON.stringify(products)))
-    productStore.items = JSON.parse(JSON.stringify(products))
+    const productToListItemMap: Record<string, ProductListItem> = {
+      [dolodent.uuid]: dolodentListItem,
+      [hemoclar.uuid]: hemoclarListItem
+    }
+    productStore.items = products.map((p) => productToListItemMap[p.uuid])
   }
 
   const givenExistingLaboratories = (...laboratories: Array<Laboratory>) => {
@@ -167,7 +270,9 @@ describe('Laboratory edition', () => {
     await editLaboratory(uuid, dto, laboratoryGateway, productGateway)
   }
 
-  const expectProductGatewayToContains = async (expected: Array<Product>) => {
+  const expectProductGatewayToContains = async (
+    expected: Array<ProductListItem>
+  ) => {
     expect(await productGateway.list(50, 0)).toStrictEqual(expected)
   }
 })

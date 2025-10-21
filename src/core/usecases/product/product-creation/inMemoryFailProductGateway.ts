@@ -4,13 +4,14 @@ import { ProductGateway } from '@core/gateways/productGateway'
 import { UUID } from '@core/types/types'
 import { EditProductDTO } from '../product-edition/editProduct'
 import { CreateProductDTO } from './createProduct'
+import { ProductListItem } from '../product-listing/productListItem'
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 export class InMemoryFailProductGateway implements ProductGateway {
   private errorMessage = ''
 
-  list(limit: number, offset: number): Promise<Array<Product>> {
+  list(limit: number, offset: number): Promise<Array<ProductListItem>> {
     throw new Error(this.errorMessage)
   }
 

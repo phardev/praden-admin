@@ -7,6 +7,11 @@ export const listProducts = async (
   productGateway: ProductGateway
 ) => {
   const productStore = useProductStore()
+
+  if (productStore.isLoading) {
+    return
+  }
+
   try {
     productStore.startLoading()
     const products = await productGateway.list(limit, offset)
