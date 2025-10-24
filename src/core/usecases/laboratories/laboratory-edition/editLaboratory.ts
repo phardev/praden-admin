@@ -33,14 +33,14 @@ export const editLaboratory = async (
         { laboratory: edited },
         productsAdded
       )
-      productStore.list(products)
+      products.forEach((product) => productStore.edit(product))
     }
     if (productsRemoved) {
       const products = await productGateway.bulkEdit(
         { laboratory: null },
         productsRemoved
       )
-      productStore.list(products)
+      products.forEach((product) => productStore.edit(product))
     }
   } finally {
     laboratoryStore.stopLoading()

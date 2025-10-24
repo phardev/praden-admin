@@ -7,7 +7,11 @@ import {
   promotionPercentageDolodent
 } from '@utils/testData/promotions'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
-import { Promotion } from '@core/entities/promotion'
+import {
+  promotionFixedMultipleProductsListItem,
+  promotionPercentageDolodentListItem
+} from '@utils/testData/fixtures/promotions/promotionListItems'
+import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
 
 describe('Get products VM', () => {
   let promotionStore: any
@@ -49,8 +53,8 @@ describe('Get products VM', () => {
   describe('There is some promotions', () => {
     beforeEach(() => {
       promotionStore.items = [
-        promotionFixedMultipleProducts,
-        promotionPercentageDolodent
+        promotionFixedMultipleProductsListItem,
+        promotionPercentageDolodentListItem
       ]
     })
     describe('Promotions in progress', () => {
@@ -63,8 +67,8 @@ describe('Get products VM', () => {
               headers: expectedHeaders,
               items: [
                 {
-                  uuid: promotionFixedMultipleProducts.uuid,
-                  name: promotionFixedMultipleProducts.name,
+                  uuid: promotionFixedMultipleProductsListItem.uuid,
+                  name: promotionFixedMultipleProductsListItem.name,
                   amount: '1,00\u00A0€',
                   startDate: '27 juil. 2023',
                   startDatetime: new Date('2023-07-27T00:00:00.000Z'),
@@ -73,8 +77,8 @@ describe('Get products VM', () => {
                   numberOfProducts: 2
                 },
                 {
-                  uuid: promotionPercentageDolodent.uuid,
-                  name: promotionPercentageDolodent.name,
+                  uuid: promotionPercentageDolodentListItem.uuid,
+                  name: promotionPercentageDolodentListItem.name,
                   amount: '10%',
                   startDate: '27 juil. 2023',
                   startDatetime: new Date('2023-07-27T00:00:00.000Z'),
@@ -89,8 +93,8 @@ describe('Get products VM', () => {
         expectVMToMatch(expectedVM)
       })
       it('should list all of them if there is no starting date or ending date', () => {
-        const withoutDatePromo: Promotion = JSON.parse(
-          JSON.stringify(promotionFixedMultipleProducts)
+        const withoutDatePromo: PromotionListItem = JSON.parse(
+          JSON.stringify(promotionFixedMultipleProductsListItem)
         )
         delete withoutDatePromo.startDate
         delete withoutDatePromo.endDate
@@ -120,8 +124,8 @@ describe('Get products VM', () => {
         expectVMToMatch(expectedVM)
       })
       it('should list all of them if there is no starting date but there is an ending date', () => {
-        const withoutDatePromo: Promotion = JSON.parse(
-          JSON.stringify(promotionPercentageDolodent)
+        const withoutDatePromo: PromotionListItem = JSON.parse(
+          JSON.stringify(promotionPercentageDolodentListItem)
         )
         delete withoutDatePromo.startDate
         withoutDatePromo.endDate = 1696104400000
@@ -151,8 +155,8 @@ describe('Get products VM', () => {
         expectVMToMatch(expectedVM)
       })
       it('should list all of them if there is a starting date but there is not an ending date', () => {
-        const withoutDatePromo: Promotion = JSON.parse(
-          JSON.stringify(promotionPercentageDolodent)
+        const withoutDatePromo: PromotionListItem = JSON.parse(
+          JSON.stringify(promotionPercentageDolodentListItem)
         )
         delete withoutDatePromo.endDate
         withoutDatePromo.startDate = 1696104400000

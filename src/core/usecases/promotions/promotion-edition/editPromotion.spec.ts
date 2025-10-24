@@ -14,6 +14,8 @@ import {
 import { calmosine } from '@utils/testData/products'
 import { editPromotion } from '@core/usecases/promotions/promotion-edition/editPromotion'
 import { PromotionDoesNotExistsError } from '@core/errors/PromotionDoesNotExistsError'
+import { PromotionListItem } from '../promotions-listing/promotionListItem'
+import { promotionFixedMultipleProductsListItem } from '@utils/testData/fixtures/promotions/promotionListItems'
 
 describe('Edit promotion', () => {
   let promotionStore: any
@@ -46,18 +48,31 @@ describe('Edit promotion', () => {
         type: ReductionType.Fixed,
         amount: 150,
         products: [calmosine],
-        startDate: 123456789,
-        endDate: 987654321
+        startDate: dto.startDate,
+        endDate: dto.endDate
       }
-      const expectedRes = [expectedPromotion, promotionFixedMultipleProducts]
+      const expectedPromotionListItems = [
+        {
+          uuid: expectedPromotion.uuid,
+          name: 'New name',
+          type: ReductionType.Fixed,
+          amount: 150,
+          startDate: dto.startDate,
+          endDate: dto.endDate,
+          productCount: 1
+        },
+        promotionFixedMultipleProductsListItem
+      ]
       beforeEach(async () => {
         await whenEditPromotion(expectedPromotion.uuid, dto)
       })
       it('should save the promotion in gateway', async () => {
-        expect(await promotionGateway.list()).toStrictEqual(expectedRes)
+        expect(await promotionGateway.list()).toStrictEqual(
+          expectedPromotionListItems
+        )
       })
       it('should save the promotion in store', () => {
-        expect(promotionStore.items).toStrictEqual(expectedRes)
+        expect(promotionStore.items).toStrictEqual(expectedPromotionListItems)
       })
     })
     describe('Update some fields', () => {
@@ -70,15 +85,31 @@ describe('Edit promotion', () => {
         name: 'New name',
         amount: 15
       }
+      const expectedPromotionListItem: PromotionListItem = {
+        uuid: promotionPercentageDolodent.uuid,
+        name: 'New name',
+        type: ReductionType.Percentage,
+        amount: 15,
+        startDate: promotionPercentageDolodent.startDate,
+        endDate: promotionPercentageDolodent.endDate,
+        productCount: 1
+      }
+
+      const expectedPromotionListItems = [
+        expectedPromotionListItem,
+        promotionFixedMultipleProductsListItem
+      ]
+
       beforeEach(async () => {
         await whenEditPromotion(expectedPromotion.uuid, dto)
       })
-      const expectedRes = [expectedPromotion, promotionFixedMultipleProducts]
       it('should save the promotion in gateway', async () => {
-        expect(await promotionGateway.list()).toStrictEqual(expectedRes)
+        expect(await promotionGateway.list()).toStrictEqual(
+          expectedPromotionListItems
+        )
       })
       it('should save the promotion in store', () => {
-        expect(promotionStore.items).toStrictEqual(expectedRes)
+        expect(promotionStore.items).toStrictEqual(expectedPromotionListItems)
       })
     })
   })
@@ -91,7 +122,15 @@ describe('Edit promotion', () => {
   })
   const givenPromotionsExists = (...promotions: Array<Promotion>) => {
     promotionGateway.feedWith(...JSON.parse(JSON.stringify(promotions)))
-    promotionStore.items = JSON.parse(JSON.stringify(promotions))
+    promotionStore.items = promotions.map((p) => ({
+      uuid: p.uuid,
+      name: p.name,
+      type: p.type,
+      amount: p.amount,
+      startDate: p.startDate,
+      endDate: p.endDate,
+      productCount: p.products.length
+    }))
   }
   const whenEditPromotion = async (uuid: string, dto: EditPromotionDTO) => {
     await editPromotion(uuid, dto, promotionGateway)

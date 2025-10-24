@@ -3,9 +3,10 @@ import { CreateProductDTO } from '@core/usecases/product/product-creation/create
 import { UUID } from '@core/types/types'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { Category } from '@core/entities/category'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 
 export interface ProductGateway {
-  list(limit: number, offset: number): Promise<Array<Product>>
+  list(limit: number, offset: number): Promise<Array<ProductListItem>>
   count(): Promise<number>
   batch(uuids: Array<UUID>): Promise<Array<Product>>
   create(dto: CreateProductDTO): Promise<Product>

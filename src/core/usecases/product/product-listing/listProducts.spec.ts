@@ -2,15 +2,16 @@ import { createPinia, setActivePinia } from 'pinia'
 import { useProductStore } from '@store/productStore'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { listProducts } from './listProducts'
-import { Product, Stock } from '@core/entities/product'
+import { Stock } from '@core/entities/product'
 import {
-  anaca3Minceur,
-  chamomilla,
-  dolodent,
-  ultraLevure
-} from '@utils/testData/products'
+  anaca3MinceurListItem,
+  chamomillaListItem,
+  dolodentListItem,
+  ultraLevureListItem
+} from '@utils/testData/fixtures/products/productListItems'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { beforeEach, describe } from 'vitest'
+import { ProductListItem } from './productListItem'
 
 describe('List products', () => {
   let productStore: any
@@ -36,16 +37,16 @@ describe('List products', () => {
   })
   describe('There is some products', () => {
     beforeEach(async () => {
-      givenExistingProducts(dolodent, ultraLevure)
+      givenExistingProducts(dolodentListItem, ultraLevureListItem)
       await whenListProducts()
     })
     it('should list all of them', () => {
-      expectProductStoreToContains(dolodent, ultraLevure)
+      expectProductStoreToContains(dolodentListItem, ultraLevureListItem)
     })
     it('should retrieve available stock', async () => {
       const expectedStock: Stock = {
-        [dolodent.ean13]: dolodent.availableStock,
-        [ultraLevure.ean13]: ultraLevure.availableStock
+        [dolodentListItem.ean13]: dolodentListItem.availableStock,
+        [ultraLevureListItem.ean13]: ultraLevureListItem.availableStock
       }
       expectStockToEqual(expectedStock)
     })
@@ -53,14 +54,19 @@ describe('List products', () => {
 
   describe('List by chunk', () => {
     beforeEach(() => {
-      givenExistingProducts(dolodent, ultraLevure, anaca3Minceur, chamomilla)
+      givenExistingProducts(
+        dolodentListItem,
+        ultraLevureListItem,
+        anaca3MinceurListItem,
+        chamomillaListItem
+      )
     })
     describe('Retreive first products', () => {
       beforeEach(async () => {
         await whenListProducts(2, 0)
       })
       it('should retrieve first products', () => {
-        expectProductStoreToContains(dolodent, ultraLevure)
+        expectProductStoreToContains(dolodentListItem, ultraLevureListItem)
       })
       it('should be aware that its not over', () => {
         expectHasMoreToBe(true)
@@ -68,7 +74,7 @@ describe('List products', () => {
     })
     it('should retrieve products with an offset', async () => {
       await whenListProducts(1, 2)
-      expectProductStoreToContains(anaca3Minceur)
+      expectProductStoreToContains(anaca3MinceurListItem)
     })
     describe('Get all by chunk', () => {
       beforeEach(async () => {
@@ -78,10 +84,10 @@ describe('List products', () => {
       })
       it('should retrieve multiple chunks and keep the old products', () => {
         expectProductStoreToContains(
-          dolodent,
-          ultraLevure,
-          anaca3Minceur,
-          chamomilla
+          dolodentListItem,
+          ultraLevureListItem,
+          anaca3MinceurListItem,
+          chamomillaListItem
         )
       })
       it('should be aware that its over', () => {
@@ -91,7 +97,7 @@ describe('List products', () => {
   })
   describe('Loading', () => {
     beforeEach(() => {
-      givenExistingProducts(dolodent, ultraLevure)
+      givenExistingProducts(dolodentListItem, ultraLevureListItem)
     })
     it('should be aware during loading', async () => {
       const unsubscribe = productStore.$subscribe(
@@ -106,10 +112,15 @@ describe('List products', () => {
       await whenListProducts()
       expect(productStore.isLoading).toBe(false)
     })
+    it('should prevent duplicate concurrent requests', async () => {
+      productStore.startLoading()
+      await whenListProducts()
+      expectProductStoreToContains()
+    })
   })
 
-  const givenExistingProducts = (...products: Array<Product>) => {
-    productGateway.feedWith(...products)
+  const givenExistingProducts = (...products: Array<ProductListItem>) => {
+    productGateway.feedListItemsWith(...products)
   }
 
   const whenListProducts = async (limit?: number, offset?: number) => {
@@ -120,7 +131,9 @@ describe('List products', () => {
     )
   }
 
-  const expectProductStoreToContains = (...products: Array<Product>) => {
+  const expectProductStoreToContains = (
+    ...products: Array<ProductListItem>
+  ) => {
     expect(productStore.items).toStrictEqual(products)
   }
 

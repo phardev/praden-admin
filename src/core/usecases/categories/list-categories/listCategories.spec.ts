@@ -46,6 +46,21 @@ describe('List categories', () => {
     })
   })
 
+  describe('Request deduplication', () => {
+    beforeEach(() => {
+      categoryGateway.feedWith(dents, diarrhee)
+    })
+    it('should prevent duplicate concurrent requests', async () => {
+      categoryStore.startLoading()
+      await whenListCategories()
+      expect(categoryStore.items).toStrictEqual([])
+    })
+    it('should allow request when not loading', async () => {
+      await whenListCategories()
+      expect(categoryStore.items).toStrictEqual([dents, diarrhee])
+    })
+  })
+
   const whenListCategories = async () => {
     await listCategories(categoryGateway)
   }

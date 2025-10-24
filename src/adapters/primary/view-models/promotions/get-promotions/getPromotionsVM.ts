@@ -15,6 +15,7 @@ import {
   priceFormatter,
   timestampToLocaleString
 } from '@utils/formatters'
+import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
 
 export interface GetPromotionItemVM {
   uuid: string
@@ -84,9 +85,11 @@ const filterPromotionsByGroup = (
   const headers = getPromotionsVMHeaders
   const res: GetPromotionsVM = {}
   groups.forEach((group: any) => {
-    const filteredItems: Array<Promotion> = promotions.filter(group.filter(now))
+    const filteredItems: Array<PromotionListItem> = promotions.filter(
+      group.filter(now)
+    )
     const items: Array<GetPromotionItemVM> = filteredItems.map(
-      (p: Promotion): GetPromotionItemVM => {
+      (p: PromotionListItem): GetPromotionItemVM => {
         let amount = ''
         if (p.type === ReductionType.Percentage) {
           amount = percentFormatter(p.amount)
@@ -104,7 +107,7 @@ const filterPromotionsByGroup = (
           startDatetime: new Date(p.startDate || ''),
           endDate: p.endDate ? timestampToLocaleString(p.endDate, 'fr-FR') : '',
           endDatetime: new Date(p.endDate || ''),
-          numberOfProducts: p.products.length
+          numberOfProducts: p.productCount
         }
       }
     )

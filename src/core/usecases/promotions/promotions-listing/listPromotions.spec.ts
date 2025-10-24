@@ -1,10 +1,10 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { usePromotionStore } from '@store/promotionStore'
 import { listPromotions } from '@core/usecases/promotions/promotions-listing/listPromotions'
-import { Promotion } from '@core/entities/promotion'
 import { InMemoryPromotionGateway } from '@adapters/secondary/promotion-gateways/InMemoryPromotionGateway'
-import { promotionPercentageDolodent } from '@utils/testData/promotions'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { promotionPercentageDolodentListItem } from '@utils/testData/fixtures/promotions/promotionListItems'
+import { PromotionListItem } from './promotionListItem'
 
 describe('List promotions', () => {
   let promotionStore: any
@@ -25,21 +25,25 @@ describe('List promotions', () => {
 
   describe('There is some promotions', () => {
     it('should list all of them', async () => {
-      givenThereIsExistingPromotions(promotionPercentageDolodent)
+      givenThereIsExistingPromotions(promotionPercentageDolodentListItem)
       await whenListPromotions()
-      expectPromotionStoreToContains(promotionPercentageDolodent)
+      expectPromotionStoreToContains(promotionPercentageDolodentListItem)
     })
   })
 
-  const givenThereIsExistingPromotions = (...promotions: Array<Promotion>) => {
-    promotionGateway.feedWith(...promotions)
+  const givenThereIsExistingPromotions = (
+    ...promotions: Array<PromotionListItem>
+  ) => {
+    promotionGateway.feedListItemWith(...promotions)
   }
 
   const whenListPromotions = async () => {
     await listPromotions(promotionGateway)
   }
 
-  const expectPromotionStoreToContains = (...promotions: Array<Promotion>) => {
+  const expectPromotionStoreToContains = (
+    ...promotions: Array<PromotionListItem>
+  ) => {
     expect(promotionStore.items).toStrictEqual(promotions)
   }
 })

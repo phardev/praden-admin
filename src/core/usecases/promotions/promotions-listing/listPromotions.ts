@@ -4,8 +4,17 @@ import { usePromotionStore } from '@store/promotionStore'
 export const listPromotions = async (
   promotionGateway: PromotionGateway
 ): Promise<void> => {
-  const promotions = await promotionGateway.list()
   const promotionStore = usePromotionStore()
-  promotionStore.list(promotions)
-  return Promise.resolve()
+
+  if (promotionStore.isLoading) {
+    return
+  }
+
+  try {
+    promotionStore.startLoading()
+    const promotions = await promotionGateway.list()
+    promotionStore.list(promotions)
+  } finally {
+    promotionStore.stopLoading()
+  }
 }

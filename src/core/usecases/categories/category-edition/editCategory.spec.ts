@@ -12,9 +12,15 @@ import { UUID } from '@core/types/types'
 import { CategoryDoesNotExistsError } from '@core/errors/CategoryDoesNotExistsError'
 import { ParentCategoryDoesNotExistsError } from '@core/errors/ParentCategoryDoesNotExistsError'
 import { anaca3Minceur, calmosine, dolodent } from '@utils/testData/products'
+import {
+  anaca3MinceurListItem,
+  calmosineListItem,
+  dolodentListItem
+} from '@utils/testData/fixtures/products/productListItems'
 import { Product } from '@core/entities/product'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { useProductStore } from '@store/productStore'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 
 describe('Category Edition', () => {
   let categoryStore: any
@@ -125,10 +131,54 @@ describe('Category Edition', () => {
         ]
       })
       it('should add the added products to the category', async () => {
-        await expectProductGatewayToContains(expectedProducts)
+        const expectedListItems = expectedProducts.map((product) => ({
+          uuid: product.uuid,
+          name: product.name,
+          ean13: product.ean13,
+          laboratory: product.laboratory
+            ? {
+                uuid: product.laboratory.uuid,
+                name: product.laboratory.name
+              }
+            : undefined,
+          categories: product.categories.map((c) => ({
+            uuid: c.uuid,
+            name: c.name
+          })),
+          priceWithoutTax: product.priceWithoutTax,
+          percentTaxRate: product.percentTaxRate,
+          availableStock: product.availableStock,
+          status: product.status,
+          flags: product.flags,
+          miniature: product.miniature,
+          isMedicine: product.isMedicine
+        }))
+        await expectProductGatewayToContains(expectedListItems)
       })
       it('should update the product store', () => {
-        expect(productStore.items).toStrictEqual(expectedProducts)
+        const expectedListItems = expectedProducts.map((product) => ({
+          uuid: product.uuid,
+          name: product.name,
+          ean13: product.ean13,
+          laboratory: product.laboratory
+            ? {
+                uuid: product.laboratory.uuid,
+                name: product.laboratory.name
+              }
+            : undefined,
+          categories: product.categories.map((c) => ({
+            uuid: c.uuid,
+            name: c.name
+          })),
+          priceWithoutTax: product.priceWithoutTax,
+          percentTaxRate: product.percentTaxRate,
+          availableStock: product.availableStock,
+          status: product.status,
+          flags: product.flags,
+          miniature: product.miniature,
+          isMedicine: product.isMedicine
+        }))
+        expect(productStore.items).toStrictEqual(expectedListItems)
       })
     })
     describe('Removed products', () => {
@@ -150,10 +200,54 @@ describe('Category Edition', () => {
         ]
       })
       it('should add the added products to the category', async () => {
-        await expectProductGatewayToContains(expectedProducts)
+        const expectedListItems = expectedProducts.map((product) => ({
+          uuid: product.uuid,
+          name: product.name,
+          ean13: product.ean13,
+          laboratory: product.laboratory
+            ? {
+                uuid: product.laboratory.uuid,
+                name: product.laboratory.name
+              }
+            : undefined,
+          categories: product.categories.map((c) => ({
+            uuid: c.uuid,
+            name: c.name
+          })),
+          priceWithoutTax: product.priceWithoutTax,
+          percentTaxRate: product.percentTaxRate,
+          availableStock: product.availableStock,
+          status: product.status,
+          flags: product.flags,
+          miniature: product.miniature,
+          isMedicine: product.isMedicine
+        }))
+        await expectProductGatewayToContains(expectedListItems)
       })
       it('should update the product store', () => {
-        expect(productStore.items).toStrictEqual(expectedProducts)
+        const expectedListItems = expectedProducts.map((product) => ({
+          uuid: product.uuid,
+          name: product.name,
+          ean13: product.ean13,
+          laboratory: product.laboratory
+            ? {
+                uuid: product.laboratory.uuid,
+                name: product.laboratory.name
+              }
+            : undefined,
+          categories: product.categories.map((c) => ({
+            uuid: c.uuid,
+            name: c.name
+          })),
+          priceWithoutTax: product.priceWithoutTax,
+          percentTaxRate: product.percentTaxRate,
+          availableStock: product.availableStock,
+          status: product.status,
+          flags: product.flags,
+          miniature: product.miniature,
+          isMedicine: product.isMedicine
+        }))
+        expect(productStore.items).toStrictEqual(expectedListItems)
       })
     })
   })
@@ -208,7 +302,12 @@ describe('Category Edition', () => {
 
   const givenExistingProducts = (...products: Array<Product>) => {
     productGateway.feedWith(...JSON.parse(JSON.stringify(products)))
-    productStore.items = JSON.parse(JSON.stringify(products))
+    const productToListItemMap: Record<string, ProductListItem> = {
+      [dolodent.uuid]: dolodentListItem,
+      [calmosine.uuid]: calmosineListItem,
+      [anaca3Minceur.uuid]: anaca3MinceurListItem
+    }
+    productStore.items = products.map((p) => productToListItemMap[p.uuid])
   }
 
   const whenEditCategory = async (
@@ -218,7 +317,9 @@ describe('Category Edition', () => {
     await editCategory(uuid, dto, categoryGateway, productGateway)
   }
 
-  const expectProductGatewayToContains = async (expected: Array<Product>) => {
+  const expectProductGatewayToContains = async (
+    expected: Array<ProductListItem>
+  ) => {
     expect(await productGateway.list(50, 0)).toStrictEqual(expected)
   }
 })

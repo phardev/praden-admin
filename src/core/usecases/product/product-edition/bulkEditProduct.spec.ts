@@ -6,7 +6,13 @@ import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InM
 import { Product } from '@core/entities/product'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
+import {
+  chamomillaListItem,
+  dolodentListItem,
+  ultraLevureListItem
+} from '@utils/testData/fixtures/products/productListItems'
 import { setActivePinia, createPinia } from 'pinia'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 
 describe('bulkEditProduct usecase', () => {
   let productGateway: InMemoryProductGateway
@@ -47,6 +53,12 @@ describe('bulkEditProduct usecase', () => {
 
   const givenExistingProducts = (products: Array<Product>) => {
     productGateway.feedWith(...products)
+    const productToListItemMap: Record<string, ProductListItem> = {
+      [chamomilla.uuid]: chamomillaListItem,
+      [dolodent.uuid]: dolodentListItem,
+      [ultraLevure.uuid]: ultraLevureListItem
+    }
+    productStore.items = products.map((p) => productToListItemMap[p.uuid])
     productUuids = products.map((product) => product.uuid)
   }
 
@@ -65,13 +77,57 @@ describe('bulkEditProduct usecase', () => {
   }
 
   const expectGatewayProductsToEqual = async () => {
-    expect(await productGateway.list(100, 0)).toStrictEqual(expectedProducts)
+    const expectedListItems = expectedProducts.map((product) => ({
+      uuid: product.uuid,
+      name: product.name,
+      ean13: product.ean13,
+      laboratory: product.laboratory
+        ? {
+            uuid: product.laboratory.uuid,
+            name: product.laboratory.name
+          }
+        : undefined,
+      categories: product.categories.map((c) => ({
+        uuid: c.uuid,
+        name: c.name
+      })),
+      priceWithoutTax: product.priceWithoutTax,
+      percentTaxRate: product.percentTaxRate,
+      availableStock: product.availableStock,
+      status: product.status,
+      flags: product.flags,
+      miniature: product.miniature,
+      isMedicine: product.isMedicine
+    }))
+    expect(await productGateway.list(100, 0)).toStrictEqual(expectedListItems)
   }
 
   const expectStoreProductsToMatchGateway = async () => {
     const expectedProducts = await Promise.all(
       productUuids.map((uuid) => productGateway.getByUuid(uuid))
     )
-    expect(productStore.items).toStrictEqual(expectedProducts)
+    const expectedListItems = expectedProducts.map((product) => ({
+      uuid: product.uuid,
+      name: product.name,
+      ean13: product.ean13,
+      laboratory: product.laboratory
+        ? {
+            uuid: product.laboratory.uuid,
+            name: product.laboratory.name
+          }
+        : undefined,
+      categories: product.categories.map((c) => ({
+        uuid: c.uuid,
+        name: c.name
+      })),
+      priceWithoutTax: product.priceWithoutTax,
+      percentTaxRate: product.percentTaxRate,
+      availableStock: product.availableStock,
+      status: product.status,
+      flags: product.flags,
+      miniature: product.miniature,
+      isMedicine: product.isMedicine
+    }))
+    expect(productStore.items).toStrictEqual(expectedListItems)
   }
 })
