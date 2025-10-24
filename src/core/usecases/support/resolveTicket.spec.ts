@@ -1,12 +1,12 @@
-import { useTicketStore } from '@store/ticketStore'
-import { resolveTicket } from '@core/usecases/support/resolveTicket'
-import { createPinia, setActivePinia } from 'pinia'
-import { startedTicket } from '@utils/testData/tickets'
-import { InMemoryTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTicketGateway'
-import { TicketDoesNotExistsError } from '@core/errors/TicketDoesNotExistsError'
-import { Ticket, TicketStatus } from '@core/entities/ticket'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { InMemoryTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTicketGateway'
+import { Ticket, TicketStatus } from '@core/entities/ticket'
+import { TicketDoesNotExistsError } from '@core/errors/TicketDoesNotExistsError'
 import { Timestamp } from '@core/types/types'
+import { resolveTicket } from '@core/usecases/support/resolveTicket'
+import { useTicketStore } from '@store/ticketStore'
+import { startedTicket } from '@utils/testData/tickets'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Resolve ticket', () => {
   let ticketStore: any

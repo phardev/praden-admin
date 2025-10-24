@@ -8,14 +8,14 @@
 </template>
 
 <script lang="ts" setup>
+import { promotionFormEditVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormEditVM'
+import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { listProducts } from '@core/usecases/product/product-listing/listProducts'
+import { editPromotion } from '@core/usecases/promotions/promotion-edition/editPromotion'
+import { getPromotion } from '@core/usecases/promotions/promotion-get/getPromotion'
+import { useCategoryGateway } from '../../../../../../../gateways/categoryGateway'
 import { useProductGateway } from '../../../../../../../gateways/productGateway'
 import { usePromotionGateway } from '../../../../../../../gateways/promotionGateway'
-import { getPromotion } from '@core/usecases/promotions/promotion-get/getPromotion'
-import { editPromotion } from '@core/usecases/promotions/promotion-edition/editPromotion'
-import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
-import { useCategoryGateway } from '../../../../../../../gateways/categoryGateway'
-import { promotionFormEditVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormEditVM'
 
 definePageMeta({ layout: 'main' })
 

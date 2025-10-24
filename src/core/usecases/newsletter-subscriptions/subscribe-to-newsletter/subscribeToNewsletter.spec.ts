@@ -1,18 +1,18 @@
+import { InMemoryCustomerGateway } from '@adapters/secondary/customer-gateways/inMemoryCustomerGateway'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { InMemoryNewsletterGateway } from '@adapters/secondary/newsletter-gateways/inMemoryNewsletterGateway'
-import { useNewsletterStore } from '@store/newsletterStore'
-import { createPinia, setActivePinia } from 'pinia'
-import {
-  subscribeToNewsletter,
-  SubscribeToNewsletterDTO
-} from './subscribeToNewsletter'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { Customer } from '@core/entities/customer'
 import { NewsletterSubscription } from '@core/entities/newsletterSubscription'
 import { Timestamp, UUID } from '@core/types/types'
-import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { lucasLefevre } from '@utils/testData/customers'
 import { useCustomerStore } from '@store/customerStore'
-import { Customer } from '@core/entities/customer'
-import { InMemoryCustomerGateway } from '@adapters/secondary/customer-gateways/inMemoryCustomerGateway'
+import { useNewsletterStore } from '@store/newsletterStore'
+import { lucasLefevre } from '@utils/testData/customers'
+import { createPinia, setActivePinia } from 'pinia'
+import {
+  SubscribeToNewsletterDTO,
+  subscribeToNewsletter
+} from './subscribeToNewsletter'
 
 describe('Subscribe to newsletter', () => {
   let newsletterStore: any

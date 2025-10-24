@@ -1,15 +1,15 @@
-import { useRoleStore } from '@store/roleStore'
 import { InMemoryRoleGateway } from '@adapters/secondary/role-gateways/InMemoryRoleGateway'
-import { createPinia, setActivePinia } from 'pinia'
-import { Role } from '@core/entities/role'
-import { adminRole, pharmacistRole } from '@utils/testData/roles'
-import {
-  createRole,
-  CreateRoleDTO
-} from '@core/usecases/roles/role-creation/createRole'
-import { PermissionResource } from '@core/entities/permissionResource'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { PermissionResource } from '@core/entities/permissionResource'
+import { Role } from '@core/entities/role'
 import { UUID } from '@core/types/types'
+import {
+  CreateRoleDTO,
+  createRole
+} from '@core/usecases/roles/role-creation/createRole'
+import { useRoleStore } from '@store/roleStore'
+import { adminRole, pharmacistRole } from '@utils/testData/roles'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Role Creation', () => {
   let roleStore: any

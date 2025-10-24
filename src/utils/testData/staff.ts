@@ -1,5 +1,5 @@
 import { Staff } from '@core/entities/staff'
-import { adminRole, pharmacistRole, assistantRole } from './roles'
+import { adminRole, assistantRole, pharmacistRole } from './roles'
 
 export const johnDoe: Staff = {
   uuid: 'staff-john',

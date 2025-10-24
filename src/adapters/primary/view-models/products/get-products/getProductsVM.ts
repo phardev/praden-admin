@@ -1,11 +1,11 @@
-import { useProductStore } from '@store/productStore'
-import { ProductStatus } from '@core/entities/product'
-import { priceFormatter } from '@utils/formatters'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { ProductStatus } from '@core/entities/product'
 import { UUID } from '@core/types/types'
-import { useSearchStore } from '@store/searchStore'
-import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
 import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
+import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
+import { priceFormatter } from '@utils/formatters'
 
 export interface GetProductsItemVM {
   uuid: UUID

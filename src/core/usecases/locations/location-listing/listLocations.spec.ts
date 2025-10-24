@@ -1,9 +1,9 @@
+import { InMemoryLocationGateway } from '@adapters/secondary/location-gateways/inMemoryLocationGateway'
 import { Location } from '@core/entities/location'
 import { listLocations } from '@core/usecases/locations/location-listing/listLocations'
-import { createPinia, setActivePinia } from 'pinia'
 import { useLocationStore } from '@store/locationStore'
-import { InMemoryLocationGateway } from '@adapters/secondary/location-gateways/inMemoryLocationGateway'
 import { reserve, zoneGeo } from '@utils/testData/locations'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Location listing', () => {
   let locationStore: any

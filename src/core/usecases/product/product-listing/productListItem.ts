@@ -1,5 +1,5 @@
-import type { UUID } from '@core/types/types'
 import { ProductStatus } from '@core/entities/product'
+import type { UUID } from '@core/types/types'
 
 export interface ProductListItemLaboratory {
   uuid: UUID

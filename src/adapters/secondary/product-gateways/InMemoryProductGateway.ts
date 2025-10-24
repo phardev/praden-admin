@@ -1,14 +1,14 @@
-import { ProductGateway } from '@core/gateways/productGateway'
-import { Product } from '@core/entities/product'
-import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
-import { getFileContent } from '@utils/file'
-import { UUID } from '@core/types/types'
-import { ProductDoesNotExistsError } from '@core/errors/ProductDoesNotExistsError'
-import { UuidGenerator } from '@core/gateways/uuidGenerator'
-import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
-import { useCategoryStore } from '@store/categoryStore'
 import { Category } from '@core/entities/category'
+import { Product } from '@core/entities/product'
+import { ProductDoesNotExistsError } from '@core/errors/ProductDoesNotExistsError'
+import { ProductGateway } from '@core/gateways/productGateway'
+import { UuidGenerator } from '@core/gateways/uuidGenerator'
+import { UUID } from '@core/types/types'
+import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
+import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { useCategoryStore } from '@store/categoryStore'
+import { getFileContent } from '@utils/file'
 
 export class InMemoryProductGateway implements ProductGateway {
   private products: Array<Product> = []

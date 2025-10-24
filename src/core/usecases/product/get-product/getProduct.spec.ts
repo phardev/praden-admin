@@ -1,19 +1,19 @@
-import { createPinia, setActivePinia } from 'pinia'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
-import { useProductStore } from '@store/productStore'
-import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
+import { InMemoryPromotionGateway } from '@adapters/secondary/promotion-gateways/InMemoryPromotionGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { Product, ProductWithPromotion } from '@core/entities/product'
+import { Promotion } from '@core/entities/promotion'
+import { ProductDoesNotExistsError } from '@core/errors/ProductDoesNotExistsError'
 import { UUID } from '@core/types/types'
 import { getProduct } from '@core/usecases/product/get-product/getProduct'
-import { ProductDoesNotExistsError } from '@core/errors/ProductDoesNotExistsError'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { InMemoryPromotionGateway } from '@adapters/secondary/promotion-gateways/InMemoryPromotionGateway'
-import { Promotion } from '@core/entities/promotion'
+import { useProductStore } from '@store/productStore'
+import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
 import {
   promotionFixedMultipleProducts,
   promotionPercentageDolodent
 } from '@utils/testData/promotions'
-import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe } from 'vitest'
 
 describe('Get product', () => {

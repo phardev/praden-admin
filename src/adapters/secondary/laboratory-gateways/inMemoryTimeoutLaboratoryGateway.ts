@@ -1,9 +1,9 @@
+import { InMemoryLaboratoryGateway } from '@adapters/secondary/laboratory-gateways/inMemoryLaboratoryGateway'
 import { Laboratory } from '@core/entities/laboratory'
-import { UUID } from '@core/types/types'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
+import { UUID } from '@core/types/types'
 import { CreateLaboratoryDTO } from '@core/usecases/laboratories/laboratory-creation/createLaboratory'
 import { EditLaboratoryDTO } from '@core/usecases/laboratories/laboratory-edition/editLaboratory'
-import { InMemoryLaboratoryGateway } from '@adapters/secondary/laboratory-gateways/inMemoryLaboratoryGateway'
 
 export class InMemoryTimeoutLaboratoryGateway extends InMemoryLaboratoryGateway {
   private readonly timeoutInMs: number

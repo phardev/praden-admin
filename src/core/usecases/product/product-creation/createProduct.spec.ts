@@ -1,28 +1,28 @@
+import { InMemoryLocationGateway } from '@adapters/secondary/location-gateways/inMemoryLocationGateway'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
-import { createPinia, setActivePinia } from 'pinia'
-import { useProductStore } from '@store/productStore'
-import {
-  createProduct,
-  CreateProductDTO
-} from '@core/usecases/product/product-creation/createProduct'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { Category } from '@core/entities/category'
+import { Location } from '@core/entities/location'
 import { Product, ProductStatus } from '@core/entities/product'
-import { dolodent, hemoclar } from '@utils/testData/products'
+import { UUID } from '@core/types/types'
+import {
+  CreateProductDTO,
+  createProduct
+} from '@core/usecases/product/product-creation/createProduct'
+import { InMemoryFailProductGateway } from '@core/usecases/product/product-creation/inMemoryFailProductGateway'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { useCategoryStore } from '@store/categoryStore'
+import { useLocationStore } from '@store/locationStore'
+import { useProductStore } from '@store/productStore'
+import { diarrhee, mum } from '@utils/testData/categories'
 import {
   dolodentListItem,
   hemoclarListItem
 } from '@utils/testData/fixtures/products/productListItems'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { reserve, zoneGeo } from '@utils/testData/locations'
-import { InMemoryLocationGateway } from '@adapters/secondary/location-gateways/inMemoryLocationGateway'
-import { useCategoryStore } from '@store/categoryStore'
-import { useLocationStore } from '@store/locationStore'
-import { diarrhee, mum } from '@utils/testData/categories'
-import { Category } from '@core/entities/category'
-import { Location } from '@core/entities/location'
-import { UUID } from '@core/types/types'
 import { avene, gilbert } from '@utils/testData/laboratories'
-import { InMemoryFailProductGateway } from '@core/usecases/product/product-creation/inMemoryFailProductGateway'
-import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { reserve, zoneGeo } from '@utils/testData/locations'
+import { dolodent, hemoclar } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Create product', () => {
   let productStore: any

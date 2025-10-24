@@ -1,14 +1,14 @@
-import { createPinia, setActivePinia } from 'pinia'
+import {
+  GetTicketPredefinedAnswersVM,
+  getTicketPredefinedAnswersVM
+} from '@adapters/primary/view-models/support/ticket-predefined-answers/ticketPredefinedAnswersVM'
 import { useTicketPredefinedAnswerStore } from '@store/ticketPredefinedAnswerStore'
 import {
-  getTicketPredefinedAnswersVM,
-  GetTicketPredefinedAnswersVM
-} from '@adapters/primary/view-models/support/ticket-predefined-answers/ticketPredefinedAnswersVM'
-import {
-  thankYouAnswer,
   orderShippedAnswer,
-  problemResolvedAnswer
+  problemResolvedAnswer,
+  thankYouAnswer
 } from '@utils/testData/ticketPredefinedAnswers'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get ticket predefined answers VM', () => {
   let ticketPredefinedAnswerStore: any

@@ -1,9 +1,9 @@
 import { Category } from '@core/entities/category'
 import { CategoryGateway } from '@core/gateways/categoryGateway'
-import { useCategoryStore } from '@store/categoryStore'
-import { UUID } from '@core/types/types'
-import { useProductStore } from '@store/productStore'
 import { ProductGateway } from '@core/gateways/productGateway'
+import { UUID } from '@core/types/types'
+import { useCategoryStore } from '@store/categoryStore'
+import { useProductStore } from '@store/productStore'
 
 export type CreateCategoryDTO = Omit<
   Category,

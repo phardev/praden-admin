@@ -1,6 +1,6 @@
+import { getUserProfile } from '@core/usecases/profile/getUserProfile'
 import Keycloak from 'keycloak-js'
 import { NuxtApp } from 'nuxt/app'
-import { getUserProfile } from '@core/usecases/profile/getUserProfile'
 import { useUserProfileGateway } from '../../../../../gateways/userProfileGateway'
 
 export default defineNuxtPlugin((nuxtApp: NuxtApp) => {

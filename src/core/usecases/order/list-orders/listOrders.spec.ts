@@ -1,14 +1,14 @@
-import { Order } from '@core/entities/order'
-import { createPinia, setActivePinia } from 'pinia'
-import { useOrderStore } from '@store/orderStore'
-import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
-import { listOrders } from './listOrders'
+import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
+import { Order } from '@core/entities/order'
+import { useOrderStore } from '@store/orderStore'
 import {
   orderNotPayed1,
   orderPrepared1,
   orderToPrepare1
 } from '@utils/testData/orders'
+import { createPinia, setActivePinia } from 'pinia'
+import { listOrders } from './listOrders'
 
 describe('List orders', () => {
   let orderStore: any

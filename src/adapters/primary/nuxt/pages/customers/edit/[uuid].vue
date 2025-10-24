@@ -8,11 +8,11 @@
 </template>
 
 <script lang="ts" setup>
-import { useCustomerGateway } from '../../../../../../../gateways/customerGateway'
-import { listCustomers } from '@core/usecases/customers/customer-listing/listCustomer'
-import { getCustomer } from '@core/usecases/customers/customer-get/getCustomer'
 import { customerFormEditVM } from '@adapters/primary/view-models/customers/customer-form/customerFormEditVM'
 import { editCustomer } from '@core/usecases/customers/customer-edition/editCustomer'
+import { getCustomer } from '@core/usecases/customers/customer-get/getCustomer'
+import { listCustomers } from '@core/usecases/customers/customer-listing/listCustomer'
+import { useCustomerGateway } from '../../../../../../../gateways/customerGateway'
 
 definePageMeta({ layout: 'main' })
 

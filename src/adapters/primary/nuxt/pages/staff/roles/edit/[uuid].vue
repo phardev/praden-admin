@@ -34,8 +34,8 @@
 </template>
 
 <script lang="ts" setup>
-import { roleFormEditVM } from '@adapters/primary/view-models/roles/role-form/roleFormEditVM'
 import { useRoleForm } from '@adapters/primary/nuxt/composables/useRoleForm'
+import { roleFormEditVM } from '@adapters/primary/view-models/roles/role-form/roleFormEditVM'
 import { PermissionResource } from '@core/entities/permissionResource'
 import { listRoles } from '@core/usecases/roles/listRoles'
 import { useRoleGateway } from '@/gateways/roleGateway'

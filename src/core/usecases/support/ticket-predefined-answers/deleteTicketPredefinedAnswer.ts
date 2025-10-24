@@ -1,6 +1,6 @@
 import { TicketPredefinedAnswerGateway } from '@core/gateways/ticketPredefinedAnswerGateway'
-import { useTicketPredefinedAnswerStore } from '@store/ticketPredefinedAnswerStore'
 import { UUID } from '@core/types/types'
+import { useTicketPredefinedAnswerStore } from '@store/ticketPredefinedAnswerStore'
 
 export const deleteTicketPredefinedAnswer = async (
   uuid: UUID,

@@ -3,14 +3,14 @@ import {
   CategoryFormFieldsReader,
   ExistingCategoryFormInitializer
 } from '@adapters/primary/view-models/categories/category-form/categoryFormGetVM'
-import { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
-import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import {
   CategoryFormVM,
   CategoryProductItemVM
 } from '@adapters/primary/view-models/categories/category-form/categoryFormVM'
-import { UUID } from '@core/types/types'
+import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { Product } from '@core/entities/product'
+import { UUID } from '@core/types/types'
+import { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
 import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
 

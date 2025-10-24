@@ -1,4 +1,21 @@
+import {
+  GetOrderVM,
+  getOrderVM,
+  OrderDeliveriesItemVM
+} from '@adapters/primary/view-models/orders/get-order/getOrderVM'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { Customer } from '@core/entities/customer'
+import { Delivery, DeliveryStatus } from '@core/entities/delivery'
+import {
+  AnonymousOrder,
+  DeliveryType,
+  Order,
+  OrderLineStatus,
+  PaymentStatus
+} from '@core/entities/order'
+import { useCustomerStore } from '@store/customerStore'
 import { useOrderStore } from '@store/orderStore'
+import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
 import {
   elodieDurandOrder1,
   lucasLefevreOrder2,
@@ -8,24 +25,7 @@ import {
   orderWithMissingProduct1,
   orderWithoutPayment
 } from '@utils/testData/orders'
-import {
-  AnonymousOrder,
-  DeliveryType,
-  Order,
-  OrderLineStatus,
-  PaymentStatus
-} from '@core/entities/order'
-import {
-  getOrderVM,
-  GetOrderVM,
-  OrderDeliveriesItemVM
-} from '@adapters/primary/view-models/orders/get-order/getOrderVM'
 import { createPinia, setActivePinia } from 'pinia'
-import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
-import { Customer } from '@core/entities/customer'
-import { useCustomerStore } from '@store/customerStore'
-import { Delivery, DeliveryStatus } from '@core/entities/delivery'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 
 describe('Get order VM', () => {
   let orderStore: any

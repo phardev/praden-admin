@@ -3,19 +3,19 @@ import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway
 import { Customer } from '@core/entities/customer'
 import { DeliveryStatus } from '@core/entities/delivery'
 import {
-  OrderLineStatus,
+  getOrderStatus,
   Order,
   OrderLine,
-  PaymentStatus,
-  getOrderStatus
+  OrderLineStatus,
+  PaymentStatus
 } from '@core/entities/order'
 import { Product } from '@core/entities/product'
 import { SearchGateway } from '@core/gateways/searchGateway'
 import { SearchCustomersDTO } from '@core/usecases/customers/customer-searching/searchCustomer'
 import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
+import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
 import { useOrderStore } from '@store/orderStore'
 import { zoneGeo } from '@utils/testData/locations'
-import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
 
 export class RealSearchGateway extends RealGateway implements SearchGateway {
   constructor(url: string) {

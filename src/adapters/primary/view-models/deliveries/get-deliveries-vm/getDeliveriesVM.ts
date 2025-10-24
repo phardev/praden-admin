@@ -1,9 +1,9 @@
-import { useDeliveryStore } from '@store/deliveryStore'
-import { HashTable, UUID } from '@core/types/types'
-import { Delivery, DeliveryStatus } from '@core/entities/delivery'
-import { TableVM } from '../../invoices/get-invoice/getInvoiceVM'
-import { useCarrierStore } from '@store/carrierStore'
 import { CarrierType } from '@core/entities/carrier'
+import { Delivery, DeliveryStatus } from '@core/entities/delivery'
+import { HashTable, UUID } from '@core/types/types'
+import { useCarrierStore } from '@store/carrierStore'
+import { useDeliveryStore } from '@store/deliveryStore'
+import { TableVM } from '../../invoices/get-invoice/getInvoiceVM'
 
 export interface GetDeliveriesItemsVM {
   uuid: UUID

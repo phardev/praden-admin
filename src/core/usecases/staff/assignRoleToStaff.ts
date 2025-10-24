@@ -1,6 +1,6 @@
 import { StaffGateway } from '@core/gateways/staffGateway'
-import { useStaffStore } from '@store/staffStore'
 import { UUID } from '@core/types/types'
+import { useStaffStore } from '@store/staffStore'
 
 export const assignRoleToStaff = async (
   staffUuid: UUID,

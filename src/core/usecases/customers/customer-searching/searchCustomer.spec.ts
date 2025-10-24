@@ -1,17 +1,17 @@
 import { FakeSearchGateway } from '@adapters/secondary/search-gateways/FakeSearchGateway'
+import { Customer } from '@core/entities/customer'
 import {
-  searchCustomers,
-  SearchCustomersDTO
+  SearchCustomersDTO,
+  searchCustomers
 } from '@core/usecases/customers/customer-searching/searchCustomer'
-import { createPinia, setActivePinia } from 'pinia'
+import { useCustomerStore } from '@store/customerStore'
 import { useSearchStore } from '@store/searchStore'
 import {
   elodieDurand,
   lucasLefevre,
   sophieMartinez
 } from '@utils/testData/customers'
-import { Customer } from '@core/entities/customer'
-import { useCustomerStore } from '@store/customerStore'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Customer searching', () => {
   let searchStore: any

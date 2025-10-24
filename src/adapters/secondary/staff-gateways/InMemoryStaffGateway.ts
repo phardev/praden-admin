@@ -1,10 +1,10 @@
-import {
-  StaffGateway,
-  CreateStaffDTO,
-  EditStaffDTO
-} from '@core/gateways/staffGateway'
-import { Staff } from '@core/entities/staff'
 import { Role } from '@core/entities/role'
+import { Staff } from '@core/entities/staff'
+import {
+  CreateStaffDTO,
+  EditStaffDTO,
+  StaffGateway
+} from '@core/gateways/staffGateway'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { UUID } from '@core/types/types'
 

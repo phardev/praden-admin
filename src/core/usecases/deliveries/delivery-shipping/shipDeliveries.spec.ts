@@ -1,7 +1,7 @@
 import { InMemoryDeliveryGateway } from '@adapters/secondary/delivery-gateways/inMemoryDeliveryGateway'
-import { useDeliveryStore } from '@store/deliveryStore'
 import { Delivery, DeliveryStatus } from '@core/entities/delivery'
 import { UUID } from '@core/types/types'
+import { useDeliveryStore } from '@store/deliveryStore'
 import {
   deliveryOrderToPrepare3,
   deliveryOrderWithMissingProduct

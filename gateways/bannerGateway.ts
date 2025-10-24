@@ -1,9 +1,9 @@
-import * as banners from '@utils/testData/banners'
-import { BannerGateway } from '@core/gateways/bannerGateway'
 import { InMemoryBannerGateway } from '@adapters/secondary/banner-gateways/inMemoryBannerGateway'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { isLocalEnv } from '@utils/env'
 import { RealBannerGateway } from '@adapters/secondary/banner-gateways/realBannerGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { BannerGateway } from '@core/gateways/bannerGateway'
+import { isLocalEnv } from '@utils/env'
+import * as banners from '@utils/testData/banners'
 
 const uuidGenerator = new FakeUuidGenerator()
 uuidGenerator.setNext('plop')

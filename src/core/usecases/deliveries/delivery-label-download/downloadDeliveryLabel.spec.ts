@@ -1,10 +1,10 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { downloadDeliveryLabel } from './downloadDeliveryLabel'
 import { InMemoryDeliveryGateway } from '@adapters/secondary/delivery-gateways/inMemoryDeliveryGateway'
-import { deliveryOrderToPrepare3 } from '@utils/testData/deliveries'
 import { UUID } from '@core/types/types'
 import { useDeliveryStore } from '@store/deliveryStore'
-import { setActivePinia, createPinia } from 'pinia'
+import { deliveryOrderToPrepare3 } from '@utils/testData/deliveries'
+import { createPinia, setActivePinia } from 'pinia'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { downloadDeliveryLabel } from './downloadDeliveryLabel'
 
 describe('downloadDeliveryLabel', () => {
   let deliveryGateway: InMemoryDeliveryGateway

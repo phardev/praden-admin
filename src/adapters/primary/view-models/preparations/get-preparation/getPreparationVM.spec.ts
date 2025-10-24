@@ -1,30 +1,30 @@
 import {
-  orderToCancel,
-  orderInPreparation1,
-  orderToPrepare1,
-  orderToPrepare2,
-  orderWithMissingProduct1,
-  orderSaved1,
-  orderWithCustomerMessage,
-  orderToPrepare3
-} from '@utils/testData/orders'
-import { Order } from '@core/entities/order'
-import { createPinia, setActivePinia } from 'pinia'
-import { usePreparationStore } from '@store/preparationStore'
-import {
-  getPreparationVM,
-  GetPreparationVM,
-  PreparationStatus
-} from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
-import { dolodent, ultraLevure } from '@utils/testData/products'
-import {
   GetPreparationsVM,
   Header
 } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import {
+  GetPreparationVM,
+  getPreparationVM,
+  PreparationStatus
+} from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
+import { Order } from '@core/entities/order'
+import {
   PreparationError,
   PreparationErrorType
 } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
+import { usePreparationStore } from '@store/preparationStore'
+import {
+  orderInPreparation1,
+  orderSaved1,
+  orderToCancel,
+  orderToPrepare1,
+  orderToPrepare2,
+  orderToPrepare3,
+  orderWithCustomerMessage,
+  orderWithMissingProduct1
+} from '@utils/testData/orders'
+import { dolodent, ultraLevure } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get preparation VM', () => {
   let preparationStore: any

@@ -1,12 +1,12 @@
-import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import {
-  RoleGateway,
-  EditRoleDTO,
-  CreateRoleDTO
-} from '@core/gateways/roleGateway'
-import { Role } from '@core/entities/role'
-import { UUID } from '@core/types/types'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
+import { Role } from '@core/entities/role'
+import {
+  CreateRoleDTO,
+  EditRoleDTO,
+  RoleGateway
+} from '@core/gateways/roleGateway'
+import { UUID } from '@core/types/types'
 
 export class RealRoleGateway extends RealGateway implements RoleGateway {
   constructor(baseUrl: string) {

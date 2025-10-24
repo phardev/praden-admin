@@ -1,5 +1,6 @@
-import { DeliveryMethod } from '@core/entities/order'
 import { InMemoryDeliveryMethodGateway } from '@adapters/secondary/delivery-method-gateways/inMemoryDeliveryMethodGateway'
+import { DeliveryMethod } from '@core/entities/order'
+import { listDeliveryMethods } from '@core/usecases/delivery-methods/delivery-method-listing/listDeliveryMethods'
 import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
 import {
   clickAndCollect,
@@ -7,7 +8,6 @@ import {
   express
 } from '@utils/testData/deliveryMethods'
 import { createPinia, setActivePinia } from 'pinia'
-import { listDeliveryMethods } from '@core/usecases/delivery-methods/delivery-method-listing/listDeliveryMethods'
 
 describe('Delivery method listing', () => {
   let deliveryMethodStore: any

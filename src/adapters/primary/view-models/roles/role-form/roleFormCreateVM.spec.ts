@@ -1,10 +1,10 @@
-import { createPinia, setActivePinia } from 'pinia'
 import {
-  roleFormCreateVM,
-  RoleFormCreateVM
+  RoleFormCreateVM,
+  roleFormCreateVM
 } from '@adapters/primary/view-models/roles/role-form/roleFormCreateVM'
 import { PermissionResource } from '@core/entities/permissionResource'
 import { CreateRoleDTO } from '@core/gateways/roleGateway'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('RoleFormCreateVM', () => {
   let vm: RoleFormCreateVM

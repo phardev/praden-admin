@@ -1,6 +1,6 @@
 import { Laboratory } from '@core/entities/laboratory'
-import { defineStore } from 'pinia'
 import { Product } from '@core/entities/product'
+import { defineStore } from 'pinia'
 
 export interface LaboratoryWithProducts {
   laboratory: Laboratory

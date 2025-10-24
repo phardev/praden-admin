@@ -1,12 +1,12 @@
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { TicketPredefinedAnswer } from '@core/entities/ticketPredefinedAnswer'
 import {
   CreateTicketPredefinedAnswerDTO,
   TicketPredefinedAnswerGateway,
   UpdateTicketPredefinedAnswerDTO
 } from '@core/gateways/ticketPredefinedAnswerGateway'
-import { TicketPredefinedAnswer } from '@core/entities/ticketPredefinedAnswer'
 import { UUID } from '@core/types/types'
 import { RealGateway } from '../order-gateways/RealOrderGateway'
-import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 
 export class RealTicketPredefinedAnswersGateway
   extends RealGateway

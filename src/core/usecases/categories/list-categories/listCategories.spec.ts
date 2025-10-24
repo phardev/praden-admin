@@ -1,9 +1,9 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useCategoryStore } from '@store/categoryStore'
-import { dents, diarrhee } from '@utils/testData/categories'
-import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { InMemoryCategoryGateway } from '@adapters/secondary/category-gateways/InMemoryCategoryGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
+import { useCategoryStore } from '@store/categoryStore'
+import { dents, diarrhee } from '@utils/testData/categories'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('List categories', () => {
   let categoryStore: any

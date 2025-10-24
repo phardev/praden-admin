@@ -1,8 +1,8 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useRoleStore } from '@store/roleStore'
 import { RoleGateway } from '@core/gateways/roleGateway'
 import { listRoles } from '@core/usecases/roles/listRoles'
-import { adminRole, pharmacistRole, assistantRole } from '@utils/testData/roles'
+import { useRoleStore } from '@store/roleStore'
+import { adminRole, assistantRole, pharmacistRole } from '@utils/testData/roles'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('List roles usecase', () => {
   let roleStore: any

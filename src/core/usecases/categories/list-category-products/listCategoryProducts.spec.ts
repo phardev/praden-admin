@@ -1,12 +1,12 @@
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
-import { createPinia, setActivePinia } from 'pinia'
-import { useCategoryStore } from '@store/categoryStore'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
-import { dents } from '@utils/testData/categories'
 import { Product } from '@core/entities/product'
-import { listCategoryProducts } from '@core/usecases/categories/list-category-products/listCategoryProducts'
 import { UUID } from '@core/types/types'
+import { listCategoryProducts } from '@core/usecases/categories/list-category-products/listCategoryProducts'
+import { useCategoryStore } from '@store/categoryStore'
+import { dents } from '@utils/testData/categories'
+import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('List category products', () => {
   let categoryStore: any

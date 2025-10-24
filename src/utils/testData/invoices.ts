@@ -1,3 +1,4 @@
+import { Invoice } from '@core/entities/invoice'
 import {
   elodieDurandOrder1,
   elodieDurandOrder2,
@@ -16,7 +17,6 @@ import {
   orderWithPromotionCode,
   orderXUKIJ
 } from '@utils/testData/orders'
-import { Invoice } from '@core/entities/invoice'
 
 export const orderDelivered1Invoice: Invoice = {
   id: orderDelivered1.invoiceNumber!,

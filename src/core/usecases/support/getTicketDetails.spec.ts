@@ -1,11 +1,11 @@
-import { useTicketStore } from '@store/ticketStore'
-import { getTicketDetails } from '@core/usecases/support/getTicketDetails'
-import { createPinia, setActivePinia } from 'pinia'
-import { startedTicket } from '@utils/testData/tickets'
-import { InMemoryTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTicketGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
-import { TicketDoesNotExistsError } from '@core/errors/TicketDoesNotExistsError'
+import { InMemoryTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTicketGateway'
 import { Ticket } from '@core/entities/ticket'
+import { TicketDoesNotExistsError } from '@core/errors/TicketDoesNotExistsError'
+import { getTicketDetails } from '@core/usecases/support/getTicketDetails'
+import { useTicketStore } from '@store/ticketStore'
+import { startedTicket } from '@utils/testData/tickets'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get ticket details', () => {
   let ticketStore: ReturnType<typeof useTicketStore>

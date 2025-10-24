@@ -1,6 +1,6 @@
+import { getSelectedPreparationsVM } from '@adapters/primary/view-models/preparations/get-selected-preparations/getSelectedPreparationsVM'
 import { usePreparationStore } from '@store/preparationStore'
 import { createPinia, setActivePinia } from 'pinia'
-import { getSelectedPreparationsVM } from '@adapters/primary/view-models/preparations/get-selected-preparations/getSelectedPreparationsVM'
 
 describe('Get selected preparations VM', () => {
   let preparationStore: any

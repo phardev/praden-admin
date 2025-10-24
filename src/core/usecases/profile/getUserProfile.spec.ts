@@ -1,8 +1,8 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useUserProfileStore } from '@store/userProfileStore'
-import { getUserProfile } from '@core/usecases/profile/getUserProfile'
 import { InMemoryUserProfileGateway } from '@adapters/secondary/profile-gateways/InMemoryUserProfileGateway'
 import type { UserProfile } from '@core/entities/userProfile'
+import { getUserProfile } from '@core/usecases/profile/getUserProfile'
+import { useUserProfileStore } from '@store/userProfileStore'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get user profile', () => {
   let userProfileStore: any

@@ -1,24 +1,24 @@
 import { InMemoryCategoryGateway } from '@adapters/secondary/category-gateways/InMemoryCategoryGateway'
-import { createPinia, setActivePinia } from 'pinia'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import {
-  createCategory,
-  CreateCategoryDTO
-} from '@core/usecases/categories/category-creation/createCategory'
-import { Category } from '@core/entities/category'
-import { UUID } from '@core/types/types'
-import { useCategoryStore } from '@store/categoryStore'
-import { dents } from '@utils/testData/categories'
-import { ParentCategoryDoesNotExistsError } from '@core/errors/ParentCategoryDoesNotExistsError'
-import { Product } from '@core/entities/product'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
-import { calmosine, dolodent } from '@utils/testData/products'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { Category } from '@core/entities/category'
+import { Product } from '@core/entities/product'
+import { ParentCategoryDoesNotExistsError } from '@core/errors/ParentCategoryDoesNotExistsError'
+import { UUID } from '@core/types/types'
+import {
+  CreateCategoryDTO,
+  createCategory
+} from '@core/usecases/categories/category-creation/createCategory'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { useCategoryStore } from '@store/categoryStore'
+import { useProductStore } from '@store/productStore'
+import { dents } from '@utils/testData/categories'
 import {
   calmosineListItem,
   dolodentListItem
 } from '@utils/testData/fixtures/products/productListItems'
-import { useProductStore } from '@store/productStore'
-import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { calmosine, dolodent } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Create category', () => {
   let categoryStore: any

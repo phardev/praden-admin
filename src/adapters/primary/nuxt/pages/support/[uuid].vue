@@ -399,18 +399,18 @@
 </template>
 
 <script lang="ts" setup>
+import { getTicketDetailsVM } from '@adapters/primary/view-models/support/get-support-ticket-details/getTicketDetailsVM'
+import { TicketPriority } from '@core/entities/ticket'
+import { addPrivateNoteToTicket } from '@core/usecases/support/addPrivateNoteToTicket'
 import { getTicketDetails } from '@core/usecases/support/getTicketDetails'
 import { replyToTicket } from '@core/usecases/support/replyToTicket'
-import { addPrivateNoteToTicket } from '@core/usecases/support/addPrivateNoteToTicket'
-import { updateTicketPriority } from '@core/usecases/support/updateTicketPriority'
-import { startTicket } from '@core/usecases/support/startTicket'
 import { resolveTicket } from '@core/usecases/support/resolveTicket'
+import { startTicket } from '@core/usecases/support/startTicket'
 import { listTicketPredefinedAnswers } from '@core/usecases/support/ticket-predefined-answers/listTicketPredefinedAnswers'
+import { updateTicketPriority } from '@core/usecases/support/updateTicketPriority'
+import { useTicketPredefinedAnswerStore } from '@store/ticketPredefinedAnswerStore'
 import { useTicketGateway } from '../../../../../../gateways/ticketGateway'
 import { useTicketPredefinedAnswerGateway } from '../../../../../../gateways/ticketPredefinedAnswerGateway'
-import { getTicketDetailsVM } from '@adapters/primary/view-models/support/get-support-ticket-details/getTicketDetailsVM'
-import { useTicketPredefinedAnswerStore } from '@store/ticketPredefinedAnswerStore'
-import { TicketPriority } from '@core/entities/ticket'
 import '@utils/strings'
 definePageMeta({ layout: 'main' })
 

@@ -1,16 +1,16 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useProductStore } from '@store/productStore'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
-import { listProducts } from './listProducts'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { Stock } from '@core/entities/product'
+import { useProductStore } from '@store/productStore'
 import {
   anaca3MinceurListItem,
   chamomillaListItem,
   dolodentListItem,
   ultraLevureListItem
 } from '@utils/testData/fixtures/products/productListItems'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe } from 'vitest'
+import { listProducts } from './listProducts'
 import { ProductListItem } from './productListItem'
 
 describe('List products', () => {

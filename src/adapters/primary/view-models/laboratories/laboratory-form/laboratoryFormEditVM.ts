@@ -1,6 +1,9 @@
+import { LaboratoryFormFieldsWriter } from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormCreateVM'
+import { LaboratoryFormVM } from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormVM'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { UUID } from '@core/types/types'
 import { Product } from '@core/entities/product'
+import { UUID } from '@core/types/types'
+import { EditLaboratoryDTO } from '@core/usecases/laboratories/laboratory-edition/editLaboratory'
 import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
 import {
@@ -8,9 +11,6 @@ import {
   LaboratoryFormFieldsReader,
   LaboratoryProductItemVM
 } from './laboratoryFormGetVM'
-import { LaboratoryFormFieldsWriter } from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormCreateVM'
-import { LaboratoryFormVM } from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormVM'
-import { EditLaboratoryDTO } from '@core/usecases/laboratories/laboratory-edition/editLaboratory'
 
 export class LaboratoryFormEditVM extends LaboratoryFormVM {
   private fieldsWriter: LaboratoryFormFieldsWriter

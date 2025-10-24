@@ -43,11 +43,11 @@ tab-group.border-b.border-gray-200(as="div")
 </template>
 
 <script lang="ts" setup>
+import BannerListItem from '@adapters/primary/nuxt/components/molecules/BannerListItem.vue'
+import { reorderBanners } from '@core/usecases/banners/banners-reorder/reorderBanners'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
 import draggable from 'vuedraggable'
-import { reorderBanners } from '@core/usecases/banners/banners-reorder/reorderBanners'
 import { useBannerGateway } from '../../../../../../gateways/bannerGateway'
-import BannerListItem from '@adapters/primary/nuxt/components/molecules/BannerListItem.vue'
 
 definePageMeta({ layout: 'main' })
 

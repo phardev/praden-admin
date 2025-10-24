@@ -1,6 +1,6 @@
-import tsconfigPaths from 'vite-tsconfig-paths'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)

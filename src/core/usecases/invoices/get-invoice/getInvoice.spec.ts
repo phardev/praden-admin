@@ -1,9 +1,9 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useInvoiceStore } from '@store/invoiceStore'
-import { InMemoryInvoiceGateway } from '@adapters/secondary/invoice-gateways/InMemoryInvoiceGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { InMemoryInvoiceGateway } from '@adapters/secondary/invoice-gateways/InMemoryInvoiceGateway'
 import { Invoice } from '@core/entities/invoice'
+import { useInvoiceStore } from '@store/invoiceStore'
 import { orderDelivered2 } from '@utils/testData/orders'
+import { createPinia, setActivePinia } from 'pinia'
 import { getInvoice } from './getInvoice'
 
 describe('Get invoice', () => {

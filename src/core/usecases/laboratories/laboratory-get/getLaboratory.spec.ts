@@ -1,19 +1,19 @@
 import { InMemoryLaboratoryGateway } from '@adapters/secondary/laboratory-gateways/inMemoryLaboratoryGateway'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
-import { createPinia, setActivePinia } from 'pinia'
-import { useLaboratoryStore } from '@store/laboratoryStore'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { avene, sanofiAventis } from '@utils/testData/laboratories'
 import { Product } from '@core/entities/product'
+import { LaboratoryDoesNotExistsError } from '@core/errors/LaboratoryDoesNotExistsError'
 import { UUID } from '@core/types/types'
-import { getLaboratory } from './getLaboratory'
+import { useLaboratoryStore } from '@store/laboratoryStore'
+import { avene, sanofiAventis } from '@utils/testData/laboratories'
 import {
   dolodent,
   hemoclar,
   productWithoutLaboratory,
   productWithoutLocation
 } from '@utils/testData/products'
-import { LaboratoryDoesNotExistsError } from '@core/errors/LaboratoryDoesNotExistsError'
+import { createPinia, setActivePinia } from 'pinia'
+import { getLaboratory } from './getLaboratory'
 
 describe('Get laboratory', () => {
   let laboratoryStore: any

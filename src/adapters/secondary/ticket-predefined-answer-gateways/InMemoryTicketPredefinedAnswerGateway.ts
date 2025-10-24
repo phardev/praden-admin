@@ -1,10 +1,12 @@
-import { TicketPredefinedAnswerGateway } from '@core/gateways/ticketPredefinedAnswerGateway'
 import { TicketPredefinedAnswer } from '@core/entities/ticketPredefinedAnswer'
-import { UUID } from '@core/types/types'
-import { CreateTicketPredefinedAnswerDTO } from '@core/gateways/ticketPredefinedAnswerGateway'
-import { UpdateTicketPredefinedAnswerDTO } from '@core/gateways/ticketPredefinedAnswerGateway'
 import { TicketPredefinedAnswerDoesNotExistsError } from '@core/errors/TicketPredefinedAnswerDoesNotExistsError'
+import {
+  CreateTicketPredefinedAnswerDTO,
+  TicketPredefinedAnswerGateway,
+  UpdateTicketPredefinedAnswerDTO
+} from '@core/gateways/ticketPredefinedAnswerGateway'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
+import { UUID } from '@core/types/types'
 
 export class InMemoryTicketPredefinedAnswerGateway
   implements TicketPredefinedAnswerGateway

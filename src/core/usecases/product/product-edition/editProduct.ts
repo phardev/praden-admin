@@ -1,6 +1,6 @@
-import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import { ProductGateway } from '@core/gateways/productGateway'
 import { UUID } from '@core/types/types'
+import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import { useProductStore } from '@store/productStore'
 
 export type EditProductDTO = Partial<

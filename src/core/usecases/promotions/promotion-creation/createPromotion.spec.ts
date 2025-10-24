@@ -1,26 +1,26 @@
-import { usePromotionStore } from '@store/promotionStore'
 import { InMemoryPromotionGateway } from '@adapters/secondary/promotion-gateways/InMemoryPromotionGateway'
-import { createPromotion } from '@core/usecases/promotions/promotion-creation/createPromotion'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import {
   CreatePromotionDTO,
   Promotion,
   ReductionType
 } from '@core/entities/promotion'
 import {
+  PromotionNeedsProductError,
+  PromotionReductionCannotExceed100Error
+} from '@core/errors/PromotionNeedProductError'
+import { createPromotion } from '@core/usecases/promotions/promotion-creation/createPromotion'
+import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
+import { usePromotionStore } from '@store/promotionStore'
+import { promotionPercentageDolodentListItem } from '@utils/testData/fixtures/promotions/promotionListItems'
+import {
   anaca3Minceur,
   calmosine,
   chamomilla,
   dolodent
 } from '@utils/testData/products'
-import { createPinia, setActivePinia } from 'pinia'
 import { promotionPercentageDolodent } from '@utils/testData/promotions'
-import { promotionPercentageDolodentListItem } from '@utils/testData/fixtures/promotions/promotionListItems'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import {
-  PromotionNeedsProductError,
-  PromotionReductionCannotExceed100Error
-} from '@core/errors/PromotionNeedProductError'
-import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Create promotion', () => {
   let promotionStore: any

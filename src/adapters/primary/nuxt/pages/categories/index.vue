@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts" setup>
+import { getTreeCategoriesVM } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
-import { getTreeCategoriesVM } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
 
 definePageMeta({ layout: 'main' })
 

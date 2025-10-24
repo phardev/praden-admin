@@ -1,12 +1,17 @@
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import {
   Field,
   PromotionProductItemVM
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { Laboratory } from '@core/entities/laboratory'
+import { Product } from '@core/entities/product'
+import { CreateLaboratoryDTO } from '@core/usecases/laboratories/laboratory-creation/createLaboratory'
 import { useFormStore } from '@store/formStore'
 import { useLaboratoryStore } from '@store/laboratoryStore'
+import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
 import { baby } from '@utils/testData/categories'
-import { createPinia, setActivePinia } from 'pinia'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { avene, gilbert } from '@utils/testData/laboratories'
 import {
   anaca3Minceur,
   calmosine,
@@ -15,18 +20,13 @@ import {
   productWithoutLaboratory,
   ultraLevure
 } from '@utils/testData/products'
-import { Product } from '@core/entities/product'
-import { useProductStore } from '@store/productStore'
-import { useSearchStore } from '@store/searchStore'
-import { LaboratoryProductItemVM } from './laboratoryFormGetVM'
-import { Laboratory } from '@core/entities/laboratory'
-import { avene, gilbert } from '@utils/testData/laboratories'
+import { createPinia, setActivePinia } from 'pinia'
 import {
   LaboratoryFormCreateVM,
   laboratoryFormCreateVM
 } from './laboratoryFormCreateVM'
+import { LaboratoryProductItemVM } from './laboratoryFormGetVM'
 import { LaboratoryAvailableProductItemVM } from './laboratoryFormVM'
-import { CreateLaboratoryDTO } from '@core/usecases/laboratories/laboratory-creation/createLaboratory'
 
 const anaca3VM: LaboratoryProductItemVM = {
   uuid: anaca3Minceur.uuid,

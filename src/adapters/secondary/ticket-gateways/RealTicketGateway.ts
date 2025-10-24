@@ -1,8 +1,8 @@
-import { TicketGateway } from '@core/gateways/ticketGateway'
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { Ticket, TicketPriority } from '@core/entities/ticket'
+import { TicketGateway } from '@core/gateways/ticketGateway'
 import { UUID } from '@core/types/types'
 import { RealGateway } from '../order-gateways/RealOrderGateway'
-import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 
 export class RealTicketGateway extends RealGateway implements TicketGateway {
   constructor(url: string) {

@@ -1,7 +1,7 @@
-import { useSearchStore } from '@store/searchStore'
-
-import { SearchGateway } from '@core/gateways/searchGateway'
 import { ProductStatus } from '@core/entities/product'
+import { SearchGateway } from '@core/gateways/searchGateway'
+import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
 
 export interface SearchProductsFilters {
   query?: string
@@ -15,6 +15,7 @@ export const searchProducts = async (
   searchGateway: SearchGateway
 ): Promise<void> => {
   const searchStore = useSearchStore()
+  const productStore = useProductStore()
   searchStore.setFilter(from, filters)
   if (
     filters.query &&
@@ -29,6 +30,7 @@ export const searchProducts = async (
   } else {
     const searchResult = await searchGateway.searchProducts(filters)
     searchStore.set(from, searchResult)
+    productStore.list(searchResult)
     searchStore.setError(from, undefined)
   }
   return Promise.resolve()

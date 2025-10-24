@@ -1,14 +1,14 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { InMemoryPromotionCodeGateway } from '../../../../adapters/secondary/promotion-code-gateways/InMemoryPromotionCodeGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { PromotionCode } from '@core/entities/promotionCode'
 import { listPromotionCodes } from '@core/usecases/promotion-codes/promotion-code-listing/listPromotionCodes'
 import { usePromotionCodeStore } from '@store/promotionCodeStore'
 import {
-  fifteenPercentPromotionCode,
   deliveryPromotionCode,
+  fifteenPercentPromotionCode,
   newSitePromotionCode
 } from '@utils/testData/promotionCodes'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { createPinia, setActivePinia } from 'pinia'
+import { InMemoryPromotionCodeGateway } from '../../../../adapters/secondary/promotion-code-gateways/InMemoryPromotionCodeGateway'
 
 describe('Promotion code listing', () => {
   let promotionCodeStore: any

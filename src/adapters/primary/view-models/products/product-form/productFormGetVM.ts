@@ -1,20 +1,20 @@
-import { useFormStore } from '@store/formStore'
-import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import type { Category } from '@core/entities/category'
 import {
   CreateProductCategoriesVM,
   CreateProductLaboratoriesVM,
   CreateProductLocationsVM
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
-import { useProductStore } from '@store/productStore'
-import { useCategoryStore } from '@store/categoryStore'
-import { addTaxToPrice } from '@utils/price'
-import { useLocationStore } from '@store/locationStore'
+import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import type { Category } from '@core/entities/category'
 import { Location, sortLocationByOrder } from '@core/entities/location'
-import { ReductionType } from '@core/entities/promotion'
-import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
-import { useLaboratoryStore } from '@store/laboratoryStore'
 import { isProductActive } from '@core/entities/product'
+import { ReductionType } from '@core/entities/promotion'
+import { useCategoryStore } from '@store/categoryStore'
+import { useFormStore } from '@store/formStore'
+import { useLaboratoryStore } from '@store/laboratoryStore'
+import { useLocationStore } from '@store/locationStore'
+import { useProductStore } from '@store/productStore'
+import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
+import { addTaxToPrice } from '@utils/price'
 
 export interface GetProductPromotionVM {
   href: string

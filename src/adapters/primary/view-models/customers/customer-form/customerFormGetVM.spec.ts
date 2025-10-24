@@ -1,16 +1,16 @@
-import { useFormStore } from '@store/formStore'
-import { useCustomerStore } from '@store/customerStore'
-import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { createPinia, setActivePinia } from 'pinia'
 import {
   CustomerFormGetVM,
   customerFormGetVM
 } from '@adapters/primary/view-models/customers/customer-form/customerFormGetVM'
+import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { useCustomerStore } from '@store/customerStore'
+import { useFormStore } from '@store/formStore'
 import {
   elodieDurand,
   lucasLefevre,
   sophieMartinez
 } from '@utils/testData/customers'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Customer form get VM', () => {
   let customerStore: any

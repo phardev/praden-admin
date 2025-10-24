@@ -1,8 +1,8 @@
-import { CustomerGateway } from '@core/gateways/customerGateway'
-import { UUID } from '@core/types/types'
-import { CustomerDoesNotExistsError } from '@core/errors/CustomerDoesNotExistsError'
 import { Customer } from '@core/entities/customer'
+import { CustomerDoesNotExistsError } from '@core/errors/CustomerDoesNotExistsError'
+import { CustomerGateway } from '@core/gateways/customerGateway'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
+import { UUID } from '@core/types/types'
 import { CreateCustomerDTO } from '@core/usecases/customers/customer-creation/createCustomer'
 import { EditCustomerDTO } from '@core/usecases/customers/customer-edition/editCustomer'
 

@@ -1,12 +1,12 @@
-import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
-import { createPinia, setActivePinia } from 'pinia'
-import { useLaboratoryStore } from '@store/laboratoryStore'
 import { getLaboratoriesVM } from '@adapters/primary/view-models/laboratories/get-laboratories/getLaboratoriesVM'
+import { useLaboratoryStore } from '@store/laboratoryStore'
 import {
   avene,
   gilbert,
   laboratoryWithoutImage
 } from '@utils/testData/laboratories'
+import { createPinia, setActivePinia } from 'pinia'
+import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
 
 describe('Get laboratories VM', () => {
   let laboratoryStore: any

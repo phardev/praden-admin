@@ -1,9 +1,9 @@
-import { Product } from '../entities/product'
-import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
-import { UUID } from '@core/types/types'
-import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { Category } from '@core/entities/category'
+import { UUID } from '@core/types/types'
+import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
+import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { Product } from '../entities/product'
 
 export interface ProductGateway {
   list(limit: number, offset: number): Promise<Array<ProductListItem>>

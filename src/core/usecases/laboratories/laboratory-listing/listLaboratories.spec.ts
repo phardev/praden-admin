@@ -1,10 +1,10 @@
-import { createPinia, setActivePinia } from 'pinia'
 import { InMemoryLaboratoryGateway } from '@adapters/secondary/laboratory-gateways/inMemoryLaboratoryGateway'
-import { useLaboratoryStore } from '@store/laboratoryStore'
-import { listLaboratories } from './listLaboratories'
-import { Laboratory } from '@core/entities/laboratory'
-import { avene, gilbert, sanofiAventis } from '@utils/testData/laboratories'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { Laboratory } from '@core/entities/laboratory'
+import { useLaboratoryStore } from '@store/laboratoryStore'
+import { avene, gilbert, sanofiAventis } from '@utils/testData/laboratories'
+import { createPinia, setActivePinia } from 'pinia'
+import { listLaboratories } from './listLaboratories'
 
 describe('Laboratory listing', () => {
   let laboratoryStore: any

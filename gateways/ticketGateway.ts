@@ -1,8 +1,8 @@
-import * as tickets from '@utils/testData/tickets'
-import { isLocalEnv } from '@utils/env'
 import { RealDateProvider } from '@adapters/secondary/date-providers/RealDateProvider'
 import { InMemoryTimeoutTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTimeoutTicketGateway'
 import { RealTicketGateway } from '@adapters/secondary/ticket-gateways/RealTicketGateway'
+import { isLocalEnv } from '@utils/env'
+import * as tickets from '@utils/testData/tickets'
 
 export const useTicketGateway = () => {
   if (isLocalEnv()) {

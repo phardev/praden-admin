@@ -131,12 +131,12 @@ div(v-if="currentVM")
 </template>
 
 <script lang="ts" setup>
+import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'
 import { ReductionType } from '@core/entities/promotion'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
-import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'
-import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
+import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 
 definePageMeta({ layout: 'main' })
 

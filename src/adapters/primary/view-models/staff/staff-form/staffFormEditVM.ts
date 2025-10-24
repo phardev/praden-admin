@@ -1,14 +1,14 @@
 import {
-  StaffFormVM,
+  type Field,
   FormFieldsReader,
   FormFieldsWriter,
   FormInitializer,
-  type Field
+  StaffFormVM
 } from '@adapters/primary/view-models/staff/staff-form/staffFormVM'
-import { useFormStore } from '@store/formStore'
-import { useStaffStore } from '@store/staffStore'
 import { EditStaffDTO } from '@core/gateways/staffGateway'
 import { UUID } from '@core/types/types'
+import { useFormStore } from '@store/formStore'
+import { useStaffStore } from '@store/staffStore'
 
 export class ExistingStaffFormInitializer implements FormInitializer {
   protected readonly key: string

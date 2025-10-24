@@ -1,5 +1,5 @@
-import { Role } from '@core/entities/role'
 import { PermissionResource } from '@core/entities/permissionResource'
+import { Role } from '@core/entities/role'
 
 export const adminRole: Role = {
   uuid: 'role-admin',
@@ -21,6 +21,7 @@ export const adminRole: Role = {
     { resource: PermissionResource.ORDERS },
     { resource: PermissionResource.BANNERS },
     { resource: PermissionResource.STAFF },
+    { resource: PermissionResource.SHOP_MANAGEMENT },
     { resource: PermissionResource.RESEARCH }
   ]
 }
@@ -43,7 +44,8 @@ export const pharmacistRole: Role = {
     { resource: PermissionResource.DELIVERIES },
     { resource: PermissionResource.PREPARATIONS },
     { resource: PermissionResource.ORDERS },
-    { resource: PermissionResource.BANNERS }
+    { resource: PermissionResource.BANNERS },
+    { resource: PermissionResource.SHOP_MANAGEMENT }
   ]
 }
 

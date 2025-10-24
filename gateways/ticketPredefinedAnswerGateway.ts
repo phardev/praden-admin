@@ -1,8 +1,8 @@
-import * as ticketPredefinedAnswers from '@utils/testData/ticketPredefinedAnswers'
-import { isLocalEnv } from '@utils/env'
-import { useUuidGenerator } from './uuidGenerator'
 import { InMemoryTicketPredefinedAnswerGateway } from '@adapters/secondary/ticket-predefined-answer-gateways/InMemoryTicketPredefinedAnswerGateway'
 import { RealTicketPredefinedAnswersGateway } from '@adapters/secondary/ticket-predefined-answer-gateways/RealTicketPredefinedAnswersGateway'
+import { isLocalEnv } from '@utils/env'
+import * as ticketPredefinedAnswers from '@utils/testData/ticketPredefinedAnswers'
+import { useUuidGenerator } from './uuidGenerator'
 
 export const useTicketPredefinedAnswerGateway = () => {
   if (isLocalEnv()) {

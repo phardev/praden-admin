@@ -1,22 +1,22 @@
 import { InMemoryLaboratoryGateway } from '@adapters/secondary/laboratory-gateways/inMemoryLaboratoryGateway'
+import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { Product } from '@core/entities/product'
 import { UUID } from '@core/types/types'
-import { useLaboratoryStore } from '@store/laboratoryStore'
-import { createPinia, setActivePinia } from 'pinia'
 import {
-  createLaboratory,
-  CreateLaboratoryDTO
+  CreateLaboratoryDTO,
+  createLaboratory
 } from '@core/usecases/laboratories/laboratory-creation/createLaboratory'
-import { Laboratory } from '../../../entities/laboratory'
-import { dolodent, hemoclar } from '@utils/testData/products'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { useLaboratoryStore } from '@store/laboratoryStore'
+import { useProductStore } from '@store/productStore'
 import {
   dolodentListItem,
   hemoclarListItem
 } from '@utils/testData/fixtures/products/productListItems'
-import { Product } from '@core/entities/product'
-import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
-import { useProductStore } from '@store/productStore'
-import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { dolodent, hemoclar } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
+import { Laboratory } from '../../../entities/laboratory'
 
 describe('Laboratory creation', () => {
   let laboratoryStore: any

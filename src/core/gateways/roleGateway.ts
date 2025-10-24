@@ -1,5 +1,5 @@
-import { Role } from '@core/entities/role'
 import { Permission } from '@core/entities/permission'
+import { Role } from '@core/entities/role'
 import { UUID } from '@core/types/types'
 
 export interface CreateRoleDTO {

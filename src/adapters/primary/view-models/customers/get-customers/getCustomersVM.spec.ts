@@ -1,18 +1,18 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useCustomerStore } from '@store/customerStore'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import {
   GetCustomersItemVM,
-  getCustomersVM,
-  GetCustomersVM
+  GetCustomersVM,
+  getCustomersVM
 } from '@adapters/primary/view-models/customers/get-customers/getCustomersVM'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { Customer } from '@core/entities/customer'
+import { useCustomerStore } from '@store/customerStore'
+import { useSearchStore } from '@store/searchStore'
 import {
   elodieDurand,
   lucasLefevre,
   sophieMartinez
 } from '@utils/testData/customers'
-import { Customer } from '@core/entities/customer'
-import { useSearchStore } from '@store/searchStore'
+import { createPinia, setActivePinia } from 'pinia'
 
 const expectedHeaders: Array<Header> = [
   {

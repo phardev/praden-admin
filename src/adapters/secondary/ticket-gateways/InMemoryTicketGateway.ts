@@ -6,11 +6,11 @@ import {
   TicketPriority,
   TicketStatus
 } from '@core/entities/ticket'
-import { UUID } from '@core/types/types'
 import { TicketDoesNotExistsError } from '@core/errors/TicketDoesNotExistsError'
-import { TicketGateway } from '@core/gateways/ticketGateway'
 import { DateProvider } from '@core/gateways/dateProvider'
+import { TicketGateway } from '@core/gateways/ticketGateway'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
+import { UUID } from '@core/types/types'
 import { getFileContent } from '@utils/file'
 
 export class InMemoryTicketGateway implements TicketGateway {

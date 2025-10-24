@@ -1,5 +1,5 @@
-import type { UUID } from '@core/types/types'
 import { Product } from '@core/entities/product'
+import type { UUID } from '@core/types/types'
 
 export interface Category {
   uuid: UUID
@@ -8,6 +8,7 @@ export interface Category {
   parentUuid?: UUID
   miniature?: string
   image?: string
+  order: number
 }
 
 export interface CategoryWithProducts {

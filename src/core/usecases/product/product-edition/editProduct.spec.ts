@@ -1,27 +1,27 @@
+import { InMemoryLocationGateway } from '@adapters/secondary/location-gateways/inMemoryLocationGateway'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
-import { useProductStore } from '@store/productStore'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
+import { Category } from '@core/entities/category'
+import { Location } from '@core/entities/location'
+import { Product } from '@core/entities/product'
+import { UUID } from '@core/types/types'
+import {
+  EditProductDTO,
+  editProduct
+} from '@core/usecases/product/product-edition/editProduct'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { useCategoryStore } from '@store/categoryStore'
+import { useLocationStore } from '@store/locationStore'
+import { useProductStore } from '@store/productStore'
+import { baby, mum } from '@utils/testData/categories'
 import {
   chamomillaListItem,
   dolodentListItem,
   ultraLevureListItem
 } from '@utils/testData/fixtures/products/productListItems'
-import { Product } from '@core/entities/product'
-import {
-  editProduct,
-  EditProductDTO
-} from '@core/usecases/product/product-edition/editProduct'
-import { UUID } from '@core/types/types'
-import { createPinia, setActivePinia } from 'pinia'
-import { baby, mum } from '@utils/testData/categories'
-import { Category } from '@core/entities/category'
-import { useCategoryStore } from '@store/categoryStore'
 import { reserve, zoneGeo } from '@utils/testData/locations'
-import { Location } from '@core/entities/location'
-import { InMemoryLocationGateway } from '@adapters/secondary/location-gateways/inMemoryLocationGateway'
-import { useLocationStore } from '@store/locationStore'
-import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Product edition', () => {
   let productStore: any

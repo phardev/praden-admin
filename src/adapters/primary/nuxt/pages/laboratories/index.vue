@@ -16,9 +16,9 @@
 </template>
 
 <script lang="ts" setup>
+import { getLaboratoriesVM } from '@adapters/primary/view-models/laboratories/get-laboratories/getLaboratoriesVM'
 import { listLaboratories } from '@core/usecases/laboratories/laboratory-listing/listLaboratories'
 import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
-import { getLaboratoriesVM } from '@adapters/primary/view-models/laboratories/get-laboratories/getLaboratoriesVM'
 
 definePageMeta({ layout: 'main' })
 

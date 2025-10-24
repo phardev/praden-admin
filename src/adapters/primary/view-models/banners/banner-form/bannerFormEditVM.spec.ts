@@ -1,11 +1,11 @@
-import { useFormStore } from '@store/formStore'
-import { createPinia, setActivePinia } from 'pinia'
 import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { banner1, banner2, banner5 } from '@utils/testData/banners'
-import { useBannerStore } from '@store/bannerStore'
 import { Banner } from '@core/entities/banner'
-import { BannerFormEditVM, bannerFormEditVM } from './bannerFormEditVM'
 import { EditBannerDTO } from '@core/usecases/banners/banner-edition/editBanner'
+import { useBannerStore } from '@store/bannerStore'
+import { useFormStore } from '@store/formStore'
+import { banner1, banner2, banner5 } from '@utils/testData/banners'
+import { createPinia, setActivePinia } from 'pinia'
+import { BannerFormEditVM, bannerFormEditVM } from './bannerFormEditVM'
 
 describe('Banner form edit VM', () => {
   let formStore: any

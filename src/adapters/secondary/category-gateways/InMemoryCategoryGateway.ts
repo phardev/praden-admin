@@ -1,11 +1,11 @@
-import { CategoryGateway } from '@core/gateways/categoryGateway'
 import { Category } from '@core/entities/category'
-import { UuidGenerator } from '@core/gateways/uuidGenerator'
-import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
-import { UUID } from '@core/types/types'
-import { ParentCategoryDoesNotExistsError } from '@core/errors/ParentCategoryDoesNotExistsError'
-import { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
 import { CategoryDoesNotExistsError } from '@core/errors/CategoryDoesNotExistsError'
+import { ParentCategoryDoesNotExistsError } from '@core/errors/ParentCategoryDoesNotExistsError'
+import { CategoryGateway } from '@core/gateways/categoryGateway'
+import { UuidGenerator } from '@core/gateways/uuidGenerator'
+import { UUID } from '@core/types/types'
+import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
+import { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
 
 export class InMemoryCategoryGateway implements CategoryGateway {
   private categories: Array<Category> = []
@@ -40,8 +40,7 @@ export class InMemoryCategoryGateway implements CategoryGateway {
       throw new ParentCategoryDoesNotExistsError(uuid)
     }
     const index = this.categories.findIndex((c) => c.uuid === uuid)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { productsAdded, productsRemoved, ...categoryDTO } = dto
+    const { _productsAdded, _productsRemoved, ...categoryDTO } = dto
     this.categories[index] = Object.assign(this.categories[index], categoryDTO)
     return Promise.resolve(this.categories[index])
   }
@@ -50,6 +49,15 @@ export class InMemoryCategoryGateway implements CategoryGateway {
     const res = this.categories.find((c) => c.uuid === uuid)
     if (!res) throw new CategoryDoesNotExistsError(uuid)
     return Promise.resolve(JSON.parse(JSON.stringify(res)))
+  }
+
+  async reorder(categoryUuids: Array<UUID>): Promise<Array<Category>> {
+    for (const uuid of categoryUuids) {
+      const i = categoryUuids.indexOf(uuid)
+      await this.edit(uuid, { order: i })
+    }
+    this.categories = this.categories.sort((a, b) => a.order - b.order)
+    return Promise.resolve(JSON.parse(JSON.stringify(this.categories)))
   }
 
   private categoryExists(uuid: UUID) {

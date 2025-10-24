@@ -1,8 +1,8 @@
-import { RealProductGateway } from '@adapters/secondary/product-gateways/RealProductGateway'
-import * as products from '@utils/testData/products'
-import { isLocalEnv } from '@utils/env'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { InMemoryTimeoutProductGateway } from '@adapters/secondary/product-gateways/InMemoryTimeoutProductGateway'
+import { RealProductGateway } from '@adapters/secondary/product-gateways/RealProductGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { isLocalEnv } from '@utils/env'
+import * as products from '@utils/testData/products'
 
 export const useProductGateway = () => {
   if (isLocalEnv()) {

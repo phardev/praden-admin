@@ -1,7 +1,7 @@
 import { UUID } from '@core/types/types'
-import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
 import { useNewsletterStore } from '@store/newsletterStore'
 import { timestampToLocaleString } from '@utils/formatters'
+import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
 
 export interface GetNewsletterSubscriptionsItemVM {
   uuid: UUID

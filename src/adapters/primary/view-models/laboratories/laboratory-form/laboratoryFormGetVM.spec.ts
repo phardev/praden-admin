@@ -1,21 +1,21 @@
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { Product } from '@core/entities/product'
 import { useFormStore } from '@store/formStore'
 import { useLaboratoryStore } from '@store/laboratoryStore'
-import { createPinia, setActivePinia } from 'pinia'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { useProductStore } from '@store/productStore'
+import { avene, gilbert } from '@utils/testData/laboratories'
 import {
   anaca3Minceur,
   calmosine,
   chamomilla,
   dolodent
 } from '@utils/testData/products'
-import { Product } from '@core/entities/product'
-import { useProductStore } from '@store/productStore'
-import { avene, gilbert } from '@utils/testData/laboratories'
+import { createPinia, setActivePinia } from 'pinia'
 import {
-  laboratoryFormGetVM,
   LaboratoryFormGetVM,
-  LaboratoryProductItemVM
+  LaboratoryProductItemVM,
+  laboratoryFormGetVM
 } from './laboratoryFormGetVM'
 
 const anaca3VM: LaboratoryProductItemVM = {

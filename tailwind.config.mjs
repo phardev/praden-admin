@@ -1,5 +1,5 @@
-import { join } from 'path'
 import typography from '@tailwindcss/typography'
+import { join } from 'path'
 
 export default {
   darkMode: 'class',

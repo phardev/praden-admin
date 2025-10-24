@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
 import { Delivery } from '@core/entities/delivery'
+import { defineStore } from 'pinia'
 
 export const useDeliveryStore = defineStore('DeliveryStore', {
   state: () => {

@@ -1,12 +1,24 @@
 import {
+  CategoryFormCreateVM,
+  categoryFormCreateVM
+} from '@adapters/primary/view-models/categories/category-form/categoryFormCreateVM'
+import {
+  CategoryAvailableProductItemVM,
+  CategoryProductItemVM
+} from '@adapters/primary/view-models/categories/category-form/categoryFormVM'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import {
   Field,
   PromotionProductItemVM
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { useFormStore } from '@store/formStore'
+import { Category } from '@core/entities/category'
+import { Product } from '@core/entities/product'
+import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
 import { useCategoryStore } from '@store/categoryStore'
+import { useFormStore } from '@store/formStore'
+import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
 import { baby, dents, minceur, mum } from '@utils/testData/categories'
-import { createPinia, setActivePinia } from 'pinia'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import {
   anaca3Minceur,
   calmosine,
@@ -15,19 +27,7 @@ import {
   productWithoutCategory,
   ultraLevure
 } from '@utils/testData/products'
-import { Product } from '@core/entities/product'
-import { useProductStore } from '@store/productStore'
-import {
-  CategoryAvailableProductItemVM,
-  CategoryProductItemVM
-} from '@adapters/primary/view-models/categories/category-form/categoryFormVM'
-import { Category } from '@core/entities/category'
-import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
-import {
-  categoryFormCreateVM,
-  CategoryFormCreateVM
-} from '@adapters/primary/view-models/categories/category-form/categoryFormCreateVM'
-import { useSearchStore } from '@store/searchStore'
+import { createPinia, setActivePinia } from 'pinia'
 
 const anaca3VM: CategoryProductItemVM = {
   uuid: anaca3Minceur.uuid,

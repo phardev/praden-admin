@@ -1,6 +1,10 @@
 import { InMemoryBannerGateway } from '@adapters/secondary/banner-gateways/inMemoryBannerGateway'
-import { useBannerStore } from '@store/bannerStore'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { Banner } from '@core/entities/banner'
+import { BannerDoesNotExistsError } from '@core/errors/BannerDoesNotExistsError'
+import { UUID } from '@core/types/types'
+import { getBanner } from '@core/usecases/banners/banner-get/getBanner'
+import { useBannerStore } from '@store/bannerStore'
 import {
   banner1,
   banner2,
@@ -9,11 +13,7 @@ import {
   banner5,
   banner6
 } from '@utils/testData/banners'
-import { Banner } from '@core/entities/banner'
-import { UUID } from '@core/types/types'
-import { getBanner } from '@core/usecases/banners/banner-get/getBanner'
 import { createPinia, setActivePinia } from 'pinia'
-import { BannerDoesNotExistsError } from '@core/errors/BannerDoesNotExistsError'
 
 describe('Banner get', () => {
   let bannerStore: any

@@ -1,8 +1,8 @@
-import * as locations from '@utils/testData/locations'
-import { LocationGateway } from '@core/gateways/locationGateway'
 import { InMemoryLocationGateway } from '@adapters/secondary/location-gateways/inMemoryLocationGateway'
-import { isLocalEnv } from '@utils/env'
 import { RealLocationGateway } from '@adapters/secondary/location-gateways/realLocationGateway'
+import { LocationGateway } from '@core/gateways/locationGateway'
+import { isLocalEnv } from '@utils/env'
+import * as locations from '@utils/testData/locations'
 
 const locationGateway = new InMemoryLocationGateway()
 locationGateway.feedWith(...Object.values(locations))

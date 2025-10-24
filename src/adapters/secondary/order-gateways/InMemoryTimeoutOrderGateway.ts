@@ -1,7 +1,7 @@
-import { Order } from '@core/entities/order'
-import { UUID } from '@core/types/types'
-import { DateProvider } from '@core/gateways/dateProvider'
 import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
+import { Order } from '@core/entities/order'
+import { DateProvider } from '@core/gateways/dateProvider'
+import { UUID } from '@core/types/types'
 
 export class InMemoryTimoutOrderGateway extends InMemoryOrderGateway {
   private readonly timeoutInMs: number

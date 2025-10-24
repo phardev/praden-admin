@@ -1,7 +1,7 @@
 import { Banner } from '@core/entities/banner'
 import { UUID } from '@core/types/types'
-import { EditBannerDTO } from '@core/usecases/banners/banner-edition/editBanner'
 import { CreateBannerDTO } from '@core/usecases/banners/banner-creation/createBanner'
+import { EditBannerDTO } from '@core/usecases/banners/banner-edition/editBanner'
 
 export interface BannerGateway {
   list(): Promise<Array<Banner>>

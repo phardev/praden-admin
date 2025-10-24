@@ -1,6 +1,6 @@
-import { useRoleStore } from '@store/roleStore'
 import { Role } from '@core/entities/role'
 import { UUID } from '@core/types/types'
+import { useRoleStore } from '@store/roleStore'
 
 export interface GetRoleListItemVM {
   uuid: UUID

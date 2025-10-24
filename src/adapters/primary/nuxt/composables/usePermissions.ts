@@ -1,10 +1,10 @@
 import { getPermissionsVM } from '@adapters/primary/view-models/permissions/getPermissionsVM'
+import { PermissionResource } from '@core/entities/permissionResource'
 import {
   canAccessRoute,
-  getRequiredPermission,
-  getPermissionKey
+  getPermissionKey,
+  getRequiredPermission
 } from '@utils/permissions/routePermissionMapping'
-import { PermissionResource } from '@core/entities/permissionResource'
 
 export const usePermissions = () => {
   const permissions = computed(() => getPermissionsVM())

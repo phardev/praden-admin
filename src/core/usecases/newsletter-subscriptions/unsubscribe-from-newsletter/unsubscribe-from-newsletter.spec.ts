@@ -1,18 +1,18 @@
-import { InMemoryNewsletterGateway } from '@adapters/secondary/newsletter-gateways/inMemoryNewsletterGateway'
-import { useNewsletterStore } from '@store/newsletterStore'
-import { createPinia, setActivePinia } from 'pinia'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { InMemoryCustomerGateway } from '@adapters/secondary/customer-gateways/inMemoryCustomerGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { InMemoryNewsletterGateway } from '@adapters/secondary/newsletter-gateways/inMemoryNewsletterGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { Customer } from '@core/entities/customer'
 import { NewsletterSubscription } from '@core/entities/newsletterSubscription'
+import { useCustomerStore } from '@store/customerStore'
+import { useNewsletterStore } from '@store/newsletterStore'
+import { elodieDurand } from '@utils/testData/customers'
 import {
   elodieDurandNewsletterSubscription,
   guestNewsletterSubscription
 } from '@utils/testData/newsletterSubscriptions'
+import { createPinia, setActivePinia } from 'pinia'
 import { unsubscribeFromNewsletter } from './unsubscribe-from-newsletter'
-import { InMemoryCustomerGateway } from '@adapters/secondary/customer-gateways/inMemoryCustomerGateway'
-import { useCustomerStore } from '@store/customerStore'
-import { Customer } from '@core/entities/customer'
-import { elodieDurand } from '@utils/testData/customers'
 
 describe('Unsubscribe from newsletter', () => {
   let newsletterStore: any

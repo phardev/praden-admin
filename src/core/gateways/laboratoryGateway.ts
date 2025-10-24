@@ -1,5 +1,5 @@
-import { UUID } from '@core/types/types'
 import { Laboratory } from '@core/entities/laboratory'
+import { UUID } from '@core/types/types'
 import { CreateLaboratoryDTO } from '@core/usecases/laboratories/laboratory-creation/createLaboratory'
 import { EditLaboratoryDTO } from '../usecases/laboratories/laboratory-edition/editLaboratory'
 

@@ -1,23 +1,23 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useFormStore } from '@store/formStore'
-import { baby, minceur, mum } from '@utils/testData/categories'
 import { type Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { dolodent, ultraLevure } from '@utils/testData/products'
-import { useProductStore } from '@store/productStore'
-import { useLocationStore } from '@store/locationStore'
-import { magasin, reserve, zoneGeo } from '@utils/testData/locations'
-import { promotionFixedMultipleProducts } from '@utils/testData/promotions'
+import { ProductStatus } from '@core/entities/product'
+import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { useCategoryStore } from '@store/categoryStore'
-import { productFormEditVM, ProductFormEditVM } from './productFormEditVM'
+import { useFormStore } from '@store/formStore'
+import { useLaboratoryStore } from '@store/laboratoryStore'
+import { useLocationStore } from '@store/locationStore'
+import { useProductStore } from '@store/productStore'
+import { baby, minceur, mum } from '@utils/testData/categories'
 import {
   anaca3,
   avene,
   gilbert,
   sanofiAventis
 } from '@utils/testData/laboratories'
-import { useLaboratoryStore } from '@store/laboratoryStore'
-import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
-import { ProductStatus } from '@core/entities/product'
+import { magasin, reserve, zoneGeo } from '@utils/testData/locations'
+import { dolodent, ultraLevure } from '@utils/testData/products'
+import { promotionFixedMultipleProducts } from '@utils/testData/promotions'
+import { createPinia, setActivePinia } from 'pinia'
+import { ProductFormEditVM, productFormEditVM } from './productFormEditVM'
 
 describe('Product form edit VM', () => {
   let locationStore: any

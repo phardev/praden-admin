@@ -61,22 +61,22 @@
 </template>
 
 <script lang="ts" setup>
-import { listStaff } from '@core/usecases/staff/listStaff'
-import { assignRoleToStaff } from '@core/usecases/staff/assignRoleToStaff'
-import { editRole } from '@core/usecases/roles/role-edition/editRole'
-import { listRoles } from '@core/usecases/roles/listRoles'
-import { listSystemResources } from '@core/usecases/system-resources/listSystemResources'
-import { useStaffGateway } from '../../../../../../gateways/staffGateway'
-import { useRoleGateway } from '../../../../../../gateways/roleGateway'
-import { useSystemResourceGateway } from '../../../../../../gateways/systemResourceGateway'
-import { getStaffVM } from '@adapters/primary/view-models/staff/get-staff/getStaffVM'
-import { getRolesVM } from '@adapters/primary/view-models/roles/get-roles/getRolesVM'
 import {
-  permissionMatrixEditVM,
-  PermissionMatrixEditVM
+  PermissionMatrixEditVM,
+  permissionMatrixEditVM
 } from '@adapters/primary/view-models/permissions/permission-matrix-edit/permissionMatrixEditVM'
 import { getRoleListVM } from '@adapters/primary/view-models/roles/get-role-list/getRoleListVM'
+import { getRolesVM } from '@adapters/primary/view-models/roles/get-roles/getRolesVM'
+import { getStaffVM } from '@adapters/primary/view-models/staff/get-staff/getStaffVM'
+import { listRoles } from '@core/usecases/roles/listRoles'
+import { editRole } from '@core/usecases/roles/role-edition/editRole'
+import { assignRoleToStaff } from '@core/usecases/staff/assignRoleToStaff'
+import { listStaff } from '@core/usecases/staff/listStaff'
+import { listSystemResources } from '@core/usecases/system-resources/listSystemResources'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
+import { useRoleGateway } from '../../../../../../gateways/roleGateway'
+import { useStaffGateway } from '../../../../../../gateways/staffGateway'
+import { useSystemResourceGateway } from '../../../../../../gateways/systemResourceGateway'
 
 definePageMeta({ layout: 'main' })
 

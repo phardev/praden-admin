@@ -1,21 +1,21 @@
-import { useFormStore } from '@store/formStore'
-import { ReductionType } from '@core/entities/promotion'
-import {
-  Field,
-  PromotionProductItemVM,
-  TypeChoiceVM
-} from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import {
   FormFieldsReader,
   FormInitializer
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import {
+  Field,
+  PromotionProductItemVM,
+  TypeChoiceVM
+} from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { ReductionType } from '@core/entities/promotion'
+import { PromotionScope } from '@core/entities/promotionCode'
+import { UUID } from '@core/types/types'
+import { useFormStore } from '@store/formStore'
+import { usePromotionCodeStore } from '@store/promotionCodeStore'
+import {
   PromotionCodeFormVM,
   PromotionCodeProductItemVM
 } from './promotionCodeFormVM'
-import { usePromotionCodeStore } from '@store/promotionCodeStore'
-import { PromotionScope } from '@core/entities/promotionCode'
-import { UUID } from '@core/types/types'
 
 export interface PromotionScopeChoiceVM {
   scope: PromotionScope

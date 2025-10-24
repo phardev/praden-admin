@@ -1,8 +1,8 @@
 import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
-import { usePreparationStore } from '@store/preparationStore'
-import { OrderGateway } from '@core/gateways/orderGateway'
 import { InvoiceGateway } from '@core/gateways/invoiceGateway'
+import { OrderGateway } from '@core/gateways/orderGateway'
 import { useInvoiceStore } from '@store/invoiceStore'
+import { usePreparationStore } from '@store/preparationStore'
 
 export const validatePreparation = async (
   orderGateway: OrderGateway,

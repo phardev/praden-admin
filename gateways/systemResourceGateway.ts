@@ -1,7 +1,7 @@
-import * as systemResources from '@utils/testData/systemResources'
+import { InMemorySystemResourceGateway } from '@adapters/secondary/system-resource-gateways/InMemorySystemResourceGateway'
 import { RealSystemResourceGateway } from '@adapters/secondary/system-resource-gateways/RealSystemResourceGateway'
 import { isLocalEnv } from '@utils/env'
-import { InMemorySystemResourceGateway } from '@adapters/secondary/system-resource-gateways/InMemorySystemResourceGateway'
+import * as systemResources from '@utils/testData/systemResources'
 
 const systemResourceGateway = new InMemorySystemResourceGateway()
 systemResourceGateway.feedWith(...systemResources.systemResources)

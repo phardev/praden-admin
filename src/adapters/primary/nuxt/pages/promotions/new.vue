@@ -9,12 +9,12 @@
 
 <script lang="ts" setup>
 import { promotionFormCreateVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { listProducts } from '@core/usecases/product/product-listing/listProducts'
-import { useProductGateway } from '../../../../../../gateways/productGateway'
-import { createPromotion } from '@core/usecases/promotions/promotion-creation/createPromotion'
-import { usePromotionGateway } from '../../../../../../gateways/promotionGateway'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
+import { listProducts } from '@core/usecases/product/product-listing/listProducts'
+import { createPromotion } from '@core/usecases/promotions/promotion-creation/createPromotion'
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
+import { useProductGateway } from '../../../../../../gateways/productGateway'
+import { usePromotionGateway } from '../../../../../../gateways/promotionGateway'
 
 definePageMeta({ layout: 'main' })
 

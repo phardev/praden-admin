@@ -1,8 +1,8 @@
 import { Reminders } from '@core/entities/reminders'
-import { InMemoryRemindersGateway } from './inMemoryRemindersGateway'
-import { getReminders } from './getReminders'
-import { createPinia, setActivePinia } from 'pinia'
 import { useStatsStore } from '@store/statsStore'
+import { createPinia, setActivePinia } from 'pinia'
+import { getReminders } from './getReminders'
+import { InMemoryRemindersGateway } from './inMemoryRemindersGateway'
 
 describe('GetReminders', () => {
   let remindersGateway: InMemoryRemindersGateway

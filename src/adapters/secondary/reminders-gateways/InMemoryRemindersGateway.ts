@@ -1,5 +1,5 @@
-import { RemindersGateway } from '@core/gateways/remindersGateway'
 import { Reminders } from '@core/entities/reminders'
+import { RemindersGateway } from '@core/gateways/remindersGateway'
 
 export class InMemoryRemindersGateway implements RemindersGateway {
   private mockData: Reminders

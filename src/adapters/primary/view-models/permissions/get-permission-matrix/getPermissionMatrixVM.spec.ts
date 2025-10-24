@@ -1,9 +1,9 @@
-import { createPinia, setActivePinia } from 'pinia'
+import { getPermissionMatrixVM } from '@adapters/primary/view-models/permissions/get-permission-matrix/getPermissionMatrixVM'
 import { useRoleStore } from '@store/roleStore'
 import { useSystemResourceStore } from '@store/systemResourceStore'
-import { getPermissionMatrixVM } from '@adapters/primary/view-models/permissions/get-permission-matrix/getPermissionMatrixVM'
-import { adminRole, pharmacistRole, assistantRole } from '@utils/testData/roles'
+import { adminRole, assistantRole, pharmacistRole } from '@utils/testData/roles'
 import { systemResources } from '@utils/testData/systemResources'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get permission matrix view model', () => {
   let roleStore: any

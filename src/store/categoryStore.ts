@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
 import { Category, CategoryWithProducts } from '@core/entities/category'
 import { Product } from '@core/entities/product'
+import { defineStore } from 'pinia'
 
 export const useCategoryStore = defineStore('CategoryStore', {
   state: () => {
@@ -50,7 +50,8 @@ export const useCategoryStore = defineStore('CategoryStore', {
             description: '',
             parentUuid: undefined,
             miniature: undefined,
-            image: undefined
+            image: undefined,
+            order: 0
           },
           products: []
         }

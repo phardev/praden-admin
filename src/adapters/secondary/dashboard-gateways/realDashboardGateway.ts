@@ -1,10 +1,10 @@
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
 import { Dashboard } from '@core/entities/dashboard'
 import {
   DashboardGateway,
   DashboardParams
 } from '@core/gateways/dashboardGateway'
-import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 
 export class RealDashboardGateway
   extends RealGateway

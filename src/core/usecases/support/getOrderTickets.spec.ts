@@ -1,22 +1,22 @@
-import { useTicketStore } from '@store/ticketStore'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { InMemoryTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTicketGateway'
+import { Ticket } from '@core/entities/ticket'
 import { getOrderTickets } from '@core/usecases/support/getOrderTickets'
-import { createPinia, setActivePinia } from 'pinia'
-import {
-  newTicket,
-  startedTicket,
-  urgentTicket,
-  resolvedTicket,
-  lowPriorityTicket,
-  waitingForAnswerTicket
-} from '@utils/testData/tickets'
+import { useTicketStore } from '@store/ticketStore'
 import {
   orderToPrepare1,
   orderToPrepare2,
   orderToPrepare3
 } from '@utils/testData/orders'
-import { InMemoryTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTicketGateway'
-import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
-import { Ticket } from '@core/entities/ticket'
+import {
+  lowPriorityTicket,
+  newTicket,
+  resolvedTicket,
+  startedTicket,
+  urgentTicket,
+  waitingForAnswerTicket
+} from '@utils/testData/tickets'
+import { createPinia, setActivePinia } from 'pinia'
 
 const allTickets = [
   newTicket,

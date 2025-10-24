@@ -1,5 +1,10 @@
+import {
+  GetBannersItemVM,
+  GetBannersVM,
+  getBannersVM
+} from '@adapters/primary/view-models/banners/get-banners/getBannersVM'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { Banner } from '@core/entities/banner'
-import { createPinia, setActivePinia } from 'pinia'
 import { useBannerStore } from '@store/bannerStore'
 import {
   banner1,
@@ -9,12 +14,7 @@ import {
   banner5,
   banner6
 } from '@utils/testData/banners'
-import {
-  GetBannersItemVM,
-  GetBannersVM,
-  getBannersVM
-} from '@adapters/primary/view-models/banners/get-banners/getBannersVM'
-import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get banners VM', () => {
   let bannerStore: any

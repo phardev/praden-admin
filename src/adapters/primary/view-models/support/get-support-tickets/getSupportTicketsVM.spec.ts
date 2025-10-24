@@ -1,19 +1,19 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useTicketStore } from '@store/ticketStore'
 import {
-  getSupportTicketsVM,
   GetSupportTicketsVM,
+  getSupportTicketsVM,
   KanbanColumnWithKey
 } from '@adapters/primary/view-models/support/get-support-tickets/getSupportTicketsVM'
+import { useTicketStore } from '@store/ticketStore'
 import {
+  lowPriorityTicket,
   newTicket,
+  notWaitingForAnswerTicket,
+  resolvedTicket,
   startedTicket,
   urgentTicket,
-  resolvedTicket,
-  lowPriorityTicket,
-  waitingForAnswerTicket,
-  notWaitingForAnswerTicket
+  waitingForAnswerTicket
 } from '@utils/testData/tickets'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get support tickets VM', () => {
   let ticketStore: any

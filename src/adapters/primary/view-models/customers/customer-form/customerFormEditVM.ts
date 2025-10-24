@@ -1,10 +1,10 @@
-import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { CustomerFormFieldsWriter } from '@adapters/primary/view-models/customers/customer-form/customerFormCreateVM'
 import {
   CustomerFormFieldsReader,
   ExistingCustomerFormInitializer
 } from '@adapters/primary/view-models/customers/customer-form/customerFormGetVM'
+import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { CreateCustomerDTO } from '@core/usecases/customers/customer-creation/createCustomer'
-import { CustomerFormFieldsWriter } from '@adapters/primary/view-models/customers/customer-form/customerFormCreateVM'
 
 export class CustomerFormEditVM {
   protected initializer: ExistingCustomerFormInitializer

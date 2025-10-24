@@ -1,19 +1,19 @@
-import { useCustomerStore } from '@store/customerStore'
+import { InMemoryCustomerGateway } from '@adapters/secondary/customer-gateways/inMemoryCustomerGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { createPinia, setActivePinia } from 'pinia'
 import { Customer } from '@core/entities/customer'
+import { CustomerDoesNotExistsError } from '@core/errors/CustomerDoesNotExistsError'
+import { UUID } from '@core/types/types'
+import {
+  EditCustomerDTO,
+  editCustomer
+} from '@core/usecases/customers/customer-edition/editCustomer'
+import { useCustomerStore } from '@store/customerStore'
 import {
   elodieDurand,
   lucasLefevre,
   sophieMartinez
 } from '@utils/testData/customers'
-import { UUID } from '@core/types/types'
-import { CustomerDoesNotExistsError } from '@core/errors/CustomerDoesNotExistsError'
-import { InMemoryCustomerGateway } from '@adapters/secondary/customer-gateways/inMemoryCustomerGateway'
-import {
-  editCustomer,
-  EditCustomerDTO
-} from '@core/usecases/customers/customer-edition/editCustomer'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Customer Edition', () => {
   let customerStore: any

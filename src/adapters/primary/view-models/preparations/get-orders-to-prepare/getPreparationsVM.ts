@@ -1,4 +1,4 @@
-import { usePreparationStore } from '@store/preparationStore'
+import { TableVM } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 import {
   DeliveryType,
   MessageContent,
@@ -6,10 +6,10 @@ import {
   OrderLine,
   OrderLineStatus
 } from '@core/entities/order'
-import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
-import { TableVM } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 import { HashTable } from '@core/types/types'
+import { usePreparationStore } from '@store/preparationStore'
 import { useProductStore } from '@store/productStore'
+import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import { addTaxToPrice } from '@utils/price'
 
 export interface GetPreparationsItemVM {

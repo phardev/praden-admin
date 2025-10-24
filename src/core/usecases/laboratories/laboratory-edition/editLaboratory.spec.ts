@@ -1,20 +1,20 @@
 import { InMemoryLaboratoryGateway } from '@adapters/secondary/laboratory-gateways/inMemoryLaboratoryGateway'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { UUID } from '@core/types/types'
 import { Laboratory } from '@core/entities/laboratory'
 import { Product } from '@core/entities/product'
-import { editLaboratory, EditLaboratoryDTO } from './editLaboratory'
-import { createPinia, setActivePinia } from 'pinia'
+import { UUID } from '@core/types/types'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 import { useLaboratoryStore } from '@store/laboratoryStore'
 import { useProductStore } from '@store/productStore'
-import { avene, gilbert, sanofiAventis } from '@utils/testData/laboratories'
-import { dolodent, hemoclar } from '@utils/testData/products'
 import {
   dolodentListItem,
   hemoclarListItem
 } from '@utils/testData/fixtures/products/productListItems'
-import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { avene, gilbert, sanofiAventis } from '@utils/testData/laboratories'
+import { dolodent, hemoclar } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
+import { EditLaboratoryDTO, editLaboratory } from './editLaboratory'
 
 describe('Laboratory edition', () => {
   let laboratoryStore: any

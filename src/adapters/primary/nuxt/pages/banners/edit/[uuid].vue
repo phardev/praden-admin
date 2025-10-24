@@ -8,10 +8,10 @@
 </template>
 
 <script lang="ts" setup>
-import { useBannerGateway } from '../../../../../../../gateways/bannerGateway'
-import { getBanner } from '@core/usecases/banners/banner-get/getBanner'
 import { bannerFormEditVM } from '@adapters/primary/view-models/banners/banner-form/bannerFormEditVM'
 import { editBanner } from '@core/usecases/banners/banner-edition/editBanner'
+import { getBanner } from '@core/usecases/banners/banner-get/getBanner'
+import { useBannerGateway } from '../../../../../../../gateways/bannerGateway'
 
 definePageMeta({ layout: 'main' })
 

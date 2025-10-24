@@ -8,10 +8,10 @@
 </template>
 
 <script lang="ts" setup>
-import { getPromotionCode } from '@core/usecases/promotion-codes/get-promotion-code/getPromotionCode'
-import { usePromotionCodeGateway } from '../../../../../../../gateways/promotionCodeGateway'
 import { promotionCodeFormEditVM } from '@adapters/primary/view-models/promotion-codes/promotion-code-form/promotionCodeFormEditVM'
+import { getPromotionCode } from '@core/usecases/promotion-codes/get-promotion-code/getPromotionCode'
 import { editPromotionCode } from '@core/usecases/promotion-codes/promotion-code-edition/editPromotionCode'
+import { usePromotionCodeGateway } from '../../../../../../../gateways/promotionCodeGateway'
 
 definePageMeta({ layout: 'main' })
 

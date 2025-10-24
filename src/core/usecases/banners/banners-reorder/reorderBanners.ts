@@ -1,6 +1,6 @@
 import { BannerGateway } from '@core/gateways/bannerGateway'
-import { useBannerStore } from '@store/bannerStore'
 import { UUID } from '@core/types/types'
+import { useBannerStore } from '@store/bannerStore'
 
 export const reorderBanners = async (
   banners: Array<UUID>,

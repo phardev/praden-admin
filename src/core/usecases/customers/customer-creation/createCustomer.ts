@@ -1,6 +1,6 @@
+import { Customer } from '@core/entities/customer'
 import { CustomerGateway } from '@core/gateways/customerGateway'
 import { useCustomerStore } from '@store/customerStore'
-import { Customer } from '@core/entities/customer'
 
 export type CreateCustomerDTO = Omit<Customer, 'uuid'>
 

@@ -1,10 +1,12 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useInvoiceStore } from '@store/invoiceStore'
 import {
   GetInvoiceVM,
   getInvoiceVM
 } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { Invoice } from '@core/entities/invoice'
+import { PromotionCode } from '@core/entities/order'
+import { useInvoiceStore } from '@store/invoiceStore'
+import { orderWithPromotionCodeInvoice } from '@utils/testData/invoices'
 import {
   orderCanceled,
   orderDelivered1,
@@ -12,10 +14,8 @@ import {
   orderPartiallyShipped1,
   orderPrepared1
 } from '@utils/testData/orders'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { anaca3Minceur, dolodent } from '@utils/testData/products'
-import { orderWithPromotionCodeInvoice } from '@utils/testData/invoices'
-import { PromotionCode } from '@core/entities/order'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get invoice VM', () => {
   let invoiceStore: any

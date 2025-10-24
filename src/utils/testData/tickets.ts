@@ -1,28 +1,28 @@
 import {
   Ticket,
-  TicketStatus,
+  TicketMessageType,
   TicketPriority,
-  TicketMessageType
+  TicketStatus
 } from '@core/entities/ticket'
-import {
-  newTicketMessage1,
-  privateNoteMessage1,
-  replyMessage1,
-  customerReplyMessage1
-} from './ticket-messages'
-import {
-  orderToPrepare1,
-  orderToPrepare2,
-  orderToPrepare3,
-  orderDelivered1
-} from './orders'
 import {
   elodieDurand,
   lucasLefevre,
-  sophieMartinez,
+  marcLeblanc,
   pierreBernard,
-  marcLeblanc
+  sophieMartinez
 } from './customers'
+import {
+  orderDelivered1,
+  orderToPrepare1,
+  orderToPrepare2,
+  orderToPrepare3
+} from './orders'
+import {
+  customerReplyMessage1,
+  newTicketMessage1,
+  privateNoteMessage1,
+  replyMessage1
+} from './ticket-messages'
 
 export const newTicket: Ticket = {
   uuid: 'ticket-new-1',

@@ -1,8 +1,8 @@
 import { CategoryGateway } from '@core/gateways/categoryGateway'
+import { ProductGateway } from '@core/gateways/productGateway'
 import { UUID } from '@core/types/types'
 import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
 import { useCategoryStore } from '@store/categoryStore'
-import { ProductGateway } from '@core/gateways/productGateway'
 import { useProductStore } from '@store/productStore'
 
 export type EditCategoryDTO = Omit<CreateCategoryDTO, 'image' | 'miniature'> & {

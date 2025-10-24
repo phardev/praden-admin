@@ -70,11 +70,11 @@ div.flex.items-center.justify-stretch.space-x-4.space-y-2
 </template>
 
 <script lang="ts" setup>
-import { useBannerGateway } from '../../../../../../gateways/bannerGateway'
-import { editBanner } from '@core/usecases/banners/banner-edition/editBanner'
 import { deleteBanner } from '@core/usecases/banners/banner-deletion/deleteBanner'
+import { editBanner } from '@core/usecases/banners/banner-edition/editBanner'
 import { format, parse } from 'date-fns'
 import { fr } from 'date-fns/locale'
+import { useBannerGateway } from '../../../../../../gateways/bannerGateway'
 
 definePageMeta({ layout: 'main' })
 

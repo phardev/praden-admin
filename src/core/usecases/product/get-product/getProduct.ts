@@ -1,9 +1,9 @@
+import { isPromotionInProgress } from '@core/entities/promotion'
+import { DateProvider } from '@core/gateways/dateProvider'
 import { ProductGateway } from '@core/gateways/productGateway'
+import { PromotionGateway } from '@core/gateways/promotionGateway'
 import { UUID } from '@core/types/types'
 import { useProductStore } from '@store/productStore'
-import { PromotionGateway } from '@core/gateways/promotionGateway'
-import { DateProvider } from '@core/gateways/dateProvider'
-import { isPromotionInProgress } from '@core/entities/promotion'
 
 export const getProduct = async (
   uuid: UUID,

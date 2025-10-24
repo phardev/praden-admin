@@ -1,11 +1,11 @@
-import {
-  RoleGateway,
-  EditRoleDTO,
-  CreateRoleDTO
-} from '@core/gateways/roleGateway'
 import { Role, sortByOrder } from '@core/entities/role'
-import { UUID } from '@core/types/types'
+import {
+  CreateRoleDTO,
+  EditRoleDTO,
+  RoleGateway
+} from '@core/gateways/roleGateway'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
+import { UUID } from '@core/types/types'
 
 export class InMemoryRoleGateway implements RoleGateway {
   private roles: Array<Role> = []

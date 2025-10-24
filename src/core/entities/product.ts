@@ -1,7 +1,7 @@
-import type { HashTable, UUID } from '@core/types/types'
-import { Promotion } from './promotion'
 import { Category } from '@core/entities/category'
 import { Laboratory } from '@core/entities/laboratory'
+import type { HashTable, UUID } from '@core/types/types'
+import { Promotion } from './promotion'
 
 export type Stock = HashTable<number>
 

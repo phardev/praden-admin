@@ -8,11 +8,11 @@
 </template>
 
 <script lang="ts" setup>
+import BannersList from '@adapters/primary/nuxt/components/organisms/BannersList.vue'
 import { getBannersVM } from '@adapters/primary/view-models/banners/get-banners/getBannersVM'
 import { listBanners } from '@core/usecases/banners/list-banners/listBanners'
 import { useBannerGateway } from '../../../../../../gateways/bannerGateway'
 import { useDateProvider } from '../../../../../../gateways/dateProvider'
-import BannersList from '@adapters/primary/nuxt/components/organisms/BannersList.vue'
 
 definePageMeta({ layout: 'main' })
 

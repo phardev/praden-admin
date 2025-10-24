@@ -1,14 +1,14 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { OrderLineStatus, Order } from '@core/entities/order'
-import { orderToCancel } from '@utils/testData/orders'
-import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
-import { cancelPreparation } from '@core/usecases/order/cancel-preparation/cancelPreparation'
-import { usePreparationStore } from '@store/preparationStore'
-import { Invoice } from '@core/entities/invoice'
-import { useInvoiceStore } from '@store/invoiceStore'
 import { InMemoryInvoiceGateway } from '@adapters/secondary/invoice-gateways/InMemoryInvoiceGateway'
+import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
+import { Invoice } from '@core/entities/invoice'
+import { Order, OrderLineStatus } from '@core/entities/order'
 import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
+import { cancelPreparation } from '@core/usecases/order/cancel-preparation/cancelPreparation'
+import { useInvoiceStore } from '@store/invoiceStore'
+import { usePreparationStore } from '@store/preparationStore'
+import { orderToCancel } from '@utils/testData/orders'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Cancel preparation', () => {
   let preparationStore: any

@@ -1,8 +1,8 @@
-import { usePreparationStore } from '@store/preparationStore'
-import { OrderGateway } from '@core/gateways/orderGateway'
-import { useProductStore } from '@store/productStore'
 import { Order } from '@core/entities/order'
+import { OrderGateway } from '@core/gateways/orderGateway'
 import { ProductGateway } from '@core/gateways/productGateway'
+import { usePreparationStore } from '@store/preparationStore'
+import { useProductStore } from '@store/productStore'
 
 export const listOrdersToPrepare = async (
   orderGateway: OrderGateway,

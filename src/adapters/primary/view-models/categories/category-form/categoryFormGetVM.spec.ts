@@ -1,13 +1,15 @@
-import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { useFormStore } from '@store/formStore'
-import { useCategoryStore } from '@store/categoryStore'
-import { baby, minceur } from '@utils/testData/categories'
-import { createPinia, setActivePinia } from 'pinia'
 import {
   CategoryFormGetVM,
   categoryFormGetVM
 } from '@adapters/primary/view-models/categories/category-form/categoryFormGetVM'
+import { CategoryProductItemVM } from '@adapters/primary/view-models/categories/category-form/categoryFormVM'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { Product } from '@core/entities/product'
+import { useCategoryStore } from '@store/categoryStore'
+import { useFormStore } from '@store/formStore'
+import { useProductStore } from '@store/productStore'
+import { baby, minceur } from '@utils/testData/categories'
 import {
   anaca3Minceur,
   calmosine,
@@ -15,9 +17,7 @@ import {
   dolodent,
   productWithoutLaboratory
 } from '@utils/testData/products'
-import { Product } from '@core/entities/product'
-import { useProductStore } from '@store/productStore'
-import { CategoryProductItemVM } from '@adapters/primary/view-models/categories/category-form/categoryFormVM'
+import { createPinia, setActivePinia } from 'pinia'
 
 const anaca3VM: CategoryProductItemVM = {
   uuid: anaca3Minceur.uuid,

@@ -8,12 +8,12 @@
 </template>
 
 <script lang="ts" setup>
-import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
-import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
 import { productFormCreateVM } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
-import { useProductGateway } from '../../../../../../gateways/productGateway'
+import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { createProduct } from '@core/usecases/product/product-creation/createProduct'
+import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
 import { useLocationGateway } from '../../../../../../gateways/locationGateway'
+import { useProductGateway } from '../../../../../../gateways/productGateway'
 
 definePageMeta({ layout: 'main' })
 

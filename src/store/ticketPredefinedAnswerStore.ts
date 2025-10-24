@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
-import { UUID } from '@core/types/types'
 import { TicketPredefinedAnswer } from '@core/entities/ticketPredefinedAnswer'
+import { UUID } from '@core/types/types'
+import { defineStore } from 'pinia'
 
 export const useTicketPredefinedAnswerStore = defineStore(
   'TicketPredefinedAnswerStore',

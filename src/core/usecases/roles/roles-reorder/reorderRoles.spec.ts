@@ -1,11 +1,11 @@
-import { Role } from '@core/entities/role'
 import { InMemoryRoleGateway } from '@adapters/secondary/role-gateways/InMemoryRoleGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { createPinia, setActivePinia } from 'pinia'
-import { useRoleStore } from '@store/roleStore'
-import { adminRole, pharmacistRole, assistantRole } from '@utils/testData/roles'
-import { reorderRoles } from '@core/usecases/roles/roles-reorder/reorderRoles'
+import { Role } from '@core/entities/role'
 import { UUID } from '@core/types/types'
+import { reorderRoles } from '@core/usecases/roles/roles-reorder/reorderRoles'
+import { useRoleStore } from '@store/roleStore'
+import { adminRole, assistantRole, pharmacistRole } from '@utils/testData/roles'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Roles reorder', () => {
   let roleGateway: InMemoryRoleGateway

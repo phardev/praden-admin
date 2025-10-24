@@ -6,10 +6,10 @@
 </template>
 
 <script lang="ts" setup>
-import { getProductCount } from '@adapters/primary/view-models/products/get-product-count/getProductCount'
-import { useProductGateway } from '../../../../../../gateways/productGateway'
 import { indexProductsVM } from '@adapters/primary/view-models/index/index-products/indexProductsVM'
+import { getProductCount } from '@adapters/primary/view-models/products/get-product-count/getProductCount'
 import { indexProducts } from '@core/usecases/product/product-indexation/indexProducts'
+import { useProductGateway } from '../../../../../../gateways/productGateway'
 import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 
 definePageMeta({ layout: 'main' })

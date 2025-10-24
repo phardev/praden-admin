@@ -1,5 +1,5 @@
-import { UUID } from '@core/types/types'
 import { BannerGateway } from '@core/gateways/bannerGateway'
+import { UUID } from '@core/types/types'
 import { useBannerStore } from '@store/bannerStore'
 
 export const deleteBanner = async (

@@ -1,16 +1,16 @@
-import { CreatePromotionDTO, ReductionType } from '@core/entities/promotion'
-import { Product } from '@core/entities/product'
-import { useProductStore } from '@store/productStore'
-import { useSearchStore } from '@store/searchStore'
+import {
+  Field,
+  PromotionFormFieldsWriter
+} from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import {
   ExistingPromotionFormInitializer,
   PromotionFormFieldsReader
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
 import { PromotionFormVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormVM'
-import {
-  Field,
-  PromotionFormFieldsWriter
-} from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { Product } from '@core/entities/product'
+import { CreatePromotionDTO, ReductionType } from '@core/entities/promotion'
+import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
 
 export class PromotionFormEditVM extends PromotionFormVM {
   protected readonly key: string
