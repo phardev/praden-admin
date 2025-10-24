@@ -6,12 +6,12 @@
       variant="ghost"
       icon="i-heroicons-arrow-left"
       :label="$t('common.back')"
-      @click="navigateTo('/shop-settings/emergency-pharmacies')"
+      @click="navigateTo('/shop-management/emergency-pharmacies')"
     )
 
   UCard
     template(#header)
-      h1.text-2xl.font-bold {{ $t('shopSettings.emergencyPharmacies.edit') }}
+      h1.text-2xl.font-bold {{ $t('shopManagement.emergencyPharmacies.edit') }}
 
     template(#default)
       div(v-if="isLoading")
@@ -29,7 +29,7 @@
         :is-active="formData.isActive"
         :is-saving="isSaving"
         @submit="onSubmit"
-        @cancel="navigateTo('/shop-settings/emergency-pharmacies')"
+        @cancel="navigateTo('/shop-management/emergency-pharmacies')"
       )
 </template>
 
@@ -88,11 +88,11 @@ const onSubmit = async (data: {
 
     const toast = useToast()
     toast.add({
-      title: t('shopSettings.emergencyPharmacies.updateSuccess'),
+      title: t('shopManagement.emergencyPharmacies.updateSuccess'),
       color: 'green'
     })
 
-    navigateTo('/shop-settings/emergency-pharmacies')
+    navigateTo('/shop-management/emergency-pharmacies')
   } catch {
     const toast = useToast()
     toast.add({

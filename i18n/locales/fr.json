@@ -343,7 +343,7 @@
   "systemResources": {
     "noResources": "Aucune ressource système disponible"
   },
-  "shopSettings": {
+  "shopManagement": {
     "title": "Gestion de la boutique",
     "overview": {
       "title": "Vue d'ensemble",

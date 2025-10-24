@@ -6,13 +6,13 @@
       variant="ghost"
       icon="i-heroicons-arrow-left"
       :label="$t('common.back')"
-      @click="navigateTo('/shop-settings')"
+      @click="navigateTo('/shop-management')"
     )
 
   UCard
     template(#header)
       .flex.items-center.justify-between
-        h1.text-2xl.font-bold {{ $t('shopSettings.categoryOrder.title') }}
+        h1.text-2xl.font-bold {{ $t('shopManagement.categoryOrder.title') }}
 
     template(#default)
       div(v-if="categoryStore.isLoading")
@@ -21,7 +21,7 @@
           span.ml-2 {{ $t('common.loading') }}
 
       div(v-else)
-        p.text-gray-600.mb-6 {{ $t('shopSettings.categoryOrder.description') }}
+        p.text-gray-600.mb-6 {{ $t('shopManagement.categoryOrder.description') }}
 
         CategoryOrderList(v-model="categories")
 </template>
@@ -67,13 +67,13 @@ const categories = computed({
 
       const toast = useToast()
       toast.add({
-        title: t('shopSettings.categoryOrder.reorderSuccess'),
+        title: t('shopManagement.categoryOrder.reorderSuccess'),
         color: 'green'
       })
     } catch {
       const toast = useToast()
       toast.add({
-        title: t('shopSettings.categoryOrder.reorderError'),
+        title: t('shopManagement.categoryOrder.reorderError'),
         color: 'red'
       })
     }

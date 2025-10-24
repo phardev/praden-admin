@@ -1,31 +1,31 @@
 <template lang="pug">
 UForm(:state="formState" @submit="onSubmit")
   .space-y-6
-    UFormGroup(:label="$t('shopSettings.emergencyPharmacies.name')" name="name" required)
+    UFormGroup(:label="$t('shopManagement.emergencyPharmacies.name')" name="name" required)
       ft-text-field(
         v-model="formState.name"
         :disabled="isLoading"
       )
 
-    UFormGroup(:label="$t('shopSettings.emergencyPharmacies.address')" name="address" required)
+    UFormGroup(:label="$t('shopManagement.emergencyPharmacies.address')" name="address" required)
       ft-text-field(
         v-model="formState.address"
         :disabled="isLoading"
       )
 
-    UFormGroup(:label="$t('shopSettings.emergencyPharmacies.phone')" name="phone" required)
+    UFormGroup(:label="$t('shopManagement.emergencyPharmacies.phone')" name="phone" required)
       ft-text-field(
         v-model="formState.phone"
         type="tel"
         :disabled="isLoading"
       )
 
-    UFormGroup(:label="$t('shopSettings.emergencyPharmacies.date')" name="date" required)
+    UFormGroup(:label="$t('shopManagement.emergencyPharmacies.date')" name="date" required)
       UPopover(:popper="{ placement: 'bottom-start' }")
         UButton.w-full(
           icon="i-heroicons-calendar-days-20-solid"
           :disabled="isLoading"
-          :label="formState.date ? formatDisplayDate(formState.date) : $t('shopSettings.emergencyPharmacies.selectDate')"
+          :label="formState.date ? formatDisplayDate(formState.date) : $t('shopManagement.emergencyPharmacies.selectDate')"
         )
           template(#trailing)
             UButton(
@@ -43,7 +43,7 @@ UForm(:state="formState" @submit="onSubmit")
             @close="close"
           )
 
-    UFormGroup(:label="$t('shopSettings.emergencyPharmacies.isActive')" name="isActive")
+    UFormGroup(:label="$t('shopManagement.emergencyPharmacies.isActive')" name="isActive")
       UToggle(v-model="formState.isActive" size="xl" :disabled="isLoading")
 
     .flex.justify-end.space-x-4

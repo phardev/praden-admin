@@ -6,13 +6,13 @@
       variant="ghost"
       icon="i-heroicons-arrow-left"
       :label="$t('common.back')"
-      @click="navigateTo('/shop-settings')"
+      @click="navigateTo('/shop-management')"
     )
 
   div.flex.items-center.align-center
-    h1.text-page-title.flex-grow {{ $t('shopSettings.announcementBar.title') }}
+    h1.text-page-title.flex-grow {{ $t('shopManagement.announcementBar.title') }}
     ft-button.button-solid.text-xl.px-6(@click="openCreateModal")
-      | {{ $t('shopSettings.announcementBar.create') }}
+      | {{ $t('shopManagement.announcementBar.create') }}
 
   AnnouncementBarsList(
     :announcement-bars-vm="announcementBarsVM"
@@ -73,12 +73,12 @@ const handleDelete = async (uuid: string) => {
   try {
     await deleteAnnouncementBar(uuid, announcementBarGateway)
     toast.add({
-      title: t('shopSettings.announcementBar.deleteSuccess'),
+      title: t('shopManagement.announcementBar.deleteSuccess'),
       color: 'green'
     })
   } catch {
     toast.add({
-      title: t('shopSettings.announcementBar.deleteError'),
+      title: t('shopManagement.announcementBar.deleteError'),
       color: 'red'
     })
   }
@@ -88,8 +88,8 @@ const handleSuccess = () => {
   toast.add({
     title:
       modalState.mode === 'create'
-        ? t('shopSettings.announcementBar.createSuccess')
-        : t('shopSettings.announcementBar.updateSuccess'),
+        ? t('shopManagement.announcementBar.createSuccess')
+        : t('shopManagement.announcementBar.updateSuccess'),
     color: 'green'
   })
 }

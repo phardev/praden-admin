@@ -17,7 +17,7 @@ tab-group.border-b.border-gray-200(as="div")
       :key="index"
     )
       div(v-if="group.items.length === 0")
-        p.text-center.text-gray-500.py-8 {{ $t('shopSettings.announcementBar.noItems') }}
+        p.text-center.text-gray-500.py-8 {{ $t('shopManagement.announcementBar.noItems') }}
       div(v-else)
         AnnouncementBarListItem(
           v-for="item in group.items"

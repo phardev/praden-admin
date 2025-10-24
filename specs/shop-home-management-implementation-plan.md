@@ -106,7 +106,7 @@ src/
 │       │       └── emergencyPharmacyFormGetVM.spec.ts
 │       └── nuxt/
 │           ├── pages/
-│           │   └── shop-settings/
+│           │   └── shop-management/
 │           │       ├── index.vue
 │           │       ├── announcement-bar.vue
 │           │       ├── category-order.vue
@@ -470,8 +470,8 @@ export const createEmergencyPharmacyForTest = (overrides?: Partial<EmergencyPhar
 **AnnouncementBar**:
 - File: `src/adapters/secondary/gateways/real/realAnnouncementBarGateway.ts`
 - Endpoints:
-  - GET `/shop-settings/announcement-bar`
-  - PUT `/shop-settings/announcement-bar`
+  - GET `/shop-management/announcement-bar`
+  - PUT `/shop-management/announcement-bar`
 
 **PharmacistSelection**:
 - File: `src/adapters/secondary/gateways/real/realPharmacistSelectionGateway.ts`
@@ -690,35 +690,35 @@ All tests should be GREEN.
 
 **Pages to Create**:
 
-1. **Overview Page**: `src/adapters/primary/nuxt/pages/shop-settings/index.vue`
+1. **Overview Page**: `src/adapters/primary/nuxt/pages/shop-management/index.vue`
    - Display 4 cards linking to each feature
    - No form logic, just navigation
 
-2. **Announcement Bar Page**: `src/adapters/primary/nuxt/pages/shop-settings/announcement-bar.vue`
+2. **Announcement Bar Page**: `src/adapters/primary/nuxt/pages/shop-management/announcement-bar.vue`
    - Import `AnnouncementBarForm` organism
    - Use `announcementBarFormVM`
    - Handle loading/error states
 
-3. **Category Order Page**: `src/adapters/primary/nuxt/pages/shop-settings/category-order.vue`
+3. **Category Order Page**: `src/adapters/primary/nuxt/pages/shop-management/category-order.vue`
    - Import `CategoryOrderList` organism
    - Use `reorderCategoriesVM`
    - Implement drag-drop with `vuedraggable`
 
-4. **Pharmacist Selection Page**: `src/adapters/primary/nuxt/pages/shop-settings/pharmacist-selection.vue`
+4. **Pharmacist Selection Page**: `src/adapters/primary/nuxt/pages/shop-management/pharmacist-selection.vue`
    - Import `PharmacistSelectionManager` organism
    - Use `pharmacistSelectionVM`
    - Product search + drag-drop ordering
 
-5. **Emergency Pharmacies List Page**: `src/adapters/primary/nuxt/pages/shop-settings/emergency-pharmacies/index.vue`
+5. **Emergency Pharmacies List Page**: `src/adapters/primary/nuxt/pages/shop-management/emergency-pharmacies/index.vue`
    - Import `EmergencyPharmaciesList` organism
    - Use `getEmergencyPharmaciesVM`
    - Display grouped by date
 
-6. **Emergency Pharmacy Create Page**: `src/adapters/primary/nuxt/pages/shop-settings/emergency-pharmacies/new.vue`
+6. **Emergency Pharmacy Create Page**: `src/adapters/primary/nuxt/pages/shop-management/emergency-pharmacies/new.vue`
    - Import `EmergencyPharmacyForm` organism
    - Use `emergencyPharmacyFormCreateVM`
 
-7. **Emergency Pharmacy Edit Page**: `src/adapters/primary/nuxt/pages/shop-settings/emergency-pharmacies/edit/[uuid].vue`
+7. **Emergency Pharmacy Edit Page**: `src/adapters/primary/nuxt/pages/shop-management/emergency-pharmacies/edit/[uuid].vue`
    - Import `EmergencyPharmacyForm` organism
    - Use `emergencyPharmacyFormEditVM` and `emergencyPharmacyFormGetVM`
 
@@ -797,7 +797,7 @@ All tests should be GREEN.
 Add complete French translations as specified in the specification document under "I18n Translations" section.
 
 **Verification**:
-1. Search all new Vue files for hardcoded strings: `grep -r "\".*\"" src/adapters/primary/nuxt/pages/shop-settings/`
+1. Search all new Vue files for hardcoded strings: `grep -r "\".*\"" src/adapters/primary/nuxt/pages/shop-management/`
 2. Ensure all user-facing text uses `$t('...')` or equivalent i18n syntax
 
 ### Phase 7: Navigation Integration
@@ -805,11 +805,11 @@ Add complete French translations as specified in the specification document unde
 **File**: Update navigation configuration (check existing navigation structure first)
 
 Add "Gestion boutique" section with children as specified:
-- Vue d'ensemble → `/shop-settings`
-- Barre d'annonce → `/shop-settings/announcement-bar`
-- Ordre des catégories → `/shop-settings/category-order`
-- Sélection du pharmacien → `/shop-settings/pharmacist-selection`
-- Pharmacies de garde → `/shop-settings/emergency-pharmacies`
+- Vue d'ensemble → `/shop-management`
+- Barre d'annonce → `/shop-management/announcement-bar`
+- Ordre des catégories → `/shop-management/category-order`
+- Sélection du pharmacien → `/shop-management/pharmacist-selection`
+- Pharmacies de garde → `/shop-management/emergency-pharmacies`
 
 **Research**: Find navigation configuration file (likely in `src/adapters/primary/nuxt/` or similar).
 

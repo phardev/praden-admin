@@ -6,18 +6,18 @@
       variant="ghost"
       icon="i-heroicons-arrow-left"
       :label="$t('common.back')"
-      @click="navigateTo('/shop-settings')"
+      @click="navigateTo('/shop-management')"
     )
     UButton(
       color="primary"
       icon="i-heroicons-plus"
-      :label="$t('shopSettings.emergencyPharmacies.create')"
-      @click="navigateTo('/shop-settings/emergency-pharmacies/new')"
+      :label="$t('shopManagement.emergencyPharmacies.create')"
+      @click="navigateTo('/shop-management/emergency-pharmacies/new')"
     )
 
   UCard
     template(#header)
-      h1.text-2xl.font-bold {{ $t('shopSettings.emergencyPharmacies.title') }}
+      h1.text-2xl.font-bold {{ $t('shopManagement.emergencyPharmacies.title') }}
 
     template(#default)
       div(v-if="listVM.isLoading")
@@ -28,22 +28,22 @@
       div(v-else-if="listVM.pharmaciesGroupedByDate.length === 0")
         .text-center.py-12.text-gray-500
           icon.mb-4(name="i-heroicons-map-pin" class="text-6xl")
-          p {{ $t('shopSettings.emergencyPharmacies.noPharmacies') }}
+          p {{ $t('shopManagement.emergencyPharmacies.noPharmacies') }}
 
       EmergencyPharmaciesList(
         v-else
         :pharmacies-grouped-by-date="listVM.pharmaciesGroupedByDate"
         :format-date="listVM.formatDate"
-        @edit="(uuid) => navigateTo(`/shop-settings/emergency-pharmacies/edit/${uuid}`)"
+        @edit="(uuid) => navigateTo(`/shop-management/emergency-pharmacies/edit/${uuid}`)"
         @delete="openDeleteModal"
       )
 
   UModal(v-model="isDeleteModalOpen")
     UCard
       template(#header)
-        h3.text-lg.font-semibold {{ $t('shopSettings.emergencyPharmacies.delete') }}
+        h3.text-lg.font-semibold {{ $t('shopManagement.emergencyPharmacies.delete') }}
       template(#default)
-        p {{ $t('shopSettings.emergencyPharmacies.deleteConfirm') }}
+        p {{ $t('shopManagement.emergencyPharmacies.deleteConfirm') }}
         p.mt-2.font-semibold(v-if="pharmacyToDelete") {{ pharmacyToDelete.name }}
       template(#footer)
         .flex.justify-end.space-x-2
@@ -101,7 +101,7 @@ const deletePharmacy = async () => {
 
     const toast = useToast()
     toast.add({
-      title: t('shopSettings.emergencyPharmacies.deleteSuccess'),
+      title: t('shopManagement.emergencyPharmacies.deleteSuccess'),
       color: 'green'
     })
 

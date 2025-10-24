@@ -14,14 +14,14 @@
     color="amber"
     variant="subtle"
     icon="i-heroicons-exclamation-triangle"
-    :title="$t('shopSettings.pharmacistSelection.unsavedChanges')"
-    :description="$t('shopSettings.pharmacistSelection.unsavedChangesDescription')"
+    :title="$t('shopManagement.pharmacistSelection.unsavedChanges')"
+    :description="$t('shopManagement.pharmacistSelection.unsavedChangesDescription')"
   )
 
   UCard
     template(#header)
       .flex.items-center.justify-between
-        h1.text-2xl.font-bold {{ $t('shopSettings.pharmacistSelection.title') }}
+        h1.text-2xl.font-bold {{ $t('shopManagement.pharmacistSelection.title') }}
         .flex.items-center.gap-3
           UButton(
             v-if="selectionVM.hasChanges"
@@ -33,7 +33,7 @@
           UButton(
             v-if="selectionVM.hasChanges"
             color="primary"
-            :label="$t('shopSettings.pharmacistSelection.save')"
+            :label="$t('shopManagement.pharmacistSelection.save')"
             :loading="selectionVM.isSaving"
             @click="saveSelection"
           )
@@ -41,7 +41,7 @@
             v-else
             color="primary"
             icon="i-heroicons-plus"
-            :label="$t('shopSettings.pharmacistSelection.addProduct')"
+            :label="$t('shopManagement.pharmacistSelection.addProduct')"
             @click="openProductModal"
           )
 
@@ -53,18 +53,18 @@
 
       div(v-else)
         .mb-6
-          p.text-gray-600 {{ $t('shopSettings.pharmacistSelection.description') }}
+          p.text-gray-600 {{ $t('shopManagement.pharmacistSelection.description') }}
           .flex.items-center.gap-2.mt-2.text-sm
-            span.font-medium.text-gray-900 {{ selectionVM.selectedProducts.length }} {{ $t('shopSettings.pharmacistSelection.productsSelected') }}
+            span.font-medium.text-gray-900 {{ selectionVM.selectedProducts.length }} {{ $t('shopManagement.pharmacistSelection.productsSelected') }}
 
         PharmacistSelectionManager(ref="managerRef" :selection-v-m="selectionVM")
 
   UModal(v-model="showCancelModal")
     UCard
       template(#header)
-        h3.text-lg.font-semibold {{ $t('shopSettings.pharmacistSelection.cancelChanges') }}
+        h3.text-lg.font-semibold {{ $t('shopManagement.pharmacistSelection.cancelChanges') }}
       template(#default)
-        p.text-gray-600 {{ $t('shopSettings.pharmacistSelection.cancelChangesConfirm') }}
+        p.text-gray-600 {{ $t('shopManagement.pharmacistSelection.cancelChangesConfirm') }}
       template(#footer)
         .flex.justify-end.gap-3
           UButton(
@@ -119,15 +119,15 @@ const saveSelection = async () => {
 
     const toast = useToast()
     toast.add({
-      title: t('shopSettings.pharmacistSelection.updateSuccess'),
+      title: t('shopManagement.pharmacistSelection.updateSuccess'),
       color: 'green'
     })
 
-    navigateTo('/shop-settings')
+    navigateTo('/shop-management')
   } catch {
     const toast = useToast()
     toast.add({
-      title: t('shopSettings.pharmacistSelection.updateError'),
+      title: t('shopManagement.pharmacistSelection.updateError'),
       color: 'red'
     })
   }
@@ -135,11 +135,11 @@ const saveSelection = async () => {
 
 const handleBackClick = () => {
   if (selectionVM.value.hasChanges) {
-    if (confirm(t('shopSettings.pharmacistSelection.leavePageConfirm'))) {
-      navigateTo('/shop-settings')
+    if (confirm(t('shopManagement.pharmacistSelection.leavePageConfirm'))) {
+      navigateTo('/shop-management')
     }
   } else {
-    navigateTo('/shop-settings')
+    navigateTo('/shop-management')
   }
 }
 
@@ -154,7 +154,7 @@ const confirmCancel = () => {
 
 onBeforeRouteLeave((to, from, next) => {
   if (selectionVM.value.hasChanges) {
-    if (confirm(t('shopSettings.pharmacistSelection.leavePageConfirm'))) {
+    if (confirm(t('shopManagement.pharmacistSelection.leavePageConfirm'))) {
       next()
     } else {
       next(false)

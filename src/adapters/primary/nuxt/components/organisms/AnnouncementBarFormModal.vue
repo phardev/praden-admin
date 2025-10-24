@@ -3,10 +3,10 @@ FtModal(v-model="isOpen" @close="handleClose")
   div(class="max-w-2xl mx-auto")
     .flex.items-center.justify-between.mb-6
       h2.text-xl.font-semibold.text-gray-900
-        | {{ mode === 'create' ? $t('shopSettings.announcementBar.createTitle') : $t('shopSettings.announcementBar.editTitle') }}
+        | {{ mode === 'create' ? $t('shopManagement.announcementBar.createTitle') : $t('shopManagement.announcementBar.editTitle') }}
 
     p.text-gray-600.mb-6
-      | {{ mode === 'create' ? $t('shopSettings.announcementBar.createDescription') : $t('shopSettings.announcementBar.editDescription') }}
+      | {{ mode === 'create' ? $t('shopManagement.announcementBar.createDescription') : $t('shopManagement.announcementBar.editDescription') }}
 
     div(v-if="modalState.error" class="mb-4 p-4 bg-red-50 border border-red-200 rounded-md")
       p(class="text-red-600") {{ modalState.error }}
@@ -29,7 +29,7 @@ FtModal(v-model="isOpen" @close="handleClose")
 
     form(v-else @submit.prevent="handleSubmit")
       UFormGroup(
-        :label="$t('shopSettings.announcementBar.text')"
+        :label="$t('shopManagement.announcementBar.text')"
         name="text"
         required
         class="pb-4"
@@ -42,7 +42,7 @@ FtModal(v-model="isOpen" @close="handleClose")
         )
 
       UFormGroup(
-        :label="$t('shopSettings.announcementBar.isActive')"
+        :label="$t('shopManagement.announcementBar.isActive')"
         name="isActive"
         class="pb-4"
       )
@@ -54,13 +54,13 @@ FtModal(v-model="isOpen" @close="handleClose")
 
       .grid.grid-cols-1.gap-4(class="md:grid-cols-2 pb-6")
         UFormGroup(
-          :label="$t('shopSettings.announcementBar.startDate')"
+          :label="$t('shopManagement.announcementBar.startDate')"
           name="startDate"
         )
           UPopover(:popper="{ placement: 'bottom-start' }")
             UButton.w-full(
               icon="i-heroicons-calendar-days-20-solid"
-              :label="currentFormVM.get('startDate').value ? formatDisplayDate(currentFormVM.get('startDate').value) : $t('shopSettings.announcementBar.selectDate')"
+              :label="currentFormVM.get('startDate').value ? formatDisplayDate(currentFormVM.get('startDate').value) : $t('shopManagement.announcementBar.selectDate')"
             )
               template(#trailing)
                 UButton(
@@ -79,13 +79,13 @@ FtModal(v-model="isOpen" @close="handleClose")
               )
 
         UFormGroup(
-          :label="$t('shopSettings.announcementBar.endDate')"
+          :label="$t('shopManagement.announcementBar.endDate')"
           name="endDate"
         )
           UPopover(:popper="{ placement: 'bottom-start' }")
             UButton.w-full(
               icon="i-heroicons-calendar-days-20-solid"
-              :label="currentFormVM.get('endDate').value ? formatDisplayDate(currentFormVM.get('endDate').value) : $t('shopSettings.announcementBar.selectDate')"
+              :label="currentFormVM.get('endDate').value ? formatDisplayDate(currentFormVM.get('endDate').value) : $t('shopManagement.announcementBar.selectDate')"
             )
               template(#trailing)
                 UButton(
@@ -115,7 +115,7 @@ FtModal(v-model="isOpen" @close="handleClose")
           type="submit"
           :disabled="!canValidate"
           :loading="modalState.isSubmitting"
-        ) {{ mode === 'create' ? $t('shopSettings.announcementBar.createSubmit') : $t('shopSettings.announcementBar.editSubmit') }}
+        ) {{ mode === 'create' ? $t('shopManagement.announcementBar.createSubmit') : $t('shopManagement.announcementBar.editSubmit') }}
 </template>
 
 <script setup lang="ts">

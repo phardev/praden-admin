@@ -18,12 +18,12 @@
 
   .text-center.py-16.bg-gray-50.rounded-lg.border-2.border-dashed.border-gray-200(v-else)
     icon.mx-auto.mb-4.text-gray-400(name="i-heroicons-shopping-bag" class="w-16 h-16")
-    h3.text-lg.font-semibold.text-gray-900.mb-2 {{ $t('shopSettings.pharmacistSelection.emptyTitle') }}
-    p.text-gray-600.mb-6.max-w-md.mx-auto {{ $t('shopSettings.pharmacistSelection.emptyDescription') }}
+    h3.text-lg.font-semibold.text-gray-900.mb-2 {{ $t('shopManagement.pharmacistSelection.emptyTitle') }}
+    p.text-gray-600.mb-6.max-w-md.mx-auto {{ $t('shopManagement.pharmacistSelection.emptyDescription') }}
     UButton(
       color="primary"
       icon="i-heroicons-plus"
-      :label="$t('shopSettings.pharmacistSelection.addFirstProduct')"
+      :label="$t('shopManagement.pharmacistSelection.addFirstProduct')"
       @click="isModalOpen = true"
     )
 

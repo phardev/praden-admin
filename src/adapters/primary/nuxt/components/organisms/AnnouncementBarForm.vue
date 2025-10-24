@@ -1,7 +1,7 @@
 <template lang="pug">
 form(@submit.prevent="onSubmit")
   .space-y-6
-    UFormGroup(:label="$t('shopSettings.announcementBar.text')" name="text" required)
+    UFormGroup(:label="$t('shopManagement.announcementBar.text')" name="text" required)
       UTextarea(
         :model-value="formVM.get('text').value"
         :rows="3"
@@ -9,7 +9,7 @@ form(@submit.prevent="onSubmit")
         @update:model-value="formVM.set('text', $event)"
       )
 
-    UFormGroup(:label="$t('shopSettings.announcementBar.isActive')" name="isActive")
+    UFormGroup(:label="$t('shopManagement.announcementBar.isActive')" name="isActive")
       UToggle(
         :model-value="formVM.get('isActive').value"
         size="xl"
@@ -18,12 +18,12 @@ form(@submit.prevent="onSubmit")
       )
 
     .grid.grid-cols-1.gap-4(class="md:grid-cols-2")
-      UFormGroup(:label="$t('shopSettings.announcementBar.startDate')" name="startDate")
+      UFormGroup(:label="$t('shopManagement.announcementBar.startDate')" name="startDate")
         UPopover(:popper="{ placement: 'bottom-start' }")
           UButton.w-full(
             icon="i-heroicons-calendar-days-20-solid"
             :disabled="formVM.isLoading"
-            :label="formVM.get('startDate').value ? formVM.formatDisplayDate(formVM.get('startDate').value) : $t('shopSettings.announcementBar.selectDate')"
+            :label="formVM.get('startDate').value ? formVM.formatDisplayDate(formVM.get('startDate').value) : $t('shopManagement.announcementBar.selectDate')"
           )
             template(#trailing)
               UButton(
@@ -41,12 +41,12 @@ form(@submit.prevent="onSubmit")
               @close="close"
             )
 
-      UFormGroup(:label="$t('shopSettings.announcementBar.endDate')" name="endDate")
+      UFormGroup(:label="$t('shopManagement.announcementBar.endDate')" name="endDate")
         UPopover(:popper="{ placement: 'bottom-start' }")
           UButton.w-full(
             icon="i-heroicons-calendar-days-20-solid"
             :disabled="formVM.isLoading"
-            :label="formVM.get('endDate').value ? formVM.formatDisplayDate(formVM.get('endDate').value) : $t('shopSettings.announcementBar.selectDate')"
+            :label="formVM.get('endDate').value ? formVM.formatDisplayDate(formVM.get('endDate').value) : $t('shopManagement.announcementBar.selectDate')"
           )
             template(#trailing)
               UButton(

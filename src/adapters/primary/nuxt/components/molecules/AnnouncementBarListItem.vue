@@ -8,16 +8,16 @@
         color="green"
         variant="subtle"
         size="xs"
-      ) {{ $t('shopSettings.announcementBar.active') }}
+      ) {{ $t('shopManagement.announcementBar.active') }}
       UBadge(
         v-else
         color="gray"
         variant="subtle"
         size="xs"
-      ) {{ $t('shopSettings.announcementBar.inactive') }}
+      ) {{ $t('shopManagement.announcementBar.inactive') }}
     .mt-1.flex.items-center.space-x-2.text-xs.text-gray-500
-      span(v-if="announcementBar.startDate") {{ $t('shopSettings.announcementBar.from') }} {{ announcementBar.startDate }}
-      span(v-if="announcementBar.endDate") {{ $t('shopSettings.announcementBar.to') }} {{ announcementBar.endDate }}
+      span(v-if="announcementBar.startDate") {{ $t('shopManagement.announcementBar.from') }} {{ announcementBar.startDate }}
+      span(v-if="announcementBar.endDate") {{ $t('shopManagement.announcementBar.to') }} {{ announcementBar.endDate }}
   .flex.items-center.space-x-2
     ft-button(
       size="sm"

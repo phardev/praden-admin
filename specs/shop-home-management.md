@@ -190,7 +190,7 @@ Add method: `reorder(categoryUuids: Array<UUID>): Promise<Array<Category>>`
 
 #### Page Structure
 ```
-/shop-settings/
+/shop-management/
   ├── index.vue                           # Overview/dashboard page
   ├── announcement-bar.vue                # Single announcement editor
   ├── category-order.vue                  # Drag-drop category list
@@ -229,7 +229,7 @@ Add method: `reorder(categoryUuids: Array<UUID>): Promise<Array<Category>>`
 Add to `i18n/locales/fr.json`:
 
 ```json
-"shopSettings": {
+"shopManagement": {
   "title": "Gestion de la boutique",
   "overview": {
     "title": "Vue d'ensemble",
@@ -292,11 +292,11 @@ Update navigation menu to add "Gestion boutique" section:
   name: 'Gestion boutique',
   icon: 'i-heroicons-home',
   children: [
-    { name: 'Vue d\'ensemble', path: '/shop-settings' },
-    { name: 'Barre d\'annonce', path: '/shop-settings/announcement-bar' },
-    { name: 'Ordre des catégories', path: '/shop-settings/category-order' },
-    { name: 'Sélection du pharmacien', path: '/shop-settings/pharmacist-selection' },
-    { name: 'Pharmacies de garde', path: '/shop-settings/emergency-pharmacies' }
+    { name: 'Vue d\'ensemble', path: '/shop-management' },
+    { name: 'Barre d\'annonce', path: '/shop-management/announcement-bar' },
+    { name: 'Ordre des catégories', path: '/shop-management/category-order' },
+    { name: 'Sélection du pharmacien', path: '/shop-management/pharmacist-selection' },
+    { name: 'Pharmacies de garde', path: '/shop-management/emergency-pharmacies' }
   ]
 }
 ```
