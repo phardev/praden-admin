@@ -40,7 +40,7 @@ export class RealAnnouncementBarGateway
         content: dto.text
       }
     )
-    return this.convertToAnnouncementBar(res.data)
+    return this.convertToAnnouncementBar(res.data.item)
   }
 
   async delete(uuid: UUID): Promise<void> {
@@ -51,7 +51,7 @@ export class RealAnnouncementBarGateway
     const res = await axiosWithBearer.get(
       `${this.baseUrl}/announcements/${uuid}`
     )
-    return this.convertToAnnouncementBar(res.data)
+    return this.convertToAnnouncementBar(res.data.item)
   }
 
   private convertToAnnouncementBar(data: any): AnnouncementBar {
