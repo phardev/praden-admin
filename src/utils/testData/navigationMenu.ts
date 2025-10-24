@@ -105,7 +105,7 @@ export const fullMenu: NavigationMenu = {
         {
           name: 'Gestion boutique',
           icon: 'heroicons:cog-6-tooth',
-          href: '/shop-settings'
+          href: '/shop-management'
         },
         {
           name: 'Bannières',

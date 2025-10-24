@@ -21,6 +21,7 @@ export const adminRole: Role = {
     { resource: PermissionResource.ORDERS },
     { resource: PermissionResource.BANNERS },
     { resource: PermissionResource.STAFF },
+    { resource: PermissionResource.SHOP_MANAGEMENT },
     { resource: PermissionResource.RESEARCH }
   ]
 }
@@ -43,7 +44,8 @@ export const pharmacistRole: Role = {
     { resource: PermissionResource.DELIVERIES },
     { resource: PermissionResource.PREPARATIONS },
     { resource: PermissionResource.ORDERS },
-    { resource: PermissionResource.BANNERS }
+    { resource: PermissionResource.BANNERS },
+    { resource: PermissionResource.SHOP_MANAGEMENT }
   ]
 }
 

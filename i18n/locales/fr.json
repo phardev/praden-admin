@@ -336,7 +336,8 @@
       "locations": "Emplacements",
       "delivery-methods": "Modes de livraison",
       "carriers": "Transporteurs",
-      "roles": "Rôles et permissions"
+      "roles": "Rôles et permissions",
+      "shop-management": "Gestion boutique"
     }
   },
   "systemResources": {
