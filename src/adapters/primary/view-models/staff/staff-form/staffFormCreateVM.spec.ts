@@ -1,9 +1,9 @@
-import { createPinia, setActivePinia } from 'pinia'
 import {
-  staffFormCreateVM,
-  StaffFormCreateVM
+  StaffFormCreateVM,
+  staffFormCreateVM
 } from '@adapters/primary/view-models/staff/staff-form/staffFormCreateVM'
 import { CreateStaffDTO } from '@core/gateways/staffGateway'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('StaffFormCreateVM', () => {
   let vm: StaffFormCreateVM

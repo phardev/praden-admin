@@ -4,8 +4,8 @@ div
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
 import JsBarcode from 'jsbarcode'
+import { onMounted, ref } from 'vue'
 
 const props = defineProps({
   code: {

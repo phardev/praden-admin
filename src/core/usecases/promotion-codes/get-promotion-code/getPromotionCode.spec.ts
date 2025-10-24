@@ -1,15 +1,15 @@
-import { createPinia, setActivePinia } from 'pinia'
 import { InMemoryPromotionCodeGateway } from '@adapters/secondary/promotion-code-gateways/InMemoryPromotionCodeGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { PromotionCode } from '@core/entities/promotionCode'
+import { PromotionCodeDoesNotExistsError } from '@core/errors/PromotionCodeDoesNotExistsError'
+import { getPromotionCode } from '@core/usecases/promotion-codes/get-promotion-code/getPromotionCode'
+import { usePromotionCodeStore } from '@store/promotionCodeStore'
 import {
   limitedInTimePromotionCode,
   newSitePromotionCode,
   tenEuroFixedPromotionCode
 } from '@utils/testData/promotionCodes'
-import { getPromotionCode } from '@core/usecases/promotion-codes/get-promotion-code/getPromotionCode'
-import { usePromotionCodeStore } from '@store/promotionCodeStore'
-import { PromotionCodeDoesNotExistsError } from '@core/errors/PromotionCodeDoesNotExistsError'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get promotion code', () => {
   let promotionCodeStore: any

@@ -61,11 +61,11 @@
 </template>
 
 <script lang="ts" setup>
-import { listEmergencyPharmacies } from '@core/usecases/emergency-pharmacies/listEmergencyPharmacies'
-import { deleteEmergencyPharmacy } from '@core/usecases/emergency-pharmacies/deleteEmergencyPharmacy'
-import { useEmergencyPharmacyGateway } from '../../../../../../../gateways/emergencyPharmacyGateway'
-import { emergencyPharmaciesListVM } from '@adapters/primary/view-models/emergency-pharmacies/emergency-pharmacies-list/emergencyPharmaciesListVM'
 import EmergencyPharmaciesList from '@adapters/primary/nuxt/components/organisms/EmergencyPharmaciesList.vue'
+import { emergencyPharmaciesListVM } from '@adapters/primary/view-models/emergency-pharmacies/emergency-pharmacies-list/emergencyPharmaciesListVM'
+import { deleteEmergencyPharmacy } from '@core/usecases/emergency-pharmacies/deleteEmergencyPharmacy'
+import { listEmergencyPharmacies } from '@core/usecases/emergency-pharmacies/listEmergencyPharmacies'
+import { useEmergencyPharmacyGateway } from '../../../../../../../gateways/emergencyPharmacyGateway'
 
 definePageMeta({ layout: 'main' })
 

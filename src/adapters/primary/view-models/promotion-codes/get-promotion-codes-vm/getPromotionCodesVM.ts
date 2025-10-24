@@ -1,20 +1,20 @@
-import { HashTable, Timestamp } from '@core/types/types'
 import { TableVM } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
-import { DateProvider } from '@core/gateways/dateProvider'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { ReductionType } from '@core/entities/promotion'
 import {
   isPromotionCodeEnded,
   isPromotionCodeInProgress,
   isPromotionCodeStarted,
   PromotionCode
 } from '@core/entities/promotionCode'
-import { ReductionType } from '@core/entities/promotion'
+import { DateProvider } from '@core/gateways/dateProvider'
+import { HashTable, Timestamp } from '@core/types/types'
+import { usePromotionCodeStore } from '@store/promotionCodeStore'
 import {
   percentFormatter,
   priceFormatter,
   timestampToLocaleString
 } from '@utils/formatters'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { usePromotionCodeStore } from '@store/promotionCodeStore'
 
 export interface GetPromotionCodesItemVM {
   uuid: string

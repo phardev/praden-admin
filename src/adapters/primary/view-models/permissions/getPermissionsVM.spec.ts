@@ -1,14 +1,14 @@
-import { createPinia, setActivePinia } from 'pinia'
+import {
+  GetPermissionsVM,
+  getPermissionsVM
+} from '@adapters/primary/view-models/permissions/getPermissionsVM'
 import { useUserProfileStore } from '@store/userProfileStore'
 import {
-  getPermissionsVM,
-  GetPermissionsVM
-} from '@adapters/primary/view-models/permissions/getPermissionsVM'
-import {
   adminUserProfile,
-  pharmacistUserProfile,
-  assistantUserProfile
+  assistantUserProfile,
+  pharmacistUserProfile
 } from '@utils/testData/userProfiles'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get permissions VM', () => {
   let userProfileStore: any

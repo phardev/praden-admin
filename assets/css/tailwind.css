@@ -1,13 +1,13 @@
-@import url('./background.css');
-@import url('./text.css');
-@import url('./border.css');
-@import url('./layout.css');
-@import url('./ring.css');
-@import url('./divide.css');
-@import url('./icons.css');
-@import url('./button.css');
-@import url('./print.css');
-@import url('./table.css');
+@import url("./background.css");
+@import url("./text.css");
+@import url("./border.css");
+@import url("./layout.css");
+@import url("./ring.css");
+@import url("./divide.css");
+@import url("./icons.css");
+@import url("./button.css");
+@import url("./print.css");
+@import url("./table.css");
 
 @tailwind base;
 @tailwind components;

@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { setActivePinia, createPinia } from 'pinia'
-import { announcementBarFormEditVM } from './announcementBarFormEditVM'
 import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import {
   announcementBarNoDates,
   announcementBarWithBothDates
 } from '@utils/testData/announcementBars'
+import { createPinia, setActivePinia } from 'pinia'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { announcementBarFormEditVM } from './announcementBarFormEditVM'
 
 describe('announcementBarFormEditVM', () => {
   beforeEach(() => {

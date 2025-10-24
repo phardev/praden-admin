@@ -1,12 +1,12 @@
 import {
-  StaffFormVM,
+  type Field,
   FormFieldsReader,
   FormFieldsWriter,
   FormInitializer,
-  type Field
+  StaffFormVM
 } from '@adapters/primary/view-models/staff/staff-form/staffFormVM'
-import { useFormStore } from '@store/formStore'
 import { CreateStaffDTO } from '@core/gateways/staffGateway'
+import { useFormStore } from '@store/formStore'
 
 export class NewStaffFormInitializer implements FormInitializer {
   protected readonly key: string

@@ -1,16 +1,16 @@
-import { CreatePromotionDTO, ReductionType } from '@core/entities/promotion'
-import { Product } from '@core/entities/product'
-import { useProductStore } from '@store/productStore'
-import { useSearchStore } from '@store/searchStore'
-import { useFormStore } from '@store/formStore'
-import { PromotionFormFieldsReader } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
-import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import {
   FieldHandler,
   FormFieldsWriter
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import { PromotionFormFieldsReader } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
 import { PromotionFormVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormVM'
+import { Product } from '@core/entities/product'
+import { CreatePromotionDTO, ReductionType } from '@core/entities/promotion'
 import { UUID } from '@core/types/types'
+import { useFormStore } from '@store/formStore'
+import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
 
 export interface TypeChoiceVM {
   type: ReductionType

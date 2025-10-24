@@ -1,17 +1,17 @@
-import { createPinia, setActivePinia } from 'pinia'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
+import { Order, OrderLine, OrderLineStatus } from '@core/entities/order'
+import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
+import { OrderLineAlreadyProcessedError } from '@core/errors/OrderLineAlreadyProcessedError'
+import { PreparationDoesNotExistsError } from '@core/errors/PreparationDoesNotExistsError'
+import { savePreparation } from '@core/usecases/order/save-preparation/savePreparation'
 import { usePreparationStore } from '@store/preparationStore'
 import {
   orderToPrepare1,
   orderToPrepare2,
   orderWithMissingProduct1
 } from '@utils/testData/orders'
-import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
-import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
-import { OrderLineStatus, Order, OrderLine } from '@core/entities/order'
-import { savePreparation } from '@core/usecases/order/save-preparation/savePreparation'
-import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
-import { PreparationDoesNotExistsError } from '@core/errors/PreparationDoesNotExistsError'
-import { OrderLineAlreadyProcessedError } from '@core/errors/OrderLineAlreadyProcessedError'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Save preparation', () => {
   let preparationStore: any

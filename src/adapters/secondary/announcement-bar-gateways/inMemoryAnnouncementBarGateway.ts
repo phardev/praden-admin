@@ -1,12 +1,12 @@
+import { AnnouncementBar, sortByOrder } from '@core/entities/announcementBar'
+import { AnnouncementBarDoesNotExistsError } from '@core/errors/AnnouncementBarDoesNotExistsError'
 import {
   AnnouncementBarGateway,
   CreateAnnouncementBarDTO,
   EditAnnouncementBarDTO
 } from '@core/gateways/announcementBarGateway'
-import { AnnouncementBar, sortByOrder } from '@core/entities/announcementBar'
-import { UUID } from '@core/types/types'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
-import { AnnouncementBarDoesNotExistsError } from '@core/errors/AnnouncementBarDoesNotExistsError'
+import { UUID } from '@core/types/types'
 
 export class InMemoryAnnouncementBarGateway implements AnnouncementBarGateway {
   private announcementBars: Array<AnnouncementBar> = []

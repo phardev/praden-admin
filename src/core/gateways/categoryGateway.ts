@@ -1,7 +1,7 @@
 import { Category } from '@core/entities/category'
+import { UUID } from '@core/types/types'
 import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
 import { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
-import { UUID } from '@core/types/types'
 
 export interface CategoryGateway {
   list(): Promise<Array<Category>>

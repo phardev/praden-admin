@@ -1,18 +1,18 @@
-import { bulkEditProduct, BulkEditProductDependencies } from './bulkEditProduct'
-import { useProductStore } from '@store/productStore'
-import { EditProductDTO } from './editProduct'
-import { UUID } from '@core/types/types'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
-import { Product } from '@core/entities/product'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
+import { Product } from '@core/entities/product'
+import { UUID } from '@core/types/types'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { useProductStore } from '@store/productStore'
 import {
   chamomillaListItem,
   dolodentListItem,
   ultraLevureListItem
 } from '@utils/testData/fixtures/products/productListItems'
-import { setActivePinia, createPinia } from 'pinia'
-import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
+import { BulkEditProductDependencies, bulkEditProduct } from './bulkEditProduct'
+import { EditProductDTO } from './editProduct'
 
 describe('bulkEditProduct usecase', () => {
   let productGateway: InMemoryProductGateway

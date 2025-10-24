@@ -11,9 +11,9 @@
   </template>
 
 <script lang="ts" setup>
-import { useNewsletterGateway } from '../../../../../../gateways/newsletterGateway'
-import { listNewsletterSubscriptions } from '@core/usecases/newsletter-subscriptions/newsletter-subscription-listing/listNewsletterSubscriptions'
 import { getNewsletterSubscriptionsVM } from '@adapters/primary/view-models/newsletters/get-newsletter-subscriptions-vm/getNewsletterSubscriptionsVM'
+import { listNewsletterSubscriptions } from '@core/usecases/newsletter-subscriptions/newsletter-subscription-listing/listNewsletterSubscriptions'
+import { useNewsletterGateway } from '../../../../../../gateways/newsletterGateway'
 
 definePageMeta({ layout: 'main' })
 

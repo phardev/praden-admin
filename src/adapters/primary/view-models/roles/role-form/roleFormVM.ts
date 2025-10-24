@@ -1,7 +1,7 @@
-import { useRoleStore } from '@store/roleStore'
-import { useFormStore } from '@store/formStore'
-import { PermissionResource } from '@core/entities/permissionResource'
 import { Permission } from '@core/entities/permission'
+import { PermissionResource } from '@core/entities/permissionResource'
+import { useFormStore } from '@store/formStore'
+import { useRoleStore } from '@store/roleStore'
 
 export interface RolePermissionOption {
   resource: PermissionResource

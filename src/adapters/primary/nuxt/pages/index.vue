@@ -89,11 +89,11 @@
 </template>
 
 <script lang="ts" setup>
+import { useUserProfileStore } from '@store/userProfileStore'
 import { formatCurrency } from '@/src/utils/formatters'
+import { useDateProvider } from '../../../../../gateways/dateProvider'
 import { useDashboardData } from '../composables/useDashboardData'
 import { usePermissions } from '../composables/usePermissions'
-import { useDateProvider } from '../../../../../gateways/dateProvider'
-import { useUserProfileStore } from '@store/userProfileStore'
 
 definePageMeta({ layout: 'main' })
 

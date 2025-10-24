@@ -1,5 +1,5 @@
-import { Role } from '@core/entities/role'
 import { PermissionResource } from '@core/entities/permissionResource'
+import { Role } from '@core/entities/role'
 
 export const adminRole: Role = {
   uuid: 'role-admin',

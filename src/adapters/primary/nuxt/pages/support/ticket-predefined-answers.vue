@@ -29,10 +29,10 @@
 
 <script setup lang="ts">
 import { getTicketPredefinedAnswersVM } from '@adapters/primary/view-models/support/ticket-predefined-answers/ticketPredefinedAnswersVM'
-import { listTicketPredefinedAnswers } from '@core/usecases/support/ticket-predefined-answers/listTicketPredefinedAnswers'
 import { createTicketPredefinedAnswer } from '@core/usecases/support/ticket-predefined-answers/createTicketPredefinedAnswer'
-import { updateTicketPredefinedAnswer } from '@core/usecases/support/ticket-predefined-answers/updateTicketPredefinedAnswer'
 import { deleteTicketPredefinedAnswer } from '@core/usecases/support/ticket-predefined-answers/deleteTicketPredefinedAnswer'
+import { listTicketPredefinedAnswers } from '@core/usecases/support/ticket-predefined-answers/listTicketPredefinedAnswers'
+import { updateTicketPredefinedAnswer } from '@core/usecases/support/ticket-predefined-answers/updateTicketPredefinedAnswer'
 import { useTicketPredefinedAnswerGateway } from '../../../../../../gateways/ticketPredefinedAnswerGateway'
 
 definePageMeta({ layout: 'main' })

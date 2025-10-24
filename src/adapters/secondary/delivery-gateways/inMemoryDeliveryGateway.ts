@@ -1,5 +1,5 @@
-import { DeliveryGateway } from '@core/gateways/deliveryGateway'
 import { Delivery, DeliveryStatus } from '@core/entities/delivery'
+import { DeliveryGateway } from '@core/gateways/deliveryGateway'
 import { UUID } from '@core/types/types'
 
 export class InMemoryDeliveryGateway implements DeliveryGateway {

@@ -1,14 +1,14 @@
-import { usePreparationStore } from '@store/preparationStore'
-import { createPinia, setActivePinia } from 'pinia'
-import { getPreparationsGaugeVM, GaugeStatus } from './getPreparationsGaugeVM'
-import { Timestamp } from '@core/types/types'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { Timestamp } from '@core/types/types'
+import { usePreparationStore } from '@store/preparationStore'
 import {
   orderSaved1,
   orderWaitingForClientAnswer1,
   orderWaitingForRestock,
   orderWithoutDelivery
 } from '@utils/testData/orders'
+import { createPinia, setActivePinia } from 'pinia'
+import { GaugeStatus, getPreparationsGaugeVM } from './getPreparationsGaugeVM'
 
 describe('Get preparations gauge VM', () => {
   let preparationStore: any

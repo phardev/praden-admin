@@ -1,17 +1,17 @@
-import { GetPromotionsVM, getPromotionsVM } from './getPromotionsVM'
-import { createPinia, setActivePinia } from 'pinia'
-import { usePromotionStore } from '@store/promotionStore'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import {
-  promotionFixedMultipleProducts,
-  promotionPercentageDolodent
-} from '@utils/testData/promotions'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
+import { usePromotionStore } from '@store/promotionStore'
 import {
   promotionFixedMultipleProductsListItem,
   promotionPercentageDolodentListItem
 } from '@utils/testData/fixtures/promotions/promotionListItems'
-import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
+import {
+  promotionFixedMultipleProducts,
+  promotionPercentageDolodent
+} from '@utils/testData/promotions'
+import { createPinia, setActivePinia } from 'pinia'
+import { GetPromotionsVM, getPromotionsVM } from './getPromotionsVM'
 
 describe('Get products VM', () => {
   let promotionStore: any

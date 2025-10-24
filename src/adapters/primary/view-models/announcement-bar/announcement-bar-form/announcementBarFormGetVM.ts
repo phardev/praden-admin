@@ -1,11 +1,11 @@
-import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
-import { useFormStore } from '@store/formStore'
-import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import {
   AnnouncementBarFormFieldsReader,
   AnnouncementBarFormVM
 } from '@adapters/primary/view-models/announcement-bar/announcement-bar-form/announcementBarFormCreateVM'
+import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { useAnnouncementBarStore } from '@store/announcementBarStore'
+import { useFormStore } from '@store/formStore'
 
 class ExistingAnnouncementBarFormInitializer implements FormInitializer {
   protected readonly key: string

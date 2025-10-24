@@ -90,14 +90,18 @@ FtModal(v-model="isOpen" @close="handleClose")
 </template>
 
 <script setup lang="ts">
-import { staffFormCreateVM } from '@adapters/primary/view-models/staff/staff-form/staffFormCreateVM'
-import { type StaffFormCreateVM } from '@adapters/primary/view-models/staff/staff-form/staffFormCreateVM'
-import { staffFormEditVM } from '@adapters/primary/view-models/staff/staff-form/staffFormEditVM'
-import { type StaffFormEditVM } from '@adapters/primary/view-models/staff/staff-form/staffFormEditVM'
+import { getRolesVM } from '@adapters/primary/view-models/roles/get-roles/getRolesVM'
+import {
+  type StaffFormCreateVM,
+  staffFormCreateVM
+} from '@adapters/primary/view-models/staff/staff-form/staffFormCreateVM'
+import {
+  type StaffFormEditVM,
+  staffFormEditVM
+} from '@adapters/primary/view-models/staff/staff-form/staffFormEditVM'
 import { createStaff } from '@core/usecases/staff/staff-creation/createStaff'
 import { editStaff } from '@core/usecases/staff/staff-edition/editStaff'
 import { useStaffGateway } from '~/gateways/staffGateway'
-import { getRolesVM } from '@adapters/primary/view-models/roles/get-roles/getRolesVM'
 
 interface Props {
   modelValue: boolean

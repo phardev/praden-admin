@@ -1,7 +1,7 @@
-import * as deliveryMethods from '@utils/testData/deliveryMethods'
-import { isLocalEnv } from '@utils/env'
 import { InMemoryDeliveryMethodGateway } from '@adapters/secondary/delivery-method-gateways/inMemoryDeliveryMethodGateway'
 import { RealDeliveryMethodGateway } from '@adapters/secondary/delivery-method-gateways/realDeliveryMethodGateway'
+import { isLocalEnv } from '@utils/env'
+import * as deliveryMethods from '@utils/testData/deliveryMethods'
 
 const deliveryMethodGateway = new InMemoryDeliveryMethodGateway()
 deliveryMethodGateway.feedWith(...Object.values(deliveryMethods))

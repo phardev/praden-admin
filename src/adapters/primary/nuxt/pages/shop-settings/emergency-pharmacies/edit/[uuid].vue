@@ -34,11 +34,11 @@
 </template>
 
 <script lang="ts" setup>
-import { getEmergencyPharmacy } from '@core/usecases/emergency-pharmacies/getEmergencyPharmacy'
-import { editEmergencyPharmacy } from '@core/usecases/emergency-pharmacies/editEmergencyPharmacy'
-import { useEmergencyPharmacyGateway } from '../../../../../../../../gateways/emergencyPharmacyGateway'
-import { useEmergencyPharmacyStore } from '@store/emergencyPharmacyStore'
 import EmergencyPharmacyForm from '@adapters/primary/nuxt/components/organisms/EmergencyPharmacyForm.vue'
+import { editEmergencyPharmacy } from '@core/usecases/emergency-pharmacies/editEmergencyPharmacy'
+import { getEmergencyPharmacy } from '@core/usecases/emergency-pharmacies/getEmergencyPharmacy'
+import { useEmergencyPharmacyStore } from '@store/emergencyPharmacyStore'
+import { useEmergencyPharmacyGateway } from '../../../../../../../../gateways/emergencyPharmacyGateway'
 
 definePageMeta({ layout: 'main' })
 

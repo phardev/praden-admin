@@ -4,10 +4,10 @@ import {
   isBannerStarted,
   sortByOrder
 } from '@core/entities/banner'
+import { DateProvider } from '@core/gateways/dateProvider'
+import { HashTable, Timestamp } from '@core/types/types'
 import { useBannerStore } from '@store/bannerStore'
 import { timestampToLocaleString } from '@utils/formatters'
-import { HashTable, Timestamp } from '@core/types/types'
-import { DateProvider } from '@core/gateways/dateProvider'
 
 export interface GetBannersItemVM {
   uuid: string

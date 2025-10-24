@@ -1,10 +1,10 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { PharmacistSelection } from '@core/entities/pharmacistSelection'
-import { updatePharmacistSelection } from '@core/usecases/pharmacist-selection/updatePharmacistSelection'
 import { InMemoryPharmacistSelectionGateway } from '@adapters/secondary/pharmacist-selection-gateways/inMemoryPharmacistSelectionGateway'
+import { PharmacistSelection } from '@core/entities/pharmacistSelection'
+import { UUID } from '@core/types/types'
+import { updatePharmacistSelection } from '@core/usecases/pharmacist-selection/updatePharmacistSelection'
 import { usePharmacistSelectionStore } from '@store/pharmacistSelectionStore'
 import { pharmacistSelection1 } from '@utils/testData/pharmacistSelections'
-import { UUID } from '@core/types/types'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('PharmacistSelection update', () => {
   let pharmacistSelectionStore: ReturnType<typeof usePharmacistSelectionStore>

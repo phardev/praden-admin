@@ -237,12 +237,12 @@ UForm(v-else)
 </template>
 
 <script lang="ts" setup>
-import { listLocations } from '@core/usecases/locations/location-listing/listLocations'
-import { useLocationGateway } from '../../../../../../gateways/locationGateway'
 import FtButton from '@adapters/primary/nuxt/components/atoms/FtButton.vue'
 import { getTreeCategoriesVM } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
-import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
 import { listLaboratories } from '@core/usecases/laboratories/laboratory-listing/listLaboratories'
+import { listLocations } from '@core/usecases/locations/location-listing/listLocations'
+import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
+import { useLocationGateway } from '../../../../../../gateways/locationGateway'
 
 definePageMeta({ layout: 'main' })
 

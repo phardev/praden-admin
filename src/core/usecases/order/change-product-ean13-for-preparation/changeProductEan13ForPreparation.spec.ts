@@ -1,10 +1,10 @@
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import { Order } from '@core/entities/order'
 import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
-import { createPinia, setActivePinia } from 'pinia'
+import { changeProductEan13ForPreparation } from '@core/usecases/order/change-product-ean13-for-preparation/changeProductEan13ForPreparation'
 import { usePreparationStore } from '@store/preparationStore'
 import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
-import { Order } from '@core/entities/order'
-import { changeProductEan13ForPreparation } from '@core/usecases/order/change-product-ean13-for-preparation/changeProductEan13ForPreparation'
+import { dolodent, ultraLevure } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Change product reference for preparation', () => {
   let preparationStore: any

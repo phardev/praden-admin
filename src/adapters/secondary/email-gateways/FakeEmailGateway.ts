@@ -1,5 +1,5 @@
-import { EmailGateway } from '@core/gateways/emailGateway'
 import { EmailMessage } from '@core/entities/emailMessage'
+import { EmailGateway } from '@core/gateways/emailGateway'
 
 export class FakeEmailGateway implements EmailGateway {
   private emails: Array<EmailMessage> = []

@@ -1,14 +1,14 @@
-import { createPinia, setActivePinia } from 'pinia'
+import { useFormStore } from '@store/formStore'
 import { usePharmacistSelectionStore } from '@store/pharmacistSelectionStore'
 import { useProductStore } from '@store/productStore'
-import { useFormStore } from '@store/formStore'
-import { pharmacistSelectionFormVM } from './pharmacistSelectionFormVM'
 import {
-  dolodent,
-  ultraLevure,
   anaca3Minceur,
-  chamomilla
+  chamomilla,
+  dolodent,
+  ultraLevure
 } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
+import { pharmacistSelectionFormVM } from './pharmacistSelectionFormVM'
 
 describe('Pharmacist Selection Form VM', () => {
   beforeEach(() => {

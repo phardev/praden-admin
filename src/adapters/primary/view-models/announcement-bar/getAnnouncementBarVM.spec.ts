@@ -1,14 +1,14 @@
-import { createPinia, setActivePinia } from 'pinia'
+import {
+  GetAnnouncementBarVM,
+  getAnnouncementBarVM
+} from '@adapters/primary/view-models/announcement-bar/getAnnouncementBarVM'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import {
   announcementBar1,
   announcementBar2
 } from '@utils/testData/announcementBars'
-import {
-  getAnnouncementBarVM,
-  GetAnnouncementBarVM
-} from '@adapters/primary/view-models/announcement-bar/getAnnouncementBarVM'
-import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get announcement bar VM', () => {
   let announcementBarStore: any

@@ -1,13 +1,12 @@
-import { PromotionGateway } from '@core/gateways/promotionGateway'
 import {
   CreatePromotionDTO,
   EditPromotionDTO,
   Promotion
 } from '@core/entities/promotion'
+import { PromotionDoesNotExistsError } from '@core/errors/PromotionDoesNotExistsError'
+import { PromotionGateway } from '@core/gateways/promotionGateway'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { UUID } from '@core/types/types'
-
-import { PromotionDoesNotExistsError } from '@core/errors/PromotionDoesNotExistsError'
 import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
 
 export class InMemoryPromotionGateway implements PromotionGateway {

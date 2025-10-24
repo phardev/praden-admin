@@ -36,10 +36,10 @@
 </template>
 
 <script lang="ts" setup>
-import draggable from 'vuedraggable'
 import PharmacistSelectionItem from '@adapters/primary/nuxt/components/molecules/PharmacistSelectionItem.vue'
 import ProductSearchModal from '@adapters/primary/nuxt/components/organisms/ProductSearchModal.vue'
 import type { pharmacistSelectionFormVM } from '@adapters/primary/view-models/pharmacist-selection/pharmacist-selection-form/pharmacistSelectionFormVM'
+import draggable from 'vuedraggable'
 
 const props = defineProps<{
   selectionVM: ReturnType<typeof pharmacistSelectionFormVM>

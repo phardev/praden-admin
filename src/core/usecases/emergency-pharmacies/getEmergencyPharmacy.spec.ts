@@ -1,12 +1,12 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { getEmergencyPharmacy } from '@core/usecases/emergency-pharmacies/getEmergencyPharmacy'
 import { InMemoryEmergencyPharmacyGateway } from '@adapters/secondary/emergency-pharmacy-gateways/inMemoryEmergencyPharmacyGateway'
-import { useEmergencyPharmacyStore } from '@store/emergencyPharmacyStore'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { getEmergencyPharmacy } from '@core/usecases/emergency-pharmacies/getEmergencyPharmacy'
+import { useEmergencyPharmacyStore } from '@store/emergencyPharmacyStore'
 import {
   emergencyPharmacy1,
   emergencyPharmacy2
 } from '@utils/testData/emergencyPharmacies'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('EmergencyPharmacy get', () => {
   let emergencyPharmacyStore: any

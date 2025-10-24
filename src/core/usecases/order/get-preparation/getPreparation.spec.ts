@@ -1,12 +1,12 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { usePreparationStore } from '@store/preparationStore'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
-import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
 import { Order } from '@core/entities/order'
+import { PreparationDoesNotExistsError } from '@core/errors/PreparationDoesNotExistsError'
 import { UUID } from '@core/types/types'
 import { getPreparation } from '@core/usecases/order/get-preparation/getPreparation'
-import { PreparationDoesNotExistsError } from '@core/errors/PreparationDoesNotExistsError'
-import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { usePreparationStore } from '@store/preparationStore'
+import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get preparation', () => {
   let preparationStore: any

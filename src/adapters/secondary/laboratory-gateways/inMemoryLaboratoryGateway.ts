@@ -1,11 +1,11 @@
-import { LaboratoryGateway } from '@core/gateways/laboratoryGateway'
 import { Laboratory } from '@core/entities/laboratory'
-import { UUID } from '@core/types/types'
 import { LaboratoryDoesNotExistsError } from '@core/errors/LaboratoryDoesNotExistsError'
+import { LaboratoryGateway } from '@core/gateways/laboratoryGateway'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
+import { UUID } from '@core/types/types'
 import { CreateLaboratoryDTO } from '@core/usecases/laboratories/laboratory-creation/createLaboratory'
-import { getFileContent } from '@utils/file'
 import { EditLaboratoryDTO } from '@core/usecases/laboratories/laboratory-edition/editLaboratory'
+import { getFileContent } from '@utils/file'
 
 export class InMemoryLaboratoryGateway implements LaboratoryGateway {
   private laboratories: Array<Laboratory> = []

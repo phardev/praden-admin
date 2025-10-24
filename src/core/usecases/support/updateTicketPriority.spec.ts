@@ -1,12 +1,12 @@
-import { useTicketStore } from '@store/ticketStore'
-import { updateTicketPriority } from '@core/usecases/support/updateTicketPriority'
-import { createPinia, setActivePinia } from 'pinia'
-import { newTicket } from '@utils/testData/tickets'
-import { InMemoryTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTicketGateway'
-import { TicketDoesNotExistsError } from '@core/errors/TicketDoesNotExistsError'
-import { Ticket, TicketPriority, TicketStatus } from '@core/entities/ticket'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { InMemoryTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTicketGateway'
+import { Ticket, TicketPriority, TicketStatus } from '@core/entities/ticket'
+import { TicketDoesNotExistsError } from '@core/errors/TicketDoesNotExistsError'
 import { Timestamp } from '@core/types/types'
+import { updateTicketPriority } from '@core/usecases/support/updateTicketPriority'
+import { useTicketStore } from '@store/ticketStore'
+import { newTicket } from '@utils/testData/tickets'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Update ticket priority', () => {
   let ticketStore: any

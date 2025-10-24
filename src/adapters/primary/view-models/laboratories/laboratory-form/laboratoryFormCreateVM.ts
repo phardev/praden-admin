@@ -1,21 +1,21 @@
-import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
-import { useFormStore } from '@store/formStore'
-import {
-  FieldHandler,
-  FormFieldsWriter
-} from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
-import { UUID } from '@core/types/types'
-import { getFileContent } from '@utils/file'
-import { Product } from '@core/entities/product'
-import { useProductStore } from '@store/productStore'
-import { useSearchStore } from '@store/searchStore'
 import {
   LaboratoryFormFieldsReader,
   LaboratoryProductItemVM
 } from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormGetVM'
 import { LaboratoryFormVM } from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormVM'
+import {
+  FieldHandler,
+  FormFieldsWriter
+} from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { Product } from '@core/entities/product'
+import { UUID } from '@core/types/types'
 import { CreateLaboratoryDTO } from '@core/usecases/laboratories/laboratory-creation/createLaboratory'
+import { useFormStore } from '@store/formStore'
+import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
+import { getFileContent } from '@utils/file'
 
 export class LaboratoryFormFieldsWriter extends FormFieldsWriter {
   protected fieldsReader: LaboratoryFormFieldsReader

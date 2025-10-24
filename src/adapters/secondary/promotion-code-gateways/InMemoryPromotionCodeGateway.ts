@@ -1,12 +1,12 @@
+import { PromotionCodeDoesNotExistsError } from '@core/errors/PromotionCodeDoesNotExistsError'
+import { PromotionCodeWithSameCodeAlreadyExistsError } from '@core/errors/PromotionCodeWithSameCodeAlreadyExistsError'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
+import { EditPromotionCodeDTO } from '@core/usecases/promotion-codes/promotion-code-edition/editPromotionCode'
 import {
   CreatePromotionCodeDTO,
   PromotionCode
 } from '../../../core/entities/promotionCode'
 import { PromotionCodeGateway } from '../../../core/gateways/promotionCodeGateway'
-import { PromotionCodeDoesNotExistsError } from '@core/errors/PromotionCodeDoesNotExistsError'
-import { EditPromotionCodeDTO } from '@core/usecases/promotion-codes/promotion-code-edition/editPromotionCode'
-import { PromotionCodeWithSameCodeAlreadyExistsError } from '@core/errors/PromotionCodeWithSameCodeAlreadyExistsError'
 
 export class InMemoryPromotionCodeGateway implements PromotionCodeGateway {
   private promotionCodes: Array<PromotionCode> = []

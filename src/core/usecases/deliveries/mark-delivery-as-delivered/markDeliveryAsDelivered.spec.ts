@@ -1,10 +1,10 @@
 import { InMemoryDeliveryGateway } from '@adapters/secondary/delivery-gateways/inMemoryDeliveryGateway'
-import { useDeliveryStore } from '@store/deliveryStore'
-import { createPinia, setActivePinia } from 'pinia'
 import { Delivery, DeliveryStatus } from '@core/entities/delivery'
 import { UUID } from '@core/types/types'
-import { deliveryOrderPrepared1 } from '@utils/testData/deliveries'
 import { markDeliveryAsDelivered } from '@core/usecases/deliveries/mark-delivery-as-delivered/markDeliveryAsDelivered'
+import { useDeliveryStore } from '@store/deliveryStore'
+import { deliveryOrderPrepared1 } from '@utils/testData/deliveries'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Mark delivery as delivered', () => {
   let deliveryStore: any

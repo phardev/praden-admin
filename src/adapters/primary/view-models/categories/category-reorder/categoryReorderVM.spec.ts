@@ -1,7 +1,7 @@
-import { createPinia, setActivePinia } from 'pinia'
 import { useCategoryStore } from '@store/categoryStore'
-import { categoryReorderVM } from './categoryReorderVM'
 import { baby, dents, mum } from '@utils/testData/categories'
+import { createPinia, setActivePinia } from 'pinia'
+import { categoryReorderVM } from './categoryReorderVM'
 
 describe('Category Reorder VM', () => {
   beforeEach(() => {

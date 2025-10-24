@@ -1,7 +1,7 @@
-import { type ProductGateway } from '@core/gateways/productGateway'
 import { type Product } from '@core/entities/product'
-import { useProductStore } from '@store/productStore'
+import { type ProductGateway } from '@core/gateways/productGateway'
 import { UUID } from '@core/types/types'
+import { useProductStore } from '@store/productStore'
 
 export type CreateProductDTO = Omit<
   Product,

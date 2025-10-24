@@ -1,6 +1,6 @@
-import { useStaffStore } from '@store/staffStore'
 import { Staff } from '@core/entities/staff'
 import { UUID } from '@core/types/types'
+import { useStaffStore } from '@store/staffStore'
 
 export interface GetStaffItemVM {
   uuid: UUID

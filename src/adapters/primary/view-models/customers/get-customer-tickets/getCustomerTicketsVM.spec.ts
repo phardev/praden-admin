@@ -1,8 +1,8 @@
 import { useTicketStore } from '@store/ticketStore'
-import { getCustomerTicketsVM } from './getCustomerTicketsVM'
-import { createPinia, setActivePinia } from 'pinia'
-import { newTicket, lowPriorityTicket } from '@utils/testData/tickets'
 import { elodieDurand } from '@utils/testData/customers'
+import { lowPriorityTicket, newTicket } from '@utils/testData/tickets'
+import { createPinia, setActivePinia } from 'pinia'
+import { getCustomerTicketsVM } from './getCustomerTicketsVM'
 
 describe('Get customer tickets view model', () => {
   let ticketStore: any

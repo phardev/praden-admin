@@ -1,5 +1,5 @@
-import { useCategoryStore } from '@store/categoryStore'
 import { Category } from '@core/entities/category'
+import { useCategoryStore } from '@store/categoryStore'
 
 export interface CategoryForDisplay {
   uuid: string

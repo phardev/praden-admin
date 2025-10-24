@@ -2,10 +2,10 @@ import {
   getTreeCategoriesVM,
   TreeCategoriesVM
 } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
-import { baby, dents, minceur, mum } from '@utils/testData/categories'
 import { Category } from '@core/entities/category'
-import { createPinia, setActivePinia } from 'pinia'
 import { useCategoryStore } from '@store/categoryStore'
+import { baby, dents, minceur, mum } from '@utils/testData/categories'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get tree categories VM', () => {
   let categoryStore: any

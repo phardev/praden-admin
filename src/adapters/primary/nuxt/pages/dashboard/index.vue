@@ -197,22 +197,22 @@ div.p-8.text-center(v-else)
 </template>
 
 <script lang="ts" setup>
+import { useUserProfileStore } from '@store/userProfileStore'
 import { format } from 'date-fns'
+import { fr } from 'date-fns/locale'
 import { formatCurrency } from '@/src/utils/formatters'
-import { useDashboardData } from '../../composables/useDashboardData'
+import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
+import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
+import { listCategories } from '../../../../../core/usecases/categories/list-categories/listCategories'
+import { listLaboratories } from '../../../../../core/usecases/laboratories/laboratory-listing/listLaboratories'
+import { getCategoriesVM } from '../../../view-models/categories/get-categories/getCategoriesVM'
 import { getLaboratoriesVM } from '../../../view-models/laboratories/get-laboratories/getLaboratoriesVM'
 import { getPermissionsVM } from '../../../view-models/permissions/getPermissionsVM'
-import { getCategoriesVM } from '../../../view-models/categories/get-categories/getCategoriesVM'
-import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
-import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
-import { listLaboratories } from '../../../../../core/usecases/laboratories/laboratory-listing/listLaboratories'
-import { listCategories } from '../../../../../core/usecases/categories/list-categories/listCategories'
-import { fr } from 'date-fns/locale'
+import CategoriesPieChart from '../../components/molecules/CategoriesPieChart.vue'
 import DeliveryMethodsPieChart from '../../components/molecules/DeliveryMethodsPieChart.vue'
 import LaboratoriesPieChart from '../../components/molecules/LaboratoriesPieChart.vue'
-import CategoriesPieChart from '../../components/molecules/CategoriesPieChart.vue'
 import ProductStockPieChart from '../../components/molecules/ProductStockPieChart.vue'
-import { useUserProfileStore } from '@store/userProfileStore'
+import { useDashboardData } from '../../composables/useDashboardData'
 
 definePageMeta({ layout: 'main' })
 

@@ -1,14 +1,14 @@
-import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
-import { createPinia, setActivePinia } from 'pinia'
+import { useCarrierStore } from '@store/carrierStore'
 import { useDeliveryStore } from '@store/deliveryStore'
-import { GetDeliveriesVM, getDeliveriesVM } from './getDeliveriesVM'
+import { colissimo, dpd, pharmacy } from '@utils/testData/carriers'
 import {
   deliveryOrderDelivered2,
   deliveryOrderToPrepare1,
   deliveryOrderToPrepare3
 } from '@utils/testData/deliveries'
-import { useCarrierStore } from '@store/carrierStore'
-import { colissimo, dpd, pharmacy } from '@utils/testData/carriers'
+import { createPinia, setActivePinia } from 'pinia'
+import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
+import { GetDeliveriesVM, getDeliveriesVM } from './getDeliveriesVM'
 
 describe('Get deliveries VM', () => {
   let deliveryStore: any

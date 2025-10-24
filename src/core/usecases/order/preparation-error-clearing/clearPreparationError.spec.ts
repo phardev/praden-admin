@@ -1,10 +1,10 @@
-import { usePreparationStore } from '@store/preparationStore'
-import { clearPreparationError } from './clearPreparationError'
-import { createPinia, setActivePinia } from 'pinia'
 import {
   PreparationError,
   PreparationErrorType
 } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
+import { usePreparationStore } from '@store/preparationStore'
+import { createPinia, setActivePinia } from 'pinia'
+import { clearPreparationError } from './clearPreparationError'
 
 describe('Clear preparation error', () => {
   let preparationStore: any

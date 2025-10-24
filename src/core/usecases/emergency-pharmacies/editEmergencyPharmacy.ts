@@ -1,6 +1,6 @@
 import { EmergencyPharmacyGateway } from '@core/gateways/emergencyPharmacyGateway'
+import { Timestamp, UUID } from '@core/types/types'
 import { useEmergencyPharmacyStore } from '@store/emergencyPharmacyStore'
-import { UUID, Timestamp } from '@core/types/types'
 
 export interface EditEmergencyPharmacyDTO {
   name?: string

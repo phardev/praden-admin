@@ -1,7 +1,7 @@
 import { Dashboard } from '@core/entities/dashboard'
-import { DashboardVM, getDashboardVM } from './getDashboardVM'
-import { createPinia, setActivePinia } from 'pinia'
 import { useStatsStore } from '@store/statsStore'
+import { createPinia, setActivePinia } from 'pinia'
+import { DashboardVM, getDashboardVM } from './getDashboardVM'
 
 describe('getDashboardVM', () => {
   let res: DashboardVM

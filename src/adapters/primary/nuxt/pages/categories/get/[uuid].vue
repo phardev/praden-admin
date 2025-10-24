@@ -9,11 +9,11 @@
 </template>
 
 <script lang="ts" setup>
-import { useCategoryGateway } from '../../../../../../../gateways/categoryGateway'
-import { getCategory } from '@core/usecases/categories/get-category/getCategory'
 import { categoryFormGetVM } from '@adapters/primary/view-models/categories/category-form/categoryFormGetVM'
-import { useProductGateway } from '../../../../../../../gateways/productGateway'
+import { getCategory } from '@core/usecases/categories/get-category/getCategory'
 import { listCategoryProducts } from '@core/usecases/categories/list-category-products/listCategoryProducts'
+import { useCategoryGateway } from '../../../../../../../gateways/categoryGateway'
+import { useProductGateway } from '../../../../../../../gateways/productGateway'
 
 definePageMeta({ layout: 'main' })
 

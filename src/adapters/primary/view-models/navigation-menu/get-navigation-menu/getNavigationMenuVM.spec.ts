@@ -1,16 +1,16 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useNavigationMenuStore } from '@store/navigationMenuStore'
-import { useUserProfileStore } from '@store/userProfileStore'
 import {
   GetNavigationMenuVM,
   getNavigationMenuVM
 } from '@adapters/primary/view-models/navigation-menu/get-navigation-menu/getNavigationMenuVM'
+import { useNavigationMenuStore } from '@store/navigationMenuStore'
+import { useUserProfileStore } from '@store/userProfileStore'
 import { fullMenu } from '@utils/testData/navigationMenu'
 import {
   adminUserProfile,
-  pharmacistUserProfile,
-  assistantUserProfile
+  assistantUserProfile,
+  pharmacistUserProfile
 } from '@utils/testData/userProfiles'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get navigation menu VM', () => {
   let navigationMenuStore: any

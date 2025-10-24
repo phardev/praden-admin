@@ -1,15 +1,15 @@
 import {
-  RoleFormVM,
+  type Field,
+  FormInitializer,
   RoleFormFieldsReader,
   RoleFormFieldsWriter,
-  FormInitializer,
-  type Field,
+  RoleFormVM,
   type RolePermissionOption
 } from '@adapters/primary/view-models/roles/role-form/roleFormVM'
-import { useFormStore } from '@store/formStore'
-import { CreateRoleDTO } from '@core/gateways/roleGateway'
 import { Permission } from '@core/entities/permission'
 import { PermissionResource } from '@core/entities/permissionResource'
+import { CreateRoleDTO } from '@core/gateways/roleGateway'
+import { useFormStore } from '@store/formStore'
 
 export class NewRoleFormInitializer implements FormInitializer {
   protected readonly key: string

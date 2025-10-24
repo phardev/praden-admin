@@ -1,17 +1,17 @@
 import { InMemoryAnnouncementBarGateway } from '@adapters/secondary/announcement-bar-gateways/inMemoryAnnouncementBarGateway'
-import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { AnnouncementBar } from '@core/entities/announcementBar'
+import { AnnouncementBarDoesNotExistsError } from '@core/errors/AnnouncementBarDoesNotExistsError'
+import { UUID } from '@core/types/types'
+import { getAnnouncementBar } from '@core/usecases/announcement-bar/announcement-bar-get/getAnnouncementBar'
+import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import {
   announcementBar1,
   announcementBar2,
   announcementBar3,
   announcementBar4
 } from '@utils/testData/announcementBars'
-import { AnnouncementBar } from '@core/entities/announcementBar'
-import { UUID } from '@core/types/types'
-import { getAnnouncementBar } from '@core/usecases/announcement-bar/announcement-bar-get/getAnnouncementBar'
 import { createPinia, setActivePinia } from 'pinia'
-import { AnnouncementBarDoesNotExistsError } from '@core/errors/AnnouncementBarDoesNotExistsError'
 
 describe('AnnouncementBar get', () => {
   let announcementBarStore: any

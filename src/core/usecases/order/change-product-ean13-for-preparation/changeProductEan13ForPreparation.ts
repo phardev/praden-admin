@@ -1,6 +1,6 @@
+import { Order, OrderLine } from '@core/entities/order'
 import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
 import { usePreparationStore } from '@store/preparationStore'
-import { Order, OrderLine } from '@core/entities/order'
 
 export const changeProductEan13ForPreparation = (
   oldEan13: string,

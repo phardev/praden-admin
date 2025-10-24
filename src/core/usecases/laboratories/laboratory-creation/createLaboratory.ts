@@ -1,9 +1,9 @@
-import { UUID } from '@core/types/types'
-import { Laboratory } from '../../../entities/laboratory'
 import { LaboratoryGateway } from '@core/gateways/laboratoryGateway'
-import { useLaboratoryStore } from '@store/laboratoryStore'
 import { ProductGateway } from '@core/gateways/productGateway'
+import { UUID } from '@core/types/types'
+import { useLaboratoryStore } from '@store/laboratoryStore'
 import { useProductStore } from '@store/productStore'
+import { Laboratory } from '../../../entities/laboratory'
 
 export type CreateLaboratoryDTO = Omit<
   Laboratory,

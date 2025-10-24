@@ -1,8 +1,8 @@
 import { Ticket, TicketPriority } from '@core/entities/ticket'
-import { UUID } from '@core/types/types'
-import { TicketGateway } from '@core/gateways/ticketGateway'
-import { InMemoryTicketGateway } from './InMemoryTicketGateway'
 import { DateProvider } from '@core/gateways/dateProvider'
+import { TicketGateway } from '@core/gateways/ticketGateway'
+import { UUID } from '@core/types/types'
+import { InMemoryTicketGateway } from './InMemoryTicketGateway'
 
 export class InMemoryTimeoutTicketGateway
   extends InMemoryTicketGateway

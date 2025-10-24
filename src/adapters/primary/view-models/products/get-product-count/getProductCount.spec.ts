@@ -1,10 +1,10 @@
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { anaca3Minceur, chamomilla, dolodent } from '@utils/testData/products'
 import { Product } from '@core/entities/product'
-import { getProductCount } from './getProductCount'
 import { useIndexStore } from '@store/indexStore'
+import { anaca3Minceur, chamomilla, dolodent } from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
+import { getProductCount } from './getProductCount'
 
 describe('Get product count', () => {
   let productGateway: InMemoryProductGateway

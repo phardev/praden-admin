@@ -1,13 +1,13 @@
-import { useDeliveryStore } from '@store/deliveryStore'
-import { createPinia, setActivePinia } from 'pinia'
 import { InMemoryDeliveryGateway } from '@adapters/secondary/delivery-gateways/inMemoryDeliveryGateway'
-import { listDeliveries } from './listDeliveries'
+import { Delivery } from '@core/entities/delivery'
+import { useDeliveryStore } from '@store/deliveryStore'
 import {
   deliveryOrderToPrepare1,
   deliveryOrderToPrepare2,
   deliveryOrderToPrepare3
 } from '@utils/testData/deliveries'
-import { Delivery } from '@core/entities/delivery'
+import { createPinia, setActivePinia } from 'pinia'
+import { listDeliveries } from './listDeliveries'
 
 describe('Delivery listing', () => {
   let deliveryStore: any

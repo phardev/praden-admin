@@ -1,14 +1,14 @@
-import { SearchGateway } from '@core/gateways/searchGateway'
 import { isProduct, Product } from '@core/entities/product'
+import { SearchGateway } from '@core/gateways/searchGateway'
 import '@utils/strings'
+import { Customer } from '@core/entities/customer'
 import { getDeliveryStatus, getOrderStatus, Order } from '@core/entities/order'
-import { useOrderStore } from '@store/orderStore'
-import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
 import { Timestamp } from '@core/types/types'
 import { SearchCustomersDTO } from '@core/usecases/customers/customer-searching/searchCustomer'
-import { Customer } from '@core/entities/customer'
-import { useCustomerStore } from '@store/customerStore'
+import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
 import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
+import { useCustomerStore } from '@store/customerStore'
+import { useOrderStore } from '@store/orderStore'
 
 export class FakeSearchGateway implements SearchGateway {
   private items: Array<any> = []

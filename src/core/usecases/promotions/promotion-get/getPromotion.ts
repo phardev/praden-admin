@@ -1,5 +1,5 @@
-import { UUID } from '@core/types/types'
 import { PromotionGateway } from '@core/gateways/promotionGateway'
+import { UUID } from '@core/types/types'
 import { usePromotionStore } from '@store/promotionStore'
 
 export const getPromotion = async (

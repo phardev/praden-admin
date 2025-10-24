@@ -1,4 +1,6 @@
-import { useOrderStore } from '@store/orderStore'
+import { AddressVM } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { DeliveryStatus } from '@core/entities/delivery'
 import {
   DeliveryType,
   getDeliveryStatus,
@@ -8,11 +10,9 @@ import {
   OrderLineStatus,
   PaymentStatus
 } from '@core/entities/order'
-import { AddressVM } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
-import { useCustomerStore } from '@store/customerStore'
-import { DeliveryStatus } from '@core/entities/delivery'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { UUID } from '@core/types/types'
+import { useCustomerStore } from '@store/customerStore'
+import { useOrderStore } from '@store/orderStore'
 
 export interface OrderCustomerVM {
   firstname: string

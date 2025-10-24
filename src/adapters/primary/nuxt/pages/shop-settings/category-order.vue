@@ -27,11 +27,11 @@
 </template>
 
 <script lang="ts" setup>
+import CategoryOrderList from '@adapters/primary/nuxt/components/organisms/CategoryOrderList.vue'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { reorderCategories } from '@core/usecases/categories-reorder/reorderCategories'
-import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
 import { useCategoryStore } from '@store/categoryStore'
-import CategoryOrderList from '@adapters/primary/nuxt/components/organisms/CategoryOrderList.vue'
+import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
 
 definePageMeta({ layout: 'main' })
 

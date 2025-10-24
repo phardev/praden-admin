@@ -1,7 +1,7 @@
-import { EmergencyPharmacyGateway } from '@core/gateways/emergencyPharmacyGateway'
 import { EmergencyPharmacy } from '@core/entities/emergencyPharmacy'
-import { UUID } from '@core/types/types'
+import { EmergencyPharmacyGateway } from '@core/gateways/emergencyPharmacyGateway'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
+import { UUID } from '@core/types/types'
 import { CreateEmergencyPharmacyDTO } from '@core/usecases/emergency-pharmacies/createEmergencyPharmacy'
 import { EditEmergencyPharmacyDTO } from '@core/usecases/emergency-pharmacies/editEmergencyPharmacy'
 

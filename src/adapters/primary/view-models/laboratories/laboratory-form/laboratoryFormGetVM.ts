@@ -1,12 +1,12 @@
-import { UUID } from '@core/types/types'
 import {
   FormFieldsReader,
   FormInitializer
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { UUID } from '@core/types/types'
 import { useFormStore } from '@store/formStore'
 import { useLaboratoryStore } from '@store/laboratoryStore'
 import { LaboratoryFormVM } from './laboratoryFormVM'
-import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 
 export interface LaboratoryProductItemVM {
   uuid: UUID

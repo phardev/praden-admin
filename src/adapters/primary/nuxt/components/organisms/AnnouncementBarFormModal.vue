@@ -120,19 +120,19 @@ FtModal(v-model="isOpen" @close="handleClose")
 
 <script setup lang="ts">
 import {
-  announcementBarFormCreateVM,
-  type AnnouncementBarFormCreateVM
+  type AnnouncementBarFormCreateVM,
+  announcementBarFormCreateVM
 } from '@adapters/primary/view-models/announcement-bar/announcement-bar-form/announcementBarFormCreateVM'
 import {
-  announcementBarFormEditVM,
-  type AnnouncementBarFormEditVM
+  type AnnouncementBarFormEditVM,
+  announcementBarFormEditVM
 } from '@adapters/primary/view-models/announcement-bar/announcement-bar-form/announcementBarFormEditVM'
 import { createAnnouncementBar } from '@core/usecases/announcement-bar/announcement-bar-creation/createAnnouncementBar'
 import { editAnnouncementBar } from '@core/usecases/announcement-bar/announcement-bar-edition/editAnnouncementBar'
 import { getAnnouncementBar } from '@core/usecases/announcement-bar/announcement-bar-get/getAnnouncementBar'
-import { useAnnouncementBarGateway } from '~/gateways/announcementBarGateway'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
+import { useAnnouncementBarGateway } from '~/gateways/announcementBarGateway'
 
 interface Props {
   modelValue: boolean

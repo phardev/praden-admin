@@ -1,10 +1,10 @@
-import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import { CategoryGateway } from '@core/gateways/categoryGateway'
-import { Category } from '@core/entities/category'
-import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
-import { UUID } from '@core/types/types'
-import { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
+import { Category } from '@core/entities/category'
+import { CategoryGateway } from '@core/gateways/categoryGateway'
+import { UUID } from '@core/types/types'
+import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
+import { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
 
 export class RealCategoryGateway
   extends RealGateway

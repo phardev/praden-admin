@@ -1,5 +1,5 @@
-import { isLocalEnv } from '@utils/env'
 import { InMemoryNavigationMenuGateway } from '@core/usecases/navigation-menu/navigation-menu-get/inMemoryNavigationMenuGateway'
+import { isLocalEnv } from '@utils/env'
 import { fullMenu } from '@utils/testData/navigationMenu'
 
 export const useNavigationMenuGateway = () => {

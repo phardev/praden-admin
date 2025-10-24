@@ -1,5 +1,5 @@
 import { UserProfile } from '@core/entities/userProfile'
-import { adminRole, pharmacistRole, assistantRole } from '@utils/testData/roles'
+import { adminRole, assistantRole, pharmacistRole } from '@utils/testData/roles'
 
 export const adminUserProfile: UserProfile = {
   uuid: 'user-admin',

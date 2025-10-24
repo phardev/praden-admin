@@ -1,13 +1,13 @@
-import { useTicketStore } from '@store/ticketStore'
 import {
+  TicketCustomer,
   TicketMessage,
   TicketMessageAttachment,
-  TicketStatus,
-  TicketPriority,
   TicketMessageType,
-  TicketCustomer
+  TicketPriority,
+  TicketStatus
 } from '@core/entities/ticket'
 import { Timestamp, UUID } from '@core/types/types'
+import { useTicketStore } from '@store/ticketStore'
 
 export interface TicketMessageVM {
   uuid: UUID

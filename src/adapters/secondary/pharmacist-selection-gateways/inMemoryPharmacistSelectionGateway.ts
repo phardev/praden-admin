@@ -1,5 +1,5 @@
-import { PharmacistSelectionGateway } from '@core/gateways/pharmacistSelectionGateway'
 import { PharmacistSelection } from '@core/entities/pharmacistSelection'
+import { PharmacistSelectionGateway } from '@core/gateways/pharmacistSelectionGateway'
 import { UUID } from '@core/types/types'
 
 export class InMemoryPharmacistSelectionGateway

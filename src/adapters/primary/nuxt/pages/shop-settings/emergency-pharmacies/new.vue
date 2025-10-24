@@ -23,10 +23,10 @@
 </template>
 
 <script lang="ts" setup>
+import EmergencyPharmacyForm from '@adapters/primary/nuxt/components/organisms/EmergencyPharmacyForm.vue'
 import { createEmergencyPharmacy } from '@core/usecases/emergency-pharmacies/createEmergencyPharmacy'
 import { useEmergencyPharmacyGateway } from '../../../../../../../gateways/emergencyPharmacyGateway'
 import { useUuidGenerator } from '../../../../../../../gateways/uuidGenerator'
-import EmergencyPharmacyForm from '@adapters/primary/nuxt/components/organisms/EmergencyPharmacyForm.vue'
 
 definePageMeta({ layout: 'main' })
 

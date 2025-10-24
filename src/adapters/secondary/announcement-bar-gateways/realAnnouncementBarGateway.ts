@@ -1,11 +1,11 @@
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
+import { AnnouncementBar } from '@core/entities/announcementBar'
 import {
   AnnouncementBarGateway,
   CreateAnnouncementBarDTO,
   EditAnnouncementBarDTO
 } from '@core/gateways/announcementBarGateway'
-import { AnnouncementBar } from '@core/entities/announcementBar'
-import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { UUID } from '@core/types/types'
 
 export class RealAnnouncementBarGateway

@@ -1,9 +1,9 @@
-import { createPinia, setActivePinia } from 'pinia'
 import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import {
   announcementBar1,
   announcementBar4
 } from '@utils/testData/announcementBars'
+import { createPinia, setActivePinia } from 'pinia'
 import { announcementBarFormVM } from './announcementBarFormVM'
 
 describe('Announcement Bar Form VM', () => {

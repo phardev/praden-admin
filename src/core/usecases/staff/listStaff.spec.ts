@@ -1,10 +1,10 @@
-import { Staff } from '@core/entities/staff'
-import { createPinia, setActivePinia } from 'pinia'
-import { useStaffStore } from '@store/staffStore'
 import { InMemoryStaffGateway } from '@adapters/secondary/staff-gateways/InMemoryStaffGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { Staff } from '@core/entities/staff'
+import { useStaffStore } from '@store/staffStore'
+import { janeDupont, johnDoe, marcMartin } from '@utils/testData/staff'
+import { createPinia, setActivePinia } from 'pinia'
 import { listStaff } from './listStaff'
-import { johnDoe, janeDupont, marcMartin } from '@utils/testData/staff'
 
 describe('List staff', () => {
   let staffStore: any

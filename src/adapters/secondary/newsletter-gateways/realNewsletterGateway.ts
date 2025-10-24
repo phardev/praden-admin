@@ -1,8 +1,8 @@
-import { NewsletterGateway } from '@core/gateways/newsletterGateway'
-import { RealGateway } from '../order-gateways/RealOrderGateway'
-import { NewsletterSubscription } from '@core/entities/newsletterSubscription'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { NewsletterSubscription } from '@core/entities/newsletterSubscription'
+import { NewsletterGateway } from '@core/gateways/newsletterGateway'
 import { SubscribeToNewsletterDTO } from '@core/usecases/newsletter-subscriptions/subscribe-to-newsletter/subscribeToNewsletter'
+import { RealGateway } from '../order-gateways/RealOrderGateway'
 
 export class RealNewsletterGateway
   extends RealGateway

@@ -1,7 +1,7 @@
-import { TicketGateway } from '@core/gateways/TicketGateway'
 import { TicketPriority } from '@core/entities/ticket'
-import { useTicketStore } from '@store/ticketStore'
+import { TicketGateway } from '@core/gateways/TicketGateway'
 import { UUID } from '@core/types/types'
+import { useTicketStore } from '@store/ticketStore'
 
 export const updateTicketPriority = async (
   ticketUuid: UUID,

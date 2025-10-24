@@ -1,5 +1,5 @@
-import { useCustomerStore } from '@store/customerStore'
 import { CustomerGateway } from '@core/gateways/customerGateway'
+import { useCustomerStore } from '@store/customerStore'
 
 export const listCustomers = async (
   limit: number,

@@ -9,8 +9,8 @@
 
 <script lang="ts" setup>
 import { bannerFormCreateVM } from '@adapters/primary/view-models/banners/banner-form/bannerFormCreateVM'
-import { useBannerGateway } from '../../../../../../gateways/bannerGateway'
 import { createBanner } from '@core/usecases/banners/banner-creation/createBanner'
+import { useBannerGateway } from '../../../../../../gateways/bannerGateway'
 
 definePageMeta({ layout: 'main' })
 

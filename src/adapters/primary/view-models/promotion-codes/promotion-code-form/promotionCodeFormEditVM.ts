@@ -1,13 +1,13 @@
+import { PromotionCodeFormFieldsWriter } from '@adapters/primary/view-models/promotion-codes/promotion-code-form/promotionCodeFormCreateVM'
 import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { PromotionCodeFormVM } from './promotionCodeFormVM'
+import { Product } from '@core/entities/product'
+import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
 import {
   ExistingPromotionCodeFormInitializer,
   PromotionCodeFormFieldsReader
 } from './promotionCodeFormGetVM'
-import { PromotionCodeFormFieldsWriter } from '@adapters/primary/view-models/promotion-codes/promotion-code-form/promotionCodeFormCreateVM'
-import { useProductStore } from '@store/productStore'
-import { Product } from '@core/entities/product'
-import { useSearchStore } from '@store/searchStore'
+import { PromotionCodeFormVM } from './promotionCodeFormVM'
 
 export class PromotionCodeFormEditVM extends PromotionCodeFormVM {
   protected readonly key: string

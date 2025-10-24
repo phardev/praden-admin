@@ -1,8 +1,8 @@
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { createPinia, setActivePinia } from 'pinia'
-import { useCategoryStore } from '@store/categoryStore'
 import { getCategoriesVM } from '@adapters/primary/view-models/categories/get-categories/getCategoriesVM'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { useCategoryStore } from '@store/categoryStore'
 import { dents, minceur } from '@utils/testData/categories'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get categories', () => {
   let categoryStore: any

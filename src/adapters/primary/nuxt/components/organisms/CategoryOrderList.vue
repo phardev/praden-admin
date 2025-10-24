@@ -15,9 +15,9 @@
 </template>
 
 <script lang="ts" setup>
-import draggable from 'vuedraggable'
 import CategoryOrderItem from '@adapters/primary/nuxt/components/molecules/CategoryOrderItem.vue'
 import type { Category } from '@core/entities/category'
+import draggable from 'vuedraggable'
 
 const categories = defineModel<Array<Category>>({ required: true })
 

@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
 import { Promotion } from '@core/entities/promotion'
 import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
+import { defineStore } from 'pinia'
 
 const toListItem = (promotion: Promotion): PromotionListItem => {
   const listItem: PromotionListItem = {

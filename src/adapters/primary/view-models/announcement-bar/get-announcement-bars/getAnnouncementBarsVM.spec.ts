@@ -1,12 +1,12 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { setActivePinia, createPinia } from 'pinia'
-import { getAnnouncementBarsVM } from './getAnnouncementBarsVM'
-import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import {
   announcementBar1,
   announcementBar4
 } from '@utils/testData/announcementBars'
+import { createPinia, setActivePinia } from 'pinia'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { getAnnouncementBarsVM } from './getAnnouncementBarsVM'
 
 describe('getAnnouncementBarsVM', () => {
   let dateProvider: FakeDateProvider

@@ -1,7 +1,7 @@
-import * as roles from '@utils/testData/roles'
+import { InMemoryRoleGateway } from '@adapters/secondary/role-gateways/InMemoryRoleGateway'
 import { RealRoleGateway } from '@adapters/secondary/role-gateways/RealRoleGateway'
 import { isLocalEnv } from '@utils/env'
-import { InMemoryRoleGateway } from '@adapters/secondary/role-gateways/InMemoryRoleGateway'
+import * as roles from '@utils/testData/roles'
 import { useUuidGenerator } from './uuidGenerator'
 
 const roleGateway = new InMemoryRoleGateway(useUuidGenerator())

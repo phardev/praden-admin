@@ -1,5 +1,5 @@
-import { useUserProfileStore } from '@store/userProfileStore'
 import { PermissionResource } from '@core/entities/permissionResource'
+import { useUserProfileStore } from '@store/userProfileStore'
 
 export interface GetPermissionsVM {
   canAccessDashboard: boolean

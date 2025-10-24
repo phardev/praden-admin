@@ -1,6 +1,6 @@
-import { CreateCustomerDTO } from '@core/usecases/customers/customer-creation/createCustomer'
-import { UUID } from '@core/types/types'
 import { CustomerGateway } from '@core/gateways/customerGateway'
+import { UUID } from '@core/types/types'
+import { CreateCustomerDTO } from '@core/usecases/customers/customer-creation/createCustomer'
 import { useCustomerStore } from '@store/customerStore'
 
 export type EditCustomerDTO = Partial<CreateCustomerDTO>

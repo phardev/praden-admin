@@ -1,5 +1,5 @@
-import { UUID } from '@core/types/types'
 import { DeliveryGateway } from '@core/gateways/deliveryGateway'
+import { UUID } from '@core/types/types'
 import { useDeliveryStore } from '@store/deliveryStore'
 
 export const markDeliveryAsDelivered = async (

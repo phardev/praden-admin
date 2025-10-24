@@ -1,7 +1,7 @@
-import { useAnnouncementBarStore } from '@store/announcementBarStore'
-import { DateProvider } from '@core/gateways/dateProvider'
 import { isAnnouncementBarInProgress } from '@core/entities/announcementBar'
+import { DateProvider } from '@core/gateways/dateProvider'
 import { Timestamp } from '@core/types/types'
+import { useAnnouncementBarStore } from '@store/announcementBarStore'
 
 export interface GetAnnouncementBarVM {
   uuid: string

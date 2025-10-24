@@ -1,8 +1,8 @@
-import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import { PharmacistSelectionGateway } from '@core/gateways/pharmacistSelectionGateway'
-import { PharmacistSelection } from '@core/entities/pharmacistSelection'
-import { UUID } from '@core/types/types'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
+import { PharmacistSelection } from '@core/entities/pharmacistSelection'
+import { PharmacistSelectionGateway } from '@core/gateways/pharmacistSelectionGateway'
+import { UUID } from '@core/types/types'
 
 export class RealPharmacistSelectionGateway
   extends RealGateway

@@ -1,24 +1,24 @@
 import {
-  ExistingProductFormInitializer,
-  GetProductPromotionVM,
-  ProductFormFieldsReader,
-  ProductFormVM
-} from '@adapters/primary/view-models/products/product-form/productFormGetVM'
-import {
   CreateProductCategoriesVM,
   CreateProductLaboratoriesVM,
   CreateProductLocationsVM,
   ProductFormFieldsWriter
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+import {
+  ExistingProductFormInitializer,
+  GetProductPromotionVM,
+  ProductFormFieldsReader,
+  ProductFormVM
+} from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { useProductStore } from '@store/productStore'
-import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
+import { ProductStatus } from '@core/entities/product'
 import { ReductionType } from '@core/entities/promotion'
 import { UUID } from '@core/types/types'
-import { useLaboratoryStore } from '@store/laboratoryStore'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
-import { ProductStatus } from '@core/entities/product'
+import { useLaboratoryStore } from '@store/laboratoryStore'
+import { useProductStore } from '@store/productStore'
 import { getFileContent } from '@utils/file'
+import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 
 export class ProductFormEditVM extends ProductFormVM {
   private fieldsReader: ProductFormFieldsReader

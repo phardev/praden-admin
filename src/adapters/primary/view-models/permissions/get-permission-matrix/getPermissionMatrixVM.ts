@@ -1,6 +1,6 @@
+import { Role } from '@core/entities/role'
 import { useRoleStore } from '@store/roleStore'
 import { useSystemResourceStore } from '@store/systemResourceStore'
-import { Role } from '@core/entities/role'
 
 export interface PermissionMatrixVM {
   systemResources: Array<string>

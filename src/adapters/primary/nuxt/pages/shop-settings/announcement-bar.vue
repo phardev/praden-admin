@@ -29,13 +29,13 @@
 </template>
 
 <script lang="ts" setup>
+import AnnouncementBarFormModal from '@adapters/primary/nuxt/components/organisms/AnnouncementBarFormModal.vue'
+import AnnouncementBarsList from '@adapters/primary/nuxt/components/organisms/AnnouncementBarsList.vue'
 import { getAnnouncementBarsVM } from '@adapters/primary/view-models/announcement-bar/get-announcement-bars/getAnnouncementBarsVM'
-import { listAnnouncementBars } from '@core/usecases/announcement-bar/list-announcement-bars/listAnnouncementBars'
 import { deleteAnnouncementBar } from '@core/usecases/announcement-bar/announcement-bar-deletion/deleteAnnouncementBar'
+import { listAnnouncementBars } from '@core/usecases/announcement-bar/list-announcement-bars/listAnnouncementBars'
 import { useAnnouncementBarGateway } from '../../../../../../gateways/announcementBarGateway'
 import { useDateProvider } from '../../../../../../gateways/dateProvider'
-import AnnouncementBarsList from '@adapters/primary/nuxt/components/organisms/AnnouncementBarsList.vue'
-import AnnouncementBarFormModal from '@adapters/primary/nuxt/components/organisms/AnnouncementBarFormModal.vue'
 
 definePageMeta({ layout: 'main' })
 

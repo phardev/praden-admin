@@ -2,8 +2,10 @@ import {
   GetPreparationsVM,
   Header
 } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { createPinia, setActivePinia } from 'pinia'
+import { getWaitingPreparationsVM } from '@adapters/primary/view-models/preparations/get-waiting-preparations/getWaitingPreparationsVM'
+import { Stock } from '@core/entities/product'
 import { usePreparationStore } from '@store/preparationStore'
+import { useProductStore } from '@store/productStore'
 import {
   orderInPreparation1,
   orderPrepared1,
@@ -12,10 +14,8 @@ import {
   orderWaitingForClientAnswer2,
   orderWaitingForRestock
 } from '@utils/testData/orders'
-import { Stock } from '@core/entities/product'
 import { chamomilla, dolodent } from '@utils/testData/products'
-import { useProductStore } from '@store/productStore'
-import { getWaitingPreparationsVM } from '@adapters/primary/view-models/preparations/get-waiting-preparations/getWaitingPreparationsVM'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get orders to prepare VM', () => {
   let preparationStore: any

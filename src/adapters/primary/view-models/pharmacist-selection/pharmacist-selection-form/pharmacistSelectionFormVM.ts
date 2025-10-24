@@ -1,7 +1,7 @@
+import { Product } from '@core/entities/product'
+import { useFormStore } from '@store/formStore'
 import { usePharmacistSelectionStore } from '@store/pharmacistSelectionStore'
 import { useProductStore } from '@store/productStore'
-import { useFormStore } from '@store/formStore'
-import { Product } from '@core/entities/product'
 
 export interface ProductForDisplay {
   uuid: string

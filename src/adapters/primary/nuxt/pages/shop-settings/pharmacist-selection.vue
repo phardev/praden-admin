@@ -81,12 +81,12 @@
 </template>
 
 <script lang="ts" setup>
+import PharmacistSelectionManager from '@adapters/primary/nuxt/components/organisms/PharmacistSelectionManager.vue'
+import { pharmacistSelectionFormVM } from '@adapters/primary/view-models/pharmacist-selection/pharmacist-selection-form/pharmacistSelectionFormVM'
 import { getPharmacistSelection } from '@core/usecases/pharmacist-selection/getPharmacistSelection'
 import { updatePharmacistSelection } from '@core/usecases/pharmacist-selection/updatePharmacistSelection'
 import { usePharmacistSelectionGateway } from '../../../../../../gateways/pharmacistSelectionGateway'
 import { useProductGateway } from '../../../../../../gateways/productGateway'
-import { pharmacistSelectionFormVM } from '@adapters/primary/view-models/pharmacist-selection/pharmacist-selection-form/pharmacistSelectionFormVM'
-import PharmacistSelectionManager from '@adapters/primary/nuxt/components/organisms/PharmacistSelectionManager.vue'
 
 definePageMeta({ layout: 'main' })
 

@@ -1,7 +1,7 @@
-import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import { RemindersGateway } from '@core/gateways/remindersGateway'
-import { Reminders } from '@core/entities/reminders'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
+import { Reminders } from '@core/entities/reminders'
+import { RemindersGateway } from '@core/gateways/remindersGateway'
 
 export class RealRemindersGateway
   extends RealGateway

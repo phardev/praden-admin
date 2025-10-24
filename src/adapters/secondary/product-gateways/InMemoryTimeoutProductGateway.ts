@@ -1,10 +1,10 @@
-import { Product } from '@core/entities/product'
-import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
-import { UUID } from '@core/types/types'
-import { UuidGenerator } from '@core/gateways/uuidGenerator'
-import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
-import { Category } from '@core/entities/category'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
+import { Category } from '@core/entities/category'
+import { Product } from '@core/entities/product'
+import { UuidGenerator } from '@core/gateways/uuidGenerator'
+import { UUID } from '@core/types/types'
+import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
+import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 
 export class InMemoryTimeoutProductGateway extends InMemoryProductGateway {
   private readonly timeoutInMs: number

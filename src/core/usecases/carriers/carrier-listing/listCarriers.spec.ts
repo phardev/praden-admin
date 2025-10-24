@@ -1,8 +1,8 @@
 import { InMemoryCarrierGateway } from '@adapters/secondary/carrier-gateways/InMemoryCarrierGateway'
 import { useCarrierStore } from '@store/carrierStore'
-import { setActivePinia, createPinia } from 'pinia'
-import { listCarriers } from './listCarriers'
 import { colissimo, dpd, pharmacy } from '@utils/testData/carriers'
+import { createPinia, setActivePinia } from 'pinia'
+import { listCarriers } from './listCarriers'
 
 describe('Carrier listing', () => {
   let carrierStore: any

@@ -1,18 +1,18 @@
-import { ReductionType } from '@core/entities/promotion'
-import { useFormStore } from '@store/formStore'
-import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import {
   FieldHandler,
   FormFieldsWriter
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import { Product } from '@core/entities/product'
+import { ReductionType } from '@core/entities/promotion'
+import { PromotionScope } from '@core/entities/promotionCode'
+import { UUID } from '@core/types/types'
+import { useFormStore } from '@store/formStore'
+import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
+import { Field } from '../../promotions/promotion-form/promotionFormCreateVM'
 import { PromotionCodeFormFieldsReader } from './promotionCodeFormGetVM'
 import { PromotionCodeFormVM } from './promotionCodeFormVM'
-import { Field } from '../../promotions/promotion-form/promotionFormCreateVM'
-import { PromotionScope } from '@core/entities/promotionCode'
-import { useProductStore } from '@store/productStore'
-import { UUID } from '@core/types/types'
-import { Product } from '@core/entities/product'
-import { useSearchStore } from '@store/searchStore'
 
 export class PromotionCodeFormFieldsWriter extends FormFieldsWriter {
   protected fieldsReader: PromotionCodeFormFieldsReader

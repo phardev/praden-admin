@@ -1,7 +1,7 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useStatsStore } from '@store/statsStore'
-import { getRemindersVM } from './getRemindersVM'
 import { Reminders } from '@core/entities/reminders'
+import { useStatsStore } from '@store/statsStore'
+import { createPinia, setActivePinia } from 'pinia'
+import { getRemindersVM } from './getRemindersVM'
 
 describe('getRemindersVM', () => {
   let statsStore: any

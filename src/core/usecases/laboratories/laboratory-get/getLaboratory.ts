@@ -1,6 +1,6 @@
+import { ProductGateway } from '@core/gateways/productGateway'
 import { UUID } from '@core/types/types'
 import { useLaboratoryStore } from '@store/laboratoryStore'
-import { ProductGateway } from '@core/gateways/productGateway'
 import { LaboratoryGateway } from '../../../gateways/laboratoryGateway'
 
 export const getLaboratory = async (

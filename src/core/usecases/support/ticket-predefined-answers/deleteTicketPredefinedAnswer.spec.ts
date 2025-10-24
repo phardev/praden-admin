@@ -1,14 +1,14 @@
-import { createPinia, setActivePinia } from 'pinia'
 import { InMemoryTicketPredefinedAnswerGateway } from '@adapters/secondary/ticket-predefined-answer-gateways/InMemoryTicketPredefinedAnswerGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { TicketPredefinedAnswer } from '@core/entities/ticketPredefinedAnswer'
-import {
-  thankYouAnswer,
-  orderShippedAnswer,
-  problemResolvedAnswer
-} from '@utils/testData/ticketPredefinedAnswers'
 import { TicketPredefinedAnswerDoesNotExistsError } from '@core/errors/TicketPredefinedAnswerDoesNotExistsError'
 import { useTicketPredefinedAnswerStore } from '@store/ticketPredefinedAnswerStore'
+import {
+  orderShippedAnswer,
+  problemResolvedAnswer,
+  thankYouAnswer
+} from '@utils/testData/ticketPredefinedAnswers'
+import { createPinia, setActivePinia } from 'pinia'
 import { deleteTicketPredefinedAnswer } from './deleteTicketPredefinedAnswer'
 
 describe('Delete ticket predefined answer', () => {

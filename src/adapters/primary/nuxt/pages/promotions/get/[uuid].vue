@@ -9,8 +9,8 @@
 </template>
 
 <script lang="ts" setup>
-import { getPromotion } from '@core/usecases/promotions/promotion-get/getPromotion'
 import { promotionFormGetVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
+import { getPromotion } from '@core/usecases/promotions/promotion-get/getPromotion'
 import { usePromotionGateway } from '../../../../../../../gateways/promotionGateway'
 
 definePageMeta({ layout: 'main' })

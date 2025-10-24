@@ -1,16 +1,16 @@
-import { usePreparationStore } from '@store/preparationStore'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { Delivery } from '@core/entities/delivery'
 import {
-  OrderLineStatus,
   Message,
   MessageContent,
   Order,
-  OrderLine
+  OrderLine,
+  OrderLineStatus
 } from '@core/entities/order'
-import { timestampToLocaleString } from '@utils/formatters'
 import { HashTable } from '@core/types/types'
 import { PreparationError } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
-import { Delivery } from '@core/entities/delivery'
+import { usePreparationStore } from '@store/preparationStore'
+import { timestampToLocaleString } from '@utils/formatters'
 
 export enum PreparationStatus {
   NotPrepared,

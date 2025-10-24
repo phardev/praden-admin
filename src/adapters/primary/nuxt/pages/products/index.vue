@@ -51,20 +51,20 @@
 </template>
 
 <script lang="ts" setup>
-import { listProducts } from '@core/usecases/product/product-listing/listProducts'
-import { useProductGateway } from '../../../../../../gateways/productGateway'
 import { getProductsVM } from '@adapters/primary/view-models/products/get-products/getProductsVM'
+import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
+import { listProducts } from '@core/usecases/product/product-listing/listProducts'
+import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
 import { useCategoryStore } from '@store/categoryStore'
 import { dents, diarrhee } from '@utils/testData/categories'
-import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
-import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
-import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
-import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 import InfiniteLoading from 'v3-infinite-loading'
+import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
+import { useProductGateway } from '../../../../../../gateways/productGateway'
+import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 import 'v3-infinite-loading/lib/style.css'
 import { ProductStatus } from '@core/entities/product'
-import { useSelection } from '../../composables/useSelection'
 import { bulkEditProduct } from '@core/usecases/product/product-edition/bulkEditProduct'
+import { useSelection } from '../../composables/useSelection'
 
 definePageMeta({ layout: 'main' })
 

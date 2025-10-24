@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
 import { NavigationMenu } from '@core/usecases/navigation-menu/navigation-menu-get/navigationMenu'
+import { defineStore } from 'pinia'
 
 export const useNavigationMenuStore = defineStore('NavigationMenuStore', {
   state: () => {

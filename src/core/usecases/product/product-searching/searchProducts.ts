@@ -1,7 +1,7 @@
-import { useSearchStore } from '@store/searchStore'
-import { useProductStore } from '@store/productStore'
-import { SearchGateway } from '@core/gateways/searchGateway'
 import { ProductStatus } from '@core/entities/product'
+import { SearchGateway } from '@core/gateways/searchGateway'
+import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
 
 export interface SearchProductsFilters {
   query?: string

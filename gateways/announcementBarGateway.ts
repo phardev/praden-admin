@@ -1,5 +1,5 @@
-import { RealAnnouncementBarGateway } from '@adapters/secondary/announcement-bar-gateways/realAnnouncementBarGateway'
 import { InMemoryAnnouncementBarGateway } from '@adapters/secondary/announcement-bar-gateways/inMemoryAnnouncementBarGateway'
+import { RealAnnouncementBarGateway } from '@adapters/secondary/announcement-bar-gateways/realAnnouncementBarGateway'
 import { isLocalEnv } from '@utils/env'
 import * as announcementBars from '@utils/testData/announcementBars'
 import { useUuidGenerator } from './uuidGenerator'

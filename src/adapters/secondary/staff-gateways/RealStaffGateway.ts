@@ -1,12 +1,12 @@
-import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import {
-  StaffGateway,
-  CreateStaffDTO,
-  EditStaffDTO
-} from '@core/gateways/staffGateway'
-import { Staff } from '@core/entities/staff'
-import { UUID } from '@core/types/types'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
+import { Staff } from '@core/entities/staff'
+import {
+  CreateStaffDTO,
+  EditStaffDTO,
+  StaffGateway
+} from '@core/gateways/staffGateway'
+import { UUID } from '@core/types/types'
 
 export class RealStaffGateway extends RealGateway implements StaffGateway {
   constructor(baseUrl: string) {

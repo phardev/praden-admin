@@ -1,14 +1,14 @@
-import { createPinia, setActivePinia } from 'pinia'
+import {
+  GetEmergencyPharmaciesVM,
+  getEmergencyPharmaciesVM
+} from '@adapters/primary/view-models/emergency-pharmacies/getEmergencyPharmaciesVM'
 import { useEmergencyPharmacyStore } from '@store/emergencyPharmacyStore'
 import {
   emergencyPharmacy1,
   emergencyPharmacy2,
   emergencyPharmacy3
 } from '@utils/testData/emergencyPharmacies'
-import {
-  getEmergencyPharmaciesVM,
-  GetEmergencyPharmaciesVM
-} from '@adapters/primary/view-models/emergency-pharmacies/getEmergencyPharmaciesVM'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get emergency pharmacies VM', () => {
   let emergencyPharmacyStore: any

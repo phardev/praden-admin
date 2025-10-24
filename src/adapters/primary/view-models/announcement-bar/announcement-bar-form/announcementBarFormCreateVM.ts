@@ -1,11 +1,11 @@
-import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { FormFieldsWriter } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import {
   FormFieldsReader,
   FormInitializer
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
-import { useFormStore } from '@store/formStore'
-import { FormFieldsWriter } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import type { CreateAnnouncementBarDTO } from '@core/gateways/announcementBarGateway'
+import { useFormStore } from '@store/formStore'
 
 export class AnnouncementBarFormFieldsWriter extends FormFieldsWriter {
   constructor(key: string) {

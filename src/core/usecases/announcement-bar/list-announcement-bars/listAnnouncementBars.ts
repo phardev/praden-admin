@@ -1,5 +1,5 @@
-import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import type { AnnouncementBarGateway } from '@core/gateways/announcementBarGateway'
+import { useAnnouncementBarStore } from '@store/announcementBarStore'
 
 export const listAnnouncementBars = async (
   announcementBarGateway: AnnouncementBarGateway

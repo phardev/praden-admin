@@ -1,5 +1,5 @@
-import { LocationGateway } from '@core/gateways/locationGateway'
 import { Location } from '@core/entities/location'
+import { LocationGateway } from '@core/gateways/locationGateway'
 
 export class InMemoryLocationGateway implements LocationGateway {
   private locations: Array<Location> = []

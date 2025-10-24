@@ -1,9 +1,9 @@
-import * as staff from '@utils/testData/staff'
-import * as roles from '@utils/testData/roles'
-import { RealStaffGateway } from '@adapters/secondary/staff-gateways/RealStaffGateway'
-import { isLocalEnv } from '@utils/env'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { InMemoryStaffGateway } from '@adapters/secondary/staff-gateways/InMemoryStaffGateway'
+import { RealStaffGateway } from '@adapters/secondary/staff-gateways/RealStaffGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { isLocalEnv } from '@utils/env'
+import * as roles from '@utils/testData/roles'
+import * as staff from '@utils/testData/staff'
 
 const uuidGenerator = new FakeUuidGenerator()
 uuidGenerator.setNext('new-uuid')

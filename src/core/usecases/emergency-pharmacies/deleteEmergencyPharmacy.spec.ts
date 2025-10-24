@@ -1,12 +1,12 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { deleteEmergencyPharmacy } from '@core/usecases/emergency-pharmacies/deleteEmergencyPharmacy'
 import { InMemoryEmergencyPharmacyGateway } from '@adapters/secondary/emergency-pharmacy-gateways/inMemoryEmergencyPharmacyGateway'
-import { useEmergencyPharmacyStore } from '@store/emergencyPharmacyStore'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { deleteEmergencyPharmacy } from '@core/usecases/emergency-pharmacies/deleteEmergencyPharmacy'
+import { useEmergencyPharmacyStore } from '@store/emergencyPharmacyStore'
 import {
   emergencyPharmacy1,
   emergencyPharmacy2
 } from '@utils/testData/emergencyPharmacies'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('EmergencyPharmacy deletion', () => {
   let emergencyPharmacyStore: any

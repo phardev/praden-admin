@@ -1,27 +1,26 @@
+import { InMemoryCustomerGateway } from '@adapters/secondary/customer-gateways/inMemoryCustomerGateway'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { Customer } from '@core/entities/customer'
+import { Order } from '@core/entities/order'
+import { CustomerDoesNotExistsError } from '@core/errors/CustomerDoesNotExistsError'
 import { UUID } from '@core/types/types'
-import { createPinia, setActivePinia } from 'pinia'
+import { getCustomer } from '@core/usecases/customers/customer-get/getCustomer'
 import { useCustomerStore } from '@store/customerStore'
+import { useOrderStore } from '@store/orderStore'
 import {
   elodieDurand,
   lucasLefevre,
   sophieMartinez
 } from '@utils/testData/customers'
-
-import { InMemoryCustomerGateway } from '@adapters/secondary/customer-gateways/inMemoryCustomerGateway'
-import { getCustomer } from '@core/usecases/customers/customer-get/getCustomer'
-import { CustomerDoesNotExistsError } from '@core/errors/CustomerDoesNotExistsError'
-import { Customer } from '@core/entities/customer'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { useOrderStore } from '@store/orderStore'
 import {
   elodieDurandOrder1,
   elodieDurandOrder2,
   lucasLefevreOrder1,
   lucasLefevreOrder2
 } from '@utils/testData/orders'
-import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
-import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
-import { Order } from '@core/entities/order'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get customer', () => {
   let customerStore: any

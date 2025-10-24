@@ -1,6 +1,6 @@
 import { EmergencyPharmacyGateway } from '@core/gateways/emergencyPharmacyGateway'
-import { useEmergencyPharmacyStore } from '@store/emergencyPharmacyStore'
 import { UUID } from '@core/types/types'
+import { useEmergencyPharmacyStore } from '@store/emergencyPharmacyStore'
 
 export const deleteEmergencyPharmacy = async (
   uuid: UUID,

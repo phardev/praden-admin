@@ -1,13 +1,13 @@
 import { InMemoryBannerGateway } from '@adapters/secondary/banner-gateways/inMemoryBannerGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { useBannerStore } from '@store/bannerStore'
 import { Banner } from '@core/entities/banner'
 import {
-  createBanner,
-  CreateBannerDTO
+  CreateBannerDTO,
+  createBanner
 } from '@core/usecases/banners/banner-creation/createBanner'
-import { createPinia, setActivePinia } from 'pinia'
+import { useBannerStore } from '@store/bannerStore'
 import { banner1, banner2 } from '@utils/testData/banners'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Create banner', () => {
   let bannerGateway: InMemoryBannerGateway

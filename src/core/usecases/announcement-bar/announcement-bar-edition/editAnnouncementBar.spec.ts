@@ -1,18 +1,18 @@
 import { InMemoryAnnouncementBarGateway } from '@adapters/secondary/announcement-bar-gateways/inMemoryAnnouncementBarGateway'
-import { createPinia, setActivePinia } from 'pinia'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { AnnouncementBar } from '@core/entities/announcementBar'
+import { UUID } from '@core/types/types'
+import {
+  EditAnnouncementBarDTO,
+  editAnnouncementBar
+} from '@core/usecases/announcement-bar/announcement-bar-edition/editAnnouncementBar'
 import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import {
   announcementBar1,
   announcementBar2,
   announcementBar3
 } from '@utils/testData/announcementBars'
-import { AnnouncementBar } from '@core/entities/announcementBar'
-import { UUID } from '@core/types/types'
-import {
-  editAnnouncementBar,
-  EditAnnouncementBarDTO
-} from '@core/usecases/announcement-bar/announcement-bar-edition/editAnnouncementBar'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('AnnouncementBar Edition', () => {
   let announcementBarGateway: InMemoryAnnouncementBarGateway

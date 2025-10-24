@@ -1,14 +1,14 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
 import { useNewsletterStore } from '@store/newsletterStore'
-import {
-  getNewsletterSubscriptionsVM,
-  GetNewsletterSubscriptionsVM
-} from './getNewsletterSubscriptionsVM'
 import {
   elodieDurandNewsletterSubscription,
   guestNewsletterSubscription
 } from '@utils/testData/newsletterSubscriptions'
+import { createPinia, setActivePinia } from 'pinia'
+import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
+import {
+  GetNewsletterSubscriptionsVM,
+  getNewsletterSubscriptionsVM
+} from './getNewsletterSubscriptionsVM'
 
 describe('Get products VM', () => {
   let newsletterStore: any

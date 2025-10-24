@@ -1,22 +1,22 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { usePromotionStore } from '@store/promotionStore'
-import {
-  PromotionFormGetVM,
-  promotionFormGetVM
-} from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
-import { useFormStore } from '@store/formStore'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import {
   Field,
   PromotionProductItemVM,
   TypeChoiceVM
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import {
+  PromotionFormGetVM,
+  promotionFormGetVM
+} from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
 import { Promotion, ReductionType } from '@core/entities/promotion'
+import { useFormStore } from '@store/formStore'
+import { usePromotionStore } from '@store/promotionStore'
+import { anaca3Minceur, dolodent, ultraLevure } from '@utils/testData/products'
 import {
   promotionFixedMultipleProducts,
   promotionPercentageDolodent
 } from '@utils/testData/promotions'
-import { anaca3Minceur, dolodent, ultraLevure } from '@utils/testData/products'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { createPinia, setActivePinia } from 'pinia'
 
 const anaca3VM: PromotionProductItemVM = {
   uuid: anaca3Minceur.uuid,

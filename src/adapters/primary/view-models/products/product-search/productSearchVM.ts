@@ -1,6 +1,6 @@
-import { useSearchStore } from '@store/searchStore'
-import { useProductStore } from '@store/productStore'
 import { Product } from '@core/entities/product'
+import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
 import { priceFormatter } from '@utils/formatters'
 
 export interface ProductSearchItemVM {

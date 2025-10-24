@@ -1,5 +1,5 @@
-import { usePharmacistSelectionStore } from '@store/pharmacistSelectionStore'
 import { UUID } from '@core/types/types'
+import { usePharmacistSelectionStore } from '@store/pharmacistSelectionStore'
 
 export interface GetPharmacistSelectionVM {
   productUuids: Array<UUID>

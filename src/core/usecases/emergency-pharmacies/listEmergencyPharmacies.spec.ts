@@ -1,13 +1,13 @@
-import { createPinia, setActivePinia } from 'pinia'
+import { InMemoryEmergencyPharmacyGateway } from '@adapters/secondary/emergency-pharmacy-gateways/inMemoryEmergencyPharmacyGateway'
 import { EmergencyPharmacy } from '@core/entities/emergencyPharmacy'
 import { listEmergencyPharmacies } from '@core/usecases/emergency-pharmacies/listEmergencyPharmacies'
-import { InMemoryEmergencyPharmacyGateway } from '@adapters/secondary/emergency-pharmacy-gateways/inMemoryEmergencyPharmacyGateway'
 import { useEmergencyPharmacyStore } from '@store/emergencyPharmacyStore'
 import {
   emergencyPharmacy1,
   emergencyPharmacy2,
   emergencyPharmacy3
 } from '@utils/testData/emergencyPharmacies'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('EmergencyPharmacies list', () => {
   let emergencyPharmacyStore: ReturnType<typeof useEmergencyPharmacyStore>

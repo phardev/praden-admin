@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia'
 import { Order } from '@core/entities/order'
 import { UUID } from '@core/types/types'
 import { PreparationError } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
+import { defineStore } from 'pinia'
 
 export const usePreparationStore = defineStore('PreparationStore', {
   state: () => {

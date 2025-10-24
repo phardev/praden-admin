@@ -1,8 +1,8 @@
 import { NewsletterSubscription } from '@core/entities/newsletterSubscription'
-import { NewsletterGateway } from '../../../core/gateways/newsletterGateway'
-import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { DateProvider } from '@core/gateways/dateProvider'
+import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { SubscribeToNewsletterDTO } from '@core/usecases/newsletter-subscriptions/subscribe-to-newsletter/subscribeToNewsletter'
+import { NewsletterGateway } from '../../../core/gateways/newsletterGateway'
 
 export class InMemoryNewsletterGateway implements NewsletterGateway {
   private subscriptions: Array<NewsletterSubscription> = []

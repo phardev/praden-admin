@@ -1,6 +1,5 @@
-import { UUID } from '@core/types/types'
-
 import { Customer } from '@core/entities/customer'
+import { UUID } from '@core/types/types'
 import { CreateCustomerDTO } from '@core/usecases/customers/customer-creation/createCustomer'
 import { EditCustomerDTO } from '@core/usecases/customers/customer-edition/editCustomer'
 

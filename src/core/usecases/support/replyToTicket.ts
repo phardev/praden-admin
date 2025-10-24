@@ -1,6 +1,6 @@
 import { TicketGateway } from '@core/gateways/ticketGateway'
-import { useTicketStore } from '@store/ticketStore'
 import { UUID } from '@core/types/types'
+import { useTicketStore } from '@store/ticketStore'
 
 export const replyToTicket = async (
   ticketUuid: UUID,

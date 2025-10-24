@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
 import { HashTable } from '@core/types/types'
+import { defineStore } from 'pinia'
 
 export const useFormStore = defineStore('FormStore', {
   state: () => {

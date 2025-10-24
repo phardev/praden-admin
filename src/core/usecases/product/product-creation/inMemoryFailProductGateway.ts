@@ -3,8 +3,8 @@ import { Product } from '@core/entities/product'
 import { ProductGateway } from '@core/gateways/productGateway'
 import { UUID } from '@core/types/types'
 import { EditProductDTO } from '../product-edition/editProduct'
-import { CreateProductDTO } from './createProduct'
 import { ProductListItem } from '../product-listing/productListItem'
+import { CreateProductDTO } from './createProduct'
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 

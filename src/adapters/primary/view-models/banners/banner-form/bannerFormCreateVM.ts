@@ -1,15 +1,15 @@
-import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import {
-  FormFieldsReader,
-  FormInitializer
-} from '@adapters/primary/view-models/products/product-form/productFormGetVM'
-import { useFormStore } from '@store/formStore'
 import {
   FieldHandler,
   FormFieldsWriter
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
-import { getFileContent } from '@utils/file'
+import {
+  FormFieldsReader,
+  FormInitializer
+} from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { CreateBannerDTO } from '@core/usecases/banners/banner-creation/createBanner'
+import { useFormStore } from '@store/formStore'
+import { getFileContent } from '@utils/file'
 
 export class BannerFormFieldsWriter extends FormFieldsWriter {
   private readonly fieldHandlers: Record<string, FieldHandler>

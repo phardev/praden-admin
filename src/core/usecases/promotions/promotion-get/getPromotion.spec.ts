@@ -1,11 +1,11 @@
-import { usePromotionStore } from '@store/promotionStore'
 import { InMemoryPromotionGateway } from '@adapters/secondary/promotion-gateways/InMemoryPromotionGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { promotionFixedMultipleProducts } from '@utils/testData/promotions'
-import { UUID } from '@core/types/types'
-import { createPinia, setActivePinia } from 'pinia'
-import { getPromotion } from '@core/usecases/promotions/promotion-get/getPromotion'
 import { PromotionDoesNotExistsError } from '@core/errors/PromotionDoesNotExistsError'
+import { UUID } from '@core/types/types'
+import { getPromotion } from '@core/usecases/promotions/promotion-get/getPromotion'
+import { usePromotionStore } from '@store/promotionStore'
+import { promotionFixedMultipleProducts } from '@utils/testData/promotions'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get promotion', () => {
   let promotionStore: any

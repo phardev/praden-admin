@@ -1,13 +1,13 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useStaffStore } from '@store/staffStore'
 import { getStaffVM } from '@adapters/primary/view-models/staff/get-staff/getStaffVM'
+import { useStaffStore } from '@store/staffStore'
 import {
-  johnDoe,
-  janeDupont,
-  marcMartin,
   emailOnlyStaff,
-  firstnameOnlyStaff
+  firstnameOnlyStaff,
+  janeDupont,
+  johnDoe,
+  marcMartin
 } from '@utils/testData/staff'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get staff VM', () => {
   let staffStore: any

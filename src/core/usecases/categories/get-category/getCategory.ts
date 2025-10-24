@@ -1,5 +1,5 @@
-import { UUID } from '@core/types/types'
 import { CategoryGateway } from '@core/gateways/categoryGateway'
+import { UUID } from '@core/types/types'
 import { useCategoryStore } from '@store/categoryStore'
 
 export const getCategory = async (

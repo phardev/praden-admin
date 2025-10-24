@@ -1,6 +1,3 @@
-import { DateProvider } from '@core/gateways/dateProvider'
-import { HashTable, Timestamp } from '@core/types/types'
-import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import {
   AnnouncementBar,
   isAnnouncementBarEnded,
@@ -8,6 +5,9 @@ import {
   isAnnouncementBarStarted,
   sortByOrder
 } from '@core/entities/announcementBar'
+import { DateProvider } from '@core/gateways/dateProvider'
+import { HashTable, Timestamp } from '@core/types/types'
+import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import { timestampToLocaleString } from '@utils/formatters'
 
 export interface GetAnnouncementBarsItemVM {

@@ -1,5 +1,5 @@
-import { Address, Contact } from './order'
 import { UUID } from '@core/types/types'
+import { Address, Contact } from './order'
 
 export interface Shop {
   uuid: UUID

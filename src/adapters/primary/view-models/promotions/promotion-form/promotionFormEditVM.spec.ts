@@ -1,34 +1,34 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useFormStore } from '@store/formStore'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import {
+  Field,
+  PromotionProductItemVM,
+  TypeChoiceVM
+} from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import {
   PromotionFormEditVM,
   promotionFormEditVM
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormEditVM'
+import { Product } from '@core/entities/product'
 import {
   CreatePromotionDTO,
   Promotion,
   ReductionType
 } from '@core/entities/promotion'
+import { useFormStore } from '@store/formStore'
+import { useProductStore } from '@store/productStore'
+import { usePromotionStore } from '@store/promotionStore'
+import { useSearchStore } from '@store/searchStore'
 import {
   anaca3Minceur,
   calmosine,
   dolodent,
   ultraLevure
 } from '@utils/testData/products'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { Product } from '@core/entities/product'
-import { useProductStore } from '@store/productStore'
-import { useSearchStore } from '@store/searchStore'
-import {
-  Field,
-  PromotionProductItemVM,
-  TypeChoiceVM
-} from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { usePromotionStore } from '@store/promotionStore'
 import {
   promotionFixedMultipleProducts,
   promotionPercentageDolodent
 } from '@utils/testData/promotions'
+import { createPinia, setActivePinia } from 'pinia'
 
 const anaca3VM: PromotionProductItemVM = {
   uuid: anaca3Minceur.uuid,

@@ -1,6 +1,6 @@
-import { StaffGateway, EditStaffDTO } from '@core/gateways/staffGateway'
-import { useStaffStore } from '@store/staffStore'
+import { EditStaffDTO, StaffGateway } from '@core/gateways/staffGateway'
 import { UUID } from '@core/types/types'
+import { useStaffStore } from '@store/staffStore'
 
 export const editStaff = async (
   uuid: UUID,

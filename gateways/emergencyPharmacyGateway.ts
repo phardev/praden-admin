@@ -1,7 +1,7 @@
-import { RealEmergencyPharmacyGateway } from '@adapters/secondary/emergency-pharmacy-gateways/realEmergencyPharmacyGateway'
 import { InMemoryEmergencyPharmacyGateway } from '@adapters/secondary/emergency-pharmacy-gateways/inMemoryEmergencyPharmacyGateway'
-import { isLocalEnv } from '@utils/env'
+import { RealEmergencyPharmacyGateway } from '@adapters/secondary/emergency-pharmacy-gateways/realEmergencyPharmacyGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { isLocalEnv } from '@utils/env'
 import * as emergencyPharmacies from '@utils/testData/emergencyPharmacies'
 
 const uuidGenerator = new FakeUuidGenerator()

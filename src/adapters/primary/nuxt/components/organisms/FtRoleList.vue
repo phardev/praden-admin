@@ -52,8 +52,8 @@
 </template>
 
 <script setup lang="ts">
-import draggable from 'vuedraggable'
 import { reorderRoles } from '@core/usecases/roles/roles-reorder/reorderRoles'
+import draggable from 'vuedraggable'
 import { useRoleGateway } from '~/gateways/roleGateway'
 
 interface RoleItem {

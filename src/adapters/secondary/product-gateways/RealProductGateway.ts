@@ -1,11 +1,11 @@
-import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import { ProductGateway } from '@core/gateways/productGateway'
-import { Product } from '@core/entities/product'
-import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
-import { UUID } from '@core/types/types'
-import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
-import { Category } from '@core/entities/category'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
+import { Category } from '@core/entities/category'
+import { Product } from '@core/entities/product'
+import { ProductGateway } from '@core/gateways/productGateway'
+import { UUID } from '@core/types/types'
+import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
+import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 
 export class RealProductGateway extends RealGateway implements ProductGateway {

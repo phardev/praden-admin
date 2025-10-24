@@ -1,5 +1,5 @@
-import { UUID } from '@core/types/types'
 import type { AnnouncementBarGateway } from '@core/gateways/announcementBarGateway'
+import { UUID } from '@core/types/types'
 import { useAnnouncementBarStore } from '@store/announcementBarStore'
 
 export const deleteAnnouncementBar = async (

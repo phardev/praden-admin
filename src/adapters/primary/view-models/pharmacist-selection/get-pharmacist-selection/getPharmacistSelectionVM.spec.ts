@@ -1,8 +1,8 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
-import { usePharmacistSelectionStore } from '@store/pharmacistSelectionStore'
 import { getPharmacistSelectionVM } from '@adapters/primary/view-models/pharmacist-selection/get-pharmacist-selection/getPharmacistSelectionVM'
+import { usePharmacistSelectionStore } from '@store/pharmacistSelectionStore'
 import { pharmacistSelection1 } from '@utils/testData/pharmacistSelections'
+import { createPinia, setActivePinia } from 'pinia'
+import { beforeEach, describe, expect, it } from 'vitest'
 
 describe('GetPharmacistSelectionVM', () => {
   let pharmacistSelectionStore: ReturnType<typeof usePharmacistSelectionStore>

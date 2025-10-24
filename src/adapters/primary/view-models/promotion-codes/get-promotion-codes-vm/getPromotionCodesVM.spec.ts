@@ -1,13 +1,13 @@
-import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { createPinia, setActivePinia } from 'pinia'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { usePromotionCodeStore } from '@store/promotionCodeStore'
-import { getPromotionCodesVM, GetPromotionCodesVM } from './getPromotionCodesVM'
 import {
   fifteenPercentIfMiniumAmountPromotionCode,
   limitedInTimePromotionCode,
   tenEuroFixedPromotionCode
 } from '@utils/testData/promotionCodes'
+import { createPinia, setActivePinia } from 'pinia'
+import { GetPromotionCodesVM, getPromotionCodesVM } from './getPromotionCodesVM'
 
 describe('Get promotion codes VM', () => {
   let promotionCodeStore: any

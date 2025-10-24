@@ -1,6 +1,6 @@
 import { PharmacistSelectionGateway } from '@core/gateways/pharmacistSelectionGateway'
-import { usePharmacistSelectionStore } from '@store/pharmacistSelectionStore'
 import { UUID } from '@core/types/types'
+import { usePharmacistSelectionStore } from '@store/pharmacistSelectionStore'
 
 export const updatePharmacistSelection = async (
   productUuids: Array<UUID>,

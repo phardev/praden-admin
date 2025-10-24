@@ -1,8 +1,8 @@
 import { useTicketStore } from '@store/ticketStore'
-import { getOrderTicketsVM } from './getOrderTicketsVM'
-import { createPinia, setActivePinia } from 'pinia'
-import { newTicket, urgentTicket } from '@utils/testData/tickets'
 import { orderToPrepare1 } from '@utils/testData/orders'
+import { newTicket, urgentTicket } from '@utils/testData/tickets'
+import { createPinia, setActivePinia } from 'pinia'
+import { getOrderTicketsVM } from './getOrderTicketsVM'
 
 describe('Get order tickets view model', () => {
   let ticketStore: any

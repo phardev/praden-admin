@@ -1,7 +1,7 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useSystemResourceStore } from '@store/systemResourceStore'
 import { getSystemResourcesVM } from '@adapters/primary/view-models/system-resources/get-system-resources/getSystemResourcesVM'
+import { useSystemResourceStore } from '@store/systemResourceStore'
 import { systemResources } from '@utils/testData/systemResources'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get system resources view model', () => {
   let systemResourceStore: any

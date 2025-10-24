@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { getToken } from '@adapters/primary/nuxt/utils/keycloak'
+import axios from 'axios'
 
 export const axiosWithBearer = axios.create({
   timeout: 30000

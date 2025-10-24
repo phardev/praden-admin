@@ -70,21 +70,21 @@ tab-group.border-b.border-gray-200.mt-4(as="div")
 </template>
 
 <script lang="ts" setup>
-import { listOrdersToPrepare } from '@core/usecases/order/orders-to-prepare-listing/listOrdersToPrepare'
-import { getSelectedPreparationsVM } from '@adapters/primary/view-models/preparations/get-selected-preparations/getSelectedPreparationsVM'
-import { toggleSelectPreparation } from '@core/usecases/order/toggle-select-preparation/toggleSelectPreparation'
-import { toggleSelectAllPreparations } from '@core/usecases/order/toggle-select-all-preparations/toggleSelectAllPreparations'
-import { startPreparations } from '@core/usecases/order/start-preparations/startPreparations'
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
-import { resetPreparationSelection } from '@core/usecases/order/reset-preparation-selection/resetPreparationSelection'
-import { useProductGateway } from '../../../../../../gateways/productGateway'
-import { useOrderGateway } from '../../../../../../gateways/orderGateway'
-import { useEmailGateway } from '../../../../../../gateways/emailGateway'
-import { listLocations } from '@core/usecases/locations/location-listing/listLocations'
-import { useLocationGateway } from '../../../../../../gateways/locationGateway'
-import PreparationsGauge from '../molecules/PreparationsGauge.vue'
 import { getPreparationsGaugeVM } from '@adapters/primary/view-models/preparations/get-preparations-gauge/getPreparationsGaugeVM'
+import { getSelectedPreparationsVM } from '@adapters/primary/view-models/preparations/get-selected-preparations/getSelectedPreparationsVM'
+import { listLocations } from '@core/usecases/locations/location-listing/listLocations'
+import { listOrdersToPrepare } from '@core/usecases/order/orders-to-prepare-listing/listOrdersToPrepare'
+import { resetPreparationSelection } from '@core/usecases/order/reset-preparation-selection/resetPreparationSelection'
+import { startPreparations } from '@core/usecases/order/start-preparations/startPreparations'
+import { toggleSelectAllPreparations } from '@core/usecases/order/toggle-select-all-preparations/toggleSelectAllPreparations'
+import { toggleSelectPreparation } from '@core/usecases/order/toggle-select-preparation/toggleSelectPreparation'
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
 import { useDateProvider } from '../../../../../../gateways/dateProvider'
+import { useEmailGateway } from '../../../../../../gateways/emailGateway'
+import { useLocationGateway } from '../../../../../../gateways/locationGateway'
+import { useOrderGateway } from '../../../../../../gateways/orderGateway'
+import { useProductGateway } from '../../../../../../gateways/productGateway'
+import PreparationsGauge from '../molecules/PreparationsGauge.vue'
 
 const gaugeVm = computed(() => getPreparationsGaugeVM(useDateProvider()))
 

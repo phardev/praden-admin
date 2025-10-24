@@ -1,7 +1,7 @@
-import { getDashboard } from '@core/usecases/dashboard/get-dashboard/getDashboard'
 import { getDashboardVM } from '@adapters/primary/view-models/dashboard/get-dashboard/getDashboardVM'
-import { useDashboardGateway } from '../../../../../gateways/dashBoardGateway'
 import { DashboardParams } from '@core/gateways/dashboardGateway'
+import { getDashboard } from '@core/usecases/dashboard/get-dashboard/getDashboard'
+import { useDashboardGateway } from '../../../../../gateways/dashBoardGateway'
 
 export const useDashboardData = () => {
   const isLoading = ref(false)

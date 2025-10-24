@@ -1,11 +1,11 @@
-import { Category } from '@core/entities/category'
 import { InMemoryCategoryGateway } from '@adapters/secondary/category-gateways/inMemoryCategoryGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { createPinia, setActivePinia } from 'pinia'
-import { useCategoryStore } from '@store/categoryStore'
-import { dents, mum, baby } from '@utils/testData/categories'
-import { reorderCategories } from '@core/usecases/categories-reorder/reorderCategories'
+import { Category } from '@core/entities/category'
 import { UUID } from '@core/types/types'
+import { reorderCategories } from '@core/usecases/categories-reorder/reorderCategories'
+import { useCategoryStore } from '@store/categoryStore'
+import { baby, dents, mum } from '@utils/testData/categories'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Categories reorder', () => {
   let categoryGateway: InMemoryCategoryGateway

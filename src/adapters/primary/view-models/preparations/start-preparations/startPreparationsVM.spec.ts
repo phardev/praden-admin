@@ -1,10 +1,14 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { usePreparationStore } from '@store/preparationStore'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import {
   PickingSortType,
   StartPreparationsVM,
   startPreparationsVM
 } from '@adapters/primary/view-models/preparations/start-preparations/startPreparationsVM'
+import { Location } from '@core/entities/location'
+import { useLocationStore } from '@store/locationStore'
+import { usePreparationStore } from '@store/preparationStore'
+import { useSettingStore } from '@store/settingStore'
+import { reserve, zoneGeo } from '@utils/testData/locations'
 import {
   orderToPrepare1,
   orderToPrepare2,
@@ -19,11 +23,7 @@ import {
   productWithoutLocation,
   ultraLevure
 } from '@utils/testData/products'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { useSettingStore } from '@store/settingStore'
-import { useLocationStore } from '@store/locationStore'
-import { reserve, zoneGeo } from '@utils/testData/locations'
-import { Location } from '@core/entities/location'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Start preparations VM', () => {
   let preparationsStore: any

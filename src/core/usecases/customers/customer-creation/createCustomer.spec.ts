@@ -1,13 +1,13 @@
-import { createPinia, setActivePinia } from 'pinia'
+import { InMemoryCustomerGateway } from '@adapters/secondary/customer-gateways/inMemoryCustomerGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { Customer } from '@core/entities/customer'
 import { UUID } from '@core/types/types'
-import { useCustomerStore } from '@store/customerStore'
-import { InMemoryCustomerGateway } from '@adapters/secondary/customer-gateways/inMemoryCustomerGateway'
 import {
-  createCustomer,
-  CreateCustomerDTO
+  CreateCustomerDTO,
+  createCustomer
 } from '@core/usecases/customers/customer-creation/createCustomer'
+import { useCustomerStore } from '@store/customerStore'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Create customer', () => {
   let customerStore: any

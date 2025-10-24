@@ -1,10 +1,10 @@
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import { Order } from '@core/entities/order'
 import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
-import { createPinia, setActivePinia } from 'pinia'
+import { setProductQuantityForPreparation } from '@core/usecases/order/set-product-quantity-for-preparation/setProductQuantityForPreparation'
 import { usePreparationStore } from '@store/preparationStore'
 import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
-import { Order } from '@core/entities/order'
-import { setProductQuantityForPreparation } from '@core/usecases/order/set-product-quantity-for-preparation/setProductQuantityForPreparation'
+import { dolodent, ultraLevure } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Set product quantity for preparation', () => {
   let preparationStore: any

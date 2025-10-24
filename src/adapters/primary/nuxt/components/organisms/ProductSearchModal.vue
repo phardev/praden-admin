@@ -66,10 +66,10 @@ UModal(:model-value="modelValue" @update:model-value="$emit('update:modelValue',
 </template>
 
 <script lang="ts" setup>
-import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
-import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 import { productSearchVM } from '@adapters/primary/view-models/products/product-search/productSearchVM'
+import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
 import { useSearchStore } from '@store/searchStore'
+import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 
 const props = defineProps<{
   modelValue: boolean

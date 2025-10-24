@@ -29,9 +29,9 @@ tab-group.border-b.border-gray-200(as="div")
 </template>
 
 <script lang="ts" setup>
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
 import AnnouncementBarListItem from '@adapters/primary/nuxt/components/molecules/AnnouncementBarListItem.vue'
 import type { GetAnnouncementBarsVM } from '@adapters/primary/view-models/announcement-bar/get-announcement-bars/getAnnouncementBarsVM'
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
 
 defineProps<{
   announcementBarsVm: GetAnnouncementBarsVM

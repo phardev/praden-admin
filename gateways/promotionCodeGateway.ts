@@ -1,8 +1,8 @@
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import * as promotionCodes from '@utils/testData/promotionCodes'
-import { isLocalEnv } from '@utils/env'
 import { InMemoryPromotionCodeGateway } from '@adapters/secondary/promotion-code-gateways/InMemoryPromotionCodeGateway'
 import { RealPromotionCodeGateway } from '@adapters/secondary/promotion-code-gateways/RealPromotionCodeGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { isLocalEnv } from '@utils/env'
+import * as promotionCodes from '@utils/testData/promotionCodes'
 
 const uuidGenerator = new FakeUuidGenerator()
 uuidGenerator.setNext('abc123')

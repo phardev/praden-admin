@@ -1,8 +1,8 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useSearchStore } from '@store/searchStore'
 import { useProductStore } from '@store/productStore'
-import { ProductSearchVM, productSearchVM } from './productSearchVM'
+import { useSearchStore } from '@store/searchStore'
 import { dolodent, ultraLevure } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
+import { ProductSearchVM, productSearchVM } from './productSearchVM'
 
 describe('Product Search VM', () => {
   let searchStore: any

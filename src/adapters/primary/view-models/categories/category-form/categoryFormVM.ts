@@ -1,10 +1,10 @@
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { useProductStore } from '@store/productStore'
-import { Product } from '@core/entities/product'
-import { useSearchStore } from '@store/searchStore'
-import { UUID } from '@core/types/types'
 import { CategoryFormFieldsReader } from '@adapters/primary/view-models/categories/category-form/categoryFormGetVM'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { Product } from '@core/entities/product'
+import { UUID } from '@core/types/types'
 import { useCategoryStore } from '@store/categoryStore'
+import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
 
 export interface CategoryProductItemVM {
   uuid: UUID

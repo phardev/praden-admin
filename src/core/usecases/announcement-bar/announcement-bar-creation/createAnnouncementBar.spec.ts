@@ -1,16 +1,16 @@
 import { InMemoryAnnouncementBarGateway } from '@adapters/secondary/announcement-bar-gateways/inMemoryAnnouncementBarGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import { AnnouncementBar } from '@core/entities/announcementBar'
 import {
-  createAnnouncementBar,
-  CreateAnnouncementBarDTO
+  CreateAnnouncementBarDTO,
+  createAnnouncementBar
 } from '@core/usecases/announcement-bar/announcement-bar-creation/createAnnouncementBar'
-import { createPinia, setActivePinia } from 'pinia'
+import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import {
   announcementBar1,
   announcementBar2
 } from '@utils/testData/announcementBars'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Create announcement bar', () => {
   let announcementBarGateway: InMemoryAnnouncementBarGateway

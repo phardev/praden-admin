@@ -1,7 +1,7 @@
-import { InvoiceGateway } from '@core/gateways/invoiceGateway'
 import { Invoice } from '@core/entities/invoice'
 import { Order } from '@core/entities/order'
 import { DateProvider } from '@core/gateways/dateProvider'
+import { InvoiceGateway } from '@core/gateways/invoiceGateway'
 
 export class InMemoryInvoiceGateway implements InvoiceGateway {
   private invoices: Array<Invoice> = []

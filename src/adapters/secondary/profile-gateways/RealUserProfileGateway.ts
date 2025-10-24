@@ -1,7 +1,7 @@
-import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import { UserProfileGateway } from '@core/gateways/userProfileGateway'
-import { UserProfile } from '@core/entities/userProfile'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
+import { UserProfile } from '@core/entities/userProfile'
+import { UserProfileGateway } from '@core/gateways/userProfileGateway'
 
 export class RealUserProfileGateway
   extends RealGateway

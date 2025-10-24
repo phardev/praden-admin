@@ -1,8 +1,8 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { PharmacistSelection } from '@core/entities/pharmacistSelection'
-import { getPharmacistSelection } from '@core/usecases/pharmacist-selection/getPharmacistSelection'
 import { InMemoryPharmacistSelectionGateway } from '@adapters/secondary/pharmacist-selection-gateways/inMemoryPharmacistSelectionGateway'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { PharmacistSelection } from '@core/entities/pharmacistSelection'
+import { getPharmacistSelection } from '@core/usecases/pharmacist-selection/getPharmacistSelection'
 import { usePharmacistSelectionStore } from '@store/pharmacistSelectionStore'
 import { useProductStore } from '@store/productStore'
 import {
@@ -10,12 +10,12 @@ import {
   pharmacistSelection2
 } from '@utils/testData/pharmacistSelections'
 import {
-  dolodent,
-  ultraLevure,
   anaca3Minceur,
-  chamomilla
+  chamomilla,
+  dolodent,
+  ultraLevure
 } from '@utils/testData/products'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('PharmacistSelection get', () => {
   let pharmacistSelectionStore: ReturnType<typeof usePharmacistSelectionStore>

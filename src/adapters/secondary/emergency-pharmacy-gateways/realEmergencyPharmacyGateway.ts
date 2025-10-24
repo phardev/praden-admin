@@ -1,10 +1,10 @@
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import { EmergencyPharmacyGateway } from '@core/gateways/emergencyPharmacyGateway'
 import { EmergencyPharmacy } from '@core/entities/emergencyPharmacy'
+import { EmergencyPharmacyGateway } from '@core/gateways/emergencyPharmacyGateway'
 import { UUID } from '@core/types/types'
 import { CreateEmergencyPharmacyDTO } from '@core/usecases/emergency-pharmacies/createEmergencyPharmacy'
 import { EditEmergencyPharmacyDTO } from '@core/usecases/emergency-pharmacies/editEmergencyPharmacy'
-import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 
 export class RealEmergencyPharmacyGateway
   extends RealGateway

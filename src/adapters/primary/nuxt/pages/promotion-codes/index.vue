@@ -6,10 +6,10 @@
 </template>
 
 <script lang="ts" setup>
-import { useDateProvider } from '../../../../../../gateways/dateProvider'
-import { listPromotionCodes } from '@core/usecases/promotion-codes/promotion-code-listing/listPromotionCodes'
-import { usePromotionCodeGateway } from '../../../../../../gateways/promotionCodeGateway'
 import { getPromotionCodesVM } from '@adapters/primary/view-models/promotion-codes/get-promotion-codes-vm/getPromotionCodesVM'
+import { listPromotionCodes } from '@core/usecases/promotion-codes/promotion-code-listing/listPromotionCodes'
+import { useDateProvider } from '../../../../../../gateways/dateProvider'
+import { usePromotionCodeGateway } from '../../../../../../gateways/promotionCodeGateway'
 
 definePageMeta({ layout: 'main' })
 

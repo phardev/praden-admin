@@ -1,6 +1,6 @@
 import { CategoryGateway } from '@core/gateways/categoryGateway'
-import { useCategoryStore } from '@store/categoryStore'
 import { UUID } from '@core/types/types'
+import { useCategoryStore } from '@store/categoryStore'
 
 export const reorderCategories = async (
   categories: Array<UUID>,

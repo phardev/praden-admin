@@ -1,12 +1,12 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useTicketStore } from '@store/ticketStore'
 import {
   getTicketDetailsVM,
   TicketDetailsVM,
   TicketMessageVM
 } from '@adapters/primary/view-models/support/get-support-ticket-details/getTicketDetailsVM'
-import { startedTicket } from '@utils/testData/tickets'
 import { TicketMessageType } from '@core/entities/ticket'
+import { useTicketStore } from '@store/ticketStore'
+import { startedTicket } from '@utils/testData/tickets'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get ticket details VM', () => {
   let ticketStore: ReturnType<typeof useTicketStore>

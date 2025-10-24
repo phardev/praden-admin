@@ -1,5 +1,5 @@
-import { RealPharmacistSelectionGateway } from '@adapters/secondary/pharmacist-selection-gateways/realPharmacistSelectionGateway'
 import { InMemoryPharmacistSelectionGateway } from '@adapters/secondary/pharmacist-selection-gateways/inMemoryPharmacistSelectionGateway'
+import { RealPharmacistSelectionGateway } from '@adapters/secondary/pharmacist-selection-gateways/realPharmacistSelectionGateway'
 import { isLocalEnv } from '@utils/env'
 import * as pharmacistSelections from '@utils/testData/pharmacistSelections'
 
