@@ -114,7 +114,7 @@ describe('Get permissions VM', () => {
         canAccessDeliveries: true,
         canAccessPreparations: true,
         canAccessOrders: true,
-        canAccessShopManagement: false,
+        canAccessShopManagement: true,
         canAccessBanners: true,
         canAccessStaff: false,
         canAccessResearch: false
@@ -140,7 +140,7 @@ describe('Get permissions VM', () => {
         canAccessDeliveries: true,
         canAccessPreparations: true,
         canAccessOrders: true,
-        canAccessShopManagement: false,
+        canAccessShopManagement: true,
         canAccessBanners: true,
         canAccessStaff: true,
         canAccessResearch: true

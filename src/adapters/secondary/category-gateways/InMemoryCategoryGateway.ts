@@ -40,7 +40,11 @@ export class InMemoryCategoryGateway implements CategoryGateway {
       throw new ParentCategoryDoesNotExistsError(uuid)
     }
     const index = this.categories.findIndex((c) => c.uuid === uuid)
-    const { _productsAdded, _productsRemoved, ...categoryDTO } = dto
+    const {
+      productsAdded: _productsAdded,
+      productsRemoved: _productsRemoved,
+      ...categoryDTO
+    } = dto
     this.categories[index] = Object.assign(this.categories[index], categoryDTO)
     return Promise.resolve(this.categories[index])
   }

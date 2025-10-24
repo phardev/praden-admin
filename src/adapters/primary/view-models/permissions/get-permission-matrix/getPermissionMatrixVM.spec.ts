@@ -49,6 +49,7 @@ describe('Get permission matrix view model', () => {
         deliveries: true,
         preparations: true,
         orders: true,
+        'shop-management': true,
         banners: true,
         staff: true,
         research: true
@@ -72,6 +73,7 @@ describe('Get permission matrix view model', () => {
         deliveries: true,
         preparations: true,
         orders: true,
+        'shop-management': true,
         banners: true,
         staff: false,
         research: false
@@ -95,6 +97,7 @@ describe('Get permission matrix view model', () => {
         deliveries: false,
         preparations: true,
         orders: true,
+        'shop-management': false,
         banners: false,
         staff: false,
         research: false

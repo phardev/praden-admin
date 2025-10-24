@@ -127,7 +127,12 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
         if (lineInGlobal) {
           lineInGlobal.quantity += line.quantity
         } else {
-          const { _unitPrice, _taxRate, _totalPrice, ...restOfLine } = line
+          const {
+            unitPrice: _unitPrice,
+            taxRate: _taxRate,
+            totalPrice: _totalPrice,
+            ...restOfLine
+          } = line
           acc.push(JSON.parse(JSON.stringify(restOfLine)))
         }
       })

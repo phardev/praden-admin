@@ -220,7 +220,7 @@ describe('Get navigation menu VM', () => {
               {
                 name: 'Gestion boutique',
                 icon: 'heroicons:cog-6-tooth',
-                href: '/shop-settings'
+                href: '/shop-management'
               },
               {
                 name: 'Bannières',
