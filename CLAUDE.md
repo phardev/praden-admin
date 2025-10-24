@@ -1183,3 +1183,9 @@ Claude Flow extends the base coordination with:
 ---
 
 Remember: **Claude Flow coordinates, Claude Code creates!** Start with `mcp__claude-flow__swarm_init` to enhance your development workflow.
+
+    Testing
+  - `TZ=UTC pnpm test run <test-suite>` - Run specific test file or directory
+  - `TZ=UTC pnpm test run` - Run all tests once
+  - ⚠️ DO NOT use `pnpm test-once` (command does not exist)
+  - ⚠️ DO NOT use `pnpm test` (this is watching mode)
