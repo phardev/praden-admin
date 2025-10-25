@@ -27,7 +27,7 @@
           @click.stop="navigateTo('/shop-management/announcement-bar')"
         )
 
-    UCard.settings-card.transition-all.duration-300(
+    UCard.hidden.settings-card.transition-all.duration-300(
       class="hover:shadow-lg hover:scale-105 cursor-pointer"
       @click="navigateTo('/shop-management/category-order')"
     )
@@ -46,7 +46,7 @@
           @click.stop="navigateTo('/shop-management/category-order')"
         )
 
-    UCard.settings-card.transition-all.duration-300(
+    UCard.hidden.settings-card.transition-all.duration-300(
       class="hover:shadow-lg hover:scale-105 cursor-pointer"
       @click="navigateTo('/shop-management/pharmacist-selection')"
     )
@@ -65,7 +65,7 @@
           @click.stop="navigateTo('/shop-management/pharmacist-selection')"
         )
 
-    UCard.settings-card.transition-all.duration-300(
+    UCard.hidden.settings-card.transition-all.duration-300(
       class="hover:shadow-lg hover:scale-105 cursor-pointer"
       @click="navigateTo('/shop-management/emergency-pharmacies')"
     )
