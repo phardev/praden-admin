@@ -1,8 +1,8 @@
 import { FakeSearchGateway } from '@adapters/secondary/search-gateways/FakeSearchGateway'
-import { beforeEach } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
-import { useIndexStore } from '@store/indexStore'
 import { indexProducts } from '@core/usecases/product/product-indexation/indexProducts'
+import { useIndexStore } from '@store/indexStore'
+import { createPinia, setActivePinia } from 'pinia'
+import { beforeEach } from 'vitest'
 
 describe('Index products', () => {
   let indexStore: any

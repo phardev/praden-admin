@@ -8,11 +8,11 @@
 </template>
 
 <script lang="ts" setup>
-import { useProductGateway } from '../../../../../../../gateways/productGateway'
-import { useLaboratoryGateway } from '../../../../../../../gateways/laboratoryGateway'
-import { getLaboratory } from '@core/usecases/laboratories/laboratory-get/getLaboratory'
 import { laboratoryFormEditVM } from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormEditVM'
 import { editLaboratory } from '@core/usecases/laboratories/laboratory-edition/editLaboratory'
+import { getLaboratory } from '@core/usecases/laboratories/laboratory-get/getLaboratory'
+import { useLaboratoryGateway } from '../../../../../../../gateways/laboratoryGateway'
+import { useProductGateway } from '../../../../../../../gateways/productGateway'
 
 definePageMeta({ layout: 'main' })
 

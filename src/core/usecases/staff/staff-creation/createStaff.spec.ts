@@ -1,14 +1,14 @@
-import { useStaffStore } from '@store/staffStore'
 import { InMemoryStaffGateway } from '@adapters/secondary/staff-gateways/InMemoryStaffGateway'
-import { createPinia, setActivePinia } from 'pinia'
-import { Staff } from '@core/entities/staff'
-import { adminRole, pharmacistRole, assistantRole } from '@utils/testData/roles'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { Staff } from '@core/entities/staff'
 import { UUID } from '@core/types/types'
 import {
-  createStaff,
-  CreateStaffDTO
+  CreateStaffDTO,
+  createStaff
 } from '@core/usecases/staff/staff-creation/createStaff'
+import { useStaffStore } from '@store/staffStore'
+import { adminRole, assistantRole, pharmacistRole } from '@utils/testData/roles'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Staff Creation', () => {
   let staffStore: any

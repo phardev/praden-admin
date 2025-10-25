@@ -90,13 +90,13 @@ ft-table(
 </template>
 
 <script lang="ts" setup>
-import { useOrderGateway } from '../../../../../../gateways/orderGateway'
+import FtTable from '@adapters/primary/nuxt/components/molecules/FtTable.vue'
 import { listOrders } from '@core/usecases/order/list-orders/listOrders'
-import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 import { searchOrders } from '@core/usecases/order/orders-searching/searchOrders'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import FtTable from '@adapters/primary/nuxt/components/molecules/FtTable.vue'
+import { useOrderGateway } from '../../../../../../gateways/orderGateway'
+import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 
 definePageMeta({ layout: 'main' })
 

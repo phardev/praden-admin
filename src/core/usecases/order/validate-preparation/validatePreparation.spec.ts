@@ -1,21 +1,21 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { usePreparationStore } from '@store/preparationStore'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { InMemoryInvoiceGateway } from '@adapters/secondary/invoice-gateways/InMemoryInvoiceGateway'
+import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
+import { Invoice } from '@core/entities/invoice'
+import { Order, OrderLineStatus } from '@core/entities/order'
 import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
+import { Timestamp } from '@core/types/types'
 import { validatePreparation } from '@core/usecases/order/validate-preparation/validatePreparation'
+import { useInvoiceStore } from '@store/invoiceStore'
+import { usePreparationStore } from '@store/preparationStore'
 import {
   orderToPrepare1,
   orderToPrepare2,
   orderWithMissingProduct1,
   orderWithMissingProduct2
 } from '@utils/testData/orders'
-import { OrderLineStatus, Order } from '@core/entities/order'
-import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
-import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
-import { Invoice } from '@core/entities/invoice'
-import { InMemoryInvoiceGateway } from '@adapters/secondary/invoice-gateways/InMemoryInvoiceGateway'
-import { useInvoiceStore } from '@store/invoiceStore'
-import { Timestamp } from '@core/types/types'
 import { dolodent, ultraLevure } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Validate preparation', () => {
   let preparationStore: any

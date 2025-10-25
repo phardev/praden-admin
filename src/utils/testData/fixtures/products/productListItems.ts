@@ -1,14 +1,14 @@
 import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 import {
   anaca3Minceur,
+  calmosine,
   chamomilla,
   dolodent,
-  ultraLevure,
-  calmosine,
   hemoclar,
+  productWithForbiddenPromotion,
   productWithoutCategory,
   productWithoutLaboratory,
-  productWithForbiddenPromotion
+  ultraLevure
 } from '@utils/testData/products'
 
 export const dolodentListItem: ProductListItem = {

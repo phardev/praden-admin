@@ -1,8 +1,8 @@
-import { UUID } from '@core/types/types'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { useCustomerStore } from '@store/customerStore'
 import { Customer } from '@core/entities/customer'
+import { UUID } from '@core/types/types'
 import { SearchCustomersDTO } from '@core/usecases/customers/customer-searching/searchCustomer'
+import { useCustomerStore } from '@store/customerStore'
 import { useSearchStore } from '@store/searchStore'
 import { priceFormatter } from '@utils/formatters'
 

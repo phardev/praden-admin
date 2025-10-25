@@ -1,6 +1,6 @@
-import { useTicketStore } from '@store/ticketStore'
-import { Ticket, TicketStatus, TicketPriority } from '@core/entities/ticket'
+import { Ticket, TicketPriority, TicketStatus } from '@core/entities/ticket'
 import { UUID } from '@core/types/types'
+import { useTicketStore } from '@store/ticketStore'
 
 export interface OrderTicketItemVM {
   uuid: UUID

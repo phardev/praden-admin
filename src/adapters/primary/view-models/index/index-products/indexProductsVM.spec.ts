@@ -1,9 +1,9 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useIndexStore } from '@store/indexStore'
 import {
-  indexProductsVM,
-  IndexProductsVM
+  IndexProductsVM,
+  indexProductsVM
 } from '@adapters/primary/view-models/index/index-products/indexProductsVM'
+import { useIndexStore } from '@store/indexStore'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Index products VM', () => {
   let indexStore: any

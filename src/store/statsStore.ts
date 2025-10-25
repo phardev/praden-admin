@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
 import { Dashboard } from '@core/entities/dashboard'
 import { Reminders } from '@core/entities/reminders'
+import { defineStore } from 'pinia'
 
 export const useStatsStore = defineStore('StatsStore', {
   state: () => {

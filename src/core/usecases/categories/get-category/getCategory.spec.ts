@@ -1,12 +1,12 @@
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { UUID } from '@core/types/types'
-import { createPinia, setActivePinia } from 'pinia'
 import { InMemoryCategoryGateway } from '@adapters/secondary/category-gateways/InMemoryCategoryGateway'
-import { useCategoryStore } from '@store/categoryStore'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { CategoryDoesNotExistsError } from '@core/errors/CategoryDoesNotExistsError'
-import { dents } from '@utils/testData/categories'
+import { UUID } from '@core/types/types'
 import { getCategory } from '@core/usecases/categories/get-category/getCategory'
+import { useCategoryStore } from '@store/categoryStore'
+import { dents } from '@utils/testData/categories'
 import { dolodent } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get category', () => {
   let categoryStore: any

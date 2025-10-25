@@ -1,12 +1,12 @@
 import { InMemoryNewsletterGateway } from '@adapters/secondary/newsletter-gateways/inMemoryNewsletterGateway'
 import { NewsletterSubscription } from '@core/entities/newsletterSubscription'
 import { useNewsletterStore } from '@store/newsletterStore'
-import { createPinia, setActivePinia } from 'pinia'
-import { listNewsletterSubscriptions } from './listNewsletterSubscriptions'
 import {
   elodieDurandNewsletterSubscription,
   guestNewsletterSubscription
 } from '@utils/testData/newsletterSubscriptions'
+import { createPinia, setActivePinia } from 'pinia'
+import { listNewsletterSubscriptions } from './listNewsletterSubscriptions'
 
 describe('Newsletter subscriptions listing', () => {
   let newsletterStore: any

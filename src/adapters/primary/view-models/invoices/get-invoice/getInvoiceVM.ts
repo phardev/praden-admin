@@ -1,10 +1,10 @@
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { Delivery } from '@core/entities/delivery'
+import { Invoice } from '@core/entities/invoice'
+import { isAnonymousOrder, Order, OrderLine } from '@core/entities/order'
+import { HashTable } from '@core/types/types'
 import { useInvoiceStore } from '@store/invoiceStore'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { isAnonymousOrder, Order, OrderLine } from '@core/entities/order'
-import { Invoice } from '@core/entities/invoice'
-import { HashTable } from '@core/types/types'
-import { Delivery } from '@core/entities/delivery'
 import { addTaxToPrice } from '@utils/price'
 
 export interface TableVM<T> {

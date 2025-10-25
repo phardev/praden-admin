@@ -1,5 +1,3 @@
-import { usePromotionStore } from '@store/promotionStore'
-import { createPinia, setActivePinia } from 'pinia'
 import { InMemoryPromotionGateway } from '@adapters/secondary/promotion-gateways/InMemoryPromotionGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import {
@@ -7,15 +5,17 @@ import {
   Promotion,
   ReductionType
 } from '@core/entities/promotion'
+import { PromotionDoesNotExistsError } from '@core/errors/PromotionDoesNotExistsError'
+import { editPromotion } from '@core/usecases/promotions/promotion-edition/editPromotion'
+import { usePromotionStore } from '@store/promotionStore'
+import { promotionFixedMultipleProductsListItem } from '@utils/testData/fixtures/promotions/promotionListItems'
+import { calmosine } from '@utils/testData/products'
 import {
   promotionFixedMultipleProducts,
   promotionPercentageDolodent
 } from '@utils/testData/promotions'
-import { calmosine } from '@utils/testData/products'
-import { editPromotion } from '@core/usecases/promotions/promotion-edition/editPromotion'
-import { PromotionDoesNotExistsError } from '@core/errors/PromotionDoesNotExistsError'
+import { createPinia, setActivePinia } from 'pinia'
 import { PromotionListItem } from '../promotions-listing/promotionListItem'
-import { promotionFixedMultipleProductsListItem } from '@utils/testData/fixtures/promotions/promotionListItems'
 
 describe('Edit promotion', () => {
   let promotionStore: any

@@ -1,7 +1,7 @@
 import { BannerGateway } from '@core/gateways/bannerGateway'
 import { UUID } from '@core/types/types'
-import { useBannerStore } from '@store/bannerStore'
 import { CreateBannerDTO } from '@core/usecases/banners/banner-creation/createBanner'
+import { useBannerStore } from '@store/bannerStore'
 
 export type EditBannerDTO = Partial<CreateBannerDTO>
 

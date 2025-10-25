@@ -1,10 +1,10 @@
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
 import { Banner } from '@core/entities/banner'
 import { BannerGateway } from '@core/gateways/bannerGateway'
 import { UUID } from '@core/types/types'
 import { CreateBannerDTO } from '@core/usecases/banners/banner-creation/createBanner'
 import { EditBannerDTO } from '@core/usecases/banners/banner-edition/editBanner'
-import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 
 export class RealBannerGateway extends RealGateway implements BannerGateway {
   constructor(url: string) {

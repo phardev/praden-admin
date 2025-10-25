@@ -1,16 +1,16 @@
-import { useTicketPredefinedAnswerStore } from '@store/ticketPredefinedAnswerStore'
-import { updateTicketPredefinedAnswer } from '@core/usecases/support/ticket-predefined-answers/updateTicketPredefinedAnswer'
-import { createPinia, setActivePinia } from 'pinia'
 import { InMemoryTicketPredefinedAnswerGateway } from '@adapters/secondary/ticket-predefined-answer-gateways/InMemoryTicketPredefinedAnswerGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { UpdateTicketPredefinedAnswerDTO } from '@core/gateways/ticketPredefinedAnswerGateway'
 import { TicketPredefinedAnswer } from '@core/entities/ticketPredefinedAnswer'
-import {
-  thankYouAnswer,
-  orderShippedAnswer,
-  problemResolvedAnswer
-} from '@utils/testData/ticketPredefinedAnswers'
 import { TicketPredefinedAnswerDoesNotExistsError } from '@core/errors/TicketPredefinedAnswerDoesNotExistsError'
+import { UpdateTicketPredefinedAnswerDTO } from '@core/gateways/ticketPredefinedAnswerGateway'
+import { updateTicketPredefinedAnswer } from '@core/usecases/support/ticket-predefined-answers/updateTicketPredefinedAnswer'
+import { useTicketPredefinedAnswerStore } from '@store/ticketPredefinedAnswerStore'
+import {
+  orderShippedAnswer,
+  problemResolvedAnswer,
+  thankYouAnswer
+} from '@utils/testData/ticketPredefinedAnswers'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Update ticket predefined answer', () => {
   let ticketPredefinedAnswerStore: any

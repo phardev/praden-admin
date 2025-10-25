@@ -59,16 +59,16 @@ div.hidden.printme.mx-2
 </template>
 
 <script lang="ts" setup>
-import { listDeliveries } from '@core/usecases/deliveries/delivery-listing/listDeliveries'
-import { useDeliveryGateway } from '../../../../../../gateways/deliveryGateway'
-import { getDeliveriesVM } from '@adapters/primary/view-models/deliveries/get-deliveries-vm/getDeliveriesVM'
 import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'
+import { getDeliveriesVM } from '@adapters/primary/view-models/deliveries/get-deliveries-vm/getDeliveriesVM'
+import { listCarriers } from '@core/usecases/carriers/carrier-listing/listCarriers'
+import { listDeliveries } from '@core/usecases/deliveries/delivery-listing/listDeliveries'
 import { shipDeliveries } from '@core/usecases/deliveries/delivery-shipping/shipDeliveries'
-import { useDateProvider } from '../../../../../../gateways/dateProvider'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
 import { timestampToLocaleString } from '@utils/formatters'
-import { listCarriers } from '@core/usecases/carriers/carrier-listing/listCarriers'
 import { useCarrierGateway } from '../../../../../../gateways/carrierGateway'
+import { useDateProvider } from '../../../../../../gateways/dateProvider'
+import { useDeliveryGateway } from '../../../../../../gateways/deliveryGateway'
 
 definePageMeta({ layout: 'main' })
 

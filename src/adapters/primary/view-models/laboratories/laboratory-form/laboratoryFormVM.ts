@@ -4,9 +4,9 @@ import {
 } from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormGetVM'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { Product } from '@core/entities/product'
+import { useLaboratoryStore } from '@store/laboratoryStore'
 import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
-import { useLaboratoryStore } from '@store/laboratoryStore'
 
 export interface LaboratoryAvailableProductItemVM
   extends LaboratoryProductItemVM {

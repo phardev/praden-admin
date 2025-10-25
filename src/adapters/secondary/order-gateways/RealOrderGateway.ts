@@ -1,13 +1,13 @@
-import { OrderGateway } from '@core/gateways/orderGateway'
-import {
-  OrderLineStatus,
-  Order,
-  OrderLine,
-  PaymentStatus
-} from '@core/entities/order'
-import type { HashTable, UUID } from '@core/types/types'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { DeliveryStatus } from '@core/entities/delivery'
+import {
+  Order,
+  OrderLine,
+  OrderLineStatus,
+  PaymentStatus
+} from '@core/entities/order'
+import { OrderGateway } from '@core/gateways/orderGateway'
+import type { HashTable, UUID } from '@core/types/types'
 
 export abstract class RealGateway {
   protected readonly baseUrl: string

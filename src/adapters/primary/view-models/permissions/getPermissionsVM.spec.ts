@@ -1,14 +1,14 @@
-import { createPinia, setActivePinia } from 'pinia'
+import {
+  GetPermissionsVM,
+  getPermissionsVM
+} from '@adapters/primary/view-models/permissions/getPermissionsVM'
 import { useUserProfileStore } from '@store/userProfileStore'
 import {
-  getPermissionsVM,
-  GetPermissionsVM
-} from '@adapters/primary/view-models/permissions/getPermissionsVM'
-import {
   adminUserProfile,
-  pharmacistUserProfile,
-  assistantUserProfile
+  assistantUserProfile,
+  pharmacistUserProfile
 } from '@utils/testData/userProfiles'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get permissions VM', () => {
   let userProfileStore: any
@@ -36,6 +36,7 @@ describe('Get permissions VM', () => {
         canAccessDeliveries: false,
         canAccessPreparations: false,
         canAccessOrders: false,
+        canAccessShopManagement: false,
         canAccessBanners: false,
         canAccessStaff: false,
         canAccessResearch: false
@@ -61,6 +62,7 @@ describe('Get permissions VM', () => {
         canAccessDeliveries: false,
         canAccessPreparations: false,
         canAccessOrders: false,
+        canAccessShopManagement: false,
         canAccessBanners: false,
         canAccessStaff: false,
         canAccessResearch: false
@@ -86,6 +88,7 @@ describe('Get permissions VM', () => {
         canAccessDeliveries: false,
         canAccessPreparations: true,
         canAccessOrders: true,
+        canAccessShopManagement: false,
         canAccessBanners: false,
         canAccessStaff: false,
         canAccessResearch: false
@@ -111,6 +114,7 @@ describe('Get permissions VM', () => {
         canAccessDeliveries: true,
         canAccessPreparations: true,
         canAccessOrders: true,
+        canAccessShopManagement: true,
         canAccessBanners: true,
         canAccessStaff: false,
         canAccessResearch: false
@@ -136,6 +140,7 @@ describe('Get permissions VM', () => {
         canAccessDeliveries: true,
         canAccessPreparations: true,
         canAccessOrders: true,
+        canAccessShopManagement: true,
         canAccessBanners: true,
         canAccessStaff: true,
         canAccessResearch: true

@@ -1,9 +1,9 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { InMemoryNavigationMenuGateway } from '@core/usecases/navigation-menu/navigation-menu-get/inMemoryNavigationMenuGateway'
-import { useNavigationMenuStore } from '@store/navigationMenuStore'
-import { NavigationMenu } from '@core/usecases/navigation-menu/navigation-menu-get/navigationMenu'
-import { fullMenu, prodMenu } from '@utils/testData/navigationMenu'
 import { getNavigationMenu } from '@core/usecases/navigation-menu/navigation-menu-get/getNavigationMenu'
+import { InMemoryNavigationMenuGateway } from '@core/usecases/navigation-menu/navigation-menu-get/inMemoryNavigationMenuGateway'
+import { NavigationMenu } from '@core/usecases/navigation-menu/navigation-menu-get/navigationMenu'
+import { useNavigationMenuStore } from '@store/navigationMenuStore'
+import { fullMenu, prodMenu } from '@utils/testData/navigationMenu'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Navigation menu get', () => {
   let navigationMenuGateway: InMemoryNavigationMenuGateway

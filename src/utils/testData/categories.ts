@@ -5,7 +5,8 @@ export const dents: Category = {
   name: 'Dents',
   description: 'La categorie des dents',
   miniature: 'https://fakeimg.pl/50/ff0000',
-  image: 'https://fakeimg.pl/300x100/ff0000'
+  image: 'https://fakeimg.pl/300x100/ff0000',
+  order: 0
 }
 
 export const mum: Category = {
@@ -13,7 +14,8 @@ export const mum: Category = {
   name: 'Maman',
   description: 'La categorie des mamans',
   miniature: 'https://fakeimg.pl/50/00ff00',
-  image: 'https://fakeimg.pl/300x100/00ff00'
+  image: 'https://fakeimg.pl/300x100/00ff00',
+  order: 1
 }
 
 export const baby: Category = {
@@ -22,7 +24,8 @@ export const baby: Category = {
   description: 'La categorie des bébés',
   parentUuid: mum.uuid,
   miniature: 'https://fakeimg.pl/50/0000ff',
-  image: 'https://fakeimg.pl/300x100/0000ff'
+  image: 'https://fakeimg.pl/300x100/0000ff',
+  order: 2
 }
 
 export const diarrhee: Category = {
@@ -30,7 +33,8 @@ export const diarrhee: Category = {
   name: 'Diarrhée',
   description: 'La categorie des diarrhées',
   miniature: 'https://fakeimg.pl/50/f0f0f0',
-  image: 'https://fakeimg.pl/300x100/f0f0f0'
+  image: 'https://fakeimg.pl/300x100/f0f0f0',
+  order: 3
 }
 
 export const minceur: Category = {
@@ -38,5 +42,6 @@ export const minceur: Category = {
   name: 'Minceur',
   description: 'La categorie minceur',
   miniature: 'https://fakeimg.pl/50/ffffff',
-  image: 'https://fakeimg.pl/300x100/ffffff'
+  image: 'https://fakeimg.pl/300x100/ffffff',
+  order: 4
 }

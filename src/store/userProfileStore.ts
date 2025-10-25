@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
 import type { UserProfile } from '@core/entities/userProfile'
+import { defineStore } from 'pinia'
 
 export const useUserProfileStore = defineStore('UserProfileStore', {
   state: () => {

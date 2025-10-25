@@ -197,14 +197,14 @@ div.flex.flex-row-reverse.mt-4
 
 <script lang="ts" setup>
 import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'
-import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
-import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 import { ReductionType } from '@core/entities/promotion'
-import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { PromotionScope } from '@core/entities/promotionCode'
 import { listDeliveryMethods } from '@core/usecases/delivery-methods/delivery-method-listing/listDeliveryMethods'
+import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
+import { format } from 'date-fns'
+import { fr } from 'date-fns/locale'
 import { useDeliveryMethodGateway } from '../../../../../../gateways/deliveryMethodGateway'
+import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 
 definePageMeta({ layout: 'main' })
 

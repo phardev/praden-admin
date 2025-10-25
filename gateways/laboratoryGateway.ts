@@ -1,8 +1,8 @@
-import * as laboratories from '@utils/testData/laboratories'
-import { isLocalEnv } from '@utils/env'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { RealLaboratoryGateway } from '@adapters/secondary/laboratory-gateways/realLaboratoryGateway'
 import { InMemoryTimeoutLaboratoryGateway } from '@adapters/secondary/laboratory-gateways/inMemoryTimeoutLaboratoryGateway'
+import { RealLaboratoryGateway } from '@adapters/secondary/laboratory-gateways/realLaboratoryGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { isLocalEnv } from '@utils/env'
+import * as laboratories from '@utils/testData/laboratories'
 
 const uuidGenerator = new FakeUuidGenerator()
 uuidGenerator.setNext('new-uuid')

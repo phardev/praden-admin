@@ -1,14 +1,14 @@
-import { useTicketPredefinedAnswerStore } from '@store/ticketPredefinedAnswerStore'
-import { listTicketPredefinedAnswers } from '@core/usecases/support/ticket-predefined-answers/listTicketPredefinedAnswers'
-import { createPinia, setActivePinia } from 'pinia'
 import { InMemoryTicketPredefinedAnswerGateway } from '@adapters/secondary/ticket-predefined-answer-gateways/InMemoryTicketPredefinedAnswerGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import {
-  thankYouAnswer,
-  orderShippedAnswer,
-  problemResolvedAnswer
-} from '@utils/testData/ticketPredefinedAnswers'
 import { TicketPredefinedAnswer } from '@core/entities/ticketPredefinedAnswer'
+import { listTicketPredefinedAnswers } from '@core/usecases/support/ticket-predefined-answers/listTicketPredefinedAnswers'
+import { useTicketPredefinedAnswerStore } from '@store/ticketPredefinedAnswerStore'
+import {
+  orderShippedAnswer,
+  problemResolvedAnswer,
+  thankYouAnswer
+} from '@utils/testData/ticketPredefinedAnswers'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('List ticket predefined answers', () => {
   let ticketPredefinedAnswerStore: any

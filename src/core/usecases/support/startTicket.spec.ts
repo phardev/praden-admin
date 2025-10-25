@@ -1,11 +1,11 @@
-import { startTicket } from './startTicket'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { InMemoryTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTicketGateway'
 import { Ticket, TicketStatus } from '@core/entities/ticket'
-import { newTicket, startedTicket } from '@utils/testData/tickets'
-import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { TicketDoesNotExistsError } from '@core/errors/TicketDoesNotExistsError'
 import { useTicketStore } from '@store/ticketStore'
+import { newTicket, startedTicket } from '@utils/testData/tickets'
 import { createPinia, setActivePinia } from 'pinia'
+import { startTicket } from './startTicket'
 
 describe('startTicket', () => {
   let dateProvider: FakeDateProvider

@@ -74,19 +74,19 @@
 </template>
 
 <script lang="ts" setup>
-import { useOrderGateway } from '../../../../../../gateways/orderGateway'
-import { getPreparation } from '@core/usecases/order/get-preparation/getPreparation'
-import { getPreparationVM } from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
-import { getOrder } from '@core/usecases/order/get-order/getOrder'
 import { getOrderVM } from '@adapters/primary/view-models/orders/get-order/getOrderVM'
-import { useCustomerGateway } from '../../../../../../gateways/customerGateway'
-import { printDeliveryLabel } from '@core/usecases/deliveries/delivery-label-printing/printDeliveryLabel'
-import { useDeliveryGateway } from '../../../../../../gateways/deliveryGateway'
-import { markDeliveryAsDelivered } from '@core/usecases/deliveries/mark-delivery-as-delivered/markDeliveryAsDelivered'
+import { getPreparationVM } from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
 import { downloadDeliveryLabel } from '@core/usecases/deliveries/delivery-label-download/downloadDeliveryLabel'
-import { useDeliveryStore } from '@store/deliveryStore'
-import { useTicketGateway } from '../../../../../../gateways/ticketGateway'
+import { printDeliveryLabel } from '@core/usecases/deliveries/delivery-label-printing/printDeliveryLabel'
+import { markDeliveryAsDelivered } from '@core/usecases/deliveries/mark-delivery-as-delivered/markDeliveryAsDelivered'
+import { getOrder } from '@core/usecases/order/get-order/getOrder'
+import { getPreparation } from '@core/usecases/order/get-preparation/getPreparation'
 import { getOrderTickets } from '@core/usecases/support/getOrderTickets'
+import { useDeliveryStore } from '@store/deliveryStore'
+import { useCustomerGateway } from '../../../../../../gateways/customerGateway'
+import { useDeliveryGateway } from '../../../../../../gateways/deliveryGateway'
+import { useOrderGateway } from '../../../../../../gateways/orderGateway'
+import { useTicketGateway } from '../../../../../../gateways/ticketGateway'
 
 definePageMeta({ layout: 'main' })
 

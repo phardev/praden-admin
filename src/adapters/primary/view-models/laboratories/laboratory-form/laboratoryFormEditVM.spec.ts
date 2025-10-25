@@ -1,11 +1,27 @@
 import {
+  LaboratoryFormEditVM,
+  laboratoryFormEditVM
+} from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormEditVM'
+import { LaboratoryProductItemVM } from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormGetVM'
+import { LaboratoryAvailableProductItemVM } from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormVM'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import {
   Field,
   PromotionProductItemVM
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { Laboratory } from '@core/entities/laboratory'
+import { Product } from '@core/entities/product'
+import { EditLaboratoryDTO } from '@core/usecases/laboratories/laboratory-edition/editLaboratory'
 import { useFormStore } from '@store/formStore'
 import { useLaboratoryStore } from '@store/laboratoryStore'
-import { createPinia, setActivePinia } from 'pinia'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
+import {
+  anaca3,
+  avene,
+  gilbert,
+  sanofiAventis
+} from '@utils/testData/laboratories'
 import {
   anaca3Minceur,
   calmosine,
@@ -14,23 +30,7 @@ import {
   productWithoutLaboratory,
   ultraLevure
 } from '@utils/testData/products'
-import { Product } from '@core/entities/product'
-import { useProductStore } from '@store/productStore'
-import { useSearchStore } from '@store/searchStore'
-import { LaboratoryProductItemVM } from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormGetVM'
-import { LaboratoryAvailableProductItemVM } from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormVM'
-import { Laboratory } from '@core/entities/laboratory'
-import {
-  laboratoryFormEditVM,
-  LaboratoryFormEditVM
-} from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormEditVM'
-import {
-  anaca3,
-  avene,
-  gilbert,
-  sanofiAventis
-} from '@utils/testData/laboratories'
-import { EditLaboratoryDTO } from '@core/usecases/laboratories/laboratory-edition/editLaboratory'
+import { createPinia, setActivePinia } from 'pinia'
 
 const anaca3VM: LaboratoryProductItemVM = {
   uuid: anaca3Minceur.uuid,

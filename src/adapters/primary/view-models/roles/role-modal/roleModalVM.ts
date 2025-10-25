@@ -1,8 +1,8 @@
-import { type RoleFormVM } from '@adapters/primary/view-models/roles/role-form/roleFormVM'
 import { roleFormCreateVM } from '@adapters/primary/view-models/roles/role-form/roleFormCreateVM'
 import { roleFormEditVM } from '@adapters/primary/view-models/roles/role-form/roleFormEditVM'
-import { useRoleStore } from '@store/roleStore'
+import { type RoleFormVM } from '@adapters/primary/view-models/roles/role-form/roleFormVM'
 import { UUID } from '@core/types/types'
+import { useRoleStore } from '@store/roleStore'
 
 export interface GetRoleModalVM {
   isOpen: boolean

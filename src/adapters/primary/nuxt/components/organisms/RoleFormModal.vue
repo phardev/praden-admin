@@ -77,17 +77,17 @@ FtModal(v-model="isOpen" @close="handleClose")
 </template>
 
 <script setup lang="ts">
+import { type RoleFormCreateVM } from '@adapters/primary/view-models/roles/role-form/roleFormCreateVM'
+import { type RoleFormEditVM } from '@adapters/primary/view-models/roles/role-form/roleFormEditVM'
+import { type RoleFormVM } from '@adapters/primary/view-models/roles/role-form/roleFormVM'
 import {
   openRoleModalForCreate,
   openRoleModalForEdit
 } from '@adapters/primary/view-models/roles/role-modal/roleModalVM'
-import { type RoleFormVM } from '@adapters/primary/view-models/roles/role-form/roleFormVM'
-import { type RoleFormCreateVM } from '@adapters/primary/view-models/roles/role-form/roleFormCreateVM'
-import { type RoleFormEditVM } from '@adapters/primary/view-models/roles/role-form/roleFormEditVM'
+import { PermissionResource } from '@core/entities/permissionResource'
 import { createRole } from '@core/usecases/roles/role-creation/createRole'
 import { editRole } from '@core/usecases/roles/role-edition/editRole'
 import { useRoleGateway } from '~/gateways/roleGateway'
-import { PermissionResource } from '@core/entities/permissionResource'
 
 interface Props {
   modelValue: boolean

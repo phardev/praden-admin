@@ -1,21 +1,21 @@
-import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
 import { CategoryFormFieldsReader } from '@adapters/primary/view-models/categories/category-form/categoryFormGetVM'
-import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
-import { useFormStore } from '@store/formStore'
-import {
-  FieldHandler,
-  FormFieldsWriter
-} from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import {
   CategoryFormVM,
   CategoryProductItemVM
 } from '@adapters/primary/view-models/categories/category-form/categoryFormVM'
-import { UUID } from '@core/types/types'
-import { getFileContent } from '@utils/file'
+import {
+  FieldHandler,
+  FormFieldsWriter
+} from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { Product } from '@core/entities/product'
+import { UUID } from '@core/types/types'
+import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
+import { useFormStore } from '@store/formStore'
 import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
+import { getFileContent } from '@utils/file'
 
 export class CategoryFormFieldsWriter extends FormFieldsWriter {
   protected fieldsReader: CategoryFormFieldsReader

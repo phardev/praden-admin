@@ -1,8 +1,8 @@
+import { Dashboard } from '@core/entities/dashboard'
 import {
   DashboardGateway,
   DashboardParams
 } from '@core/gateways/dashboardGateway'
-import { Dashboard } from '@core/entities/dashboard'
 
 export class InMemoryDashboardGateway implements DashboardGateway {
   private mockData: Dashboard

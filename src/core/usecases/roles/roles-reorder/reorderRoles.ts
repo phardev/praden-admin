@@ -1,6 +1,6 @@
 import { RoleGateway } from '@core/gateways/roleGateway'
-import { useRoleStore } from '@store/roleStore'
 import { UUID } from '@core/types/types'
+import { useRoleStore } from '@store/roleStore'
 
 export const reorderRoles = async (
   roles: Array<UUID>,

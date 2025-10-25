@@ -1,6 +1,6 @@
-import { MessageGateway } from '@core/gateways/messageGateway'
 import { Message, MessageContent } from '@core/entities/order'
 import { DateProvider } from '@core/gateways/dateProvider'
+import { MessageGateway } from '@core/gateways/messageGateway'
 
 export class InMemoryMessageGateway implements MessageGateway {
   private messages: Array<Message> = []

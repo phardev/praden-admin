@@ -1,5 +1,5 @@
-import { useTicketPredefinedAnswerStore } from '@store/ticketPredefinedAnswerStore'
 import { UUID } from '@core/types/types'
+import { useTicketPredefinedAnswerStore } from '@store/ticketPredefinedAnswerStore'
 
 export interface TicketPredefinedAnswerItemVM {
   uuid: UUID

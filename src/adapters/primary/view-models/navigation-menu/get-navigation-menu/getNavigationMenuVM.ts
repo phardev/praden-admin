@@ -1,6 +1,6 @@
+import { getPermissionsVM } from '@adapters/primary/view-models/permissions/getPermissionsVM'
 import { NavigationMenu } from '@core/usecases/navigation-menu/navigation-menu-get/navigationMenu'
 import { useNavigationMenuStore } from '@store/navigationMenuStore'
-import { getPermissionsVM } from '@adapters/primary/view-models/permissions/getPermissionsVM'
 import { canAccessRoute } from '@utils/permissions/routePermissionMapping'
 
 export type GetNavigationMenuVM = Partial<NavigationMenu>

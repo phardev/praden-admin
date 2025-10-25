@@ -1,5 +1,5 @@
-import { useBannerStore } from '@store/bannerStore'
 import { BannerGateway } from '@core/gateways/bannerGateway'
+import { useBannerStore } from '@store/bannerStore'
 
 export const listBanners = async (bannerGateway: BannerGateway) => {
   const banners = await bannerGateway.list()

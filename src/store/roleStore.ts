@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
 import { Role } from '@core/entities/role'
 import { UUID } from '@core/types/types'
+import { defineStore } from 'pinia'
 
 export const useRoleStore = defineStore('RoleStore', {
   state: () => {

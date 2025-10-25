@@ -265,7 +265,7 @@ const createChart = () => {
           Pourcentage: ${(
             (d.data.count /
               processedData.reduce((sum, item) => sum + item.count, 0)) *
-            100
+              100
           ).toFixed(1)}%
         `
         )

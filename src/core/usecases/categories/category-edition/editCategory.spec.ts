@@ -1,26 +1,26 @@
-import { useCategoryStore } from '@store/categoryStore'
 import { InMemoryCategoryGateway } from '@adapters/secondary/category-gateways/InMemoryCategoryGateway'
+import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { createPinia, setActivePinia } from 'pinia'
 import { Category } from '@core/entities/category'
-import { baby, dents, diarrhee, minceur } from '@utils/testData/categories'
-import {
-  editCategory,
-  EditCategoryDTO
-} from '@core/usecases/categories/category-edition/editCategory'
-import { UUID } from '@core/types/types'
+import { Product } from '@core/entities/product'
 import { CategoryDoesNotExistsError } from '@core/errors/CategoryDoesNotExistsError'
 import { ParentCategoryDoesNotExistsError } from '@core/errors/ParentCategoryDoesNotExistsError'
-import { anaca3Minceur, calmosine, dolodent } from '@utils/testData/products'
+import { UUID } from '@core/types/types'
+import {
+  EditCategoryDTO,
+  editCategory
+} from '@core/usecases/categories/category-edition/editCategory'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { useCategoryStore } from '@store/categoryStore'
+import { useProductStore } from '@store/productStore'
+import { baby, dents, diarrhee, minceur } from '@utils/testData/categories'
 import {
   anaca3MinceurListItem,
   calmosineListItem,
   dolodentListItem
 } from '@utils/testData/fixtures/products/productListItems'
-import { Product } from '@core/entities/product'
-import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
-import { useProductStore } from '@store/productStore'
-import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
+import { anaca3Minceur, calmosine, dolodent } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Category Edition', () => {
   let categoryStore: any

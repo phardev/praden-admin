@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
 import { NewsletterSubscription } from '@core/entities/newsletterSubscription'
 import { UUID } from '@core/types/types'
+import { defineStore } from 'pinia'
 
 export const useNewsletterStore = defineStore('NewsletterSubcriptionStore', {
   state: () => {

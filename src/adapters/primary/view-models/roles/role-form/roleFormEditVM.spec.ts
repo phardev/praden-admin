@@ -1,15 +1,15 @@
-import { createPinia, setActivePinia } from 'pinia'
 import {
-  roleFormEditVM,
-  RoleFormEditVM
+  RoleFormEditVM,
+  roleFormEditVM
 } from '@adapters/primary/view-models/roles/role-form/roleFormEditVM'
-import { PermissionResource } from '@core/entities/permissionResource'
-import { EditRoleDTO } from '@core/gateways/roleGateway'
-import { Role } from '@core/entities/role'
-import { useRoleStore } from '@store/roleStore'
-import { useFormStore } from '@store/formStore'
-import { adminRole, pharmacistRole } from '@utils/testData/roles'
 import type { Field } from '@adapters/primary/view-models/roles/role-form/roleFormVM'
+import { PermissionResource } from '@core/entities/permissionResource'
+import { Role } from '@core/entities/role'
+import { EditRoleDTO } from '@core/gateways/roleGateway'
+import { useFormStore } from '@store/formStore'
+import { useRoleStore } from '@store/roleStore'
+import { adminRole, pharmacistRole } from '@utils/testData/roles'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('RoleFormEditVM', () => {
   let vm: RoleFormEditVM

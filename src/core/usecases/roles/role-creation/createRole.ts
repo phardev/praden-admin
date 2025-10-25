@@ -1,4 +1,4 @@
-import { RoleGateway, CreateRoleDTO } from '@core/gateways/roleGateway'
+import { CreateRoleDTO, RoleGateway } from '@core/gateways/roleGateway'
 import { useRoleStore } from '@store/roleStore'
 
 export const createRole = async (

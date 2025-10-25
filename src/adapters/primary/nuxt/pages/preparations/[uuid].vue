@@ -64,22 +64,22 @@ invoice.hidden.printme.mx-2
 </template>
 
 <script lang="ts" setup>
-import { useOrderGateway } from '../../../../../../gateways/orderGateway'
-import { getPreparation } from '@core/usecases/order/get-preparation/getPreparation'
 import { getPreparationVM } from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
-import { validatePreparation } from '@core/usecases/order/validate-preparation/validatePreparation'
-import { useInvoiceGateway } from '../../../../../../gateways/invoiceGateway'
-import { savePreparation } from '@core/usecases/order/save-preparation/savePreparation'
-import { cancelPreparation } from '@core/usecases/order/cancel-preparation/cancelPreparation'
+import { downloadDeliveryLabel } from '@core/usecases/deliveries/delivery-label-download/downloadDeliveryLabel'
 import { askClientHowToFinishPreparation } from '@core/usecases/order/ask-client-how-to-finish-preparation/askClientHowToFinishPreparation'
+import { cancelPreparation } from '@core/usecases/order/cancel-preparation/cancelPreparation'
+import { changeProductEan13ForPreparation } from '@core/usecases/order/change-product-ean13-for-preparation/changeProductEan13ForPreparation'
+import { getPreparation } from '@core/usecases/order/get-preparation/getPreparation'
+import { clearPreparationError } from '@core/usecases/order/preparation-error-clearing/clearPreparationError'
+import { savePreparation } from '@core/usecases/order/save-preparation/savePreparation'
+import { scanProductToPreparation } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
 import { removeProductFromPreparation } from '@core/usecases/order/scan-product-to-remove-fom-preparation/scanProductToRemoveFromPreparation'
 import { setProductQuantityForPreparation } from '@core/usecases/order/set-product-quantity-for-preparation/setProductQuantityForPreparation'
-import { changeProductEan13ForPreparation } from '@core/usecases/order/change-product-ean13-for-preparation/changeProductEan13ForPreparation'
-import { clearPreparationError } from '@core/usecases/order/preparation-error-clearing/clearPreparationError'
-import { scanProductToPreparation } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
-import { downloadDeliveryLabel } from '@core/usecases/deliveries/delivery-label-download/downloadDeliveryLabel'
-import { useDeliveryGateway } from '../../../../../../gateways/deliveryGateway'
+import { validatePreparation } from '@core/usecases/order/validate-preparation/validatePreparation'
 import { useDeliveryStore } from '@store/deliveryStore'
+import { useDeliveryGateway } from '../../../../../../gateways/deliveryGateway'
+import { useInvoiceGateway } from '../../../../../../gateways/invoiceGateway'
+import { useOrderGateway } from '../../../../../../gateways/orderGateway'
 
 definePageMeta({ layout: 'main' })
 

@@ -1,7 +1,7 @@
+import { Delivery, DeliveryStatus } from '@core/entities/delivery'
+import { Promotion } from '@core/entities/promotion'
 import { Timestamp, UUID } from '@core/types/types'
 import { addTaxToPrice } from '@utils/price'
-import { Promotion } from '@core/entities/promotion'
-import { Delivery, DeliveryStatus } from '@core/entities/delivery'
 import { Carrier } from './carrier'
 
 export interface Address {

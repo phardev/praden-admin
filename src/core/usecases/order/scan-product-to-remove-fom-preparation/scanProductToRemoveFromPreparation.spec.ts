@@ -1,10 +1,10 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { usePreparationStore } from '@store/preparationStore'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import { Order } from '@core/entities/order'
 import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
 import { removeProductFromPreparation } from '@core/usecases/order/scan-product-to-remove-fom-preparation/scanProductToRemoveFromPreparation'
+import { usePreparationStore } from '@store/preparationStore'
 import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
-import { Order } from '@core/entities/order'
+import { dolodent, ultraLevure } from '@utils/testData/products'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Scan product to remove from preparation', () => {
   let preparationStore: any

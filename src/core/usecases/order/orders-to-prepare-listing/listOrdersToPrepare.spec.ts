@@ -1,7 +1,12 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { usePreparationStore } from '@store/preparationStore'
-import { listOrdersToPrepare } from '@core/usecases/order/orders-to-prepare-listing/listOrdersToPrepare'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
+import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { Order } from '@core/entities/order'
+import { Product, Stock } from '@core/entities/product'
+import { listOrdersToPrepare } from '@core/usecases/order/orders-to-prepare-listing/listOrdersToPrepare'
+import { usePreparationStore } from '@store/preparationStore'
+import { useProductStore } from '@store/productStore'
 import {
   orderDelivered1,
   orderDelivered2,
@@ -13,13 +18,8 @@ import {
   orderWithMissingProduct1,
   orderWithoutPayment
 } from '@utils/testData/orders'
-import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
-import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
-import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
-import { useProductStore } from '@store/productStore'
-import { Product, Stock } from '@core/entities/product'
 import { chamomilla, dolodent, ultraLevure } from '@utils/testData/products'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('List orders to prepare', () => {
   let preparationStore: any

@@ -1,21 +1,21 @@
-import { useFormStore } from '@store/formStore'
-import { type Category } from '@core/entities/category'
-import { type Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { getFileContent } from '@utils/file'
-import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
-import { addTaxToPrice, removeTaxFromPrice } from '@utils/price'
-import { useProductStore } from '@store/productStore'
 import {
   FormInitializer,
   ProductFormFieldsReader,
   ProductFormVM
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
-import { useLocationStore } from '@store/locationStore'
-import { Location } from '@core/entities/location'
-import { UUID } from '@core/types/types'
+import { type Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { type Category } from '@core/entities/category'
 import { Laboratory } from '@core/entities/laboratory'
-import { useLaboratoryStore } from '@store/laboratoryStore'
+import { Location } from '@core/entities/location'
 import { ProductStatus } from '@core/entities/product'
+import { UUID } from '@core/types/types'
+import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
+import { useFormStore } from '@store/formStore'
+import { useLaboratoryStore } from '@store/laboratoryStore'
+import { useLocationStore } from '@store/locationStore'
+import { useProductStore } from '@store/productStore'
+import { getFileContent } from '@utils/file'
+import { addTaxToPrice, removeTaxFromPrice } from '@utils/price'
 
 export type CreateProductCategoriesVM = Array<Pick<Category, 'uuid' | 'name'>>
 export type CreateProductLocationsVM = Array<Pick<Location, 'uuid' | 'name'>>

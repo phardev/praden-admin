@@ -9,14 +9,14 @@
 </template>
 
 <script lang="ts" setup>
-import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
-import { useCategoryGateway } from '../../../../../../../gateways/categoryGateway'
-import { useProductGateway } from '../../../../../../../gateways/productGateway'
-import { getProduct } from '@core/usecases/product/get-product/getProduct'
 import { productFormGetVM } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
+import { getProduct } from '@core/usecases/product/get-product/getProduct'
 import { listPromotions } from '@core/usecases/promotions/promotions-listing/listPromotions'
-import { usePromotionGateway } from '../../../../../../../gateways/promotionGateway'
+import { useCategoryGateway } from '../../../../../../../gateways/categoryGateway'
 import { useDateProvider } from '../../../../../../../gateways/dateProvider'
+import { useProductGateway } from '../../../../../../../gateways/productGateway'
+import { usePromotionGateway } from '../../../../../../../gateways/promotionGateway'
 
 definePageMeta({ layout: 'main' })
 

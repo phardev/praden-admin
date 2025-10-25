@@ -1,8 +1,8 @@
 import { Permission } from '@core/entities/permission'
+import { Role } from '@core/entities/role'
 import { UUID } from '@core/types/types'
 import { useRoleStore } from '@store/roleStore'
 import { useSystemResourceStore } from '@store/systemResourceStore'
-import { Role } from '@core/entities/role'
 
 export interface PermissionMatrixRole {
   uuid: UUID

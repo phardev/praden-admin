@@ -1,13 +1,13 @@
-import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
-import { useFormStore } from '@store/formStore'
-import { CreateBannerDTO } from '@core/usecases/banners/banner-creation/createBanner'
-import { useBannerStore } from '@store/bannerStore'
 import {
   BannerFormFieldsReader,
   BannerFormFieldsWriter,
   BannerFormVM
 } from '@adapters/primary/view-models/banners/banner-form/bannerFormCreateVM'
+import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { CreateBannerDTO } from '@core/usecases/banners/banner-creation/createBanner'
+import { useBannerStore } from '@store/bannerStore'
+import { useFormStore } from '@store/formStore'
 
 class ExistingBannerFormInitializer implements FormInitializer {
   protected readonly key: string

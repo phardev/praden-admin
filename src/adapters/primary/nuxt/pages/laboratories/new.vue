@@ -9,10 +9,10 @@
 
 <script lang="ts" setup>
 import { laboratoryFormCreateVM } from '@adapters/primary/view-models/laboratories/laboratory-form/laboratoryFormCreateVM'
-import { useProductGateway } from '../../../../../../gateways/productGateway'
-import { listProducts } from '@core/usecases/product/product-listing/listProducts'
 import { createLaboratory } from '@core/usecases/laboratories/laboratory-creation/createLaboratory'
+import { listProducts } from '@core/usecases/product/product-listing/listProducts'
 import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
+import { useProductGateway } from '../../../../../../gateways/productGateway'
 
 definePageMeta({ layout: 'main' })
 

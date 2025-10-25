@@ -1,8 +1,8 @@
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { DeliveryStatus } from '@core/entities/delivery'
 import { Order, OrderLineStatus, PaymentStatus } from '@core/entities/order'
 import { useOrderStore } from '@store/orderStore'
-import { createPinia, setActivePinia } from 'pinia'
-import { getOrdersVM, GetOrdersVM } from './getOrdersVM'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { useSearchStore } from '@store/searchStore'
 import {
   orderNotPayed1,
   orderPrepared1,
@@ -10,8 +10,8 @@ import {
   orderWithoutDelivery,
   orderWithPromotionCode
 } from '@utils/testData/orders'
-import { useSearchStore } from '@store/searchStore'
-import { DeliveryStatus } from '@core/entities/delivery'
+import { createPinia, setActivePinia } from 'pinia'
+import { GetOrdersVM, getOrdersVM } from './getOrdersVM'
 
 const expectedHeaders: Array<Header> = [
   {

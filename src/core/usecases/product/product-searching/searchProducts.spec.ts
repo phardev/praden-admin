@@ -1,9 +1,11 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useSearchStore } from '@store/searchStore'
+import { FakeSearchGateway } from '@adapters/secondary/search-gateways/FakeSearchGateway'
+import { ProductStatus } from '@core/entities/product'
 import {
-  searchProducts,
-  SearchProductsFilters
+  SearchProductsFilters,
+  searchProducts
 } from '@core/usecases/product/product-searching/searchProducts'
+import { useSearchStore } from '@store/searchStore'
+import { baby, dents } from '@utils/testData/categories'
 import {
   calmosine,
   chamomilla,
@@ -12,9 +14,7 @@ import {
   productWithoutLaboratory,
   ultraLevure
 } from '@utils/testData/products'
-import { FakeSearchGateway } from '@adapters/secondary/search-gateways/FakeSearchGateway'
-import { baby, dents } from '@utils/testData/categories'
-import { ProductStatus } from '@core/entities/product'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Search products', () => {
   let searchStore: any

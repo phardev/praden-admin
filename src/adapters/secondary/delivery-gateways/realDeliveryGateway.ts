@@ -1,8 +1,8 @@
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
 import { Delivery, DeliveryStatus } from '@core/entities/delivery'
 import { DeliveryGateway } from '@core/gateways/deliveryGateway'
 import { UUID } from '@core/types/types'
-import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 
 export class RealDeliveryGateway
   extends RealGateway

@@ -1,17 +1,16 @@
-import { usePreparationStore } from '@store/preparationStore'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
-import { isAnonymousOrder } from '@core/entities/order'
 import {
   AddressVM,
   getDeliveryAddressVM
 } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
-import { useSettingStore } from '@store/settingStore'
-import { addTaxToPrice } from '@utils/price'
-import { getTotalWithTax, Order } from '@core/entities/order'
-import { useLocationStore } from '@store/locationStore'
-import { zoneGeo } from '@utils/testData/locations'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { sortLocationByOrder } from '@core/entities/location'
+import { getTotalWithTax, isAnonymousOrder, Order } from '@core/entities/order'
+import { useLocationStore } from '@store/locationStore'
+import { usePreparationStore } from '@store/preparationStore'
+import { useSettingStore } from '@store/settingStore'
+import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
+import { addTaxToPrice } from '@utils/price'
+import { zoneGeo } from '@utils/testData/locations'
 
 export interface GlobalPreparationLineVM {
   reference: string
@@ -128,8 +127,12 @@ export const startPreparationsVM = (origin: string): StartPreparationsVM => {
         if (lineInGlobal) {
           lineInGlobal.quantity += line.quantity
         } else {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { unitPrice, taxRate, totalPrice, ...restOfLine } = line
+          const {
+            unitPrice: _unitPrice,
+            taxRate: _taxRate,
+            totalPrice: _totalPrice,
+            ...restOfLine
+          } = line
           acc.push(JSON.parse(JSON.stringify(restOfLine)))
         }
       })

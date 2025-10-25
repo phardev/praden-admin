@@ -1,9 +1,8 @@
-import { useSearchStore } from '@store/searchStore'
-
+import { DeliveryStatus } from '@core/entities/delivery'
+import { OrderLineStatus, PaymentStatus } from '@core/entities/order'
 import { SearchGateway } from '@core/gateways/searchGateway'
 import { Timestamp, UUID } from '@core/types/types'
-import { OrderLineStatus, PaymentStatus } from '@core/entities/order'
-import { DeliveryStatus } from '@core/entities/delivery'
+import { useSearchStore } from '@store/searchStore'
 
 export interface SearchDTO {
   query?: string

@@ -1,6 +1,6 @@
-import { getRemindersVM } from '../../view-models/reminders/get-reminders/getRemindersVM'
 import { getReminders } from '@core/usecases/reminders/get-reminders/getReminders'
 import { useRemindersGateway } from '../../../../../gateways/remindersGateway'
+import { getRemindersVM } from '../../view-models/reminders/get-reminders/getRemindersVM'
 
 export const useRemindersData = () => {
   const isLoading = ref(false)

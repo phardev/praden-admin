@@ -1,6 +1,5 @@
 import { Product, ProductStatus } from '@core/entities/product'
 import { baby, dents, diarrhee, minceur } from '@utils/testData/categories'
-import { reserve, zoneGeo } from '@utils/testData/locations'
 import {
   anaca3,
   biocodex,
@@ -9,6 +8,7 @@ import {
   nutrisante,
   sanofiAventis
 } from '@utils/testData/laboratories'
+import { reserve, zoneGeo } from '@utils/testData/locations'
 
 export const dolodent: Product = {
   uuid: 'product-dolodent',

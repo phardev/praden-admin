@@ -1,18 +1,18 @@
-import { usePromotionStore } from '@store/promotionStore'
-import { useFormStore } from '@store/formStore'
-import { ReductionType } from '@core/entities/promotion'
-import {
-  Field,
-  PromotionProductItemVM,
-  TypeChoiceVM
-} from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { Product } from '@core/entities/product'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import {
   FormFieldsReader,
   FormInitializer
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import {
+  Field,
+  PromotionProductItemVM,
+  TypeChoiceVM
+} from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { PromotionFormVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormVM'
+import { Product } from '@core/entities/product'
+import { ReductionType } from '@core/entities/promotion'
+import { useFormStore } from '@store/formStore'
+import { usePromotionStore } from '@store/promotionStore'
 
 export class ExistingPromotionFormInitializer implements FormInitializer {
   protected readonly key: string

@@ -1,7 +1,7 @@
-import { createPinia, setActivePinia } from 'pinia'
+import { toggleSelectAllPreparations } from '@core/usecases/order/toggle-select-all-preparations/toggleSelectAllPreparations'
 import { usePreparationStore } from '@store/preparationStore'
 import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
-import { toggleSelectAllPreparations } from '@core/usecases/order/toggle-select-all-preparations/toggleSelectAllPreparations'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Toggle select all preparations', () => {
   let preparationStore: any

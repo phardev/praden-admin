@@ -1,9 +1,9 @@
-import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
-import { useFormStore } from '@store/formStore'
-import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { CustomerFormFieldsReader } from '@adapters/primary/view-models/customers/customer-form/customerFormGetVM'
 import { FormFieldsWriter } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { CreateCustomerDTO } from '@core/usecases/customers/customer-creation/createCustomer'
+import { useFormStore } from '@store/formStore'
 
 export class NewCustomerFormInitializer implements FormInitializer {
   protected readonly key: string

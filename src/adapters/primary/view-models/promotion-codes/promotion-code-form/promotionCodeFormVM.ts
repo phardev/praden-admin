@@ -1,4 +1,14 @@
+import { DeliveryMethod } from '@core/entities/order'
+import { Product } from '@core/entities/product'
 import { ReductionType } from '@core/entities/promotion'
+import {
+  CreatePromotionCodeDTO,
+  PromotionScope
+} from '@core/entities/promotionCode'
+import { UUID } from '@core/types/types'
+import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
+import { usePromotionCodeStore } from '@store/promotionCodeStore'
+import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
 import {
   Field,
   TypeChoiceVM
@@ -8,16 +18,6 @@ import {
   PromotionCodeFormFieldsReader,
   PromotionScopeChoiceVM
 } from './promotionCodeFormGetVM'
-import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
-import {
-  CreatePromotionCodeDTO,
-  PromotionScope
-} from '@core/entities/promotionCode'
-import { usePromotionCodeStore } from '@store/promotionCodeStore'
-import { Product } from '@core/entities/product'
-import { UUID } from '@core/types/types'
-import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
-import { DeliveryMethod } from '@core/entities/order'
 
 export interface PromotionCodeProductItemVM {
   uuid: UUID

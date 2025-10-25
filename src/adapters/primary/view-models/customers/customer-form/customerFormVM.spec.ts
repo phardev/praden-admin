@@ -1,12 +1,3 @@
-import { useFormStore } from '@store/formStore'
-import { useCustomerStore } from '@store/customerStore'
-import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { createPinia, setActivePinia } from 'pinia'
-import {
-  CustomerFormGetVM,
-  customerFormGetVM
-} from '@adapters/primary/view-models/customers/customer-form/customerFormGetVM'
-import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
 import {
   CustomerFormCreateVM,
   customerFormCreateVM
@@ -15,7 +6,16 @@ import {
   CustomerFormEditVM,
   customerFormEditVM
 } from '@adapters/primary/view-models/customers/customer-form/customerFormEditVM'
+import {
+  CustomerFormGetVM,
+  customerFormGetVM
+} from '@adapters/primary/view-models/customers/customer-form/customerFormGetVM'
+import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { CreateCustomerDTO } from '@core/usecases/customers/customer-creation/createCustomer'
+import { useCustomerStore } from '@store/customerStore'
+import { useFormStore } from '@store/formStore'
+import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
+import { createPinia, setActivePinia } from 'pinia'
 
 const editableInitialVMTests = (
   getVM: () => CustomerFormCreateVM | CustomerFormEditVM | CustomerFormGetVM,

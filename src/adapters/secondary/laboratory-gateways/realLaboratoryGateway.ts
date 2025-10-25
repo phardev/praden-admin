@@ -1,10 +1,10 @@
-import { LaboratoryGateway } from '@core/gateways/laboratoryGateway'
-import { RealGateway } from '../order-gateways/RealOrderGateway'
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { Laboratory } from '@core/entities/laboratory'
+import { LaboratoryGateway } from '@core/gateways/laboratoryGateway'
 import { UUID } from '@core/types/types'
 import { CreateLaboratoryDTO } from '@core/usecases/laboratories/laboratory-creation/createLaboratory'
 import { EditLaboratoryDTO } from '@core/usecases/laboratories/laboratory-edition/editLaboratory'
-import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { RealGateway } from '../order-gateways/RealOrderGateway'
 
 export class RealLaboratoryGateway
   extends RealGateway

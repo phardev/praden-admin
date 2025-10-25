@@ -1,6 +1,6 @@
 import { SearchGateway } from '@core/gateways/searchGateway'
-import { useSearchStore } from '@store/searchStore'
 import { SearchDTO } from '@core/usecases/order/orders-searching/searchOrders'
+import { useSearchStore } from '@store/searchStore'
 
 export type SearchCustomersDTO = SearchDTO
 

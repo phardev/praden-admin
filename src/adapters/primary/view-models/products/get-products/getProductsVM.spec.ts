@@ -1,11 +1,7 @@
-import { GetProductsVM, getProductsVM } from './getProductsVM'
-import {
-  dolodent,
-  productWithForbiddenPromotion,
-  productWithoutCategory,
-  productWithoutLaboratory,
-  ultraLevure
-} from '@utils/testData/products'
+import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { ProductStatus } from '@core/entities/product'
+import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
 import {
   dolodentListItem,
   productWithForbiddenPromotionListItem,
@@ -13,11 +9,15 @@ import {
   productWithoutLaboratoryListItem,
   ultraLevureListItem
 } from '@utils/testData/fixtures/products/productListItems'
+import {
+  dolodent,
+  productWithForbiddenPromotion,
+  productWithoutCategory,
+  productWithoutLaboratory,
+  ultraLevure
+} from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
-import { useProductStore } from '@store/productStore'
-import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { useSearchStore } from '@store/searchStore'
-import { ProductStatus } from '@core/entities/product'
+import { GetProductsVM, getProductsVM } from './getProductsVM'
 
 describe('Get products VM', () => {
   let productStore: any

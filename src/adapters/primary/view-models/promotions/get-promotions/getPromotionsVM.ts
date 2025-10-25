@@ -1,7 +1,5 @@
 import { TableVM } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
-import { HashTable, Timestamp } from '@core/types/types'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { usePromotionStore } from '@store/promotionStore'
 import {
   isPromotionEnded,
   isPromotionInProgress,
@@ -10,12 +8,14 @@ import {
   ReductionType
 } from '@core/entities/promotion'
 import { DateProvider } from '@core/gateways/dateProvider'
+import { HashTable, Timestamp } from '@core/types/types'
+import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
+import { usePromotionStore } from '@store/promotionStore'
 import {
   percentFormatter,
   priceFormatter,
   timestampToLocaleString
 } from '@utils/formatters'
-import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
 
 export interface GetPromotionItemVM {
   uuid: string

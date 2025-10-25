@@ -1,11 +1,23 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useFormStore } from '@store/formStore'
+import {
+  PromotionCodeFormGetVM,
+  PromotionScopeChoiceVM,
+  promotionCodeFormGetVM
+} from '@adapters/primary/view-models/promotion-codes/promotion-code-form/promotionCodeFormGetVM'
 import {
   Field,
   TypeChoiceVM
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { DeliveryMethod } from '@core/entities/order'
 import { ReductionType } from '@core/entities/promotion'
+import { PromotionCode, PromotionScope } from '@core/entities/promotionCode'
+import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
+import { useFormStore } from '@store/formStore'
 import { usePromotionCodeStore } from '@store/promotionCodeStore'
+import {
+  clickAndCollect,
+  deliveryInRelayPoint,
+  express
+} from '@utils/testData/deliveryMethods'
 import {
   deliveryPromotionCode,
   fifteenPercentIfMiniumAmountPromotionCode,
@@ -14,19 +26,7 @@ import {
   limitedPromotionCode,
   tenEuroFixedPromotionCode
 } from '@utils/testData/promotionCodes'
-import { PromotionCode, PromotionScope } from '@core/entities/promotionCode'
-import {
-  PromotionCodeFormGetVM,
-  promotionCodeFormGetVM,
-  PromotionScopeChoiceVM
-} from '@adapters/primary/view-models/promotion-codes/promotion-code-form/promotionCodeFormGetVM'
-import {
-  clickAndCollect,
-  deliveryInRelayPoint,
-  express
-} from '@utils/testData/deliveryMethods'
-import { DeliveryMethod } from '@core/entities/order'
-import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
+import { createPinia, setActivePinia } from 'pinia'
 
 const availableTypeChoices: Array<TypeChoiceVM> = [
   {

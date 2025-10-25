@@ -35,16 +35,16 @@
 </template>
 
 <script lang="ts" setup>
-import { listCustomers } from '@core/usecases/customers/customer-listing/listCustomer'
-import { useCustomerGateway } from '../../../../../../gateways/customerGateway'
 import { getCustomersVM } from '@adapters/primary/view-models/customers/get-customers/getCustomersVM'
+import { listCustomers } from '@core/usecases/customers/customer-listing/listCustomer'
 import { searchCustomers } from '@core/usecases/customers/customer-searching/searchCustomer'
-import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 import { useSearchStore } from '@store/searchStore'
 import InfiniteLoading from 'v3-infinite-loading'
+import { useCustomerGateway } from '../../../../../../gateways/customerGateway'
+import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 import 'v3-infinite-loading/lib/style.css'
-import { unsubscribeFromNewsletter } from '@core/usecases/newsletter-subscriptions/unsubscribe-from-newsletter/unsubscribe-from-newsletter'
 import { subscribeToNewsletter } from '@core/usecases/newsletter-subscriptions/subscribe-to-newsletter/subscribeToNewsletter'
+import { unsubscribeFromNewsletter } from '@core/usecases/newsletter-subscriptions/unsubscribe-from-newsletter/unsubscribe-from-newsletter'
 import { useNewsletterGateway } from '../../../../../../gateways/newsletterGateway'
 
 definePageMeta({ layout: 'main' })

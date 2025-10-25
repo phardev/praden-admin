@@ -1,11 +1,11 @@
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import {
   CreatePromotionCodeDTO,
   PromotionCode
 } from '@core/entities/promotionCode'
-import { RealGateway } from '../order-gateways/RealOrderGateway'
 import { PromotionCodeGateway } from '@core/gateways/promotionCodeGateway'
-import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { EditPromotionCodeDTO } from '@core/usecases/promotion-codes/promotion-code-edition/editPromotionCode'
+import { RealGateway } from '../order-gateways/RealOrderGateway'
 
 export class RealPromotionCodeGateway
   extends RealGateway

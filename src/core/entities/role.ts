@@ -1,5 +1,5 @@
-import type { UUID } from '@core/types/types'
 import type { Permission } from '@core/entities/permission'
+import type { UUID } from '@core/types/types'
 
 export interface Role {
   uuid: UUID

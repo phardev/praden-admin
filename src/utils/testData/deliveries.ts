@@ -1,11 +1,10 @@
+import { Delivery, DeliveryStatus } from '@core/entities/delivery'
 import {
   clickAndCollect,
   deliveryInRelayPoint,
   deliveryInRelayPointDPD
 } from '@utils/testData/deliveryMethods'
 import { praden } from '@utils/testData/shop'
-
-import { Delivery, DeliveryStatus } from '@core/entities/delivery'
 
 export const deliveryOrderToPrepare1: Delivery = {
   uuid: 'delivery-order-to-prepare-1',

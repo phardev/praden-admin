@@ -1,16 +1,16 @@
-import { useFormStore } from '@store/formStore'
-import { useCategoryStore } from '@store/categoryStore'
-import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { CreateProductCategoriesVM } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
-import type { Category } from '@core/entities/category'
-import {
-  FormFieldsReader,
-  FormInitializer
-} from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import {
   CategoryFormVM,
   CategoryProductItemVM
 } from '@adapters/primary/view-models/categories/category-form/categoryFormVM'
+import { CreateProductCategoriesVM } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+import {
+  FormFieldsReader,
+  FormInitializer
+} from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import type { Category } from '@core/entities/category'
+import { useCategoryStore } from '@store/categoryStore'
+import { useFormStore } from '@store/formStore'
 
 export class ExistingCategoryFormInitializer implements FormInitializer {
   protected readonly key: string

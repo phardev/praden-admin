@@ -1,7 +1,7 @@
-import { EditProductDTO } from './editProduct'
-import { UUID } from '@core/types/types'
 import { ProductGateway } from '@core/gateways/productGateway'
+import { UUID } from '@core/types/types'
 import { useProductStore } from '@store/productStore'
+import { EditProductDTO } from './editProduct'
 
 export interface BulkEditProductDependencies {
   productGateway: ProductGateway

@@ -1,7 +1,14 @@
-import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
+import { InMemoryCustomerGateway } from '@adapters/secondary/customer-gateways/inMemoryCustomerGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
-import { useOrderStore } from '@store/orderStore'
+import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { Customer } from '@core/entities/customer'
 import { Order } from '@core/entities/order'
+import { UUID } from '@core/types/types'
+import { getOrder } from '@core/usecases/order/get-order/getOrder'
+import { useCustomerStore } from '@store/customerStore'
+import { useOrderStore } from '@store/orderStore'
+import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
 import {
   elodieDurandOrder2,
   lucasLefevreOrder1,
@@ -9,14 +16,7 @@ import {
   orderToPrepare2,
   orderToPrepare3
 } from '@utils/testData/orders'
-import { UUID } from '@core/types/types'
-import { getOrder } from '@core/usecases/order/get-order/getOrder'
 import { createPinia, setActivePinia } from 'pinia'
-import { Customer } from '@core/entities/customer'
-import { InMemoryCustomerGateway } from '@adapters/secondary/customer-gateways/inMemoryCustomerGateway'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { useCustomerStore } from '@store/customerStore'
-import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
 
 describe('Get order', () => {
   let orderGateway: InMemoryOrderGateway

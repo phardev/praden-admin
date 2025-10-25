@@ -1,12 +1,12 @@
-import { InvoiceGateway } from '@core/gateways/invoiceGateway'
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { Invoice } from '@core/entities/invoice'
 import {
-  OrderLineStatus,
   Order,
   OrderLine,
+  OrderLineStatus,
   PaymentStatus
 } from '@core/entities/order'
-import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { InvoiceGateway } from '@core/gateways/invoiceGateway'
 import { zoneGeo } from '@utils/testData/locations'
 
 export class RealInvoiceGateway implements InvoiceGateway {

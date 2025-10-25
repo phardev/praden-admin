@@ -1,9 +1,9 @@
 import { Dashboard } from '@core/entities/dashboard'
-import { InMemoryDashboardGateway } from '@core/usecases/dashboard/get-dashboard/inMemoryDashboardGateway'
-import { getDashboard } from './getDashboard'
 import { DashboardParams } from '@core/gateways/dashboardGateway'
-import { createPinia, setActivePinia } from 'pinia'
+import { InMemoryDashboardGateway } from '@core/usecases/dashboard/get-dashboard/inMemoryDashboardGateway'
 import { useStatsStore } from '@store/statsStore'
+import { createPinia, setActivePinia } from 'pinia'
+import { getDashboard } from './getDashboard'
 
 describe('GetDashboard', () => {
   let dashboardGateway: InMemoryDashboardGateway

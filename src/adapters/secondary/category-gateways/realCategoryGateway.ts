@@ -1,10 +1,10 @@
-import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import { CategoryGateway } from '@core/gateways/categoryGateway'
-import { Category } from '@core/entities/category'
-import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
-import { UUID } from '@core/types/types'
-import { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
+import { Category } from '@core/entities/category'
+import { CategoryGateway } from '@core/gateways/categoryGateway'
+import { UUID } from '@core/types/types'
+import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
+import { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
 
 export class RealCategoryGateway
   extends RealGateway
@@ -59,5 +59,15 @@ export class RealCategoryGateway
   async getByUuid(uuid: UUID): Promise<Category> {
     const res = await axiosWithBearer.get(`${this.baseUrl}/categories/${uuid}`)
     return res.data.item
+  }
+
+  async reorder(categoryUuids: Array<UUID>): Promise<Array<Category>> {
+    const res = await axiosWithBearer.post(
+      `${this.baseUrl}/categories/reorder`,
+      {
+        uuids: categoryUuids
+      }
+    )
+    return res.data.items
   }
 }

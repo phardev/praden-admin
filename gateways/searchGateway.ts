@@ -1,9 +1,8 @@
-import * as products from '@utils/testData/products'
-import * as categories from '@utils/testData/categories'
-
 import { FakeSearchGateway } from '@adapters/secondary/search-gateways/FakeSearchGateway'
-import { isLocalEnv } from '@utils/env'
 import { RealSearchGateway } from '@adapters/secondary/search-gateways/RealSearchGateway'
+import { isLocalEnv } from '@utils/env'
+import * as categories from '@utils/testData/categories'
+import * as products from '@utils/testData/products'
 
 export const useSearchGateway = () => {
   if (isLocalEnv()) {

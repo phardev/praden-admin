@@ -1,6 +1,6 @@
-import { RemindersGateway } from '@core/gateways/remindersGateway'
-import { RealRemindersGateway } from '@adapters/secondary/reminders-gateways/RealRemindersGateway'
 import { InMemoryRemindersGateway } from '@adapters/secondary/reminders-gateways/InMemoryRemindersGateway'
+import { RealRemindersGateway } from '@adapters/secondary/reminders-gateways/RealRemindersGateway'
+import { RemindersGateway } from '@core/gateways/remindersGateway'
 import { isLocalEnv } from '@utils/env'
 
 const inMemory = (() => {

@@ -1,8 +1,8 @@
 import { PickingSortType } from '@adapters/primary/view-models/preparations/start-preparations/startPreparationsVM'
-import { createPinia, setActivePinia } from 'pinia'
-import { useSettingStore } from '@store/settingStore'
 import { getSettings } from '@core/usecases/settings/get-settings/getSettings'
 import { InMemorySettingGateway } from '@core/usecases/settings/get-settings/InMemorySettingGateway'
+import { useSettingStore } from '@store/settingStore'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get settings', () => {
   let settingStore: any

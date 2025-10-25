@@ -1,6 +1,6 @@
-import { useCategoryStore } from '@store/categoryStore'
-import { UUID } from '@core/types/types'
 import { Category } from '@core/entities/category'
+import { UUID } from '@core/types/types'
+import { useCategoryStore } from '@store/categoryStore'
 
 export interface TreeNode<T> {
   data: T

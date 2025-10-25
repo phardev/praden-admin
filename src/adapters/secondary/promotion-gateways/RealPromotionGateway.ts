@@ -1,12 +1,12 @@
-import { PromotionGateway } from '@core/gateways/promotionGateway'
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
 import {
   CreatePromotionDTO,
   EditPromotionDTO,
   Promotion
 } from '@core/entities/promotion'
+import { PromotionGateway } from '@core/gateways/promotionGateway'
 import { UUID } from '@core/types/types'
-import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
 
 export class RealPromotionGateway

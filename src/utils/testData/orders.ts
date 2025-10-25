@@ -1,3 +1,4 @@
+import { DeliveryStatus } from '@core/entities/delivery'
 import {
   AnonymousOrder,
   CustomerOrder,
@@ -5,21 +6,7 @@ import {
   OrderLineStatus,
   PaymentStatus
 } from '@core/entities/order'
-import {
-  anaca3Minceur,
-  calmosine,
-  chamomilla,
-  dolodent,
-  hemoclar,
-  productWithoutLocation,
-  ultraLevure
-} from '@utils/testData/products'
-import {
-  clickAndCollect,
-  deliveryInRelayPoint
-} from '@utils/testData/deliveryMethods'
 import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
-import { praden } from '@utils/testData/shop'
 import {
   deliveryOrderDelivered1,
   deliveryOrderDelivered2,
@@ -29,7 +16,20 @@ import {
   deliveryOrderToPrepare3,
   deliveryOrderWithMissingProduct
 } from '@utils/testData/deliveries'
-import { DeliveryStatus } from '@core/entities/delivery'
+import {
+  clickAndCollect,
+  deliveryInRelayPoint
+} from '@utils/testData/deliveryMethods'
+import {
+  anaca3Minceur,
+  calmosine,
+  chamomilla,
+  dolodent,
+  hemoclar,
+  productWithoutLocation,
+  ultraLevure
+} from '@utils/testData/products'
+import { praden } from '@utils/testData/shop'
 
 export const orderToPrepare1: AnonymousOrder = {
   uuid: 'XIKOKI',

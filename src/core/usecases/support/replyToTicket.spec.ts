@@ -1,13 +1,13 @@
-import { useTicketStore } from '@store/ticketStore'
-import { replyToTicket } from '@core/usecases/support/replyToTicket'
-import { createPinia, setActivePinia } from 'pinia'
-import { newTicket } from '@utils/testData/tickets'
-import { InMemoryTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTicketGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { InMemoryTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTicketGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { TicketDoesNotExistsError } from '@core/errors/TicketDoesNotExistsError'
 import { Ticket, TicketMessageType, TicketStatus } from '@core/entities/ticket'
+import { TicketDoesNotExistsError } from '@core/errors/TicketDoesNotExistsError'
 import { Timestamp } from '@core/types/types'
+import { replyToTicket } from '@core/usecases/support/replyToTicket'
+import { useTicketStore } from '@store/ticketStore'
+import { newTicket } from '@utils/testData/tickets'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Reply to ticket', () => {
   let ticketStore: any

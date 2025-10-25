@@ -1,7 +1,7 @@
-import * as deliveries from '@utils/testData/deliveries'
-import { isLocalEnv } from '@utils/env'
 import { InMemoryDeliveryGateway } from '@adapters/secondary/delivery-gateways/inMemoryDeliveryGateway'
 import { RealDeliveryGateway } from '@adapters/secondary/delivery-gateways/realDeliveryGateway'
+import { isLocalEnv } from '@utils/env'
+import * as deliveries from '@utils/testData/deliveries'
 
 const deliveryGateway = new InMemoryDeliveryGateway()
 deliveryGateway.feedWith(...Object.values(deliveries))

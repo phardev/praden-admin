@@ -1,7 +1,7 @@
-import { useRoleStore } from '@store/roleStore'
-import { useFormStore } from '@store/formStore'
-import { PermissionResource } from '@core/entities/permissionResource'
 import { Permission } from '@core/entities/permission'
+import { PermissionResource } from '@core/entities/permissionResource'
+import { useFormStore } from '@store/formStore'
+import { useRoleStore } from '@store/roleStore'
 
 export interface RolePermissionOption {
   resource: PermissionResource
@@ -58,7 +58,8 @@ export class RoleFormFieldsReader extends FormFieldsReader {
       [PermissionResource.ORDERS]: 'Commandes',
       [PermissionResource.BANNERS]: 'Bannières',
       [PermissionResource.STAFF]: 'Équipe',
-      [PermissionResource.RESEARCH]: 'Recherche'
+      [PermissionResource.RESEARCH]: 'Recherche',
+      [PermissionResource.SHOP_MANAGEMENT]: 'Gestion Boutique'
     }
 
     return Object.values(PermissionResource).map((resource) => ({

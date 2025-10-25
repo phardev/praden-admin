@@ -1,6 +1,6 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { usePreparationStore } from '@store/preparationStore'
 import { resetPreparationSelection } from '@core/usecases/order/reset-preparation-selection/resetPreparationSelection'
+import { usePreparationStore } from '@store/preparationStore'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Reset preparation selection', () => {
   let preparationStore: any

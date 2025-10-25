@@ -1,13 +1,13 @@
-import { useTicketStore } from '@store/ticketStore'
-import { addPrivateNoteToTicket } from '@core/usecases/support/addPrivateNoteToTicket'
-import { createPinia, setActivePinia } from 'pinia'
-import { newTicket } from '@utils/testData/tickets'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { InMemoryTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTicketGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { TicketDoesNotExistsError } from '@core/errors/TicketDoesNotExistsError'
 import { Ticket, TicketMessageType, TicketStatus } from '@core/entities/ticket'
-import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { TicketDoesNotExistsError } from '@core/errors/TicketDoesNotExistsError'
 import { Timestamp } from '@core/types/types'
+import { addPrivateNoteToTicket } from '@core/usecases/support/addPrivateNoteToTicket'
+import { useTicketStore } from '@store/ticketStore'
+import { newTicket } from '@utils/testData/tickets'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Add private note to ticket', () => {
   let ticketStore: any

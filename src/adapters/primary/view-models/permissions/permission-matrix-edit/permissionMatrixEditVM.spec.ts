@@ -1,11 +1,11 @@
-import {
-  permissionMatrixEditVM,
-  PermissionMatrixEditVM,
-  EditRoleChangeDto
-} from './permissionMatrixEditVM'
-import { createPinia, setActivePinia } from 'pinia'
 import { useRoleStore } from '@store/roleStore'
 import { useSystemResourceStore } from '@store/systemResourceStore'
+import { createPinia, setActivePinia } from 'pinia'
+import {
+  EditRoleChangeDto,
+  PermissionMatrixEditVM,
+  permissionMatrixEditVM
+} from './permissionMatrixEditVM'
 
 describe('PermissionMatrixEditVM', () => {
   let vm: PermissionMatrixEditVM

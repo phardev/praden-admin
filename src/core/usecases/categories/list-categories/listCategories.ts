@@ -1,5 +1,5 @@
-import { useCategoryStore } from '@store/categoryStore'
 import { CategoryGateway } from '@core/gateways/categoryGateway'
+import { useCategoryStore } from '@store/categoryStore'
 
 export const listCategories = async (categoryGateway: CategoryGateway) => {
   const categoryStore = useCategoryStore()

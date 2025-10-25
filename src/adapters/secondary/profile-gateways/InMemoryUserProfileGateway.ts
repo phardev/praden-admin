@@ -1,5 +1,5 @@
-import { UserProfileGateway } from '@core/gateways/userProfileGateway'
 import { UserProfile } from '@core/entities/userProfile'
+import { UserProfileGateway } from '@core/gateways/userProfileGateway'
 
 export class InMemoryUserProfileGateway implements UserProfileGateway {
   private profiles: Array<UserProfile> = []

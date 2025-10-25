@@ -1,7 +1,7 @@
-import { printDeliveryLabel } from '@core/usecases/deliveries/delivery-label-printing/printDeliveryLabel'
 import { InMemoryDeliveryGateway } from '@adapters/secondary/delivery-gateways/inMemoryDeliveryGateway'
-import { deliveryOrderToPrepare3 } from '@utils/testData/deliveries'
 import { UUID } from '@core/types/types'
+import { printDeliveryLabel } from '@core/usecases/deliveries/delivery-label-printing/printDeliveryLabel'
+import { deliveryOrderToPrepare3 } from '@utils/testData/deliveries'
 
 describe('Order delivery label printing', () => {
   let deliveryGateway: InMemoryDeliveryGateway

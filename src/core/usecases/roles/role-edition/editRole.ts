@@ -1,4 +1,4 @@
-import { RoleGateway, EditRoleDTO } from '@core/gateways/roleGateway'
+import { EditRoleDTO, RoleGateway } from '@core/gateways/roleGateway'
 import { UUID } from '@core/types/types'
 import { useRoleStore } from '@store/roleStore'
 

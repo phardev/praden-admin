@@ -1,10 +1,10 @@
-import { BannerGateway } from '@core/gateways/bannerGateway'
 import { Banner, sortByOrder } from '@core/entities/banner'
-import { UUID } from '@core/types/types'
-import { UuidGenerator } from '@core/gateways/uuidGenerator'
-import { EditBannerDTO } from '@core/usecases/banners/banner-edition/editBanner'
-import { CreateBannerDTO } from '@core/usecases/banners/banner-creation/createBanner'
 import { BannerDoesNotExistsError } from '@core/errors/BannerDoesNotExistsError'
+import { BannerGateway } from '@core/gateways/bannerGateway'
+import { UuidGenerator } from '@core/gateways/uuidGenerator'
+import { UUID } from '@core/types/types'
+import { CreateBannerDTO } from '@core/usecases/banners/banner-creation/createBanner'
+import { EditBannerDTO } from '@core/usecases/banners/banner-edition/editBanner'
 import { getFileContent } from '@utils/file'
 
 export class InMemoryBannerGateway implements BannerGateway {

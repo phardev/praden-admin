@@ -1,6 +1,6 @@
 import {
-  TicketPredefinedAnswerGateway,
-  CreateTicketPredefinedAnswerDTO
+  CreateTicketPredefinedAnswerDTO,
+  TicketPredefinedAnswerGateway
 } from '@core/gateways/ticketPredefinedAnswerGateway'
 import { useTicketPredefinedAnswerStore } from '@store/ticketPredefinedAnswerStore'
 

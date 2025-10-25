@@ -1,11 +1,11 @@
-import { Banner } from '@core/entities/banner'
 import { InMemoryBannerGateway } from '@adapters/secondary/banner-gateways/inMemoryBannerGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { createPinia, setActivePinia } from 'pinia'
+import { Banner } from '@core/entities/banner'
+import { UUID } from '@core/types/types'
+import { reorderBanners } from '@core/usecases/banners/banners-reorder/reorderBanners'
 import { useBannerStore } from '@store/bannerStore'
 import { banner1, banner2, banner3 } from '@utils/testData/banners'
-import { reorderBanners } from '@core/usecases/banners/banners-reorder/reorderBanners'
-import { UUID } from '@core/types/types'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Banners reorder', () => {
   let bannerGateway: InMemoryBannerGateway

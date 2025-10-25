@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
 import { Ticket } from '@core/entities/ticket'
 import { UUID } from '@core/types/types'
+import { defineStore } from 'pinia'
 
 export const useTicketStore = defineStore('TicketStore', {
   state: () => {

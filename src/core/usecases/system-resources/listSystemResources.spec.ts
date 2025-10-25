@@ -1,8 +1,8 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useSystemResourceStore } from '@store/systemResourceStore'
 import { SystemResourceGateway } from '@core/gateways/systemResourceGateway'
 import { listSystemResources } from '@core/usecases/system-resources/listSystemResources'
+import { useSystemResourceStore } from '@store/systemResourceStore'
 import { systemResources } from '@utils/testData/systemResources'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('List system resources usecase', () => {
   let systemResourceStore: any

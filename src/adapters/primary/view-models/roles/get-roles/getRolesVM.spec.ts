@@ -1,7 +1,7 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useRoleStore } from '@store/roleStore'
 import { getRolesVM } from '@adapters/primary/view-models/roles/get-roles/getRolesVM'
-import { adminRole, pharmacistRole, assistantRole } from '@utils/testData/roles'
+import { useRoleStore } from '@store/roleStore'
+import { adminRole, assistantRole, pharmacistRole } from '@utils/testData/roles'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get roles VM', () => {
   let roleStore: any

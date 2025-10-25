@@ -1,4 +1,4 @@
-import { StaffGateway, CreateStaffDTO } from '@core/gateways/staffGateway'
+import { CreateStaffDTO, StaffGateway } from '@core/gateways/staffGateway'
 import { useStaffStore } from '@store/staffStore'
 
 export const createStaff = async (

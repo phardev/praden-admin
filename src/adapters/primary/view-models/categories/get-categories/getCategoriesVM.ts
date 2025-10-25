@@ -1,7 +1,7 @@
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { useCategoryStore } from '@store/categoryStore'
 import { Category } from '@core/entities/category'
 import { UUID } from '@core/types/types'
+import { useCategoryStore } from '@store/categoryStore'
 
 export interface GetCategoriesItemVM {
   uuid: UUID

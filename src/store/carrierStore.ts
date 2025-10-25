@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
 import { Carrier } from '@core/entities/carrier'
+import { defineStore } from 'pinia'
 
 export const useCarrierStore = defineStore('CarrierStore', {
   state: () => {

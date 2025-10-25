@@ -1,5 +1,5 @@
-import { EmailGateway } from '@core/gateways/emailGateway'
 import { PreparationStartedMessage } from '@core/entities/emailMessage'
+import { EmailGateway } from '@core/gateways/emailGateway'
 import axios from 'axios'
 
 export class RealEmailGateway implements EmailGateway {

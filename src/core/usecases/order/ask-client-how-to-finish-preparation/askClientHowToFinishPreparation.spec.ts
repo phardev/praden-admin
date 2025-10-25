@@ -1,12 +1,12 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
-import { Message, MessageContent, Order } from '@core/entities/order'
-import { usePreparationStore } from '@store/preparationStore'
-import { askClientHowToFinishPreparation } from '@core/usecases/order/ask-client-how-to-finish-preparation/askClientHowToFinishPreparation'
-import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
+import { Message, MessageContent, Order } from '@core/entities/order'
 import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
 import { PreparationDoesNotExistsError } from '@core/errors/PreparationDoesNotExistsError'
+import { askClientHowToFinishPreparation } from '@core/usecases/order/ask-client-how-to-finish-preparation/askClientHowToFinishPreparation'
+import { usePreparationStore } from '@store/preparationStore'
+import { orderToPrepare1, orderToPrepare2 } from '@utils/testData/orders'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Ask client how to finish preparation', () => {
   let preparationStore: any

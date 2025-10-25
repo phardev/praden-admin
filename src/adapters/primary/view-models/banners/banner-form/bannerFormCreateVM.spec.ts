@@ -1,11 +1,11 @@
-import { useFormStore } from '@store/formStore'
-import { createPinia, setActivePinia } from 'pinia'
 import {
   BannerFormCreateVM,
   bannerFormCreateVM
 } from '@adapters/primary/view-models/banners/banner-form/bannerFormCreateVM'
 import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { CreateBannerDTO } from '@core/usecases/banners/banner-creation/createBanner'
+import { useFormStore } from '@store/formStore'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Banner form create VM', () => {
   let formStore: any

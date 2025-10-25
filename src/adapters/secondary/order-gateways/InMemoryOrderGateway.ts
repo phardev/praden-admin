@@ -1,16 +1,16 @@
-import { OrderGateway } from '@core/gateways/orderGateway'
 import {
-  OrderLineStatus,
   Message,
   MessageContent,
   Order,
   OrderLine,
+  OrderLineStatus,
   PaymentStatus
 } from '@core/entities/order'
-import { UUID } from '@core/types/types'
+import { OrderLineAlreadyProcessedError } from '@core/errors/OrderLineAlreadyProcessedError'
 import { PreparationDoesNotExistsError } from '@core/errors/PreparationDoesNotExistsError'
 import { DateProvider } from '@core/gateways/dateProvider'
-import { OrderLineAlreadyProcessedError } from '@core/errors/OrderLineAlreadyProcessedError'
+import { OrderGateway } from '@core/gateways/orderGateway'
+import { UUID } from '@core/types/types'
 
 export class InMemoryOrderGateway implements OrderGateway {
   private orders: Array<Order> = []

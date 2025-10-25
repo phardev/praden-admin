@@ -1,22 +1,22 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useFormStore } from '@store/formStore'
+import { PromotionScopeChoiceVM } from '@adapters/primary/view-models/promotion-codes/promotion-code-form/promotionCodeFormGetVM'
 import {
   Field,
   TypeChoiceVM
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { DeliveryMethod } from '@core/entities/order'
 import { ReductionType } from '@core/entities/promotion'
 import {
   CreatePromotionCodeDTO,
   PromotionScope
 } from '@core/entities/promotionCode'
-import { PromotionScopeChoiceVM } from '@adapters/primary/view-models/promotion-codes/promotion-code-form/promotionCodeFormGetVM'
+import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
+import { useFormStore } from '@store/formStore'
 import {
   clickAndCollect,
   deliveryInRelayPoint,
   express
 } from '@utils/testData/deliveryMethods'
-import { DeliveryMethod } from '@core/entities/order'
-import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
+import { createPinia, setActivePinia } from 'pinia'
 import {
   PromotionCodeFormCreateVM,
   promotionCodeFormCreateVM

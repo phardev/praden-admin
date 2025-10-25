@@ -1,13 +1,13 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useStaffStore } from '@store/staffStore'
 import {
-  staffFormEditVM,
-  StaffFormEditVM
+  StaffFormEditVM,
+  staffFormEditVM
 } from '@adapters/primary/view-models/staff/staff-form/staffFormEditVM'
-import { EditStaffDTO } from '@core/gateways/staffGateway'
 import { Staff } from '@core/entities/staff'
-import { adminRole } from '@utils/testData/roles'
+import { EditStaffDTO } from '@core/gateways/staffGateway'
 import { UUID } from '@core/types/types'
+import { useStaffStore } from '@store/staffStore'
+import { adminRole } from '@utils/testData/roles'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('StaffFormEditVM', () => {
   let vm: StaffFormEditVM

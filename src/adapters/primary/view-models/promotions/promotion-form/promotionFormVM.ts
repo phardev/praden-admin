@@ -1,12 +1,12 @@
-import { PromotionFormFieldsReader } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
-import { ReductionType } from '@core/entities/promotion'
 import {
   Field,
   PromotionProductItemVM,
   TypeChoiceVM
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { PromotionFormFieldsReader } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
 import { Product } from '@core/entities/product'
+import { ReductionType } from '@core/entities/promotion'
 
 export abstract class PromotionFormVM {
   protected fieldsReader: PromotionFormFieldsReader

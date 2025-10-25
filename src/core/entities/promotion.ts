@@ -1,5 +1,5 @@
-import { Timestamp, UUID } from '@core/types/types'
 import { Product } from '@core/entities/product'
+import { Timestamp, UUID } from '@core/types/types'
 
 export enum ReductionType {
   Fixed = 'FIXED',

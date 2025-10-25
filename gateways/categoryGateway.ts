@@ -1,8 +1,8 @@
-import * as categories from '@utils/testData/categories'
-import { RealCategoryGateway } from '@adapters/secondary/category-gateways/realCategoryGateway'
-import { isLocalEnv } from '@utils/env'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { InMemoryTimoutCategoryGateway } from '@adapters/secondary/category-gateways/InMemoryTimoutCategoryGateway'
+import { RealCategoryGateway } from '@adapters/secondary/category-gateways/realCategoryGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
+import { isLocalEnv } from '@utils/env'
+import * as categories from '@utils/testData/categories'
 
 const uuidGenerator = new FakeUuidGenerator()
 uuidGenerator.setNext('new-uuid')

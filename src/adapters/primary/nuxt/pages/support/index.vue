@@ -72,9 +72,9 @@
 </template>
 
 <script lang="ts" setup>
+import { getSupportTicketsVM } from '@adapters/primary/view-models/support/get-support-tickets/getSupportTicketsVM'
 import { getSupportTickets } from '@core/usecases/support/getSupportTickets'
 import { useTicketGateway } from '../../../../../../gateways/ticketGateway'
-import { getSupportTicketsVM } from '@adapters/primary/view-models/support/get-support-tickets/getSupportTicketsVM'
 
 definePageMeta({ layout: 'main' })
 

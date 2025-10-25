@@ -1,16 +1,16 @@
+import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { ProductStatus } from '@core/entities/product'
+import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
+import { useFormStore } from '@store/formStore'
+import { useLaboratoryStore } from '@store/laboratoryStore'
+import { useProductStore } from '@store/productStore'
+import { anaca3, avene, sanofiAventis } from '@utils/testData/laboratories'
+import { createPinia, setActivePinia } from 'pinia'
 import {
   CreateProductLaboratoriesVM,
-  productFormCreateVM,
-  ProductFormCreateVM
+  ProductFormCreateVM,
+  productFormCreateVM
 } from './productFormCreateVM'
-import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
-import { createPinia, setActivePinia } from 'pinia'
-import { useFormStore } from '@store/formStore'
-import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { useLaboratoryStore } from '@store/laboratoryStore'
-import { anaca3, avene, sanofiAventis } from '@utils/testData/laboratories'
-import { useProductStore } from '@store/productStore'
-import { ProductStatus } from '@core/entities/product'
 
 describe('Product form create VM', () => {
   let vm: ProductFormCreateVM

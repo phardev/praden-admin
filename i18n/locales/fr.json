@@ -336,10 +336,99 @@
       "locations": "Emplacements",
       "delivery-methods": "Modes de livraison",
       "carriers": "Transporteurs",
-      "roles": "Rôles et permissions"
+      "roles": "Rôles et permissions",
+      "shop-management": "Gestion boutique"
     }
   },
   "systemResources": {
     "noResources": "Aucune ressource système disponible"
+  },
+  "shopManagement": {
+    "title": "Gestion de la boutique",
+    "overview": {
+      "title": "Vue d'ensemble",
+      "announcementBarCard": "Barre d'annonce",
+      "categoryOrderCard": "Ordre des catégories",
+      "pharmacistSelectionCard": "Sélection du pharmacien",
+      "emergencyPharmaciesCard": "Pharmacies de garde"
+    },
+    "announcementBar": {
+      "title": "Barres d'annonce",
+      "text": "Texte de l'annonce",
+      "isActive": "Annonce active",
+      "active": "Active",
+      "inactive": "Inactive",
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "from": "Du",
+      "to": "au",
+      "selectDate": "Choisissez une date",
+      "create": "Créer une annonce",
+      "createTitle": "Créer une barre d'annonce",
+      "createDescription": "Ajoutez une nouvelle barre d'annonce pour informer vos clients",
+      "createSubmit": "Créer",
+      "editTitle": "Modifier la barre d'annonce",
+      "editDescription": "Modifiez les informations de la barre d'annonce",
+      "editSubmit": "Modifier",
+      "noItems": "Aucune barre d'annonce",
+      "createSuccess": "Barre d'annonce créée avec succès",
+      "updateSuccess": "Barre d'annonce mise à jour avec succès",
+      "deleteSuccess": "Barre d'annonce supprimée avec succès",
+      "updateError": "Erreur lors de la mise à jour de l'annonce",
+      "deleteError": "Erreur lors de la suppression de l'annonce"
+    },
+    "categoryOrder": {
+      "title": "Ordre des catégories",
+      "description": "Glissez-déposez les catégories pour modifier leur ordre d'affichage",
+      "dragToReorder": "Glisser pour réorganiser",
+      "reorderSuccess": "Ordre des catégories mis à jour",
+      "reorderError": "Erreur lors de la réorganisation"
+    },
+    "pharmacistSelection": {
+      "title": "Sélection du pharmacien",
+      "description": "Gérez les produits mis en avant sur la page d'accueil",
+      "addProducts": "Ajouter des produits",
+      "addProduct": "Ajouter un produit",
+      "removeProduct": "Retirer",
+      "reorder": "Réorganiser",
+      "searchPlaceholder": "Rechercher un produit...",
+      "searchProducts": "Rechercher des produits...",
+      "selectedProducts": "Produits sélectionnés",
+      "searchResults": "Résultats de recherche",
+      "noProducts": "Aucun produit sélectionné",
+      "noResults": "Aucun produit trouvé",
+      "alreadySelected": "Déjà sélectionné",
+      "minimumSearch": "Saisissez au moins 3 caractères pour rechercher",
+      "updateSuccess": "Sélection mise à jour",
+      "updateError": "Erreur lors de la mise à jour",
+      "save": "Enregistrer",
+      "unsavedChanges": "Modifications non enregistrées",
+      "unsavedChangesDescription": "Vos modifications ne seront pas sauvegardées si vous quittez cette page sans enregistrer.",
+      "productsSelected": "produits sélectionnés",
+      "emptyTitle": "Mettez en avant vos meilleurs produits",
+      "emptyDescription": "Sélectionnez les produits que vous souhaitez afficher en priorité sur la page d'accueil de votre boutique.",
+      "addFirstProduct": "Ajouter votre premier produit",
+      "cancelChanges": "Abandonner les modifications ?",
+      "cancelChangesConfirm": "Êtes-vous sûr de vouloir abandonner vos modifications ?",
+      "leavePageConfirm": "Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ?"
+    },
+    "emergencyPharmacies": {
+      "title": "Pharmacies de garde",
+      "create": "Ajouter une pharmacie de garde",
+      "edit": "Modifier la pharmacie de garde",
+      "delete": "Supprimer",
+      "name": "Nom de la pharmacie",
+      "address": "Adresse",
+      "phone": "Téléphone",
+      "date": "Date de garde",
+      "isActive": "Active",
+      "selectDate": "Choisissez une date",
+      "noPharmacies": "Aucune pharmacie de garde",
+      "createSuccess": "Pharmacie de garde créée",
+      "updateSuccess": "Pharmacie de garde mise à jour",
+      "deleteSuccess": "Pharmacie de garde supprimée",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette pharmacie de garde ?",
+      "groupedByDate": "Pharmacies par date"
+    }
   }
 }

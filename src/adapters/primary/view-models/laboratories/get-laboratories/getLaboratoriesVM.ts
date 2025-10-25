@@ -1,6 +1,6 @@
-import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
-import { useLaboratoryStore } from '@store/laboratoryStore'
 import { UUID } from '@core/types/types'
+import { useLaboratoryStore } from '@store/laboratoryStore'
+import { Header } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
 
 export interface GetLaboratoriesItemsVM {
   uuid: UUID

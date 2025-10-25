@@ -1,10 +1,13 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useSearchStore } from '@store/searchStore'
 import { FakeSearchGateway } from '@adapters/secondary/search-gateways/FakeSearchGateway'
+import { DeliveryStatus } from '@core/entities/delivery'
+import { Order, OrderLineStatus, PaymentStatus } from '@core/entities/order'
 import {
-  searchOrders,
-  SearchOrdersDTO
+  SearchOrdersDTO,
+  searchOrders
 } from '@core/usecases/order/orders-searching/searchOrders'
+import { useOrderStore } from '@store/orderStore'
+import { useSearchStore } from '@store/searchStore'
+import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
 import {
   elodieDurandOrder2,
   lucasLefevreOrder1,
@@ -18,10 +21,7 @@ import {
   orderToPrepare2,
   orderToPrepare3
 } from '@utils/testData/orders'
-import { Order, OrderLineStatus, PaymentStatus } from '@core/entities/order'
-import { useOrderStore } from '@store/orderStore'
-import { elodieDurand, lucasLefevre } from '@utils/testData/customers'
-import { DeliveryStatus } from '@core/entities/delivery'
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('Search orders', () => {
   let searchStore: any

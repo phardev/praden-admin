@@ -26,8 +26,8 @@
 </template>
 
 <script lang="ts" setup>
-import { roleFormCreateVM } from '@adapters/primary/view-models/roles/role-form/roleFormCreateVM'
 import { useRoleForm } from '@adapters/primary/nuxt/composables/useRoleForm'
+import { roleFormCreateVM } from '@adapters/primary/view-models/roles/role-form/roleFormCreateVM'
 import { PermissionResource } from '@core/entities/permissionResource'
 
 // Meta and SEO

@@ -1,7 +1,7 @@
-import { isLocalEnv } from '@utils/env'
 import { RealDashboardGateway } from '@adapters/secondary/dashboard-gateways/realDashboardGateway'
-import { InMemoryDashboardGateway } from '@core/usecases/dashboard/get-dashboard/inMemoryDashboardGateway'
 import { DashboardGateway } from '@core/gateways/dashboardGateway'
+import { InMemoryDashboardGateway } from '@core/usecases/dashboard/get-dashboard/inMemoryDashboardGateway'
+import { isLocalEnv } from '@utils/env'
 
 const gateway = new InMemoryDashboardGateway()
 gateway.feedWith({

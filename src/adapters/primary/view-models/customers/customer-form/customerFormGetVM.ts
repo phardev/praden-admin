@@ -2,11 +2,11 @@ import {
   FormFieldsReader,
   FormInitializer
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
-import { useFormStore } from '@store/formStore'
-import { useCustomerStore } from '@store/customerStore'
 import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { OrderLineStatus, PaymentStatus } from '@core/entities/order'
 import { DeliveryStatus } from '@core/entities/delivery'
+import { OrderLineStatus, PaymentStatus } from '@core/entities/order'
+import { useCustomerStore } from '@store/customerStore'
+import { useFormStore } from '@store/formStore'
 
 export class ExistingCustomerFormInitializer implements FormInitializer {
   protected readonly key: string

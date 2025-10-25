@@ -1,19 +1,19 @@
+import { DeliveryStatus } from '@core/entities/delivery'
+import {
+  getDeliveryStatus,
+  getOrderStatus,
+  Order,
+  OrderLineStatus,
+  PaymentStatus
+} from '@core/entities/order'
+import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
+import { useOrderStore } from '@store/orderStore'
+import { useSearchStore } from '@store/searchStore'
+import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import {
   computeTotalWithTaxForOrder,
   Header
 } from '../../preparations/get-orders-to-prepare/getPreparationsVM'
-import { useOrderStore } from '@store/orderStore'
-import {
-  OrderLineStatus,
-  getDeliveryStatus,
-  Order,
-  PaymentStatus,
-  getOrderStatus
-} from '@core/entities/order'
-import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
-import { useSearchStore } from '@store/searchStore'
-import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
-import { DeliveryStatus } from '@core/entities/delivery'
 
 export interface GetOrdersItemVM {
   reference: string

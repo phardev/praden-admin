@@ -1,10 +1,10 @@
+import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
+import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
 import { Customer } from '@core/entities/customer'
 import { CustomerGateway } from '@core/gateways/customerGateway'
 import { UUID } from '@core/types/types'
 import { CreateCustomerDTO } from '@core/usecases/customers/customer-creation/createCustomer'
-import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
 import { EditCustomerDTO } from '@core/usecases/customers/customer-edition/editCustomer'
-import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 
 export class RealCustomerGateway
   extends RealGateway
