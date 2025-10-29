@@ -1,6 +1,6 @@
 import { useFormStore } from '@store/formStore'
 import { usePharmacistSelectionStore } from '@store/pharmacistSelectionStore'
-import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
 
 export interface ProductForDisplay {
   uuid: string
@@ -11,38 +11,78 @@ export interface ProductForDisplay {
 }
 
 const FORM_KEY = 'pharmacist-selection-form'
+const SEARCH_NAMESPACE = 'pharmacist-selection-modal'
 
 export const pharmacistSelectionFormVM = () => {
   const pharmacistSelectionStore = usePharmacistSelectionStore()
-  const productStore = useProductStore()
   const formStore = useFormStore()
+  const searchStore = useSearchStore()
 
-  formStore.set(FORM_KEY, {
-    productUuids: pharmacistSelectionStore.selection.map((item) => item.uuid)
-  })
+  const initialItems: Array<ProductForDisplay> =
+    pharmacistSelectionStore.selection.map((item) => ({
+      uuid: item.uuid,
+      name: item.name,
+      miniature: item.miniature,
+      priceWithoutTax: item.priceWithoutTax,
+      percentTaxRate: item.percentTaxRate
+    }))
 
-  const getFormProductUuids = (): Array<string> => {
-    return formStore.get(FORM_KEY)?.productUuids || []
+  formStore.set(FORM_KEY, { items: initialItems })
+
+  const getFormItems = (): Array<ProductForDisplay> => {
+    return formStore.get(FORM_KEY)?.items || []
+  }
+
+  const findProductData = (productUuid: string): ProductForDisplay | null => {
+    const selectionItem = pharmacistSelectionStore.selection.find(
+      (item) => item.uuid === productUuid
+    )
+    if (selectionItem) {
+      return {
+        uuid: selectionItem.uuid,
+        name: selectionItem.name,
+        miniature: selectionItem.miniature,
+        priceWithoutTax: selectionItem.priceWithoutTax,
+        percentTaxRate: selectionItem.percentTaxRate
+      }
+    }
+
+    const searchResults = searchStore.get(SEARCH_NAMESPACE) || []
+    const searchProduct = searchResults.find((p: any) => p.uuid === productUuid)
+    if (searchProduct) {
+      return {
+        uuid: searchProduct.uuid,
+        name: searchProduct.name,
+        miniature: searchProduct.miniature,
+        priceWithoutTax: searchProduct.priceWithoutTax,
+        percentTaxRate: searchProduct.percentTaxRate
+      }
+    }
+
+    return null
   }
 
   const addProduct = (productUuid: string) => {
-    const currentUuids = getFormProductUuids()
-    formStore.set(FORM_KEY, { productUuids: [...currentUuids, productUuid] })
+    const currentItems = getFormItems()
+    const productData = findProductData(productUuid)
+    if (productData) {
+      formStore.set(FORM_KEY, { items: [...currentItems, productData] })
+    }
   }
 
   const removeProduct = (productUuid: string) => {
-    const currentUuids = getFormProductUuids()
+    const currentItems = getFormItems()
     formStore.set(FORM_KEY, {
-      productUuids: currentUuids.filter((uuid) => uuid !== productUuid)
+      items: currentItems.filter((item) => item.uuid !== productUuid)
     })
   }
 
   const reorder = (oldIndex: number, newIndex: number) => {
-    const currentUuids = getFormProductUuids()
-    const reordered = [...currentUuids]
+    const currentItems = getFormItems()
+    const reordered = [...currentItems]
     const [movedItem] = reordered.splice(oldIndex, 1)
     reordered.splice(newIndex, 0, movedItem)
-    formStore.set(FORM_KEY, { productUuids: reordered })
+    formStore.set(FORM_KEY, { items: reordered })
   }
 
   const formatPrice = (priceInCents: number): string => {
@@ -53,98 +93,67 @@ export const pharmacistSelectionFormVM = () => {
   }
 
   const getProductUuids = (): Array<string> => {
-    return getFormProductUuids()
+    return getFormItems().map((item) => item.uuid)
   }
 
   const getSelection = () => {
-    const productUuids = getFormProductUuids()
-    return productUuids
-      .map((uuid, index) => {
-        const item = pharmacistSelectionStore.selection.find(
-          (s) => s.uuid === uuid
-        )
-        if (item) {
-          return {
-            ...item,
-            order: index
-          }
+    return getFormItems().map((item, index) => {
+      const fullItem = pharmacistSelectionStore.selection.find(
+        (s) => s.uuid === item.uuid
+      )
+      if (fullItem) {
+        return {
+          ...fullItem,
+          order: index
         }
+      }
 
-        const product = productStore.items.find((p) => p.uuid === uuid)
-        if (product) {
-          const price = Math.round(
-            product.priceWithoutTax * (1 + product.percentTaxRate / 100)
-          )
-          return {
-            uuid: product.uuid,
-            name: product.name,
-            miniature: product.miniature,
-            priceWithoutTax: product.priceWithoutTax,
-            percentTaxRate: product.percentTaxRate,
-            price,
-            availableStock: product.availableStock,
-            weight: 0,
-            laboratory: product.laboratory?.name,
-            isMedicine: product.isMedicine,
-            flags: product.flags,
-            promotions: [],
-            order: index
-          }
-        }
-
-        return null
-      })
-      .filter((item): item is NonNullable<typeof item> => item !== null)
+      const price = Math.round(
+        item.priceWithoutTax * (1 + item.percentTaxRate / 100)
+      )
+      return {
+        uuid: item.uuid,
+        name: item.name,
+        miniature: item.miniature,
+        priceWithoutTax: item.priceWithoutTax,
+        percentTaxRate: item.percentTaxRate,
+        price,
+        availableStock: 0,
+        weight: 0,
+        laboratory: undefined,
+        isMedicine: false,
+        flags: [],
+        promotions: [],
+        order: index
+      }
+    })
   }
 
   const reset = () => {
-    formStore.set(FORM_KEY, {
-      productUuids: pharmacistSelectionStore.selection.map((item) => item.uuid)
-    })
+    const resetItems: Array<ProductForDisplay> =
+      pharmacistSelectionStore.selection.map((item) => ({
+        uuid: item.uuid,
+        name: item.name,
+        miniature: item.miniature,
+        priceWithoutTax: item.priceWithoutTax,
+        percentTaxRate: item.percentTaxRate
+      }))
+    formStore.set(FORM_KEY, { items: resetItems })
   }
 
   return {
     get selectedProducts() {
-      const productUuids = getFormProductUuids()
-      return productUuids
-        .map((uuid) => {
-          const selectionItem = pharmacistSelectionStore.selection.find(
-            (item) => item.uuid === uuid
-          )
-          if (selectionItem) {
-            return {
-              uuid: selectionItem.uuid,
-              name: selectionItem.name,
-              miniature: selectionItem.miniature,
-              priceWithoutTax: selectionItem.priceWithoutTax,
-              percentTaxRate: selectionItem.percentTaxRate
-            }
-          }
-
-          const product = productStore.items.find((p) => p.uuid === uuid)
-          if (product) {
-            return {
-              uuid: product.uuid,
-              name: product.name,
-              miniature: product.miniature,
-              priceWithoutTax: product.priceWithoutTax,
-              percentTaxRate: product.percentTaxRate
-            }
-          }
-
-          return null
-        })
-        .filter((item): item is ProductForDisplay => item !== null)
+      return getFormItems()
     },
     get hasChanges() {
-      const formUuids = getFormProductUuids()
+      const formUuids = getFormItems().map((item) => item.uuid)
       const storeUuids = pharmacistSelectionStore.selection.map(
         (item) => item.uuid
       )
       return JSON.stringify(formUuids) !== JSON.stringify(storeUuids)
     },
     get isLoading() {
-      return pharmacistSelectionStore.isLoading || productStore.isLoading
+      return pharmacistSelectionStore.isLoading
     },
     get isSaving() {
       return pharmacistSelectionStore.isLoading
