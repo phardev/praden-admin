@@ -1,5 +1,4 @@
 import { Product } from '@core/entities/product'
-import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
 import { priceFormatter } from '@utils/formatters'
 
@@ -24,7 +23,6 @@ export const productSearchVM = (
   selectedProductUuids: Array<string>
 ): ProductSearchVM => {
   const searchStore = useSearchStore()
-  const productStore = useProductStore()
   const searchResults = searchStore.get(namespace) || []
   const searchError = searchStore.getError(namespace)
 
@@ -44,7 +42,7 @@ export const productSearchVM = (
         isSelected: selectedProductUuids.includes(product.uuid)
       }
     }),
-    isLoading: productStore.isLoading,
+    isLoading: searchStore.isLoading(namespace),
     hasError: !!searchError,
     errorMessage: searchError
       ? 'Veuillez saisir au moins 3 caractères'

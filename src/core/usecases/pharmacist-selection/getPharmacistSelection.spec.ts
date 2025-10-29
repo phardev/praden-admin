@@ -1,34 +1,21 @@
 import { InMemoryPharmacistSelectionGateway } from '@adapters/secondary/pharmacist-selection-gateways/inMemoryPharmacistSelectionGateway'
-import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
-import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { PharmacistSelection } from '@core/entities/pharmacistSelection'
 import { getPharmacistSelection } from '@core/usecases/pharmacist-selection/getPharmacistSelection'
 import { usePharmacistSelectionStore } from '@store/pharmacistSelectionStore'
-import { useProductStore } from '@store/productStore'
 import {
   pharmacistSelection1,
   pharmacistSelection2
 } from '@utils/testData/pharmacistSelections'
-import {
-  anaca3Minceur,
-  chamomilla,
-  dolodent,
-  ultraLevure
-} from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
 
 describe('PharmacistSelection get', () => {
   let pharmacistSelectionStore: ReturnType<typeof usePharmacistSelectionStore>
-  let productStore: ReturnType<typeof useProductStore>
   let pharmacistSelectionGateway: InMemoryPharmacistSelectionGateway
-  let productGateway: InMemoryProductGateway
 
   beforeEach(() => {
     setActivePinia(createPinia())
     pharmacistSelectionStore = usePharmacistSelectionStore()
-    productStore = useProductStore()
     pharmacistSelectionGateway = new InMemoryPharmacistSelectionGateway()
-    productGateway = new InMemoryProductGateway(new FakeUuidGenerator())
   })
 
   describe('Get pharmacist selection', () => {
@@ -36,23 +23,6 @@ describe('PharmacistSelection get', () => {
       givenExistingSelection(pharmacistSelection1)
       await whenGetPharmacistSelection()
       expectSelectionToBe(pharmacistSelection1)
-    })
-
-    it('should save the products from selection in the product store', async () => {
-      givenExistingSelection(pharmacistSelection1)
-      givenProductsForSelection([
-        dolodent,
-        ultraLevure,
-        anaca3Minceur,
-        chamomilla
-      ])
-      await whenGetPharmacistSelection()
-      expectProductsInStoreToBe([
-        dolodent,
-        ultraLevure,
-        anaca3Minceur,
-        chamomilla
-      ])
     })
 
     it('should set loading to true at start of getting selection', () => {
@@ -91,12 +61,8 @@ describe('PharmacistSelection get', () => {
     })
   })
 
-  const givenExistingSelection = (selection: PharmacistSelection) => {
-    pharmacistSelectionGateway.feedWith(selection)
-  }
-
-  const givenProductsForSelection = (products: Array<any>) => {
-    productGateway.feedWith(...products)
+  const givenExistingSelection = (selection: Array<PharmacistSelection>) => {
+    pharmacistSelectionGateway.feedWith(...selection)
   }
 
   const givenGatewayWillFail = () => {
@@ -106,13 +72,11 @@ describe('PharmacistSelection get', () => {
   }
 
   const whenGetPharmacistSelection = async () => {
-    await getPharmacistSelection(pharmacistSelectionGateway, productGateway)
+    await getPharmacistSelection(pharmacistSelectionGateway)
   }
 
-  const expectSelectionToBe = (selection: PharmacistSelection) => {
-    expect(pharmacistSelectionStore.productUuids).toStrictEqual(
-      selection.productUuids
-    )
+  const expectSelectionToBe = (selection: Array<PharmacistSelection>) => {
+    expect(pharmacistSelectionStore.selection).toStrictEqual(selection)
   }
 
   const expectLoadingToBe = (loading: boolean) => {
@@ -121,9 +85,5 @@ describe('PharmacistSelection get', () => {
 
   const expectErrorToBe = (error: string) => {
     expect(pharmacistSelectionStore.error).toBe(error)
-  }
-
-  const expectProductsInStoreToBe = (products: Array<any>) => {
-    expect(productStore.items).toStrictEqual(products)
   }
 })

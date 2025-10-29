@@ -12,23 +12,23 @@ describe('GetPharmacistSelectionVM', () => {
     pharmacistSelectionStore = usePharmacistSelectionStore()
   })
 
-  it('should return empty product uuids and loading false by default', () => {
+  it('should return empty selection and loading false by default', () => {
     const vm = getPharmacistSelectionVM()
 
     expect(vm).toStrictEqual({
-      productUuids: [],
+      selection: [],
       isLoading: false,
       error: null
     })
   })
 
-  it('should return product uuids from store', () => {
-    pharmacistSelectionStore.setSelection(pharmacistSelection1.productUuids)
+  it('should return selection from store', () => {
+    pharmacistSelectionStore.setSelection(pharmacistSelection1)
 
     const vm = getPharmacistSelectionVM()
 
     expect(vm).toStrictEqual({
-      productUuids: pharmacistSelection1.productUuids,
+      selection: pharmacistSelection1,
       isLoading: false,
       error: null
     })
@@ -40,7 +40,7 @@ describe('GetPharmacistSelectionVM', () => {
     const vm = getPharmacistSelectionVM()
 
     expect(vm).toStrictEqual({
-      productUuids: [],
+      selection: [],
       isLoading: true,
       error: null
     })
@@ -52,7 +52,7 @@ describe('GetPharmacistSelectionVM', () => {
     const vm = getPharmacistSelectionVM()
 
     expect(vm).toStrictEqual({
-      productUuids: [],
+      selection: [],
       isLoading: false,
       error: 'Test error'
     })

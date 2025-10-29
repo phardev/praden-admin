@@ -1,8 +1,8 @@
-import { UUID } from '@core/types/types'
+import { PharmacistSelection } from '@core/entities/pharmacistSelection'
 import { usePharmacistSelectionStore } from '@store/pharmacistSelectionStore'
 
 export interface GetPharmacistSelectionVM {
-  productUuids: Array<UUID>
+  selection: Array<PharmacistSelection>
   isLoading: boolean
   error: string | null
 }
@@ -11,7 +11,7 @@ export const getPharmacistSelectionVM = (): GetPharmacistSelectionVM => {
   const pharmacistSelectionStore = usePharmacistSelectionStore()
 
   return {
-    productUuids: pharmacistSelectionStore.productUuids,
+    selection: pharmacistSelectionStore.selection,
     isLoading: pharmacistSelectionStore.isLoading,
     error: pharmacistSelectionStore.error
   }

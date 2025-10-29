@@ -17,47 +17,39 @@
     :title="$t('shopManagement.pharmacistSelection.unsavedChanges')"
     :description="$t('shopManagement.pharmacistSelection.unsavedChangesDescription')"
   )
+    template(#actions)
+      .flex.gap-3
+        UButton(
+          color="gray"
+          variant="ghost"
+          :label="$t('common.cancel')"
+          @click="handleCancelClick"
+        )
+        UButton(
+          color="primary"
+          :label="$t('shopManagement.pharmacistSelection.save')"
+          :loading="selectionVM.isSaving"
+          @click="saveSelection"
+        )
 
   UCard
     template(#header)
       .flex.items-center.justify-between
         h1.text-2xl.font-bold {{ $t('shopManagement.pharmacistSelection.title') }}
-        .flex.items-center.gap-3
-          UButton(
-            v-if="selectionVM.hasChanges"
-            color="gray"
-            variant="ghost"
-            :label="$t('common.cancel')"
-            @click="handleCancelClick"
-          )
-          UButton(
-            v-if="selectionVM.hasChanges"
-            color="primary"
-            :label="$t('shopManagement.pharmacistSelection.save')"
-            :loading="selectionVM.isSaving"
-            @click="saveSelection"
-          )
-          UButton(
-            v-else
-            color="primary"
-            icon="i-heroicons-plus"
-            :label="$t('shopManagement.pharmacistSelection.addProduct')"
-            @click="openProductModal"
-          )
+        UButton(
+          color="primary"
+          icon="i-heroicons-plus"
+          :label="$t('shopManagement.pharmacistSelection.addProduct')"
+          @click="openProductModal"
+        )
 
     template(#default)
-      div(v-if="selectionVM.isLoading")
-        .flex.justify-center.items-center.py-12
-          icon.animate-spin.h-8.w-8(name="i-heroicons-arrow-path")
-          span.ml-2 {{ $t('common.loading') }}
+      .mb-6(v-if="!selectionVM.isLoading")
+        p.text-gray-600 {{ $t('shopManagement.pharmacistSelection.description') }}
+        .flex.items-center.gap-2.mt-2.text-sm
+          span.font-medium.text-gray-900 {{ selectionVM.selectedProducts.length }} {{ $t('shopManagement.pharmacistSelection.productsSelected') }}
 
-      div(v-else)
-        .mb-6
-          p.text-gray-600 {{ $t('shopManagement.pharmacistSelection.description') }}
-          .flex.items-center.gap-2.mt-2.text-sm
-            span.font-medium.text-gray-900 {{ selectionVM.selectedProducts.length }} {{ $t('shopManagement.pharmacistSelection.productsSelected') }}
-
-        PharmacistSelectionManager(ref="managerRef" :selection-v-m="selectionVM")
+      PharmacistSelectionManager(ref="managerRef" :selection-v-m="selectionVM")
 
   UModal(v-model="showCancelModal")
     UCard
@@ -92,14 +84,13 @@ definePageMeta({ layout: 'main' })
 
 const { t } = useI18n()
 const pharmacistSelectionGateway = usePharmacistSelectionGateway()
-const productGateway = useProductGateway()
 
 const selectionVM = ref(pharmacistSelectionFormVM())
 const showCancelModal = ref(false)
 const managerRef = ref<InstanceType<typeof PharmacistSelectionManager>>()
 
 onMounted(async () => {
-  await getPharmacistSelection(pharmacistSelectionGateway, productGateway)
+  await getPharmacistSelection(pharmacistSelectionGateway)
   selectionVM.value = pharmacistSelectionFormVM()
 })
 
@@ -113,7 +104,7 @@ const openProductModal = () => {
 const saveSelection = async () => {
   try {
     await updatePharmacistSelection(
-      selectionVM.value.getProductUuids(),
+      selectionVM.value.getSelection(),
       pharmacistSelectionGateway
     )
 

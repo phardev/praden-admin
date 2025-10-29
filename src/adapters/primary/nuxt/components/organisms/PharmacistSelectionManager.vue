@@ -1,6 +1,9 @@
 <template lang="pug">
 .space-y-6
-  .selected-products(v-if="selectionVM.selectedProducts.length > 0")
+  .space-y-3(v-if="selectionVM.isLoading")
+    USkeleton.h-24(v-for="n in 3" :key="n")
+
+  .selected-products(v-else-if="selectionVM.selectedProducts.length > 0")
     .space-y-3
       draggable(
         :model-value="selectionVM.selectedProducts"
