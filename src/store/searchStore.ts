@@ -47,6 +47,9 @@ export const useSearchStore = defineStore('SearchStore', {
     },
     endLoading(key: string) {
       this.loading[key] = false
+    },
+    clear(key: string) {
+      delete this.items[key]
     }
   }
 })

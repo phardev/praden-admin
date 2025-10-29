@@ -24,8 +24,8 @@ export const searchProducts = async (
     searchStore.set(from, [])
     searchStore.endLoading(from)
   } else if (!filters.query && !filters.status) {
+    searchStore.clear(from)
     searchStore.setError(from, undefined)
-    searchStore.set(from, [])
     searchStore.endLoading(from)
   } else {
     searchStore.startLoading(from)
