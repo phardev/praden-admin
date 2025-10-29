@@ -1,6 +1,5 @@
 import { ProductStatus } from '@core/entities/product'
 import { SearchGateway } from '@core/gateways/searchGateway'
-import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
 
 export interface SearchProductsFilters {
@@ -15,7 +14,6 @@ export const searchProducts = async (
   searchGateway: SearchGateway
 ): Promise<void> => {
   const searchStore = useSearchStore()
-  const productStore = useProductStore()
   searchStore.setFilter(from, filters)
   if (
     filters.query &&
@@ -24,14 +22,17 @@ export const searchProducts = async (
   ) {
     searchStore.setError(from, 'query is too short')
     searchStore.set(from, [])
+    searchStore.endLoading(from)
   } else if (!filters.query && !filters.status) {
     searchStore.setError(from, undefined)
     searchStore.set(from, [])
+    searchStore.endLoading(from)
   } else {
+    searchStore.startLoading(from)
     const searchResult = await searchGateway.searchProducts(filters)
     searchStore.set(from, searchResult)
-    productStore.list(searchResult)
     searchStore.setError(from, undefined)
+    searchStore.endLoading(from)
   }
   return Promise.resolve()
 }

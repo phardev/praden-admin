@@ -1,20 +1,14 @@
 import { PharmacistSelectionGateway } from '@core/gateways/pharmacistSelectionGateway'
-import { ProductGateway } from '@core/gateways/productGateway'
 import { usePharmacistSelectionStore } from '@store/pharmacistSelectionStore'
-import { useProductStore } from '@store/productStore'
 
 export const getPharmacistSelection = async (
-  pharmacistSelectionGateway: PharmacistSelectionGateway,
-  productGateway: ProductGateway
+  pharmacistSelectionGateway: PharmacistSelectionGateway
 ): Promise<void> => {
   const pharmacistSelectionStore = usePharmacistSelectionStore()
-  const productStore = useProductStore()
   try {
     pharmacistSelectionStore.startLoading()
     const selection = await pharmacistSelectionGateway.get()
-    const products = await productGateway.batch(selection.productUuids)
-    productStore.list(products)
-    pharmacistSelectionStore.setSelection(selection.productUuids)
+    pharmacistSelectionStore.setSelection(selection)
     pharmacistSelectionStore.stopLoading()
   } catch (error) {
     pharmacistSelectionStore.setError(

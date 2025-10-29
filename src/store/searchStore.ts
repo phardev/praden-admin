@@ -6,7 +6,8 @@ export const useSearchStore = defineStore('SearchStore', {
     return {
       items: {} as HashTable<Array<any>>,
       filters: {} as HashTable<Array<any>>,
-      errors: {} as HashTable<string | undefined>
+      errors: {} as HashTable<string | undefined>,
+      loading: {} as HashTable<boolean>
     }
   },
   getters: {
@@ -24,6 +25,11 @@ export const useSearchStore = defineStore('SearchStore', {
       return (key: string): any => {
         return state.errors[key]
       }
+    },
+    isLoading: (state) => {
+      return (key: string): boolean => {
+        return state.loading[key] || false
+      }
     }
   },
   actions: {
@@ -35,6 +41,12 @@ export const useSearchStore = defineStore('SearchStore', {
     },
     setError(key: string, value: string | undefined) {
       this.errors[key] = value
+    },
+    startLoading(key: string) {
+      this.loading[key] = true
+    },
+    endLoading(key: string) {
+      this.loading[key] = false
     }
   }
 })

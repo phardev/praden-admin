@@ -19,9 +19,8 @@ UModal(:model-value="modelValue" @update:model-value="$emit('update:modelValue',
             p {{ $t('shopManagement.pharmacistSelection.minimumSearch') }}
 
         div(v-else-if="searchVM.isLoading")
-          .flex.justify-center.items-center.py-8
-            icon.animate-spin.h-6.w-6(name="i-heroicons-arrow-path")
-            span.ml-2 {{ $t('common.loading') }}
+          .space-y-3
+            USkeleton.h-16(v-for="n in 3" :key="n")
 
         div(v-else-if="searchVM.hasError")
           .text-center.py-8.text-gray-500

@@ -1,4 +1,4 @@
-import { UUID } from '@core/types/types'
+import { PharmacistSelection } from '@core/entities/pharmacistSelection'
 import { defineStore } from 'pinia'
 
 export const usePharmacistSelectionStore = defineStore(
@@ -6,18 +6,18 @@ export const usePharmacistSelectionStore = defineStore(
   {
     state: () => {
       return {
-        productUuids: [] as Array<UUID>,
+        selection: [] as Array<PharmacistSelection>,
         isLoading: false,
         error: null as string | null
       }
     },
     actions: {
-      setSelection(productUuids: Array<UUID>) {
-        this.productUuids = JSON.parse(JSON.stringify(productUuids))
+      setSelection(selection: Array<PharmacistSelection>) {
+        this.selection = JSON.parse(JSON.stringify(selection))
         this.error = null
       },
       clearSelection() {
-        this.productUuids = []
+        this.selection = []
       },
       startLoading() {
         this.isLoading = true
