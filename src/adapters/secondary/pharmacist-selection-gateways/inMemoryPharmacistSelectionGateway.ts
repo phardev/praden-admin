@@ -1,29 +1,28 @@
 import { PharmacistSelection } from '@core/entities/pharmacistSelection'
 import { PharmacistSelectionGateway } from '@core/gateways/pharmacistSelectionGateway'
-import { UUID } from '@core/types/types'
 
 export class InMemoryPharmacistSelectionGateway
   implements PharmacistSelectionGateway
 {
-  private selection: PharmacistSelection = { productUuids: [] }
+  private selection: Array<PharmacistSelection> = []
   private error: Error | null = null
 
-  async get(): Promise<PharmacistSelection> {
+  async get(): Promise<Array<PharmacistSelection>> {
     if (this.error) {
       return Promise.reject(this.error)
     }
     return Promise.resolve(JSON.parse(JSON.stringify(this.selection)))
   }
 
-  async update(productUuids: Array<UUID>): Promise<PharmacistSelection> {
+  async update(selection: Array<PharmacistSelection>): Promise<void> {
     if (this.error) {
       return Promise.reject(this.error)
     }
-    this.selection = { productUuids }
-    return Promise.resolve(JSON.parse(JSON.stringify(this.selection)))
+    this.selection = JSON.parse(JSON.stringify(selection))
+    return Promise.resolve()
   }
 
-  feedWith(selection: PharmacistSelection) {
+  feedWith(...selection: Array<PharmacistSelection>) {
     this.selection = JSON.parse(JSON.stringify(selection))
     this.error = null
   }

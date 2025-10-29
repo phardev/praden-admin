@@ -1,3 +1,5 @@
+import { PharmacistSelection } from '@core/entities/pharmacistSelection'
+import { Product } from '@core/entities/product'
 import { useFormStore } from '@store/formStore'
 import { usePharmacistSelectionStore } from '@store/pharmacistSelectionStore'
 import { useProductStore } from '@store/productStore'
@@ -10,6 +12,28 @@ import {
 import { createPinia, setActivePinia } from 'pinia'
 import { pharmacistSelectionFormVM } from './pharmacistSelectionFormVM'
 
+const toPharmacistSelection = (
+  product: Product,
+  order: number
+): PharmacistSelection => ({
+  uuid: product.uuid,
+  name: product.name,
+  miniature: product.miniature,
+  priceWithoutTax: product.priceWithoutTax,
+  percentTaxRate: product.percentTaxRate,
+  price: Math.round(
+    product.priceWithoutTax * (1 + product.percentTaxRate / 100)
+  ),
+  availableStock: product.availableStock,
+  maxQuantityForOrder: product.maxQuantityForOrder,
+  weight: product.weight,
+  laboratory: product.laboratory?.name,
+  isMedicine: product.isMedicine,
+  flags: product.flags,
+  promotions: [],
+  order
+})
+
 describe('Pharmacist Selection Form VM', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -19,7 +43,10 @@ describe('Pharmacist Selection Form VM', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
     const formStore = useFormStore()
-    pharmacistSelectionStore.setSelection([dolodent.uuid, chamomilla.uuid])
+    pharmacistSelectionStore.setSelection([
+      toPharmacistSelection(dolodent, 0),
+      toPharmacistSelection(chamomilla, 1)
+    ])
     productStore.list([dolodent, ultraLevure, anaca3Minceur, chamomilla])
 
     pharmacistSelectionFormVM()
@@ -32,7 +59,10 @@ describe('Pharmacist Selection Form VM', () => {
   it('should read selectedProducts from FormStore', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
-    pharmacistSelectionStore.setSelection([dolodent.uuid, chamomilla.uuid])
+    pharmacistSelectionStore.setSelection([
+      toPharmacistSelection(dolodent, 0),
+      toPharmacistSelection(chamomilla, 1)
+    ])
     productStore.list([dolodent, ultraLevure, anaca3Minceur, chamomilla])
 
     const vm = pharmacistSelectionFormVM()
@@ -58,7 +88,7 @@ describe('Pharmacist Selection Form VM', () => {
   it('should reflect loading state from stores', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
-    pharmacistSelectionStore.setSelection([dolodent.uuid])
+    pharmacistSelectionStore.setSelection([toPharmacistSelection(dolodent, 0)])
     productStore.list([dolodent])
     pharmacistSelectionStore.startLoading()
 
@@ -71,7 +101,7 @@ describe('Pharmacist Selection Form VM', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
     const formStore = useFormStore()
-    pharmacistSelectionStore.setSelection([dolodent.uuid])
+    pharmacistSelectionStore.setSelection([toPharmacistSelection(dolodent, 0)])
     productStore.list([dolodent, ultraLevure])
 
     const vm = pharmacistSelectionFormVM()
@@ -79,7 +109,9 @@ describe('Pharmacist Selection Form VM', () => {
 
     expect({
       formStoreUuids: formStore.get('pharmacist-selection-form').productUuids,
-      entityStoreUuids: pharmacistSelectionStore.productUuids
+      entityStoreUuids: pharmacistSelectionStore.selection.map(
+        (item) => item.uuid
+      )
     }).toStrictEqual({
       formStoreUuids: [dolodent.uuid, ultraLevure.uuid],
       entityStoreUuids: [dolodent.uuid]
@@ -89,7 +121,7 @@ describe('Pharmacist Selection Form VM', () => {
   it('should set hasChanges to true after adding product', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
-    pharmacistSelectionStore.setSelection([dolodent.uuid])
+    pharmacistSelectionStore.setSelection([toPharmacistSelection(dolodent, 0)])
     productStore.list([dolodent, ultraLevure])
 
     const vm = pharmacistSelectionFormVM()
@@ -101,7 +133,10 @@ describe('Pharmacist Selection Form VM', () => {
   it('should remove product from selected list', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
-    pharmacistSelectionStore.setSelection([dolodent.uuid, chamomilla.uuid])
+    pharmacistSelectionStore.setSelection([
+      toPharmacistSelection(dolodent, 0),
+      toPharmacistSelection(chamomilla, 1)
+    ])
     productStore.list([dolodent, ultraLevure, chamomilla])
 
     const vm = pharmacistSelectionFormVM()
@@ -121,7 +156,10 @@ describe('Pharmacist Selection Form VM', () => {
   it('should set hasChanges to true after removing product', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
-    pharmacistSelectionStore.setSelection([dolodent.uuid, chamomilla.uuid])
+    pharmacistSelectionStore.setSelection([
+      toPharmacistSelection(dolodent, 0),
+      toPharmacistSelection(chamomilla, 1)
+    ])
     productStore.list([dolodent, chamomilla])
 
     const vm = pharmacistSelectionFormVM()
@@ -134,9 +172,9 @@ describe('Pharmacist Selection Form VM', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
     pharmacistSelectionStore.setSelection([
-      dolodent.uuid,
-      ultraLevure.uuid,
-      chamomilla.uuid
+      toPharmacistSelection(dolodent, 0),
+      toPharmacistSelection(ultraLevure, 1),
+      toPharmacistSelection(chamomilla, 2)
     ])
     productStore.list([dolodent, ultraLevure, chamomilla])
 
@@ -172,9 +210,9 @@ describe('Pharmacist Selection Form VM', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
     pharmacistSelectionStore.setSelection([
-      dolodent.uuid,
-      ultraLevure.uuid,
-      chamomilla.uuid
+      toPharmacistSelection(dolodent, 0),
+      toPharmacistSelection(ultraLevure, 1),
+      toPharmacistSelection(chamomilla, 2)
     ])
     productStore.list([dolodent, ultraLevure, chamomilla])
 
@@ -191,7 +229,10 @@ describe('Pharmacist Selection Form VM', () => {
   it('should set hasChanges to true after reordering', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
-    pharmacistSelectionStore.setSelection([dolodent.uuid, chamomilla.uuid])
+    pharmacistSelectionStore.setSelection([
+      toPharmacistSelection(dolodent, 0),
+      toPharmacistSelection(chamomilla, 1)
+    ])
     productStore.list([dolodent, chamomilla])
 
     const vm = pharmacistSelectionFormVM()
@@ -215,9 +256,9 @@ describe('Pharmacist Selection Form VM', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
     pharmacistSelectionStore.setSelection([
-      dolodent.uuid,
-      ultraLevure.uuid,
-      chamomilla.uuid
+      toPharmacistSelection(dolodent, 0),
+      toPharmacistSelection(ultraLevure, 1),
+      toPharmacistSelection(chamomilla, 2)
     ])
     productStore.list([dolodent, ultraLevure, chamomilla])
 
@@ -234,7 +275,10 @@ describe('Pharmacist Selection Form VM', () => {
   it('should reset to store state and clear hasChanges', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
-    pharmacistSelectionStore.setSelection([dolodent.uuid, chamomilla.uuid])
+    pharmacistSelectionStore.setSelection([
+      toPharmacistSelection(dolodent, 0),
+      toPharmacistSelection(chamomilla, 1)
+    ])
     productStore.list([dolodent, ultraLevure, chamomilla])
 
     const vm = pharmacistSelectionFormVM()
@@ -271,7 +315,7 @@ describe('Pharmacist Selection Form VM', () => {
   it('should reflect saving state when pharmacist selection store is loading', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
-    pharmacistSelectionStore.setSelection([dolodent.uuid])
+    pharmacistSelectionStore.setSelection([toPharmacistSelection(dolodent, 0)])
     productStore.list([dolodent])
     pharmacistSelectionStore.startLoading()
 
@@ -283,7 +327,7 @@ describe('Pharmacist Selection Form VM', () => {
   it('should reflect not saving when pharmacist selection store is not loading', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
-    pharmacistSelectionStore.setSelection([dolodent.uuid])
+    pharmacistSelectionStore.setSelection([toPharmacistSelection(dolodent, 0)])
     productStore.list([dolodent])
 
     const vm = pharmacistSelectionFormVM()
@@ -294,7 +338,7 @@ describe('Pharmacist Selection Form VM', () => {
   it('should provide reactive hasChanges that updates when accessed multiple times', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
-    pharmacistSelectionStore.setSelection([dolodent.uuid])
+    pharmacistSelectionStore.setSelection([toPharmacistSelection(dolodent, 0)])
     productStore.list([dolodent, ultraLevure])
 
     const vm = pharmacistSelectionFormVM()
@@ -315,7 +359,7 @@ describe('Pharmacist Selection Form VM', () => {
   it('should provide reactive selectedProducts that updates when accessed multiple times', () => {
     const pharmacistSelectionStore = usePharmacistSelectionStore()
     const productStore = useProductStore()
-    pharmacistSelectionStore.setSelection([dolodent.uuid])
+    pharmacistSelectionStore.setSelection([toPharmacistSelection(dolodent, 0)])
     productStore.list([dolodent, ultraLevure])
 
     const vm = pharmacistSelectionFormVM()

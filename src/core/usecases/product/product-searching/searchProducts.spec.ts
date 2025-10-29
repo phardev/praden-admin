@@ -279,6 +279,38 @@ describe('Search products', () => {
     })
   })
 
+  describe('Loading state', () => {
+    beforeEach(() => {
+      searchGateway.feedWith(dolodent, chamomilla)
+    })
+
+    it('should set loading to true at start of search', () => {
+      givenQueryIs('dol')
+      const promise = whenSearchForProducts()
+      expectLoadingToBe(true)
+      return promise
+    })
+
+    it('should set loading to false after search completes', async () => {
+      givenQueryIs('dol')
+      await whenSearchForProducts()
+      expectLoadingToBe(false)
+    })
+
+    it('should set loading to false when query is too short', async () => {
+      givenQueryIs('do')
+      givenMinimumQueryLength(3)
+      await whenSearchForProducts()
+      expectLoadingToBe(false)
+    })
+
+    it('should set loading to false when query is empty', async () => {
+      givenQueryIs('')
+      await whenSearchForProducts()
+      expectLoadingToBe(false)
+    })
+  })
+
   const givenQueryIs = (q: string) => {
     filters.query = q
   }
@@ -311,5 +343,9 @@ describe('Search products', () => {
 
   const expectErrorToBe = (expected: string | undefined) => {
     expect(searchStore.getError(url)).toStrictEqual(expected)
+  }
+
+  const expectLoadingToBe = (expected: boolean) => {
+    expect(searchStore.isLoading(url)).toBe(expected)
   }
 })

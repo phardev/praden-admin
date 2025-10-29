@@ -1,4 +1,3 @@
-import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
 import { dolodent, ultraLevure } from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
@@ -6,14 +5,12 @@ import { ProductSearchVM, productSearchVM } from './productSearchVM'
 
 describe('Product Search VM', () => {
   let searchStore: any
-  let productStore: any
   const namespace = 'product-search-modal'
   let expectedVM: Partial<ProductSearchVM>
 
   beforeEach(() => {
     setActivePinia(createPinia())
     searchStore = useSearchStore()
-    productStore = useProductStore()
   })
 
   describe('Given empty search results, when getting VM, then returns empty search results', () => {
@@ -74,9 +71,9 @@ describe('Product Search VM', () => {
     })
   })
 
-  describe('Given productStore is loading, when getting VM, then returns loading state', () => {
+  describe('Given searchStore is loading, when getting VM, then returns loading state', () => {
     it('should return loading state', () => {
-      productStore.isLoading = true
+      searchStore.startLoading(namespace)
       expectedVM = {
         searchResults: [],
         isLoading: true,
