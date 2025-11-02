@@ -38,7 +38,7 @@ export const getProductsVM = (key: string): GetProductsVM => {
   const searchResult = searchStore.get(key)
   const searchFilter = searchStore.getFilter(key)
   const searchError = searchStore.getError(key)
-  const products = searchResult || allProducts
+  const products = searchResult !== undefined ? searchResult : allProducts
   const formatter = priceFormatter('fr-FR', 'EUR')
   const headers: Array<Header> = [
     {

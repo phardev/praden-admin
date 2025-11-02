@@ -33,13 +33,13 @@ describe('Search products', () => {
     beforeEach(async () => {
       await whenSearchForProducts()
     })
-    it('should return an empty array', async () => {
-      expectSearchResultToBeEmpty()
+    it('should not set search results', async () => {
+      expectSearchResultToBeUndefined()
     })
     it('should save the search', () => {
       expectCurrentFiltersToEqual({})
     })
-    it('should says that the query is too short', () => {
+    it('should not have error', () => {
       expectErrorToBe(undefined)
     })
   })
@@ -49,13 +49,13 @@ describe('Search products', () => {
       url = 'https://another-url.com/'
       await whenSearchForProducts()
     })
-    it('should save the result for another url', () => {
-      expectSearchResultToBeEmpty()
+    it('should not set search results for another url', () => {
+      expectSearchResultToBeUndefined()
     })
     it('should save the search for another url', () => {
       expectCurrentFiltersToEqual({})
     })
-    it('should says that the query is too short', () => {
+    it('should not have error', () => {
       expectErrorToBe(undefined)
     })
   })
@@ -241,11 +241,11 @@ describe('Search products', () => {
           givenQueryIs('')
           await whenSearchForProducts()
         })
-        it('should not have', () => {
+        it('should not have error', () => {
           expectErrorToBe(undefined)
         })
-        it('should not have result', () => {
-          expectSearchResultToBeEmpty()
+        it('should clear search results to show all products', () => {
+          expectSearchResultToBeUndefined()
         })
         it('should save the search query', () => {
           expectCurrentFiltersToEqual({
@@ -347,5 +347,9 @@ describe('Search products', () => {
 
   const expectLoadingToBe = (expected: boolean) => {
     expect(searchStore.isLoading(url)).toBe(expected)
+  }
+
+  const expectSearchResultToBeUndefined = () => {
+    expect(searchStore.get(url)).toBeUndefined()
   }
 })

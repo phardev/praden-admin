@@ -272,6 +272,20 @@ describe('Get products VM', () => {
           expectVMToMatch(expectedVM)
         })
       })
+      describe('Search performed but no results found', () => {
+        beforeEach(() => {
+          productStore.items = [dolodentListItem, ultraLevureListItem]
+          searchStore.set(key, [])
+          searchStore.setFilter(key, { query: 'nonexistent' })
+        })
+        it('should show empty list (no results)', () => {
+          expectedVM = {
+            items: [],
+            currentSearch: { query: 'nonexistent' }
+          }
+          expectVMToMatch(expectedVM)
+        })
+      })
     })
     describe('Are all products listed ?', () => {
       it('should inform that there is more items', () => {
