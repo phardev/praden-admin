@@ -92,7 +92,7 @@
 import { useUserProfileStore } from '@store/userProfileStore'
 import { formatCurrency } from '@/src/utils/formatters'
 import { useDateProvider } from '../../../../../gateways/dateProvider'
-import { getPermissionsVM } from '../../../view-models/permissions/getPermissionsVM'
+import { getPermissionsVM } from '../../view-models/permissions/getPermissionsVM'
 import { useDashboardData } from '../composables/useDashboardData'
 
 definePageMeta({ layout: 'main' })
