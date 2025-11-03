@@ -13,17 +13,9 @@ export const useDashboardData = () => {
   const fetchDashboardData = async (
     params: DashboardParams = { productLimit: 50 }
   ) => {
-    console.log('[useDashboardData] Starting fetch with params:', params)
     isLoading.value = true
     try {
       await getDashboard(params, useDashboardGateway())
-      console.log('[useDashboardData] Fetch completed successfully')
-      console.log(
-        '[useDashboardData] Dashboard value after fetch:',
-        dashboard.value
-      )
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error)
     } finally {
       isLoading.value = false
     }
