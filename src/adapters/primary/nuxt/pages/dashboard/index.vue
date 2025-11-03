@@ -376,7 +376,7 @@ onMounted(() => {
         stopWatch()
       }
     },
-    { immediate: true }
+    { immediate: false }
   )
 
   updateScreenSize()
