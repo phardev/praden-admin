@@ -147,7 +147,7 @@ onMounted(() => {
         stopWatch()
       }
     },
-    { immediate: false }
+    { immediate: true }
   )
 })
 
