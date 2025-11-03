@@ -10,7 +10,7 @@
 
   .grid.grid-cols-1.gap-6(class="md:grid-cols-2 lg:grid-cols-4")
     UCard.dashboard-card.transition-all.duration-300(
-      v-if="canAccess('/dashboard')"
+      v-if="permissions.canAccessDashboard"
       class="hover:shadow-lg hover:scale-105 cursor-pointer"
       @click="navigateTo('/dashboard')"
     )
@@ -58,7 +58,7 @@
         p.text-sm.text-gray-600.mb-4 Consultez l'historique des commandes et leur statut.
         UButton(color="primary" variant="soft" block icon="i-heroicons-arrow-right" label="Accéder" @click.stop="navigateTo('/orders')")
 
-  UCard.mt-8(v-if="canAccess('/dashboard')")
+  UCard.mt-8(v-if="permissions.canAccessDashboard")
     template(#header)
       h2.text-xl.font-bold Aperçu rapide du jour
     template(#default)
@@ -92,14 +92,27 @@
 import { useUserProfileStore } from '@store/userProfileStore'
 import { formatCurrency } from '@/src/utils/formatters'
 import { useDateProvider } from '../../../../../gateways/dateProvider'
+import { getPermissionsVM } from '../../view-models/permissions/getPermissionsVM'
 import { useDashboardData } from '../composables/useDashboardData'
-import { usePermissions } from '../composables/usePermissions'
 
 definePageMeta({ layout: 'main' })
 
 const { isLoading, dashboard, fetchDashboardData } = useDashboardData()
-const { canAccess } = usePermissions()
+const permissions = computed(() => getPermissionsVM())
 const userProfileStore = useUserProfileStore()
+
+const canAccess = (route: string): boolean => {
+  const routePermissionMap: Record<
+    string,
+    keyof ReturnType<typeof getPermissionsVM>
+  > = {
+    '/products': 'canAccessProducts',
+    '/preparations': 'canAccessPreparations',
+    '/orders': 'canAccessOrders'
+  }
+  const permissionKey = routePermissionMap[route]
+  return permissionKey ? permissions.value[permissionKey] : false
+}
 
 onMounted(() => {
   const dateProvider = useDateProvider()
@@ -129,7 +142,7 @@ onMounted(() => {
   const stopWatch = watch(
     () => userProfileStore.current,
     (profile) => {
-      if (profile && canAccess('/dashboard')) {
+      if (profile && permissions.value.canAccessDashboard) {
         fetchDashboardData(params)
         stopWatch()
       }

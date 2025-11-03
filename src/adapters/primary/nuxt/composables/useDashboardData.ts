@@ -16,8 +16,6 @@ export const useDashboardData = () => {
     isLoading.value = true
     try {
       await getDashboard(params, useDashboardGateway())
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error)
     } finally {
       isLoading.value = false
     }
