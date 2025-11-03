@@ -126,12 +126,13 @@ onMounted(() => {
     productLimit: 0
   }
 
-  const stopWatch = watch(
+  let stopWatch: (() => void) | undefined
+  stopWatch = watch(
     () => userProfileStore.current,
     (profile) => {
       if (profile && canAccess('/dashboard')) {
         fetchDashboardData(params)
-        stopWatch()
+        stopWatch?.()
       }
     },
     { immediate: true }
