@@ -16,7 +16,7 @@ export class RealCategoryGateway
 
   async list(): Promise<Array<Category>> {
     const res = await axiosWithBearer.get(`${this.baseUrl}/categories/`)
-    return res.data.items
+    return res.data.items.sort((a: Category, b: Category) => a.order - b.order)
   }
 
   async create(dto: CreateCategoryDTO): Promise<Category> {
@@ -68,6 +68,6 @@ export class RealCategoryGateway
         uuids: categoryUuids
       }
     )
-    return res.data.items
+    return res.data.items.sort((a: Category, b: Category) => a.order - b.order)
   }
 }

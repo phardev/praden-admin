@@ -109,7 +109,7 @@ const saveChanges = async () => {
       color: 'green'
     })
 
-    navigateTo('/shop-management')
+    reorderVM.value.reset()
   } catch {
     const toast = useToast()
     toast.add({

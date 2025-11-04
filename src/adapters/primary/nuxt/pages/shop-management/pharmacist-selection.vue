@@ -114,7 +114,7 @@ const saveSelection = async () => {
       color: 'green'
     })
 
-    navigateTo('/shop-management')
+    selectionVM.value = pharmacistSelectionFormVM()
   } catch {
     const toast = useToast()
     toast.add({

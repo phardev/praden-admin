@@ -52,9 +52,9 @@ describe('Category Edition', () => {
       }
       const expectedRes: Array<Category> = [
         expectedCategory,
-        minceur,
+        baby,
         diarrhee,
-        baby
+        minceur
       ]
       beforeEach(async () => {
         await whenEditCategory(expectedCategory.uuid, dto)
@@ -81,9 +81,9 @@ describe('Category Edition', () => {
       }
       const expectedRes: Array<Category> = [
         dents,
-        minceur,
+        baby,
         expectedCategory,
-        baby
+        minceur
       ]
       beforeEach(async () => {
         await whenEditCategory(diarrhee.uuid, dto)

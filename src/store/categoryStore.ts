@@ -23,11 +23,14 @@ export const useCategoryStore = defineStore('CategoryStore', {
     },
     add(category: Category) {
       this.items.push(category)
+      this.items.sort((a, b) => a.order - b.order)
     },
     edit(category: Category) {
-      this.items = this.items.map((c) => {
-        return c.uuid === category.uuid ? category : c
-      })
+      this.items = this.items
+        .map((c) => {
+          return c.uuid === category.uuid ? category : c
+        })
+        .sort((a, b) => a.order - b.order)
     },
     setCurrentCategory(category: Category) {
       this.current = {

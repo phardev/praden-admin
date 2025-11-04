@@ -9,34 +9,31 @@
     @end="onDragEnd"
   )
     template(#item="{ element }")
-      .category-node-wrapper.mb-2
-        .flex.gap-2
-          .drag-handle.cursor-move.p-2.hover_bg-gray-100.rounded.flex-shrink-0
-            icon(name="i-heroicons-bars-3" class="text-gray-400")
-          .flex-1
-            .category-item-wrapper.flex.justify-between.items-center.p-2.cursor-pointer.bg-hover(
-              @click="element.children && element.children.length > 0 ? toggleNode(element.data.uuid) : null"
+      .category-node-wrapper.mb-2.drag-handle
+        .category-item-wrapper.flex.justify-between.items-center.p-2.bg-hover
+          .flex.items-center.gap-3.flex-1
+            .hamburger-icon.p-2.flex.items-center.flex-shrink-0
+              icon.icon-sm(name="i-heroicons-bars-3" class="text-gray-400")
+            img.rounded(
+              v-if="element.data.miniature"
+              :src="element.data.miniature"
+              :alt="element.data.name"
+              width="40"
+              height="40"
             )
-              .flex.items-center.gap-3.flex-1
-                img.rounded(
-                  v-if="element.data.miniature"
-                  :src="element.data.miniature"
-                  :alt="element.data.name"
-                  width="40"
-                  height="40"
-                )
-                span.font-medium {{ element.data.name }}
-              .expand-button.flex.items-center.justify-center(
-                v-if="element.children && element.children.length > 0"
-              )
-                icon.icon-md(
-                  v-if="isOpen(element.data.uuid)"
-                  name="material-symbols-light:keyboard-arrow-up"
-                )
-                icon.icon-md(
-                  v-else
-                  name="material-symbols-light:keyboard-arrow-down"
-                )
+            span.font-medium {{ element.data.name }}
+          .expand-button.flex.items-center.justify-center.cursor-pointer.p-2.hover_bg-gray-100.rounded(
+            v-if="element.children && element.children.length > 0"
+            @click.stop="toggleNode(element.data.uuid)"
+          )
+            icon.icon-md(
+              v-if="isOpen(element.data.uuid)"
+              name="material-symbols-light:keyboard-arrow-up"
+            )
+            icon.icon-md(
+              v-else
+              name="material-symbols-light:keyboard-arrow-down"
+            )
         .category-children(
           v-if="element.children && element.children.length > 0 && isOpen(element.data.uuid)"
           :class="{'pl-8 mt-2 border-l-2 border-gray-200': level < 3}"
@@ -51,12 +48,10 @@
 </template>
 
 <script lang="ts" setup>
-import CategoryOrderItem from '@adapters/primary/nuxt/components/molecules/CategoryOrderItem.vue'
 import type {
   TreeCategoryNodeVM,
   TreeNode
 } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
-import type { Category } from '@core/entities/category'
 import draggable from 'vuedraggable'
 
 const props = defineProps<{
@@ -79,18 +74,6 @@ const localNodes = computed({
     emit('update:modelValue', v)
   }
 })
-
-const categoryFromNode = (node: TreeNode<TreeCategoryNodeVM>): Category => {
-  return {
-    uuid: node.data.uuid,
-    name: node.data.name,
-    description: '',
-    parentUuid: props.parentUuid || undefined,
-    miniature: node.data.miniature,
-    image: '',
-    order: 0
-  }
-}
 
 const draggedUuid = ref<string | null>(null)
 
@@ -121,6 +104,10 @@ const toggleNode = (uuid: string) => {
 </script>
 
 <style scoped>
+.category-node-wrapper.drag-handle {
+  cursor: move;
+}
+
 .category-item-wrapper {
   transition: all 0.2s ease;
   border: 1px solid #e5e7eb;
@@ -134,5 +121,10 @@ const toggleNode = (uuid: string) => {
 
 .expand-button {
   transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.expand-button:hover {
+  background-color: #e5e7eb;
 }
 </style>
