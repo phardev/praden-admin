@@ -44,7 +44,8 @@ describe('Create category', () => {
     const expectedCategory: Category = {
       name: 'Created',
       description: 'The description',
-      uuid
+      uuid,
+      order: 0
     }
     beforeEach(async () => {
       await whenCreateCategory(uuid, categoryDTO)
@@ -69,7 +70,8 @@ describe('Create category', () => {
       const expectedCategory: Category = {
         name: 'Child category',
         description: 'The child description',
-        uuid
+        uuid,
+        order: 1
       }
       beforeEach(async () => {
         categoryGateway.feedWith(dents)
@@ -106,7 +108,8 @@ describe('Create category', () => {
       const expectedCategory: Category = {
         name: 'new-category',
         description: 'The description',
-        uuid
+        uuid,
+        order: 0
       }
       await whenCreateCategory(uuid, dto)
       expectedProducts = [

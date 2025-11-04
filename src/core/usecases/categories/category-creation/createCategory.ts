@@ -7,7 +7,7 @@ import { useProductStore } from '@store/productStore'
 
 export type CreateCategoryDTO = Omit<
   Category,
-  'uuid' | 'image' | 'miniature'
+  'uuid' | 'image' | 'miniature' | 'order'
 > & {
   productsAdded: Array<UUID>
   image?: File
