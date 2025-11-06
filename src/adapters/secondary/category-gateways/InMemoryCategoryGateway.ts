@@ -16,7 +16,8 @@ export class InMemoryCategoryGateway implements CategoryGateway {
   }
 
   list(): Promise<Array<Category>> {
-    return Promise.resolve(JSON.parse(JSON.stringify(this.categories)))
+    const sorted = this.categories.sort((a, b) => a.order - b.order)
+    return Promise.resolve(JSON.parse(JSON.stringify(sorted)))
   }
 
   create(dto: CreateCategoryDTO): Promise<Category> {
@@ -26,7 +27,8 @@ export class InMemoryCategoryGateway implements CategoryGateway {
     const category: Category = {
       uuid: this.uuidGenerator.generate(),
       name: dto.name,
-      description: dto.description
+      description: dto.description,
+      order: this.categories.length
     }
     this.categories.push(category)
     return Promise.resolve(category)

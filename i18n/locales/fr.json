@@ -37,7 +37,9 @@
     "delete": "Supprimer",
     "loading": "Chargement...",
     "back": "Retour",
-    "edit": "Modifier"
+    "edit": "Modifier",
+    "expandAll": "Voir tout",
+    "collapseAll": "Cacher tout"
   },
   "customers": {
     "viewTitle": "Voir client",
@@ -382,7 +384,13 @@
       "description": "Glissez-déposez les catégories pour modifier leur ordre d'affichage",
       "dragToReorder": "Glisser pour réorganiser",
       "reorderSuccess": "Ordre des catégories mis à jour",
-      "reorderError": "Erreur lors de la réorganisation"
+      "reorderError": "Erreur lors de la réorganisation",
+      "save": "Enregistrer",
+      "unsavedChanges": "Modifications non enregistrées",
+      "unsavedChangesDescription": "Vos modifications ne seront pas sauvegardées si vous quittez cette page sans enregistrer.",
+      "cancelChanges": "Abandonner les modifications ?",
+      "cancelChangesConfirm": "Êtes-vous sûr de vouloir abandonner vos modifications ?",
+      "leavePageConfirm": "Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ?"
     },
     "pharmacistSelection": {
       "title": "Sélection du pharmacien",

@@ -1,8 +1,7 @@
 <template lang="pug">
-.category-item.flex.items-center.p-3.bg-white.border.rounded.cursor-move.transition-all(
+.category-item.flex.items-center.p-3.bg-white.border.rounded.transition-all(
   :class="{ 'hover:bg-gray-50': !isDragging, 'opacity-50': isDragging }"
 )
-  icon.mr-3.text-gray-400.flex-shrink-0(name="i-heroicons-bars-3" class="text-xl")
   img.mr-3.rounded(
     v-if="category.miniature"
     :src="category.miniature"
