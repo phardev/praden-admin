@@ -1,4 +1,5 @@
 import { PromotionCode } from '@core/entities/promotionCode'
+import { PromotionCodeStats } from '@core/entities/promotionCodeStats'
 import { defineStore } from 'pinia'
 
 export const usePromotionCodeStore = defineStore('PromotionCodeStore', {
@@ -6,6 +7,7 @@ export const usePromotionCodeStore = defineStore('PromotionCodeStore', {
     return {
       items: [] as Array<PromotionCode>,
       current: undefined as PromotionCode | undefined,
+      stats: undefined as PromotionCodeStats | undefined,
       isLoading: false
     }
   },
@@ -33,6 +35,9 @@ export const usePromotionCodeStore = defineStore('PromotionCodeStore', {
     delete(promotionCode: PromotionCode) {
       const index = this.items.findIndex((b) => b.uuid === promotionCode.uuid)
       this.items.splice(index, 1)
+    },
+    setStats(stats: PromotionCodeStats) {
+      this.stats = JSON.parse(JSON.stringify(stats))
     }
   }
 })
