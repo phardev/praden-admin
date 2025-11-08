@@ -342,6 +342,23 @@
       "shop-management": "Gestion boutique"
     }
   },
+  "promotionCode": {
+    "viewTitle": "Voir code promotion",
+    "editButton": "Editer code promotion",
+    "stats": {
+      "title": "Statistiques",
+      "usageCount": "Nombre d'utilisations",
+      "totalSales": "Ventes totales",
+      "totalDiscountGiven": "Montant de réduction",
+      "emailUsages": "Utilisations",
+      "salesDistribution": "Répartition des ventes",
+      "netSales": "Ventes nettes",
+      "discount": "Réductions",
+      "tooltipLabel": "Montant",
+      "usageSingular": "utilisation",
+      "usagePlural": "utilisations"
+    }
+  },
   "systemResources": {
     "noResources": "Aucune ressource système disponible"
   },
