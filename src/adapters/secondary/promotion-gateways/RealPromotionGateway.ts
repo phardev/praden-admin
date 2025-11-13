@@ -5,6 +5,7 @@ import {
   EditPromotionDTO,
   Promotion
 } from '@core/entities/promotion'
+import { PromotionStats } from '@core/entities/promotionStats'
 import { PromotionGateway } from '@core/gateways/promotionGateway'
 import { UUID } from '@core/types/types'
 import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
@@ -77,5 +78,36 @@ export class RealPromotionGateway
       }
       return 0
     })
+  }
+
+  async getStats(uuid: UUID): Promise<PromotionStats> {
+    const res = await axiosWithBearer.get(
+      `${this.baseUrl}/promotions/${uuid}/stats`
+    )
+    const backendData = res.data
+
+    const domainStats: PromotionStats = {
+      usageCount: backendData.totalUsage,
+      totalSales: backendData.totalSales,
+      totalDiscountGiven: backendData.totalReduction,
+      productUsages: backendData.productStats.map((product: any) => ({
+        productUuid: product.productUuid,
+        name: product.productName,
+        ean13: product.ean13,
+        usageCount: product.quantitySold,
+        totalAmountTaxIncluded: Math.round(product.totalWithTax),
+        totalReductionTaxIncluded: Math.round(product.totalDiscount)
+      }))
+    }
+
+    return Promise.resolve(domainStats)
+  }
+
+  async exportStatsPDF(uuid: UUID): Promise<Blob> {
+    const res = await axiosWithBearer.get(
+      `${this.baseUrl}/promotions/${uuid}/stats/pdf`,
+      { responseType: 'blob' }
+    )
+    return Promise.resolve(res.data)
   }
 }
