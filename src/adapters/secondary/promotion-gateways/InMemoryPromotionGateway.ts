@@ -3,6 +3,7 @@ import {
   EditPromotionDTO,
   Promotion
 } from '@core/entities/promotion'
+import { PromotionStats } from '@core/entities/promotionStats'
 import { PromotionDoesNotExistsError } from '@core/errors/PromotionDoesNotExistsError'
 import { PromotionGateway } from '@core/gateways/promotionGateway'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
@@ -12,6 +13,8 @@ import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/
 export class InMemoryPromotionGateway implements PromotionGateway {
   private promotions: Array<Promotion> = []
   private promotionsListItem: Array<PromotionListItem> = []
+  private statsMap: Map<UUID, PromotionStats> = new Map()
+  private pdfBlobMap: Map<UUID, Blob> = new Map()
   private uuidGenerator: UuidGenerator
 
   constructor(uuidGenerator: UuidGenerator) {
@@ -86,5 +89,25 @@ export class InMemoryPromotionGateway implements PromotionGateway {
 
   feedListItemWith(...promotionsListItem: Array<PromotionListItem>) {
     this.promotionsListItem = promotionsListItem
+  }
+
+  getStats(uuid: UUID): Promise<PromotionStats> {
+    const stats = this.statsMap.get(uuid)
+    if (!stats) throw new Error(`No stats found for promotion ${uuid}`)
+    return Promise.resolve(JSON.parse(JSON.stringify(stats)))
+  }
+
+  exportStatsPDF(uuid: UUID): Promise<Blob> {
+    const blob = this.pdfBlobMap.get(uuid)
+    if (!blob) throw new Error(`No PDF blob found for promotion ${uuid}`)
+    return Promise.resolve(blob)
+  }
+
+  feedStatsFor(uuid: UUID, stats: PromotionStats) {
+    this.statsMap.set(uuid, stats)
+  }
+
+  feedPDFBlobFor(uuid: UUID, blob: Blob) {
+    this.pdfBlobMap.set(uuid, blob)
   }
 }

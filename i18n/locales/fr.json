@@ -359,6 +359,25 @@
       "usagePlural": "utilisations"
     }
   },
+  "promotion": {
+    "stats": {
+      "title": "Statistiques de la promotion",
+      "productName": "Produit",
+      "reference": "Référence",
+      "usageCount": "Nombre d'utilisations",
+      "totalAmountTaxIncluded": "Montant total TTC",
+      "totalReductionTaxIncluded": "Réduction totale TTC",
+      "exportPdf": "Exporter en PDF",
+      "noData": "Aucune donnée disponible",
+      "summary": "Résumé",
+      "totalUsage": "Total des utilisations",
+      "totalSales": "Ventes totales",
+      "totalDiscount": "Réduction totale accordée",
+      "netSales": "Ventes nettes",
+      "discount": "Réductions",
+      "tooltipLabel": "Montant"
+    }
+  },
   "systemResources": {
     "noResources": "Aucune ressource système disponible"
   },

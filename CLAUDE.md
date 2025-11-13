@@ -59,3 +59,5 @@
   - Forms use view models with get(field) / set(field, value) pattern
   - Field structure: { value: any, canEdit: boolean } for permission control
   - Never mutate stores directly from components - use usecases
+- Add to memory "A usecase NEVER returns a value"
+- Add to memory that we must import type in vue file
