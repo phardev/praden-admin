@@ -310,6 +310,9 @@
       }
     }
   },
+  "newsletter": {
+    "exportButton": "Exporter la newsletter"
+  },
   "permissions": {
     "permission": "Permission",
     "noData": "Aucune donnée disponible",
