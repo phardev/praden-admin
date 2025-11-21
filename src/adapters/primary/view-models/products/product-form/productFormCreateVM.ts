@@ -122,7 +122,9 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
   }
 
   async setNewImages(newImages: Array<File>): Promise<void> {
-    super.set('newImages', newImages)
+    const existingNewImages = this.fieldsReader.get('newImages')
+    const updatedNewImages = [...existingNewImages, ...newImages]
+    super.set('newImages', updatedNewImages)
     const images = this.fieldsReader.get('images')
     for (const image of newImages) {
       const content = await getFileContent(image)

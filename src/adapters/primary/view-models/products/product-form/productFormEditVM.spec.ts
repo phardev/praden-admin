@@ -416,6 +416,22 @@ describe('Product form edit VM', () => {
       laboratoryStore.items = [avene, sanofiAventis]
       vm = productFormEditVM(key)
     })
+    describe('Adding images in 2 separate steps', () => {
+      it('should accumulate both images in newImages', async () => {
+        const firstImage = [
+          new File(['data1'], 'File 1', { type: 'image/png' })
+        ]
+        const secondImage = [
+          new File(['data2'], 'File 2', { type: 'image/jpeg' })
+        ]
+
+        await vm.set('newImages', firstImage)
+        await vm.set('newImages', secondImage)
+
+        const dto = vm.getDto()
+        expect(dto.newImages).toStrictEqual([...firstImage, ...secondImage])
+      })
+    })
     describe('For a dto without max quantity for order', () => {
       it('should prepare the dto', async () => {
         const newImages = [
