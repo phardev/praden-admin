@@ -1,5 +1,4 @@
 <template lang="pug">
-invoice.hidden.printme.mx-2
 .section.no-printme
   h1.text-4xl.font-semibold.text-default Commande \#{{ preparationVM.reference }}
   ft-scanner(
@@ -78,7 +77,6 @@ import { setProductQuantityForPreparation } from '@core/usecases/order/set-produ
 import { validatePreparation } from '@core/usecases/order/validate-preparation/validatePreparation'
 import { useDeliveryStore } from '@store/deliveryStore'
 import { useDeliveryGateway } from '../../../../../../gateways/deliveryGateway'
-import { useInvoiceGateway } from '../../../../../../gateways/invoiceGateway'
 import { useOrderGateway } from '../../../../../../gateways/orderGateway'
 
 definePageMeta({ layout: 'main' })
@@ -171,7 +169,7 @@ const validate = async () => {
     }
 
     try {
-      await validatePreparation(useOrderGateway(), useInvoiceGateway())
+      await validatePreparation(useOrderGateway())
       await manualPrint(newWindow)
 
       setTimeout(() => {
@@ -185,8 +183,7 @@ const validate = async () => {
       return
     }
   } else {
-    await validatePreparation(useOrderGateway(), useInvoiceGateway())
-    window.print()
+    await validatePreparation(useOrderGateway())
   }
   router.push('/preparations')
 }
@@ -236,12 +233,7 @@ const manualPrint = async (newWindow?: Window | null) => {
 
 const cancel = async () => {
   closeActionsModal()
-  await cancelPreparation(useOrderGateway(), useInvoiceGateway())
-
-  setTimeout(() => {
-    window.print()
-  }, 100)
-
+  await cancelPreparation(useOrderGateway())
   router.push('/preparations')
 }
 
