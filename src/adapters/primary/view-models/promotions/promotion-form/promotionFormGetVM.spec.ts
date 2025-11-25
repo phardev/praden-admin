@@ -97,7 +97,7 @@ describe('Promotion form get VM', () => {
           promotion: promotionFixedMultipleProducts,
           expectedFields: {
             name: promotionFixedMultipleProducts.name,
-            products: [ultraLevureVM, anaca3VM],
+            products: [anaca3VM, ultraLevureVM],
             availableProducts: [],
             type: ReductionType.Fixed,
             amount: '1',

@@ -142,15 +142,17 @@ export class PromotionFormCreateVM extends PromotionFormVM {
         !addedProducts.map((p: Product) => p.uuid).includes(p.uuid)
     )
     return {
-      value: res.map((p: Product) => {
-        return {
-          uuid: p.uuid,
-          name: p.name,
-          reference: p.ean13,
-          categories: p.categories.map((c) => c.name),
-          laboratory: p.laboratory ? p.laboratory.name : ''
-        }
-      }),
+      value: res
+        .map((p: Product) => {
+          return {
+            uuid: p.uuid,
+            name: p.name,
+            reference: p.ean13,
+            categories: p.categories.map((c) => c.name),
+            laboratory: p.laboratory ? p.laboratory.name : ''
+          }
+        })
+        .sort((a, b) => a.name.localeCompare(b.name)),
       canEdit: true
     }
   }
