@@ -65,7 +65,7 @@
           @click.stop="navigateTo('/shop-management/pharmacist-selection')"
         )
 
-    UCard.hidden.settings-card.transition-all.duration-300(
+    UCard.settings-card.transition-all.duration-300(
       class="hover:shadow-lg hover:scale-105 cursor-pointer"
       @click="navigateTo('/shop-management/emergency-pharmacies')"
     )

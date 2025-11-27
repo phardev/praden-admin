@@ -33,7 +33,7 @@ export class RealEmergencyPharmacyGateway
     uuid: UUID,
     dto: EditEmergencyPharmacyDTO
   ): Promise<EmergencyPharmacy> {
-    const res = await axiosWithBearer.patch(
+    const res = await axiosWithBearer.put(
       `${this.baseUrl}/emergency-pharmacies/${uuid}`,
       dto
     )
