@@ -126,22 +126,29 @@ UForm(v-else)
           @input="miniatureChanged"
         )
       UFormGroup.pb-4(label="Images" name="images")
-        div.flex.items-center.gap-4
-          div.relative.group(v-for="(image, index) in currentVM.get('images').value" :key="index")
-            img.mb-4(:src="image" height=200 width=200 alt="Selected Image")
-            button(
-              v-if="currentVM.get('images').canEdit"
-              type="button"
-              class="absolute top-0 right-0 rounded-full flex items-center justify-center text-xs cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
-              @click="removeImage(image)"
-            )
-              icon.icon-xl.text-error(name="material-symbols:cancel")
-            div(
-              v-if="currentVM.get('images').canEdit"
-              class="absolute inset-0 border-2 border-tomato9 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
-            )
+        draggable.flex.items-center.gap-4(
+          v-if="currentVM.getProductImagesForDisplay"
+          :model-value="productImagesDisplay"
+          :disabled="!canEditImages"
+          item-key="id"
+          @change="onImageReorder"
+        )
+          template(#item="{ element, index }")
+            div.relative.group.cursor-grab
+              img.mb-4(:src="element.url" height=200 width=200 alt="Selected Image")
+              button(
+                v-if="canEditImages"
+                type="button"
+                class="absolute top-0 right-0 rounded-full flex items-center justify-center text-xs cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
+                @click="removeImageById(element.id)"
+              )
+                icon.icon-xl.text-error(name="material-symbols:cancel")
+              div(
+                v-if="canEditImages"
+                class="absolute inset-0 border-2 border-tomato9 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+              )
         ft-file-input(
-          v-if="currentVM.get('images').canEdit"
+          v-if="canEditImages"
           accept="image/*"
           multiple
           @input="imagesChanged"
@@ -241,6 +248,7 @@ import FtButton from '@adapters/primary/nuxt/components/atoms/FtButton.vue'
 import { getTreeCategoriesVM } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
 import { listLaboratories } from '@core/usecases/laboratories/laboratory-listing/listLaboratories'
 import { listLocations } from '@core/usecases/locations/location-listing/listLocations'
+import draggable from 'vuedraggable'
 import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
 import { useLocationGateway } from '../../../../../../gateways/locationGateway'
 
@@ -289,6 +297,14 @@ const treeCategoriesVM = computed(() => {
 
 const currentVM = toRef(props, 'vm')
 
+const productImagesDisplay = computed(() => {
+  return currentVM.value?.getProductImagesForDisplay?.() || []
+})
+
+const canEditImages = computed(() => {
+  return currentVM.value?.get?.('productImages')?.canEdit ?? false
+})
+
 const nameChanged = (name: string) => {
   currentVM?.value?.set('name', name)
 }
@@ -336,11 +352,22 @@ const miniatureChanged = async (value: any) => {
 }
 
 const imagesChanged = async (value: FileList) => {
-  await currentVM?.value?.set('newImages', Array.from(value))
+  await currentVM?.value?.addImages?.(Array.from(value))
 }
 
-const removeImage = async (image) => {
-  await currentVM?.value?.removeImage(image)
+const removeImageById = (imageId: string) => {
+  currentVM?.value?.removeImageById?.(imageId)
+}
+
+const onImageReorder = (event: {
+  moved?: { oldIndex: number; newIndex: number }
+}) => {
+  if (event.moved) {
+    currentVM?.value?.reorderImages?.(
+      event.moved.oldIndex,
+      event.moved.newIndex
+    )
+  }
 }
 
 const categorySelected = (uuid: string) => {

@@ -11,8 +11,15 @@ import {
   ProductFormVM
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { RealUuidGenerator } from '@adapters/secondary/uuid-generators/RealUuidGenerator'
 import { ProductStatus } from '@core/entities/product'
+import {
+  createNewImage,
+  getDisplayUrl,
+  type ProductImage
+} from '@core/entities/productImage'
 import { ReductionType } from '@core/entities/promotion'
+import type { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { UUID } from '@core/types/types'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { useLaboratoryStore } from '@store/laboratoryStore'
@@ -23,16 +30,19 @@ import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 export class ProductFormEditVM extends ProductFormVM {
   private fieldsReader: ProductFormFieldsReader
   private fieldsWriter: ProductFormFieldsWriter
+  private uuidGenerator: UuidGenerator
 
   constructor(
     initializer: ExistingProductFormInitializer,
     fieldsReader: ProductFormFieldsReader,
-    fieldsWriter: ProductFormFieldsWriter
+    fieldsWriter: ProductFormFieldsWriter,
+    uuidGenerator: UuidGenerator
   ) {
     super()
     initializer.init()
     this.fieldsReader = fieldsReader
     this.fieldsWriter = fieldsWriter
+    this.uuidGenerator = uuidGenerator
   }
 
   get(fieldName: string): any {
@@ -66,23 +76,55 @@ export class ProductFormEditVM extends ProductFormVM {
     await this.fieldsWriter.set(fieldName, value)
   }
 
-  async removeImage(data: string) {
-    const images = this.fieldsReader.get('images')
-    if (images.find((i: string) => i === data)) {
-      const removedImages = this.fieldsReader.get('removedImages')
-      removedImages.push(data)
-      const updated = images.filter((image: string) => image !== data)
-      await this.set('images', updated)
+  removeImageById(imageId: string): void {
+    const productImages: Array<ProductImage> =
+      this.fieldsReader.get('productImages')
+    const filtered = productImages.filter((img) => img.id !== imageId)
+    filtered.forEach((img, index) => {
+      img.order = index
+    })
+    this.fieldsWriter.set('productImages', filtered)
+  }
+
+  reorderImages(fromIndex: number, toIndex: number): void {
+    const productImages: Array<ProductImage> = [
+      ...this.fieldsReader.get('productImages')
+    ]
+    const [moved] = productImages.splice(fromIndex, 1)
+    productImages.splice(toIndex, 0, moved)
+    productImages.forEach((img, index) => {
+      img.order = index
+    })
+    this.fieldsWriter.set('productImages', productImages)
+  }
+
+  async addImages(files: Array<File>): Promise<void> {
+    const productImages: Array<ProductImage> =
+      this.fieldsReader.get('productImages')
+    const startOrder = productImages.length
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]
+      const previewUrl = await getFileContent(file)
+      const newImage = createNewImage(
+        file,
+        this.uuidGenerator.generate(),
+        startOrder + i,
+        previewUrl
+      )
+      productImages.push(newImage)
     }
-    const newImages = this.fieldsReader.get('newImages')
-    const newImagesData = []
-    for (const file of newImages) {
-      newImagesData.push(await getFileContent(file))
-    }
-    const index = newImagesData.findIndex((i) => i === data)
-    if (index >= 0) {
-      newImages.splice(index, 1)
-    }
+    this.fieldsWriter.set('productImages', productImages)
+  }
+
+  getProductImagesForDisplay(): Array<{ id: string; url: string }> {
+    const productImages: Array<ProductImage> =
+      this.fieldsReader.get('productImages') || []
+    return [...productImages]
+      .sort((a, b) => a.order - b.order)
+      .map((img) => ({
+        id: img.id,
+        url: getDisplayUrl(img)
+      }))
   }
 
   getAvailableCategories(): CreateProductCategoriesVM {
@@ -111,6 +153,9 @@ export class ProductFormEditVM extends ProductFormVM {
     const laboratory = laboratoryStore.getByUuid(
       this.fieldsReader.get('laboratory')
     )
+    const productImages: Array<ProductImage> =
+      this.fieldsReader.get('productImages') || []
+    const orderedImages = [...productImages].sort((a, b) => a.order - b.order)
     return {
       name: this.fieldsReader.get('name'),
       status: this.fieldsReader.get('isActive')
@@ -122,8 +167,7 @@ export class ProductFormEditVM extends ProductFormVM {
       categoryUuids: this.fieldsReader.get('categoryUuids'),
       laboratory,
       miniature: this.fieldsReader.get('newMiniature'),
-      removedImages: this.fieldsReader.get('removedImages'),
-      newImages: this.fieldsReader.get('newImages'),
+      orderedImages,
       priceWithoutTax,
       percentTaxRate,
       locations: this.fieldsReader.get('locations'),
@@ -171,8 +215,9 @@ export class ProductFormEditVM extends ProductFormVM {
 }
 
 export const productFormEditVM = (key: string) => {
-  const initializer = new ExistingProductFormInitializer(key)
+  const uuidGenerator = new RealUuidGenerator()
+  const initializer = new ExistingProductFormInitializer(key, uuidGenerator)
   const getter = new ProductFormFieldsReader(key)
   const setter = new ProductFormFieldsWriter(key, getter)
-  return new ProductFormEditVM(initializer, getter, setter)
+  return new ProductFormEditVM(initializer, getter, setter, uuidGenerator)
 }
