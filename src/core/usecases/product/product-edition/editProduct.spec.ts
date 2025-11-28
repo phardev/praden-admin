@@ -4,6 +4,10 @@ import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidG
 import { Category } from '@core/entities/category'
 import { Location } from '@core/entities/location'
 import { Product } from '@core/entities/product'
+import {
+  createExistingImage,
+  createNewImage
+} from '@core/entities/productImage'
 import { UUID } from '@core/types/types'
 import {
   EditProductDTO,
@@ -188,18 +192,21 @@ describe('Product edition', () => {
     })
     describe('Images change', () => {
       beforeEach(async () => {
+        givenEditingProductIs(dolodent)
+        const file1 = new File(['data1'], 'File 1', { type: 'image/png' })
+        const file2 = new File(['data2'], 'File 2', { type: 'image/jpeg' })
         dto = {
-          newImages: [
-            new File(['data1'], 'File 1', { type: 'image/png' }),
-            new File(['data2'], 'File 2', { type: 'image/jpeg' })
+          orderedImages: [
+            createExistingImage(product.images[0], 'existing-0', 0),
+            createNewImage(file1, 'new-1', 1, ''),
+            createNewImage(file2, 'new-2', 2, '')
           ]
         }
-        givenEditingProductIs(dolodent)
         expectedProduct = {
           ...product,
           flags: { arePromotionsAllowed: true },
           images: [
-            ...product.images,
+            product.images[0],
             'data:image/png;base64,ZGF0YTE=',
             'data:image/jpeg;base64,ZGF0YTI='
           ]
@@ -213,7 +220,7 @@ describe('Product edition', () => {
           dolodentListItem
         )
       })
-      it('should edit the product in the gateway', async () => {
+      it('should edit the product in the gateway with updated images', async () => {
         expect(await productGateway.getByUuid(product.uuid)).toStrictEqual(
           expectedProduct
         )

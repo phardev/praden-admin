@@ -4,10 +4,17 @@ import {
   CreateProductLocationsVM
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { RealUuidGenerator } from '@adapters/secondary/uuid-generators/RealUuidGenerator'
 import type { Category } from '@core/entities/category'
 import { Location, sortLocationByOrder } from '@core/entities/location'
 import { isProductActive } from '@core/entities/product'
+import {
+  createExistingImage,
+  getDisplayUrl,
+  type ProductImage
+} from '@core/entities/productImage'
 import { ReductionType } from '@core/entities/promotion'
+import type { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { useCategoryStore } from '@store/categoryStore'
 import { useFormStore } from '@store/formStore'
 import { useLaboratoryStore } from '@store/laboratoryStore'
@@ -89,12 +96,14 @@ export class ProductFormFieldsReader extends FormFieldsReader {
 
 export class ExistingProductFormInitializer implements FormInitializer {
   protected readonly key: string
+  protected readonly uuidGenerator: UuidGenerator
   protected formStore: any
   protected productStore: any
   protected locationStore: any
 
-  constructor(key: string) {
+  constructor(key: string, uuidGenerator: UuidGenerator) {
     this.key = key
+    this.uuidGenerator = uuidGenerator
     this.formStore = useFormStore()
     this.productStore = useProductStore()
     this.locationStore = useLocationStore()
@@ -105,6 +114,11 @@ export class ExistingProductFormInitializer implements FormInitializer {
     if (product) {
       product = JSON.parse(JSON.stringify(product))
     }
+    const imageUrls: Array<string> = product.images || []
+    const productImages: Array<ProductImage> = imageUrls.map(
+      (url: string, index: number) =>
+        createExistingImage(url, this.uuidGenerator.generate(), index)
+    )
     this.formStore.set(this.key, {
       name: product.name,
       status: product.status,
@@ -124,10 +138,8 @@ export class ExistingProductFormInitializer implements FormInitializer {
       availableStock: product.availableStock,
       miniature: product.miniature,
       newMiniature: undefined,
-      newImages: [],
-      removedImages: [],
-      images: product.images || [],
-      initialImages: JSON.parse(JSON.stringify(product.images || [])),
+      productImages,
+      initialImageUrls: imageUrls,
       description: product.description,
       instructionsForUse: product.instructionsForUse,
       composition: product.composition,
@@ -183,6 +195,17 @@ export class ProductFormGetVM extends ProductFormVM {
     return this.fieldsReader.getAvailableLaboratories()
   }
 
+  getProductImagesForDisplay(): Array<{ id: string; url: string }> {
+    const productImages: Array<ProductImage> =
+      this.fieldsReader.get('productImages') || []
+    return [...productImages]
+      .sort((a, b) => a.order - b.order)
+      .map((img) => ({
+        id: img.id,
+        url: getDisplayUrl(img)
+      }))
+  }
+
   getPromotion(): GetProductPromotionVM | undefined {
     const productStore = useProductStore()
     if (!productStore.current?.promotion) return undefined
@@ -213,7 +236,8 @@ export class ProductFormGetVM extends ProductFormVM {
 }
 
 export const productFormGetVM = (key: string): ProductFormGetVM => {
-  const initVM = new ExistingProductFormInitializer(key)
+  const uuidGenerator = new RealUuidGenerator()
+  const initVM = new ExistingProductFormInitializer(key, uuidGenerator)
   const getForm = new ProductFormFieldsReader(key)
   return new ProductFormGetVM(initVM, getForm)
 }

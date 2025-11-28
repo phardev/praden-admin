@@ -1,5 +1,6 @@
 import { Category } from '@core/entities/category'
 import { Product } from '@core/entities/product'
+import { isExistingImage, type ProductImage } from '@core/entities/productImage'
 import { ProductDoesNotExistsError } from '@core/errors/ProductDoesNotExistsError'
 import { ProductGateway } from '@core/gateways/productGateway'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
@@ -107,13 +108,17 @@ export class InMemoryProductGateway implements ProductGateway {
       Object.assign(this.products[index].locations, dto.locations)
       delete dto.locations
     }
-    if (dto.newImages) {
-      const newImages: Array<string> = []
-      for (const image of dto.newImages) {
-        newImages.push(await getFileContent(image))
+    if (dto.orderedImages) {
+      const images: Array<string> = []
+      for (const image of dto.orderedImages) {
+        if (isExistingImage(image)) {
+          images.push(image.source.url)
+        } else {
+          images.push(await getFileContent(image.source.file))
+        }
       }
-      Array.prototype.push.apply(this.products[index].images, newImages)
-      delete dto.newImages
+      this.products[index].images = images
+      delete dto.orderedImages
     }
     if (dto.categoryUuids) {
       this.products[index].categories = []

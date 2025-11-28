@@ -2,6 +2,7 @@ import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
 import { Category } from '@core/entities/category'
 import { Product } from '@core/entities/product'
+import type { ProductImage } from '@core/entities/productImage'
 import { ProductGateway } from '@core/gateways/productGateway'
 import { UUID } from '@core/types/types'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
@@ -156,13 +157,17 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
   }
 
   async edit(uuid: UUID, dto: EditProductDTO): Promise<Product> {
-    const { laboratory, flags, ...productDto } = dto
+    const { laboratory, flags, orderedImages, ...productDto } = dto
+    console.log('orderedImages', orderedImages)
     const formData = this.createFormData(productDto)
     if (laboratory) {
       formData.append('laboratoryUuid', laboratory.uuid)
     }
     if (flags?.arePromotionsAllowed) {
       formData.append('arePromotionsAllowed', 'on')
+    }
+    if (orderedImages) {
+      this.appendOrderedImages(formData, orderedImages)
     }
     const res = await axiosWithBearer.patch(
       `${this.baseUrl}/products/edit/${uuid}`,
@@ -174,6 +179,35 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
       }
     )
     return Promise.resolve(res.data.item)
+  }
+
+  private appendOrderedImages(
+    formData: FormData,
+    orderedImages: Array<ProductImage>
+  ): void {
+    const metadata = orderedImages.map((img) => {
+      if (img.source.type === 'new') {
+        return {
+          id: img.id,
+          source: { type: 'new' as const, previewUrl: img.source.previewUrl },
+          order: img.order
+        }
+      }
+      return {
+        id: img.id,
+        source: { type: 'existing' as const, url: img.source.url },
+        order: img.order
+      }
+    })
+    formData.append('orderedImages', JSON.stringify(metadata))
+
+    const newImages = orderedImages.filter(
+      (img): img is ProductImage & { source: { type: 'new'; file: File } } =>
+        img.source.type === 'new'
+    )
+    newImages.forEach((img, index) => {
+      formData.append(`orderedImages_files[${index}]`, img.source.file)
+    })
   }
 
   async create(dto: CreateProductDTO): Promise<Product> {
