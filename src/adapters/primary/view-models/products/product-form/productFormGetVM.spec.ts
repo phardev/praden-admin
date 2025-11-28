@@ -1,8 +1,14 @@
 import {
+  ExistingProductFormInitializer,
   ProductFormGetVM,
   productFormGetVM
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import { type Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { SequentialUuidGenerator } from '@adapters/secondary/uuid-generators/SequentialUuidGenerator'
+import {
+  createExistingImage,
+  type ProductImage
+} from '@core/entities/productImage'
 import { useCategoryStore } from '@store/categoryStore'
 import { useFormStore } from '@store/formStore'
 import { useLaboratoryStore } from '@store/laboratoryStore'
@@ -18,6 +24,7 @@ import {
 import { magasin, reserve, zoneGeo } from '@utils/testData/locations'
 import {
   dolodent,
+  hemoclar,
   productWithDecimalPrice,
   productWithoutLaboratory,
   ultraLevure
@@ -255,7 +262,6 @@ describe('Product form get VM', () => {
           { field: 'cip7', expected: product.cip7 },
           { field: 'cip13', expected: product.cip13 },
           { field: 'ean13', expected: product.ean13 },
-          { field: 'images', expected: product.images },
           { field: 'percentTaxRate', expected: product.percentTaxRate },
           { field: 'availableStock', expected: product.availableStock },
           { field: 'laboratory', expected: product.laboratory?.uuid || '' },
@@ -333,6 +339,61 @@ describe('Product form get VM', () => {
     it('should be aware when not loading', () => {
       productStore.isLoading = false
       expect(vm.isLoading()).toBe(false)
+    })
+  })
+
+  describe('ProductImages initialization', () => {
+    it('should transform backend images to ProductImage array', () => {
+      const uuidGenerator = new SequentialUuidGenerator('img')
+      productStore.current = { product: hemoclar }
+      locationStore.items = [zoneGeo]
+      categoryStore.items = [baby]
+      laboratoryStore.items = [sanofiAventis]
+
+      const initializer = new ExistingProductFormInitializer(key, uuidGenerator)
+      initializer.init()
+
+      const expectedProductImages: Array<ProductImage> = [
+        createExistingImage('https://fakeimg.pl/300/', 'img-0', 0),
+        createExistingImage('https://fakeimg.pl/400/', 'img-1', 1),
+        createExistingImage('https://fakeimg.pl/300/', 'img-2', 2)
+      ]
+      expect(formStore.get(key).productImages).toStrictEqual(
+        expectedProductImages
+      )
+    })
+
+    it('should store initial image URLs for reference', () => {
+      const uuidGenerator = new SequentialUuidGenerator('img')
+      productStore.current = { product: hemoclar }
+      locationStore.items = [zoneGeo]
+      categoryStore.items = [baby]
+      laboratoryStore.items = [sanofiAventis]
+
+      const initializer = new ExistingProductFormInitializer(key, uuidGenerator)
+      initializer.init()
+
+      expect(formStore.get(key).initialImageUrls).toStrictEqual([
+        'https://fakeimg.pl/300/',
+        'https://fakeimg.pl/400/',
+        'https://fakeimg.pl/300/'
+      ])
+    })
+
+    it('should return product images for display sorted by order', () => {
+      productStore.current = { product: hemoclar }
+      locationStore.items = [zoneGeo]
+      categoryStore.items = [baby]
+      laboratoryStore.items = [sanofiAventis]
+      vm = productFormGetVM(key)
+
+      const images = vm.getProductImagesForDisplay()
+      const urls = images.map((img) => img.url)
+      expect(urls).toStrictEqual([
+        'https://fakeimg.pl/300/',
+        'https://fakeimg.pl/400/',
+        'https://fakeimg.pl/300/'
+      ])
     })
   })
 })

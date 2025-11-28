@@ -1,3 +1,4 @@
+import type { ProductImage } from '@core/entities/productImage'
 import { ProductGateway } from '@core/gateways/productGateway'
 import { UUID } from '@core/types/types'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
@@ -5,9 +6,7 @@ import { useProductStore } from '@store/productStore'
 
 export type EditProductDTO = Partial<
   Omit<CreateProductDTO, 'images'> & {
-    images: Array<string>
-    newImages: Array<File>
-    removedImages: Array<string>
+    orderedImages: Array<ProductImage>
   }
 >
 

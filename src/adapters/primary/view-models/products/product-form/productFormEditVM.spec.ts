@@ -1,5 +1,16 @@
+import { ProductFormFieldsWriter } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+import {
+  ExistingProductFormInitializer,
+  ProductFormFieldsReader
+} from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import { type Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { SequentialUuidGenerator } from '@adapters/secondary/uuid-generators/SequentialUuidGenerator'
 import { ProductStatus } from '@core/entities/product'
+import {
+  createExistingImage,
+  createNewImage,
+  type ProductImage
+} from '@core/entities/productImage'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { useCategoryStore } from '@store/categoryStore'
 import { useFormStore } from '@store/formStore'
@@ -14,7 +25,7 @@ import {
   sanofiAventis
 } from '@utils/testData/laboratories'
 import { magasin, reserve, zoneGeo } from '@utils/testData/locations'
-import { dolodent, ultraLevure } from '@utils/testData/products'
+import { dolodent, hemoclar, ultraLevure } from '@utils/testData/products'
 import { promotionFixedMultipleProducts } from '@utils/testData/promotions'
 import { createPinia, setActivePinia } from 'pinia'
 import { ProductFormEditVM, productFormEditVM } from './productFormEditVM'
@@ -179,8 +190,6 @@ describe('Product form edit VM', () => {
           { field: 'cip7', expected: product.cip7 },
           { field: 'cip13', expected: product.cip13 },
           { field: 'ean13', expected: product.ean13 },
-          { field: 'images', expected: product.images },
-          { field: 'removedImages', expected: [] },
           { field: 'percentTaxRate', expected: product.percentTaxRate },
           { field: 'availableStock', expected: product.availableStock },
           { field: 'laboratory', expected: product.laboratory!.uuid },
@@ -391,22 +400,6 @@ describe('Product form edit VM', () => {
     })
   })
 
-  describe('Remove image', () => {
-    const product = dolodent
-    beforeEach(() => {
-      productStore.current = {
-        product
-      }
-      vm = productFormEditVM(key)
-    })
-    describe('Images are already saved', () => {
-      it('should remove saved displayed images', async () => {
-        await vm.removeImage(dolodent.images[0])
-        expect(vm.get('images').value).toStrictEqual([])
-      })
-    })
-  })
-
   describe('DTO', () => {
     const product = dolodent
     beforeEach(() => {
@@ -414,182 +407,71 @@ describe('Product form edit VM', () => {
         product
       }
       laboratoryStore.items = [avene, sanofiAventis]
-      vm = productFormEditVM(key)
     })
-    describe('Adding images in 2 separate steps', () => {
-      it('should accumulate both images in newImages', async () => {
-        const firstImage = [
-          new File(['data1'], 'File 1', { type: 'image/png' })
-        ]
-        const secondImage = [
-          new File(['data2'], 'File 2', { type: 'image/jpeg' })
-        ]
+    describe('For a dto with orderedImages from existing product', () => {
+      it('should include existing images as orderedImages', () => {
+        vm = productFormEditVM(key)
+        const dto = vm.getDto()
+        expect(dto.orderedImages?.length).toBe(1)
+        expect(dto.orderedImages?.[0].source).toStrictEqual({
+          type: 'existing',
+          url: dolodent.images[0]
+        })
+      })
+    })
+    describe('For a dto after adding new images', () => {
+      it('should include both existing and new images in orderedImages', async () => {
+        const uuidGenerator = new SequentialUuidGenerator('dto-img')
+        const initializer = new ExistingProductFormInitializer(
+          key,
+          uuidGenerator
+        )
+        const getter = new ProductFormFieldsReader(key)
+        const setter = new ProductFormFieldsWriter(key, getter)
+        vm = new ProductFormEditVM(initializer, getter, setter, uuidGenerator)
 
-        await vm.set('newImages', firstImage)
-        await vm.set('newImages', secondImage)
+        const newFile = new File(['data1'], 'File 1', { type: 'image/png' })
+        await vm.addImages([newFile])
 
         const dto = vm.getDto()
-        expect(dto.newImages).toStrictEqual([...firstImage, ...secondImage])
+        expect(dto.orderedImages?.length).toBe(2)
       })
     })
-    describe('For a dto without max quantity for order', () => {
-      it('should prepare the dto', async () => {
-        const newImages = [
-          new File(['data1'], 'File 1', { type: 'image/png' }),
-          new File(['data2'], 'File 2', { type: 'image/jpeg' }),
-          new File(['data3'], 'File 3', { type: 'image/gif' })
-        ]
-        const newMiniature = new File(['data1'], 'MINIATURE', {
-          type: 'image/png'
-        })
-        const expectedDTO: EditProductDTO = {
-          name: 'test',
-          status: ProductStatus.Active,
-          cip7: '1234567',
-          cip13: '1234567890123',
-          ean13: '1234567890123',
-          categoryUuids: [...product.categories.map((c) => c.uuid), 'abc123'],
-          laboratory: avene,
-          miniature: newMiniature,
-          removedImages: [],
-          newImages,
-          priceWithoutTax: 1200,
-          percentTaxRate: 5,
-          locations: product.locations,
-          availableStock: 21,
-          description: '<p>description</p>',
-          instructionsForUse: '<p>instructionsForUse</p>',
-          composition: '<p>composition</p>',
-          weight: 1200,
-          maxQuantityForOrder: undefined,
-          flags: { arePromotionsAllowed: product.flags.arePromotionsAllowed }
-        }
-        vm.set('name', expectedDTO.name)
-        vm.set('cip7', expectedDTO.cip7)
-        vm.set('cip13', expectedDTO.cip13)
-        vm.set('ean13', expectedDTO.ean13)
-        await vm.set('miniature', newMiniature)
-        await vm.set('newImages', newImages)
-        vm.toggleCategory('abc123')
-        vm.set('laboratory', expectedDTO.laboratory!.uuid)
-        vm.set('priceWithoutTax', '12')
-        vm.set('percentTaxRate', '5')
-        vm.set('locations', expectedDTO.locations)
-        vm.set('availableStock', '21')
-        vm.set('description', expectedDTO.description)
-        vm.set('instructionsForUse', expectedDTO.instructionsForUse)
-        vm.set('composition', expectedDTO.composition)
-        vm.set('weight', '1.2')
-        vm.set('maxQuantityForOrder', undefined)
-        expect(vm.getDto()).toStrictEqual(expectedDTO)
+    describe('For a dto after removing an image', () => {
+      it('should not include removed image in orderedImages', () => {
+        const uuidGenerator = new SequentialUuidGenerator('dto-img')
+        const initializer = new ExistingProductFormInitializer(
+          key,
+          uuidGenerator
+        )
+        const getter = new ProductFormFieldsReader(key)
+        const setter = new ProductFormFieldsWriter(key, getter)
+        vm = new ProductFormEditVM(initializer, getter, setter, uuidGenerator)
+
+        vm.removeImageById('dto-img-0')
+
+        const dto = vm.getDto()
+        expect(dto.orderedImages).toStrictEqual([])
       })
     })
-    describe('For a dto', () => {
-      it('should prepare the dto', async () => {
-        const newImages = [
-          new File(['data1'], 'File 1', { type: 'image/png' }),
-          new File(['data2'], 'File 2', { type: 'image/jpeg' }),
-          new File(['data3'], 'File 3', { type: 'image/gif' })
-        ]
-        const newMiniature = new File(['data1'], 'MINIATURE', {
-          type: 'image/png'
-        })
-        const expectedDTO: EditProductDTO = {
-          name: 'test',
-          status: ProductStatus.Inactive,
-          cip7: '1234567',
-          cip13: '1234567890123',
-          ean13: '1234567890123',
-          categoryUuids: [...product.categories.map((c) => c.uuid), 'abc123'],
-          laboratory: avene,
-          miniature: newMiniature,
-          removedImages: [],
-          newImages,
-          priceWithoutTax: 1200,
-          percentTaxRate: 5,
-          locations: product.locations,
-          availableStock: 21,
-          description: '<p>description</p>',
-          instructionsForUse: '<p>instructionsForUse</p>',
-          composition: '<p>composition</p>',
-          weight: 1200,
-          maxQuantityForOrder: 12,
-          flags: { arePromotionsAllowed: false }
-        }
-        vm.toggleIsActive()
-        vm.set('name', expectedDTO.name)
-        vm.set('cip7', expectedDTO.cip7)
-        vm.set('cip13', expectedDTO.cip13)
-        vm.set('ean13', expectedDTO.ean13)
-        await vm.set('miniature', newMiniature)
-        await vm.set('newImages', newImages)
-        vm.toggleCategory('abc123')
-        vm.set('laboratory', expectedDTO.laboratory!.uuid)
-        vm.set('priceWithoutTax', '12')
-        vm.set('percentTaxRate', '5')
-        vm.set('locations', expectedDTO.locations)
-        vm.set('availableStock', '21')
-        vm.set('description', expectedDTO.description)
-        vm.set('instructionsForUse', expectedDTO.instructionsForUse)
-        vm.set('composition', expectedDTO.composition)
-        vm.set('weight', '1.2')
-        vm.set('maxQuantityForOrder', '12')
-        vm.set('arePromotionsAllowed', false)
-        expect(vm.getDto()).toStrictEqual(expectedDTO)
-      })
-    })
-    describe('For a dto with removed images', () => {
-      it('should prepare the dto', async () => {
-        const newImages = [
-          new File(['data1'], 'File 1', { type: 'image/png' }),
-          new File(['data2'], 'File 2', { type: 'image/jpeg' }),
-          new File(['data3'], 'File 3', { type: 'image/gif' })
-        ]
-        const newMiniature = new File(['data1'], 'MINIATURE', {
-          type: 'image/png'
-        })
-        const expectedDTO: EditProductDTO = {
-          name: 'test',
-          status: ProductStatus.Inactive,
-          cip7: '1234567',
-          cip13: '1234567890123',
-          ean13: '1234567890123',
-          categoryUuids: [...product.categories.map((c) => c.uuid), 'abc123'],
-          laboratory: avene,
-          miniature: newMiniature,
-          removedImages: [dolodent.images[0]],
-          newImages,
-          priceWithoutTax: 1200,
-          percentTaxRate: 5,
-          locations: product.locations,
-          availableStock: 21,
-          description: '<p>description</p>',
-          instructionsForUse: '<p>instructionsForUse</p>',
-          composition: '<p>composition</p>',
-          weight: 1200,
-          maxQuantityForOrder: 12,
-          flags: { arePromotionsAllowed: true }
-        }
-        vm.toggleIsActive()
-        vm.set('name', expectedDTO.name)
-        vm.set('cip7', expectedDTO.cip7)
-        vm.set('cip13', expectedDTO.cip13)
-        vm.set('ean13', expectedDTO.ean13)
-        await vm.set('miniature', newMiniature)
-        await vm.set('newImages', newImages)
-        vm.toggleCategory('abc123')
-        vm.set('laboratory', expectedDTO.laboratory!.uuid)
-        vm.set('priceWithoutTax', '12')
-        vm.set('percentTaxRate', '5')
-        vm.set('locations', expectedDTO.locations)
-        vm.set('availableStock', '21')
-        vm.set('description', expectedDTO.description)
-        vm.set('instructionsForUse', expectedDTO.instructionsForUse)
-        vm.set('composition', expectedDTO.composition)
-        vm.set('weight', '1.2')
-        vm.set('maxQuantityForOrder', '12')
-        vm.removeImage(dolodent.images[0])
-        expect(vm.getDto()).toStrictEqual(expectedDTO)
+    describe('For a dto after reordering images', () => {
+      it('should return images in new order', () => {
+        productStore.current = { product: hemoclar }
+        const uuidGenerator = new SequentialUuidGenerator('dto-img')
+        const initializer = new ExistingProductFormInitializer(
+          key,
+          uuidGenerator
+        )
+        const getter = new ProductFormFieldsReader(key)
+        const setter = new ProductFormFieldsWriter(key, getter)
+        vm = new ProductFormEditVM(initializer, getter, setter, uuidGenerator)
+
+        vm.reorderImages(2, 0)
+
+        const dto = vm.getDto()
+        expect(dto.orderedImages?.[0].id).toBe('dto-img-2')
+        expect(dto.orderedImages?.[1].id).toBe('dto-img-0')
+        expect(dto.orderedImages?.[2].id).toBe('dto-img-1')
       })
     })
   })
@@ -614,6 +496,200 @@ describe('Product form edit VM', () => {
     it('should be aware when not loading', () => {
       productStore.isLoading = false
       expect(vm.isLoading()).toBe(false)
+    })
+  })
+
+  describe('ProductImage operations', () => {
+    const uuidGenerator = new SequentialUuidGenerator('img')
+
+    beforeEach(() => {
+      uuidGenerator.reset()
+      productStore.current = { product: hemoclar }
+      locationStore.items = [zoneGeo]
+      categoryStore.items = [baby]
+      laboratoryStore.items = [sanofiAventis]
+      vm = productFormEditVM(key)
+    })
+
+    describe('removeImageById', () => {
+      it('should remove image by ID and recalculate order', () => {
+        const productImages = formStore.get(key)
+          .productImages as Array<ProductImage>
+        const imageIdToRemove = productImages[1].id
+
+        vm.removeImageById(imageIdToRemove)
+
+        const updatedImages = formStore.get(key)
+          .productImages as Array<ProductImage>
+        expect(updatedImages.length).toBe(2)
+      })
+
+      it('should preserve remaining images with correct order after removal', () => {
+        const productImages = formStore.get(key)
+          .productImages as Array<ProductImage>
+        const imageIdToRemove = productImages[1].id
+
+        vm.removeImageById(imageIdToRemove)
+
+        const updatedImages = formStore.get(key)
+          .productImages as Array<ProductImage>
+        expect(updatedImages[0].order).toBe(0)
+      })
+
+      it('should preserve remaining images with updated order for second element', () => {
+        const productImages = formStore.get(key)
+          .productImages as Array<ProductImage>
+        const imageIdToRemove = productImages[1].id
+
+        vm.removeImageById(imageIdToRemove)
+
+        const updatedImages = formStore.get(key)
+          .productImages as Array<ProductImage>
+        expect(updatedImages[1].order).toBe(1)
+      })
+    })
+
+    describe('reorderImages', () => {
+      it('should move image from first position to last', () => {
+        vm.reorderImages(0, 2)
+
+        const updatedImages = formStore.get(key)
+          .productImages as Array<ProductImage>
+        expect(updatedImages[2].source).toStrictEqual({
+          type: 'existing',
+          url: 'https://fakeimg.pl/300/'
+        })
+      })
+
+      it('should update order values after reordering', () => {
+        vm.reorderImages(0, 2)
+
+        const updatedImages = formStore.get(key)
+          .productImages as Array<ProductImage>
+        expect(updatedImages.map((img) => img.order)).toStrictEqual([0, 1, 2])
+      })
+    })
+
+    describe('addImages', () => {
+      it('should add new images with correct order after existing ones', async () => {
+        const newFiles = [
+          new File(['data1'], 'new1.png', { type: 'image/png' }),
+          new File(['data2'], 'new2.png', { type: 'image/png' })
+        ]
+
+        await vm.addImages(newFiles)
+
+        const updatedImages = formStore.get(key)
+          .productImages as Array<ProductImage>
+        expect(updatedImages.length).toBe(5)
+      })
+
+      it('should assign new images with type new', async () => {
+        const newFiles = [
+          new File(['data1'], 'new1.png', { type: 'image/png' })
+        ]
+
+        await vm.addImages(newFiles)
+
+        const updatedImages = formStore.get(key)
+          .productImages as Array<ProductImage>
+        expect(updatedImages[3].source.type).toBe('new')
+      })
+
+      it('should assign correct order to newly added images', async () => {
+        const newFiles = [
+          new File(['data1'], 'new1.png', { type: 'image/png' }),
+          new File(['data2'], 'new2.png', { type: 'image/png' })
+        ]
+
+        await vm.addImages(newFiles)
+
+        const updatedImages = formStore.get(key)
+          .productImages as Array<ProductImage>
+        expect(updatedImages[3].order).toBe(3)
+      })
+    })
+  })
+
+  describe('Full scenario: A,B,C → remove B → add D → reorder D,C,A', () => {
+    const scenarioKey = 'full-scenario-key'
+    const uuidGenerator = new SequentialUuidGenerator('scenario')
+
+    beforeEach(() => {
+      uuidGenerator.reset()
+      productStore.current = { product: hemoclar }
+      locationStore.items = [zoneGeo]
+      categoryStore.items = [baby]
+      laboratoryStore.items = [sanofiAventis]
+    })
+
+    it('should produce final order D,C,A after remove B, add D, reorder', async () => {
+      const initializer = new ExistingProductFormInitializer(
+        scenarioKey,
+        uuidGenerator
+      )
+      const getter = new ProductFormFieldsReader(scenarioKey)
+      const setter = new ProductFormFieldsWriter(scenarioKey, getter)
+      vm = new ProductFormEditVM(initializer, getter, setter, uuidGenerator)
+
+      vm.removeImageById('scenario-1')
+
+      const fileD = new File(['dataD'], 'imageD.png', { type: 'image/png' })
+      await vm.addImages([fileD])
+
+      vm.reorderImages(2, 0)
+      vm.reorderImages(2, 1)
+
+      const dto = vm.getDto()
+      expect(dto.orderedImages?.map((img) => img.id)).toStrictEqual([
+        'scenario-3',
+        'scenario-2',
+        'scenario-0'
+      ])
+    })
+
+    it('should have correct image sources after full scenario', async () => {
+      const initializer = new ExistingProductFormInitializer(
+        scenarioKey,
+        uuidGenerator
+      )
+      const getter = new ProductFormFieldsReader(scenarioKey)
+      const setter = new ProductFormFieldsWriter(scenarioKey, getter)
+      vm = new ProductFormEditVM(initializer, getter, setter, uuidGenerator)
+
+      vm.removeImageById('scenario-1')
+
+      const fileD = new File(['dataD'], 'imageD.png', { type: 'image/png' })
+      await vm.addImages([fileD])
+
+      vm.reorderImages(2, 0)
+      vm.reorderImages(2, 1)
+
+      const dto = vm.getDto()
+      expect(dto.orderedImages?.[0].source.type).toBe('new')
+    })
+
+    it('should maintain correct order values after full scenario', async () => {
+      const initializer = new ExistingProductFormInitializer(
+        scenarioKey,
+        uuidGenerator
+      )
+      const getter = new ProductFormFieldsReader(scenarioKey)
+      const setter = new ProductFormFieldsWriter(scenarioKey, getter)
+      vm = new ProductFormEditVM(initializer, getter, setter, uuidGenerator)
+
+      vm.removeImageById('scenario-1')
+
+      const fileD = new File(['dataD'], 'imageD.png', { type: 'image/png' })
+      await vm.addImages([fileD])
+
+      vm.reorderImages(2, 0)
+      vm.reorderImages(2, 1)
+
+      const dto = vm.getDto()
+      expect(dto.orderedImages?.map((img) => img.order)).toStrictEqual([
+        0, 1, 2
+      ])
     })
   })
 })
