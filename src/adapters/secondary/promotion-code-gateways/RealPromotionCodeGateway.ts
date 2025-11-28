@@ -3,6 +3,7 @@ import {
   CreatePromotionCodeDTO,
   PromotionCode
 } from '@core/entities/promotionCode'
+import { PromotionCodeStats } from '@core/entities/promotionCodeStats'
 import { PromotionCodeGateway } from '@core/gateways/promotionCodeGateway'
 import { EditPromotionCodeDTO } from '@core/usecases/promotion-codes/promotion-code-edition/editPromotionCode'
 import { RealGateway } from '../order-gateways/RealOrderGateway'
@@ -25,6 +26,23 @@ export class RealPromotionCodeGateway
       `${this.baseUrl}/promotion-codes/${code}`
     )
     return Promise.resolve(res.data)
+  }
+
+  async getStats(code: string): Promise<PromotionCodeStats> {
+    const res = await axiosWithBearer.get(
+      `${this.baseUrl}/promotion-codes/${code}/stats`
+    )
+    return Promise.resolve({
+      usageCount: res.data.totalUsage,
+      totalSales: res.data.totalSales,
+      totalDiscountGiven: res.data.totalReduction,
+      emailUsages: res.data.userEmails.map(
+        (user: { email: string; usageCount: number }) => ({
+          email: user.email,
+          usageCount: user.usageCount
+        })
+      )
+    })
   }
 
   async create(dto: CreatePromotionCodeDTO): Promise<PromotionCode> {

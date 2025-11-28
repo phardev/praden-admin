@@ -124,15 +124,17 @@ export class PromotionFormGetVM extends PromotionFormVM {
   override getProducts(): Field<Array<PromotionProductItemVM>> {
     const promotionStore = usePromotionStore()
     const promotion = promotionStore.current!
-    const value = promotion.products.map((product: Product) => {
-      return {
-        uuid: product.uuid,
-        name: product.name,
-        reference: product.ean13,
-        categories: product.categories.map((c) => c.name),
-        laboratory: product.laboratory ? product.laboratory.name : ''
-      }
-    })
+    const value = promotion.products
+      .map((product: Product) => {
+        return {
+          uuid: product.uuid,
+          name: product.name,
+          reference: product.ean13,
+          categories: product.categories.map((c) => c.name),
+          laboratory: product.laboratory ? product.laboratory.name : ''
+        }
+      })
+      .sort((a, b) => a.name.localeCompare(b.name))
     return {
       value,
       canEdit: false

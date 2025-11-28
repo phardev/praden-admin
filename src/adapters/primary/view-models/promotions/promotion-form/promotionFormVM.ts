@@ -54,15 +54,17 @@ export abstract class PromotionFormVM {
 
   getProducts(): Field<Array<PromotionProductItemVM>> {
     const addedProducts = this.fieldsReader.get('products')
-    const value = addedProducts.map((product: Product) => {
-      return {
-        uuid: product.uuid,
-        name: product.name,
-        reference: product.ean13,
-        categories: product.categories.map((c) => c.name),
-        laboratory: product.laboratory ? product.laboratory.name : ''
-      }
-    })
+    const value = addedProducts
+      .map((product: Product) => {
+        return {
+          uuid: product.uuid,
+          name: product.name,
+          reference: product.ean13,
+          categories: product.categories.map((c) => c.name),
+          laboratory: product.laboratory ? product.laboratory.name : ''
+        }
+      })
+      .sort((a, b) => a.name.localeCompare(b.name))
     return {
       value,
       canEdit: true

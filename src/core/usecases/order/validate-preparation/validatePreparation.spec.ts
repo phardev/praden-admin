@@ -1,12 +1,9 @@
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
-import { InMemoryInvoiceGateway } from '@adapters/secondary/invoice-gateways/InMemoryInvoiceGateway'
 import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
-import { Invoice } from '@core/entities/invoice'
 import { Order, OrderLineStatus } from '@core/entities/order'
 import { NoPreparationSelectedError } from '@core/errors/NoPreparationSelectedError'
 import { Timestamp } from '@core/types/types'
 import { validatePreparation } from '@core/usecases/order/validate-preparation/validatePreparation'
-import { useInvoiceStore } from '@store/invoiceStore'
 import { usePreparationStore } from '@store/preparationStore'
 import {
   orderToPrepare1,
@@ -19,18 +16,14 @@ import { createPinia, setActivePinia } from 'pinia'
 
 describe('Validate preparation', () => {
   let preparationStore: any
-  let invoiceStore: any
   let orderGateway: InMemoryOrderGateway
-  let invoiceGateway: InMemoryInvoiceGateway
   const dateProvider = new FakeDateProvider()
   let now: Timestamp
 
   beforeEach(() => {
     setActivePinia(createPinia())
     preparationStore = usePreparationStore()
-    invoiceStore = useInvoiceStore()
     orderGateway = new InMemoryOrderGateway(dateProvider)
-    invoiceGateway = new InMemoryInvoiceGateway(dateProvider)
   })
 
   describe('The preparation is fully prepared', () => {
@@ -53,29 +46,6 @@ describe('Validate preparation', () => {
     })
     it('should remove it from preparation store', async () => {
       expectPreparationStoreToEqual()
-    })
-    describe('Invoice', () => {
-      let expectedInvoiceNumber: string
-      let expectedInvoice: Invoice
-      beforeEach(() => {
-        expectedInvoiceNumber = order.invoiceNumber!
-        const expectedOrder: Order = JSON.parse(JSON.stringify(order))
-        expectedOrder.lines[0].status = OrderLineStatus.Prepared
-        expectedOrder.lines[0].updatedAt = now
-        expectedInvoice = {
-          id: expectedInvoiceNumber,
-          data: expectedOrder,
-          createdAt: now
-        }
-      })
-      it('should create the invoice', async () => {
-        expect(await invoiceGateway.get(expectedInvoiceNumber)).toStrictEqual(
-          expectedInvoice
-        )
-      })
-      it('should save the invoice in the store', async () => {
-        expect(invoiceStore.current).toStrictEqual(expectedInvoice)
-      })
     })
   })
   describe('Another preparation is fully prepared', () => {
@@ -102,29 +72,6 @@ describe('Validate preparation', () => {
     })
     it('should remove it from preparation store', async () => {
       expectPreparationStoreToEqual(orderToPrepare1)
-    })
-    describe('Invoice', () => {
-      let expectedInvoiceNumber: string
-      let expectedInvoice: Invoice
-      beforeEach(() => {
-        expectedInvoiceNumber = order.invoiceNumber!
-        const expectedOrder: Order = JSON.parse(JSON.stringify(order))
-        expectedOrder.lines[0].status = OrderLineStatus.Prepared
-        expectedOrder.lines[1].status = OrderLineStatus.Prepared
-        expectedInvoice = {
-          id: expectedInvoiceNumber,
-          data: expectedOrder,
-          createdAt: now
-        }
-      })
-      it('should create the invoice', async () => {
-        expect(await invoiceGateway.get(expectedInvoiceNumber)).toStrictEqual(
-          expectedInvoice
-        )
-      })
-      it('should save the invoice in store', async () => {
-        expect(invoiceStore.current).toStrictEqual(expectedInvoice)
-      })
     })
   })
 
@@ -162,26 +109,6 @@ describe('Validate preparation', () => {
       })
       it('should remove it from preparation store', async () => {
         expectPreparationStoreToEqual()
-      })
-      describe('Invoice', () => {
-        let expectedInvoiceNumber: string
-        let expectedInvoice: Invoice
-        beforeEach(() => {
-          expectedInvoiceNumber = order.invoiceNumber!
-          expectedInvoice = {
-            id: expectedInvoiceNumber,
-            data: expectedOrder,
-            createdAt: now
-          }
-        })
-        it('should create the invoice', async () => {
-          expect(await invoiceGateway.get(expectedInvoiceNumber)).toStrictEqual(
-            expectedInvoice
-          )
-        })
-        it('should save the invoice in store', async () => {
-          expect(invoiceStore.current).toStrictEqual(expectedInvoice)
-        })
       })
     })
     describe('Multiple lines cannot be fully prepared', () => {
@@ -269,7 +196,7 @@ describe('Validate preparation', () => {
   }
 
   const whenValidatePreparation = async () => {
-    await validatePreparation(orderGateway, invoiceGateway)
+    await validatePreparation(orderGateway)
   }
 
   const expectPreparationStoreToEqual = (...orders: Array<Order>) => {

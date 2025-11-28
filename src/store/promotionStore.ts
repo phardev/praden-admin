@@ -1,4 +1,5 @@
 import { Promotion } from '@core/entities/promotion'
+import { PromotionStats } from '@core/entities/promotionStats'
 import { PromotionListItem } from '@core/usecases/promotions/promotions-listing/promotionListItem'
 import { defineStore } from 'pinia'
 
@@ -24,6 +25,7 @@ export const usePromotionStore = defineStore('PromotionStore', {
     return {
       items: [] as Array<PromotionListItem>,
       current: undefined as Promotion | undefined,
+      stats: null as PromotionStats | null,
       isLoading: false
     }
   },
@@ -50,6 +52,9 @@ export const usePromotionStore = defineStore('PromotionStore', {
     },
     setCurrent(promotion: Promotion) {
       this.current = JSON.parse(JSON.stringify(promotion))
+    },
+    setStats(stats: PromotionStats) {
+      this.stats = stats
     },
     startLoading() {
       this.isLoading = true

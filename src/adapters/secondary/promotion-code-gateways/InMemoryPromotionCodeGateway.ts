@@ -6,10 +6,12 @@ import {
   CreatePromotionCodeDTO,
   PromotionCode
 } from '../../../core/entities/promotionCode'
+import { PromotionCodeStats } from '../../../core/entities/promotionCodeStats'
 import { PromotionCodeGateway } from '../../../core/gateways/promotionCodeGateway'
 
 export class InMemoryPromotionCodeGateway implements PromotionCodeGateway {
   private promotionCodes: Array<PromotionCode> = []
+  private stats: Map<string, PromotionCodeStats> = new Map()
   private readonly uuidGenerator: UuidGenerator
 
   constructor(uuidGenerator: UuidGenerator) {
@@ -62,7 +64,19 @@ export class InMemoryPromotionCodeGateway implements PromotionCodeGateway {
     }
   }
 
+  async getStats(code: string): Promise<PromotionCodeStats> {
+    const stats = this.stats.get(code)
+    if (!stats) {
+      throw new PromotionCodeDoesNotExistsError(code)
+    }
+    return Promise.resolve(JSON.parse(JSON.stringify(stats)))
+  }
+
   feedWith(...promotionCodes: Array<PromotionCode>) {
     this.promotionCodes = promotionCodes
+  }
+
+  feedStatsFor(code: string, stats: PromotionCodeStats) {
+    this.stats.set(code, stats)
   }
 }

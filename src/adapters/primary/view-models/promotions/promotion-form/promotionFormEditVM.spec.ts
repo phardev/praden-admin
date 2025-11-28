@@ -227,7 +227,7 @@ describe('Promotion form edit VM', () => {
       })
       it('should give the right products VM', () => {
         const expectedField: Field<Array<PromotionProductItemVM>> = {
-          value: [ultraLevureVM, anaca3VM, dolodentVM],
+          value: [anaca3VM, dolodentVM, ultraLevureVM],
           canEdit: true
         }
         expect(vm.getProducts()).toStrictEqual(expectedField)
@@ -250,7 +250,7 @@ describe('Promotion form edit VM', () => {
       })
       it('should give the right products VM', () => {
         const expectedField: Field<Array<PromotionProductItemVM>> = {
-          value: [dolodentVM, ultraLevureVM, anaca3VM],
+          value: [anaca3VM, dolodentVM, ultraLevureVM],
           canEdit: true
         }
         expect(vm.getProducts()).toStrictEqual(expectedField)

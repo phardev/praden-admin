@@ -6,6 +6,7 @@ import { InvoiceGateway } from '@core/gateways/invoiceGateway'
 export class InMemoryInvoiceGateway implements InvoiceGateway {
   private invoices: Array<Invoice> = []
   private dateProvider: DateProvider
+  private pdfBlobs: Map<string, Blob> = new Map()
 
   constructor(dateProvider: DateProvider) {
     this.dateProvider = dateProvider
@@ -31,7 +32,23 @@ export class InMemoryInvoiceGateway implements InvoiceGateway {
     return Promise.resolve(invoice)
   }
 
+  downloadPdf(invoiceNumber: string): Promise<Blob> {
+    const blob = this.pdfBlobs.get(invoiceNumber)
+    if (blob) {
+      return Promise.resolve(blob)
+    }
+    return Promise.resolve(
+      new Blob([`Mock PDF content for invoice ${invoiceNumber}`], {
+        type: 'application/pdf'
+      })
+    )
+  }
+
   feedWith(...invoices: Array<Invoice>) {
     this.invoices = invoices
+  }
+
+  feedPdfBlobFor(invoiceNumber: string, blob: Blob) {
+    this.pdfBlobs.set(invoiceNumber, blob)
   }
 }

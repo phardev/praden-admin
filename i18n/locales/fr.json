@@ -310,6 +310,9 @@
       }
     }
   },
+  "newsletter": {
+    "exportButton": "Exporter la newsletter"
+  },
   "permissions": {
     "permission": "Permission",
     "noData": "Aucune donnée disponible",
@@ -340,6 +343,42 @@
       "carriers": "Transporteurs",
       "roles": "Rôles et permissions",
       "shop-management": "Gestion boutique"
+    }
+  },
+  "promotionCode": {
+    "viewTitle": "Voir code promotion",
+    "editButton": "Editer code promotion",
+    "stats": {
+      "title": "Statistiques",
+      "usageCount": "Nombre d'utilisations",
+      "totalSales": "Ventes totales",
+      "totalDiscountGiven": "Montant de réduction",
+      "emailUsages": "Utilisations",
+      "salesDistribution": "Répartition des ventes",
+      "netSales": "Ventes nettes",
+      "discount": "Réductions",
+      "tooltipLabel": "Montant",
+      "usageSingular": "utilisation",
+      "usagePlural": "utilisations"
+    }
+  },
+  "promotion": {
+    "stats": {
+      "title": "Statistiques de la promotion",
+      "productName": "Produit",
+      "reference": "Référence",
+      "usageCount": "Nombre d'utilisations",
+      "totalAmountTaxIncluded": "Montant total TTC",
+      "totalReductionTaxIncluded": "Réduction totale TTC",
+      "exportPdf": "Exporter en PDF",
+      "noData": "Aucune donnée disponible",
+      "summary": "Résumé",
+      "totalUsage": "Total des utilisations",
+      "totalSales": "Ventes totales",
+      "totalDiscount": "Réduction totale accordée",
+      "netSales": "Ventes nettes",
+      "discount": "Réductions",
+      "tooltipLabel": "Montant"
     }
   },
   "systemResources": {

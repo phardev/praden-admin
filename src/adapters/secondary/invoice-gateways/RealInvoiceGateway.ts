@@ -33,6 +33,14 @@ export class RealInvoiceGateway implements InvoiceGateway {
     return this.convertToInvoice(res.data)
   }
 
+  async downloadPdf(invoiceNumber: string): Promise<Blob> {
+    const res = await axiosWithBearer.get(
+      `${this.baseUrl}/invoices/${encodeURIComponent(invoiceNumber)}/pdf`,
+      { responseType: 'blob' }
+    )
+    return res.data
+  }
+
   private convertToInvoice(data: any): Invoice {
     return {
       id: data.invoiceNumber,
