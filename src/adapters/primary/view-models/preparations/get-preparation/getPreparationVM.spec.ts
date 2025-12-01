@@ -14,6 +14,8 @@ import {
 } from '@core/usecases/order/scan-product-to-preparation/scanProductToPreparation'
 import { usePreparationStore } from '@store/preparationStore'
 import {
+  orderCanceled,
+  orderDelivered1,
   orderInPreparation1,
   orderSaved1,
   orderToCancel,
@@ -80,7 +82,8 @@ describe('Get preparation VM', () => {
           canCancel: false,
           canAskHowToFinish: false,
           error: undefined,
-          isLoading: false
+          isLoading: false,
+          shouldRedirectToOrder: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -109,7 +112,8 @@ describe('Get preparation VM', () => {
           canCancel: false,
           canAskHowToFinish: false,
           error: undefined,
-          isLoading: false
+          isLoading: false,
+          shouldRedirectToOrder: false
         }
         expect(getPreparationVM()).toStrictEqual(expectedVM)
       })
@@ -353,7 +357,8 @@ describe('Get preparation VM', () => {
         canValidate: false,
         canCancel: false,
         canAskHowToFinish: false,
-        isLoading: false
+        isLoading: false,
+        shouldRedirectToOrder: false
       }
       expect(getPreparationVM()).toStrictEqual(emptyVM)
     })
@@ -385,7 +390,8 @@ describe('Get preparation VM', () => {
         canCancel: false,
         canAskHowToFinish: false,
         error: undefined,
-        isLoading: false
+        isLoading: false,
+        shouldRedirectToOrder: false
       }
       expect(getPreparationVM()).toStrictEqual(expectedVM)
     })
@@ -397,6 +403,32 @@ describe('Get preparation VM', () => {
       preparationStore.isLoading = true
       const expectedVM: Partial<GetPreparationsVM> = {
         isLoading: true
+      }
+      expectVMToMatch(expectedVM)
+    })
+  })
+
+  describe('Redirect to order', () => {
+    it('should not redirect when preparation is in progress', () => {
+      givenCurrentPreparationIs(orderToPrepare1)
+      const expectedVM: Partial<GetPreparationVM> = {
+        shouldRedirectToOrder: false
+      }
+      expectVMToMatch(expectedVM)
+    })
+
+    it('should redirect when preparation is prepared', () => {
+      givenCurrentPreparationIs(orderDelivered1)
+      const expectedVM: Partial<GetPreparationVM> = {
+        shouldRedirectToOrder: true
+      }
+      expectVMToMatch(expectedVM)
+    })
+
+    it('should redirect when preparation is canceled', () => {
+      givenCurrentPreparationIs(orderCanceled)
+      const expectedVM: Partial<GetPreparationVM> = {
+        shouldRedirectToOrder: true
       }
       expectVMToMatch(expectedVM)
     })

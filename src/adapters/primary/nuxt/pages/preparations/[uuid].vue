@@ -265,6 +265,16 @@ watch(
   },
   { immediate: true }
 )
+
+watch(
+  () => preparationVM.value.shouldRedirectToOrder,
+  (shouldRedirect) => {
+    if (shouldRedirect) {
+      router.push(`/orders/${preparationUuid}`)
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style lang="scss" scoped>

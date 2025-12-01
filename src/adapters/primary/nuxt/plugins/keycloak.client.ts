@@ -18,9 +18,7 @@ export default defineNuxtPlugin((nuxtApp: NuxtApp) => {
   const loadUserProfile = async () => {
     try {
       await getUserProfile(userProfileGateway)
-    } catch {
-      // Error already handled in getUserProfile
-    }
+    } catch {}
   }
 
   const keycloakReady = new Promise<void>((resolve, reject) => {
@@ -35,17 +33,14 @@ export default defineNuxtPlugin((nuxtApp: NuxtApp) => {
               clearInterval(intervalId)
             })
           }, 60000)
+
+          await loadUserProfile()
         } else {
-          keycloak.login()
+          keycloak.login({ redirectUri: window.location.href })
+          return
         }
 
         resolve()
-
-        if (authenticated) {
-          nextTick(() => {
-            loadUserProfile()
-          })
-        }
       })
       .catch((err) => {
         reject(err)
