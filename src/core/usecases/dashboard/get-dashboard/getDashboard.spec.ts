@@ -247,6 +247,14 @@ describe('GetDashboard', () => {
     })
   })
 
+  it('should pass timezone parameter to gateway', async () => {
+    params = {
+      timezone: 'Europe/Paris'
+    }
+    await whenGetDashboardData()
+    expect(dashboardGateway.receivedTimezone).toStrictEqual('Europe/Paris')
+  })
+
   const whenGetDashboardData = async () => {
     await getDashboard(params, dashboardGateway)
   }
