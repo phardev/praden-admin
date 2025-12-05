@@ -15,7 +15,12 @@ export const useDashboardData = () => {
   ) => {
     isLoading.value = true
     try {
-      await getDashboard(params, useDashboardGateway())
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+      const paramsWithTimezone = {
+        ...params,
+        timezone
+      }
+      await getDashboard(paramsWithTimezone, useDashboardGateway())
     } finally {
       isLoading.value = false
     }

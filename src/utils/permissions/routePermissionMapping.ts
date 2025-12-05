@@ -31,6 +31,9 @@ export const ROUTE_PERMISSION_MAP: Record<string, PermissionResource> = {
   '/support': PermissionResource.SUPPORT,
   '/support/ticket-predefined-answers': PermissionResource.SUPPORT,
   '/deliveries': PermissionResource.DELIVERIES,
+  '/delivery-price-rules': PermissionResource.DELIVERY_PRICE_RULES,
+  '/delivery-price-rules/new': PermissionResource.DELIVERY_PRICE_RULES,
+  '/delivery-price-rules/edit': PermissionResource.DELIVERY_PRICE_RULES,
   '/preparations': PermissionResource.PREPARATIONS,
   '/waitingPreparations': PermissionResource.PREPARATIONS,
   '/orders': PermissionResource.ORDERS,
@@ -120,7 +123,8 @@ export const getPermissionKey = (permission: PermissionResource): string => {
     [PermissionResource.BANNERS]: 'canAccessBanners',
     [PermissionResource.STAFF]: 'canAccessStaff',
     [PermissionResource.RESEARCH]: 'canAccessResearch',
-    [PermissionResource.SHOP_MANAGEMENT]: 'canAccessShopManagement'
+    [PermissionResource.SHOP_MANAGEMENT]: 'canAccessShopManagement',
+    [PermissionResource.DELIVERY_PRICE_RULES]: 'canAccessDeliveryPriceRules'
   }
 
   return permissionMap[permission]

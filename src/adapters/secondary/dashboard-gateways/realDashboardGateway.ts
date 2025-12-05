@@ -38,6 +38,10 @@ export class RealDashboardGateway
       queryParams.append('promotionOnly', params.promotionOnly.toString())
     }
 
+    if (params.timezone) {
+      queryParams.append('timezone', params.timezone)
+    }
+
     const url = `${this.baseUrl}/dashboard${
       queryParams.toString() ? '?' + queryParams.toString() : ''
     }`

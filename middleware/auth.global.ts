@@ -17,9 +17,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     if ($keycloakReady) {
       try {
         await $keycloakReady
-        await new Promise((resolve) => setTimeout(resolve, 100))
-      } catch (error) {
-        console.error('Authentication failed:', error)
+      } catch {
         return navigateTo('/')
       }
     }

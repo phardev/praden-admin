@@ -1,6 +1,7 @@
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { Delivery } from '@core/entities/delivery'
 import {
+  getOrderStatus,
   Message,
   MessageContent,
   Order,
@@ -43,6 +44,7 @@ export interface GetPreparationVM {
   canAskHowToFinish: boolean
   error?: PreparationError
   isLoading: boolean
+  shouldRedirectToOrder: boolean
 }
 
 const canValidate = (
@@ -116,6 +118,13 @@ const canAskHowToFinish = (
   return messages.length === 0
 }
 
+const shouldRedirectToOrder = (preparation: Order): boolean => {
+  const status = getOrderStatus(preparation)
+  return (
+    status === OrderLineStatus.Prepared || status === OrderLineStatus.Canceled
+  )
+}
+
 export const getPreparationVM = (): GetPreparationVM => {
   const preparationStore = usePreparationStore()
   const preparation = preparationStore.current
@@ -129,7 +138,8 @@ export const getPreparationVM = (): GetPreparationVM => {
       canValidate: false,
       canCancel: false,
       canAskHowToFinish: false,
-      isLoading: false
+      isLoading: false,
+      shouldRedirectToOrder: false
     }
   }
   const headers: Array<Header> = [
@@ -176,7 +186,8 @@ export const getPreparationVM = (): GetPreparationVM => {
     canCancel: canCancel(preparation.messages),
     canAskHowToFinish: canAskHowToFinish(lines, preparation),
     error,
-    isLoading: preparationStore.isLoading
+    isLoading: preparationStore.isLoading,
+    shouldRedirectToOrder: shouldRedirectToOrder(preparation)
   }
   if (preparation.customerMessage) {
     res.customerMessage = preparation.customerMessage

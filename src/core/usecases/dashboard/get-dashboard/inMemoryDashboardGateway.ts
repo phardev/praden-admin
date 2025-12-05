@@ -6,6 +6,7 @@ import {
 
 export class InMemoryDashboardGateway implements DashboardGateway {
   private mockData: Dashboard
+  public receivedTimezone?: string
 
   constructor() {
     this.mockData = {
@@ -29,6 +30,7 @@ export class InMemoryDashboardGateway implements DashboardGateway {
   }
 
   async getDashboardData(params: DashboardParams): Promise<Dashboard> {
+    this.receivedTimezone = params.timezone
     let filteredTopProducts = this.mockData.topProducts
 
     if (params.laboratoryUuid) {

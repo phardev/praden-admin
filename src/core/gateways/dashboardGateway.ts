@@ -7,6 +7,7 @@ export interface DashboardParams {
   laboratoryUuid?: string
   categoryUuid?: string
   promotionOnly?: boolean
+  timezone?: string
 }
 
 export interface DashboardGateway {
