@@ -86,7 +86,7 @@ describe('deliveryPriceRuleFormEditVM', () => {
       price: 590,
       minOrderValue: 0,
       maxWeight: 30000,
-      priority: 10,
+      priority: 1,
       startDate: null,
       endDate: null,
       isActive: true

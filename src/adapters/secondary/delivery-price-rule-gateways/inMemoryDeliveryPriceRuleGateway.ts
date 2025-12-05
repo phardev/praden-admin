@@ -29,7 +29,7 @@ export class InMemoryDeliveryPriceRuleGateway
   }
 
   async list(): Promise<Array<DeliveryPriceRule>> {
-    const sorted = [...this.rules].sort((a, b) => a.priority - b.priority)
+    const sorted = [...this.rules].sort((a, b) => b.priority - a.priority)
     return Promise.resolve(JSON.parse(JSON.stringify(sorted)))
   }
 
@@ -38,7 +38,7 @@ export class InMemoryDeliveryPriceRuleGateway
   ): Promise<Array<DeliveryPriceRule>> {
     const filtered = this.rules
       .filter((rule) => rule.deliveryMethodUuid === deliveryMethodUuid)
-      .sort((a, b) => a.priority - b.priority)
+      .sort((a, b) => b.priority - a.priority)
     return Promise.resolve(JSON.parse(JSON.stringify(filtered)))
   }
 

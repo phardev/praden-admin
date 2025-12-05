@@ -60,7 +60,7 @@ export const getDeliveryPriceRuleListVM =
     const deliveryMethodStore = useDeliveryMethodStore()
 
     const rules = [...deliveryPriceRuleStore.items].sort(
-      (a, b) => a.priority - b.priority
+      (a, b) => b.priority - a.priority
     )
 
     return rules.map((rule) => {

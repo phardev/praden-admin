@@ -85,13 +85,13 @@ describe('deliveryPriceRuleListVM', () => {
     expect(result[0].deliveryMethodName).toStrictEqual('Colissimo')
   })
 
-  it('should return rules sorted by priority', () => {
+  it('should return rules sorted by priority descending', () => {
     const store = useDeliveryPriceRuleStore()
     store.list([standardShipping, freeShippingOver39, christmasFreeShipping])
 
     const result = getDeliveryPriceRuleListVM()
 
-    expect(result.map((r) => r.priority)).toStrictEqual([0, 1, 10])
+    expect(result.map((r) => r.priority)).toStrictEqual([100, 50, 1])
   })
 
   it('should map all fields correctly', () => {
