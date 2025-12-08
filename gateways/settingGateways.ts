@@ -4,6 +4,6 @@ import { SettingGateway } from '@core/usecases/settings/get-settings/settingGate
 
 export const useSettingsGateway = (): SettingGateway => {
   const gateway = new InMemorySettingGateway()
-  gateway.feedWith({ pickingSortType: PickingSortType.Name })
+  gateway.feedWith({ pickingSortType: PickingSortType.Location })
   return gateway
 }
