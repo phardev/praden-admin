@@ -10,7 +10,6 @@ import { usePreparationStore } from '@store/preparationStore'
 import { useSettingStore } from '@store/settingStore'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import { addTaxToPrice } from '@utils/price'
-import { zoneGeo } from '@utils/testData/locations'
 
 export interface GlobalPreparationLineVM {
   reference: string
@@ -51,10 +50,17 @@ export interface StartPreparationsVM {
   detail: Array<PreparationLineDetailVM>
 }
 
+const getZoneGeoUuid = (): string => {
+  const locationStore = useLocationStore()
+  const sortedLocations = [...locationStore.items].sort(sortLocationByOrder)
+  return sortedLocations[0]?.uuid ?? ''
+}
+
 const sortByLocation = (a: any, b: any): number => {
-  if (!a.locations[zoneGeo.uuid]) return 1
-  if (!b.locations[zoneGeo.uuid]) return -1
-  return a.locations[zoneGeo.uuid] < b.locations[zoneGeo.uuid] ? -1 : 1
+  const zoneGeoUuid = getZoneGeoUuid()
+  if (!a.locations[zoneGeoUuid]) return 1
+  if (!b.locations[zoneGeoUuid]) return -1
+  return a.locations[zoneGeoUuid] < b.locations[zoneGeoUuid] ? -1 : 1
 }
 
 const sortByProductName = (a: any, b: any): number => {

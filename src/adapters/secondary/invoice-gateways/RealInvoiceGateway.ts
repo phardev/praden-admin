@@ -7,7 +7,7 @@ import {
   PaymentStatus
 } from '@core/entities/order'
 import { InvoiceGateway } from '@core/gateways/invoiceGateway'
-import { zoneGeo } from '@utils/testData/locations'
+import { useLocationStore } from '@store/locationStore'
 
 export class RealInvoiceGateway implements InvoiceGateway {
   private readonly baseUrl: string
@@ -49,7 +49,16 @@ export class RealInvoiceGateway implements InvoiceGateway {
     }
   }
 
+  private getZoneGeoUuid(): string {
+    const locationStore = useLocationStore()
+    const sortedLocations = [...locationStore.items].sort(
+      (a, b) => a.order - b.order
+    )
+    return sortedLocations[0]?.uuid ?? ''
+  }
+
   private convertToOrder(data: any): Order {
+    const zoneGeoUuid = this.getZoneGeoUuid()
     const copy = typeof data === 'string' ? JSON.parse(data) : data
     copy.lines = copy.lines.map((l: any) => {
       const res: OrderLine = {
@@ -61,7 +70,7 @@ export class RealInvoiceGateway implements InvoiceGateway {
         preparedQuantity: l.preparedQuantity,
         unitAmount: l.priceWithoutTax,
         status: this.getDeliveryStatus(l.deliveryStatus),
-        locations: { [zoneGeo.uuid]: l.location },
+        locations: { [zoneGeoUuid]: l.location },
         updatedAt: l.updatedAt
       }
       return res
