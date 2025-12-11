@@ -209,6 +209,20 @@ UForm(v-else)
           type="number"
           @update:model-value="availableStockChanged"
         )
+      UFormGroup.pb-4(label="Stock minimum pour vendre en ligne" name="minStockToSell")
+        ft-text-field(
+          :model-value="currentVM.get('minStockToSell').value"
+          :disabled="!currentVM.get('minStockToSell').canEdit"
+          type="number"
+          @update:model-value="minStockToSellChanged"
+        )
+      UFormGroup.pb-4(label="Mode de gestion du stock" name="stockManagementMode")
+        ft-select(
+          :model-value="currentVM.get('stockManagementMode').value"
+          :disabled="!currentVM.get('stockManagementMode').canEdit"
+          :options="stockManagementModeOptions"
+          @update:model-value="stockManagementModeChanged"
+        )
       UFormGroup.pb-4(label="Quantité limite pour une commande" name="maxQuantityForOrder")
         ft-text-field(
           :model-value="currentVM.get('maxQuantityForOrder').value"
@@ -305,6 +319,11 @@ const canEditImages = computed(() => {
   return currentVM.value?.get?.('productImages')?.canEdit ?? false
 })
 
+const stockManagementModeOptions = [
+  { value: 'WINPHARMA', label: 'Winpharma' },
+  { value: 'MANUAL', label: 'Manuel' }
+]
+
 const nameChanged = (name: string) => {
   currentVM?.value?.set('name', name)
 }
@@ -380,6 +399,14 @@ const locationChanged = (uuid: string, value: string) => {
 
 const availableStockChanged = (availableStock: string) => {
   currentVM?.value?.set('availableStock', availableStock)
+}
+
+const minStockToSellChanged = (minStockToSell: string) => {
+  currentVM?.value?.set('minStockToSell', minStockToSell)
+}
+
+const stockManagementModeChanged = (stockManagementMode: string) => {
+  currentVM?.value?.set('stockManagementMode', stockManagementMode)
 }
 
 const maxQuantityForOrderChanged = (maxQuantityForOrder: string) => {
