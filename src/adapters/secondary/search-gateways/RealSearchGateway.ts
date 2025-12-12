@@ -14,8 +14,8 @@ import { SearchGateway } from '@core/gateways/searchGateway'
 import { SearchCustomersDTO } from '@core/usecases/customers/customer-searching/searchCustomer'
 import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
 import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
+import { useLocationStore } from '@store/locationStore'
 import { useOrderStore } from '@store/orderStore'
-import { zoneGeo } from '@utils/testData/locations'
 
 export class RealSearchGateway extends RealGateway implements SearchGateway {
   constructor(url: string) {
@@ -147,7 +147,16 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
     return res.data
   }
 
+  private getZoneGeoUuid(): string {
+    const locationStore = useLocationStore()
+    const sortedLocations = [...locationStore.items].sort(
+      (a, b) => a.order - b.order
+    )
+    return sortedLocations[0]?.uuid ?? ''
+  }
+
   private convertToOrder(data: any): Order {
+    const zoneGeoUuid = this.getZoneGeoUuid()
     const copy = JSON.parse(JSON.stringify(data))
     copy.lines = copy.lines.map((l: any) => {
       const res: OrderLine = {
@@ -159,7 +168,7 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
         preparedQuantity: l.preparedQuantity,
         unitAmount: l.priceWithoutTax,
         status: this.getOrderLineStatus(l.status),
-        locations: { [zoneGeo.uuid]: l.location },
+        locations: { [zoneGeoUuid]: l.location },
         updatedAt: l.updatedAt
       }
       return res
