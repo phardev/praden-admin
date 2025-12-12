@@ -158,7 +158,6 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
 
   async edit(uuid: UUID, dto: EditProductDTO): Promise<Product> {
     const { laboratory, flags, orderedImages, ...productDto } = dto
-    console.log('orderedImages', orderedImages)
     const formData = this.createFormData(productDto)
     if (laboratory) {
       formData.append('laboratoryUuid', laboratory.uuid)

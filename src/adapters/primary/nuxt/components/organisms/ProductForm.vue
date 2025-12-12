@@ -217,10 +217,12 @@ UForm(v-else)
           @update:model-value="minStockToSellChanged"
         )
       UFormGroup.pb-4(label="Mode de gestion du stock" name="stockManagementMode")
-        ft-select(
+        USelectMenu(
           :model-value="currentVM.get('stockManagementMode').value"
           :disabled="!currentVM.get('stockManagementMode').canEdit"
           :options="stockManagementModeOptions"
+          value-attribute="value"
+          option-attribute="label"
           @update:model-value="stockManagementModeChanged"
         )
       UFormGroup.pb-4(label="Quantité limite pour une commande" name="maxQuantityForOrder")
