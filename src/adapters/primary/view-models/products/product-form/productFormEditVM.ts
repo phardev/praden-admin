@@ -12,7 +12,7 @@ import {
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { RealUuidGenerator } from '@adapters/secondary/uuid-generators/RealUuidGenerator'
-import { ProductStatus } from '@core/entities/product'
+import { ProductStatus, StockManagementMode } from '@core/entities/product'
 import {
   createNewImage,
   getDisplayUrl,
@@ -172,6 +172,12 @@ export class ProductFormEditVM extends ProductFormVM {
       percentTaxRate,
       locations: this.fieldsReader.get('locations'),
       availableStock,
+      minStockToSell: this.fieldsReader.get('minStockToSell')
+        ? parseInt(this.fieldsReader.get('minStockToSell'))
+        : undefined,
+      stockManagementMode: this.fieldsReader.get('stockManagementMode') as
+        | StockManagementMode
+        | undefined,
       description: this.fieldsReader.get('description'),
       instructionsForUse: this.fieldsReader.get('instructionsForUse'),
       composition: this.fieldsReader.get('composition'),

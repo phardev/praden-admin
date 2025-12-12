@@ -66,6 +66,8 @@ const toListItem = (product: Product): ProductListItem => {
     priceWithoutTax: product.priceWithoutTax,
     percentTaxRate: product.percentTaxRate,
     availableStock: product.availableStock,
+    minStockToSell: product.minStockToSell,
+    stockManagementMode: product.stockManagementMode,
     status: product.status,
     flags: product.flags,
     miniature: product.miniature,

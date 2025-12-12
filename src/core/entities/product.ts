@@ -10,6 +10,11 @@ export enum ProductStatus {
   Inactive = 'INACTIVE'
 }
 
+export enum StockManagementMode {
+  WINPHARMA = 'WINPHARMA',
+  MANUAL = 'MANUAL'
+}
+
 export interface Product {
   uuid: UUID
   status: ProductStatus
@@ -24,6 +29,8 @@ export interface Product {
   percentTaxRate: number
   locations: HashTable<string>
   availableStock: number
+  minStockToSell: number
+  stockManagementMode: StockManagementMode
   laboratory?: Laboratory | null
   description: string
   instructionsForUse: string

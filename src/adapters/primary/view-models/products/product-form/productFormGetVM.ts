@@ -136,6 +136,8 @@ export class ExistingProductFormInitializer implements FormInitializer {
       laboratory: product.laboratory?.uuid || '',
       locations: product.locations,
       availableStock: product.availableStock,
+      minStockToSell: product.minStockToSell,
+      stockManagementMode: product.stockManagementMode,
       miniature: product.miniature,
       newMiniature: undefined,
       productImages,
