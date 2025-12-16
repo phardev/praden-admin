@@ -43,6 +43,32 @@ describe('GetDashboard', () => {
           deliveryPrice: 0
         }
       ],
+      previousYearMonthlySales: [
+        {
+          month: '2024-01',
+          count: 180,
+          turnover: 900000,
+          averageBasketValue: 5000,
+          canceledTurnover: 0,
+          deliveryPrice: 0
+        },
+        {
+          month: '2024-02',
+          count: 250,
+          turnover: 1250000,
+          averageBasketValue: 5000,
+          canceledTurnover: 0,
+          deliveryPrice: 0
+        },
+        {
+          month: '2024-03',
+          count: 400,
+          turnover: 1600000,
+          averageBasketValue: 4000,
+          canceledTurnover: 0,
+          deliveryPrice: 0
+        }
+      ],
       totalSales: {
         count: 1000,
         turnover: 4500000,
@@ -183,6 +209,7 @@ describe('GetDashboard', () => {
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: mockData.monthlySales,
+      previousYearMonthlySales: mockData.previousYearMonthlySales,
       totalSales: mockData.totalSales,
       topProducts: [mockData.topProducts[0], mockData.topProducts[1]],
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
@@ -200,6 +227,7 @@ describe('GetDashboard', () => {
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: [mockData.monthlySales[1]],
+      previousYearMonthlySales: mockData.previousYearMonthlySales,
       totalSales: {
         count: mockData.monthlySales[1].count,
         turnover: mockData.monthlySales[1].turnover,
@@ -222,6 +250,7 @@ describe('GetDashboard', () => {
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: mockData.monthlySales,
+      previousYearMonthlySales: mockData.previousYearMonthlySales,
       totalSales: mockData.totalSales,
       topProducts: [mockData.topProducts[0]],
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
@@ -238,6 +267,7 @@ describe('GetDashboard', () => {
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: mockData.monthlySales,
+      previousYearMonthlySales: mockData.previousYearMonthlySales,
       totalSales: mockData.totalSales,
       topProducts: [mockData.topProducts[2]],
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
