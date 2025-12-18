@@ -31,6 +31,32 @@ gateway.feedWith({
       deliveryPrice: 0
     }
   ],
+  previousYearMonthlySales: [
+    {
+      month: '2024-01',
+      count: 150,
+      turnover: 800000,
+      averageBasketValue: 5333,
+      canceledTurnover: 0,
+      deliveryPrice: 0
+    },
+    {
+      month: '2024-02',
+      count: 250,
+      turnover: 1200000,
+      averageBasketValue: 4800,
+      canceledTurnover: 0,
+      deliveryPrice: 0
+    },
+    {
+      month: '2024-03',
+      count: 400,
+      turnover: 1600000,
+      averageBasketValue: 4000,
+      canceledTurnover: 0,
+      deliveryPrice: 0
+    }
+  ],
   totalSales: {
     count: 1000,
     turnover: 4500000,
