@@ -21,7 +21,7 @@ onMounted(() => {
 })
 
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = router.currentRoute.value.name as string
 const vm = ref(laboratoryFormCreateVM(routeName))
 
 const validate = async () => {

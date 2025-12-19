@@ -35,6 +35,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { Customer } from '@core/entities/customer'
 import { getCustomersVM } from '@adapters/primary/view-models/customers/get-customers/getCustomersVM'
 import { listCustomers } from '@core/usecases/customers/customer-listing/listCustomer'
 import { searchCustomers } from '@core/usecases/customers/customer-searching/searchCustomer'
@@ -51,11 +52,11 @@ definePageMeta({ layout: 'main' })
 const limit = 100
 let offset = 0
 
-const load = async ($state) => {
+const load = async ($state: any) => {
   if (!search.value) {
     await listCustomers(limit, offset, useCustomerGateway())
     offset += limit
-    if (customersVM.hasMore) {
+    if (customersVM.value.hasMore) {
       $state.loaded()
     } else {
       $state.complete()
@@ -78,7 +79,7 @@ const customerSelected = (uuid: string) => {
 const search = ref(customersVM.value?.currentSearch?.query || '')
 
 const minimumQueryLength = 3
-let debounceTimer
+let debounceTimer: ReturnType<typeof setTimeout> | undefined
 
 const searchChanged = (e: any) => {
   if (debounceTimer) {
@@ -88,8 +89,8 @@ const searchChanged = (e: any) => {
     const query = e.target.value
     if (!query) {
       const searchStore = useSearchStore()
-      searchStore.set(routeName, undefined)
-      searchStore.setFilter(routeName, undefined)
+      searchStore.set(routeName, [])
+      searchStore.setFilter(routeName, null)
       searchStore.setError(routeName, undefined)
     } else {
       searchCustomers(

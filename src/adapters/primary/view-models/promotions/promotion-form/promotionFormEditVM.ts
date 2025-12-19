@@ -48,7 +48,7 @@ export class PromotionFormEditVM extends PromotionFormVM {
     const productStore = useProductStore()
     const allProducts: Array<Product> = productStore.items
     const searchStore = useSearchStore()
-    const filteredProducts: Array<Product> = searchStore.get(this.key)
+    const filteredProducts: Array<Product> = searchStore.get(this.key) as Array<Product>
     const addedProducts = this.fieldsReader.get('products')
     const res = (filteredProducts || allProducts).filter(
       (p: Product) =>

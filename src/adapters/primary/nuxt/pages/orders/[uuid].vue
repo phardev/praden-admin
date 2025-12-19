@@ -74,6 +74,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { Delivery } from '@core/entities/delivery'
 import { getOrderVM } from '@adapters/primary/view-models/orders/get-order/getOrderVM'
 import { getPreparationVM } from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
 import { downloadDeliveryLabel } from '@core/usecases/deliveries/delivery-label-download/downloadDeliveryLabel'
@@ -91,7 +92,7 @@ import { useTicketGateway } from '../../../../../../gateways/ticketGateway'
 definePageMeta({ layout: 'main' })
 
 const route = useRoute()
-const orderUuid = route.params.uuid
+const orderUuid = route.params.uuid as string
 const router = useRouter()
 const deliveryStore = useDeliveryStore()
 
@@ -109,11 +110,11 @@ const orderVM = computed(() => {
   return getOrderVM()
 })
 
-const printLabel = (delivery) => {
+const printLabel = (delivery: Delivery) => {
   printDeliveryLabel(delivery.uuid, useDeliveryGateway())
 }
 
-const downloadLabel = async (delivery) => {
+const downloadLabel = async (delivery: Delivery) => {
   const newWindow = window.open('about:blank', '_blank')
 
   if (!newWindow) {
@@ -144,13 +145,13 @@ const downloadLabel = async (delivery) => {
   }
 }
 
-const markAsDelivered = async (delivery) => {
+const markAsDelivered = async (delivery: Delivery) => {
   await markDeliveryAsDelivered(delivery.uuid, useDeliveryGateway())
   router.push('/orders/')
 }
 
 const getInvoice = () => {
-  const encodedInvoiceNumber = encodeURIComponent(orderVM.value.invoiceNumber)
+  const encodedInvoiceNumber = encodeURIComponent(orderVM.value.invoiceNumber ?? '')
   router.push(`/invoices/${encodedInvoiceNumber}`)
 }
 </script>

@@ -6,6 +6,7 @@
     "verbatimModuleSyntax": false,
     "baseUrl": ".",
     "paths": {
+      "@/*": ["./*"],
       "@adapters/*": ["src/adapters/*"],
       "@core/*": ["src/core/*"],
       "@store/*": ["src/store/*"],

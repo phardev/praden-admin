@@ -1,0 +1,7 @@
+NUXT_PUBLIC_ENV=DEV
+BACKEND_URL=http://localhost:8787/admin
+# BACKEND_URL=https://ecommerce-backend-development.admin-a5f.workers.dev/admin
+# BACKEND_URL=https://ecommerce-backend-production.admin-a5f.workers.dev/admin
+KEYCLOAK_URL=https://keycloak.phardev.fr
+KEYCLOAK_REALM=Phardev
+KEYCLOAK_CLIENT_ID=pharma-admin-app
