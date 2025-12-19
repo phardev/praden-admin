@@ -42,7 +42,7 @@ describe('Reply to ticket', () => {
             uuid: 'reply-message-uuid',
             content: 'Merci pour votre message',
             type: TicketMessageType.PUBLIC,
-            authorName: 'Service Client',
+            authorUuid: 'support-operator-uuid',
             sentAt: now,
             attachments: []
           }
@@ -63,7 +63,7 @@ describe('Reply to ticket', () => {
             uuid: 'reply-message-uuid',
             content: 'Merci pour votre message',
             type: TicketMessageType.PUBLIC,
-            authorName: 'Service Client',
+            authorUuid: 'support-operator-uuid',
             sentAt: now,
             attachments: []
           }
@@ -86,7 +86,7 @@ describe('Reply to ticket', () => {
             uuid: 'reply-message-uuid',
             content: 'Merci pour votre message',
             type: TicketMessageType.PUBLIC,
-            authorName: 'Service Client',
+            authorUuid: 'support-operator-uuid',
             sentAt: now,
             attachments: []
           }

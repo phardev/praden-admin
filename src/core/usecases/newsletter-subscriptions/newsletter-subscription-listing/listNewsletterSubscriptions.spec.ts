@@ -69,8 +69,8 @@ describe('Newsletter subscriptions listing', () => {
     newsletterGateway.feedWith(...subscriptions)
   }
 
-  const whenListNewsletterSubscriptions = async () => {
-    await listNewsletterSubscriptions(newsletterGateway)
+  const whenListNewsletterSubscriptions = async (gateway = newsletterGateway) => {
+    await listNewsletterSubscriptions(gateway)
   }
   const expectStoreToEquals = (
     ...subscriptions: Array<NewsletterSubscription>

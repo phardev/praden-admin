@@ -101,7 +101,7 @@ import {
 } from '@adapters/primary/view-models/staff/staff-form/staffFormEditVM'
 import { createStaff } from '@core/usecases/staff/staff-creation/createStaff'
 import { editStaff } from '@core/usecases/staff/staff-edition/editStaff'
-import { useStaffGateway } from '~/gateways/staffGateway'
+import { useStaffGateway } from '@/gateways/staffGateway'
 
 interface Props {
   modelValue: boolean
