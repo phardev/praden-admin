@@ -61,7 +61,7 @@ div.flex.items-center.justify-stretch.space-x-4.space-y-2
           )
   ft-toggle(
     :model-value="banner.isActive"
-    @update:model-value="(value) => updateIsActive(banner.uuid, value)"
+    @update:model-value="(value: boolean) => updateIsActive(banner.uuid, value)"
   )
   icon.icon-lg.text-link(
     name="material-symbols:edit-square-outline"
@@ -87,7 +87,7 @@ defineProps({
   }
 })
 
-const updateIsActive = (uuid, isActive) => {
+const updateIsActive = (uuid: string, isActive: boolean) => {
   editBanner(uuid, { isActive }, useBannerGateway())
 }
 
@@ -100,7 +100,7 @@ const startDateChanged = (uuid: string, date: number) => {
 }
 
 const clearStartDate = (uuid: string) => {
-  editBanner(uuid, { startDate: null }, useBannerGateway())
+  editBanner(uuid, { startDate: undefined }, useBannerGateway())
 }
 
 const endDateChanged = (uuid: string, date: number) => {
@@ -108,7 +108,7 @@ const endDateChanged = (uuid: string, date: number) => {
 }
 
 const clearEndDate = (uuid: string) => {
-  editBanner(uuid, { endDate: null }, useBannerGateway())
+  editBanner(uuid, { endDate: undefined }, useBannerGateway())
 }
 
 const editClicked = (uuid: string) => {

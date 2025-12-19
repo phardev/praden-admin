@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import type { MonthlySales } from '@core/entities/dashboard'
-import { formatCurrency } from '@/src/utils/formatters'
+import { formatCurrency } from '@utils/formatters'
 
 const props = defineProps<{
   data: MonthlySales[]

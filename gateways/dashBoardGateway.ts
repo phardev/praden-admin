@@ -114,7 +114,14 @@ gateway.feedWith({
         name: 'Product 3 Laboratory'
       }
     }
-  ]
+  ],
+  ordersByDeliveryMethod: [],
+  ordersByLaboratory: [],
+  productQuantitiesByCategory: [],
+  productStockStats: {
+    inStockCount: 0,
+    outOfStockCount: 0
+  }
 })
 
 export const useDashboardGateway = (): DashboardGateway => {

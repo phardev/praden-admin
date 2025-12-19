@@ -37,6 +37,8 @@ div(v-if="isLoading")
   )
 </template>
 <script setup lang="ts">
+import type { TreeNode, TreeCategoryNodeVM } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
+
 const props = defineProps({
   isLoading: {
     type: Boolean,
@@ -45,7 +47,7 @@ const props = defineProps({
     }
   },
   items: {
-    type: Array,
+    type: Array as PropType<Array<TreeNode<TreeCategoryNodeVM>>>,
     default: () => {
       return []
     }
@@ -70,10 +72,10 @@ const props = defineProps({
   }
 })
 
-const openItems = ref([])
+const openItems = ref<string[]>([])
 
 const expandAll = () => {
-  const expandRecursive = (items) => {
+  const expandRecursive = (items: Array<TreeNode<TreeCategoryNodeVM>>) => {
     items.forEach((item) => {
       if (!openItems.value.includes(item.data.uuid)) {
         openItems.value.push(item.data.uuid)
@@ -90,7 +92,7 @@ const collapseAll = () => {
   openItems.value = []
 }
 
-const updateOpenItems = (newOpenItems) => {
+const updateOpenItems = (newOpenItems: string[]) => {
   openItems.value = newOpenItems
 }
 const emit = defineEmits<{
