@@ -96,12 +96,10 @@ export default defineNuxtConfig({
   ssr: false,
 
   nitro: {
-    preset: 'cloudflare-pages',
-    cloudflare: {
-      pages: {
-        routes: {
-          exclude: ['/api/*']
-        }
+    preset: 'node-server',
+    esbuild: {
+      options: {
+        target: 'esnext'
       }
     }
   },
@@ -125,7 +123,15 @@ export default defineNuxtConfig({
     define: {
       'process.env.DEBUG': false
     },
-    optimizeDeps: { exclude: ['fsevents'] },
+    optimizeDeps: {
+      exclude: ['fsevents'],
+      esbuildOptions: {
+        target: 'esnext'
+      }
+    },
+    build: {
+      target: 'esnext'
+    },
     server: {
       watch: {
         ignored: [

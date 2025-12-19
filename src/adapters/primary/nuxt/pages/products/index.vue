@@ -131,12 +131,20 @@ const searchChanged = (e: any) => {
       query: e.target.value,
       minimumQueryLength
     }
-    searchProducts(routeName as string, buildFilters({ ...filters }), useSearchGateway())
+    searchProducts(
+      routeName as string,
+      buildFilters({ ...filters }),
+      useSearchGateway()
+    )
   }, 300)
 }
 
 const productStatusChanged = (status: ProductStatus) => {
-  searchProducts(routeName as string, buildFilters({ status }), useSearchGateway())
+  searchProducts(
+    routeName as string,
+    buildFilters({ status }),
+    useSearchGateway()
+  )
 }
 
 const clearProductStatus = () => {

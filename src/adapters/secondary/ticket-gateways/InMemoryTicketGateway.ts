@@ -46,7 +46,7 @@ export class InMemoryTicketGateway implements TicketGateway {
   async addReply(
     ticketUuid: UUID,
     content: string,
-    authorName: string,
+    authorUuid: UUID,
     attachments: Array<File> = []
   ): Promise<Ticket> {
     const ticketIndex = this.tickets.findIndex((t) => t.uuid === ticketUuid)
@@ -68,7 +68,7 @@ export class InMemoryTicketGateway implements TicketGateway {
       content,
       type: TicketMessageType.PUBLIC,
       sentAt: this.dateProvider.now(),
-      authorUuid: this.uuidGenerator?.generate() || '',
+      authorUuid,
       attachments: messageAttachments
     }
 
@@ -90,7 +90,7 @@ export class InMemoryTicketGateway implements TicketGateway {
   async addPrivateNote(
     ticketUuid: UUID,
     content: string,
-    authorName: string,
+    authorUuid: UUID,
     attachments: Array<File> = []
   ): Promise<Ticket> {
     const ticketIndex = this.tickets.findIndex((t) => t.uuid === ticketUuid)
@@ -112,7 +112,7 @@ export class InMemoryTicketGateway implements TicketGateway {
       content,
       type: TicketMessageType.PRIVATE,
       sentAt: this.dateProvider.now(),
-      authorUuid: this.uuidGenerator?.generate() || '',
+      authorUuid,
       attachments: messageAttachments
     }
 

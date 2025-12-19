@@ -121,7 +121,7 @@ describe('Add private note to ticket', () => {
     await addPrivateNoteToTicket(
       ticketUuid,
       content,
-      'Opérateur Support',
+      'support-operator-uuid',
       ticketGateway
     )
   }

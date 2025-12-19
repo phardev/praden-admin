@@ -34,7 +34,9 @@ defineEmits<{
 const currentRole = computed(() => {
   if (!props.modelValue) return null
   return (
-    props.options.find((option: RoleOption) => option.uuid === props.modelValue) || null
+    props.options.find(
+      (option: RoleOption) => option.uuid === props.modelValue
+    ) || null
   )
 })
 </script>

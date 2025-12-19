@@ -232,7 +232,7 @@ export class InMemoryProductGateway implements ProductGateway {
 
   feedWith(...products: Array<Product>) {
     this.products = JSON.parse(JSON.stringify(products))
-    this.productsListItem = products.map(this.toListItem)
+    this.productsListItem = products.map((p) => this.toListItem(p))
   }
 
   feedListItemsWith(...productsListItem: Array<ProductListItem>) {

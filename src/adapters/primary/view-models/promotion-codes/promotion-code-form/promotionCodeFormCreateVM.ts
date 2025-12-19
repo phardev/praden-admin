@@ -6,8 +6,8 @@ import { FormInitializer } from '@adapters/primary/view-models/products/product-
 import type { Product } from '@core/entities/product'
 import { ReductionType } from '@core/entities/promotion'
 import { PromotionScope } from '@core/entities/promotionCode'
-import type { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 import { UUID } from '@core/types/types'
+import type { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 import { useFormStore } from '@store/formStore'
 import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
@@ -109,7 +109,9 @@ export class PromotionCodeFormCreateVM extends PromotionCodeFormVM {
     const productStore = useProductStore()
     const allProducts: Array<ProductListItem> = productStore.items
     const searchStore = useSearchStore()
-    const filteredProducts: Array<ProductListItem> = searchStore.get(this.key) as Array<ProductListItem>
+    const filteredProducts: Array<ProductListItem> = searchStore.get(
+      this.key
+    ) as Array<ProductListItem>
     const addedProducts = this.fieldsReader.get('products')
     const res = (filteredProducts || allProducts).filter(
       (p: ProductListItem) =>

@@ -5,10 +5,10 @@ import {
 import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import { PromotionFormFieldsReader } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
 import { PromotionFormVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormVM'
-import type { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
-import { CreatePromotionDTO, ReductionType } from '@core/entities/promotion'
 import type { Product } from '@core/entities/product'
+import { CreatePromotionDTO, ReductionType } from '@core/entities/promotion'
 import { UUID } from '@core/types/types'
+import type { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 import { useFormStore } from '@store/formStore'
 import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
@@ -134,17 +134,19 @@ export class PromotionFormCreateVM extends PromotionFormVM {
 
   getAvailableProducts() {
     const productStore = useProductStore()
-    const allProducts: Array<Product> = productStore.items
+    const allProducts: Array<ProductListItem> = productStore.items
     const searchStore = useSearchStore()
-    const filteredProducts: Array<Product> = searchStore.get(this.key) as Array<Product>
+    const filteredProducts: Array<ProductListItem> = searchStore.get(
+      this.key
+    ) as Array<ProductListItem>
     const addedProducts = this.fieldsReader.get('products')
     const res = (filteredProducts || allProducts).filter(
-      (p: Product) =>
-        !addedProducts.map((p: Product) => p.uuid).includes(p.uuid)
+      (p: ProductListItem) =>
+        !addedProducts.map((p: ProductListItem) => p.uuid).includes(p.uuid)
     )
     return {
       value: res
-        .map((p: Product) => {
+        .map((p: ProductListItem) => {
           return {
             uuid: p.uuid,
             name: p.name,

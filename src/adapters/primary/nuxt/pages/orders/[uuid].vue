@@ -74,9 +74,9 @@
 </template>
 
 <script lang="ts" setup>
-import type { Delivery } from '@core/entities/delivery'
 import { getOrderVM } from '@adapters/primary/view-models/orders/get-order/getOrderVM'
 import { getPreparationVM } from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
+import type { Delivery } from '@core/entities/delivery'
 import { downloadDeliveryLabel } from '@core/usecases/deliveries/delivery-label-download/downloadDeliveryLabel'
 import { printDeliveryLabel } from '@core/usecases/deliveries/delivery-label-printing/printDeliveryLabel'
 import { markDeliveryAsDelivered } from '@core/usecases/deliveries/mark-delivery-as-delivered/markDeliveryAsDelivered'
@@ -151,7 +151,9 @@ const markAsDelivered = async (delivery: Delivery) => {
 }
 
 const getInvoice = () => {
-  const encodedInvoiceNumber = encodeURIComponent(orderVM.value.invoiceNumber ?? '')
+  const encodedInvoiceNumber = encodeURIComponent(
+    orderVM.value.invoiceNumber ?? ''
+  )
   router.push(`/invoices/${encodedInvoiceNumber}`)
 }
 </script>

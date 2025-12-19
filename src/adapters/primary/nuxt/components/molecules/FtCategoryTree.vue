@@ -37,7 +37,10 @@ div(v-if="isLoading")
   )
 </template>
 <script setup lang="ts">
-import type { TreeNode, TreeCategoryNodeVM } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
+import type {
+  TreeCategoryNodeVM,
+  TreeNode
+} from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
 
 const props = defineProps({
   isLoading: {

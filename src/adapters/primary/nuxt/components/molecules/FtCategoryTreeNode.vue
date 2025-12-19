@@ -56,7 +56,10 @@
 </template>
 <script setup lang="ts">
 import FtCheckbox from '@adapters/primary/nuxt/components/atoms/FtCheckbox.vue'
-import type { TreeNode, TreeCategoryNodeVM } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
+import type {
+  TreeCategoryNodeVM,
+  TreeNode
+} from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
 
 const props = defineProps({
   items: {
@@ -129,11 +132,11 @@ const selected = async (uuid: string) => {
 const isIndeterminate = (item: TreeNode<TreeCategoryNodeVM>): boolean => {
   if (item.children.length === 0) return false
 
-  const childIndeterminateStates = item.children.map((child: TreeNode<TreeCategoryNodeVM>) =>
-    isIndeterminate(child)
+  const childIndeterminateStates = item.children.map(
+    (child: TreeNode<TreeCategoryNodeVM>) => isIndeterminate(child)
   )
-  const childSelectedStates = item.children.map((child: TreeNode<TreeCategoryNodeVM>) =>
-    isSelected(child.data.uuid)
+  const childSelectedStates = item.children.map(
+    (child: TreeNode<TreeCategoryNodeVM>) => isSelected(child.data.uuid)
   )
 
   const hasSelectedChildren = childSelectedStates.some((state) => state)
@@ -150,7 +153,8 @@ const isIndeterminate = (item: TreeNode<TreeCategoryNodeVM>): boolean => {
 const hasSelectedChild = (item: TreeNode<TreeCategoryNodeVM>): boolean => {
   if (!item.children || !item.children.length) return false
   return item.children.some(
-    (child: TreeNode<TreeCategoryNodeVM>) => isSelected(child.data.uuid) || hasSelectedChild(child)
+    (child: TreeNode<TreeCategoryNodeVM>) =>
+      isSelected(child.data.uuid) || hasSelectedChild(child)
   )
 }
 </script>

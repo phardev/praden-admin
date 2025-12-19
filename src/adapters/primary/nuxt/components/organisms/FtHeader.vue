@@ -65,7 +65,7 @@ const openSidebar = () => {
 const logout = () => {
   const { $keycloak } = useNuxtApp()
   if ($keycloak) {
-    ($keycloak as Keycloak).logout({ redirectUri: window.location.origin })
+    ;($keycloak as Keycloak).logout({ redirectUri: window.location.origin })
   }
 }
 </script>

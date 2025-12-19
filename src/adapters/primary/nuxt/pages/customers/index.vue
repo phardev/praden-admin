@@ -35,8 +35,8 @@
 </template>
 
 <script lang="ts" setup>
-import type { Customer } from '@core/entities/customer'
 import { getCustomersVM } from '@adapters/primary/view-models/customers/get-customers/getCustomersVM'
+import type { Customer } from '@core/entities/customer'
 import { listCustomers } from '@core/usecases/customers/customer-listing/listCustomer'
 import { searchCustomers } from '@core/usecases/customers/customer-searching/searchCustomer'
 import { useSearchStore } from '@store/searchStore'

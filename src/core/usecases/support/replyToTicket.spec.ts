@@ -140,7 +140,12 @@ describe('Reply to ticket', () => {
 
   const whenReplyToTicket = async (ticketUuid: string, content: string) => {
     uuidGenerator.setNext('reply-message-uuid')
-    await replyToTicket(ticketUuid, content, 'Service Client', ticketGateway)
+    await replyToTicket(
+      ticketUuid,
+      content,
+      'support-operator-uuid',
+      ticketGateway
+    )
   }
 
   const whenReplyToTicketWithAttachments = async (
@@ -152,7 +157,7 @@ describe('Reply to ticket', () => {
     await replyToTicket(
       ticketUuid,
       content,
-      'Service Client',
+      'support-operator-uuid',
       ticketGateway,
       attachments
     )

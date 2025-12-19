@@ -9,13 +9,13 @@ export interface TicketGateway {
   addReply(
     ticketUuid: UUID,
     content: string,
-    authorName: string,
+    authorUuid: UUID,
     attachments?: Array<File>
   ): Promise<Ticket>
   addPrivateNote(
     ticketUuid: UUID,
     content: string,
-    authorName: string,
+    authorUuid: UUID,
     attachments?: Array<File>
   ): Promise<Ticket>
   updatePriority(ticketUuid: UUID, priority: TicketPriority): Promise<Ticket>

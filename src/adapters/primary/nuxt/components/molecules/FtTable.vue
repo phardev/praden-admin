@@ -134,7 +134,9 @@ const selectAll = () => {
 }
 
 const getValue = (item: any, key: string) => {
-  return key.split('.').reduce((item: any, key: string) => item && item[key], item)
+  return key
+    .split('.')
+    .reduce((item: any, key: string) => item && item[key], item)
 }
 </script>
 
