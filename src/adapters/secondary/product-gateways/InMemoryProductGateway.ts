@@ -112,9 +112,15 @@ export class InMemoryProductGateway implements ProductGateway {
       const images: Array<string> = []
       for (const image of dto.orderedImages) {
         if (isExistingImage(image)) {
-          images.push(image.source.url)
+          const source = image.source
+          if (source.type === 'existing') {
+            images.push(source.url)
+          }
         } else {
-          images.push(await getFileContent(image.source.file))
+          const source = image.source
+          if (source.type === 'new') {
+            images.push(await getFileContent(source.file))
+          }
         }
       }
       this.products[index].images = images

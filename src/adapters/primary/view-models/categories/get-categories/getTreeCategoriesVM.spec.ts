@@ -99,7 +99,8 @@ describe('Get tree categories VM', () => {
         name: 'Root category 1',
         description: '',
         miniature: 'root-miniature-1',
-        image: 'root-img-1'
+        image: 'root-img-1',
+        order: 0
       }
       const childCategory1: Category = {
         uuid: 'child-category1',
@@ -107,7 +108,8 @@ describe('Get tree categories VM', () => {
         description: '',
         parentUuid: rootCategory1.uuid,
         miniature: 'child-miniature-1',
-        image: 'child-img-1'
+        image: 'child-img-1',
+        order: 0
       }
       const childCategory2: Category = {
         uuid: 'child-category2',
@@ -115,7 +117,8 @@ describe('Get tree categories VM', () => {
         description: '',
         parentUuid: rootCategory1.uuid,
         miniature: 'child-miniature-2',
-        image: 'child-img-2'
+        image: 'child-img-2',
+        order: 1
       }
       const grandChildCategory1: Category = {
         uuid: 'grandChild-category1',
@@ -123,7 +126,8 @@ describe('Get tree categories VM', () => {
         description: '',
         parentUuid: childCategory1.uuid,
         miniature: 'grandchild-miniature-1',
-        image: 'grandchild-img-1'
+        image: 'grandchild-img-1',
+        order: 0
       }
       const grandChildCategory2: Category = {
         uuid: 'grandChild-category2',
@@ -131,14 +135,16 @@ describe('Get tree categories VM', () => {
         description: '',
         parentUuid: childCategory2.uuid,
         miniature: 'grandchild-miniature-2',
-        image: 'grandchild-img-2'
+        image: 'grandchild-img-2',
+        order: 0
       }
       const rootCategory2: Category = {
         uuid: 'root-category2',
         name: 'Root category 2',
         description: '',
         miniature: 'root-miniature-2',
-        image: 'root-img-2'
+        image: 'root-img-2',
+        order: 1
       }
       givenExistingCategories(
         rootCategory1,

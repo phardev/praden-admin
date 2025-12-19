@@ -113,6 +113,6 @@ const handleSubmit = async () => {
 }
 
 const navigateBack = () => {
-  $router.push('/staff')
+  navigateTo('/staff')
 }
 </script>

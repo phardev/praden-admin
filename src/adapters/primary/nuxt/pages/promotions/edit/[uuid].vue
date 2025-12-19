@@ -26,7 +26,7 @@ const router = useRouter()
 const routeName = router.currentRoute.value.name as string
 
 onMounted(async () => {
-  listProducts(useProductGateway())
+  listProducts(100, 0, useProductGateway())
   listCategories(useCategoryGateway())
   await getPromotion(promotionUuid, usePromotionGateway())
   vm.value = promotionFormEditVM(routeName)

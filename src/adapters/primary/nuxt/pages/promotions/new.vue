@@ -19,7 +19,7 @@ import { usePromotionGateway } from '../../../../../../gateways/promotionGateway
 definePageMeta({ layout: 'main' })
 
 onMounted(() => {
-  listProducts(useProductGateway())
+  listProducts(100, 0, useProductGateway())
   listCategories(useCategoryGateway())
 })
 

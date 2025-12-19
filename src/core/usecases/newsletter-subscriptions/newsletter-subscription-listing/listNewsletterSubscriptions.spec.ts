@@ -1,4 +1,6 @@
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { InMemoryNewsletterGateway } from '@adapters/secondary/newsletter-gateways/inMemoryNewsletterGateway'
+import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { NewsletterSubscription } from '@core/entities/newsletterSubscription'
 import { useNewsletterStore } from '@store/newsletterStore'
 import {
@@ -11,11 +13,18 @@ import { listNewsletterSubscriptions } from './listNewsletterSubscriptions'
 describe('Newsletter subscriptions listing', () => {
   let newsletterStore: any
   let newsletterGateway: InMemoryNewsletterGateway
+  let uuidGenerator: FakeUuidGenerator
+  let dateProvider: FakeDateProvider
 
   beforeEach(() => {
     setActivePinia(createPinia())
     newsletterStore = useNewsletterStore()
-    newsletterGateway = new InMemoryNewsletterGateway()
+    uuidGenerator = new FakeUuidGenerator()
+    dateProvider = new FakeDateProvider()
+    newsletterGateway = new InMemoryNewsletterGateway(
+      uuidGenerator,
+      dateProvider
+    )
   })
 
   describe('There is no newsletter subscription', () => {

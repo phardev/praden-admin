@@ -51,7 +51,7 @@ const isSubmitting = ref(false)
 
 // Handlers
 const handleNameChanged = (value: string) => {
-  vm.setName(value)
+  vm.set('name', value)
 }
 
 const handlePermissionToggled = (resource: PermissionResource) => {
@@ -74,6 +74,6 @@ const handleSubmit = async () => {
 }
 
 const navigateBack = () => {
-  $router.push('/staff')
+  navigateTo('/staff')
 }
 </script>

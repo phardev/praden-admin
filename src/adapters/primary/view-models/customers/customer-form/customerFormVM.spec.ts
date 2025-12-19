@@ -173,12 +173,16 @@ describe('Customer form', () => {
             firstname: 'jean',
             lastname: 'bon',
             email: 'jeanbon@email.com',
-            phone: '0987654321'
+            phone: '0987654321',
+            ordersCount: 0,
+            ordersTotal: 0
           }
           vm.set('firstname', expectedDTO.firstname)
           vm.set('lastname', expectedDTO.lastname)
           vm.set('email', expectedDTO.email)
           vm.set('phone', expectedDTO.phone)
+          vm.set('ordersCount', expectedDTO.ordersCount)
+          vm.set('ordersTotal', expectedDTO.ordersTotal)
           expect(vm.getDto()).toStrictEqual(expectedDTO)
         })
       })
@@ -224,12 +228,16 @@ describe('Customer form', () => {
             firstname: 'jean',
             lastname: 'bon',
             email: 'jeanbon@email.com',
-            phone: '0987654321'
+            phone: '0987654321',
+            ordersCount: 0,
+            ordersTotal: 0
           }
           vm.set('firstname', expectedDTO.firstname)
           vm.set('lastname', expectedDTO.lastname)
           vm.set('email', expectedDTO.email)
           vm.set('phone', expectedDTO.phone)
+          vm.set('ordersCount', expectedDTO.ordersCount)
+          vm.set('ordersTotal', expectedDTO.ordersTotal)
           expect(vm.getDto()).toStrictEqual(expectedDTO)
         })
       })
