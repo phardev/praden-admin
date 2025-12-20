@@ -5,6 +5,7 @@ import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidG
 import { Order } from '@core/entities/order'
 import { Product, Stock } from '@core/entities/product'
 import { listOrdersToPrepare } from '@core/usecases/order/orders-to-prepare-listing/listOrdersToPrepare'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 import { usePreparationStore } from '@store/preparationStore'
 import { useProductStore } from '@store/productStore'
 import {
@@ -60,7 +61,10 @@ describe('List orders to prepare', () => {
         expectPreparationStoreToContains(orderToPrepare1, orderToPrepare2)
       })
       it('should list all products', async () => {
-        expectProductStoreToContains(dolodent, ultraLevure)
+        expectProductStoreToContains(
+          toListItem(dolodent),
+          toListItem(ultraLevure)
+        )
       })
     })
     it('should list orders if all items are processing', async () => {
@@ -147,12 +151,38 @@ describe('List orders to prepare', () => {
   }
 
   const expectProductStoreToContains = (
-    ...expectedProducts: Array<Product>
+    ...expectedProducts: Array<ProductListItem>
   ) => {
     expect(productStore.items).toStrictEqual(expectedProducts)
   }
 
   const expectStockToContains = (expectedStock: Stock) => {
     expect(productStore.stock).toStrictEqual(expectedStock)
+  }
+
+  const toListItem = (product: Product): ProductListItem => {
+    const listItem: ProductListItem = {
+      uuid: product.uuid,
+      name: product.name,
+      ean13: product.ean13,
+      categories: product.categories.map((c) => ({
+        uuid: c.uuid,
+        name: c.name
+      })),
+      priceWithoutTax: product.priceWithoutTax,
+      percentTaxRate: product.percentTaxRate,
+      availableStock: product.availableStock,
+      status: product.status,
+      flags: product.flags,
+      miniature: product.miniature,
+      isMedicine: product.isMedicine
+    }
+    if (product.laboratory) {
+      listItem.laboratory = {
+        uuid: product.laboratory.uuid,
+        name: product.laboratory.name
+      }
+    }
+    return listItem
   }
 })

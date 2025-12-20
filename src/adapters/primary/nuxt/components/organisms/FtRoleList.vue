@@ -54,7 +54,7 @@
 <script setup lang="ts">
 import { reorderRoles } from '@core/usecases/roles/roles-reorder/reorderRoles'
 import draggable from 'vuedraggable'
-import { useRoleGateway } from '~/gateways/roleGateway'
+import { useRoleGateway } from '../../../../../../gateways/roleGateway'
 
 interface RoleItem {
   uuid: string

@@ -184,7 +184,7 @@ const descriptionChanged = (description: string) => {
   currentVM?.value?.set('description', description)
 }
 
-let debounceTimer
+let debounceTimer: ReturnType<typeof setTimeout> | undefined
 const minimumQueryLength = 3
 
 const searchChanged = (e: any) => {
@@ -194,7 +194,7 @@ const searchChanged = (e: any) => {
       query: e.target.value,
       minimumQueryLength
     }
-    searchProducts(routeName, filters, useSearchGateway())
+    searchProducts(String(routeName), filters, useSearchGateway())
   }, 300)
 }
 

@@ -94,14 +94,14 @@ const router = useRouter()
 const routeName = router.currentRoute.value.name
 
 const productsVM = computed(() => {
-  return getProductsVM(routeName)
+  return getProductsVM(String(routeName))
 })
 
-const load = async ($state) => {
+const load = async ($state: any) => {
   if (!search.value) {
     await listProducts(limit, offset, productGateway)
     offset += limit
-    if (productsVM.hasMore) {
+    if (productsVM.value.hasMore) {
       $state.loaded()
     } else {
       $state.complete()
@@ -114,9 +114,9 @@ const load = async ($state) => {
 const search = ref(productsVM.value.currentSearch?.query)
 const productStatus = ref(productsVM.value.currentSearch?.status)
 const minimumQueryLength = 3
-let debounceTimer
+let debounceTimer: ReturnType<typeof setTimeout> | undefined
 
-const buildFilters = (partial) => {
+const buildFilters = (partial: any) => {
   return {
     query: search.value,
     status: productStatus.value,
@@ -131,18 +131,26 @@ const searchChanged = (e: any) => {
       query: e.target.value,
       minimumQueryLength
     }
-    searchProducts(routeName, buildFilters({ ...filters }), useSearchGateway())
+    searchProducts(
+      String(routeName),
+      buildFilters({ ...filters }),
+      useSearchGateway()
+    )
   }, 300)
 }
 
 const productStatusChanged = (status: ProductStatus) => {
-  searchProducts(routeName, buildFilters({ status }), useSearchGateway())
+  searchProducts(
+    String(routeName),
+    buildFilters({ status }),
+    useSearchGateway()
+  )
 }
 
 const clearProductStatus = () => {
   productStatus.value = undefined
   searchProducts(
-    routeName,
+    String(routeName),
     buildFilters({ status: undefined }),
     useSearchGateway()
   )

@@ -33,8 +33,12 @@ export const useSearchStore = defineStore('SearchStore', {
     }
   },
   actions: {
-    set(key: string, value: Array<any>) {
-      this.items[key] = value
+    set(key: string, value: Array<any> | undefined) {
+      if (value === undefined) {
+        delete this.items[key]
+      } else {
+        this.items[key] = value
+      }
     },
     setFilter(key: string, value: any) {
       this.filters[key] = value

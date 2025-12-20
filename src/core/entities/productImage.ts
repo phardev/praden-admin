@@ -32,8 +32,13 @@ export const createNewImage = (
 export const getDisplayUrl = (image: ProductImage): string =>
   image.source.type === 'existing' ? image.source.url : image.source.previewUrl
 
-export const isExistingImage = (image: ProductImage): boolean =>
+export const isExistingImage = (
+  image: ProductImage
+): image is ProductImage & { source: { type: 'existing'; url: string } } =>
   image.source.type === 'existing'
 
-export const isNewImage = (image: ProductImage): boolean =>
-  image.source.type === 'new'
+export const isNewImage = (
+  image: ProductImage
+): image is ProductImage & {
+  source: { type: 'new'; file: File; previewUrl: string }
+} => image.source.type === 'new'

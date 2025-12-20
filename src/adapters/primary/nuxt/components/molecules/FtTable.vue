@@ -133,8 +133,14 @@ const selectAll = () => {
   )
 }
 
-const getValue = (item, key) => {
-  return key.split('.').reduce((item, key) => item && item[key], item)
+const getValue = (item: Record<string, unknown>, key: string) => {
+  return key
+    .split('.')
+    .reduce(
+      (item: Record<string, unknown>, key: string) =>
+        item && (item[key] as Record<string, unknown>),
+      item
+    )
 }
 </script>
 

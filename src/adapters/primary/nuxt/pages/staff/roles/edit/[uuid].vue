@@ -38,7 +38,7 @@ import { useRoleForm } from '@adapters/primary/nuxt/composables/useRoleForm'
 import { roleFormEditVM } from '@adapters/primary/view-models/roles/role-form/roleFormEditVM'
 import { PermissionResource } from '@core/entities/permissionResource'
 import { listRoles } from '@core/usecases/roles/listRoles'
-import { useRoleGateway } from '@/gateways/roleGateway'
+import { useRoleGateway } from '../../../../../../../../gateways/roleGateway'
 
 // Meta and SEO
 definePageMeta({
@@ -56,7 +56,7 @@ const route = useRoute()
 const roleUuid = route.params.uuid as string
 
 // Composables
-const { $router } = useNuxtApp()
+const router = useRouter()
 const { updateRole } = useRoleForm()
 const roleGateway = useRoleGateway()
 
@@ -113,6 +113,6 @@ const handleSubmit = async () => {
 }
 
 const navigateBack = () => {
-  $router.push('/staff')
+  router.push('/staff')
 }
 </script>

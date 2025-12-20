@@ -40,7 +40,7 @@ describe('Role Edition', () => {
       const expectedRole: Role = {
         ...adminRole,
         name: 'Super Administrateur',
-        permissions: dto.permissions
+        permissions: dto.permissions!
       }
       const expectedRoles: Array<Role> = [
         expectedRole,
@@ -73,7 +73,7 @@ describe('Role Edition', () => {
       const expectedRole: Role = {
         ...pharmacistRole,
         name: 'Pharmacien Titulaire',
-        permissions: dto.permissions
+        permissions: dto.permissions!
       }
       const expectedRoles: Array<Role> = [
         adminRole,

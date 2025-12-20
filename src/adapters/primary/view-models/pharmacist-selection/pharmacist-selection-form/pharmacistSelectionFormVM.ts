@@ -122,7 +122,7 @@ export const pharmacistSelectionFormVM = () => {
         weight: 0,
         laboratory: undefined,
         isMedicine: false,
-        flags: [],
+        flags: {} as Record<string, boolean>,
         promotions: [],
         order: index
       }

@@ -10,12 +10,19 @@ export const usePermissions = () => {
   const permissions = computed(() => getPermissionsVM())
 
   const canAccess = (route: string): boolean => {
-    return canAccessRoute(route, permissions.value)
+    return canAccessRoute(
+      route,
+      permissions.value as unknown as Record<string, boolean>
+    )
   }
 
   const hasPermission = (permission: PermissionResource): boolean => {
     const permissionKey = getPermissionKey(permission)
-    return permissions.value[permissionKey] || false
+    return (
+      (permissions.value as unknown as Record<string, boolean>)[
+        permissionKey
+      ] || false
+    )
   }
 
   const getRoutePermission = (route: string): PermissionResource | null => {

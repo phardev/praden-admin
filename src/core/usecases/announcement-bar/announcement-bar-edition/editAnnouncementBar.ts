@@ -5,6 +5,8 @@ import type {
 import { UUID } from '@core/types/types'
 import { useAnnouncementBarStore } from '@store/announcementBarStore'
 
+export type { EditAnnouncementBarDTO }
+
 export const editAnnouncementBar = async (
   uuid: UUID,
   dto: EditAnnouncementBarDTO,

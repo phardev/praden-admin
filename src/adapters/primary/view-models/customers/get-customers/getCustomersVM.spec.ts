@@ -141,7 +141,8 @@ describe('Get customers VM', () => {
       items: [],
       isLoading: false,
       hasMore: false,
-      currentSearch: undefined
+      currentSearch: undefined,
+      searchError: undefined
     }
     expect(getCustomersVM(key)).toMatchObject({ ...emptyVM, ...expectedVM })
   }

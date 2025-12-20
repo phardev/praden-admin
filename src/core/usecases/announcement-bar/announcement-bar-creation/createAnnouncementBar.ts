@@ -4,6 +4,8 @@ import type {
 } from '@core/gateways/announcementBarGateway'
 import { useAnnouncementBarStore } from '@store/announcementBarStore'
 
+export type { CreateAnnouncementBarDTO }
+
 export const createAnnouncementBar = async (
   dto: CreateAnnouncementBarDTO,
   announcementBarGateway: AnnouncementBarGateway

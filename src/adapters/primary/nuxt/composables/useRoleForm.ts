@@ -1,6 +1,6 @@
 import { createRole } from '@core/usecases/roles/role-creation/createRole'
 import { editRole } from '@core/usecases/roles/role-edition/editRole'
-import { useRoleGateway } from '@/gateways/roleGateway'
+import { useRoleGateway } from '../../../../../gateways/roleGateway'
 
 export const useRoleForm = () => {
   const roleGateway = useRoleGateway()

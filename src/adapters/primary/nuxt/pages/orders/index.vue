@@ -13,6 +13,6 @@ const router = useRouter()
 const routeName = router.currentRoute.value.name
 
 const ordersVM = computed(() => {
-  return getOrdersVM(routeName)
+  return getOrdersVM(String(routeName))
 })
 </script>

@@ -1,4 +1,4 @@
-import { InMemoryCategoryGateway } from '@adapters/secondary/category-gateways/inMemoryCategoryGateway'
+import { InMemoryCategoryGateway } from '@adapters/secondary/category-gateways/InMemoryCategoryGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { Category } from '@core/entities/category'
 import { UUID } from '@core/types/types'

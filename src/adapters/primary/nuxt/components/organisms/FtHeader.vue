@@ -60,10 +60,14 @@ const openSidebar = () => {
   emit('open-sidebar')
 }
 
+interface KeycloakInstance {
+  logout: (options: { redirectUri: string }) => void
+}
+
 const logout = () => {
-  const { $keycloak } = useNuxtApp()
-  if ($keycloak) {
-    $keycloak.logout({ redirectUri: window.location.origin })
+  const nuxtApp = useNuxtApp() as unknown as { $keycloak: KeycloakInstance }
+  if (nuxtApp.$keycloak) {
+    nuxtApp.$keycloak.logout({ redirectUri: window.location.origin })
   }
 }
 </script>
