@@ -50,12 +50,12 @@ export class InMemoryTimeoutTicketGateway
   override addReply(
     ticketUuid: UUID,
     content: string,
-    authorName: string,
+    authorUuid: UUID,
     attachments: Array<File> = []
   ): Promise<Ticket> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(super.addReply(ticketUuid, content, authorName, attachments))
+        resolve(super.addReply(ticketUuid, content, authorUuid, attachments))
       }, this.timeoutInMs)
     })
   }
@@ -63,13 +63,13 @@ export class InMemoryTimeoutTicketGateway
   override addPrivateNote(
     ticketUuid: UUID,
     content: string,
-    authorName: string,
+    authorUuid: UUID,
     attachments: Array<File> = []
   ): Promise<Ticket> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(
-          super.addPrivateNote(ticketUuid, content, authorName, attachments)
+          super.addPrivateNote(ticketUuid, content, authorUuid, attachments)
         )
       }, this.timeoutInMs)
     })

@@ -151,7 +151,7 @@ const props = defineProps({
 
 const currentVM = toRef(props, 'vm')
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = router.currentRoute.value.name as string
 const availableProductSelector = useSelection()
 const addedProductSelector = useSelection()
 const search = ref('')
@@ -165,7 +165,7 @@ const amountChanged = (amount: string) => {
     currentVM.value.set('amount', amount)
 }
 
-let debounceTimer
+let debounceTimer: ReturnType<typeof setTimeout> | undefined
 const minimumQueryLength = 3
 
 const searchChanged = (e: any) => {

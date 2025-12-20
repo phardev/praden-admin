@@ -60,7 +60,10 @@ export class InMemoryCategoryGateway implements CategoryGateway {
   async reorder(categoryUuids: Array<UUID>): Promise<Array<Category>> {
     for (const uuid of categoryUuids) {
       const i = categoryUuids.indexOf(uuid)
-      await this.edit(uuid, { order: i })
+      const index = this.categories.findIndex((c) => c.uuid === uuid)
+      if (index >= 0) {
+        this.categories[index].order = i
+      }
     }
     this.categories = this.categories.sort((a, b) => a.order - b.order)
     return Promise.resolve(JSON.parse(JSON.stringify(this.categories)))

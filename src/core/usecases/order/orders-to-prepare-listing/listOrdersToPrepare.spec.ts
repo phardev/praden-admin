@@ -149,7 +149,34 @@ describe('List orders to prepare', () => {
   const expectProductStoreToContains = (
     ...expectedProducts: Array<Product>
   ) => {
-    expect(productStore.items).toStrictEqual(expectedProducts)
+    const expectedListItems = expectedProducts.map(toListItem)
+    expect(productStore.items).toStrictEqual(expectedListItems)
+  }
+
+  const toListItem = (product: Product) => {
+    const listItem: any = {
+      uuid: product.uuid,
+      name: product.name,
+      ean13: product.ean13,
+      categories: product.categories.map((c) => ({
+        uuid: c.uuid,
+        name: c.name
+      })),
+      priceWithoutTax: product.priceWithoutTax,
+      percentTaxRate: product.percentTaxRate,
+      availableStock: product.availableStock,
+      status: product.status,
+      flags: product.flags,
+      miniature: product.miniature,
+      isMedicine: product.isMedicine
+    }
+    if (product.laboratory) {
+      listItem.laboratory = {
+        uuid: product.laboratory.uuid,
+        name: product.laboratory.name
+      }
+    }
+    return listItem
   }
 
   const expectStockToContains = (expectedStock: Stock) => {

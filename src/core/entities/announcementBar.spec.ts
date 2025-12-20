@@ -14,6 +14,7 @@ describe('AnnouncementBar entity', () => {
   const announcementBar: AnnouncementBar = {
     uuid: 'announcement-1',
     text: 'Test announcement',
+    order: 1,
     isActive: true
   }
 

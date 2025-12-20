@@ -5,14 +5,14 @@ import { useTicketStore } from '@store/ticketStore'
 export const replyToTicket = async (
   ticketUuid: UUID,
   content: string,
-  authorName: string,
+  authorUuid: UUID,
   ticketGateway: TicketGateway,
   attachments: Array<File> = []
 ): Promise<void> => {
   const updatedTicket = await ticketGateway.addReply(
     ticketUuid,
     content,
-    authorName,
+    authorUuid,
     attachments
   )
   const ticketStore = useTicketStore()

@@ -51,16 +51,22 @@ import { useBannerGateway } from '../../../../../../gateways/bannerGateway'
 
 definePageMeta({ layout: 'main' })
 
+interface BannersVmType {
+  Tous?: {
+    items?: Array<{ uuid: string; [key: string]: any }>
+  }
+}
+
 const props = defineProps({
   bannersVm: {
-    type: Object,
+    type: Object as () => BannersVmType,
     default() {
       return {}
     }
   }
 })
 
-const allBanners = ref([])
+const allBanners = ref<Array<{ uuid: string; [key: string]: any }>>([])
 
 watch(
   () => props.bannersVm,
@@ -72,7 +78,7 @@ watch(
 
 const banners = computed({
   get: () => allBanners.value,
-  set: (v) => {
+  set: (v: Array<{ uuid: string; [key: string]: any }>) => {
     reorderBanners(
       v.map((b) => b.uuid),
       useBannerGateway()

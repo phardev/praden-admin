@@ -45,7 +45,7 @@ const onSubmit = async (data: {
   isSaving.value = true
 
   try {
-    await createEmergencyPharmacy(data, emergencyPharmacyGateway, uuidGenerator)
+    await createEmergencyPharmacy(data, emergencyPharmacyGateway)
 
     const toast = useToast()
     toast.add({

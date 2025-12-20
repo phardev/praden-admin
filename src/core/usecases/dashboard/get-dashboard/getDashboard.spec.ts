@@ -43,6 +43,7 @@ describe('GetDashboard', () => {
           deliveryPrice: 0
         }
       ],
+      previousYearMonthlySales: [],
       totalSales: {
         count: 1000,
         turnover: 4500000,
@@ -183,6 +184,7 @@ describe('GetDashboard', () => {
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: mockData.monthlySales,
+      previousYearMonthlySales: mockData.previousYearMonthlySales,
       totalSales: mockData.totalSales,
       topProducts: [mockData.topProducts[0], mockData.topProducts[1]],
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
@@ -200,6 +202,7 @@ describe('GetDashboard', () => {
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: [mockData.monthlySales[1]],
+      previousYearMonthlySales: mockData.previousYearMonthlySales,
       totalSales: {
         count: mockData.monthlySales[1].count,
         turnover: mockData.monthlySales[1].turnover,
@@ -222,6 +225,7 @@ describe('GetDashboard', () => {
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: mockData.monthlySales,
+      previousYearMonthlySales: mockData.previousYearMonthlySales,
       totalSales: mockData.totalSales,
       topProducts: [mockData.topProducts[0]],
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
@@ -238,6 +242,7 @@ describe('GetDashboard', () => {
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: mockData.monthlySales,
+      previousYearMonthlySales: mockData.previousYearMonthlySales,
       totalSales: mockData.totalSales,
       topProducts: [mockData.topProducts[2]],
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,

@@ -53,9 +53,9 @@ const { t } = useI18n()
 const vm = ref()
 const statsVM = ref()
 const route = useRoute()
-const code = route.params.code
+const code = route.params.code as string
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = router.currentRoute.value.name as string
 
 const chartData = computed(() => {
   if (!statsVM.value) return []

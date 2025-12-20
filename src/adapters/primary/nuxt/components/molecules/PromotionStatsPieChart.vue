@@ -5,9 +5,6 @@ div(v-if="chartData.length > 0")
 
 <script setup lang="ts">
 import type { PromotionStatsVM } from '@adapters/primary/view-models/promotions/promotion-stats/promotionStatsVM'
-import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
-import PieChart from './PieChart.vue'
 
 const props = defineProps<{
   statsVm: PromotionStatsVM | null

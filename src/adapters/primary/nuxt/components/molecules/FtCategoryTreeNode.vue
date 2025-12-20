@@ -56,16 +56,20 @@
 </template>
 <script setup lang="ts">
 import FtCheckbox from '@adapters/primary/nuxt/components/atoms/FtCheckbox.vue'
+import type {
+  TreeCategoryNodeVM,
+  TreeNode
+} from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
 
 const props = defineProps({
   items: {
-    type: Array,
+    type: Array as PropType<Array<TreeNode<TreeCategoryNodeVM>>>,
     default: () => {
       return []
     }
   },
   openItems: {
-    type: Array,
+    type: Array as PropType<string[]>,
     default: () => {
       return []
     }
@@ -90,7 +94,7 @@ const props = defineProps({
   }
 })
 
-const toggle = (item) => {
+const toggle = (item: TreeNode<TreeCategoryNodeVM>) => {
   const uuid = item.data.uuid
   const newOpenItems = [...props.openItems]
   if (newOpenItems.includes(uuid)) {
@@ -101,9 +105,9 @@ const toggle = (item) => {
   updateOpenItems(newOpenItems)
 }
 
-const isSelected = (uuid) => props.selection.includes(uuid)
+const isSelected = (uuid: string) => props.selection.includes(uuid)
 
-const isOpen = (uuid) => props.openItems.includes(uuid)
+const isOpen = (uuid: string) => props.openItems.includes(uuid)
 
 const emit = defineEmits<{
   (e: 'view', uuid: string): void
@@ -125,14 +129,14 @@ const selected = async (uuid: string) => {
   }
 }
 
-const isIndeterminate = (item) => {
+const isIndeterminate = (item: TreeNode<TreeCategoryNodeVM>): boolean => {
   if (item.children.length === 0) return false
 
-  const childIndeterminateStates = item.children.map((child) =>
-    isIndeterminate(child)
+  const childIndeterminateStates = item.children.map(
+    (child: TreeNode<TreeCategoryNodeVM>) => isIndeterminate(child)
   )
-  const childSelectedStates = item.children.map((child) =>
-    isSelected(child.data.uuid)
+  const childSelectedStates = item.children.map(
+    (child: TreeNode<TreeCategoryNodeVM>) => isSelected(child.data.uuid)
   )
 
   const hasSelectedChildren = childSelectedStates.some((state) => state)
@@ -146,10 +150,11 @@ const isIndeterminate = (item) => {
   )
 }
 
-const hasSelectedChild = (item) => {
+const hasSelectedChild = (item: TreeNode<TreeCategoryNodeVM>): boolean => {
   if (!item.children || !item.children.length) return false
   return item.children.some(
-    (child) => isSelected(child.data.uuid) || hasSelectedChild(child)
+    (child: TreeNode<TreeCategoryNodeVM>) =>
+      isSelected(child.data.uuid) || hasSelectedChild(child)
   )
 }
 </script>

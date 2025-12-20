@@ -1,11 +1,9 @@
 import { InMemoryRoleGateway } from '@adapters/secondary/role-gateways/InMemoryRoleGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
 import { Role } from '@core/entities/role'
+import type { EditRoleDTO } from '@core/gateways/roleGateway'
 import { UUID } from '@core/types/types'
-import {
-  EditRoleDTO,
-  editRole
-} from '@core/usecases/roles/role-edition/editRole'
+import { editRole } from '@core/usecases/roles/role-edition/editRole'
 import { useRoleStore } from '@store/roleStore'
 import { adminRole, assistantRole, pharmacistRole } from '@utils/testData/roles'
 import { createPinia, setActivePinia } from 'pinia'
@@ -40,7 +38,7 @@ describe('Role Edition', () => {
       const expectedRole: Role = {
         ...adminRole,
         name: 'Super Administrateur',
-        permissions: dto.permissions
+        permissions: dto.permissions!
       }
       const expectedRoles: Array<Role> = [
         expectedRole,
@@ -73,7 +71,7 @@ describe('Role Edition', () => {
       const expectedRole: Role = {
         ...pharmacistRole,
         name: 'Pharmacien Titulaire',
-        permissions: dto.permissions
+        permissions: dto.permissions!
       }
       const expectedRoles: Array<Role> = [
         adminRole,

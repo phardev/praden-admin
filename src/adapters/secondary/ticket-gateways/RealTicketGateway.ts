@@ -36,7 +36,7 @@ export class RealTicketGateway extends RealGateway implements TicketGateway {
   async addReply(
     ticketUuid: UUID,
     content: string,
-    authorName: string,
+    authorUuid: UUID,
     attachments: Array<File> = []
   ): Promise<Ticket> {
     const formData = this.createFormData({ content, attachments })
@@ -56,7 +56,7 @@ export class RealTicketGateway extends RealGateway implements TicketGateway {
   async addPrivateNote(
     ticketUuid: UUID,
     content: string,
-    authorName: string,
+    authorUuid: UUID,
     attachments: Array<File> = []
   ): Promise<Ticket> {
     const formData = this.createFormData({ content, attachments })

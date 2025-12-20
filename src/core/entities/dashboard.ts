@@ -61,6 +61,7 @@ export interface ProductByCategory {
 
 export interface Dashboard {
   monthlySales: MonthlySales[]
+  previousYearMonthlySales: MonthlySales[]
   totalSales: TotalSales
   topProducts: TopProduct[]
   ordersByDeliveryMethod: OrderByDeliveryMethod[]

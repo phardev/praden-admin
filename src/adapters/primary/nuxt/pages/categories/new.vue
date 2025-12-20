@@ -21,7 +21,7 @@ onMounted(() => {
 })
 
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = String(router.currentRoute.value.name)
 const vm = ref(categoryFormCreateVM(routeName))
 
 const validate = async () => {

@@ -87,7 +87,7 @@ import {
 import { PermissionResource } from '@core/entities/permissionResource'
 import { createRole } from '@core/usecases/roles/role-creation/createRole'
 import { editRole } from '@core/usecases/roles/role-edition/editRole'
-import { useRoleGateway } from '~/gateways/roleGateway'
+import { useRoleGateway } from '@/gateways/roleGateway'
 
 interface Props {
   modelValue: boolean

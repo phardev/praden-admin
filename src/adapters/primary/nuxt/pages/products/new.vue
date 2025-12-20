@@ -22,14 +22,10 @@ onMounted(() => {
 })
 
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = router.currentRoute.value.name as string
 const vm = ref(productFormCreateVM(routeName))
 const validate = async () => {
-  await createProduct(
-    vm.value.getDto(),
-    useProductGateway(),
-    useLocationGateway()
-  )
+  await createProduct(vm.value.getDto(), useProductGateway())
   router.push('/products/')
 }
 </script>

@@ -5,23 +5,30 @@
 </template>
 
 <script lang="ts" setup>
-import { MonthlySales } from '@core/entities/dashboard'
+import type { MonthlySales } from '@core/entities/dashboard'
 
 const props = defineProps<{
   data: MonthlySales[]
+  previousYearData?: MonthlySales[]
 }>()
 
 const isMounted = ref(false)
 const chartContainer = ref<HTMLElement | null>(null)
 
+const getMonthNumber = (month: string) => {
+  return month.split('-')[1]
+}
+
 const sortedData = computed(() => {
   return [...props.data].sort((a, b) => a.month.localeCompare(b.month))
 })
 
-const formatMonth = (month: string) => {
-  const [year, monthNum] = month.split('-')
-  return `${monthNum}/${year.substring(2)}`
-}
+const sortedPreviousYearData = computed(() => {
+  if (!props.previousYearData) return []
+  return [...props.previousYearData].sort((a, b) =>
+    a.month.localeCompare(b.month)
+  )
+})
 
 const createChart = async () => {
   if (!chartContainer.value || !isMounted.value || props.data.length === 0)
@@ -49,22 +56,32 @@ const createChart = async () => {
     .append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`)
 
-  const x = d3
+  const hasPreviousYearData = sortedPreviousYearData.value.length > 0
+  const months = sortedData.value.map((d) => getMonthNumber(d.month))
+
+  const x0 = d3.scaleBand().domain(months).range([0, width]).padding(0.2)
+
+  const x1 = d3
     .scaleBand()
-    .domain(sortedData.value.map((d) => formatMonth(d.month)))
-    .range([0, width])
-    .padding(0.2)
+    .domain(hasPreviousYearData ? ['previous', 'current'] : ['current'])
+    .range([0, x0.bandwidth()])
+    .padding(0.05)
+
+  const allCounts = [
+    ...sortedData.value.map((d) => d.count),
+    ...sortedPreviousYearData.value.map((d) => d.count)
+  ]
 
   const y = d3
     .scaleLinear()
-    .domain([0, d3.max(sortedData.value, (d) => d.count) || 0])
+    .domain([0, d3.max(allCounts) || 0])
     .nice()
     .range([height, 0])
 
   svg
     .append('g')
     .attr('transform', `translate(0,${height})`)
-    .call(d3.axisBottom(x))
+    .call(d3.axisBottom(x0))
     .selectAll('text')
     .style('text-anchor', 'middle')
 
@@ -79,48 +96,6 @@ const createChart = async () => {
     .text('Nombre de ventes')
     .attr('class', 'axis-label')
 
-  svg
-    .selectAll('rect')
-    .data(sortedData.value)
-    .enter()
-    .append('rect')
-    .attr('x', (d) => x(formatMonth(d.month)) || 0)
-    .attr('y', (d) => y(d.count))
-    .attr('width', x.bandwidth())
-    .attr('height', (d) => height - y(d.count))
-    .attr('fill', 'rgba(59, 130, 246, 0.7)')
-    .attr('stroke', 'rgba(59, 130, 246, 1)')
-    .attr('stroke-width', 1)
-    .on('mouseover', function (event, d) {
-      d3.select(this).attr('fill', 'rgba(59, 130, 246, 0.9)')
-
-      const tooltipWidth = 150
-      const tooltipHeight = 40
-      const viewportWidth = window.innerWidth
-      const viewportHeight = window.innerHeight
-
-      let left = event.pageX + 10
-      let top = event.pageY - 20
-
-      if (left + tooltipWidth > viewportWidth) {
-        left = event.pageX - tooltipWidth - 10
-      }
-
-      if (top + tooltipHeight > viewportHeight) {
-        top = event.pageY - tooltipHeight - 10
-      }
-
-      tooltip
-        .style('opacity', 1)
-        .html(`<strong>Nombre de ventes:</strong> ${d.count}`)
-        .style('left', left + 'px')
-        .style('top', top + 'px')
-    })
-    .on('mouseout', function () {
-      d3.select(this).attr('fill', 'rgba(59, 130, 246, 0.7)')
-      tooltip.style('opacity', 0)
-    })
-
   const tooltip = d3
     .select('body')
     .append('div')
@@ -133,6 +108,104 @@ const createChart = async () => {
     .style('box-shadow', '0 2px 5px rgba(0, 0, 0, 0.2)')
     .style('pointer-events', 'none')
     .style('opacity', 0)
+
+  const currentYear = sortedData.value[0]?.month.split('-')[0] || ''
+  const previousYear =
+    sortedPreviousYearData.value[0]?.month.split('-')[0] || ''
+
+  if (hasPreviousYearData) {
+    const previousYearMap = new Map(
+      sortedPreviousYearData.value.map((d) => [getMonthNumber(d.month), d])
+    )
+
+    svg
+      .selectAll('.bar-previous')
+      .data(sortedData.value)
+      .enter()
+      .append('rect')
+      .attr('class', 'bar-previous')
+      .attr(
+        'x',
+        (d) => (x0(getMonthNumber(d.month)) || 0) + (x1('previous') || 0)
+      )
+      .attr('y', (d) => {
+        const prevData = previousYearMap.get(getMonthNumber(d.month))
+        return y(prevData?.count || 0)
+      })
+      .attr('width', x1.bandwidth())
+      .attr('height', (d) => {
+        const prevData = previousYearMap.get(getMonthNumber(d.month))
+        return height - y(prevData?.count || 0)
+      })
+      .attr('fill', 'rgba(249, 115, 22, 0.7)')
+      .attr('stroke', 'rgba(249, 115, 22, 1)')
+      .attr('stroke-width', 1)
+      .on('mouseover', function (event, d) {
+        d3.select(this).attr('fill', 'rgba(249, 115, 22, 0.9)')
+        const prevData = previousYearMap.get(getMonthNumber(d.month))
+        tooltip
+          .style('opacity', 1)
+          .html(`<strong>${previousYear}:</strong> ${prevData?.count || 0}`)
+          .style('left', event.pageX + 10 + 'px')
+          .style('top', event.pageY - 20 + 'px')
+      })
+      .on('mouseout', function () {
+        d3.select(this).attr('fill', 'rgba(249, 115, 22, 0.7)')
+        tooltip.style('opacity', 0)
+      })
+  }
+
+  svg
+    .selectAll('.bar-current')
+    .data(sortedData.value)
+    .enter()
+    .append('rect')
+    .attr('class', 'bar-current')
+    .attr('x', (d) => (x0(getMonthNumber(d.month)) || 0) + (x1('current') || 0))
+    .attr('y', (d) => y(d.count))
+    .attr('width', x1.bandwidth())
+    .attr('height', (d) => height - y(d.count))
+    .attr('fill', 'rgba(59, 130, 246, 0.7)')
+    .attr('stroke', 'rgba(59, 130, 246, 1)')
+    .attr('stroke-width', 1)
+    .on('mouseover', function (event, d) {
+      d3.select(this).attr('fill', 'rgba(59, 130, 246, 0.9)')
+      tooltip
+        .style('opacity', 1)
+        .html(`<strong>${currentYear}:</strong> ${d.count}`)
+        .style('left', event.pageX + 10 + 'px')
+        .style('top', event.pageY - 20 + 'px')
+    })
+    .on('mouseout', function () {
+      d3.select(this).attr('fill', 'rgba(59, 130, 246, 0.7)')
+      tooltip.style('opacity', 0)
+    })
+
+  if (hasPreviousYearData) {
+    const legend = svg
+      .append('g')
+      .attr('transform', `translate(${width - 150}, 0)`)
+
+    legend
+      .append('rect')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('fill', 'rgba(249, 115, 22, 0.7)')
+
+    legend.append('text').attr('x', 20).attr('y', 12).text(previousYear)
+
+    legend
+      .append('rect')
+      .attr('x', 0)
+      .attr('y', 20)
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('fill', 'rgba(59, 130, 246, 0.7)')
+
+    legend.append('text').attr('x', 20).attr('y', 32).text(currentYear)
+  }
 }
 
 const handleResize = () => {
@@ -158,7 +231,7 @@ onBeforeUnmount(() => {
 })
 
 watch(
-  () => props.data,
+  () => [props.data, props.previousYearData],
   () => {
     createChart()
   },
