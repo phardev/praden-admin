@@ -17,7 +17,10 @@ export const getNavigationMenuVM = (): GetNavigationMenuVM => {
   const filteredSections = menu.sections
     .map((section) => {
       const filteredLinks = section.links.filter((link) => {
-        return canAccessRoute(link.href, permissions)
+        return canAccessRoute(
+          link.href,
+          permissions as unknown as Record<string, boolean>
+        )
       })
 
       return {

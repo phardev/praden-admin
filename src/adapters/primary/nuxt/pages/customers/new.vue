@@ -16,7 +16,7 @@ definePageMeta({ layout: 'main' })
 
 const router = useRouter()
 const routeName = router.currentRoute.value.name
-const vm = ref(customerFormCreateVM(routeName))
+const vm = ref(customerFormCreateVM(String(routeName)))
 
 const validate = async () => {
   await createCustomer(vm.value.getDto(), useCustomerGateway())

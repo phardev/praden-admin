@@ -42,7 +42,9 @@ export class CustomerFormEditVM {
       firstname: this.fieldsReader.get('firstname'),
       lastname: this.fieldsReader.get('lastname'),
       email: this.fieldsReader.get('email'),
-      phone: this.fieldsReader.get('phone')
+      phone: this.fieldsReader.get('phone'),
+      ordersCount: this.fieldsReader.get('ordersCount') ?? 0,
+      ordersTotal: this.fieldsReader.get('ordersTotal') ?? 0
     }
   }
 

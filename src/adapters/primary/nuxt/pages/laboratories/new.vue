@@ -22,7 +22,7 @@ onMounted(() => {
 
 const router = useRouter()
 const routeName = router.currentRoute.value.name
-const vm = ref(laboratoryFormCreateVM(routeName))
+const vm = ref(laboratoryFormCreateVM(String(routeName)))
 
 const validate = async () => {
   await createLaboratory(

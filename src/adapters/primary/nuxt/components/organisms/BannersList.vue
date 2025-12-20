@@ -60,7 +60,13 @@ const props = defineProps({
   }
 })
 
-const allBanners = ref([])
+interface BannerItem {
+  uuid: string
+  isInProgress?: boolean
+  isFuture?: boolean
+}
+
+const allBanners = ref<BannerItem[]>([])
 
 watch(
   () => props.bannersVm,

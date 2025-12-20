@@ -18,15 +18,15 @@ definePageMeta({ layout: 'main' })
 
 const vm = ref()
 const route = useRoute()
-const customerUuid = route.params.uuid
+const customerUuid = route.params.uuid as string
 const router = useRouter()
 const routeName = router.currentRoute.value.name
 
 onMounted(async () => {
   const customerGateway = useCustomerGateway()
-  listCustomers(customerGateway)
+  await listCustomers(100, 0, customerGateway)
   await getCustomer(customerUuid, customerGateway)
-  vm.value = customerFormEditVM(routeName)
+  vm.value = customerFormEditVM(String(routeName))
 })
 
 const validate = async () => {

@@ -18,7 +18,7 @@ definePageMeta({ layout: 'main' })
 
 const vm = ref()
 const route = useRoute()
-const laboratoryUuid = route.params.uuid
+const laboratoryUuid = route.params.uuid as string
 
 const router = useRouter()
 const routeName = router.currentRoute.value.name
@@ -29,7 +29,7 @@ onMounted(async () => {
     useLaboratoryGateway(),
     useProductGateway()
   )
-  vm.value = laboratoryFormGetVM(routeName)
+  vm.value = laboratoryFormGetVM(String(routeName))
 })
 
 const edit = () => {

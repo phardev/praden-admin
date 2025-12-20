@@ -17,13 +17,13 @@ definePageMeta({ layout: 'main' })
 
 const vm = ref()
 const route = useRoute()
-const bannerUuid = route.params.uuid
+const bannerUuid = route.params.uuid as string
 const router = useRouter()
 const routeName = router.currentRoute.value.name
 
 onMounted(async () => {
   await getBanner(bannerUuid, useBannerGateway())
-  vm.value = bannerFormEditVM(routeName)
+  vm.value = bannerFormEditVM(String(routeName))
 })
 
 const validate = async () => {

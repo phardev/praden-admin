@@ -19,7 +19,7 @@ definePageMeta({ layout: 'main' })
 
 const vm = ref()
 const route = useRoute()
-const categoryUuid = route.params.uuid
+const categoryUuid = route.params.uuid as string
 const router = useRouter()
 const routeName = router.currentRoute.value.name
 
@@ -28,7 +28,7 @@ onMounted(async () => {
   const productGateway = useProductGateway()
   await getCategory(categoryUuid, categoryGateway)
   await listCategoryProducts(25, 0, categoryUuid, productGateway)
-  vm.value = categoryFormEditVM(routeName)
+  vm.value = categoryFormEditVM(String(routeName))
 })
 
 const validate = async () => {

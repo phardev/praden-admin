@@ -88,7 +88,33 @@ gateway.feedWith({
         name: 'Product 3 Laboratory'
       }
     }
-  ]
+  ],
+  ordersByDeliveryMethod: [
+    {
+      deliveryMethodUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+      deliveryMethodName: 'Colissimo',
+      count: 500
+    }
+  ],
+  ordersByLaboratory: [
+    {
+      laboratoryUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+      laboratoryName: 'Modilac',
+      count: 100
+    }
+  ],
+  productQuantitiesByCategory: [
+    {
+      uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+      name: 'Bébé',
+      count: 150,
+      parentUuid: null
+    }
+  ],
+  productStockStats: {
+    inStockCount: 800,
+    outOfStockCount: 50
+  }
 })
 
 export const useDashboardGateway = (): DashboardGateway => {

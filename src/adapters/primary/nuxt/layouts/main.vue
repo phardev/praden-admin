@@ -25,8 +25,8 @@ const sidebarDialog = useDialog()
 
 const { t } = useI18n()
 
-const errorMessage = ref(undefined)
-const errorTitle = ref(undefined)
+const errorMessage = ref<string | undefined>(undefined)
+const errorTitle = ref<string | undefined>(undefined)
 
 const route = useRoute()
 watch(
@@ -37,7 +37,14 @@ watch(
   }
 )
 
-const getError = (err) => {
+interface AxiosError {
+  response?: {
+    status: number
+    data: unknown
+  }
+}
+
+const getError = (err: AxiosError) => {
   console.log(err)
   if (err.response) {
     const status = err.response.status
@@ -86,9 +93,13 @@ const translateValidationErrors = (errors: unknown): string => {
     return errors
   }
 
-  return errors
-    .map((error) => {
-      const parts = error.split(':').map((p) => p.trim())
+  if (!Array.isArray(errors)) {
+    return String(errors)
+  }
+
+  return (errors as string[])
+    .map((error: string) => {
+      const parts = error.split(':').map((p: string) => p.trim())
       if (parts.length === 2) {
         const field = parts[0]
         const message = parts[1].toLowerCase()

@@ -24,7 +24,7 @@ const emit = defineEmits<{
 
 const onCategoryClick = (category: ProductByCategory) => {
   if (category && props.data.length > 1) {
-    emit('select-category', category)
+    emit('select-category', category.uuid)
   }
 }
 
@@ -40,6 +40,6 @@ const pieChartConfig = {
   otherLabel: 'Autres',
   innerRadius: 0.5,
   tooltipLabel: 'Produits vendus',
-  showBackButton: props.data.some((item) => item.parentUuid)
+  showBackButton: props.data.some((item: ProductByCategory) => item.parentUuid)
 }
 </script>

@@ -21,7 +21,7 @@ definePageMeta({ layout: 'main' })
 
 const vm = ref()
 const route = useRoute()
-const productUuid = route.params.uuid
+const productUuid = route.params.uuid as string
 const router = useRouter()
 const routeName = router.currentRoute.value.name
 
@@ -35,7 +35,7 @@ onMounted(async () => {
     usePromotionGateway(),
     useDateProvider()
   )
-  vm.value = productFormEditVM(routeName)
+  vm.value = productFormEditVM(String(routeName))
 })
 
 const validate = async () => {

@@ -1,6 +1,6 @@
 import { Category } from '@core/entities/category'
 import { Product } from '@core/entities/product'
-import { isExistingImage, type ProductImage } from '@core/entities/productImage'
+import { isExistingImage, isNewImage, type ProductImage } from '@core/entities/productImage'
 import { ProductDoesNotExistsError } from '@core/errors/ProductDoesNotExistsError'
 import { ProductGateway } from '@core/gateways/productGateway'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
@@ -113,7 +113,7 @@ export class InMemoryProductGateway implements ProductGateway {
       for (const image of dto.orderedImages) {
         if (isExistingImage(image)) {
           images.push(image.source.url)
-        } else {
+        } else if (isNewImage(image)) {
           images.push(await getFileContent(image.source.file))
         }
       }

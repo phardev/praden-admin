@@ -5,7 +5,7 @@ import {
 import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import { PromotionFormFieldsReader } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
 import { PromotionFormVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormVM'
-import { Product } from '@core/entities/product'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 import { CreatePromotionDTO, ReductionType } from '@core/entities/promotion'
 import { UUID } from '@core/types/types'
 import { useFormStore } from '@store/formStore'
@@ -58,7 +58,7 @@ export class PromotionFormFieldsWriter extends FormFieldsWriter {
     const productStore = useProductStore()
     const searchStore = useSearchStore()
     const searchResult = searchStore.get(this.key)
-    const alreadyAdded = products.map((p: Product) => p.uuid)
+    const alreadyAdded = products.map((p: ProductListItem) => p.uuid)
     uuids
       .filter((uuid) => !alreadyAdded.includes(uuid))
       .forEach((uuid) => {
@@ -73,7 +73,7 @@ export class PromotionFormFieldsWriter extends FormFieldsWriter {
 
   removeProducts(uuids: Array<UUID>) {
     let products = this.fieldsReader.get('products')
-    products = products.filter((p: Product) => !uuids.includes(p.uuid))
+    products = products.filter((p: ProductListItem) => !uuids.includes(p.uuid))
     super.set('products', products)
   }
 }
@@ -133,17 +133,17 @@ export class PromotionFormCreateVM extends PromotionFormVM {
 
   getAvailableProducts() {
     const productStore = useProductStore()
-    const allProducts: Array<Product> = productStore.items
+    const allProducts = productStore.items
     const searchStore = useSearchStore()
-    const filteredProducts: Array<Product> = searchStore.get(this.key)
+    const filteredProducts: Array<ProductListItem> = searchStore.get(this.key)
     const addedProducts = this.fieldsReader.get('products')
     const res = (filteredProducts || allProducts).filter(
-      (p: Product) =>
-        !addedProducts.map((p: Product) => p.uuid).includes(p.uuid)
+      (p: ProductListItem) =>
+        !addedProducts.map((p: ProductListItem) => p.uuid).includes(p.uuid)
     )
     return {
       value: res
-        .map((p: Product) => {
+        .map((p: ProductListItem) => {
           return {
             uuid: p.uuid,
             name: p.name,

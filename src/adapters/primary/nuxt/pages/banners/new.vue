@@ -16,7 +16,7 @@ definePageMeta({ layout: 'main' })
 
 const router = useRouter()
 const routeName = router.currentRoute.value.name
-const vm = ref(bannerFormCreateVM(routeName))
+const vm = ref(bannerFormCreateVM(String(routeName)))
 
 const validate = async () => {
   await createBanner(vm.value.getDto(), useBannerGateway())

@@ -37,6 +37,11 @@ div(v-if="isLoading")
   )
 </template>
 <script setup lang="ts">
+interface TreeItem {
+  data: { uuid: string; name: string }
+  children?: TreeItem[]
+}
+
 const props = defineProps({
   isLoading: {
     type: Boolean,
@@ -45,7 +50,7 @@ const props = defineProps({
     }
   },
   items: {
-    type: Array,
+    type: Array as PropType<TreeItem[]>,
     default: () => {
       return []
     }
@@ -63,18 +68,18 @@ const props = defineProps({
     }
   },
   selection: {
-    type: Array<string>,
+    type: Array as PropType<string[]>,
     default: () => {
       return []
     }
   }
 })
 
-const openItems = ref([])
+const openItems = ref<string[]>([])
 
 const expandAll = () => {
-  const expandRecursive = (items) => {
-    items.forEach((item) => {
+  const expandRecursive = (items: TreeItem[]) => {
+    items.forEach((item: TreeItem) => {
       if (!openItems.value.includes(item.data.uuid)) {
         openItems.value.push(item.data.uuid)
       }
@@ -90,7 +95,7 @@ const collapseAll = () => {
   openItems.value = []
 }
 
-const updateOpenItems = (newOpenItems) => {
+const updateOpenItems = (newOpenItems: string[]) => {
   openItems.value = newOpenItems
 }
 const emit = defineEmits<{

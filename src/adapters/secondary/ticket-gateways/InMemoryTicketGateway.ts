@@ -68,7 +68,7 @@ export class InMemoryTicketGateway implements TicketGateway {
       content,
       type: TicketMessageType.PUBLIC,
       sentAt: this.dateProvider.now(),
-      authorName,
+      authorUuid: authorName,
       attachments: messageAttachments
     }
 
@@ -112,7 +112,7 @@ export class InMemoryTicketGateway implements TicketGateway {
       content,
       type: TicketMessageType.PRIVATE,
       sentAt: this.dateProvider.now(),
-      authorName,
+      authorUuid: authorName,
       attachments: messageAttachments
     }
 

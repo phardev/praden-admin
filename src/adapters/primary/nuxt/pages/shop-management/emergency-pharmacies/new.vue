@@ -26,14 +26,12 @@
 import EmergencyPharmacyForm from '@adapters/primary/nuxt/components/organisms/EmergencyPharmacyForm.vue'
 import { createEmergencyPharmacy } from '@core/usecases/emergency-pharmacies/createEmergencyPharmacy'
 import { useEmergencyPharmacyGateway } from '../../../../../../../gateways/emergencyPharmacyGateway'
-import { useUuidGenerator } from '../../../../../../../gateways/uuidGenerator'
 
 definePageMeta({ layout: 'main' })
 
 const { t } = useI18n()
 const isSaving = ref(false)
 const emergencyPharmacyGateway = useEmergencyPharmacyGateway()
-const uuidGenerator = useUuidGenerator()
 
 const onSubmit = async (data: {
   name: string
@@ -45,7 +43,7 @@ const onSubmit = async (data: {
   isSaving.value = true
 
   try {
-    await createEmergencyPharmacy(data, emergencyPharmacyGateway, uuidGenerator)
+    await createEmergencyPharmacy(data, emergencyPharmacyGateway)
 
     const toast = useToast()
     toast.add({
