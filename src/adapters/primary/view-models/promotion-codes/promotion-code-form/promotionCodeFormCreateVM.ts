@@ -3,10 +3,10 @@ import {
   FormFieldsWriter
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
-import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 import { ReductionType } from '@core/entities/promotion'
 import { PromotionScope } from '@core/entities/promotionCode'
 import { UUID } from '@core/types/types'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 import { useFormStore } from '@store/formStore'
 import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'

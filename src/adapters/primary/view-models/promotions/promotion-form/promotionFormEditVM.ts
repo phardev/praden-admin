@@ -7,8 +7,8 @@ import {
   PromotionFormFieldsReader
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormGetVM'
 import { PromotionFormVM } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormVM'
-import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 import { CreatePromotionDTO, ReductionType } from '@core/entities/promotion'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
 

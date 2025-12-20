@@ -25,7 +25,8 @@ describe('Get user profile', () => {
           { resource: 'dashboard' },
           { resource: 'newsletter' },
           { resource: 'administration' }
-        ]
+        ],
+        order: 0
       }
     }
 
@@ -42,7 +43,8 @@ describe('Get user profile', () => {
         role: {
           uuid: 'user',
           name: 'User',
-          permissions: [{ resource: 'dashboard' }]
+          permissions: [{ resource: 'dashboard' }],
+          order: 1
         }
       })
     })

@@ -28,7 +28,9 @@ export class InMemoryCustomerGateway implements CustomerGateway {
   create(dto: CreateCustomerDTO): Promise<Customer> {
     const customer: Customer = {
       ...dto,
-      uuid: this.uuidGenerator.generate()
+      uuid: this.uuidGenerator.generate(),
+      ordersCount: 0,
+      ordersTotal: 0
     }
     this.customers.push(customer)
     return Promise.resolve(customer)

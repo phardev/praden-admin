@@ -29,7 +29,9 @@ describe('Create customer', () => {
     }
     const expectedCustomer: Customer = {
       ...customerDTO,
-      uuid
+      uuid,
+      ordersCount: 0,
+      ordersTotal: 0
     }
     beforeEach(async () => {
       await whenCreateCustomer(uuid, customerDTO)
@@ -52,7 +54,9 @@ describe('Create customer', () => {
     }
     const expectedCustomer: Customer = {
       ...customerDTO,
-      uuid
+      uuid,
+      ordersCount: 0,
+      ordersTotal: 0
     }
     beforeEach(async () => {
       await whenCreateCustomer(uuid, customerDTO)

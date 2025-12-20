@@ -76,13 +76,13 @@
 <script lang="ts" setup>
 import { getOrderVM } from '@adapters/primary/view-models/orders/get-order/getOrderVM'
 import { getPreparationVM } from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
+import type { Delivery } from '@core/entities/delivery'
 import { downloadDeliveryLabel } from '@core/usecases/deliveries/delivery-label-download/downloadDeliveryLabel'
 import { printDeliveryLabel } from '@core/usecases/deliveries/delivery-label-printing/printDeliveryLabel'
 import { markDeliveryAsDelivered } from '@core/usecases/deliveries/mark-delivery-as-delivered/markDeliveryAsDelivered'
 import { getOrder } from '@core/usecases/order/get-order/getOrder'
 import { getPreparation } from '@core/usecases/order/get-preparation/getPreparation'
 import { getOrderTickets } from '@core/usecases/support/getOrderTickets'
-import type { Delivery } from '@core/entities/delivery'
 import { useDeliveryStore } from '@store/deliveryStore'
 import { useCustomerGateway } from '../../../../../../gateways/customerGateway'
 import { useDeliveryGateway } from '../../../../../../gateways/deliveryGateway'
@@ -151,7 +151,9 @@ const markAsDelivered = async (delivery: Delivery) => {
 }
 
 const getInvoice = () => {
-  const encodedInvoiceNumber = encodeURIComponent(orderVM.value.invoiceNumber || '')
+  const encodedInvoiceNumber = encodeURIComponent(
+    orderVM.value.invoiceNumber || ''
+  )
   router.push(`/invoices/${encodedInvoiceNumber}`)
 }
 </script>

@@ -64,7 +64,9 @@ export abstract class PromotionFormVM {
           laboratory: product.laboratory ? product.laboratory.name : ''
         }
       })
-      .sort((a: PromotionProductItemVM, b: PromotionProductItemVM) => a.name.localeCompare(b.name))
+      .sort((a: PromotionProductItemVM, b: PromotionProductItemVM) =>
+        a.name.localeCompare(b.name)
+      )
     return {
       value,
       canEdit: true

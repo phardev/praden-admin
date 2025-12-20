@@ -42,7 +42,7 @@ describe('Reply to ticket', () => {
             uuid: 'reply-message-uuid',
             content: 'Merci pour votre message',
             type: TicketMessageType.PUBLIC,
-            authorName: 'Service Client',
+            authorUuid: 'customer-service-uuid',
             sentAt: now,
             attachments: []
           }
@@ -63,7 +63,7 @@ describe('Reply to ticket', () => {
             uuid: 'reply-message-uuid',
             content: 'Merci pour votre message',
             type: TicketMessageType.PUBLIC,
-            authorName: 'Service Client',
+            authorUuid: 'customer-service-uuid',
             sentAt: now,
             attachments: []
           }
@@ -86,7 +86,7 @@ describe('Reply to ticket', () => {
             uuid: 'reply-message-uuid',
             content: 'Merci pour votre message',
             type: TicketMessageType.PUBLIC,
-            authorName: 'Service Client',
+            authorUuid: 'customer-service-uuid',
             sentAt: now,
             attachments: []
           }
@@ -140,7 +140,12 @@ describe('Reply to ticket', () => {
 
   const whenReplyToTicket = async (ticketUuid: string, content: string) => {
     uuidGenerator.setNext('reply-message-uuid')
-    await replyToTicket(ticketUuid, content, 'Service Client', ticketGateway)
+    await replyToTicket(
+      ticketUuid,
+      content,
+      'customer-service-uuid',
+      ticketGateway
+    )
   }
 
   const whenReplyToTicketWithAttachments = async (
@@ -152,7 +157,7 @@ describe('Reply to ticket', () => {
     await replyToTicket(
       ticketUuid,
       content,
-      'Service Client',
+      'customer-service-uuid',
       ticketGateway,
       attachments
     )

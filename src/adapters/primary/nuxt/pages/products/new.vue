@@ -24,10 +24,7 @@ const router = useRouter()
 const routeName = String(router.currentRoute.value.name)
 const vm = ref(productFormCreateVM(routeName))
 const validate = async () => {
-  await createProduct(
-    vm.value.getDto(),
-    useProductGateway()
-  )
+  await createProduct(vm.value.getDto(), useProductGateway())
   router.push('/products/')
 }
 </script>

@@ -2,7 +2,10 @@ import { Customer } from '@core/entities/customer'
 import { CustomerGateway } from '@core/gateways/customerGateway'
 import { useCustomerStore } from '@store/customerStore'
 
-export type CreateCustomerDTO = Omit<Customer, 'uuid'>
+export type CreateCustomerDTO = Omit<
+  Customer,
+  'uuid' | 'ordersCount' | 'ordersTotal' | 'newsletterSubscription'
+>
 
 export const createCustomer = async (
   dto: CreateCustomerDTO,

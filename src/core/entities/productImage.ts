@@ -39,5 +39,6 @@ export const isExistingImage = (
 
 export const isNewImage = (
   image: ProductImage
-): image is ProductImage & { source: { type: 'new'; file: File; previewUrl: string } } =>
-  image.source.type === 'new'
+): image is ProductImage & {
+  source: { type: 'new'; file: File; previewUrl: string }
+} => image.source.type === 'new'
