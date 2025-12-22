@@ -71,7 +71,12 @@ definePageMeta({ layout: 'main' })
 
 const { t } = useI18n()
 const isDeleteModalOpen = ref(false)
-const pharmacyToDelete = ref(null)
+interface PharmacyToDelete {
+  uuid: string
+  name: string
+}
+
+const pharmacyToDelete = ref<PharmacyToDelete | null>(null)
 const emergencyPharmacyGateway = useEmergencyPharmacyGateway()
 
 onMounted(async () => {
@@ -80,7 +85,7 @@ onMounted(async () => {
 
 const listVM = computed(() => emergencyPharmaciesListVM())
 
-const openDeleteModal = (pharmacy) => {
+const openDeleteModal = (pharmacy: PharmacyToDelete) => {
   pharmacyToDelete.value = pharmacy
   isDeleteModalOpen.value = true
 }

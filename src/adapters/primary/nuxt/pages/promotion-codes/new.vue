@@ -15,7 +15,7 @@ import { usePromotionCodeGateway } from '../../../../../../gateways/promotionCod
 definePageMeta({ layout: 'main' })
 
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = router.currentRoute.value.name as string
 const vm = ref(promotionCodeFormCreateVM(routeName))
 
 const validate = async () => {

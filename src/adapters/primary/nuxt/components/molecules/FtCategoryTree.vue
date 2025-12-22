@@ -70,11 +70,16 @@ const props = defineProps({
   }
 })
 
-const openItems = ref([])
+interface CategoryTreeItem {
+  data: { uuid: string; name: string; miniature: string }
+  children: CategoryTreeItem[]
+}
+
+const openItems = ref<string[]>([])
 
 const expandAll = () => {
-  const expandRecursive = (items) => {
-    items.forEach((item) => {
+  const expandRecursive = (items: CategoryTreeItem[]) => {
+    items.forEach((item: CategoryTreeItem) => {
       if (!openItems.value.includes(item.data.uuid)) {
         openItems.value.push(item.data.uuid)
       }
@@ -83,14 +88,14 @@ const expandAll = () => {
       }
     })
   }
-  expandRecursive(props.items)
+  expandRecursive(props.items as CategoryTreeItem[])
 }
 
 const collapseAll = () => {
   openItems.value = []
 }
 
-const updateOpenItems = (newOpenItems) => {
+const updateOpenItems = (newOpenItems: string[]) => {
   openItems.value = newOpenItems
 }
 const emit = defineEmits<{

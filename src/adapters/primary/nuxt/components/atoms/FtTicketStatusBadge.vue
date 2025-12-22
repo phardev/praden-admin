@@ -16,13 +16,15 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n()
 
+type SizeType = 'xs' | 'sm' | 'md'
+
 const sizeClasses = computed(() => {
-  const sizes = {
+  const sizes: Record<SizeType, string> = {
     xs: 'text-xs px-2 py-1',
     sm: 'text-sm px-2 py-1',
     md: 'text-sm px-3 py-1'
   }
-  return sizes[props.size]
+  return sizes[props.size as SizeType]
 })
 
 const badgeClass = computed(() => {

@@ -57,6 +57,11 @@
 <script setup lang="ts">
 import FtCheckbox from '@adapters/primary/nuxt/components/atoms/FtCheckbox.vue'
 
+interface CategoryTreeItem {
+  data: { uuid: string; name: string; miniature: string }
+  children: CategoryTreeItem[]
+}
+
 const props = defineProps({
   items: {
     type: Array,
@@ -90,9 +95,9 @@ const props = defineProps({
   }
 })
 
-const toggle = (item) => {
+const toggle = (item: CategoryTreeItem) => {
   const uuid = item.data.uuid
-  const newOpenItems = [...props.openItems]
+  const newOpenItems = [...props.openItems] as string[]
   if (newOpenItems.includes(uuid)) {
     newOpenItems.splice(newOpenItems.indexOf(uuid), 1)
   } else {
@@ -101,9 +106,9 @@ const toggle = (item) => {
   updateOpenItems(newOpenItems)
 }
 
-const isSelected = (uuid) => props.selection.includes(uuid)
+const isSelected = (uuid: string) => props.selection.includes(uuid)
 
-const isOpen = (uuid) => props.openItems.includes(uuid)
+const isOpen = (uuid: string) => props.openItems.includes(uuid)
 
 const emit = defineEmits<{
   (e: 'view', uuid: string): void
@@ -125,31 +130,36 @@ const selected = async (uuid: string) => {
   }
 }
 
-const isIndeterminate = (item) => {
+const isIndeterminate = (item: CategoryTreeItem): boolean => {
   if (item.children.length === 0) return false
 
-  const childIndeterminateStates = item.children.map((child) =>
-    isIndeterminate(child)
+  const childIndeterminateStates = item.children.map(
+    (child: CategoryTreeItem) => isIndeterminate(child)
   )
-  const childSelectedStates = item.children.map((child) =>
+  const childSelectedStates = item.children.map((child: CategoryTreeItem) =>
     isSelected(child.data.uuid)
   )
 
-  const hasSelectedChildren = childSelectedStates.some((state) => state)
-  const hasUnselectedChildren = childSelectedStates.some((state) => !state)
+  const hasSelectedChildren = childSelectedStates.some(
+    (state: boolean) => state
+  )
+  const hasUnselectedChildren = childSelectedStates.some(
+    (state: boolean) => !state
+  )
 
   return (
     (!isSelected(item.data.uuid) &&
       hasSelectedChildren &&
       hasUnselectedChildren) ||
-    childIndeterminateStates.some((state) => state)
+    childIndeterminateStates.some((state: boolean) => state)
   )
 }
 
-const hasSelectedChild = (item) => {
+const hasSelectedChild = (item: CategoryTreeItem): boolean => {
   if (!item.children || !item.children.length) return false
   return item.children.some(
-    (child) => isSelected(child.data.uuid) || hasSelectedChild(child)
+    (child: CategoryTreeItem) =>
+      isSelected(child.data.uuid) || hasSelectedChild(child)
   )
 }
 </script>

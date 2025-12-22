@@ -88,7 +88,49 @@ gateway.feedWith({
         name: 'Product 3 Laboratory'
       }
     }
-  ]
+  ],
+  ordersByDeliveryMethod: [
+    {
+      deliveryMethodUuid: 'dm-1',
+      deliveryMethodName: 'Standard',
+      count: 500
+    },
+    {
+      deliveryMethodUuid: 'dm-2',
+      deliveryMethodName: 'Express',
+      count: 300
+    }
+  ],
+  ordersByLaboratory: [
+    {
+      laboratoryUuid: 'lab-1',
+      laboratoryName: 'Laboratory 1',
+      count: 400
+    },
+    {
+      laboratoryUuid: 'lab-2',
+      laboratoryName: 'Laboratory 2',
+      count: 350
+    }
+  ],
+  productQuantitiesByCategory: [
+    {
+      uuid: 'cat-1',
+      name: 'Category 1',
+      count: 150,
+      parentUuid: null
+    },
+    {
+      uuid: 'cat-2',
+      name: 'Category 2',
+      count: 120,
+      parentUuid: null
+    }
+  ],
+  productStockStats: {
+    inStockCount: 850,
+    outOfStockCount: 50
+  }
 })
 
 export const useDashboardGateway = (): DashboardGateway => {

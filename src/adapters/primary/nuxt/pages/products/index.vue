@@ -91,17 +91,22 @@ onMounted(() => {
 })
 
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = router.currentRoute.value.name as string
 
 const productsVM = computed(() => {
   return getProductsVM(routeName)
 })
 
-const load = async ($state) => {
+interface InfiniteLoadingState {
+  loaded: () => void
+  complete: () => void
+}
+
+const load = async ($state: InfiniteLoadingState) => {
   if (!search.value) {
     await listProducts(limit, offset, productGateway)
     offset += limit
-    if (productsVM.hasMore) {
+    if (productsVM.value.hasMore) {
       $state.loaded()
     } else {
       $state.complete()
@@ -114,9 +119,9 @@ const load = async ($state) => {
 const search = ref(productsVM.value.currentSearch?.query)
 const productStatus = ref(productsVM.value.currentSearch?.status)
 const minimumQueryLength = 3
-let debounceTimer
+let debounceTimer: ReturnType<typeof setTimeout> | undefined
 
-const buildFilters = (partial) => {
+const buildFilters = (partial: Record<string, unknown>) => {
   return {
     query: search.value,
     status: productStatus.value,

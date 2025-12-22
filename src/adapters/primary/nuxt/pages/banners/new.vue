@@ -15,7 +15,7 @@ import { useBannerGateway } from '../../../../../../gateways/bannerGateway'
 definePageMeta({ layout: 'main' })
 
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = router.currentRoute.value.name as string
 const vm = ref(bannerFormCreateVM(routeName))
 
 const validate = async () => {

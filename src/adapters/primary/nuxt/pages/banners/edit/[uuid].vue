@@ -17,9 +17,9 @@ definePageMeta({ layout: 'main' })
 
 const vm = ref()
 const route = useRoute()
-const bannerUuid = route.params.uuid
+const bannerUuid = route.params.uuid as string
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = router.currentRoute.value.name as string
 
 onMounted(async () => {
   await getBanner(bannerUuid, useBannerGateway())

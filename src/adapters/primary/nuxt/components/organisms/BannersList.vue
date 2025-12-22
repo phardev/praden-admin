@@ -60,7 +60,13 @@ const props = defineProps({
   }
 })
 
-const allBanners = ref([])
+interface BannerItem {
+  uuid: string
+  isInProgress: boolean
+  isFuture: boolean
+}
+
+const allBanners = ref<BannerItem[]>([])
 
 watch(
   () => props.bannersVm,
@@ -72,9 +78,9 @@ watch(
 
 const banners = computed({
   get: () => allBanners.value,
-  set: (v) => {
+  set: (v: BannerItem[]) => {
     reorderBanners(
-      v.map((b) => b.uuid),
+      v.map((b: BannerItem) => b.uuid),
       useBannerGateway()
     )
   }

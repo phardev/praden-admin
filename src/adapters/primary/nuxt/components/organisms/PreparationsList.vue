@@ -128,7 +128,7 @@ const router = useRouter()
 
 const start = () => {
   window.print()
-  startPreparations(useOrderGateway(), useEmailGateway())
+  startPreparations(useOrderGateway())
   router.push('/preparations')
 }
 </script>

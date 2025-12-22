@@ -132,7 +132,7 @@ import { editAnnouncementBar } from '@core/usecases/announcement-bar/announcemen
 import { getAnnouncementBar } from '@core/usecases/announcement-bar/announcement-bar-get/getAnnouncementBar'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import { useAnnouncementBarGateway } from '~/gateways/announcementBarGateway'
+import { useAnnouncementBarGateway } from '../../../../../../gateways/announcementBarGateway'
 
 interface Props {
   modelValue: boolean

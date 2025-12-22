@@ -19,12 +19,12 @@ import { usePromotionGateway } from '../../../../../../gateways/promotionGateway
 definePageMeta({ layout: 'main' })
 
 onMounted(() => {
-  listProducts(useProductGateway())
+  listProducts(1000, 0, useProductGateway())
   listCategories(useCategoryGateway())
 })
 
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = router.currentRoute.value.name as string
 const vm = ref(promotionFormCreateVM(routeName))
 
 const validate = async () => {
