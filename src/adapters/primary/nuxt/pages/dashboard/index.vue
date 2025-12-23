@@ -198,9 +198,9 @@ div.p-8.text-center(v-else)
 
 <script lang="ts" setup>
 import { useUserProfileStore } from '@store/userProfileStore'
+import { formatCurrency } from '@utils/formatters'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import { formatCurrency } from '@/src/utils/formatters'
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
 import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
 import { listCategories } from '../../../../../core/usecases/categories/list-categories/listCategories'

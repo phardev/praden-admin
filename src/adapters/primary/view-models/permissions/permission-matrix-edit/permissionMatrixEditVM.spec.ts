@@ -60,7 +60,8 @@ describe('PermissionMatrixEditVM', () => {
           { resource: 'dashboard' },
           { resource: 'newsletter' },
           { resource: 'administration' }
-        ]
+        ],
+        order: 0
       },
       {
         uuid: 'role-pharmacist',
@@ -68,12 +69,14 @@ describe('PermissionMatrixEditVM', () => {
         permissions: [
           { resource: 'dashboard' },
           { resource: 'user-management' }
-        ]
+        ],
+        order: 1
       },
       {
         uuid: 'role-assistant',
         name: 'Assistant',
-        permissions: [{ resource: 'dashboard' }]
+        permissions: [{ resource: 'dashboard' }],
+        order: 2
       }
     ]
 
@@ -250,8 +253,6 @@ describe('PermissionMatrixEditVM', () => {
 
   describe('Update original functionality', () => {
     it('should make current permissions the new baseline', () => {
-      const vm = permissionMatrixEditVM(initialPermissions, roles)
-
       vm.setPermission('role-admin', 'user-management', true)
       vm.setPermission('role-pharmacist', 'newsletter', true)
 
@@ -264,8 +265,6 @@ describe('PermissionMatrixEditVM', () => {
     })
 
     it('should allow new changes after updating original', () => {
-      const vm = permissionMatrixEditVM(initialPermissions, roles)
-
       vm.setPermission('role-admin', 'user-management', true)
       vm.updateOriginal()
 

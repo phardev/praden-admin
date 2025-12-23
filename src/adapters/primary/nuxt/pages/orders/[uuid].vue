@@ -91,7 +91,7 @@ import { useTicketGateway } from '../../../../../../gateways/ticketGateway'
 definePageMeta({ layout: 'main' })
 
 const route = useRoute()
-const orderUuid = route.params.uuid
+const orderUuid = String(route.params.uuid)
 const router = useRouter()
 const deliveryStore = useDeliveryStore()
 
@@ -109,11 +109,11 @@ const orderVM = computed(() => {
   return getOrderVM()
 })
 
-const printLabel = (delivery) => {
+const printLabel = (delivery: { uuid: string }) => {
   printDeliveryLabel(delivery.uuid, useDeliveryGateway())
 }
 
-const downloadLabel = async (delivery) => {
+const downloadLabel = async (delivery: { uuid: string }) => {
   const newWindow = window.open('about:blank', '_blank')
 
   if (!newWindow) {
@@ -144,13 +144,13 @@ const downloadLabel = async (delivery) => {
   }
 }
 
-const markAsDelivered = async (delivery) => {
+const markAsDelivered = async (delivery: { uuid: string }) => {
   await markDeliveryAsDelivered(delivery.uuid, useDeliveryGateway())
   router.push('/orders/')
 }
 
 const getInvoice = () => {
-  const encodedInvoiceNumber = encodeURIComponent(orderVM.value.invoiceNumber)
+  const encodedInvoiceNumber = encodeURIComponent(orderVM.value.invoiceNumber!)
   router.push(`/invoices/${encodedInvoiceNumber}`)
 }
 </script>

@@ -163,7 +163,7 @@ const props = defineProps({
 
 const currentVM = toRef(props, 'vm')
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = String(router.currentRoute.value.name ?? '')
 const availableProductSelector = useSelection()
 const addedProductSelector = useSelection()
 const search = ref('')
@@ -184,14 +184,15 @@ const descriptionChanged = (description: string) => {
   currentVM?.value?.set('description', description)
 }
 
-let debounceTimer
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
 const minimumQueryLength = 3
 
-const searchChanged = (e: any) => {
+const searchChanged = (e: Event) => {
   if (debounceTimer) clearTimeout(debounceTimer)
   debounceTimer = setTimeout(() => {
+    const target = e.target as HTMLInputElement
     const filters = {
-      query: e.target.value,
+      query: target.value,
       minimumQueryLength
     }
     searchProducts(routeName, filters, useSearchGateway())

@@ -15,7 +15,7 @@ import { useCustomerGateway } from '../../../../../../gateways/customerGateway'
 definePageMeta({ layout: 'main' })
 
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = String(router.currentRoute.value.name ?? '')
 const vm = ref(customerFormCreateVM(routeName))
 
 const validate = async () => {

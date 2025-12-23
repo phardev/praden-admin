@@ -61,6 +61,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { EmergencyPharmacy } from '@core/entities/emergencyPharmacy'
 import EmergencyPharmaciesList from '@adapters/primary/nuxt/components/organisms/EmergencyPharmaciesList.vue'
 import { emergencyPharmaciesListVM } from '@adapters/primary/view-models/emergency-pharmacies/emergency-pharmacies-list/emergencyPharmaciesListVM'
 import { deleteEmergencyPharmacy } from '@core/usecases/emergency-pharmacies/deleteEmergencyPharmacy'
@@ -71,7 +72,7 @@ definePageMeta({ layout: 'main' })
 
 const { t } = useI18n()
 const isDeleteModalOpen = ref(false)
-const pharmacyToDelete = ref(null)
+const pharmacyToDelete = ref<EmergencyPharmacy | null>(null)
 const emergencyPharmacyGateway = useEmergencyPharmacyGateway()
 
 onMounted(async () => {
@@ -80,7 +81,7 @@ onMounted(async () => {
 
 const listVM = computed(() => emergencyPharmaciesListVM())
 
-const openDeleteModal = (pharmacy) => {
+const openDeleteModal = (pharmacy: EmergencyPharmacy) => {
   pharmacyToDelete.value = pharmacy
   isDeleteModalOpen.value = true
 }

@@ -153,7 +153,7 @@
 
 <script lang="ts" setup>
 import { useUserProfileStore } from '@store/userProfileStore'
-import { formatCurrency } from '@/src/utils/formatters'
+import { formatCurrency } from '@utils/formatters'
 import { useDateProvider } from '../../../../../gateways/dateProvider'
 import { getPermissionsVM } from '../../view-models/permissions/getPermissionsVM'
 import { useDashboardData } from '../composables/useDashboardData'

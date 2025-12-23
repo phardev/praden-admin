@@ -37,6 +37,12 @@ div(v-if="isLoading")
   )
 </template>
 <script setup lang="ts">
+import type {
+  TreeCategoryNodeVM,
+  TreeNode
+} from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
+import type { UUID } from '@core/types/types'
+
 const props = defineProps({
   isLoading: {
     type: Boolean,
@@ -45,7 +51,7 @@ const props = defineProps({
     }
   },
   items: {
-    type: Array,
+    type: Array<TreeNode<TreeCategoryNodeVM>>,
     default: () => {
       return []
     }
@@ -70,11 +76,13 @@ const props = defineProps({
   }
 })
 
-const openItems = ref([])
+const openItems = ref<Array<UUID>>([])
 
 const expandAll = () => {
-  const expandRecursive = (items) => {
-    items.forEach((item) => {
+  const expandRecursive = (
+    items: Array<TreeNode<TreeCategoryNodeVM>>
+  ): void => {
+    items.forEach((item: TreeNode<TreeCategoryNodeVM>) => {
       if (!openItems.value.includes(item.data.uuid)) {
         openItems.value.push(item.data.uuid)
       }
@@ -90,13 +98,13 @@ const collapseAll = () => {
   openItems.value = []
 }
 
-const updateOpenItems = (newOpenItems) => {
+const updateOpenItems = (newOpenItems: Array<UUID>): void => {
   openItems.value = newOpenItems
 }
 const emit = defineEmits<{
   (e: 'view', uuid: string): void
   (e: 'selected', uuid: string): void
-  (e: 'update:open-items', items: Array<any>): void
+  (e: 'update:open-items', items: Array<UUID>): void
 }>()
 
 const view = (uuid: string): void => {
