@@ -5,7 +5,7 @@ ft-modal(v-model="model")
       label="Choisissez le produit" name="productChoice"
     )
       ft-autocomplete(
-        v-model="productSelected"
+        v-model="selectedProduct"
         :options="products"
         by="reference"
         option-attribute="name"
