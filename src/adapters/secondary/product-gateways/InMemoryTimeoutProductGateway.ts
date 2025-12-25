@@ -15,7 +15,10 @@ export class InMemoryTimeoutProductGateway extends InMemoryProductGateway {
     this.timeoutInMs = timeoutInMs
   }
 
-  override async list(limit: number, offset: number): Promise<Array<ProductListItem>> {
+  override async list(
+    limit: number,
+    offset: number
+  ): Promise<Array<ProductListItem>> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.list(limit, offset))

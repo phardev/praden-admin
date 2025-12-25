@@ -9,41 +9,12 @@ import {
 
 describe('PermissionMatrixEditVM', () => {
   let vm: PermissionMatrixEditVM
-  let initialPermissions: Record<string, Record<string, boolean>>
-  let roles: Array<{ uuid: string; name: string }>
 
   beforeEach(() => {
     setActivePinia(createPinia())
 
     const roleStore = useRoleStore()
     const systemResourceStore = useSystemResourceStore()
-
-    roles = [
-      { uuid: 'role-admin', name: 'Administrateur' },
-      { uuid: 'role-pharmacist', name: 'Pharmacien' },
-      { uuid: 'role-assistant', name: 'Assistant' }
-    ]
-
-    initialPermissions = {
-      'role-admin': {
-        dashboard: true,
-        newsletter: true,
-        administration: true,
-        'user-management': false
-      },
-      'role-pharmacist': {
-        dashboard: true,
-        newsletter: false,
-        administration: false,
-        'user-management': true
-      },
-      'role-assistant': {
-        dashboard: true,
-        newsletter: false,
-        administration: false,
-        'user-management': false
-      }
-    }
 
     systemResourceStore.items = [
       'dashboard',

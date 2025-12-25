@@ -20,7 +20,11 @@ describe('deliveryPriceRuleListVM', () => {
         name: 'Colissimo',
         description: 'Livraison Colissimo',
         type: 'DELIVERY' as any,
-        carrier: { uuid: 'carrier-colissimo', name: 'Colissimo', type: 'COLISSIMO' as any },
+        carrier: {
+          uuid: 'carrier-colissimo',
+          name: 'Colissimo',
+          type: 'COLISSIMO' as any
+        },
         priceRanges: []
       },
       {
@@ -28,7 +32,11 @@ describe('deliveryPriceRuleListVM', () => {
         name: 'Mondial Relay',
         description: 'Livraison Mondial Relay',
         type: 'DELIVERY' as any,
-        carrier: { uuid: 'carrier-mondial-relay', name: 'Mondial Relay', type: 'DPD' as any },
+        carrier: {
+          uuid: 'carrier-mondial-relay',
+          name: 'Mondial Relay',
+          type: 'DPD' as any
+        },
         priceRanges: []
       }
     ])
