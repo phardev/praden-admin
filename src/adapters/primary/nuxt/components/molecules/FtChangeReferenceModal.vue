@@ -11,7 +11,7 @@ ft-modal(v-model="model")
         option-attribute="name"
         value-attribute="reference"
         :search-attributes="['reference', 'name']"
-        @update:model-value="productSelected"
+        @update:model-value="handleProductSelected"
       )
         template(#option="{ option: product }")
           span {{ product.reference }} - {{ product.name }}
@@ -44,7 +44,9 @@ const emit = defineEmits<{
   (e: 'referenceChanged', oldReference: string, newReference: string): void
 }>()
 
-const productSelected = (reference: string) => {
+const productSelected = ref('')
+
+const handleProductSelected = (reference: string) => {
   scanModal.value = true
   selectedProduct.value = reference
 }
