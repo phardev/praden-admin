@@ -76,6 +76,11 @@ export const fullMenu: NavigationMenu = {
           name: 'Livraisons',
           icon: 'material-symbols-light:delivery-truck-speed-outline',
           href: '/deliveries'
+        },
+        {
+          name: 'Règles de prix',
+          icon: 'mdi:truck-delivery-outline',
+          href: '/delivery-price-rules'
         }
       ]
     },

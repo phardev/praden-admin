@@ -59,7 +59,8 @@ export class RoleFormFieldsReader extends FormFieldsReader {
       [PermissionResource.BANNERS]: 'Bannières',
       [PermissionResource.STAFF]: 'Équipe',
       [PermissionResource.RESEARCH]: 'Recherche',
-      [PermissionResource.SHOP_MANAGEMENT]: 'Gestion Boutique'
+      [PermissionResource.SHOP_MANAGEMENT]: 'Gestion Boutique',
+      [PermissionResource.DELIVERY_PRICE_RULES]: 'Règles de prix de livraison'
     }
 
     return Object.values(PermissionResource).map((resource) => ({

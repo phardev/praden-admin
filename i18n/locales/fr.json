@@ -45,7 +45,44 @@
     "back": "Retour",
     "edit": "Modifier",
     "expandAll": "Voir tout",
-    "collapseAll": "Cacher tout"
+    "collapseAll": "Cacher tout",
+    "active": "Actif",
+    "inactive": "Inactif"
+  },
+  "deliveryPriceRules": {
+    "title": "Règles de prix de livraison",
+    "create": "Créer une règle",
+    "noRules": "Aucune règle de prix configurée",
+    "confirmDelete": "Supprimer cette règle ?",
+    "confirmDeleteMessage": "Êtes-vous sûr de vouloir supprimer cette règle de prix de livraison ?",
+    "deleteSuccess": "Règle supprimée avec succès",
+    "createSuccess": "Règle créée avec succès",
+    "updateSuccess": "Règle mise à jour avec succès",
+    "fields": {
+      "priority": "Priorité",
+      "name": "Nom",
+      "deliveryMethod": "Mode de livraison",
+      "price": "Prix de la livraison",
+      "minOrderValue": "Montant minimum",
+      "maxWeight": "Poids max.",
+      "dateRange": "Période de validité",
+      "isActive": "Statut",
+      "priorityHelp": "Les règles avec une priorité plus élevée sont appliquées en premier",
+      "startDate": "Date de début",
+      "endDate": "Date de fin"
+    },
+    "form": {
+      "title": {
+        "create": "Créer une règle de prix",
+        "edit": "Modifier la règle de prix"
+      },
+      "selectDeliveryMethod": "Sélectionner un mode de livraison",
+      "namePlaceholder": "Ex: Livraison gratuite dès 39€",
+      "priceUnit": "€",
+      "weightUnit": "kg",
+      "selectStartDate": "Sélectionner une date de début",
+      "selectEndDate": "Sélectionner une date de fin"
+    }
   },
   "customers": {
     "viewTitle": "Voir client",
@@ -346,6 +383,7 @@
       "invoices": "Factures",
       "locations": "Emplacements",
       "delivery-methods": "Modes de livraison",
+      "delivery-price-rules": "Règles de prix de livraison",
       "carriers": "Transporteurs",
       "roles": "Rôles et permissions",
       "shop-management": "Gestion boutique"

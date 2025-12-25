@@ -148,7 +148,7 @@ watch(
   },
   { immediate: true, deep: true }
 )
-const dto = (partial) => {
+const dto = (partial: Record<string, any>) => {
   return {
     ...props.initialFilters,
     query: search.value,
@@ -248,7 +248,7 @@ const clearPaymentStatus = () => {
   )
 }
 
-const clicked = (reference) => {
+const clicked = (reference: string) => {
   const router = useRouter()
   router.push(`/orders/${reference}`)
 }

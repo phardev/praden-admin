@@ -210,7 +210,7 @@ definePageMeta({ layout: 'main' })
 
 const search = ref('')
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = String(router.currentRoute.value.name ?? '')
 const availableProductSelector = useSelection()
 const addedProductSelector = useSelection()
 
@@ -294,14 +294,15 @@ const getScopeIcon = (scope: PromotionScope) => {
     : 'material-symbols-light:delivery-truck-speed-outline'
 }
 
-let debounceTimer
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
 const minimumQueryLength = 3
 
-const searchChanged = (e: any) => {
+const searchChanged = (e: Event) => {
   if (debounceTimer) clearTimeout(debounceTimer)
   debounceTimer = setTimeout(() => {
+    const target = e.target as HTMLInputElement
     const filters = {
-      query: e.target.value,
+      query: target.value,
       minimumQueryLength
     }
     searchProducts(routeName, filters, useSearchGateway())

@@ -122,8 +122,9 @@ export const pharmacistSelectionFormVM = () => {
         weight: 0,
         laboratory: undefined,
         isMedicine: false,
-        flags: [],
+        flags: {},
         promotions: [],
+        maxQuantityForOrder: undefined,
         order: index
       }
     })

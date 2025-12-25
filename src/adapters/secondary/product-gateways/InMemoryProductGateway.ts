@@ -45,6 +45,8 @@ export class InMemoryProductGateway implements ProductGateway {
       priceWithoutTax: product.priceWithoutTax,
       percentTaxRate: product.percentTaxRate,
       availableStock: product.availableStock,
+      minStockToSell: product.minStockToSell,
+      stockManagementMode: product.stockManagementMode,
       status: product.status,
       flags: product.flags,
       miniature: product.miniature,
@@ -80,6 +82,8 @@ export class InMemoryProductGateway implements ProductGateway {
       percentTaxRate: dto.percentTaxRate,
       locations: dto.locations,
       availableStock: dto.availableStock,
+      minStockToSell: dto.minStockToSell,
+      stockManagementMode: dto.stockManagementMode,
       laboratory: dto.laboratory,
       description: dto.description,
       instructionsForUse: dto.instructionsForUse,
@@ -112,9 +116,15 @@ export class InMemoryProductGateway implements ProductGateway {
       const images: Array<string> = []
       for (const image of dto.orderedImages) {
         if (isExistingImage(image)) {
-          images.push(image.source.url)
+          const source = image.source
+          if (source.type === 'existing') {
+            images.push(source.url)
+          }
         } else {
-          images.push(await getFileContent(image.source.file))
+          const source = image.source
+          if (source.type === 'new') {
+            images.push(await getFileContent(source.file))
+          }
         }
       }
       this.products[index].images = images

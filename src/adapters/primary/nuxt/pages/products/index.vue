@@ -52,6 +52,7 @@
 
 <script lang="ts" setup>
 import { getProductsVM } from '@adapters/primary/view-models/products/get-products/getProductsVM'
+import type { ProductStatus } from '@core/entities/product'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { listProducts } from '@core/usecases/product/product-listing/listProducts'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
@@ -62,9 +63,13 @@ import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
 import { useProductGateway } from '../../../../../../gateways/productGateway'
 import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 import 'v3-infinite-loading/lib/style.css'
-import { ProductStatus } from '@core/entities/product'
 import { bulkEditProduct } from '@core/usecases/product/product-edition/bulkEditProduct'
 import { useSelection } from '../../composables/useSelection'
+
+interface InfiniteLoadingState {
+  loaded: () => void
+  complete: () => void
+}
 
 definePageMeta({ layout: 'main' })
 
@@ -91,17 +96,17 @@ onMounted(() => {
 })
 
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = String(router.currentRoute.value.name ?? '')
 
 const productsVM = computed(() => {
   return getProductsVM(routeName)
 })
 
-const load = async ($state) => {
+const load = async ($state: InfiniteLoadingState) => {
   if (!search.value) {
     await listProducts(limit, offset, productGateway)
     offset += limit
-    if (productsVM.hasMore) {
+    if (productsVM.value.hasMore) {
       $state.loaded()
     } else {
       $state.complete()
@@ -114,9 +119,13 @@ const load = async ($state) => {
 const search = ref(productsVM.value.currentSearch?.query)
 const productStatus = ref(productsVM.value.currentSearch?.status)
 const minimumQueryLength = 3
-let debounceTimer
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
-const buildFilters = (partial) => {
+const buildFilters = (partial: {
+  query?: string
+  status?: ProductStatus
+  minimumQueryLength?: number
+}) => {
   return {
     query: search.value,
     status: productStatus.value,
@@ -131,18 +140,26 @@ const searchChanged = (e: any) => {
       query: e.target.value,
       minimumQueryLength
     }
-    searchProducts(routeName, buildFilters({ ...filters }), useSearchGateway())
+    searchProducts(
+      String(routeName),
+      buildFilters({ ...filters }),
+      useSearchGateway()
+    )
   }, 300)
 }
 
 const productStatusChanged = (status: ProductStatus) => {
-  searchProducts(routeName, buildFilters({ status }), useSearchGateway())
+  searchProducts(
+    String(routeName),
+    buildFilters({ status }),
+    useSearchGateway()
+  )
 }
 
 const clearProductStatus = () => {
   productStatus.value = undefined
   searchProducts(
-    routeName,
+    String(routeName),
     buildFilters({ status: undefined }),
     useSearchGateway()
   )

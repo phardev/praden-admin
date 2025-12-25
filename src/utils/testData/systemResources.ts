@@ -12,6 +12,7 @@ export const systemResources = [
   PermissionResource.NEWSLETTER,
   PermissionResource.SUPPORT,
   PermissionResource.DELIVERIES,
+  PermissionResource.DELIVERY_PRICE_RULES,
   PermissionResource.PREPARATIONS,
   PermissionResource.ORDERS,
   PermissionResource.SHOP_MANAGEMENT,

@@ -1,4 +1,4 @@
-import { ProductStatus } from '@core/entities/product'
+import { ProductStatus, StockManagementMode } from '@core/entities/product'
 import type { UUID } from '@core/types/types'
 
 export interface ProductListItemLaboratory {
@@ -20,6 +20,8 @@ export interface ProductListItem {
   priceWithoutTax: number
   percentTaxRate: number
   availableStock: number
+  minStockToSell: number
+  stockManagementMode: StockManagementMode
   status: ProductStatus
   flags: Record<string, boolean>
   miniature: string
