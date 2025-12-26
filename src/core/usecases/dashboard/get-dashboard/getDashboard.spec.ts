@@ -43,6 +43,24 @@ describe('GetDashboard', () => {
           deliveryPrice: 0
         }
       ],
+      nextYearMonthlySales: [
+        {
+          month: '2026-01',
+          count: 220,
+          turnover: 1100000,
+          averageBasketValue: 5000,
+          canceledTurnover: 0,
+          deliveryPrice: 0
+        },
+        {
+          month: '2026-02',
+          count: 330,
+          turnover: 1650000,
+          averageBasketValue: 5000,
+          canceledTurnover: 0,
+          deliveryPrice: 0
+        }
+      ],
       totalSales: {
         count: 1000,
         turnover: 4500000,
@@ -183,6 +201,7 @@ describe('GetDashboard', () => {
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: mockData.monthlySales,
+      nextYearMonthlySales: mockData.nextYearMonthlySales,
       totalSales: mockData.totalSales,
       topProducts: [mockData.topProducts[0], mockData.topProducts[1]],
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
@@ -200,6 +219,7 @@ describe('GetDashboard', () => {
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: [mockData.monthlySales[1]],
+      nextYearMonthlySales: mockData.nextYearMonthlySales,
       totalSales: {
         count: mockData.monthlySales[1].count,
         turnover: mockData.monthlySales[1].turnover,
@@ -222,6 +242,7 @@ describe('GetDashboard', () => {
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: mockData.monthlySales,
+      nextYearMonthlySales: mockData.nextYearMonthlySales,
       totalSales: mockData.totalSales,
       topProducts: [mockData.topProducts[0]],
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
@@ -238,6 +259,7 @@ describe('GetDashboard', () => {
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: mockData.monthlySales,
+      nextYearMonthlySales: mockData.nextYearMonthlySales,
       totalSales: mockData.totalSales,
       topProducts: [mockData.topProducts[2]],
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,

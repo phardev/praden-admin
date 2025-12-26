@@ -5,10 +5,11 @@
 </template>
 
 <script lang="ts" setup>
-import { MonthlySales } from '@core/entities/dashboard'
+import type { MonthlySales } from '@core/entities/dashboard'
 
 const props = defineProps<{
   data: MonthlySales[]
+  nextYearData?: MonthlySales[]
 }>()
 
 const isMounted = ref(false)
@@ -18,9 +19,19 @@ const sortedData = computed(() => {
   return [...props.data].sort((a, b) => a.month.localeCompare(b.month))
 })
 
+const sortedNextYearData = computed(() => {
+  if (!props.nextYearData) return []
+  return [...props.nextYearData].sort((a, b) => a.month.localeCompare(b.month))
+})
+
 const formatMonth = (month: string) => {
-  const [year, monthNum] = month.split('-')
-  return `${monthNum}/${year.substring(2)}`
+  const [, monthNum] = month.split('-')
+  return monthNum
+}
+
+const extractYear = (data: MonthlySales[]) => {
+  if (data.length === 0) return ''
+  return data[0].month.split('-')[0]
 }
 
 const createChart = async () => {
@@ -32,7 +43,7 @@ const createChart = async () => {
 
   d3.select(chartContainer.value).selectAll('*').remove()
 
-  const margin = { top: 30, right: 30, bottom: 60, left: 60 }
+  const margin = { top: 40, right: 30, bottom: 60, left: 60 }
   let containerHeight = chartContainer.value.clientHeight
   if (containerHeight === 0) {
     containerHeight = 400
@@ -49,22 +60,51 @@ const createChart = async () => {
     .append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`)
 
-  const x = d3
-    .scaleBand()
-    .domain(sortedData.value.map((d) => formatMonth(d.month)))
-    .range([0, width])
-    .padding(0.2)
+  const hasNextYearData = sortedNextYearData.value.length > 0
+  const currentYear = extractYear(sortedData.value)
+  const nextYear = hasNextYearData ? extractYear(sortedNextYearData.value) : ''
 
-  const y = d3
-    .scaleLinear()
-    .domain([0, d3.max(sortedData.value, (d) => d.count) || 0])
-    .nice()
-    .range([height, 0])
+  const months = [
+    '01',
+    '02',
+    '03',
+    '04',
+    '05',
+    '06',
+    '07',
+    '08',
+    '09',
+    '10',
+    '11',
+    '12'
+  ]
+
+  const currentYearMap = new Map(
+    sortedData.value.map((d) => [formatMonth(d.month), d.count])
+  )
+  const nextYearMap = new Map(
+    sortedNextYearData.value.map((d) => [formatMonth(d.month), d.count])
+  )
+
+  const x0 = d3.scaleBand().domain(months).range([0, width]).padding(0.2)
+
+  const x1 = d3
+    .scaleBand()
+    .domain(hasNextYearData ? ['current', 'next'] : ['current'])
+    .range([0, x0.bandwidth()])
+    .padding(0.05)
+
+  const maxCount = Math.max(
+    d3.max(sortedData.value, (d) => d.count) || 0,
+    hasNextYearData ? d3.max(sortedNextYearData.value, (d) => d.count) || 0 : 0
+  )
+
+  const y = d3.scaleLinear().domain([0, maxCount]).nice().range([height, 0])
 
   svg
     .append('g')
     .attr('transform', `translate(0,${height})`)
-    .call(d3.axisBottom(x))
+    .call(d3.axisBottom(x0))
     .selectAll('text')
     .style('text-anchor', 'middle')
 
@@ -79,48 +119,6 @@ const createChart = async () => {
     .text('Nombre de ventes')
     .attr('class', 'axis-label')
 
-  svg
-    .selectAll('rect')
-    .data(sortedData.value)
-    .enter()
-    .append('rect')
-    .attr('x', (d) => x(formatMonth(d.month)) || 0)
-    .attr('y', (d) => y(d.count))
-    .attr('width', x.bandwidth())
-    .attr('height', (d) => height - y(d.count))
-    .attr('fill', 'rgba(59, 130, 246, 0.7)')
-    .attr('stroke', 'rgba(59, 130, 246, 1)')
-    .attr('stroke-width', 1)
-    .on('mouseover', function (event, d) {
-      d3.select(this).attr('fill', 'rgba(59, 130, 246, 0.9)')
-
-      const tooltipWidth = 150
-      const tooltipHeight = 40
-      const viewportWidth = window.innerWidth
-      const viewportHeight = window.innerHeight
-
-      let left = event.pageX + 10
-      let top = event.pageY - 20
-
-      if (left + tooltipWidth > viewportWidth) {
-        left = event.pageX - tooltipWidth - 10
-      }
-
-      if (top + tooltipHeight > viewportHeight) {
-        top = event.pageY - tooltipHeight - 10
-      }
-
-      tooltip
-        .style('opacity', 1)
-        .html(`<strong>Nombre de ventes:</strong> ${d.count}`)
-        .style('left', left + 'px')
-        .style('top', top + 'px')
-    })
-    .on('mouseout', function () {
-      d3.select(this).attr('fill', 'rgba(59, 130, 246, 0.7)')
-      tooltip.style('opacity', 0)
-    })
-
   const tooltip = d3
     .select('body')
     .append('div')
@@ -133,6 +131,97 @@ const createChart = async () => {
     .style('box-shadow', '0 2px 5px rgba(0, 0, 0, 0.2)')
     .style('pointer-events', 'none')
     .style('opacity', 0)
+
+  months.forEach((month) => {
+    const currentCount = currentYearMap.get(month) || 0
+    const nextCount = nextYearMap.get(month) || 0
+
+    svg
+      .append('rect')
+      .attr('x', (x0(month) || 0) + (x1('current') || 0))
+      .attr('y', y(currentCount))
+      .attr('width', x1.bandwidth())
+      .attr('height', height - y(currentCount))
+      .attr('fill', 'rgba(59, 130, 246, 0.7)')
+      .attr('stroke', 'rgba(59, 130, 246, 1)')
+      .attr('stroke-width', 1)
+      .on('mouseover', function (event) {
+        d3.select(this).attr('fill', 'rgba(59, 130, 246, 0.9)')
+        tooltip
+          .style('opacity', 1)
+          .html(
+            `<strong>${currentYear}</strong><br>Nombre de ventes: ${currentCount}`
+          )
+          .style('left', event.pageX + 10 + 'px')
+          .style('top', event.pageY - 20 + 'px')
+      })
+      .on('mouseout', function () {
+        d3.select(this).attr('fill', 'rgba(59, 130, 246, 0.7)')
+        tooltip.style('opacity', 0)
+      })
+
+    if (hasNextYearData) {
+      svg
+        .append('rect')
+        .attr('x', (x0(month) || 0) + (x1('next') || 0))
+        .attr('y', y(nextCount))
+        .attr('width', x1.bandwidth())
+        .attr('height', height - y(nextCount))
+        .attr('fill', 'rgba(147, 51, 234, 0.7)')
+        .attr('stroke', 'rgba(147, 51, 234, 1)')
+        .attr('stroke-width', 1)
+        .on('mouseover', function (event) {
+          d3.select(this).attr('fill', 'rgba(147, 51, 234, 0.9)')
+          tooltip
+            .style('opacity', 1)
+            .html(
+              `<strong>${nextYear}</strong><br>Nombre de ventes: ${nextCount}`
+            )
+            .style('left', event.pageX + 10 + 'px')
+            .style('top', event.pageY - 20 + 'px')
+        })
+        .on('mouseout', function () {
+          d3.select(this).attr('fill', 'rgba(147, 51, 234, 0.7)')
+          tooltip.style('opacity', 0)
+        })
+    }
+  })
+
+  if (hasNextYearData) {
+    const legend = svg
+      .append('g')
+      .attr('transform', `translate(${width - 150}, -25)`)
+
+    legend
+      .append('rect')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('fill', 'rgba(59, 130, 246, 0.7)')
+
+    legend
+      .append('text')
+      .attr('x', 20)
+      .attr('y', 12)
+      .text(currentYear)
+      .style('font-size', '12px')
+
+    legend
+      .append('rect')
+      .attr('x', 70)
+      .attr('y', 0)
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('fill', 'rgba(147, 51, 234, 0.7)')
+
+    legend
+      .append('text')
+      .attr('x', 90)
+      .attr('y', 12)
+      .text(nextYear)
+      .style('font-size', '12px')
+  }
 }
 
 const handleResize = () => {
@@ -158,7 +247,7 @@ onBeforeUnmount(() => {
 })
 
 watch(
-  () => props.data,
+  () => [props.data, props.nextYearData],
   () => {
     createChart()
   },

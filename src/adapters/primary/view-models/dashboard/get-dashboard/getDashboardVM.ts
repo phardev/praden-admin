@@ -33,6 +33,7 @@ export interface TotalSalesVM
 
 export interface DashboardVM {
   monthlySales: MonthlySalesVM[]
+  nextYearMonthlySales: MonthlySalesVM[]
   totalSales: TotalSalesVM
   topProducts: TopProduct[]
   ordersByDeliveryMethod: OrderByDeliveryMethod[]
@@ -47,6 +48,7 @@ export const getDashboardVM = (): DashboardVM => {
   if (!dashboard) {
     return {
       monthlySales: [],
+      nextYearMonthlySales: [],
       totalSales: {
         count: 0,
         turnover: 0,
@@ -64,14 +66,18 @@ export const getDashboardVM = (): DashboardVM => {
       }
     }
   }
-  return {
-    monthlySales: dashboard.monthlySales.map((sale) => ({
+  const mapSalesToVM = (sales: typeof dashboard.monthlySales) =>
+    sales.map((sale) => ({
       ...sale,
       turnover: sale.turnover / 100,
       canceledTurnover: sale.canceledTurnover / 100,
       deliveryPrice: sale.deliveryPrice / 100,
       averageBasketValue: sale.averageBasketValue / 100
-    })),
+    }))
+
+  return {
+    monthlySales: mapSalesToVM(dashboard.monthlySales),
+    nextYearMonthlySales: mapSalesToVM(dashboard.nextYearMonthlySales),
     totalSales: {
       ...dashboard.totalSales,
       turnover: dashboard.totalSales.turnover / 100,
