@@ -5,11 +5,12 @@
 </template>
 
 <script lang="ts" setup>
-import { MonthlySales } from '@core/entities/dashboard'
+import type { MonthlySales } from '@core/entities/dashboard'
 import { formatCurrency } from '@/src/utils/formatters'
 
 const props = defineProps<{
   data: MonthlySales[]
+  previousYearData?: MonthlySales[]
 }>()
 
 const isMounted = ref(false)
@@ -19,9 +20,23 @@ const sortedData = computed(() => {
   return [...props.data].sort((a, b) => a.month.localeCompare(b.month))
 })
 
-const formatMonth = (month: string) => {
-  const [year, monthNum] = month.split('-')
-  return `${monthNum}/${year.substring(2)}`
+const sortedPreviousYearData = computed(() => {
+  if (!props.previousYearData) return []
+  return [...props.previousYearData].sort((a, b) =>
+    a.month.localeCompare(b.month)
+  )
+})
+
+const hasPreviousYearData = computed(() => {
+  return sortedPreviousYearData.value.length > 0
+})
+
+const extractMonthNumber = (month: string) => {
+  return month.split('-')[1]
+}
+
+const extractYear = (month: string) => {
+  return month.split('-')[0]
 }
 
 const createChart = async () => {
@@ -50,15 +65,32 @@ const createChart = async () => {
     .append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`)
 
-  const x = d3
-    .scaleBand()
-    .domain(sortedData.value.map((d) => formatMonth(d.month)))
-    .range([0, width])
-    .padding(0.2)
+  const currentYear =
+    sortedData.value.length > 0 ? extractYear(sortedData.value[0].month) : ''
+  const previousYear =
+    sortedPreviousYearData.value.length > 0
+      ? extractYear(sortedPreviousYearData.value[0].month)
+      : ''
+
+  const allMonthNumbers = new Set<string>()
+  sortedData.value.forEach((d) =>
+    allMonthNumbers.add(extractMonthNumber(d.month))
+  )
+  sortedPreviousYearData.value.forEach((d) =>
+    allMonthNumbers.add(extractMonthNumber(d.month))
+  )
+  const months = Array.from(allMonthNumbers).sort()
+
+  const x = d3.scaleBand().domain(months).range([0, width]).padding(0.2)
+
+  const allDeliveryPrices = [
+    ...sortedData.value.map((d) => d.deliveryPrice),
+    ...sortedPreviousYearData.value.map((d) => d.deliveryPrice)
+  ]
 
   const y = d3
     .scaleLinear()
-    .domain([0, d3.max(sortedData.value, (d) => d.deliveryPrice) || 1000])
+    .domain([0, d3.max(allDeliveryPrices) || 1000])
     .nice()
     .range([height, 0])
 
@@ -82,39 +114,134 @@ const createChart = async () => {
     .text('Frais de livraison')
     .attr('class', 'axis-label')
 
+  const tooltip = d3
+    .select('body')
+    .append('div')
+    .attr('class', 'tooltip')
+    .style('position', 'absolute')
+    .style('z-index', '100')
+    .style('background', 'rgba(255, 255, 255, 0.9)')
+    .style('padding', '8px')
+    .style('border-radius', '4px')
+    .style('box-shadow', '0 2px 5px rgba(0, 0, 0, 0.2)')
+    .style('pointer-events', 'none')
+    .style('opacity', 0)
+
+  if (hasPreviousYearData.value) {
+    const previousYearMappedData = sortedPreviousYearData.value.map((d) => ({
+      ...d,
+      monthNumber: extractMonthNumber(d.month)
+    }))
+
+    const linePrev = d3
+      .line<(typeof previousYearMappedData)[0]>()
+      .x((d) => (x(d.monthNumber) || 0) + x.bandwidth() / 2)
+      .y((d) => y(d.deliveryPrice))
+      .curve(d3.curveMonotoneX)
+
+    const areaPrev = d3
+      .area<(typeof previousYearMappedData)[0]>()
+      .x((d) => (x(d.monthNumber) || 0) + x.bandwidth() / 2)
+      .y0(height)
+      .y1((d) => y(d.deliveryPrice))
+      .curve(d3.curveMonotoneX)
+
+    svg
+      .append('path')
+      .datum(previousYearMappedData)
+      .attr('fill', 'rgba(20, 184, 166, 0.2)')
+      .attr('d', areaPrev)
+
+    svg
+      .append('path')
+      .datum(previousYearMappedData)
+      .attr('fill', 'none')
+      .attr('stroke', 'rgba(20, 184, 166, 1)')
+      .attr('stroke-width', 2)
+      .attr('d', linePrev)
+
+    svg
+      .selectAll('.circle-prev')
+      .data(previousYearMappedData)
+      .enter()
+      .append('circle')
+      .attr('class', 'circle-prev')
+      .attr('cx', (d) => (x(d.monthNumber) || 0) + x.bandwidth() / 2)
+      .attr('cy', (d) => y(d.deliveryPrice))
+      .attr('r', 5)
+      .attr('fill', 'rgba(20, 184, 166, 1)')
+      .on('mouseover', function (event, d) {
+        d3.select(this).attr('r', 7)
+
+        const tooltipWidth = 200
+        const tooltipHeight = 50
+        const viewportWidth = window.innerWidth
+        const viewportHeight = window.innerHeight
+
+        let left = event.pageX + 10
+        let top = event.pageY - 20
+
+        if (left + tooltipWidth > viewportWidth) {
+          left = event.pageX - tooltipWidth - 10
+        }
+
+        if (top + tooltipHeight > viewportHeight) {
+          top = event.pageY - tooltipHeight - 10
+        }
+
+        tooltip
+          .style('opacity', 1)
+          .html(
+            `<strong>${previousYear}</strong><br/>Frais de livraison: ${formatCurrency(d.deliveryPrice)}`
+          )
+          .style('left', left + 'px')
+          .style('top', top + 'px')
+      })
+      .on('mouseout', function () {
+        d3.select(this).attr('r', 5)
+        tooltip.style('opacity', 0)
+      })
+  }
+
+  const currentYearMappedData = sortedData.value.map((d) => ({
+    ...d,
+    monthNumber: extractMonthNumber(d.month)
+  }))
+
   const line = d3
-    .line<MonthlySales>()
-    .x((d) => (x(formatMonth(d.month)) || 0) + x.bandwidth() / 2)
+    .line<(typeof currentYearMappedData)[0]>()
+    .x((d) => (x(d.monthNumber) || 0) + x.bandwidth() / 2)
     .y((d) => y(d.deliveryPrice))
     .curve(d3.curveMonotoneX)
 
   const area = d3
-    .area<MonthlySales>()
-    .x((d) => (x(formatMonth(d.month)) || 0) + x.bandwidth() / 2)
+    .area<(typeof currentYearMappedData)[0]>()
+    .x((d) => (x(d.monthNumber) || 0) + x.bandwidth() / 2)
     .y0(height)
     .y1((d) => y(d.deliveryPrice))
     .curve(d3.curveMonotoneX)
 
   svg
     .append('path')
-    .datum(sortedData.value)
+    .datum(currentYearMappedData)
     .attr('fill', 'rgba(79, 70, 229, 0.2)')
     .attr('d', area)
 
   svg
     .append('path')
-    .datum(sortedData.value)
+    .datum(currentYearMappedData)
     .attr('fill', 'none')
     .attr('stroke', 'rgba(79, 70, 229, 1)')
     .attr('stroke-width', 2)
     .attr('d', line)
 
   svg
-    .selectAll('circle')
-    .data(sortedData.value)
+    .selectAll('.circle-current')
+    .data(currentYearMappedData)
     .enter()
     .append('circle')
-    .attr('cx', (d) => (x(formatMonth(d.month)) || 0) + x.bandwidth() / 2)
+    .attr('class', 'circle-current')
+    .attr('cx', (d) => (x(d.monthNumber) || 0) + x.bandwidth() / 2)
     .attr('cy', (d) => y(d.deliveryPrice))
     .attr('r', 5)
     .attr('fill', 'rgba(79, 70, 229, 1)')
@@ -122,7 +249,7 @@ const createChart = async () => {
       d3.select(this).attr('r', 7)
 
       const tooltipWidth = 200
-      const tooltipHeight = 40
+      const tooltipHeight = 50
       const viewportWidth = window.innerWidth
       const viewportHeight = window.innerHeight
 
@@ -140,9 +267,7 @@ const createChart = async () => {
       tooltip
         .style('opacity', 1)
         .html(
-          `<strong>Frais de livraison:</strong> ${formatCurrency(
-            d.deliveryPrice
-          )}`
+          `<strong>${currentYear}</strong><br/>Frais de livraison: ${formatCurrency(d.deliveryPrice)}`
         )
         .style('left', left + 'px')
         .style('top', top + 'px')
@@ -152,18 +277,42 @@ const createChart = async () => {
       tooltip.style('opacity', 0)
     })
 
-  const tooltip = d3
-    .select('body')
-    .append('div')
-    .attr('class', 'tooltip')
-    .style('position', 'absolute')
-    .style('z-index', '100')
-    .style('background', 'rgba(255, 255, 255, 0.9)')
-    .style('padding', '8px')
-    .style('border-radius', '4px')
-    .style('box-shadow', '0 2px 5px rgba(0, 0, 0, 0.2)')
-    .style('pointer-events', 'none')
-    .style('opacity', 0)
+  if (hasPreviousYearData.value) {
+    const legend = svg
+      .append('g')
+      .attr('class', 'legend')
+      .attr('transform', `translate(${width - 100}, 0)`)
+
+    legend
+      .append('rect')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('width', 12)
+      .attr('height', 12)
+      .attr('fill', 'rgba(20, 184, 166, 0.7)')
+
+    legend
+      .append('text')
+      .attr('x', 16)
+      .attr('y', 10)
+      .text(previousYear)
+      .style('font-size', '11px')
+
+    legend
+      .append('rect')
+      .attr('x', 0)
+      .attr('y', 18)
+      .attr('width', 12)
+      .attr('height', 12)
+      .attr('fill', 'rgba(79, 70, 229, 0.7)')
+
+    legend
+      .append('text')
+      .attr('x', 16)
+      .attr('y', 28)
+      .text(currentYear)
+      .style('font-size', '11px')
+  }
 }
 
 const handleResize = () => {
@@ -191,9 +340,9 @@ onBeforeUnmount(() => {
 })
 
 watch(
-  () => props.data,
+  () => [props.data, props.previousYearData],
   (newData) => {
-    if (newData.length > 0) {
+    if (newData && newData[0] && newData[0].length > 0) {
       createChart()
     }
   },
