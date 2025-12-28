@@ -161,14 +161,14 @@ const createChart = async () => {
   svg
     .append('path')
     .datum(currentYearDataForLine)
-    .attr('fill', 'rgba(79, 70, 229, 0.2)')
+    .attr('fill', 'rgba(99, 102, 241, 0.2)')
     .attr('d', area)
 
   svg
     .append('path')
     .datum(currentYearDataForLine)
     .attr('fill', 'none')
-    .attr('stroke', 'rgba(79, 70, 229, 1)')
+    .attr('stroke', 'rgba(99, 102, 241, 1)')
     .attr('stroke-width', 2)
     .attr('d', line)
 
@@ -181,7 +181,7 @@ const createChart = async () => {
     .attr('cx', (d) => (x(d.month) || 0) + x.bandwidth() / 2)
     .attr('cy', (d) => y(d.deliveryPrice))
     .attr('r', 5)
-    .attr('fill', 'rgba(79, 70, 229, 1)')
+    .attr('fill', 'rgba(99, 102, 241, 1)')
     .on('mouseover', function (event, d) {
       d3.select(this).attr('r', 7)
       tooltip
@@ -201,14 +201,14 @@ const createChart = async () => {
     svg
       .append('path')
       .datum(nextYearDataForLine)
-      .attr('fill', 'rgba(147, 51, 234, 0.1)')
+      .attr('fill', 'rgba(6, 182, 212, 0.1)')
       .attr('d', area)
 
     svg
       .append('path')
       .datum(nextYearDataForLine)
       .attr('fill', 'none')
-      .attr('stroke', 'rgba(147, 51, 234, 1)')
+      .attr('stroke', 'rgba(6, 182, 212, 1)')
       .attr('stroke-width', 2)
       .attr('d', line)
 
@@ -221,7 +221,7 @@ const createChart = async () => {
       .attr('cx', (d) => (x(d.month) || 0) + x.bandwidth() / 2)
       .attr('cy', (d) => y(d.deliveryPrice))
       .attr('r', 5)
-      .attr('fill', 'rgba(147, 51, 234, 1)')
+      .attr('fill', 'rgba(6, 182, 212, 1)')
       .on('mouseover', function (event, d) {
         d3.select(this).attr('r', 7)
         tooltip
@@ -247,7 +247,7 @@ const createChart = async () => {
       .attr('y', 0)
       .attr('width', 15)
       .attr('height', 15)
-      .attr('fill', 'rgba(79, 70, 229, 0.7)')
+      .attr('fill', 'rgba(99, 102, 241, 0.7)')
 
     legend
       .append('text')
@@ -262,7 +262,7 @@ const createChart = async () => {
       .attr('y', 0)
       .attr('width', 15)
       .attr('height', 15)
-      .attr('fill', 'rgba(147, 51, 234, 0.7)')
+      .attr('fill', 'rgba(6, 182, 212, 0.7)')
 
     legend
       .append('text')
