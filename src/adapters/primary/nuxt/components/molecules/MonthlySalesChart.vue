@@ -167,11 +167,11 @@ const createChart = async () => {
         .attr('y', y(nextCount))
         .attr('width', x1.bandwidth())
         .attr('height', height - y(nextCount))
-        .attr('fill', 'rgba(147, 51, 234, 0.7)')
-        .attr('stroke', 'rgba(147, 51, 234, 1)')
+        .attr('fill', 'rgba(251, 146, 60, 0.7)')
+        .attr('stroke', 'rgba(251, 146, 60, 1)')
         .attr('stroke-width', 1)
         .on('mouseover', function (event) {
-          d3.select(this).attr('fill', 'rgba(147, 51, 234, 0.9)')
+          d3.select(this).attr('fill', 'rgba(251, 146, 60, 0.9)')
           tooltip
             .style('opacity', 1)
             .html(
@@ -181,7 +181,7 @@ const createChart = async () => {
             .style('top', event.pageY - 20 + 'px')
         })
         .on('mouseout', function () {
-          d3.select(this).attr('fill', 'rgba(147, 51, 234, 0.7)')
+          d3.select(this).attr('fill', 'rgba(251, 146, 60, 0.7)')
           tooltip.style('opacity', 0)
         })
     }
@@ -213,7 +213,7 @@ const createChart = async () => {
       .attr('y', 0)
       .attr('width', 15)
       .attr('height', 15)
-      .attr('fill', 'rgba(147, 51, 234, 0.7)')
+      .attr('fill', 'rgba(251, 146, 60, 0.7)')
 
     legend
       .append('text')
