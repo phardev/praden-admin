@@ -115,22 +115,44 @@ describe('getDashboardVM', () => {
       productStockStats: {
         inStockCount: 750,
         outOfStockCount: 250
-      }
+      },
+      nextYearMonthlySales: [
+        {
+          month: '2026-01',
+          count: 160,
+          turnover: 1350000,
+          canceledTurnover: 22000,
+          averageBasketValue: 8438,
+          deliveryPrice: 11000
+        },
+        {
+          month: '2026-02',
+          count: 210,
+          turnover: 1900000,
+          canceledTurnover: 27000,
+          averageBasketValue: 9048,
+          deliveryPrice: 16000
+        }
+      ]
     }
 
     statsStore.dashboard = mockDashboard
 
+    const mapSalesToExpected = (sales: typeof mockDashboard.monthlySales) =>
+      sales.map((sale) => ({
+        ...sale,
+        turnover: sale.turnover / 100,
+        canceledTurnover: sale.canceledTurnover / 100,
+        averageBasketValue: sale.averageBasketValue / 100,
+        deliveryPrice: sale.deliveryPrice / 100
+      }))
+
     res = getDashboardVM()
     expect(res).toStrictEqual({
-      monthlySales: mockDashboard.monthlySales.map((sale) => {
-        return {
-          ...sale,
-          turnover: sale.turnover / 100,
-          canceledTurnover: sale.canceledTurnover / 100,
-          averageBasketValue: sale.averageBasketValue / 100,
-          deliveryPrice: sale.deliveryPrice / 100
-        }
-      }),
+      monthlySales: mapSalesToExpected(mockDashboard.monthlySales),
+      nextYearMonthlySales: mapSalesToExpected(
+        mockDashboard.nextYearMonthlySales
+      ),
       totalSales: {
         count: mockDashboard.totalSales.count,
         turnover: mockDashboard.totalSales.turnover / 100,
@@ -151,6 +173,7 @@ describe('getDashboardVM', () => {
 
     expect(res).toStrictEqual({
       monthlySales: [],
+      nextYearMonthlySales: [],
       totalSales: {
         count: 0,
         turnover: 0,

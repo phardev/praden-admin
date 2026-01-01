@@ -133,13 +133,13 @@ div(v-if="permissions.canAccessDashboard")
           h3.text-lg.font-medium {{ $t('dashboard.monthlySales') }}
         template(#default)
           .h-80
-            MonthlySalesChart(:data="dashboard.monthlySales")
+            MonthlySalesChart(:data="dashboard.monthlySales" :next-year-data="dashboard.nextYearMonthlySales")
       UCard
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.monthlyTurnover') }}
         template(#default)
           .h-80
-            MonthlyTurnoverChart(:data="dashboard.monthlySales")
+            MonthlyTurnoverChart(:data="dashboard.monthlySales" :next-year-data="dashboard.nextYearMonthlySales")
       UCard()
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.categoriesDistribution') }}
@@ -163,7 +163,7 @@ div(v-if="permissions.canAccessDashboard")
           h3.text-lg.font-medium {{ $t('dashboard.monthlyDeliveryPrice') }}
         template(#default)
           .h-80
-            MonthlyDeliveryPriceChart(:data="dashboard.monthlySales")
+            MonthlyDeliveryPriceChart(:data="dashboard.monthlySales" :next-year-data="dashboard.nextYearMonthlySales")
       UCard(v-if="!areDateFiltersApplied")
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.productStockDistribution') }}
@@ -175,7 +175,7 @@ div(v-if="permissions.canAccessDashboard")
           h3.text-lg.font-medium {{ $t('dashboard.monthlyCanceledTurnover') }}
         template(#default)
           .h-80
-            MonthlyCanceledTurnoverChart(:data="dashboard.monthlySales")
+            MonthlyCanceledTurnoverChart(:data="dashboard.monthlySales" :next-year-data="dashboard.nextYearMonthlySales")
 
     UCard.mt-16
       template(#header)
