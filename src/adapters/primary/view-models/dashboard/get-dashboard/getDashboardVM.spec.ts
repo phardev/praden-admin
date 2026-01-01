@@ -11,6 +11,103 @@ describe('getDashboardVM', () => {
     setActivePinia(createPinia())
     statsStore = useStatsStore()
   })
+
+  it('should split monthly sales by year when backend returns combined data', () => {
+    const mockDashboard = {
+      monthlySales: [
+        {
+          month: '2025-01',
+          count: 150,
+          turnover: 1250000,
+          canceledTurnover: 20000,
+          averageBasketValue: 8333,
+          deliveryPrice: 10000
+        },
+        {
+          month: '2025-02',
+          count: 200,
+          turnover: 1800000,
+          canceledTurnover: 25000,
+          averageBasketValue: 9000,
+          deliveryPrice: 15000
+        },
+        {
+          month: '2026-01',
+          count: 160,
+          turnover: 1350000,
+          canceledTurnover: 22000,
+          averageBasketValue: 8438,
+          deliveryPrice: 11000
+        }
+      ],
+      totalSales: {
+        count: 510,
+        turnover: 4400000,
+        canceledTurnover: 67000,
+        averageBasketValue: 8627,
+        deliveryPrice: 36000
+      },
+      topProducts: [],
+      ordersByDeliveryMethod: [],
+      ordersByLaboratory: [],
+      productQuantitiesByCategory: [],
+      productStockStats: {
+        inStockCount: 750,
+        outOfStockCount: 250
+      }
+    }
+
+    statsStore.dashboard = mockDashboard
+
+    res = getDashboardVM()
+
+    expect(res).toStrictEqual({
+      monthlySales: [
+        {
+          month: '2025-01',
+          count: 150,
+          turnover: 12500,
+          canceledTurnover: 200,
+          averageBasketValue: 83.33,
+          deliveryPrice: 100
+        },
+        {
+          month: '2025-02',
+          count: 200,
+          turnover: 18000,
+          canceledTurnover: 250,
+          averageBasketValue: 90,
+          deliveryPrice: 150
+        }
+      ],
+      nextYearMonthlySales: [
+        {
+          month: '2026-01',
+          count: 160,
+          turnover: 13500,
+          canceledTurnover: 220,
+          averageBasketValue: 84.38,
+          deliveryPrice: 110
+        }
+      ],
+      totalSales: {
+        count: 510,
+        turnover: 44000,
+        canceledTurnover: 670,
+        averageBasketValue: 86.27,
+        deliveryPrice: 360
+      },
+      topProducts: [],
+      ordersByDeliveryMethod: [],
+      ordersByLaboratory: [],
+      productQuantitiesByCategory: [],
+      productStockStats: {
+        inStockCount: 750,
+        outOfStockCount: 250
+      }
+    })
+  })
+
   it('should convert prices from cents to euros', () => {
     const mockDashboard: Dashboard = {
       monthlySales: [
@@ -151,7 +248,7 @@ describe('getDashboardVM', () => {
     expect(res).toStrictEqual({
       monthlySales: mapSalesToExpected(mockDashboard.monthlySales),
       nextYearMonthlySales: mapSalesToExpected(
-        mockDashboard.nextYearMonthlySales
+        mockDashboard.nextYearMonthlySales!
       ),
       totalSales: {
         count: mockDashboard.totalSales.count,
