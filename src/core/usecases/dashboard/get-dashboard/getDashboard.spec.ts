@@ -68,6 +68,13 @@ describe('GetDashboard', () => {
         canceledTurnover: 0,
         deliveryPrice: 0
       },
+      previousYearTotalSales: {
+        count: 800,
+        turnover: 3600000,
+        averageBasketValue: 4500,
+        canceledTurnover: 0,
+        deliveryPrice: 0
+      },
       topProducts: [
         {
           productUuid: 'product-1',
@@ -203,6 +210,7 @@ describe('GetDashboard', () => {
       monthlySales: mockData.monthlySales,
       nextYearMonthlySales: mockData.nextYearMonthlySales,
       totalSales: mockData.totalSales,
+      previousYearTotalSales: mockData.previousYearTotalSales,
       topProducts: [mockData.topProducts[0], mockData.topProducts[1]],
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
       ordersByLaboratory: mockData.ordersByLaboratory,
@@ -227,6 +235,7 @@ describe('GetDashboard', () => {
         canceledTurnover: mockData.monthlySales[1].canceledTurnover,
         deliveryPrice: mockData.monthlySales[1].deliveryPrice
       },
+      previousYearTotalSales: mockData.previousYearTotalSales,
       topProducts: mockData.topProducts,
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
       ordersByLaboratory: mockData.ordersByLaboratory,
@@ -244,6 +253,7 @@ describe('GetDashboard', () => {
       monthlySales: mockData.monthlySales,
       nextYearMonthlySales: mockData.nextYearMonthlySales,
       totalSales: mockData.totalSales,
+      previousYearTotalSales: mockData.previousYearTotalSales,
       topProducts: [mockData.topProducts[0]],
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
       ordersByLaboratory: mockData.ordersByLaboratory,
@@ -261,6 +271,7 @@ describe('GetDashboard', () => {
       monthlySales: mockData.monthlySales,
       nextYearMonthlySales: mockData.nextYearMonthlySales,
       totalSales: mockData.totalSales,
+      previousYearTotalSales: mockData.previousYearTotalSales,
       topProducts: [mockData.topProducts[2]],
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
       ordersByLaboratory: mockData.ordersByLaboratory,

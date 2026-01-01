@@ -47,6 +47,13 @@ describe('getDashboardVM', () => {
         averageBasketValue: 8627,
         deliveryPrice: 36000
       },
+      previousYearTotalSales: {
+        count: 400,
+        turnover: 3500000,
+        canceledTurnover: 50000,
+        averageBasketValue: 8750,
+        deliveryPrice: 30000
+      },
       topProducts: [],
       ordersByDeliveryMethod: [],
       ordersByLaboratory: [],
@@ -97,6 +104,13 @@ describe('getDashboardVM', () => {
         averageBasketValue: 86.27,
         deliveryPrice: 360
       },
+      previousYearTotalSales: {
+        count: 400,
+        turnover: 35000,
+        canceledTurnover: 500,
+        averageBasketValue: 87.5,
+        deliveryPrice: 300
+      },
       topProducts: [],
       ordersByDeliveryMethod: [],
       ordersByLaboratory: [],
@@ -134,6 +148,13 @@ describe('getDashboardVM', () => {
         canceledTurnover: 55000,
         averageBasketValue: 8714,
         deliveryPrice: 25000
+      },
+      previousYearTotalSales: {
+        count: 280,
+        turnover: 2400000,
+        canceledTurnover: 45000,
+        averageBasketValue: 8571,
+        deliveryPrice: 20000
       },
       topProducts: [
         {
@@ -257,6 +278,15 @@ describe('getDashboardVM', () => {
         averageBasketValue: mockDashboard.totalSales.averageBasketValue / 100,
         deliveryPrice: mockDashboard.totalSales.deliveryPrice / 100
       },
+      previousYearTotalSales: {
+        count: mockDashboard.previousYearTotalSales.count,
+        turnover: mockDashboard.previousYearTotalSales.turnover / 100,
+        canceledTurnover:
+          mockDashboard.previousYearTotalSales.canceledTurnover / 100,
+        averageBasketValue:
+          mockDashboard.previousYearTotalSales.averageBasketValue / 100,
+        deliveryPrice: mockDashboard.previousYearTotalSales.deliveryPrice / 100
+      },
       topProducts: mockDashboard.topProducts,
       ordersByDeliveryMethod: mockDashboard.ordersByDeliveryMethod,
       ordersByLaboratory: mockDashboard.ordersByLaboratory,
@@ -272,6 +302,13 @@ describe('getDashboardVM', () => {
       monthlySales: [],
       nextYearMonthlySales: [],
       totalSales: {
+        count: 0,
+        turnover: 0,
+        canceledTurnover: 0,
+        averageBasketValue: 0,
+        deliveryPrice: 0
+      },
+      previousYearTotalSales: {
         count: 0,
         turnover: 0,
         canceledTurnover: 0,

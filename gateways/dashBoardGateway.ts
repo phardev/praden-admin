@@ -56,6 +56,13 @@ gateway.feedWith({
     canceledTurnover: 0,
     deliveryPrice: 0
   },
+  previousYearTotalSales: {
+    count: 800,
+    turnover: 3600000,
+    averageBasketValue: 4500,
+    canceledTurnover: 0,
+    deliveryPrice: 0
+  },
   topProducts: [
     {
       productUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
