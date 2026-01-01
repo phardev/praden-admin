@@ -263,13 +263,17 @@ const areProductFiltersApplied = ref(false)
 const areDateFiltersApplied = ref(false)
 
 const currentYear = computed(() => {
-  const now = new Date()
-  return now.getFullYear().toString()
+  if (endDate.value) {
+    return new Date(endDate.value).getFullYear().toString()
+  }
+  return new Date().getFullYear().toString()
 })
 
 const previousYear = computed(() => {
-  const now = new Date()
-  return (now.getFullYear() - 1).toString()
+  if (endDate.value) {
+    return (new Date(endDate.value).getFullYear() - 1).toString()
+  }
+  return (new Date().getFullYear() - 1).toString()
 })
 
 const statsCards = computed(() => [
