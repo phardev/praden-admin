@@ -123,14 +123,16 @@ div(v-if="permissions.canAccessDashboard")
           .text-center
             h3.text-lg.font-medium {{ stat.title }}
         template(#default)
-          .flex.justify-center.gap-6
+          .flex.justify-center.gap-6(v-if="stat.showDualYear")
             .text-center
               p.text-xs.text-gray-500.mb-1.font-medium {{ previousYear }}
-              p.text-xl.font-bold.text-blue-600 {{ stat.isApplicableWithProductFilters ? stat.previousYearValue : areProductFiltersApplied ? 'N/A' : stat.previousYearValue }}
+              p.text-xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.previousYearValue : areProductFiltersApplied ? 'N/A' : stat.previousYearValue }}
             .border-l.border-gray-200
             .text-center
               p.text-xs.text-gray-500.mb-1.font-medium {{ currentYear }}
-              p.text-xl.font-bold.text-purple-600 {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
+              p.text-xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
+          .text-center(v-else)
+            p.text-2xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
           p.text-sm.text-gray-500.text-center.mt-2 {{ stat.description }}
 
     .grid.grid-cols-1.gap-6.mb-8(class="lg:grid-cols-2")
@@ -283,7 +285,8 @@ const statsCards = computed(() => [
     previousYearValue:
       dashboard.value.previousYearTotalSales.count.toLocaleString(),
     description: t('dashboard.orders'),
-    isApplicableWithProductFilters: true
+    isApplicableWithProductFilters: true,
+    showDualYear: true
   },
   {
     title: t('dashboard.totalTurnover'),
@@ -292,7 +295,8 @@ const statsCards = computed(() => [
       dashboard.value.previousYearTotalSales.turnover
     ),
     description: t('dashboard.revenue'),
-    isApplicableWithProductFilters: true
+    isApplicableWithProductFilters: true,
+    showDualYear: true
   },
   {
     title: t('dashboard.canceledTurnover'),
@@ -301,7 +305,8 @@ const statsCards = computed(() => [
       dashboard.value.previousYearTotalSales.canceledTurnover
     ),
     description: t('dashboard.canceledRevenue'),
-    isApplicableWithProductFilters: true
+    isApplicableWithProductFilters: true,
+    showDualYear: false
   },
   {
     title: t('dashboard.deliveryPrice'),
@@ -310,7 +315,8 @@ const statsCards = computed(() => [
       dashboard.value.previousYearTotalSales.deliveryPrice
     ),
     description: t('dashboard.deliveryRevenue'),
-    isApplicableWithProductFilters: false
+    isApplicableWithProductFilters: false,
+    showDualYear: false
   },
   {
     title: t('dashboard.averageBasket'),
@@ -319,7 +325,8 @@ const statsCards = computed(() => [
       dashboard.value.previousYearTotalSales.averageBasketValue
     ),
     description: t('dashboard.perOrder'),
-    isApplicableWithProductFilters: false
+    isApplicableWithProductFilters: false,
+    showDualYear: false
   }
 ])
 
