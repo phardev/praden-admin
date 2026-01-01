@@ -97,6 +97,7 @@ describe('getDashboardVM', () => {
           deliveryPrice: 110
         }
       ],
+      previousYearMonthlySales: [],
       totalSales: {
         count: 510,
         turnover: 44000,
@@ -271,6 +272,7 @@ describe('getDashboardVM', () => {
       nextYearMonthlySales: mapSalesToExpected(
         mockDashboard.nextYearMonthlySales!
       ),
+      previousYearMonthlySales: [],
       totalSales: {
         count: mockDashboard.totalSales.count,
         turnover: mockDashboard.totalSales.turnover / 100,
@@ -301,6 +303,7 @@ describe('getDashboardVM', () => {
     expect(res).toStrictEqual({
       monthlySales: [],
       nextYearMonthlySales: [],
+      previousYearMonthlySales: [],
       totalSales: {
         count: 0,
         turnover: 0,
