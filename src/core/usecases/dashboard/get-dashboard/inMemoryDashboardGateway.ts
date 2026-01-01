@@ -19,6 +19,13 @@ export class InMemoryDashboardGateway implements DashboardGateway {
         canceledTurnover: 0,
         deliveryPrice: 0
       },
+      previousYearTotalSales: {
+        count: 0,
+        turnover: 0,
+        averageBasketValue: 0,
+        canceledTurnover: 0,
+        deliveryPrice: 0
+      },
       topProducts: [],
       ordersByDeliveryMethod: [],
       ordersByLaboratory: [],
@@ -85,6 +92,7 @@ export class InMemoryDashboardGateway implements DashboardGateway {
         canceledTurnover: 0,
         deliveryPrice: 0
       },
+      previousYearTotalSales: this.mockData.previousYearTotalSales,
       topProducts: filteredTopProducts,
       ordersByDeliveryMethod: this.mockData.ordersByDeliveryMethod,
       ordersByLaboratory: this.mockData.ordersByLaboratory,

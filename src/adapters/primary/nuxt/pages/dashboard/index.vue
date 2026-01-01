@@ -123,9 +123,17 @@ div(v-if="permissions.canAccessDashboard")
           .text-center
             h3.text-lg.font-medium {{ stat.title }}
         template(#default)
-          .text-center
-            p.text-3xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
-            p.text-sm.text-gray-500 {{ stat.description }}
+          .flex.justify-center.gap-6(v-if="stat.showDualYear")
+            .text-center
+              p.text-xs.text-gray-500.mb-1.font-medium {{ previousYear }}
+              p.text-xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.previousYearValue : areProductFiltersApplied ? 'N/A' : stat.previousYearValue }}
+            .border-l.border-gray-200
+            .text-center
+              p.text-xs.text-gray-500.mb-1.font-medium {{ currentYear }}
+              p.text-xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
+          .text-center(v-else)
+            p.text-2xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
+          p.text-sm.text-gray-500.text-center.mt-2 {{ stat.description }}
 
     .grid.grid-cols-1.gap-6.mb-8(class="lg:grid-cols-2")
       UCard
@@ -256,36 +264,69 @@ const categoriesVM = computed(() => {
 const areProductFiltersApplied = ref(false)
 const areDateFiltersApplied = ref(false)
 
+const currentYear = computed(() => {
+  if (endDate.value) {
+    return new Date(endDate.value).getFullYear().toString()
+  }
+  return new Date().getFullYear().toString()
+})
+
+const previousYear = computed(() => {
+  if (endDate.value) {
+    return (new Date(endDate.value).getFullYear() - 1).toString()
+  }
+  return (new Date().getFullYear() - 1).toString()
+})
+
 const statsCards = computed(() => [
   {
     title: t('dashboard.totalSales'),
     value: dashboard.value.totalSales.count.toLocaleString(),
+    previousYearValue:
+      dashboard.value.previousYearTotalSales.count.toLocaleString(),
     description: t('dashboard.orders'),
-    isApplicableWithProductFilters: true
+    isApplicableWithProductFilters: true,
+    showDualYear: true
   },
   {
     title: t('dashboard.totalTurnover'),
     value: formatCurrency(dashboard.value.totalSales.turnover),
+    previousYearValue: formatCurrency(
+      dashboard.value.previousYearTotalSales.turnover
+    ),
     description: t('dashboard.revenue'),
-    isApplicableWithProductFilters: true
+    isApplicableWithProductFilters: true,
+    showDualYear: true
   },
   {
     title: t('dashboard.canceledTurnover'),
     value: formatCurrency(dashboard.value.totalSales.canceledTurnover),
+    previousYearValue: formatCurrency(
+      dashboard.value.previousYearTotalSales.canceledTurnover
+    ),
     description: t('dashboard.canceledRevenue'),
-    isApplicableWithProductFilters: true
+    isApplicableWithProductFilters: true,
+    showDualYear: false
   },
   {
     title: t('dashboard.deliveryPrice'),
     value: formatCurrency(dashboard.value.totalSales.deliveryPrice),
+    previousYearValue: formatCurrency(
+      dashboard.value.previousYearTotalSales.deliveryPrice
+    ),
     description: t('dashboard.deliveryRevenue'),
-    isApplicableWithProductFilters: false
+    isApplicableWithProductFilters: false,
+    showDualYear: false
   },
   {
     title: t('dashboard.averageBasket'),
     value: formatCurrency(dashboard.value.totalSales.averageBasketValue),
+    previousYearValue: formatCurrency(
+      dashboard.value.previousYearTotalSales.averageBasketValue
+    ),
     description: t('dashboard.perOrder'),
-    isApplicableWithProductFilters: false
+    isApplicableWithProductFilters: false,
+    showDualYear: false
   }
 ])
 

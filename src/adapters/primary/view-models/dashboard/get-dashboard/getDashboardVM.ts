@@ -55,6 +55,7 @@ export interface DashboardVM {
   monthlySales: MonthlySalesVM[]
   nextYearMonthlySales: MonthlySalesVM[]
   totalSales: TotalSalesVM
+  previousYearTotalSales: TotalSalesVM
   topProducts: TopProduct[]
   ordersByDeliveryMethod: OrderByDeliveryMethod[]
   ordersByLaboratory: OrderByLaboratory[]
@@ -70,6 +71,13 @@ export const getDashboardVM = (): DashboardVM => {
       monthlySales: [],
       nextYearMonthlySales: [],
       totalSales: {
+        count: 0,
+        turnover: 0,
+        canceledTurnover: 0,
+        deliveryPrice: 0,
+        averageBasketValue: 0
+      },
+      previousYearTotalSales: {
         count: 0,
         turnover: 0,
         canceledTurnover: 0,
@@ -111,6 +119,14 @@ export const getDashboardVM = (): DashboardVM => {
       canceledTurnover: dashboard.totalSales.canceledTurnover / 100,
       deliveryPrice: dashboard.totalSales.deliveryPrice / 100,
       averageBasketValue: dashboard.totalSales.averageBasketValue / 100
+    },
+    previousYearTotalSales: {
+      ...dashboard.previousYearTotalSales,
+      turnover: dashboard.previousYearTotalSales.turnover / 100,
+      canceledTurnover: dashboard.previousYearTotalSales.canceledTurnover / 100,
+      deliveryPrice: dashboard.previousYearTotalSales.deliveryPrice / 100,
+      averageBasketValue:
+        dashboard.previousYearTotalSales.averageBasketValue / 100
     },
     topProducts: dashboard.topProducts,
     ordersByDeliveryMethod: dashboard.ordersByDeliveryMethod,
