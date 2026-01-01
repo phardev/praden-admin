@@ -126,6 +126,7 @@ div(v-if="permissions.canAccessDashboard")
           .text-center
             p.text-3xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
             p.text-sm.text-gray-500 {{ stat.description }}
+            p.text-sm.text-gray-400.mt-1(v-if="stat.previousYearValue") {{ $t('dashboard.previousYear') }}: {{ stat.previousYearValue }}
 
     .grid.grid-cols-1.gap-6.mb-8(class="lg:grid-cols-2")
       UCard
@@ -256,34 +257,49 @@ const categoriesVM = computed(() => {
 const areProductFiltersApplied = ref(false)
 const areDateFiltersApplied = ref(false)
 
+const previousYear = computed(() => dashboard.value.previousYearTotalSales)
+
 const statsCards = computed(() => [
   {
     title: t('dashboard.totalSales'),
     value: dashboard.value.totalSales.count.toLocaleString(),
+    previousYearValue: previousYear.value?.count.toLocaleString(),
     description: t('dashboard.orders'),
     isApplicableWithProductFilters: true
   },
   {
     title: t('dashboard.totalTurnover'),
     value: formatCurrency(dashboard.value.totalSales.turnover),
+    previousYearValue: previousYear.value
+      ? formatCurrency(previousYear.value.turnover)
+      : undefined,
     description: t('dashboard.revenue'),
     isApplicableWithProductFilters: true
   },
   {
     title: t('dashboard.canceledTurnover'),
     value: formatCurrency(dashboard.value.totalSales.canceledTurnover),
+    previousYearValue: previousYear.value
+      ? formatCurrency(previousYear.value.canceledTurnover)
+      : undefined,
     description: t('dashboard.canceledRevenue'),
     isApplicableWithProductFilters: true
   },
   {
     title: t('dashboard.deliveryPrice'),
     value: formatCurrency(dashboard.value.totalSales.deliveryPrice),
+    previousYearValue: previousYear.value
+      ? formatCurrency(previousYear.value.deliveryPrice)
+      : undefined,
     description: t('dashboard.deliveryRevenue'),
     isApplicableWithProductFilters: false
   },
   {
     title: t('dashboard.averageBasket'),
     value: formatCurrency(dashboard.value.totalSales.averageBasketValue),
+    previousYearValue: previousYear.value
+      ? formatCurrency(previousYear.value.averageBasketValue)
+      : undefined,
     description: t('dashboard.perOrder'),
     isApplicableWithProductFilters: false
   }

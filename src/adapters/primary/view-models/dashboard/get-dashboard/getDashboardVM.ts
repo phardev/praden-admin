@@ -55,6 +55,7 @@ export interface DashboardVM {
   monthlySales: MonthlySalesVM[]
   nextYearMonthlySales: MonthlySalesVM[]
   totalSales: TotalSalesVM
+  previousYearTotalSales?: TotalSalesVM
   topProducts: TopProduct[]
   ordersByDeliveryMethod: OrderByDeliveryMethod[]
   ordersByLaboratory: OrderByLaboratory[]
@@ -102,20 +103,30 @@ export const getDashboardVM = (): DashboardVM => {
       }
     : splitSalesByYear(dashboard.monthlySales)
 
-  return {
+  const mapTotalSalesToVM = (sales: TotalSales): TotalSalesVM => ({
+    ...sales,
+    turnover: sales.turnover / 100,
+    canceledTurnover: sales.canceledTurnover / 100,
+    deliveryPrice: sales.deliveryPrice / 100,
+    averageBasketValue: sales.averageBasketValue / 100
+  })
+
+  const result: DashboardVM = {
     monthlySales: mapSalesToVM(currentYear),
     nextYearMonthlySales: mapSalesToVM(nextYear),
-    totalSales: {
-      ...dashboard.totalSales,
-      turnover: dashboard.totalSales.turnover / 100,
-      canceledTurnover: dashboard.totalSales.canceledTurnover / 100,
-      deliveryPrice: dashboard.totalSales.deliveryPrice / 100,
-      averageBasketValue: dashboard.totalSales.averageBasketValue / 100
-    },
+    totalSales: mapTotalSalesToVM(dashboard.totalSales),
     topProducts: dashboard.topProducts,
     ordersByDeliveryMethod: dashboard.ordersByDeliveryMethod,
     ordersByLaboratory: dashboard.ordersByLaboratory,
     productQuantitiesByCategory: dashboard.productQuantitiesByCategory,
     productStockStats: dashboard.productStockStats
   }
+
+  if (dashboard.previousYearTotalSales) {
+    result.previousYearTotalSales = mapTotalSalesToVM(
+      dashboard.previousYearTotalSales
+    )
+  }
+
+  return result
 }

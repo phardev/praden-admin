@@ -277,6 +277,24 @@ describe('GetDashboard', () => {
     expect(dashboardGateway.receivedTimezone).toStrictEqual('Europe/Paris')
   })
 
+  it('should include previous year total sales in dashboard data', async () => {
+    const previousYearTotalSales = {
+      count: 800,
+      turnover: 3600000,
+      averageBasketValue: 4500,
+      canceledTurnover: 100000,
+      deliveryPrice: 200000
+    }
+    dashboardGateway.feedWith({
+      ...mockData,
+      previousYearTotalSales
+    })
+    await whenGetDashboardData()
+    expect(statsStore.dashboard.previousYearTotalSales).toStrictEqual(
+      previousYearTotalSales
+    )
+  })
+
   const whenGetDashboardData = async () => {
     await getDashboard(params, dashboardGateway)
   }

@@ -63,6 +63,7 @@ export interface Dashboard {
   monthlySales: MonthlySales[]
   nextYearMonthlySales?: MonthlySales[]
   totalSales: TotalSales
+  previousYearTotalSales?: TotalSales
   topProducts: TopProduct[]
   ordersByDeliveryMethod: OrderByDeliveryMethod[]
   ordersByLaboratory: OrderByLaboratory[]

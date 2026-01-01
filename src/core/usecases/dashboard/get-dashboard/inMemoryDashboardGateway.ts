@@ -75,7 +75,7 @@ export class InMemoryDashboardGateway implements DashboardGateway {
     )
     const averageBasketValue = totalCount > 0 ? totalTurnover / totalCount : 0
 
-    return {
+    const result: Dashboard = {
       monthlySales: filteredMonthlySales,
       nextYearMonthlySales: this.mockData.nextYearMonthlySales,
       totalSales: {
@@ -91,6 +91,12 @@ export class InMemoryDashboardGateway implements DashboardGateway {
       productQuantitiesByCategory: this.mockData.productQuantitiesByCategory,
       productStockStats: this.mockData.productStockStats
     }
+
+    if (this.mockData.previousYearTotalSales) {
+      result.previousYearTotalSales = this.mockData.previousYearTotalSales
+    }
+
+    return result
   }
 
   feedWith(mockData: Dashboard) {

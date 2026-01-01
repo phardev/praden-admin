@@ -288,4 +288,44 @@ describe('getDashboardVM', () => {
       }
     })
   })
+
+  it('should convert previous year total sales prices from cents to euros', () => {
+    const mockDashboard: Dashboard = {
+      monthlySales: [],
+      totalSales: {
+        count: 350,
+        turnover: 3050000,
+        canceledTurnover: 55000,
+        averageBasketValue: 8714,
+        deliveryPrice: 25000
+      },
+      previousYearTotalSales: {
+        count: 280,
+        turnover: 2500000,
+        canceledTurnover: 45000,
+        averageBasketValue: 8929,
+        deliveryPrice: 20000
+      },
+      topProducts: [],
+      ordersByDeliveryMethod: [],
+      ordersByLaboratory: [],
+      productQuantitiesByCategory: [],
+      productStockStats: {
+        inStockCount: 750,
+        outOfStockCount: 250
+      }
+    }
+
+    statsStore.dashboard = mockDashboard
+
+    res = getDashboardVM()
+
+    expect(res.previousYearTotalSales).toStrictEqual({
+      count: 280,
+      turnover: 25000,
+      canceledTurnover: 450,
+      averageBasketValue: 89.29,
+      deliveryPrice: 200
+    })
+  })
 })
