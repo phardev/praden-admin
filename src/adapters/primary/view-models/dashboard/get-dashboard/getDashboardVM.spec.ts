@@ -1,7 +1,11 @@
 import { Dashboard } from '@core/entities/dashboard'
 import { useStatsStore } from '@store/statsStore'
 import { createPinia, setActivePinia } from 'pinia'
-import { DashboardVM, getDashboardVM } from './getDashboardVM'
+import {
+  calculateEvolution,
+  DashboardVM,
+  getDashboardVM
+} from './getDashboardVM'
 
 describe('getDashboardVM', () => {
   let res: DashboardVM
@@ -327,5 +331,19 @@ describe('getDashboardVM', () => {
         outOfStockCount: 0
       }
     })
+  })
+})
+
+describe('calculateEvolution', () => {
+  it('should calculate negative evolution when current year is lower than previous year', () => {
+    const result = calculateEvolution(500, 1000)
+
+    expect(result).toBe(-50)
+  })
+
+  it('should calculate positive evolution when current year is higher than previous year', () => {
+    const result = calculateEvolution(1200, 1000)
+
+    expect(result).toBe(20)
   })
 })

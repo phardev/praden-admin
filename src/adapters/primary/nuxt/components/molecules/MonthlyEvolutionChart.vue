@@ -10,13 +10,6 @@
             :key="header"
           ) {{ header }}
       tbody
-        tr.border-b.border-gray-100
-          td.py-3.px-3.text-left.text-gray-600.font-medium {{ $t('dashboard.evolution.salesLabel') }}
-          td.py-3.px-3.text-center(
-            v-for="(evolution, index) in salesEvolutions"
-            :key="'sales-' + index"
-            :class="getEvolutionClass(evolution)"
-          ) {{ formatEvolution(evolution) }}
         tr
           td.py-3.px-3.text-left.text-gray-600.font-medium {{ $t('dashboard.evolution.turnoverLabel') }}
           td.py-3.px-3.text-center(
@@ -27,7 +20,10 @@
 </template>
 
 <script lang="ts" setup>
-import type { MonthlySalesVM } from '../../../view-models/dashboard/get-dashboard/getDashboardVM'
+import {
+  calculateEvolution,
+  type MonthlySalesVM
+} from '../../../view-models/dashboard/get-dashboard/getDashboardVM'
 
 interface Props {
   currentYearData: MonthlySalesVM[]
@@ -83,47 +79,6 @@ const createMonthMap = (
   })
   return map
 }
-
-const calculateEvolution = (
-  current: number,
-  previous: number
-): number | null => {
-  if (previous === 0) {
-    return current > 0 ? 100 : 0
-  }
-  return ((current - previous) / previous) * 100
-}
-
-const salesEvolutions = computed(() => {
-  const currentMap = createMonthMap(props.currentYearData)
-  const previousMap = createMonthMap(props.previousYearData)
-
-  const monthlyEvolutions: (number | null)[] = []
-  let totalCurrent = 0
-  let totalPrevious = 0
-
-  MONTHS.forEach((month) => {
-    const currentData = currentMap.get(month)
-    const previousData = previousMap.get(month)
-
-    const currentCount = currentData?.count || 0
-    const previousCount = previousData?.count || 0
-
-    totalCurrent += currentCount
-    totalPrevious += previousCount
-
-    if (!currentData && !previousData) {
-      monthlyEvolutions.push(null)
-    } else {
-      monthlyEvolutions.push(calculateEvolution(currentCount, previousCount))
-    }
-  })
-
-  const totalEvolution = calculateEvolution(totalCurrent, totalPrevious)
-  monthlyEvolutions.push(totalEvolution)
-
-  return monthlyEvolutions
-})
 
 const turnoverEvolutions = computed(() => {
   const currentMap = createMonthMap(props.currentYearData)
