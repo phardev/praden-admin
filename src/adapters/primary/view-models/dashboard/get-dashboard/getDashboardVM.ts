@@ -1,4 +1,4 @@
-import {
+import type {
   MonthlySales,
   OrderByDeliveryMethod,
   OrderByLaboratory,
@@ -8,6 +8,26 @@ import {
   TotalSales
 } from '@core/entities/dashboard'
 import { useStatsStore } from '@store/statsStore'
+
+const getYearFromMonth = (month: string): number => {
+  return parseInt(month.split('-')[0], 10)
+}
+
+const splitSalesByYear = (
+  sales: MonthlySales[]
+): { currentYear: MonthlySales[]; nextYear: MonthlySales[] } => {
+  if (sales.length === 0) {
+    return { currentYear: [], nextYear: [] }
+  }
+  const firstYear = getYearFromMonth(sales[0].month)
+  const currentYear = sales.filter(
+    (sale) => getYearFromMonth(sale.month) === firstYear
+  )
+  const nextYear = sales.filter(
+    (sale) => getYearFromMonth(sale.month) === firstYear + 1
+  )
+  return { currentYear, nextYear }
+}
 
 export interface MonthlySalesVM
   extends Omit<
@@ -66,7 +86,7 @@ export const getDashboardVM = (): DashboardVM => {
       }
     }
   }
-  const mapSalesToVM = (sales: typeof dashboard.monthlySales) =>
+  const mapSalesToVM = (sales: MonthlySales[]) =>
     sales.map((sale) => ({
       ...sale,
       turnover: sale.turnover / 100,
@@ -75,9 +95,16 @@ export const getDashboardVM = (): DashboardVM => {
       averageBasketValue: sale.averageBasketValue / 100
     }))
 
+  const { currentYear, nextYear } = dashboard.nextYearMonthlySales
+    ? {
+        currentYear: dashboard.monthlySales,
+        nextYear: dashboard.nextYearMonthlySales
+      }
+    : splitSalesByYear(dashboard.monthlySales)
+
   return {
-    monthlySales: mapSalesToVM(dashboard.monthlySales),
-    nextYearMonthlySales: mapSalesToVM(dashboard.nextYearMonthlySales),
+    monthlySales: mapSalesToVM(currentYear),
+    nextYearMonthlySales: mapSalesToVM(nextYear),
     totalSales: {
       ...dashboard.totalSales,
       turnover: dashboard.totalSales.turnover / 100,
