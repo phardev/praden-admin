@@ -151,7 +151,9 @@ div(v-if="permissions.canAccessDashboard")
 
     UCard.mb-8(v-if="dashboard.previousYearMonthlySales.length > 0")
       template(#header)
-        h3.text-lg.font-medium {{ $t('dashboard.evolution.title') }}
+        h3.text-lg.font-medium {{ $t('dashboard.evolution.title') }} (
+          span.text-primary {{ $t('dashboard.evolution.titleSuffix') }}
+          | )
       template(#default)
         MonthlyEvolutionChart(:current-year-data="dashboard.monthlySales" :previous-year-data="dashboard.previousYearMonthlySales")
 

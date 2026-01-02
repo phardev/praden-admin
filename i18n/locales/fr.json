@@ -119,6 +119,7 @@
     "productStockDistribution": "Répartition des produits par stock disponible",
     "evolution": {
       "title": "Évolution par rapport à l'année précédente",
+      "titleSuffix": "Chiffre d'affaire",
       "salesLabel": "Ventes",
       "turnoverLabel": "CA"
     },
