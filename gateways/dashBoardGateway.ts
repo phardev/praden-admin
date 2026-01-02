@@ -7,6 +7,24 @@ const gateway = new InMemoryDashboardGateway()
 gateway.feedWith({
   monthlySales: [
     {
+      month: '2026-01',
+      count: 220,
+      turnover: 1100000,
+      averageBasketValue: 5000,
+      canceledTurnover: 0,
+      deliveryPrice: 0
+    },
+    {
+      month: '2026-02',
+      count: 330,
+      turnover: 1650000,
+      averageBasketValue: 5000,
+      canceledTurnover: 0,
+      deliveryPrice: 0
+    }
+  ],
+  previousYearMonthlySales: [
+    {
       month: '2025-01',
       count: 200,
       turnover: 1000000,
@@ -31,34 +49,16 @@ gateway.feedWith({
       deliveryPrice: 0
     }
   ],
-  nextYearMonthlySales: [
-    {
-      month: '2026-01',
-      count: 220,
-      turnover: 1100000,
-      averageBasketValue: 5000,
-      canceledTurnover: 0,
-      deliveryPrice: 0
-    },
-    {
-      month: '2026-02',
-      count: 330,
-      turnover: 1650000,
-      averageBasketValue: 5000,
-      canceledTurnover: 0,
-      deliveryPrice: 0
-    }
-  ],
   totalSales: {
-    count: 1000,
-    turnover: 4500000,
-    averageBasketValue: 4500,
+    count: 550,
+    turnover: 2750000,
+    averageBasketValue: 5000,
     canceledTurnover: 0,
     deliveryPrice: 0
   },
   previousYearTotalSales: {
-    count: 800,
-    turnover: 3600000,
+    count: 1000,
+    turnover: 4500000,
     averageBasketValue: 4500,
     canceledTurnover: 0,
     deliveryPrice: 0

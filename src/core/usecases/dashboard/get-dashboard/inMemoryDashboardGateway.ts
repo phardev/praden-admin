@@ -11,7 +11,7 @@ export class InMemoryDashboardGateway implements DashboardGateway {
   constructor() {
     this.mockData = {
       monthlySales: [],
-      nextYearMonthlySales: [],
+      previousYearMonthlySales: [],
       totalSales: {
         count: 0,
         turnover: 0,
@@ -84,7 +84,7 @@ export class InMemoryDashboardGateway implements DashboardGateway {
 
     return {
       monthlySales: filteredMonthlySales,
-      nextYearMonthlySales: this.mockData.nextYearMonthlySales,
+      previousYearMonthlySales: this.mockData.previousYearMonthlySales,
       totalSales: {
         count: totalCount,
         turnover: totalTurnover,

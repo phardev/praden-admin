@@ -9,26 +9,6 @@ import type {
 } from '@core/entities/dashboard'
 import { useStatsStore } from '@store/statsStore'
 
-const getYearFromMonth = (month: string): number => {
-  return parseInt(month.split('-')[0], 10)
-}
-
-const splitSalesByYear = (
-  sales: MonthlySales[]
-): { currentYear: MonthlySales[]; nextYear: MonthlySales[] } => {
-  if (sales.length === 0) {
-    return { currentYear: [], nextYear: [] }
-  }
-  const firstYear = getYearFromMonth(sales[0].month)
-  const currentYear = sales.filter(
-    (sale) => getYearFromMonth(sale.month) === firstYear
-  )
-  const nextYear = sales.filter(
-    (sale) => getYearFromMonth(sale.month) === firstYear + 1
-  )
-  return { currentYear, nextYear }
-}
-
 export const calculateEvolution = (
   current: number,
   previous: number
@@ -63,7 +43,6 @@ export interface TotalSalesVM
 
 export interface DashboardVM {
   monthlySales: MonthlySalesVM[]
-  nextYearMonthlySales: MonthlySalesVM[]
   previousYearMonthlySales: MonthlySalesVM[]
   totalSales: TotalSalesVM
   previousYearTotalSales: TotalSalesVM
@@ -80,7 +59,6 @@ export const getDashboardVM = (): DashboardVM => {
   if (!dashboard) {
     return {
       monthlySales: [],
-      nextYearMonthlySales: [],
       previousYearMonthlySales: [],
       totalSales: {
         count: 0,
@@ -106,6 +84,7 @@ export const getDashboardVM = (): DashboardVM => {
       }
     }
   }
+
   const mapSalesToVM = (sales: MonthlySales[]) =>
     sales.map((sale) => ({
       ...sale,
@@ -115,19 +94,9 @@ export const getDashboardVM = (): DashboardVM => {
       averageBasketValue: sale.averageBasketValue / 100
     }))
 
-  const { currentYear, nextYear } = dashboard.nextYearMonthlySales
-    ? {
-        currentYear: dashboard.monthlySales,
-        nextYear: dashboard.nextYearMonthlySales
-      }
-    : splitSalesByYear(dashboard.monthlySales)
-
   return {
-    monthlySales: mapSalesToVM(currentYear),
-    nextYearMonthlySales: mapSalesToVM(nextYear),
-    previousYearMonthlySales: mapSalesToVM(
-      dashboard.previousYearMonthlySales || []
-    ),
+    monthlySales: mapSalesToVM(dashboard.monthlySales),
+    previousYearMonthlySales: mapSalesToVM(dashboard.previousYearMonthlySales),
     totalSales: {
       ...dashboard.totalSales,
       turnover: dashboard.totalSales.turnover / 100,
