@@ -29,6 +29,16 @@ const splitSalesByYear = (
   return { currentYear, nextYear }
 }
 
+export const calculateEvolution = (
+  current: number,
+  previous: number
+): number => {
+  if (previous === 0) {
+    return current > 0 ? 100 : 0
+  }
+  return ((current - previous) / previous) * 100
+}
+
 export interface MonthlySalesVM
   extends Omit<
     MonthlySales,
@@ -54,6 +64,7 @@ export interface TotalSalesVM
 export interface DashboardVM {
   monthlySales: MonthlySalesVM[]
   nextYearMonthlySales: MonthlySalesVM[]
+  previousYearMonthlySales: MonthlySalesVM[]
   totalSales: TotalSalesVM
   previousYearTotalSales: TotalSalesVM
   topProducts: TopProduct[]
@@ -70,6 +81,7 @@ export const getDashboardVM = (): DashboardVM => {
     return {
       monthlySales: [],
       nextYearMonthlySales: [],
+      previousYearMonthlySales: [],
       totalSales: {
         count: 0,
         turnover: 0,
@@ -113,6 +125,9 @@ export const getDashboardVM = (): DashboardVM => {
   return {
     monthlySales: mapSalesToVM(currentYear),
     nextYearMonthlySales: mapSalesToVM(nextYear),
+    previousYearMonthlySales: mapSalesToVM(
+      dashboard.previousYearMonthlySales || []
+    ),
     totalSales: {
       ...dashboard.totalSales,
       turnover: dashboard.totalSales.turnover / 100,

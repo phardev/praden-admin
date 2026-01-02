@@ -148,6 +148,14 @@ div(v-if="permissions.canAccessDashboard")
         template(#default)
           .h-80
             MonthlyTurnoverChart(:data="dashboard.monthlySales" :next-year-data="dashboard.nextYearMonthlySales")
+
+    UCard.mb-8(v-if="dashboard.previousYearMonthlySales.length > 0")
+      template(#header)
+        h3.text-lg.font-medium {{ $t('dashboard.evolution.title') }}
+      template(#default)
+        MonthlyEvolutionChart(:current-year-data="dashboard.monthlySales" :previous-year-data="dashboard.previousYearMonthlySales")
+
+    .grid.grid-cols-1.gap-6.mb-8(class="lg:grid-cols-2")
       UCard()
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.categoriesDistribution') }}
