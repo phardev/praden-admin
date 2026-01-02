@@ -98,7 +98,7 @@ const turnoverEvolutions = computed(() => {
     totalCurrent += currentTurnover
     totalPrevious += previousTurnover
 
-    if (!currentData && !previousData) {
+    if (!currentData) {
       monthlyEvolutions.push(null)
     } else {
       monthlyEvolutions.push(
