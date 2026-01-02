@@ -1,6 +1,7 @@
 import { PromotionCodeFormFieldsWriter } from '@adapters/primary/view-models/promotion-codes/promotion-code-form/promotionCodeFormCreateVM'
 import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { Product } from '@core/entities/product'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
 import {
@@ -28,16 +29,16 @@ export class PromotionCodeFormEditVM extends PromotionCodeFormVM {
 
   getAvailableProducts() {
     const productStore = useProductStore()
-    const allProducts: Array<Product> = productStore.items
+    const allProducts: Array<ProductListItem> = productStore.items
     const searchStore = useSearchStore()
-    const filteredProducts: Array<Product> = searchStore.get(this.key)
+    const filteredProducts: Array<ProductListItem> = searchStore.get(this.key)
     const addedProducts = this.fieldsReader.get('products')
     const res = (filteredProducts || allProducts).filter(
-      (p: Product) =>
+      (p: ProductListItem) =>
         !addedProducts.map((p: Product) => p.uuid).includes(p.uuid)
     )
     return {
-      value: res.map((p: Product) => {
+      value: res.map((p: ProductListItem) => {
         return {
           uuid: p.uuid,
           name: p.name,

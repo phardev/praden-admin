@@ -9,10 +9,20 @@
       "@adapters/*": ["src/adapters/*"],
       "@core/*": ["src/core/*"],
       "@store/*": ["src/store/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "~/*": ["./*"],
+      "@/*": ["./*"],
+      "@/src/*": ["src/*"]
     },
     "types": ["vitest/globals", "node", "@types/jsdom", "@nuxt/schema"],
     "module": "NodeNext"
   },
-  "include": [".nuxt/types", "types", "src", "utils", "vitest.config.mjs"]
+  "include": [
+    ".nuxt/types",
+    "types",
+    "src",
+    "utils",
+    "gateways",
+    "vitest.config.mjs"
+  ]
 }

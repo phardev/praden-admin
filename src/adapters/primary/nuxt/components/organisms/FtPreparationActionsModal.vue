@@ -95,7 +95,7 @@ const removeProduct = (cip13: string) => {
 }
 
 const productsReferences = computed(() => {
-  return props.products.map((p) => p.reference)
+  return props.products.map((p: any) => p.reference)
 })
 
 const isChangeQuantityOpened = ref(false)

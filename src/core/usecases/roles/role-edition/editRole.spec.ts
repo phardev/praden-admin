@@ -27,20 +27,21 @@ describe('Role Edition', () => {
     })
 
     describe('For admin role', () => {
+      const permissions = [
+        { resource: 'dashboard' },
+        { resource: 'newsletter' },
+        { resource: 'administration' },
+        { resource: 'user-management' },
+        { resource: 'new-permission' }
+      ]
       const dto: EditRoleDTO = {
         name: 'Super Administrateur',
-        permissions: [
-          { resource: 'dashboard' },
-          { resource: 'newsletter' },
-          { resource: 'administration' },
-          { resource: 'user-management' },
-          { resource: 'new-permission' }
-        ]
+        permissions
       }
       const expectedRole: Role = {
         ...adminRole,
         name: 'Super Administrateur',
-        permissions: dto.permissions
+        permissions
       }
       const expectedRoles: Array<Role> = [
         expectedRole,
@@ -62,18 +63,19 @@ describe('Role Edition', () => {
     })
 
     describe('For pharmacist role', () => {
+      const permissions = [
+        { resource: 'dashboard' },
+        { resource: 'newsletter' },
+        { resource: 'reports' }
+      ]
       const dto: EditRoleDTO = {
         name: 'Pharmacien Titulaire',
-        permissions: [
-          { resource: 'dashboard' },
-          { resource: 'newsletter' },
-          { resource: 'reports' }
-        ]
+        permissions
       }
       const expectedRole: Role = {
         ...pharmacistRole,
         name: 'Pharmacien Titulaire',
-        permissions: dto.permissions
+        permissions
       }
       const expectedRoles: Array<Role> = [
         adminRole,

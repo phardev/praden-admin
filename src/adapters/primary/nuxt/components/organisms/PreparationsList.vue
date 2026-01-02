@@ -80,7 +80,6 @@ import { toggleSelectAllPreparations } from '@core/usecases/order/toggle-select-
 import { toggleSelectPreparation } from '@core/usecases/order/toggle-select-preparation/toggleSelectPreparation'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
 import { useDateProvider } from '../../../../../../gateways/dateProvider'
-import { useEmailGateway } from '../../../../../../gateways/emailGateway'
 import { useLocationGateway } from '../../../../../../gateways/locationGateway'
 import { useOrderGateway } from '../../../../../../gateways/orderGateway'
 import { useProductGateway } from '../../../../../../gateways/productGateway'
@@ -128,7 +127,7 @@ const router = useRouter()
 
 const start = () => {
   window.print()
-  startPreparations(useOrderGateway(), useEmailGateway())
+  startPreparations(useOrderGateway())
   router.push('/preparations')
 }
 </script>

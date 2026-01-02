@@ -2,6 +2,7 @@ import { PermissionResource } from '@core/entities/permissionResource'
 import { useUserProfileStore } from '@store/userProfileStore'
 
 export interface GetPermissionsVM {
+  [key: string]: boolean
   canAccessDashboard: boolean
   canAccessReminders: boolean
   canAccessProducts: boolean

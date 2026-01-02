@@ -7,6 +7,24 @@ const gateway = new InMemoryDashboardGateway()
 gateway.feedWith({
   monthlySales: [
     {
+      month: '2026-01',
+      count: 220,
+      turnover: 1100000,
+      averageBasketValue: 5000,
+      canceledTurnover: 0,
+      deliveryPrice: 0
+    },
+    {
+      month: '2026-02',
+      count: 330,
+      turnover: 1650000,
+      averageBasketValue: 5000,
+      canceledTurnover: 0,
+      deliveryPrice: 0
+    }
+  ],
+  previousYearMonthlySales: [
+    {
       month: '2025-01',
       count: 200,
       turnover: 1000000,
@@ -32,6 +50,13 @@ gateway.feedWith({
     }
   ],
   totalSales: {
+    count: 550,
+    turnover: 2750000,
+    averageBasketValue: 5000,
+    canceledTurnover: 0,
+    deliveryPrice: 0
+  },
+  previousYearTotalSales: {
     count: 1000,
     turnover: 4500000,
     averageBasketValue: 4500,
@@ -88,7 +113,37 @@ gateway.feedWith({
         name: 'Product 3 Laboratory'
       }
     }
-  ]
+  ],
+  ordersByDeliveryMethod: [
+    {
+      deliveryMethodUuid: '11111111-1111-1111-1111-111111111111',
+      deliveryMethodName: 'Standard',
+      count: 500
+    },
+    {
+      deliveryMethodUuid: '22222222-2222-2222-2222-222222222222',
+      deliveryMethodName: 'Express',
+      count: 300
+    }
+  ],
+  ordersByLaboratory: [
+    {
+      laboratoryUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+      laboratoryName: 'Modilac',
+      count: 200
+    }
+  ],
+  productQuantitiesByCategory: [
+    {
+      uuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
+      name: 'Category 1',
+      count: 100
+    }
+  ],
+  productStockStats: {
+    inStockCount: 450,
+    outOfStockCount: 50
+  }
 })
 
 export const useDashboardGateway = (): DashboardGateway => {

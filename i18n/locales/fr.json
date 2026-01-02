@@ -1,11 +1,5 @@
 {
   "name": "plop",
-  "home": {
-    "christmas": {
-      "title": "Joyeuses Fêtes de fin d'année !",
-      "message": "Nous vous souhaitons des joyeuses fêtes de fin d'année !"
-    }
-  },
   "validation": {
     "name": {
       "required": "Le nom est requis."
@@ -117,6 +111,12 @@
     "laboratoriesDistribution": "Répartition des ventes par laboratoire",
     "categoriesDistribution": "Répartition des ventes par catégorie",
     "productStockDistribution": "Répartition des produits par stock disponible",
+    "evolution": {
+      "title": "Évolution par rapport à l'année précédente",
+      "titleSuffix": "Chiffre d'affaire",
+      "salesLabel": "Ventes",
+      "turnoverLabel": "CA"
+    },
     "topProducts": {
       "title": "Produits les plus vendus",
       "productName": "Nom du produit",

@@ -123,9 +123,17 @@ div(v-if="permissions.canAccessDashboard")
           .text-center
             h3.text-lg.font-medium {{ stat.title }}
         template(#default)
-          .text-center
-            p.text-3xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
-            p.text-sm.text-gray-500 {{ stat.description }}
+          .flex.justify-center.gap-6(v-if="stat.showDualYear")
+            .text-center
+              p.text-xs.text-gray-500.mb-1.font-medium {{ previousYear }}
+              p.text-xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.previousYearValue : areProductFiltersApplied ? 'N/A' : stat.previousYearValue }}
+            .border-l.border-gray-200
+            .text-center
+              p.text-xs.text-gray-500.mb-1.font-medium {{ currentYear }}
+              p.text-xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
+          .text-center(v-else)
+            p.text-2xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
+          p.text-sm.text-gray-500.text-center.mt-2 {{ stat.description }}
 
     .grid.grid-cols-1.gap-6.mb-8(class="lg:grid-cols-2")
       UCard
@@ -133,13 +141,23 @@ div(v-if="permissions.canAccessDashboard")
           h3.text-lg.font-medium {{ $t('dashboard.monthlySales') }}
         template(#default)
           .h-80
-            MonthlySalesChart(:data="dashboard.monthlySales")
+            MonthlySalesChart(:data="dashboard.previousYearMonthlySales" :next-year-data="dashboard.monthlySales")
       UCard
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.monthlyTurnover') }}
         template(#default)
           .h-80
-            MonthlyTurnoverChart(:data="dashboard.monthlySales")
+            MonthlyTurnoverChart(:data="dashboard.previousYearMonthlySales" :next-year-data="dashboard.monthlySales")
+
+    UCard.mb-8(v-if="dashboard.previousYearMonthlySales.length > 0")
+      template(#header)
+        h3.text-lg.font-medium {{ $t('dashboard.evolution.title') }} (
+          span.text-primary {{ $t('dashboard.evolution.titleSuffix') }}
+          | )
+      template(#default)
+        MonthlyEvolutionChart(:current-year-data="dashboard.monthlySales" :previous-year-data="dashboard.previousYearMonthlySales")
+
+    .grid.grid-cols-1.gap-6.mb-8(class="lg:grid-cols-2")
       UCard()
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.categoriesDistribution') }}
@@ -163,7 +181,7 @@ div(v-if="permissions.canAccessDashboard")
           h3.text-lg.font-medium {{ $t('dashboard.monthlyDeliveryPrice') }}
         template(#default)
           .h-80
-            MonthlyDeliveryPriceChart(:data="dashboard.monthlySales")
+            MonthlyDeliveryPriceChart(:data="dashboard.previousYearMonthlySales" :next-year-data="dashboard.monthlySales")
       UCard(v-if="!areDateFiltersApplied")
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.productStockDistribution') }}
@@ -175,7 +193,7 @@ div(v-if="permissions.canAccessDashboard")
           h3.text-lg.font-medium {{ $t('dashboard.monthlyCanceledTurnover') }}
         template(#default)
           .h-80
-            MonthlyCanceledTurnoverChart(:data="dashboard.monthlySales")
+            MonthlyCanceledTurnoverChart(:data="dashboard.previousYearMonthlySales" :next-year-data="dashboard.monthlySales")
 
     UCard.mt-16
       template(#header)
@@ -198,9 +216,9 @@ div.p-8.text-center(v-else)
 
 <script lang="ts" setup>
 import { useUserProfileStore } from '@store/userProfileStore'
+import { formatCurrency } from '@utils/formatters'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import { formatCurrency } from '@/src/utils/formatters'
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
 import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
 import { listCategories } from '../../../../../core/usecases/categories/list-categories/listCategories'
@@ -256,36 +274,69 @@ const categoriesVM = computed(() => {
 const areProductFiltersApplied = ref(false)
 const areDateFiltersApplied = ref(false)
 
+const currentYear = computed(() => {
+  if (endDate.value) {
+    return new Date(endDate.value).getFullYear().toString()
+  }
+  return new Date().getFullYear().toString()
+})
+
+const previousYear = computed(() => {
+  if (endDate.value) {
+    return (new Date(endDate.value).getFullYear() - 1).toString()
+  }
+  return (new Date().getFullYear() - 1).toString()
+})
+
 const statsCards = computed(() => [
   {
     title: t('dashboard.totalSales'),
     value: dashboard.value.totalSales.count.toLocaleString(),
+    previousYearValue:
+      dashboard.value.previousYearTotalSales.count.toLocaleString(),
     description: t('dashboard.orders'),
-    isApplicableWithProductFilters: true
+    isApplicableWithProductFilters: true,
+    showDualYear: true
   },
   {
     title: t('dashboard.totalTurnover'),
     value: formatCurrency(dashboard.value.totalSales.turnover),
+    previousYearValue: formatCurrency(
+      dashboard.value.previousYearTotalSales.turnover
+    ),
     description: t('dashboard.revenue'),
-    isApplicableWithProductFilters: true
+    isApplicableWithProductFilters: true,
+    showDualYear: true
   },
   {
     title: t('dashboard.canceledTurnover'),
     value: formatCurrency(dashboard.value.totalSales.canceledTurnover),
+    previousYearValue: formatCurrency(
+      dashboard.value.previousYearTotalSales.canceledTurnover
+    ),
     description: t('dashboard.canceledRevenue'),
-    isApplicableWithProductFilters: true
+    isApplicableWithProductFilters: true,
+    showDualYear: false
   },
   {
     title: t('dashboard.deliveryPrice'),
     value: formatCurrency(dashboard.value.totalSales.deliveryPrice),
+    previousYearValue: formatCurrency(
+      dashboard.value.previousYearTotalSales.deliveryPrice
+    ),
     description: t('dashboard.deliveryRevenue'),
-    isApplicableWithProductFilters: false
+    isApplicableWithProductFilters: false,
+    showDualYear: false
   },
   {
     title: t('dashboard.averageBasket'),
     value: formatCurrency(dashboard.value.totalSales.averageBasketValue),
+    previousYearValue: formatCurrency(
+      dashboard.value.previousYearTotalSales.averageBasketValue
+    ),
     description: t('dashboard.perOrder'),
-    isApplicableWithProductFilters: false
+    isApplicableWithProductFilters: false,
+    showDualYear: false
   }
 ])
 

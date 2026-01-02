@@ -9,41 +9,12 @@ import {
 
 describe('PermissionMatrixEditVM', () => {
   let vm: PermissionMatrixEditVM
-  let initialPermissions: Record<string, Record<string, boolean>>
-  let roles: Array<{ uuid: string; name: string }>
 
   beforeEach(() => {
     setActivePinia(createPinia())
 
     const roleStore = useRoleStore()
     const systemResourceStore = useSystemResourceStore()
-
-    roles = [
-      { uuid: 'role-admin', name: 'Administrateur' },
-      { uuid: 'role-pharmacist', name: 'Pharmacien' },
-      { uuid: 'role-assistant', name: 'Assistant' }
-    ]
-
-    initialPermissions = {
-      'role-admin': {
-        dashboard: true,
-        newsletter: true,
-        administration: true,
-        'user-management': false
-      },
-      'role-pharmacist': {
-        dashboard: true,
-        newsletter: false,
-        administration: false,
-        'user-management': true
-      },
-      'role-assistant': {
-        dashboard: true,
-        newsletter: false,
-        administration: false,
-        'user-management': false
-      }
-    }
 
     systemResourceStore.items = [
       'dashboard',
@@ -60,7 +31,8 @@ describe('PermissionMatrixEditVM', () => {
           { resource: 'dashboard' },
           { resource: 'newsletter' },
           { resource: 'administration' }
-        ]
+        ],
+        order: 0
       },
       {
         uuid: 'role-pharmacist',
@@ -68,12 +40,14 @@ describe('PermissionMatrixEditVM', () => {
         permissions: [
           { resource: 'dashboard' },
           { resource: 'user-management' }
-        ]
+        ],
+        order: 1
       },
       {
         uuid: 'role-assistant',
         name: 'Assistant',
-        permissions: [{ resource: 'dashboard' }]
+        permissions: [{ resource: 'dashboard' }],
+        order: 2
       }
     ]
 
@@ -250,8 +224,6 @@ describe('PermissionMatrixEditVM', () => {
 
   describe('Update original functionality', () => {
     it('should make current permissions the new baseline', () => {
-      const vm = permissionMatrixEditVM(initialPermissions, roles)
-
       vm.setPermission('role-admin', 'user-management', true)
       vm.setPermission('role-pharmacist', 'newsletter', true)
 
@@ -264,8 +236,6 @@ describe('PermissionMatrixEditVM', () => {
     })
 
     it('should allow new changes after updating original', () => {
-      const vm = permissionMatrixEditVM(initialPermissions, roles)
-
       vm.setPermission('role-admin', 'user-management', true)
       vm.updateOriginal()
 
