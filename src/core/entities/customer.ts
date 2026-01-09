@@ -9,5 +9,6 @@ export interface Customer {
   phone: string
   ordersCount: number
   ordersTotal: number
+  lastOrderDate?: Date | string
   newsletterSubscription?: NewsletterSubscription
 }
