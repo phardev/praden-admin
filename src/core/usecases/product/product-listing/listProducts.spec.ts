@@ -50,6 +50,9 @@ describe('List products', () => {
       }
       expectStockToEqual(expectedStock)
     })
+    it('should be aware that its over when products count is less than limit', () => {
+      expectHasMoreToBe(false)
+    })
   })
 
   describe('List by chunk', () => {
