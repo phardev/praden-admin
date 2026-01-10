@@ -6,7 +6,7 @@
   product-table(
     :headers="productsVM.headers"
     :items="productsVM.items"
-    :is-loading="productsVM.isLoading"
+    :is-loading="showTableSkeleton"
     :selectable="true"
     :selection="productSelector.get()"
     @item-selected="productSelector.toggleSelect"
@@ -77,6 +77,7 @@ definePageMeta({ layout: 'main' })
 const productGateway = useProductGateway()
 const limit = 25
 let offset = 0
+const isLoadingProducts = ref(false)
 const productSelector = useSelection()
 const isBulkEditProductModalOpened = ref(false)
 
@@ -92,6 +93,7 @@ const handleBulkEdit = async (dto: { arePromotionsAllowed: boolean }) => {
 onMounted(() => {
   resetProducts()
   offset = 0
+  isLoadingProducts.value = false
   const categoryStore = useCategoryStore()
   categoryStore.items = [dents, diarrhee]
   listCategories(useCategoryGateway())
@@ -105,21 +107,37 @@ const productsVM = computed(() => {
   return getProductsVM(routeName)
 })
 
+const showTableSkeleton = computed(() => {
+  return productsVM.value.isLoading && productsVM.value.items.length === 0
+})
+
 const load = async ($state: InfiniteLoadingState) => {
-  if (!search.value) {
-    if (offset > 0 && !productsVM.value.hasMore) {
-      $state.complete()
-      return
-    }
+  if (isLoadingProducts.value) {
+    return
+  }
+
+  if (search.value) {
+    $state.complete()
+    return
+  }
+
+  if (!productsVM.value.hasMore && offset > 0) {
+    $state.complete()
+    return
+  }
+
+  isLoadingProducts.value = true
+  try {
     await listProducts(limit, offset, productGateway)
     offset += limit
+
     if (productsVM.value.hasMore) {
       $state.loaded()
     } else {
       $state.complete()
     }
-  } else {
-    $state.complete()
+  } finally {
+    isLoadingProducts.value = false
   }
 }
 
