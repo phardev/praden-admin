@@ -8,7 +8,7 @@
   div(:class="{'mt-4': hasSearchSlot}")
     slot(name="search")
   .-mx-4.ring-1.ring-light(class='sm:-mx-6 md:mx-0 md:rounded-lg')
-    div(class="overflow-y-auto" style="max-height: 400px;")
+    div(ref="scrollContainerRef" class="overflow-y-auto" style="max-height: 400px;")
       table.min-w-full.divide-y.divide-light
         thead.bg-contrast
           tr
@@ -52,9 +52,14 @@
               :key="headerIndex"
             )
               slot(:name="header.value" :item="item") {{ getValue(item, header.value) }}
+      slot(name="infinite")
 </template>
 
 <script lang="ts" setup>
+const scrollContainerRef = ref<HTMLElement | null>(null)
+
+defineExpose({ scrollContainerRef })
+
 const props = defineProps({
   headers: {
     type: Array,

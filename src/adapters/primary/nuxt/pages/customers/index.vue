@@ -4,6 +4,7 @@
     nuxt-link(to="/customers/new")
       ft-button.button-solid.text-xl.px-6 Créer client
   ft-table(
+    ref="customerTableRef"
     :headers="customersVM.headers"
     :items="customersVM.items"
     @clicked="customerSelected"
@@ -28,10 +29,10 @@
           @update:model-value="toggleNewsletterSubscription(item)"
           @click.stop
         )
-  InfiniteLoading(@infinite="load")
-    template(#complete)
-      div
-
+    template(#infinite)
+      InfiniteLoading(:target="customerTableRef?.scrollContainerRef" @infinite="load")
+        template(#complete)
+          div
 </template>
 
 <script lang="ts" setup>
@@ -51,6 +52,10 @@ import { unsubscribeFromNewsletter } from '@core/usecases/newsletter-subscriptio
 import { useNewsletterGateway } from '../../../../../../gateways/newsletterGateway'
 
 definePageMeta({ layout: 'main' })
+
+const customerTableRef = ref<{ scrollContainerRef: HTMLElement | null } | null>(
+  null
+)
 const limit = 100
 let offset = 0
 
@@ -60,11 +65,18 @@ interface InfiniteLoadingState {
 }
 
 const load = async ($state: InfiniteLoadingState) => {
+  const scrollContainer = customerTableRef.value?.scrollContainerRef
+  const scrollTop = scrollContainer?.scrollTop ?? 0
+
   if (!search.value) {
     await listCustomers(limit, offset, useCustomerGateway())
     offset += limit
     if (customersVM.value.hasMore) {
       $state.loaded()
+      await nextTick()
+      if (scrollContainer) {
+        scrollContainer.scrollTop = scrollTop
+      }
     } else {
       $state.complete()
     }
