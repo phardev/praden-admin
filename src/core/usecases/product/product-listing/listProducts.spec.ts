@@ -94,6 +94,15 @@ describe('List products', () => {
         expectHasMoreToBe(false)
       })
     })
+    describe('Last batch returns fewer products than limit', () => {
+      beforeEach(async () => {
+        await whenListProducts(3, 0)
+        await whenListProducts(3, 3)
+      })
+      it('should be aware that its over when partial batch received', () => {
+        expectHasMoreToBe(false)
+      })
+    })
   })
   describe('Loading', () => {
     beforeEach(() => {

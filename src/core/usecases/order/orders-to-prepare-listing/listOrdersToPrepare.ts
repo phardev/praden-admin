@@ -17,7 +17,7 @@ export const listOrdersToPrepare = async (
     const productUuids = getUniqueProductUuids(orders)
     const products = await productGateway.batch(productUuids)
     const productStore = useProductStore()
-    productStore.list(products.map(toProductListItem))
+    productStore.list(products.map(toProductListItem), products.length + 1)
     preparationStore.list(orders)
   } finally {
     preparationStore.stopLoading()
