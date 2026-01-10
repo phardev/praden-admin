@@ -55,6 +55,7 @@ import { getProductsVM } from '@adapters/primary/view-models/products/get-produc
 import type { ProductStatus } from '@core/entities/product'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { listProducts } from '@core/usecases/product/product-listing/listProducts'
+import { resetProducts } from '@core/usecases/product/product-reset/resetProducts'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
 import { useCategoryStore } from '@store/categoryStore'
 import { dents, diarrhee } from '@utils/testData/categories'
@@ -89,6 +90,8 @@ const handleBulkEdit = async (dto: { arePromotionsAllowed: boolean }) => {
 }
 
 onMounted(() => {
+  resetProducts()
+  offset = 0
   const categoryStore = useCategoryStore()
   categoryStore.items = [dents, diarrhee]
   listCategories(useCategoryGateway())
@@ -104,6 +107,10 @@ const productsVM = computed(() => {
 
 const load = async ($state: InfiniteLoadingState) => {
   if (!search.value) {
+    if (offset > 0 && !productsVM.value.hasMore) {
+      $state.complete()
+      return
+    }
     await listProducts(limit, offset, productGateway)
     offset += limit
     if (productsVM.value.hasMore) {

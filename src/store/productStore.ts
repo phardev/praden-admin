@@ -50,6 +50,11 @@ export const useProductStore = defineStore('ProductStore', {
     },
     stopLoading() {
       this.isLoading = false
+    },
+    reset() {
+      this.items = []
+      this.hasMore = true
+      this.isLoading = false
     }
   }
 })
