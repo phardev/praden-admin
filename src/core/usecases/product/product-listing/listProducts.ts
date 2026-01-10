@@ -15,7 +15,7 @@ export const listProducts = async (
   try {
     productStore.startLoading()
     const products = await productGateway.list(limit, offset)
-    productStore.list(products)
+    productStore.list(products, limit)
   } finally {
     productStore.stopLoading()
   }

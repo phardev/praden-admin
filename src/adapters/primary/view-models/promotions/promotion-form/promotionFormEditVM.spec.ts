@@ -340,7 +340,7 @@ describe('Promotion form edit VM', () => {
   })
 
   const givenExistingProducts = (...products: Array<Product>) => {
-    productStore.list(products)
+    productStore.list(products, products.length)
   }
 
   const givenExistingSearchResult = (...searchResults: Array<Product>) => {

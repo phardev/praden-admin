@@ -4,6 +4,7 @@ import { Stock } from '@core/entities/product'
 import { useProductStore } from '@store/productStore'
 import {
   anaca3MinceurListItem,
+  calmosineListItem,
   chamomillaListItem,
   dolodentListItem,
   ultraLevureListItem
@@ -91,6 +92,21 @@ describe('List products', () => {
         )
       })
       it('should be aware that its over', () => {
+        expectHasMoreToBe(false)
+      })
+    })
+    describe('When last batch returns fewer products than limit', () => {
+      beforeEach(() => {
+        givenExistingProducts(
+          dolodentListItem,
+          ultraLevureListItem,
+          anaca3MinceurListItem,
+          chamomillaListItem,
+          calmosineListItem
+        )
+      })
+      it('should be aware that its over when receiving fewer products than requested', async () => {
+        await whenListProducts(2, 4)
         expectHasMoreToBe(false)
       })
     })

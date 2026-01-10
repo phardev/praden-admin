@@ -20,7 +20,7 @@ export const useProductStore = defineStore('ProductStore', {
     }
   },
   actions: {
-    list(products: Array<ProductListItem>) {
+    list(products: Array<ProductListItem>, limit: number) {
       products.forEach((p) => {
         const existingProduct = this.items.find((item) => item.uuid === p.uuid)
         if (existingProduct) {
@@ -32,7 +32,7 @@ export const useProductStore = defineStore('ProductStore', {
         }
         this.stock[p.ean13] = p.availableStock
       })
-      this.hasMore = products.length > 0
+      this.hasMore = products.length === limit
     },
     add(product: Product) {
       this.items.push(toListItem(product))
