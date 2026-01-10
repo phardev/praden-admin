@@ -7,7 +7,8 @@ export const useCustomerStore = defineStore('CustomerStore', {
     return {
       items: [] as Array<Customer>,
       current: undefined as Customer | undefined,
-      hasMore: false as boolean
+      hasMore: false as boolean,
+      isLoading: false
     }
   },
   getters: {
@@ -47,6 +48,12 @@ export const useCustomerStore = defineStore('CustomerStore', {
     },
     setCurrent(customer: Customer) {
       this.current = JSON.parse(JSON.stringify(customer))
+    },
+    startLoading() {
+      this.isLoading = true
+    },
+    stopLoading() {
+      this.isLoading = false
     }
   }
 })

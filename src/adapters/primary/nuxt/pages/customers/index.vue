@@ -4,8 +4,10 @@
     nuxt-link(to="/customers/new")
       ft-button.button-solid.text-xl.px-6 Créer client
   ft-table(
+    ref="tableRef"
     :headers="customersVM.headers"
     :items="customersVM.items"
+    :is-loading="customersVM.isLoading"
     @clicked="customerSelected"
   )
     template(#title) Clients
@@ -28,9 +30,10 @@
           @update:model-value="toggleNewsletterSubscription(item)"
           @click.stop
         )
-  InfiniteLoading(@infinite="load")
-    template(#complete)
-      div
+    template(#infinite)
+      InfiniteLoading(:target="tableRef?.scrollContainerRef" @infinite="load")
+        template(#complete)
+          div
 
 </template>
 
@@ -51,6 +54,7 @@ import { unsubscribeFromNewsletter } from '@core/usecases/newsletter-subscriptio
 import { useNewsletterGateway } from '../../../../../../gateways/newsletterGateway'
 
 definePageMeta({ layout: 'main' })
+const tableRef = ref<any>(null)
 const limit = 100
 let offset = 0
 

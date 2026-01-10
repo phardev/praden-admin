@@ -93,7 +93,7 @@ export const getCustomersVM = (key: string): GetCustomersVM => {
       ordersTotal: formatter.format(customer.ordersTotal / 100),
       lastOrderDate: formatLastOrderDate(customer.lastOrderDate)
     })),
-    isLoading: false,
+    isLoading: customerStore.isLoading,
     hasMore: customerStore.hasMore,
     currentSearch,
     searchError: searchError

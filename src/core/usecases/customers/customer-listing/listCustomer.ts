@@ -6,8 +6,17 @@ export const listCustomers = async (
   offset: number,
   customerGateway: CustomerGateway
 ): Promise<void> => {
-  const customers = await customerGateway.list(limit, offset)
   const customerStore = useCustomerStore()
-  customerStore.list(customers)
-  return Promise.resolve()
+
+  if (customerStore.isLoading) {
+    return
+  }
+
+  try {
+    customerStore.startLoading()
+    const customers = await customerGateway.list(limit, offset)
+    customerStore.list(customers)
+  } finally {
+    customerStore.stopLoading()
+  }
 }

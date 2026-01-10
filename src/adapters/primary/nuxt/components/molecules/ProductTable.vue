@@ -1,5 +1,6 @@
 <template lang="pug">
 ft-table(
+  ref="ftTableRef"
   v-bind="{ ...$attrs, ...$slots }"
 )
   template(v-for="(_, name) in $slots", #[name]="scope")
@@ -23,3 +24,11 @@ ft-table(
   template(#arePromotionsAllowed="{ item }")
     FtPromotionAllowedBadge(:allowed="item.arePromotionsAllowed")
 </template>
+
+<script lang="ts" setup>
+const ftTableRef = ref<any>(null)
+
+const scrollContainerRef = computed(() => ftTableRef.value?.scrollContainerRef)
+
+defineExpose({ scrollContainerRef })
+</script>

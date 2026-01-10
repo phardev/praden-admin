@@ -4,6 +4,7 @@
     nuxt-link(to="/products/new")
       ft-button.button-solid.text-xl.px-6 Créer produit
   product-table(
+    ref="tableRef"
     :headers="productsVM.headers"
     :items="productsVM.items"
     :is-loading="productsVM.isLoading"
@@ -34,14 +35,15 @@
           )
     template(#name="{ item }")
       .font-medium.text-default {{ item.name }}
+    template(#infinite)
+      InfiniteLoading(:target="tableRef?.scrollContainerRef" @infinite="load")
+        template(#complete)
+          div
   .mt-4.flex.gap-4
     ft-button.button-solid.text-base(
       :disabled="!productSelector.get().length"
       @click="openBulkEditDialog"
     ) Modifier la sélection
-  InfiniteLoading(@infinite="load")
-    template(#complete)
-      div
   ft-bulk-edit-product-modal(
     v-model="isBulkEditProductModalOpened"
     :selected-count="productSelector.get().length"
@@ -73,6 +75,7 @@ interface InfiniteLoadingState {
 
 definePageMeta({ layout: 'main' })
 
+const tableRef = ref<any>(null)
 const productGateway = useProductGateway()
 const limit = 25
 let offset = 0
