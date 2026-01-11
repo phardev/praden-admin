@@ -34,14 +34,15 @@
           )
     template(#name="{ item }")
       .font-medium.text-default {{ item.name }}
+    template(#infinite)
+      InfiniteLoading(@infinite="load")
+        template(#complete)
+          div
   .mt-4.flex.gap-4
     ft-button.button-solid.text-base(
       :disabled="!productSelector.get().length"
       @click="openBulkEditDialog"
     ) Modifier la sélection
-  InfiniteLoading(target=".ft-table-scroll" @infinite="load")
-    template(#complete)
-      div
   ft-bulk-edit-product-modal(
     v-model="isBulkEditProductModalOpened"
     :selected-count="productSelector.get().length"

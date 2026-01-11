@@ -52,6 +52,7 @@
               :key="headerIndex"
             )
               slot(:name="header.value" :item="item") {{ getValue(item, header.value) }}
+      slot(name="infinite")
 </template>
 
 <script lang="ts" setup>
