@@ -28,7 +28,7 @@
           @update:model-value="toggleNewsletterSubscription(item)"
           @click.stop
         )
-  InfiniteLoading(@infinite="load")
+  InfiniteLoading(target=".ft-table-scroll" @infinite="load")
     template(#complete)
       div
 

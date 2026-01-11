@@ -39,7 +39,7 @@
       :disabled="!productSelector.get().length"
       @click="openBulkEditDialog"
     ) Modifier la sélection
-  InfiniteLoading(@infinite="load")
+  InfiniteLoading(target=".ft-table-scroll" @infinite="load")
     template(#complete)
       div
   ft-bulk-edit-product-modal(
