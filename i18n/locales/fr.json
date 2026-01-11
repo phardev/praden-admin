@@ -1,11 +1,5 @@
 {
   "name": "plop",
-  "home": {
-    "christmas": {
-      "title": "Joyeuses Fêtes de fin d'année !",
-      "message": "Nous vous souhaitons des joyeuses fêtes de fin d'année !"
-    }
-  },
   "validation": {
     "name": {
       "required": "Le nom est requis."
