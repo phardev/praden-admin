@@ -41,7 +41,8 @@
     "expandAll": "Voir tout",
     "collapseAll": "Cacher tout",
     "active": "Actif",
-    "inactive": "Inactif"
+    "inactive": "Inactif",
+    "save": "Enregistrer"
   },
   "deliveryPriceRules": {
     "title": "Règles de prix de livraison",
