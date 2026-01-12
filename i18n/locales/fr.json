@@ -435,7 +435,8 @@
       "announcementBarCard": "Barre d'annonce",
       "categoryOrderCard": "Ordre des catégories",
       "pharmacistSelectionCard": "Sélection du pharmacien",
-      "emergencyPharmaciesCard": "Pharmacies de garde"
+      "emergencyPharmaciesCard": "Pharmacies de garde",
+      "loyaltyConfigCard": "Programme de fidélité"
     },
     "announcementBar": {
       "title": "Barres d'annonce",
@@ -520,6 +521,23 @@
       "deleteSuccess": "Pharmacie de garde supprimée",
       "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette pharmacie de garde ?",
       "groupedByDate": "Pharmacies par date"
+    }
+  },
+  "loyalty": {
+    "points": "Points de fidélité",
+    "config": {
+      "title": "Configuration fidélité",
+      "description": "Configurez le programme de fidélité de votre boutique",
+      "pointsPerEuro": "Points par euro",
+      "pointsPerEuroPlaceholder": "Ex: 1",
+      "isEnabled": "Système activé",
+      "systemEnabled": "Le système de fidélité est activé",
+      "systemDisabled": "Le système de fidélité est désactivé",
+      "updateSuccess": "Configuration de fidélité mise à jour",
+      "updateError": "Erreur lors de la mise à jour",
+      "unsavedChanges": "Modifications non enregistrées",
+      "unsavedChangesDescription": "Vos modifications ne seront pas sauvegardées si vous quittez cette page sans enregistrer.",
+      "leavePageConfirm": "Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ?"
     }
   }
 }

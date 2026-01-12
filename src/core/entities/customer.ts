@@ -11,4 +11,5 @@ export interface Customer {
   ordersTotal: number
   lastOrderDate?: Date | string
   newsletterSubscription?: NewsletterSubscription
+  loyaltyPoints?: number
 }

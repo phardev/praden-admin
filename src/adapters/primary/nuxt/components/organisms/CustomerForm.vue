@@ -24,6 +24,12 @@ div(v-if="currentVM")
       :disabled="!currentVM.get('phone').canEdit"
       @update:model-value="phoneChanged"
     )
+  UFormGroup.pb-4(:label="$t('loyalty.points')" name="loyaltyPoints")
+    ft-text-field(
+      :model-value="currentVM.get('loyaltyPoints').value"
+      disabled
+      type="number"
+    )
   div.flex.flex-row-reverse.mt-4
     ft-button.px-6.text-xl(
       v-if="currentVM.getDisplayValidate()"

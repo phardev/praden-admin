@@ -36,6 +36,10 @@ const expectedHeaders: Array<Header> = [
     value: 'newsletterSubscription'
   },
   {
+    name: 'Points fidélité',
+    value: 'loyaltyPoints'
+  },
+  {
     name: 'Nombre de commandes',
     value: 'ordersCount'
   },
@@ -173,6 +177,7 @@ describe('Get customers VM', () => {
       email: customer.email,
       phone: customer.phone,
       newsletterSubscription: !!customer.newsletterSubscription,
+      loyaltyPoints: customer.loyaltyPoints ?? 0,
       ordersCount: customer.ordersCount,
       ordersTotal: formatter.format(customer.ordersTotal / 100),
       lastOrderDate: formatLastOrderDate(customer.lastOrderDate)
