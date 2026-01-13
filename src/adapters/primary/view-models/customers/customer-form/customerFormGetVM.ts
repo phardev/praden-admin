@@ -28,7 +28,8 @@ export class ExistingCustomerFormInitializer implements FormInitializer {
       firstname: customer.firstname,
       lastname: customer.lastname,
       email: customer.email,
-      phone: customer.phone
+      phone: customer.phone,
+      loyaltyPoints: customer.loyaltyPoints
     })
   }
 }

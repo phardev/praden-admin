@@ -24,6 +24,11 @@ div(v-if="currentVM")
       :disabled="!currentVM.get('phone').canEdit"
       @update:model-value="phoneChanged"
     )
+  UFormGroup.pb-4(v-if="showLoyaltyPoints" :label="$t('customers.loyaltyPoints')" name="loyaltyPoints")
+    ft-text-field(
+      :model-value="currentVM.get('loyaltyPoints').value"
+      disabled
+    )
   div.flex.flex-row-reverse.mt-4
     ft-button.px-6.text-xl(
       v-if="currentVM.getDisplayValidate()"
@@ -41,10 +46,15 @@ const props = defineProps({
     default() {
       return undefined
     }
+  },
+  showLoyaltyPoints: {
+    type: Boolean,
+    default: false
   }
 })
 
 const currentVM = toRef(props, 'vm')
+const showLoyaltyPoints = toRef(props, 'showLoyaltyPoints')
 
 const firstnameChanged = (firstname: string) => {
   currentVM?.value?.set('firstname', firstname)

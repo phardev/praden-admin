@@ -5,6 +5,7 @@
   h1.text-title {{ $t('customers.viewTitle') }}
   customer-form(
     :vm="vm"
+    :show-loyalty-points="true"
   )
   h2.text-subtitle.mt-4 {{ $t('customers.ordersHistory') }}
   orders-list(

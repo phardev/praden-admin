@@ -10,7 +10,8 @@ export const elodieDurand: Customer = {
   ordersCount: 2,
   ordersTotal: 10000,
   lastOrderDate: '2024-03-15T10:30:00.000Z',
-  newsletterSubscription: elodieDurandNewsletterSubscription
+  newsletterSubscription: elodieDurandNewsletterSubscription,
+  loyaltyPoints: 100
 }
 
 export const lucasLefevre: Customer = {
@@ -21,7 +22,8 @@ export const lucasLefevre: Customer = {
   phone: '+33687654321',
   ordersCount: 1,
   ordersTotal: 5000,
-  lastOrderDate: '2024-02-20T14:15:00.000Z'
+  lastOrderDate: '2024-02-20T14:15:00.000Z',
+  loyaltyPoints: 50
 }
 
 export const sophieMartinez: Customer = {
@@ -31,7 +33,8 @@ export const sophieMartinez: Customer = {
   email: 'sophie.martinez@example.com',
   phone: '+33698765432',
   ordersCount: 0,
-  ordersTotal: 0
+  ordersTotal: 0,
+  loyaltyPoints: 0
 }
 
 export const pierreBernard: Customer = {
@@ -41,7 +44,8 @@ export const pierreBernard: Customer = {
   email: 'pierre.bernard@example.com',
   phone: '+33654321987',
   ordersCount: 3,
-  ordersTotal: 15000
+  ordersTotal: 15000,
+  loyaltyPoints: 150
 }
 
 export const marcLeblanc: Customer = {
@@ -51,5 +55,6 @@ export const marcLeblanc: Customer = {
   email: 'marc.leblanc@example.com',
   phone: '+33676543210',
   ordersCount: 1,
-  ordersTotal: 7500
+  ordersTotal: 7500,
+  loyaltyPoints: 75
 }

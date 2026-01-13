@@ -82,7 +82,8 @@
     "viewTitle": "Voir client",
     "editButton": "Editer client",
     "ordersHistory": "Historique des commandes",
-    "supportTickets": "Tickets de support"
+    "supportTickets": "Tickets de support",
+    "loyaltyPoints": "Points de fidélité"
   },
   "orders": {
     "supportTickets": "Tickets de support"
@@ -435,7 +436,8 @@
       "announcementBarCard": "Barre d'annonce",
       "categoryOrderCard": "Ordre des catégories",
       "pharmacistSelectionCard": "Sélection du pharmacien",
-      "emergencyPharmaciesCard": "Pharmacies de garde"
+      "emergencyPharmaciesCard": "Pharmacies de garde",
+      "loyaltyPointsCard": "Points de fidélité"
     },
     "announcementBar": {
       "title": "Barres d'annonce",
@@ -520,6 +522,21 @@
       "deleteSuccess": "Pharmacie de garde supprimée",
       "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette pharmacie de garde ?",
       "groupedByDate": "Pharmacies par date"
+    },
+    "loyaltyPoints": {
+      "title": "Points de fidélité",
+      "description": "Configurez le programme de points de fidélité pour vos clients",
+      "pointsPerEuro": "Points par euro",
+      "pointsPerEuroHelp": "Nombre de points attribués pour chaque euro dépensé",
+      "minimumOrderAmount": "Montant minimum de commande",
+      "minimumOrderAmountHelp": "Montant minimum en centimes pour obtenir des points",
+      "isActive": "Programme actif",
+      "isActiveHelp": "Activer ou désactiver le programme de fidélité",
+      "save": "Enregistrer",
+      "updateSuccess": "Configuration mise à jour avec succès",
+      "updateError": "Erreur lors de la mise à jour de la configuration",
+      "active": "Actif",
+      "inactive": "Inactif"
     }
   }
 }
