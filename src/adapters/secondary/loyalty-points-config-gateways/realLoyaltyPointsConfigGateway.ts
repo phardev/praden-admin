@@ -18,10 +18,10 @@ export class RealLoyaltyPointsConfigGateway
     const res = await axiosWithBearer.get(
       `${this.baseUrl}/loyalty-points-config`
     )
-    if (!res.data.item) {
+    if (!res.data) {
       return null
     }
-    return this.convertToLoyaltyPointsConfig(res.data.item)
+    return this.convertToLoyaltyPointsConfig(res.data)
   }
 
   async update(
@@ -31,7 +31,7 @@ export class RealLoyaltyPointsConfigGateway
       `${this.baseUrl}/loyalty-points-config`,
       dto
     )
-    return this.convertToLoyaltyPointsConfig(res.data.item)
+    return this.convertToLoyaltyPointsConfig(res.data)
   }
 
   private convertToLoyaltyPointsConfig(data: any): LoyaltyPointsConfig {
