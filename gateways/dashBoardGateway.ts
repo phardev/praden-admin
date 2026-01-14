@@ -67,6 +67,7 @@ gateway.feedWith({
     {
       productUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608',
       name: 'Modilac Expert Riz 3 Lait dès 12 mois 800 g',
+      ean13: '3401598753214',
       count: 52,
       categories: [
         {
@@ -82,6 +83,7 @@ gateway.feedWith({
     {
       productUuid: '88362b96-80f7-452b-9ef0-7b85b90d7609',
       name: 'Product 2',
+      ean13: '3401598753215',
       count: 45,
       categories: [
         {
@@ -97,6 +99,7 @@ gateway.feedWith({
     {
       productUuid: '99362b96-80f7-452b-9ef0-7b85b90d7610',
       name: 'Product 3',
+      ean13: '3401598753216',
       count: 38,
       categories: [
         {

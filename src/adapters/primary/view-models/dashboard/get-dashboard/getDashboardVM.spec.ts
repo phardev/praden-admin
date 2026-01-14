@@ -72,6 +72,7 @@ describe('getDashboardVM', () => {
         {
           productUuid: '123',
           name: 'Product A',
+          ean13: '3401598753214',
           count: 50,
           categories: [
             {

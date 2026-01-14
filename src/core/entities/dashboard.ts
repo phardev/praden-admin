@@ -35,6 +35,7 @@ export interface TopProductLaboratory {
 export interface TopProduct {
   productUuid: string
   name: string
+  ean13: string
   count: number
   categories: Array<TopProductCategory>
   laboratory: TopProductLaboratory

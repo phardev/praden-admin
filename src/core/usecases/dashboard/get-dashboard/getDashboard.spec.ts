@@ -79,6 +79,7 @@ describe('GetDashboard', () => {
         {
           productUuid: 'product-1',
           name: 'Modilac Expert Riz 3 Lait dès 12 mois 800 g',
+          ean13: '3401598753214',
           count: 52,
           categories: [
             {
@@ -94,6 +95,7 @@ describe('GetDashboard', () => {
         {
           productUuid: 'product-2',
           name: 'Product 2',
+          ean13: '3401598753215',
           count: 45,
           categories: [
             {
@@ -109,6 +111,7 @@ describe('GetDashboard', () => {
         {
           productUuid: 'product-3',
           name: 'Product 3',
+          ean13: '3401598753216',
           count: 38,
           categories: [
             {
