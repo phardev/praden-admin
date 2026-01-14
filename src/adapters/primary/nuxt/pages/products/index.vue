@@ -103,8 +103,12 @@ const productsVM = computed(() => {
   return getProductsVM(routeName)
 })
 
+const isSearchActive = computed(() => {
+  return !!search.value || !!productStatus.value
+})
+
 const load = async ($state: InfiniteLoadingState) => {
-  if (!search.value) {
+  if (!isSearchActive.value) {
     await listProducts(limit, offset, productGateway)
     offset += limit
     if (productsVM.value.hasMore) {

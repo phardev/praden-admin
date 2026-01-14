@@ -106,7 +106,8 @@ export const getProductsVM = (key: string): GetProductsVM => {
     searchError: searchError
       ? 'Veuillez saisir au moins 3 caractères pour lancer la recherche.'
       : undefined,
-    hasMore: productStore.hasMore.valueOf(),
+    hasMore:
+      searchResult !== undefined ? false : productStore.hasMore.valueOf(),
     isLoading
   }
 }

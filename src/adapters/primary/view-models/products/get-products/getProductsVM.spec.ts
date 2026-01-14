@@ -286,6 +286,33 @@ describe('Get products VM', () => {
           expectVMToMatch(expectedVM)
         })
       })
+      describe('Search results should not have pagination', () => {
+        beforeEach(() => {
+          productStore.hasMore = true
+          searchStore.set(key, [dolodentListItem])
+        })
+        it('should return hasMore false when search results are present', () => {
+          expectedVM = {
+            items: [
+              {
+                uuid: dolodent.uuid,
+                name: dolodent.name,
+                img: dolodent.miniature,
+                reference: dolodent.ean13,
+                laboratory: dolodent.laboratory!.name,
+                categories: dolodent.categories.map((c) => c.name),
+                priceWithoutTax: '5,00\u00A0€',
+                priceWithTax: '5,50\u00A0€',
+                availableStock: dolodent.availableStock,
+                isActive: true,
+                arePromotionsAllowed: false
+              }
+            ],
+            hasMore: false
+          }
+          expectVMToMatch(expectedVM)
+        })
+      })
     })
     describe('Are all products listed ?', () => {
       it('should inform that there is more items', () => {
