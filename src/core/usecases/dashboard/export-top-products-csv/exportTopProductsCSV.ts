@@ -10,7 +10,7 @@ export interface ExportTopProductsLabels {
 }
 
 const escapeCSVField = (field: string): string => {
-  if (field.includes(',') || field.includes('"') || field.includes('\n')) {
+  if (field.includes(';') || field.includes('"') || field.includes('\n')) {
     return `"${field.replace(/"/g, '""')}"`
   }
   return field
@@ -20,14 +20,14 @@ export const generateCSVContent = (
   topProducts: TopProduct[],
   labels: Pick<ExportTopProductsLabels, 'productName' | 'ean13' | 'orderCount'>
 ): string => {
-  const headers = `${labels.productName},${labels.ean13},${labels.orderCount}`
+  const headers = `${labels.productName};${labels.ean13};${labels.orderCount}`
   if (topProducts.length === 0) {
     return headers
   }
 
   const rows = topProducts.map(
     (product) =>
-      `${escapeCSVField(product.name)},${product.ean13},${product.count}`
+      `${escapeCSVField(product.name)};${product.ean13};${product.count}`
   )
 
   return [headers, ...rows].join('\n')
