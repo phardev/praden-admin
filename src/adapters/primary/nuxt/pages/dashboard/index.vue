@@ -346,6 +346,10 @@ const topProductsColumns = [
     label: t('dashboard.topProducts.productName')
   },
   {
+    key: 'ean13',
+    label: t('dashboard.topProducts.ean13')
+  },
+  {
     key: 'categories',
     label: t('dashboard.topProducts.categories')
   },

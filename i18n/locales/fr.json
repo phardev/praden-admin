@@ -120,6 +120,7 @@
     "topProducts": {
       "title": "Produits les plus vendus",
       "productName": "Nom du produit",
+      "ean13": "EAN13",
       "categories": "Catégories",
       "laboratory": "Laboratoire",
       "orderCount": "Nombre de boites vendues"
