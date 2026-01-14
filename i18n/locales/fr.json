@@ -123,7 +123,8 @@
       "ean13": "EAN13",
       "categories": "Catégories",
       "laboratory": "Laboratoire",
-      "orderCount": "Nombre de boites vendues"
+      "orderCount": "Nombre de boites vendues",
+      "downloadCsv": "Télécharger CSV"
     }
   },
   "preparations": {

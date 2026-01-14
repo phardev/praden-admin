@@ -197,7 +197,17 @@ div(v-if="permissions.canAccessDashboard")
 
     UCard.mt-16
       template(#header)
-        h3.text-lg.font-medium {{ $t('dashboard.topProducts.title') }}
+        .flex.justify-between.items-center
+          h3.text-lg.font-medium {{ $t('dashboard.topProducts.title') }}
+          UButton(
+            color="primary"
+            variant="soft"
+            icon="i-heroicons-arrow-down-tray"
+            size="sm"
+            :disabled="dashboard.topProducts.length === 0"
+            @click="downloadTopProductsCsv"
+          )
+            | {{ $t('dashboard.topProducts.downloadCsv') }}
       template(#default)
         UTable(:columns="topProductsColumns" :rows="dashboard.topProducts")
           template(#categories-data="{ row }")
@@ -220,8 +230,11 @@ import { formatCurrency } from '@utils/formatters'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
+import { useDateProvider } from '../../../../../../gateways/dateProvider'
+import { useFileDownloadService } from '../../../../../../gateways/fileDownloadService'
 import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
 import { listCategories } from '../../../../../core/usecases/categories/list-categories/listCategories'
+import { exportTopProductsCSV } from '../../../../../core/usecases/dashboard/export-top-products-csv/exportTopProductsCSV'
 import { listLaboratories } from '../../../../../core/usecases/laboratories/laboratory-listing/listLaboratories'
 import { getCategoriesVM } from '../../../view-models/categories/get-categories/getCategoriesVM'
 import { getLaboratoriesVM } from '../../../view-models/laboratories/get-laboratories/getLaboratoriesVM'
@@ -518,5 +531,13 @@ const laboratorySearch = (query: string) => {
     const normalizedName = normalizeText(optionName)
     return normalizedName.includes(normalizedQuery)
   })
+}
+
+const downloadTopProductsCsv = () => {
+  exportTopProductsCSV(
+    dashboard.value.topProducts,
+    useFileDownloadService(),
+    useDateProvider()
+  )
 }
 </script>
