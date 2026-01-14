@@ -89,6 +89,7 @@
   },
   "dashboard": {
     "title": "Tableau de bord",
+    "filenamePrefix": "produits-plus-vendus",
     "selectDateRange": "Sélectionner une période",
     "productLimit": "Nombre de produits",
     "promotionOnly": "Produits en promotion uniquement",

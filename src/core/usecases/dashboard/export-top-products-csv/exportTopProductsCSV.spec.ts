@@ -1,10 +1,18 @@
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { InMemoryFileDownloadService } from '@adapters/secondary/file-download-services/InMemoryFileDownloadService'
 import type { TopProduct } from '@core/entities/dashboard'
+import type { ExportTopProductsLabels } from '@core/usecases/dashboard/export-top-products-csv/exportTopProductsCSV'
 import {
   exportTopProductsCSV,
   generateCSVContent
 } from '@core/usecases/dashboard/export-top-products-csv/exportTopProductsCSV'
+
+const labels: ExportTopProductsLabels = {
+  filenamePrefix: 'produits-plus-vendus',
+  productName: 'Nom du produit',
+  ean13: 'EAN13',
+  orderCount: 'Nombre de boites vendues'
+}
 
 describe('Export top products CSV', () => {
   let fileDownloadService: InMemoryFileDownloadService
@@ -46,7 +54,7 @@ describe('Export top products CSV', () => {
       whenExportTopProductsCSV(topProducts)
       const downloadedFile = fileDownloadService.getLastDownloadedFile()
       expect(downloadedFile?.filename).toStrictEqual(
-        'top-products-2021-01-01.csv'
+        'produits-plus-vendus-2021-01-01.csv'
       )
     })
   })
@@ -63,9 +71,11 @@ describe('Export top products CSV', () => {
           laboratory: { uuid: 'lab-1', name: 'Sanofi' }
         }
       ]
-      const csvContent = generateCSVContent(topProducts)
+      const csvContent = generateCSVContent(topProducts, labels)
       const firstLine = csvContent.split('\n')[0]
-      expect(firstLine).toStrictEqual('name,ean13,qty sold')
+      expect(firstLine).toStrictEqual(
+        'Nom du produit,EAN13,Nombre de boites vendues'
+      )
     })
 
     it('should include all top products data in CSV rows', () => {
@@ -79,7 +89,7 @@ describe('Export top products CSV', () => {
           laboratory: { uuid: 'lab-1', name: 'Sanofi' }
         }
       ]
-      const csvContent = generateCSVContent(topProducts)
+      const csvContent = generateCSVContent(topProducts, labels)
       const lines = csvContent.split('\n')
       expect(lines[1]).toStrictEqual('Doliprane 1000mg,3400930000001,150')
     })
@@ -95,7 +105,7 @@ describe('Export top products CSV', () => {
           laboratory: { uuid: 'lab-1', name: 'Sanofi' }
         }
       ]
-      const csvContent = generateCSVContent(topProducts)
+      const csvContent = generateCSVContent(topProducts, labels)
       const lines = csvContent.split('\n')
       expect(lines[1]).toStrictEqual(
         '"Doliprane, 1000mg Tablets",3400930000001,150'
@@ -113,7 +123,7 @@ describe('Export top products CSV', () => {
           laboratory: { uuid: 'lab-1', name: 'Sanofi' }
         }
       ]
-      const csvContent = generateCSVContent(topProducts)
+      const csvContent = generateCSVContent(topProducts, labels)
       const lines = csvContent.split('\n')
       expect(lines[1]).toStrictEqual(
         '"Doliprane ""Extra"" 1000mg",3400930000001,150'
@@ -121,12 +131,14 @@ describe('Export top products CSV', () => {
     })
 
     it('should handle empty top products array', () => {
-      const csvContent = generateCSVContent([])
-      expect(csvContent).toStrictEqual('name,ean13,qty sold')
+      const csvContent = generateCSVContent([], labels)
+      expect(csvContent).toStrictEqual(
+        'Nom du produit,EAN13,Nombre de boites vendues'
+      )
     })
   })
 
   const whenExportTopProductsCSV = (topProducts: TopProduct[]): void => {
-    exportTopProductsCSV(topProducts, fileDownloadService, dateProvider)
+    exportTopProductsCSV(topProducts, fileDownloadService, dateProvider, labels)
   }
 })

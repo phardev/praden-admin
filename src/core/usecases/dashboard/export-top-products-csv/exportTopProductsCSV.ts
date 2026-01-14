@@ -2,6 +2,13 @@ import type { TopProduct } from '@core/entities/dashboard'
 import type { DateProvider } from '@core/gateways/dateProvider'
 import type { FileDownloadService } from '@core/gateways/fileDownloadService'
 
+export interface ExportTopProductsLabels {
+  filenamePrefix: string
+  productName: string
+  ean13: string
+  orderCount: string
+}
+
 const escapeCSVField = (field: string): string => {
   if (field.includes(',') || field.includes('"') || field.includes('\n')) {
     return `"${field.replace(/"/g, '""')}"`
@@ -9,8 +16,11 @@ const escapeCSVField = (field: string): string => {
   return field
 }
 
-export const generateCSVContent = (topProducts: TopProduct[]): string => {
-  const headers = 'name,ean13,qty sold'
+export const generateCSVContent = (
+  topProducts: TopProduct[],
+  labels: Pick<ExportTopProductsLabels, 'productName' | 'ean13' | 'orderCount'>
+): string => {
+  const headers = `${labels.productName},${labels.ean13},${labels.orderCount}`
   if (topProducts.length === 0) {
     return headers
   }
@@ -26,12 +36,13 @@ export const generateCSVContent = (topProducts: TopProduct[]): string => {
 export const exportTopProductsCSV = (
   topProducts: TopProduct[],
   fileDownloadService: FileDownloadService,
-  dateProvider: DateProvider
+  dateProvider: DateProvider,
+  labels: ExportTopProductsLabels
 ): void => {
-  const csvContent = generateCSVContent(topProducts)
+  const csvContent = generateCSVContent(topProducts, labels)
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' })
   const date = new Date(dateProvider.now())
   const formattedDate = date.toISOString().split('T')[0]
-  const filename = `top-products-${formattedDate}.csv`
+  const filename = `${labels.filenamePrefix}-${formattedDate}.csv`
   fileDownloadService.downloadFile(blob, filename)
 }
