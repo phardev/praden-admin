@@ -234,7 +234,10 @@ import { useDateProvider } from '../../../../../../gateways/dateProvider'
 import { useFileDownloadService } from '../../../../../../gateways/fileDownloadService'
 import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
 import { listCategories } from '../../../../../core/usecases/categories/list-categories/listCategories'
-import { exportTopProductsCSV } from '../../../../../core/usecases/dashboard/export-top-products-csv/exportTopProductsCSV'
+import {
+  type ExportTopProductsLabels,
+  exportTopProductsCSV
+} from '../../../../../core/usecases/dashboard/export-top-products-csv/exportTopProductsCSV'
 import { listLaboratories } from '../../../../../core/usecases/laboratories/laboratory-listing/listLaboratories'
 import { getCategoriesVM } from '../../../view-models/categories/get-categories/getCategoriesVM'
 import { getLaboratoriesVM } from '../../../view-models/laboratories/get-laboratories/getLaboratoriesVM'
@@ -534,10 +537,17 @@ const laboratorySearch = (query: string) => {
 }
 
 const downloadTopProductsCsv = () => {
+  const labels: ExportTopProductsLabels = {
+    filenamePrefix: t('dashboard.filenamePrefix'),
+    productName: t('dashboard.topProducts.productName'),
+    ean13: t('dashboard.topProducts.ean13'),
+    orderCount: t('dashboard.topProducts.orderCount')
+  }
   exportTopProductsCSV(
     dashboard.value.topProducts,
     useFileDownloadService(),
-    useDateProvider()
+    useDateProvider(),
+    labels
   )
 }
 </script>
