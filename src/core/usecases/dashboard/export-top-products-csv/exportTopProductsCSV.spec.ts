@@ -74,7 +74,7 @@ describe('Export top products CSV', () => {
       const csvContent = generateCSVContent(topProducts, labels)
       const firstLine = csvContent.split('\n')[0]
       expect(firstLine).toStrictEqual(
-        'Nom du produit,EAN13,Nombre de boites vendues'
+        'Nom du produit;EAN13;Nombre de boites vendues'
       )
     })
 
@@ -91,14 +91,14 @@ describe('Export top products CSV', () => {
       ]
       const csvContent = generateCSVContent(topProducts, labels)
       const lines = csvContent.split('\n')
-      expect(lines[1]).toStrictEqual('Doliprane 1000mg,3400930000001,150')
+      expect(lines[1]).toStrictEqual('Doliprane 1000mg;3400930000001;150')
     })
 
-    it('should handle products with commas in names', () => {
+    it('should handle products with semicolons in names', () => {
       const topProducts: TopProduct[] = [
         {
           productUuid: 'product-1',
-          name: 'Doliprane, 1000mg Tablets',
+          name: 'Doliprane; 1000mg Tablets',
           ean13: '3400930000001',
           count: 150,
           categories: [],
@@ -108,7 +108,7 @@ describe('Export top products CSV', () => {
       const csvContent = generateCSVContent(topProducts, labels)
       const lines = csvContent.split('\n')
       expect(lines[1]).toStrictEqual(
-        '"Doliprane, 1000mg Tablets",3400930000001,150'
+        '"Doliprane; 1000mg Tablets";3400930000001;150'
       )
     })
 
@@ -126,14 +126,14 @@ describe('Export top products CSV', () => {
       const csvContent = generateCSVContent(topProducts, labels)
       const lines = csvContent.split('\n')
       expect(lines[1]).toStrictEqual(
-        '"Doliprane ""Extra"" 1000mg",3400930000001,150'
+        '"Doliprane ""Extra"" 1000mg";3400930000001;150'
       )
     })
 
     it('should handle empty top products array', () => {
       const csvContent = generateCSVContent([], labels)
       expect(csvContent).toStrictEqual(
-        'Nom du produit,EAN13,Nombre de boites vendues'
+        'Nom du produit;EAN13;Nombre de boites vendues'
       )
     })
   })
