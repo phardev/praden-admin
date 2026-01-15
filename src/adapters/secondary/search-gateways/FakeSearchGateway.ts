@@ -1,5 +1,8 @@
 import { isProduct, Product } from '@core/entities/product'
-import { SearchGateway } from '@core/gateways/searchGateway'
+import {
+  SearchGateway,
+  SearchProductsResult
+} from '@core/gateways/searchGateway'
 import '@utils/strings'
 import { Customer } from '@core/entities/customer'
 import { getDeliveryStatus, getOrderStatus, Order } from '@core/entities/order'
@@ -20,9 +23,11 @@ export class FakeSearchGateway implements SearchGateway {
     this.customerStore = useCustomerStore()
   }
 
-  searchProducts(filters: SearchProductsFilters): Promise<Array<Product>> {
+  searchProducts(
+    filters: SearchProductsFilters
+  ): Promise<SearchProductsResult> {
     const products = this.items.filter((i) => isProduct(i))
-    const res = products.filter((p) => {
+    const filtered = products.filter((p) => {
       if (filters.query) {
         const query = filters.query
         const isCategoryNameMatching = p.categories.some((c) =>
@@ -44,7 +49,23 @@ export class FakeSearchGateway implements SearchGateway {
         return p.status === filters.status
       }
     })
-    return Promise.resolve(res)
+    const total = filtered.length
+    const from = filters.from ?? 0
+    const size = filters.size ?? 25
+    const items = filtered.slice(from, from + size)
+    const page = Math.floor(from / size) + 1
+    const totalPages = Math.ceil(total / size)
+    const hasMore = items.length === size && total > from + size
+    return Promise.resolve({
+      items,
+      pagination: {
+        total,
+        page,
+        pageSize: size,
+        totalPages
+      },
+      hasMore
+    })
   }
 
   indexProducts(limit: number, offset: number): Promise<number> {

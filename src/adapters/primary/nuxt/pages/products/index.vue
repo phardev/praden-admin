@@ -77,6 +77,7 @@ definePageMeta({ layout: 'main' })
 const productGateway = useProductGateway()
 const limit = 25
 let offset = 0
+let searchOffset = 0
 const productSelector = useSelection()
 const isBulkEditProductModalOpened = ref(false)
 
@@ -104,7 +105,7 @@ const productsVM = computed(() => {
 })
 
 const load = async ($state: InfiniteLoadingState) => {
-  if (!search.value) {
+  if (!search.value && !productStatus.value) {
     await listProducts(limit, offset, productGateway)
     offset += limit
     if (productsVM.value.hasMore) {
@@ -113,7 +114,30 @@ const load = async ($state: InfiniteLoadingState) => {
       $state.complete()
     }
   } else {
-    $state.complete()
+    if (productsVM.value.isSearchLoading) {
+      return
+    }
+    if (!productsVM.value.hasMoreSearch) {
+      $state.complete()
+      return
+    }
+    await searchProducts(
+      String(routeName),
+      buildFilters({
+        query: search.value,
+        status: productStatus.value,
+        minimumQueryLength,
+        size: limit,
+        from: searchOffset
+      }),
+      useSearchGateway()
+    )
+    searchOffset += limit
+    if (productsVM.value.hasMoreSearch) {
+      $state.loaded()
+    } else {
+      $state.complete()
+    }
   }
 }
 
@@ -126,10 +150,13 @@ const buildFilters = (partial: {
   query?: string
   status?: ProductStatus
   minimumQueryLength?: number
+  size?: number
+  from?: number
 }) => {
   return {
     query: search.value,
     status: productStatus.value,
+    size: limit,
     ...partial
   }
 }
@@ -137,9 +164,11 @@ const buildFilters = (partial: {
 const searchChanged = (e: any) => {
   if (debounceTimer) clearTimeout(debounceTimer)
   debounceTimer = setTimeout(() => {
+    searchOffset = 0
     const filters = {
       query: e.target.value,
-      minimumQueryLength
+      minimumQueryLength,
+      from: 0
     }
     searchProducts(
       String(routeName),
@@ -150,18 +179,20 @@ const searchChanged = (e: any) => {
 }
 
 const productStatusChanged = (status: ProductStatus) => {
+  searchOffset = 0
   searchProducts(
     String(routeName),
-    buildFilters({ status }),
+    buildFilters({ status, from: 0 }),
     useSearchGateway()
   )
 }
 
 const clearProductStatus = () => {
+  searchOffset = 0
   productStatus.value = undefined
   searchProducts(
     String(routeName),
-    buildFilters({ status: undefined }),
+    buildFilters({ status: undefined, from: 0 }),
     useSearchGateway()
   )
 }
