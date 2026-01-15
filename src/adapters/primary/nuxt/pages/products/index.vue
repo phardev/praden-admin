@@ -80,7 +80,6 @@ let offset = 0
 let searchOffset = 0
 const productSelector = useSelection()
 const isBulkEditProductModalOpened = ref(false)
-const isSearchLoading = ref(false)
 
 const handleBulkEdit = async (dto: { arePromotionsAllowed: boolean }) => {
   isBulkEditProductModalOpened.value = false
@@ -115,14 +114,13 @@ const load = async ($state: InfiniteLoadingState) => {
       $state.complete()
     }
   } else {
-    if (isSearchLoading.value) {
+    if (productsVM.value.isSearchLoading) {
       return
     }
     if (!productsVM.value.hasMoreSearch) {
       $state.complete()
       return
     }
-    isSearchLoading.value = true
     await searchProducts(
       String(routeName),
       buildFilters({
@@ -135,7 +133,6 @@ const load = async ($state: InfiniteLoadingState) => {
       useSearchGateway()
     )
     searchOffset += limit
-    isSearchLoading.value = false
     if (productsVM.value.hasMoreSearch) {
       $state.loaded()
     } else {
