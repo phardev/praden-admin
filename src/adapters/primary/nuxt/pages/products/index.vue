@@ -58,6 +58,7 @@ import { listCategories } from '@core/usecases/categories/list-categories/listCa
 import { listProducts } from '@core/usecases/product/product-listing/listProducts'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
 import { useCategoryStore } from '@store/categoryStore'
+import { useSearchStore } from '@store/searchStore'
 import { dents, diarrhee } from '@utils/testData/categories'
 import InfiniteLoading from 'v3-infinite-loading'
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
@@ -103,15 +104,20 @@ const productsVM = computed(() => {
   return getProductsVM(routeName)
 })
 
+const isSearchActive = computed(() => {
+  const searchStore = useSearchStore()
+  return searchStore.get(routeName) !== undefined
+})
+
 const load = async ($state: InfiniteLoadingState) => {
-  if (!search.value) {
-    await listProducts(limit, offset, productGateway)
-    offset += limit
-    if (productsVM.value.hasMore) {
-      $state.loaded()
-    } else {
-      $state.complete()
-    }
+  if (isSearchActive.value) {
+    $state.complete()
+    return
+  }
+  await listProducts(limit, offset, productGateway)
+  offset += limit
+  if (productsVM.value.hasMore) {
+    $state.loaded()
   } else {
     $state.complete()
   }
