@@ -6,6 +6,8 @@
   customer-form(
     :vm="vm"
   )
+  h2.text-subtitle.mt-8 {{ $t('customers.loyalty.title') }}
+  customer-loyalty-points
   h2.text-subtitle.mt-4 {{ $t('customers.ordersHistory') }}
   orders-list(
     :vm="ordersVM"
@@ -21,9 +23,11 @@ import { customerFormGetVM } from '@adapters/primary/view-models/customers/custo
 import { getOrdersVM } from '@adapters/primary/view-models/orders/get-orders/getOrdersVM'
 import { getCustomer } from '@core/usecases/customers/customer-get/getCustomer'
 import { listCustomers } from '@core/usecases/customers/customer-listing/listCustomer'
+import { getCustomerLoyaltyPoints } from '@core/usecases/loyalty/get-customer-loyalty-points/getCustomerLoyaltyPoints'
 import { searchOrders } from '@core/usecases/order/orders-searching/searchOrders'
 import { getCustomerTickets } from '@core/usecases/support/getCustomerTickets'
 import { useCustomerGateway } from '../../../../../../../gateways/customerGateway'
+import { useLoyaltyGateway } from '../../../../../../../gateways/loyaltyGateway'
 import { useSearchGateway } from '../../../../../../../gateways/searchGateway'
 import { useTicketGateway } from '../../../../../../../gateways/ticketGateway'
 
@@ -43,6 +47,8 @@ onMounted(async () => {
   await getCustomer(customerUuid, customerGateway)
   const ticketGateway = useTicketGateway()
   await getCustomerTickets(customerUuid, ticketGateway)
+  const loyaltyGateway = useLoyaltyGateway()
+  await getCustomerLoyaltyPoints(customerUuid, loyaltyGateway)
   vm.value = customerFormGetVM(routeName)
 })
 

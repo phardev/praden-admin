@@ -35,6 +35,7 @@
     "create": "Créer",
     "update": "Modifier",
     "delete": "Supprimer",
+    "save": "Enregistrer",
     "loading": "Chargement...",
     "back": "Retour",
     "edit": "Modifier",
@@ -82,7 +83,20 @@
     "viewTitle": "Voir client",
     "editButton": "Editer client",
     "ordersHistory": "Historique des commandes",
-    "supportTickets": "Tickets de support"
+    "supportTickets": "Tickets de support",
+    "loyalty": {
+      "title": "Points de fidélité",
+      "totalPoints": "points au total",
+      "activePoints": "actifs",
+      "expiredPoints": "expirés",
+      "noTransactions": "Aucun point de fidélité",
+      "order": "Commande",
+      "points": "Points",
+      "eligibleAmount": "Montant éligible",
+      "earnedAt": "Date d'obtention",
+      "expiresAt": "Date d'expiration",
+      "expired": "Expiré"
+    }
   },
   "orders": {
     "supportTickets": "Tickets de support"
@@ -438,7 +452,8 @@
       "announcementBarCard": "Barre d'annonce",
       "categoryOrderCard": "Ordre des catégories",
       "pharmacistSelectionCard": "Sélection du pharmacien",
-      "emergencyPharmaciesCard": "Pharmacies de garde"
+      "emergencyPharmaciesCard": "Pharmacies de garde",
+      "loyaltyPointsCard": "Points de fidélité"
     },
     "announcementBar": {
       "title": "Barres d'annonce",
@@ -523,6 +538,15 @@
       "deleteSuccess": "Pharmacie de garde supprimée",
       "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette pharmacie de garde ?",
       "groupedByDate": "Pharmacies par date"
+    },
+    "loyaltyPoints": {
+      "title": "Points de fidélité",
+      "configuration": "Configuration",
+      "isActive": "Programme de fidélité actif",
+      "pointsPerEuro": "Points par euro dépensé",
+      "pointsPerEuroHint": "Nombre de points attribués par euro dépensé (hors médicaments et produits exclus des promotions)",
+      "saveSuccess": "Configuration des points de fidélité enregistrée",
+      "saveError": "Erreur lors de l'enregistrement de la configuration"
     }
   }
 }

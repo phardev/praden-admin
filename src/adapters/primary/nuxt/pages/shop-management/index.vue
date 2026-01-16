@@ -83,6 +83,25 @@
           :label="$t('common.edit')"
           @click.stop="navigateTo('/shop-management/emergency-pharmacies')"
         )
+
+    UCard.settings-card.transition-all.duration-300(
+      class="hover:shadow-lg hover:scale-105 cursor-pointer"
+      @click="navigateTo('/shop-management/loyalty-points')"
+    )
+      template(#header)
+        .flex.items-center.justify-between
+          h2.text-lg.font-semibold {{ $t('shopManagement.overview.loyaltyPointsCard') }}
+          icon(name="i-heroicons-gift" class="text-2xl text-primary")
+      template(#default)
+        p.text-sm.text-gray-600.mb-4 {{ $t('shopManagement.loyaltyPoints.title') }}
+        UButton(
+          color="primary"
+          variant="soft"
+          block
+          icon="i-heroicons-arrow-right"
+          :label="$t('common.edit')"
+          @click.stop="navigateTo('/shop-management/loyalty-points')"
+        )
 </template>
 
 <script lang="ts" setup>
