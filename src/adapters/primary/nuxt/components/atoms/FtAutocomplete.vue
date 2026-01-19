@@ -21,7 +21,7 @@ const model = defineModel({ type: String })
 const emit = defineEmits(['clear'])
 
 const clear = () => {
-  model.value = null
+  model.value = undefined
   emit('clear')
 }
 </script>

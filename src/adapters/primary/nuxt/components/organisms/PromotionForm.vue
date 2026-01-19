@@ -157,6 +157,7 @@ const addedProductSelector = useSelection()
 const search = ref('')
 
 const nameChanged = (name: string) => {
+  if (!currentVM.value) return
   currentVM.value.set('name', name)
 }
 
@@ -181,18 +182,22 @@ const searchChanged = (e: Event) => {
 }
 
 const startDateChanged = (date: number) => {
+  if (!currentVM.value) return
   currentVM.value.set('startDate', date)
 }
 
 const clearStartDate = () => {
+  if (!currentVM.value) return
   currentVM.value.set('startDate', undefined)
 }
 
 const endDateChanged = (date: number) => {
+  if (!currentVM.value) return
   currentVM.value.set('endDate', date)
 }
 
 const clearEndDate = () => {
+  if (!currentVM.value) return
   currentVM.value.set('endDate', undefined)
 }
 
@@ -201,11 +206,13 @@ const getIcon = (type: ReductionType) => {
 }
 
 const addProducts = () => {
+  if (!currentVM.value) return
   currentVM.value.addProducts(availableProductSelector.get())
   availableProductSelector.clear()
 }
 
 const removeProducts = () => {
+  if (!currentVM.value) return
   currentVM.value.removeProducts(addedProductSelector.get())
   addedProductSelector.clear()
 }

@@ -143,6 +143,17 @@ UForm(v-else :state="currentVM")
         )
           template(#option="{ option: laboratory }")
             span {{ laboratory.name }}
+      UFormGroup.pb-4(
+        v-if="currentVM.get('scope').value === PromotionScope.Delivery"
+        label="Poids maximum de la commande (kg)"
+        name="maxWeight"
+      )
+        ft-text-field(
+          :model-value="currentVM.get('maxWeight').value"
+          :disabled="!currentVM.get('maxWeight').canEdit"
+          type="number"
+          @update:model-value="maxWeightChanged"
+        )
   ft-text-field(
     v-if="currentVM.get('products').canEdit"
     v-model="search"
@@ -243,45 +254,49 @@ const props = defineProps({
 const currentVM = toRef(props, 'vm')
 
 const codeChanged = (code: string) => {
-  currentVM.value.set('code', code)
+  currentVM.value?.set('code', code)
 }
 
 const amountChanged = (amount: string) => {
   if (currentVM?.value?.get('amount').canEdit)
-    currentVM.value.set('amount', amount)
+    currentVM.value?.set('amount', amount)
 }
 
 const startDateChanged = (date: number) => {
-  currentVM.value.set('startDate', date)
+  currentVM.value?.set('startDate', date)
 }
 
 const clearStartDate = () => {
-  currentVM.value.set('startDate', undefined)
+  currentVM.value?.set('startDate', undefined)
 }
 
 const endDateChanged = (date: number) => {
-  currentVM.value.set('endDate', date)
+  currentVM.value?.set('endDate', date)
 }
 
 const clearEndDate = () => {
-  currentVM.value.set('endDate', undefined)
+  currentVM.value?.set('endDate', undefined)
 }
 
 const maximumUsageChanged = (value: string) => {
-  currentVM.value.set('maximumUsage', value)
+  currentVM.value?.set('maximumUsage', value)
 }
 
 const minimumAmountChanged = (value: string) => {
   if (currentVM?.value?.get('minimumAmount').canEdit)
-    currentVM.value.set('minimumAmount', value)
+    currentVM.value?.set('minimumAmount', value)
 }
 
 const deliveryMethodChanged = (uuid: string) => {
-  currentVM.value.set('deliveryMethodUuid', uuid)
+  currentVM.value?.set('deliveryMethodUuid', uuid)
 }
 
 const clearDeliveryMethod = () => {
-  currentVM.value.set('deliveryMethodUuid', undefined)
+  currentVM.value?.set('deliveryMethodUuid', undefined)
+}
+
+const maxWeightChanged = (value: string) => {
+  currentVM.value?.set('maxWeight', value)
 }
 
 const getReductionTypeIcon = (type: ReductionType) => {
@@ -310,12 +325,12 @@ const searchChanged = (e: Event) => {
 }
 
 const addProducts = () => {
-  currentVM.value.addProducts(availableProductSelector.get())
+  currentVM.value?.addProducts(availableProductSelector.get())
   availableProductSelector.clear()
 }
 
 const removeProducts = () => {
-  currentVM.value.removeProducts(addedProductSelector.get())
+  currentVM.value?.removeProducts(addedProductSelector.get())
   addedProductSelector.clear()
 }
 

@@ -72,7 +72,8 @@ describe('Promotion code form create VM', () => {
         endDate: undefined,
         maximumUsage: undefined,
         minimumAmount: undefined,
-        deliveryMethodUuid: undefined
+        deliveryMethodUuid: undefined,
+        maxWeight: undefined
       }
       const fields = [
         { field: 'code' },
@@ -83,7 +84,8 @@ describe('Promotion code form create VM', () => {
         { field: 'endDate' },
         { field: 'maximumUsage' },
         { field: 'minimumAmount' },
-        { field: 'deliveryMethodUuid' }
+        { field: 'deliveryMethodUuid' },
+        { field: 'maxWeight' }
       ]
       describe.each(fields)('For promotion code', ({ field }) => {
         it(`should initialize ${field}"`, () => {
@@ -189,6 +191,26 @@ describe('Promotion code form create VM', () => {
         expect(formStore.get(key)['amount']).toBe(undefined)
       })
     })
+    describe('Update scope to DELIVERY', () => {
+      it('should set default maxWeight to 5 when scope changes to DELIVERY', () => {
+        vm.set('scope', PromotionScope.Delivery)
+        expect(formStore.get(key)['maxWeight']).toBe(5)
+      })
+    })
+    describe('Update scope to PRODUCTS', () => {
+      it('should clear maxWeight when scope changes to PRODUCTS', () => {
+        vm.set('scope', PromotionScope.Delivery)
+        vm.set('scope', PromotionScope.Products)
+        expect(formStore.get(key)['maxWeight']).toBe(undefined)
+      })
+    })
+    describe('Update scope to DELIVERY when maxWeight already set', () => {
+      it('should preserve existing maxWeight value', () => {
+        vm.set('maxWeight', 3)
+        vm.set('scope', PromotionScope.Delivery)
+        expect(formStore.get(key)['maxWeight']).toBe(3)
+      })
+    })
   })
   describe('Type choices', () => {
     it('should provide available type choices', () => {
@@ -258,6 +280,22 @@ describe('Promotion code form create VM', () => {
       vm.set('maximumUsage', expectedDto.conditions.maximumUsage!.toString())
       vm.set('minimumAmount', '100')
       vm.set('deliveryMethodUuid', expectedDto.conditions.deliveryMethodUuid)
+      expect(vm.getDto()).toStrictEqual(expectedDto)
+    })
+    it('should include maxWeight in dto when set', () => {
+      const expectedDto: CreatePromotionCodeDTO = {
+        code: 'DELIVERY_CODE',
+        reductionType: ReductionType.Percentage,
+        scope: PromotionScope.Delivery,
+        amount: 100,
+        conditions: {
+          maxWeight: 5000
+        }
+      }
+      vm.set('code', expectedDto.code)
+      vm.set('reductionType', expectedDto.reductionType)
+      vm.set('scope', expectedDto.scope)
+      vm.set('amount', expectedDto.amount.toString())
       expect(vm.getDto()).toStrictEqual(expectedDto)
     })
   })

@@ -147,6 +147,10 @@ export abstract class PromotionCodeFormVM {
     if (products.length) {
       res.conditions.products = products
     }
+    const maxWeight = this.fieldsReader.get('maxWeight')
+    if (maxWeight !== undefined && maxWeight !== null && maxWeight !== '') {
+      res.conditions.maxWeight = +maxWeight * 1000
+    }
     return res
   }
 

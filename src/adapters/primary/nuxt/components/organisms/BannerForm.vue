@@ -122,19 +122,19 @@ const imageChanged = async (value: any) => {
 }
 
 const startDateChanged = (date: number) => {
-  currentVM.value.set('startDate', date)
+  currentVM.value?.set('startDate', date)
 }
 
 const clearStartDate = () => {
-  currentVM.value.set('startDate', null)
+  currentVM.value?.set('startDate', null)
 }
 
 const endDateChanged = (date: number) => {
-  currentVM.value.set('endDate', date)
+  currentVM.value?.set('endDate', date)
 }
 
 const clearEndDate = () => {
-  currentVM.value.set('endDate', null)
+  currentVM.value?.set('endDate', null)
 }
 
 const emit = defineEmits<{

@@ -180,7 +180,11 @@ const createChart = () => {
     : 0
   const arc = d3.arc().innerRadius(innerRadiusValue).outerRadius(radius)
 
-  if (props.config.innerRadius > 0 && props.config.showBackButton) {
+  if (
+    props.config.innerRadius &&
+    props.config.innerRadius > 0 &&
+    props.config.showBackButton
+  ) {
     const buttonGroup = svg.append('g').attr('class', 'center-button')
 
     buttonGroup

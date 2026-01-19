@@ -37,7 +37,7 @@ function handleEscape(event?: KeyboardEvent) {
 defineShortcuts({
   escape: {
     usingInput: true,
-    whenever: [model],
+    whenever: [() => !!model.value],
     handler: handleEscape
   }
 })

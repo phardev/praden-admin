@@ -43,7 +43,7 @@ import { useRoleGateway } from '@/gateways/roleGateway'
 // Meta and SEO
 definePageMeta({
   title: 'Modifier le rôle',
-  layout: 'default'
+  layout: 'main'
 })
 
 useSeoMeta({
