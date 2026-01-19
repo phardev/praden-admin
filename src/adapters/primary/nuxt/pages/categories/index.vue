@@ -8,12 +8,14 @@
     :is-loading="treeCategoriesVM.isLoading"
     :items="treeCategoriesVM.items"
     @view="categorySelected"
+    @toggle-status="handleToggleStatus"
   )
 </template>
 
 <script lang="ts" setup>
 import { getTreeCategoriesVM } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
+import { toggleCategoryStatus } from '@core/usecases/categories/toggle-category-status/toggleCategoryStatus'
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
 
 definePageMeta({ layout: 'main' })
@@ -29,5 +31,9 @@ const treeCategoriesVM = computed(() => {
 const categorySelected = (uuid: string) => {
   const router = useRouter()
   router.push(`/categories/get/${uuid}`)
+}
+
+const handleToggleStatus = async (uuid: string) => {
+  await toggleCategoryStatus(uuid, useCategoryGateway())
 }
 </script>

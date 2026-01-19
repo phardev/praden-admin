@@ -6,7 +6,7 @@ import { EditCategoryDTO } from '@core/usecases/categories/category-edition/edit
 export interface CategoryGateway {
   list(): Promise<Array<Category>>
   create(dto: CreateCategoryDTO): Promise<Category>
-  edit(uuid: UUID, dto: EditCategoryDTO): Promise<Category>
+  edit(uuid: UUID, dto: Partial<EditCategoryDTO>): Promise<Category>
   getByUuid(uuid: UUID): Promise<Category>
   reorder(categoryUuids: Array<UUID>): Promise<Array<Category>>
 }

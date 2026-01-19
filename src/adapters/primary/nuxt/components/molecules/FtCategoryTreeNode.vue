@@ -20,7 +20,16 @@
               )
               img.w-8.h-8(:src="item.data.miniature")
               span {{ item.data.name }}
-            div.flex.items-center.justify-center
+              FtCategoryStatusBadge(:status="item.data.status")
+            div.flex.items-center.justify-center.gap-2
+              UButton(
+                v-if="!selectable"
+                :icon="item.data.status === CategoryStatus.Active ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                size="xs"
+                color="gray"
+                variant="ghost"
+                @click.stop.prevent="toggleStatus(item.data.uuid)"
+              )
               icon.icon-md.text-link(
                 name="mdi-eye-outline"
                 @click.prevent="view(item.data.uuid)"
@@ -52,6 +61,7 @@
               @update:open-items="updateOpenItems"
               @selected="selected"
               @clicked.prevent="view"
+              @toggle-status="toggleStatus"
             )
 </template>
 <script setup lang="ts">
@@ -60,6 +70,7 @@ import type {
   TreeCategoryNodeVM,
   TreeNode
 } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
+import { CategoryStatus } from '@core/entities/category'
 import type { UUID } from '@core/types/types'
 
 const props = defineProps({
@@ -114,10 +125,15 @@ const emit = defineEmits<{
   (e: 'view', uuid: string): void
   (e: 'selected', uuid: string): void
   (e: 'update:open-items', items: Array<UUID>): void
+  (e: 'toggle-status', uuid: string): void
 }>()
 
 const view = (uuid: string): void => {
   emit('view', uuid)
+}
+
+const toggleStatus = (uuid: string): void => {
+  emit('toggle-status', uuid)
 }
 
 const updateOpenItems = (openItems: Array<UUID>): void => {

@@ -11,7 +11,7 @@ import {
   Field,
   PromotionProductItemVM
 } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { Category } from '@core/entities/category'
+import { Category, CategoryStatus } from '@core/entities/category'
 import { Product } from '@core/entities/product'
 import { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
 import { useCategoryStore } from '@store/categoryStore'
@@ -453,7 +453,8 @@ describe('Category form edit VM', () => {
           image: currentCategory.image,
           newImage: undefined,
           productsAdded: [],
-          productsRemoved: []
+          productsRemoved: [],
+          status: currentCategory.status
         }
         vm.set('name', expectedDTO.name)
         vm.set('parentUuid', expectedDTO.parentUuid)
@@ -473,7 +474,8 @@ describe('Category form edit VM', () => {
           image: currentCategory.image,
           newImage: undefined,
           productsAdded: [chamomilla.uuid],
-          productsRemoved: []
+          productsRemoved: [],
+          status: currentCategory.status
         }
         vm.addProducts([chamomilla.uuid])
         expect(vm.getDto()).toStrictEqual(expectedDTO)
@@ -488,7 +490,8 @@ describe('Category form edit VM', () => {
           image: currentCategory.image,
           newImage: undefined,
           productsAdded: [ultraLevure.uuid, chamomilla.uuid],
-          productsRemoved: []
+          productsRemoved: [],
+          status: currentCategory.status
         }
         givenExistingProducts(ultraLevure, chamomilla)
         vm.addProducts([ultraLevure.uuid, chamomilla.uuid])
@@ -504,7 +507,8 @@ describe('Category form edit VM', () => {
           image: currentCategory.image,
           newImage: undefined,
           productsAdded: [],
-          productsRemoved: []
+          productsRemoved: [],
+          status: currentCategory.status
         }
         vm.addProducts([dolodent.uuid])
         expect(vm.getDto()).toStrictEqual(expectedDTO)
@@ -521,7 +525,8 @@ describe('Category form edit VM', () => {
           image: currentCategory.image,
           newImage: undefined,
           productsAdded: [],
-          productsRemoved: [dolodent.uuid]
+          productsRemoved: [dolodent.uuid],
+          status: currentCategory.status
         }
         vm.removeProducts([dolodent.uuid])
         expect(vm.getDto()).toStrictEqual(expectedDTO)
@@ -541,7 +546,8 @@ describe('Category form edit VM', () => {
           image: baby.image,
           newImage: undefined,
           productsAdded: [],
-          productsRemoved: [dolodent.uuid, chamomilla.uuid]
+          productsRemoved: [dolodent.uuid, chamomilla.uuid],
+          status: baby.status
         }
         vm.removeProducts([dolodent.uuid, chamomilla.uuid])
         expect(vm.getDto()).toStrictEqual(expectedDTO)
@@ -561,7 +567,8 @@ describe('Category form edit VM', () => {
           image: currentCategory.image,
           newImage: undefined,
           productsAdded: [],
-          productsRemoved: []
+          productsRemoved: [],
+          status: currentCategory.status
         }
         givenExistingProducts(chamomilla)
         vm.addProducts([chamomilla.uuid])
@@ -583,7 +590,8 @@ describe('Category form edit VM', () => {
           image: 'data:image/png;base64,aW1hZ2U=',
           newImage,
           productsAdded: [],
-          productsRemoved: []
+          productsRemoved: [],
+          status: currentCategory.status
         }
         await vm.set('image', newImage)
         expect(vm.getDto()).toStrictEqual(expectedDTO)
@@ -603,7 +611,8 @@ describe('Category form edit VM', () => {
           image: currentCategory.image,
           newImage: undefined,
           productsAdded: [],
-          productsRemoved: []
+          productsRemoved: [],
+          status: currentCategory.status
         }
         await vm.set('miniature', newMiniature)
         expect(vm.getDto()).toStrictEqual(expectedDTO)
@@ -625,7 +634,8 @@ describe('Category form edit VM', () => {
           image: currentCategory.image,
           newImage: undefined,
           productsAdded: [ultraLevure.uuid, anaca3Minceur.uuid],
-          productsRemoved: [dolodent.uuid]
+          productsRemoved: [dolodent.uuid],
+          status: currentCategory.status
         }
         givenExistingProducts(ultraLevure, chamomilla, anaca3Minceur)
         vm.addProducts([ultraLevure.uuid])

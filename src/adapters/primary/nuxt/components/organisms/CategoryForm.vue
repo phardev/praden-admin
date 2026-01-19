@@ -40,6 +40,15 @@ div(v-if="!currentVM || currentVM.isLoading()")
     .flex.flex-row-reverse.mt-4
       .h-12.w-32.bg-gray-200.rounded.animate-pulse
 form(v-else)
+  UFormGroup.pb-4(
+    v-if="currentVM.get('status')?.canEdit"
+    label="Statut"
+    name="status"
+  )
+    FtCategoryStatusSelect(
+      :model-value="currentVM.get('status').value"
+      @update:model-value="statusChanged"
+    )
   UFormGroup.pb-4(label="Nom" name="name")
     ft-text-field(
       :model-value="currentVM.get('name').value"
@@ -147,6 +156,7 @@ form(v-else)
 
 <script lang="ts" setup>
 import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'
+import type { CategoryStatus } from '@core/entities/category'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
 import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 
@@ -170,6 +180,10 @@ const search = ref('')
 
 const nameChanged = (name: string) => {
   currentVM?.value?.set('name', name)
+}
+
+const statusChanged = (status: CategoryStatus) => {
+  currentVM?.value?.set('status', status)
 }
 
 const parentCategoryChanged = (uuid: string) => {

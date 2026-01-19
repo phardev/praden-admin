@@ -1,7 +1,7 @@
 import { InMemoryCategoryGateway } from '@adapters/secondary/category-gateways/InMemoryCategoryGateway'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { Category } from '@core/entities/category'
+import { Category, CategoryStatus } from '@core/entities/category'
 import { Product } from '@core/entities/product'
 import { ParentCategoryDoesNotExistsError } from '@core/errors/ParentCategoryDoesNotExistsError'
 import { UUID } from '@core/types/types'
@@ -39,13 +39,15 @@ describe('Create category', () => {
     const categoryDTO: CreateCategoryDTO = {
       name: 'Created',
       description: 'The description',
-      productsAdded: []
+      productsAdded: [],
+      status: CategoryStatus.Active
     }
     const expectedCategory: Category = {
       name: 'Created',
       description: 'The description',
       uuid,
-      order: 0
+      order: 0,
+      status: CategoryStatus.Active
     }
     beforeEach(async () => {
       await whenCreateCategory(uuid, categoryDTO)
@@ -62,7 +64,8 @@ describe('Create category', () => {
     const categoryDTO: CreateCategoryDTO = {
       name: 'Child category',
       description: 'The child description',
-      productsAdded: []
+      productsAdded: [],
+      status: CategoryStatus.Active
     }
     describe('The parent category exists', () => {
       const dto = JSON.parse(JSON.stringify(categoryDTO))
@@ -71,7 +74,8 @@ describe('Create category', () => {
         name: 'Child category',
         description: 'The child description',
         uuid,
-        order: 1
+        order: 1,
+        status: CategoryStatus.Active
       }
       beforeEach(async () => {
         categoryGateway.feedWith(dents)
@@ -103,13 +107,15 @@ describe('Create category', () => {
       const dto: CreateCategoryDTO = {
         name: 'new-category',
         description: 'The description',
-        productsAdded: [dolodent.uuid, calmosine.uuid]
+        productsAdded: [dolodent.uuid, calmosine.uuid],
+        status: CategoryStatus.Active
       }
       const expectedCategory: Category = {
         name: 'new-category',
         description: 'The description',
         uuid,
-        order: 0
+        order: 0,
+        status: CategoryStatus.Active
       }
       await whenCreateCategory(uuid, dto)
       expectedProducts = [
@@ -186,7 +192,8 @@ describe('Create category', () => {
       const dto: CreateCategoryDTO = {
         name: 'new-category',
         description: 'The description',
-        productsAdded: [dolodent.uuid, calmosine.uuid]
+        productsAdded: [dolodent.uuid, calmosine.uuid],
+        status: CategoryStatus.Active
       }
       const unsubscribe = categoryStore.$subscribe(
         (mutation: any, state: any) => {
@@ -200,7 +207,8 @@ describe('Create category', () => {
       const dto: CreateCategoryDTO = {
         name: 'new-category',
         description: 'The description',
-        productsAdded: [dolodent.uuid, calmosine.uuid]
+        productsAdded: [dolodent.uuid, calmosine.uuid],
+        status: CategoryStatus.Active
       }
       await whenCreateCategory(dents.uuid, dto)
       expect(categoryStore.isLoading).toBe(false)
