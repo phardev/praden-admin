@@ -143,6 +143,18 @@ UForm(v-else :state="currentVM")
         )
           template(#option="{ option: laboratory }")
             span {{ laboratory.name }}
+      UFormGroup.pb-4(
+        v-if="currentVM.get('scope').value === PromotionScope.Delivery"
+        label="Poids maximum de la commande (kg)"
+        name="maxWeight"
+      )
+        ft-text-field(
+          :model-value="currentVM.get('maxWeight').value"
+          :disabled="!currentVM.get('maxWeight').canEdit"
+          type="number"
+          step="0.1"
+          @update:model-value="maxWeightChanged"
+        )
   ft-text-field(
     v-if="currentVM.get('products').canEdit"
     v-model="search"
@@ -282,6 +294,10 @@ const deliveryMethodChanged = (uuid: string) => {
 
 const clearDeliveryMethod = () => {
   currentVM.value.set('deliveryMethodUuid', undefined)
+}
+
+const maxWeightChanged = (value: string) => {
+  currentVM.value.set('maxWeight', value)
 }
 
 const getReductionTypeIcon = (type: ReductionType) => {

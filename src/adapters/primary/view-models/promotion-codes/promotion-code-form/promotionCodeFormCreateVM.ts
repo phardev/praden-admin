@@ -23,7 +23,8 @@ export class PromotionCodeFormFieldsWriter extends FormFieldsWriter {
     super(key)
     this.fieldsReader = fieldsReader
     this.fieldHandlers = {
-      reductionType: this.setReductionType.bind(this)
+      reductionType: this.setReductionType.bind(this),
+      scope: this.setScope.bind(this)
     }
   }
 
@@ -61,6 +62,15 @@ export class PromotionCodeFormFieldsWriter extends FormFieldsWriter {
     this.set('amount', undefined)
     super.set('reductionType', type)
   }
+
+  private setScope(scope: PromotionScope): void {
+    if (scope === PromotionScope.Delivery) {
+      super.set('maxWeight', 5)
+    } else {
+      super.set('maxWeight', undefined)
+    }
+    super.set('scope', scope)
+  }
 }
 
 export class NewPromotionCodeFormInitializer implements FormInitializer {
@@ -83,7 +93,8 @@ export class NewPromotionCodeFormInitializer implements FormInitializer {
       maximumUsage: undefined,
       minimumAmount: undefined,
       deliveryMethodUuid: undefined,
-      products: []
+      products: [],
+      maxWeight: undefined
     })
   }
 }

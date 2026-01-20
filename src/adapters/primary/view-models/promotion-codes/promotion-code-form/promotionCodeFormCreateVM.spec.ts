@@ -260,6 +260,35 @@ describe('Promotion code form create VM', () => {
       vm.set('deliveryMethodUuid', expectedDto.conditions.deliveryMethodUuid)
       expect(vm.getDto()).toStrictEqual(expectedDto)
     })
+    it('should return the dto with maxWeight converted from kg to grams', () => {
+      const expectedDto: CreatePromotionCodeDTO = {
+        code: 'TEST_MAX_WEIGHT',
+        reductionType: ReductionType.Percentage,
+        scope: PromotionScope.Delivery,
+        amount: 100,
+        conditions: {
+          maxWeight: 5000
+        }
+      }
+      vm.set('code', expectedDto.code)
+      vm.set('reductionType', expectedDto.reductionType)
+      vm.set('scope', expectedDto.scope)
+      vm.set('amount', expectedDto.amount.toString())
+      vm.set('maxWeight', '5')
+      expect(vm.getDto()).toStrictEqual(expectedDto)
+    })
+  })
+
+  describe('Scope change', () => {
+    it('should set maxWeight to 5 when scope changes to Delivery', () => {
+      vm.set('scope', PromotionScope.Delivery)
+      expect(vm.get('maxWeight').value).toBe(5)
+    })
+    it('should clear maxWeight when scope changes to Products', () => {
+      vm.set('scope', PromotionScope.Delivery)
+      vm.set('scope', PromotionScope.Products)
+      expect(vm.get('maxWeight').value).toBe(undefined)
+    })
   })
 
   const givenAvailableDeliveryMethods = (
