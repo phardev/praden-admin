@@ -1,4 +1,8 @@
-import { Category, CategoryWithProducts } from '@core/entities/category'
+import {
+  Category,
+  CategoryStatus,
+  CategoryWithProducts
+} from '@core/entities/category'
 import { Product } from '@core/entities/product'
 import { defineStore } from 'pinia'
 
@@ -54,7 +58,8 @@ export const useCategoryStore = defineStore('CategoryStore', {
             parentUuid: undefined,
             miniature: undefined,
             image: undefined,
-            order: 0
+            order: 0,
+            status: CategoryStatus.Active
           },
           products: []
         }
@@ -65,6 +70,11 @@ export const useCategoryStore = defineStore('CategoryStore', {
       )
       if (toPush.length) {
         this.current!.products.push(...toPush)
+      }
+    },
+    editMultiple(categories: Array<Category>) {
+      for (const category of categories) {
+        this.edit(category)
       }
     }
   }

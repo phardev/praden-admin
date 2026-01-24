@@ -66,6 +66,20 @@ form(v-else)
     )
       template(#option="{ option: category }")
         span {{ category.name }}
+  UFormGroup.pb-4(
+    v-if="currentVM.get('status')"
+    :label="$t('common.status')"
+    name="status"
+  )
+    div.flex.items-center.gap-4
+      u-toggle(
+        :model-value="currentVM.get('status').value === 'ACTIVE'"
+        :disabled="!currentVM.get('status').canEdit"
+        @update:model-value="statusChanged"
+      )
+      span.text-sm(
+        :class="currentVM.get('status').value === 'ACTIVE' ? 'text-green-600' : 'text-gray-500'"
+      ) {{ currentVM.get('status').value === 'ACTIVE' ? $t('category.status.active') : $t('category.status.inactive') }}
   UFormGroup.pb-4(label="Miniature" name="miniature")
     img.mb-4(
       v-if="currentVM.get('miniature').value"
@@ -182,6 +196,10 @@ const clearParentCategory = () => {
 
 const descriptionChanged = (description: string) => {
   currentVM?.value?.set('description', description)
+}
+
+const statusChanged = (isActive: boolean) => {
+  currentVM?.value?.set('status', isActive ? 'ACTIVE' : 'INACTIVE')
 }
 
 let debounceTimer: ReturnType<typeof setTimeout> | null = null

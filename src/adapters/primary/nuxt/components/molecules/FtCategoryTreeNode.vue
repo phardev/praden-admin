@@ -7,7 +7,7 @@
       )
         .list-item(@click="toggle(item)")
           .flex.justify-between.items-center.p-2.cursor-pointer.bg-hover(
-            :class="{ 'parent-selected bg-contrast': hasSelectedChild(item) }"
+            :class="{ 'parent-selected bg-contrast': hasSelectedChild(item), 'opacity-50': isInactive(item) }"
           )
             div.flex.items-center.justify-center.space-x-4
               ft-checkbox(
@@ -19,8 +19,24 @@
                 @click.stop.prevent="selected(item.data.uuid)"
               )
               img.w-8.h-8(:src="item.data.miniature")
-              span {{ item.data.name }}
-            div.flex.items-center.justify-center
+              span(:class="{ 'line-through': isInactive(item) }") {{ item.data.name }}
+              u-badge(
+                v-if="isInactive(item)"
+                color="gray"
+                variant="subtle"
+                size="xs"
+              ) {{ $t('category.status.inactive') }}
+            div.flex.items-center.justify-center.space-x-2
+              u-button(
+                v-if="showToggle"
+                size="xs"
+                :color="isInactive(item) ? 'primary' : 'gray'"
+                variant="ghost"
+                @click.stop.prevent="onToggleStatus(item)"
+              )
+                icon.icon-sm(
+                  :name="isInactive(item) ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+                )
               icon.icon-md.text-link(
                 name="mdi-eye-outline"
                 @click.prevent="view(item.data.uuid)"
@@ -48,10 +64,12 @@
               :disabled="disabled"
               :selectable="selectable"
               :selection="selection"
+              :show-toggle="showToggle"
               @view="view"
               @update:open-items="updateOpenItems"
               @selected="selected"
               @clicked.prevent="view"
+              @toggle-status="(uuid, hasChildren) => emit('toggle-status', uuid, hasChildren)"
             )
 </template>
 <script setup lang="ts">
@@ -60,6 +78,7 @@ import type {
   TreeCategoryNodeVM,
   TreeNode
 } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
+import { CategoryStatus } from '@core/entities/category'
 import type { UUID } from '@core/types/types'
 
 const props = defineProps({
@@ -92,6 +111,12 @@ const props = defineProps({
     default: () => {
       return []
     }
+  },
+  showToggle: {
+    type: Boolean,
+    default: () => {
+      return false
+    }
   }
 })
 
@@ -114,7 +139,15 @@ const emit = defineEmits<{
   (e: 'view', uuid: string): void
   (e: 'selected', uuid: string): void
   (e: 'update:open-items', items: Array<UUID>): void
+  (e: 'toggle-status', uuid: string, hasChildren: boolean): void
 }>()
+
+const isInactive = (item: TreeNode<TreeCategoryNodeVM>): boolean =>
+  item.data.status === CategoryStatus.Inactive
+
+const onToggleStatus = (item: TreeNode<TreeCategoryNodeVM>): void => {
+  emit('toggle-status', item.data.uuid, item.data.hasChildren)
+}
 
 const view = (uuid: string): void => {
   emit('view', uuid)

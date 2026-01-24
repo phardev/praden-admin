@@ -2,7 +2,7 @@ import {
   getTreeCategoriesVM,
   TreeCategoriesVM
 } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
-import { Category } from '@core/entities/category'
+import { Category, CategoryStatus } from '@core/entities/category'
 import { useCategoryStore } from '@store/categoryStore'
 import { baby, dents, minceur, mum } from '@utils/testData/categories'
 import { createPinia, setActivePinia } from 'pinia'
@@ -28,7 +28,9 @@ describe('Get tree categories VM', () => {
           data: {
             uuid: mum.uuid,
             name: mum.name,
-            miniature: mum.miniature!
+            miniature: mum.miniature!,
+            status: mum.status,
+            hasChildren: false
           },
           children: []
         }
@@ -42,7 +44,9 @@ describe('Get tree categories VM', () => {
           data: {
             uuid: mum.uuid,
             name: mum.name,
-            miniature: mum.miniature!
+            miniature: mum.miniature!,
+            status: mum.status,
+            hasChildren: false
           },
           children: []
         },
@@ -50,7 +54,9 @@ describe('Get tree categories VM', () => {
           data: {
             uuid: dents.uuid,
             name: dents.name,
-            miniature: dents.miniature!
+            miniature: dents.miniature!,
+            status: dents.status,
+            hasChildren: false
           },
           children: []
         },
@@ -58,7 +64,9 @@ describe('Get tree categories VM', () => {
           data: {
             uuid: minceur.uuid,
             name: minceur.name,
-            miniature: minceur.miniature!
+            miniature: minceur.miniature!,
+            status: minceur.status,
+            hasChildren: false
           },
           children: []
         }
@@ -75,14 +83,18 @@ describe('Get tree categories VM', () => {
           data: {
             uuid: mum.uuid,
             name: mum.name,
-            miniature: mum.miniature!
+            miniature: mum.miniature!,
+            status: mum.status,
+            hasChildren: true
           },
           children: [
             {
               data: {
                 uuid: baby.uuid,
                 name: baby.name,
-                miniature: baby.miniature!
+                miniature: baby.miniature!,
+                status: baby.status,
+                hasChildren: false
               },
               children: []
             }
@@ -100,7 +112,8 @@ describe('Get tree categories VM', () => {
         description: '',
         miniature: 'root-miniature-1',
         image: 'root-img-1',
-        order: 0
+        order: 0,
+        status: CategoryStatus.Active
       }
       const childCategory1: Category = {
         uuid: 'child-category1',
@@ -109,7 +122,8 @@ describe('Get tree categories VM', () => {
         parentUuid: rootCategory1.uuid,
         miniature: 'child-miniature-1',
         image: 'child-img-1',
-        order: 1
+        order: 1,
+        status: CategoryStatus.Active
       }
       const childCategory2: Category = {
         uuid: 'child-category2',
@@ -118,7 +132,8 @@ describe('Get tree categories VM', () => {
         parentUuid: rootCategory1.uuid,
         miniature: 'child-miniature-2',
         image: 'child-img-2',
-        order: 2
+        order: 2,
+        status: CategoryStatus.Active
       }
       const grandChildCategory1: Category = {
         uuid: 'grandChild-category1',
@@ -127,7 +142,8 @@ describe('Get tree categories VM', () => {
         parentUuid: childCategory1.uuid,
         miniature: 'grandchild-miniature-1',
         image: 'grandchild-img-1',
-        order: 3
+        order: 3,
+        status: CategoryStatus.Active
       }
       const grandChildCategory2: Category = {
         uuid: 'grandChild-category2',
@@ -136,7 +152,8 @@ describe('Get tree categories VM', () => {
         parentUuid: childCategory2.uuid,
         miniature: 'grandchild-miniature-2',
         image: 'grandchild-img-2',
-        order: 4
+        order: 4,
+        status: CategoryStatus.Active
       }
       const rootCategory2: Category = {
         uuid: 'root-category2',
@@ -144,7 +161,8 @@ describe('Get tree categories VM', () => {
         description: '',
         miniature: 'root-miniature-2',
         image: 'root-img-2',
-        order: 5
+        order: 5,
+        status: CategoryStatus.Active
       }
       givenExistingCategories(
         rootCategory1,
@@ -159,21 +177,27 @@ describe('Get tree categories VM', () => {
           data: {
             uuid: rootCategory1.uuid,
             name: rootCategory1.name,
-            miniature: rootCategory1.miniature!
+            miniature: rootCategory1.miniature!,
+            status: rootCategory1.status,
+            hasChildren: true
           },
           children: [
             {
               data: {
                 uuid: childCategory1.uuid,
                 name: childCategory1.name,
-                miniature: childCategory1.miniature!
+                miniature: childCategory1.miniature!,
+                status: childCategory1.status,
+                hasChildren: true
               },
               children: [
                 {
                   data: {
                     uuid: grandChildCategory1.uuid,
                     name: grandChildCategory1.name,
-                    miniature: grandChildCategory1.miniature!
+                    miniature: grandChildCategory1.miniature!,
+                    status: grandChildCategory1.status,
+                    hasChildren: false
                   },
                   children: []
                 }
@@ -183,14 +207,18 @@ describe('Get tree categories VM', () => {
               data: {
                 uuid: childCategory2.uuid,
                 name: childCategory2.name,
-                miniature: childCategory2.miniature!
+                miniature: childCategory2.miniature!,
+                status: childCategory2.status,
+                hasChildren: true
               },
               children: [
                 {
                   data: {
                     uuid: grandChildCategory2.uuid,
                     name: grandChildCategory2.name,
-                    miniature: grandChildCategory2.miniature!
+                    miniature: grandChildCategory2.miniature!,
+                    status: grandChildCategory2.status,
+                    hasChildren: false
                   },
                   children: []
                 }
@@ -202,7 +230,9 @@ describe('Get tree categories VM', () => {
           data: {
             uuid: rootCategory2.uuid,
             name: rootCategory2.name,
-            miniature: rootCategory2.miniature!
+            miniature: rootCategory2.miniature!,
+            status: rootCategory2.status,
+            hasChildren: false
           },
           children: []
         }

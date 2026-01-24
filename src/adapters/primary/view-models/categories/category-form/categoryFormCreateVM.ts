@@ -9,6 +9,7 @@ import {
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
 import { FormInitializer } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { CategoryStatus } from '@core/entities/category'
 import { Product } from '@core/entities/product'
 import { UUID } from '@core/types/types'
 import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
@@ -152,7 +153,8 @@ export class CategoryFormCreateVM extends CategoryFormVM {
       description: this.fieldsReader.get('description'),
       productsAdded,
       miniature: this.fieldsReader.get('miniature'),
-      image: this.fieldsReader.get('newImage')
+      image: this.fieldsReader.get('newImage'),
+      status: CategoryStatus.Active
     }
   }
 

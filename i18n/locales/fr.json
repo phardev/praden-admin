@@ -359,6 +359,18 @@
   "newsletter": {
     "exportButton": "Exporter la newsletter"
   },
+  "category": {
+    "status": {
+      "active": "Actif",
+      "inactive": "Inactif"
+    },
+    "toggle": {
+      "cascadeTitle": "Modifier le statut des sous-catégories ?",
+      "cascadeMessage": "Cette catégorie contient des sous-catégories. Souhaitez-vous également modifier leur statut ?",
+      "onlyThis": "Cette catégorie uniquement",
+      "includeChildren": "Inclure les sous-catégories"
+    }
+  },
   "permissions": {
     "permission": "Permission",
     "noData": "Aucune donnée disponible",

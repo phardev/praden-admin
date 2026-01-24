@@ -101,7 +101,8 @@ export class CategoryFormEditVM extends CategoryFormVM {
       image: this.fieldsReader.get('image'),
       newImage: this.fieldsReader.get('newImage'),
       productsAdded,
-      productsRemoved
+      productsRemoved,
+      status: this.fieldsReader.get('status')
     }
   }
 

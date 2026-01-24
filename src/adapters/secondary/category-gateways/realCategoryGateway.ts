@@ -70,4 +70,12 @@ export class RealCategoryGateway
     )
     return res.data.items.sort((a: Category, b: Category) => a.order - b.order)
   }
+
+  async toggleStatus(uuid: UUID, cascade: boolean): Promise<Array<Category>> {
+    const res = await axiosWithBearer.patch(
+      `${this.baseUrl}/categories/${uuid}/toggle-status`,
+      { cascade }
+    )
+    return res.data.items
+  }
 }

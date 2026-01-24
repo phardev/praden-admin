@@ -9,4 +9,5 @@ export interface CategoryGateway {
   edit(uuid: UUID, dto: EditCategoryDTO): Promise<Category>
   getByUuid(uuid: UUID): Promise<Category>
   reorder(categoryUuids: Array<UUID>): Promise<Array<Category>>
+  toggleStatus(uuid: UUID, cascade: boolean): Promise<Array<Category>>
 }

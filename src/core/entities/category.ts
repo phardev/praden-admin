@@ -1,6 +1,11 @@
 import { Product } from '@core/entities/product'
 import type { UUID } from '@core/types/types'
 
+export enum CategoryStatus {
+  Active = 'ACTIVE',
+  Inactive = 'INACTIVE'
+}
+
 export interface Category {
   uuid: UUID
   name: string
@@ -9,6 +14,7 @@ export interface Category {
   miniature?: string
   image?: string
   order: number
+  status: CategoryStatus
 }
 
 export interface CategoryWithProducts {

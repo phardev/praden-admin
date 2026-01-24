@@ -52,4 +52,15 @@ export class InMemoryTimoutCategoryGateway extends InMemoryCategoryGateway {
       }, this.timeoutInMs)
     })
   }
+
+  override toggleStatus(
+    uuid: UUID,
+    cascade: boolean
+  ): Promise<Array<Category>> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(super.toggleStatus(uuid, cascade))
+      }, this.timeoutInMs)
+    })
+  }
 }

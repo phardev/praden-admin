@@ -1,4 +1,4 @@
-import { Category } from '@core/entities/category'
+import { Category, CategoryStatus } from '@core/entities/category'
 import { CategoryDoesNotExistsError } from '@core/errors/CategoryDoesNotExistsError'
 import { ParentCategoryDoesNotExistsError } from '@core/errors/ParentCategoryDoesNotExistsError'
 import { CategoryGateway } from '@core/gateways/categoryGateway'
@@ -28,7 +28,8 @@ export class InMemoryCategoryGateway implements CategoryGateway {
       uuid: this.uuidGenerator.generate(),
       name: dto.name,
       description: dto.description,
-      order: this.categories.length
+      order: this.categories.length,
+      status: dto.status
     }
     this.categories.push(category)
     return Promise.resolve(category)
@@ -66,8 +67,45 @@ export class InMemoryCategoryGateway implements CategoryGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(this.categories)))
   }
 
+  async toggleStatus(uuid: UUID, cascade: boolean): Promise<Array<Category>> {
+    const category = await this.getByUuid(uuid)
+    const newStatus =
+      category.status === CategoryStatus.Active
+        ? CategoryStatus.Inactive
+        : CategoryStatus.Active
+
+    const updatedCategories: Array<Category> = []
+    await this.edit(uuid, { status: newStatus })
+    updatedCategories.push(await this.getByUuid(uuid))
+
+    if (cascade) {
+      const descendants = this.getDescendants(uuid)
+      for (const descendant of descendants) {
+        await this.edit(descendant.uuid, { status: newStatus })
+        updatedCategories.push(await this.getByUuid(descendant.uuid))
+      }
+    }
+
+    return Promise.resolve(updatedCategories)
+  }
+
   private categoryExists(uuid: UUID) {
     return this.categories.findIndex((c) => c.uuid === uuid) >= 0
+  }
+
+  private getDescendants(uuid: UUID): Array<Category> {
+    const result: Array<Category> = []
+    const traverse = (parentUuid: UUID) => {
+      const children = this.categories.filter(
+        (c) => c.parentUuid === parentUuid
+      )
+      for (const child of children) {
+        result.push(child)
+        traverse(child.uuid)
+      }
+    }
+    traverse(uuid)
+    return result
   }
 
   feedWith(...categories: Array<Category>) {
