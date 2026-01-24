@@ -7,12 +7,16 @@
   ft-category-tree.mt-4(
     :is-loading="treeCategoriesVM.isLoading"
     :items="treeCategoriesVM.items"
+    :show-status-toggle="true"
     @view="categorySelected"
+    @toggle-status="toggleCategoryStatus"
   )
 </template>
 
 <script lang="ts" setup>
 import { getTreeCategoriesVM } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
+import type { CategoryStatus } from '@core/entities/category'
+import { updateCategoryStatus } from '@core/usecases/categories/category-status-update/updateCategoryStatus'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
 
@@ -29,5 +33,14 @@ const treeCategoriesVM = computed(() => {
 const categorySelected = (uuid: string) => {
   const router = useRouter()
   router.push(`/categories/get/${uuid}`)
+}
+
+const toggleCategoryStatus = async (
+  uuid: string,
+  currentStatus: CategoryStatus
+) => {
+  const newStatus: CategoryStatus =
+    currentStatus === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
+  await updateCategoryStatus(uuid, newStatus, useCategoryGateway())
 }
 </script>

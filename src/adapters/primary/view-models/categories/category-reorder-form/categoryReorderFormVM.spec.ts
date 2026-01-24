@@ -2,6 +2,7 @@ import type {
   TreeCategoryNodeVM,
   TreeNode
 } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
+import type { CategoryStatus } from '@core/entities/category'
 import { useCategoryStore } from '@store/categoryStore'
 import { useFormStore } from '@store/formStore'
 import { baby, dents, mum } from '@utils/testData/categories'
@@ -15,9 +16,10 @@ const createTreeNode = (
   uuid: string,
   name: string,
   miniature: string,
-  children: CategoryTree = []
+  children: CategoryTree = [],
+  status: CategoryStatus = 'ACTIVE'
 ): TreeNode<TreeCategoryNodeVM> => ({
-  data: { uuid, name, miniature },
+  data: { uuid, name, miniature, status },
   children
 })
 

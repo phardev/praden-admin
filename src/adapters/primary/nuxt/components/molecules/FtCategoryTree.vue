@@ -31,9 +31,11 @@ div(v-if="isLoading")
     :disabled="disabled"
     :selectable="selectable"
     :selection="selection"
+    :show-status-toggle="showStatusToggle"
     @selected="selected"
     @view="view"
     @update:open-items="updateOpenItems"
+    @toggle-status="toggleStatus"
   )
 </template>
 <script setup lang="ts">
@@ -41,6 +43,7 @@ import type {
   TreeCategoryNodeVM,
   TreeNode
 } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
+import type { CategoryStatus } from '@core/entities/category'
 import type { UUID } from '@core/types/types'
 
 const props = defineProps({
@@ -72,6 +75,12 @@ const props = defineProps({
     type: Array<string>,
     default: () => {
       return []
+    }
+  },
+  showStatusToggle: {
+    type: Boolean,
+    default: () => {
+      return false
     }
   }
 })
@@ -105,6 +114,7 @@ const emit = defineEmits<{
   (e: 'view', uuid: string): void
   (e: 'selected', uuid: string): void
   (e: 'update:open-items', items: Array<UUID>): void
+  (e: 'toggle-status', uuid: string, currentStatus: CategoryStatus): void
 }>()
 
 const view = (uuid: string): void => {
@@ -113,6 +123,10 @@ const view = (uuid: string): void => {
 
 const selected = (uuid: string): void => {
   emit('selected', uuid)
+}
+
+const toggleStatus = (uuid: string, currentStatus: CategoryStatus): void => {
+  emit('toggle-status', uuid, currentStatus)
 }
 </script>
 

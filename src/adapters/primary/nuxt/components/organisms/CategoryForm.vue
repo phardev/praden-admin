@@ -40,6 +40,19 @@ div(v-if="!currentVM || currentVM.isLoading()")
     .flex.flex-row-reverse.mt-4
       .h-12.w-32.bg-gray-200.rounded.animate-pulse
 form(v-else)
+  UFormGroup.pb-4(
+    v-if="currentVM.get('isActive')"
+    :label="$t('categories.status.label')"
+    name="status"
+  )
+    UToggle(
+      size="xl"
+      on-icon="i-heroicons-check-20-solid"
+      off-icon="i-heroicons-x-mark-20-solid"
+      :model-value="currentVM.get('isActive').value"
+      :disabled="!currentVM.get('isActive').canEdit"
+      @click="toggleIsActive"
+    )
   UFormGroup.pb-4(label="Nom" name="name")
     ft-text-field(
       :model-value="currentVM.get('name').value"
@@ -182,6 +195,11 @@ const clearParentCategory = () => {
 
 const descriptionChanged = (description: string) => {
   currentVM?.value?.set('description', description)
+}
+
+const toggleIsActive = () => {
+  const current = currentVM?.value?.get('isActive').value
+  currentVM?.value?.set('isActive', !current)
 }
 
 let debounceTimer: ReturnType<typeof setTimeout> | null = null

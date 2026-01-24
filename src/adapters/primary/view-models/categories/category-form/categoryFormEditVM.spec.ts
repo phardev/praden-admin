@@ -452,6 +452,7 @@ describe('Category form edit VM', () => {
           newMiniature: undefined,
           image: currentCategory.image,
           newImage: undefined,
+          status: 'ACTIVE',
           productsAdded: [],
           productsRemoved: []
         }
@@ -472,6 +473,7 @@ describe('Category form edit VM', () => {
           newMiniature: undefined,
           image: currentCategory.image,
           newImage: undefined,
+          status: 'ACTIVE',
           productsAdded: [chamomilla.uuid],
           productsRemoved: []
         }
@@ -487,6 +489,7 @@ describe('Category form edit VM', () => {
           newMiniature: undefined,
           image: currentCategory.image,
           newImage: undefined,
+          status: 'ACTIVE',
           productsAdded: [ultraLevure.uuid, chamomilla.uuid],
           productsRemoved: []
         }
@@ -503,6 +506,7 @@ describe('Category form edit VM', () => {
           newMiniature: undefined,
           image: currentCategory.image,
           newImage: undefined,
+          status: 'ACTIVE',
           productsAdded: [],
           productsRemoved: []
         }
@@ -520,6 +524,7 @@ describe('Category form edit VM', () => {
           newMiniature: undefined,
           image: currentCategory.image,
           newImage: undefined,
+          status: 'ACTIVE',
           productsAdded: [],
           productsRemoved: [dolodent.uuid]
         }
@@ -540,6 +545,7 @@ describe('Category form edit VM', () => {
           newMiniature: undefined,
           image: baby.image,
           newImage: undefined,
+          status: 'ACTIVE',
           productsAdded: [],
           productsRemoved: [dolodent.uuid, chamomilla.uuid]
         }
@@ -560,6 +566,7 @@ describe('Category form edit VM', () => {
           newMiniature: undefined,
           image: currentCategory.image,
           newImage: undefined,
+          status: 'ACTIVE',
           productsAdded: [],
           productsRemoved: []
         }
@@ -582,6 +589,7 @@ describe('Category form edit VM', () => {
           newMiniature: undefined,
           image: 'data:image/png;base64,aW1hZ2U=',
           newImage,
+          status: 'ACTIVE',
           productsAdded: [],
           productsRemoved: []
         }
@@ -602,6 +610,7 @@ describe('Category form edit VM', () => {
           newMiniature,
           image: currentCategory.image,
           newImage: undefined,
+          status: 'ACTIVE',
           productsAdded: [],
           productsRemoved: []
         }
@@ -624,6 +633,7 @@ describe('Category form edit VM', () => {
           newMiniature: undefined,
           image: currentCategory.image,
           newImage: undefined,
+          status: 'ACTIVE',
           productsAdded: [ultraLevure.uuid, anaca3Minceur.uuid],
           productsRemoved: [dolodent.uuid]
         }

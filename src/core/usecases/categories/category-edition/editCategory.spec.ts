@@ -102,6 +102,7 @@ describe('Category Edition', () => {
             parentUuid: 'not-exists',
             name: dents.name,
             description: dents.description,
+            status: 'ACTIVE',
             productsAdded: [],
             productsRemoved: []
           })
@@ -115,6 +116,7 @@ describe('Category Edition', () => {
         const dto: EditCategoryDTO = {
           name: minceur.name,
           description: minceur.description,
+          status: 'ACTIVE',
           productsAdded: [dolodent.uuid, calmosine.uuid],
           productsRemoved: []
         }
@@ -192,6 +194,7 @@ describe('Category Edition', () => {
         const dto: EditCategoryDTO = {
           name: minceur.name,
           description: minceur.description,
+          status: 'ACTIVE',
           productsRemoved: [anaca3Minceur.uuid],
           productsAdded: []
         }
@@ -265,6 +268,7 @@ describe('Category Edition', () => {
         whenEditCategory('NotExists', {
           name: 'NewName',
           description: 'NewDescription',
+          status: 'ACTIVE',
           productsAdded: [],
           productsRemoved: []
         })

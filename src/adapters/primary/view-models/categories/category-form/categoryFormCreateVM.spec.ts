@@ -400,6 +400,7 @@ describe('Category form create VM', () => {
           description: 'description',
           miniature: undefined,
           image: undefined,
+          status: 'ACTIVE',
           productsAdded: []
         }
         vm.set('name', expectedDTO.name)
@@ -416,6 +417,7 @@ describe('Category form create VM', () => {
           description: '',
           miniature: undefined,
           image: undefined,
+          status: 'ACTIVE',
           productsAdded: [chamomilla.uuid]
         }
         givenExistingProducts(chamomilla)
@@ -429,6 +431,7 @@ describe('Category form create VM', () => {
           description: '',
           miniature: undefined,
           image: undefined,
+          status: 'ACTIVE',
           productsAdded: [ultraLevure.uuid, chamomilla.uuid]
         }
         givenExistingProducts(ultraLevure, chamomilla)
@@ -442,6 +445,7 @@ describe('Category form create VM', () => {
           description: '',
           miniature: undefined,
           image: undefined,
+          status: 'ACTIVE',
           productsAdded: [dolodent.uuid]
         }
         givenExistingProducts(dolodent)
@@ -459,6 +463,7 @@ describe('Category form create VM', () => {
           description: baby.description,
           miniature: undefined,
           image: undefined,
+          status: 'ACTIVE',
           productsAdded: [ultraLevure.uuid, chamomilla.uuid, anaca3Minceur.uuid]
         }
         givenExistingProducts(ultraLevure, chamomilla, anaca3Minceur)
@@ -484,6 +489,7 @@ describe('Category form create VM', () => {
           description: '',
           miniature: undefined,
           image: newImage,
+          status: 'ACTIVE',
           productsAdded: []
         }
         await vm.set('image', newImage)

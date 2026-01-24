@@ -78,6 +78,13 @@
       "selectEndDate": "Sélectionner une date de fin"
     }
   },
+  "categories": {
+    "status": {
+      "label": "Statut",
+      "active": "Activé",
+      "inactive": "Désactivé"
+    }
+  },
   "customers": {
     "viewTitle": "Voir client",
     "editButton": "Editer client",

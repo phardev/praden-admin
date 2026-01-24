@@ -39,13 +39,15 @@ describe('Create category', () => {
     const categoryDTO: CreateCategoryDTO = {
       name: 'Created',
       description: 'The description',
+      status: 'ACTIVE',
       productsAdded: []
     }
     const expectedCategory: Category = {
       name: 'Created',
       description: 'The description',
       uuid,
-      order: 0
+      order: 0,
+      status: 'ACTIVE'
     }
     beforeEach(async () => {
       await whenCreateCategory(uuid, categoryDTO)
@@ -62,6 +64,7 @@ describe('Create category', () => {
     const categoryDTO: CreateCategoryDTO = {
       name: 'Child category',
       description: 'The child description',
+      status: 'ACTIVE',
       productsAdded: []
     }
     describe('The parent category exists', () => {
@@ -71,7 +74,8 @@ describe('Create category', () => {
         name: 'Child category',
         description: 'The child description',
         uuid,
-        order: 1
+        order: 1,
+        status: 'ACTIVE'
       }
       beforeEach(async () => {
         categoryGateway.feedWith(dents)
@@ -103,13 +107,15 @@ describe('Create category', () => {
       const dto: CreateCategoryDTO = {
         name: 'new-category',
         description: 'The description',
+        status: 'ACTIVE',
         productsAdded: [dolodent.uuid, calmosine.uuid]
       }
       const expectedCategory: Category = {
         name: 'new-category',
         description: 'The description',
         uuid,
-        order: 0
+        order: 0,
+        status: 'ACTIVE'
       }
       await whenCreateCategory(uuid, dto)
       expectedProducts = [
@@ -186,6 +192,7 @@ describe('Create category', () => {
       const dto: CreateCategoryDTO = {
         name: 'new-category',
         description: 'The description',
+        status: 'ACTIVE',
         productsAdded: [dolodent.uuid, calmosine.uuid]
       }
       const unsubscribe = categoryStore.$subscribe(
@@ -200,6 +207,7 @@ describe('Create category', () => {
       const dto: CreateCategoryDTO = {
         name: 'new-category',
         description: 'The description',
+        status: 'ACTIVE',
         productsAdded: [dolodent.uuid, calmosine.uuid]
       }
       await whenCreateCategory(dents.uuid, dto)

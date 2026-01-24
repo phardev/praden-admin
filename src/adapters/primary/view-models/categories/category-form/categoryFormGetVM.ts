@@ -36,6 +36,7 @@ export class ExistingCategoryFormInitializer implements FormInitializer {
       newMiniature: undefined,
       image: category.image,
       newImage: undefined,
+      isActive: category.status === 'ACTIVE',
       products: this.categoryStore.current?.products || []
     })
   }

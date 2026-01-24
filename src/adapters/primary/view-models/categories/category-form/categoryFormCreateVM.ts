@@ -90,6 +90,7 @@ export class NewCategoryFormInitializer implements FormInitializer {
       parentUuid: undefined,
       miniature: undefined,
       image: undefined,
+      isActive: true,
       products: []
     })
   }
@@ -146,10 +147,12 @@ export class CategoryFormCreateVM extends CategoryFormVM {
   getDto(): CreateCategoryDTO {
     const products: Array<Product> = this.fieldsReader.get('products')
     const productsAdded = products.map((p: Product) => p.uuid)
+    const isActive = this.fieldsReader.get('isActive')
     return {
       name: this.fieldsReader.get('name'),
       parentUuid: this.fieldsReader.get('parentUuid'),
       description: this.fieldsReader.get('description'),
+      status: isActive ? 'ACTIVE' : 'INACTIVE',
       productsAdded,
       miniature: this.fieldsReader.get('miniature'),
       image: this.fieldsReader.get('newImage')

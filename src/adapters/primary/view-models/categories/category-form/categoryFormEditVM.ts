@@ -92,6 +92,7 @@ export class CategoryFormEditVM extends CategoryFormVM {
     const productsRemoved = initialProductsUuids.filter(
       (uuid: UUID) => !productsUuids.includes(uuid)
     )
+    const isActive = this.fieldsReader.get('isActive')
     return {
       name: this.fieldsReader.get('name'),
       parentUuid: this.fieldsReader.get('parentUuid'),
@@ -100,6 +101,7 @@ export class CategoryFormEditVM extends CategoryFormVM {
       newMiniature: this.fieldsReader.get('newMiniature'),
       image: this.fieldsReader.get('image'),
       newImage: this.fieldsReader.get('newImage'),
+      status: isActive ? 'ACTIVE' : 'INACTIVE',
       productsAdded,
       productsRemoved
     }
