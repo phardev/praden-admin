@@ -1,11 +1,14 @@
-import { Category } from '@core/entities/category'
+import type { Category, CategoryStatus } from '@core/entities/category'
 import { CategoryDoesNotExistsError } from '@core/errors/CategoryDoesNotExistsError'
 import { ParentCategoryDoesNotExistsError } from '@core/errors/ParentCategoryDoesNotExistsError'
-import { CategoryGateway } from '@core/gateways/categoryGateway'
-import { UuidGenerator } from '@core/gateways/uuidGenerator'
-import { UUID } from '@core/types/types'
-import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
-import { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
+import type {
+  CategoryGateway,
+  ToggleCategoryStatusResult
+} from '@core/gateways/categoryGateway'
+import type { UuidGenerator } from '@core/gateways/uuidGenerator'
+import type { UUID } from '@core/types/types'
+import type { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
+import type { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
 
 export class InMemoryCategoryGateway implements CategoryGateway {
   private categories: Array<Category> = []
@@ -28,7 +31,8 @@ export class InMemoryCategoryGateway implements CategoryGateway {
       uuid: this.uuidGenerator.generate(),
       name: dto.name,
       description: dto.description,
-      order: this.categories.length
+      order: this.categories.length,
+      status: 'ACTIVE'
     }
     this.categories.push(category)
     return Promise.resolve(category)
@@ -64,6 +68,50 @@ export class InMemoryCategoryGateway implements CategoryGateway {
     }
     this.categories = this.categories.sort((a, b) => a.order - b.order)
     return Promise.resolve(JSON.parse(JSON.stringify(this.categories)))
+  }
+
+  toggleStatus(
+    uuid: UUID,
+    status: CategoryStatus
+  ): Promise<ToggleCategoryStatusResult> {
+    if (!this.categoryExists(uuid)) {
+      throw new CategoryDoesNotExistsError(uuid)
+    }
+
+    const descendants = this.getDescendants(uuid)
+    const allUuids = [uuid, ...descendants.map((c) => c.uuid)]
+
+    const updated: Array<Category> = []
+    for (const targetUuid of allUuids) {
+      const index = this.categories.findIndex((c) => c.uuid === targetUuid)
+      if (index >= 0) {
+        this.categories[index] = { ...this.categories[index], status }
+        updated.push(this.categories[index])
+      }
+    }
+
+    const category = updated.find((c) => c.uuid === uuid)!
+    const cascadedCategories = updated.filter((c) => c.uuid !== uuid)
+
+    return Promise.resolve({
+      category: JSON.parse(JSON.stringify(category)),
+      cascadedCategories: JSON.parse(JSON.stringify(cascadedCategories))
+    })
+  }
+
+  private getDescendants(uuid: UUID): Array<Category> {
+    const result: Array<Category> = []
+    const traverse = (parentUuid: UUID) => {
+      const children = this.categories.filter(
+        (c) => c.parentUuid === parentUuid
+      )
+      for (const child of children) {
+        result.push(child)
+        traverse(child.uuid)
+      }
+    }
+    traverse(uuid)
+    return result
   }
 
   private categoryExists(uuid: UUID) {

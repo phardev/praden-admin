@@ -31,9 +31,11 @@ div(v-if="isLoading")
     :disabled="disabled"
     :selectable="selectable"
     :selection="selection"
+    :show-status-toggle="showStatusToggle"
     @selected="selected"
     @view="view"
     @update:open-items="updateOpenItems"
+    @status-toggled="statusToggled"
   )
 </template>
 <script setup lang="ts">
@@ -73,6 +75,12 @@ const props = defineProps({
     default: () => {
       return []
     }
+  },
+  showStatusToggle: {
+    type: Boolean,
+    default: () => {
+      return false
+    }
   }
 })
 
@@ -105,6 +113,7 @@ const emit = defineEmits<{
   (e: 'view', uuid: string): void
   (e: 'selected', uuid: string): void
   (e: 'update:open-items', items: Array<UUID>): void
+  (e: 'status-toggled', uuid: string, isActive: boolean): void
 }>()
 
 const view = (uuid: string): void => {
@@ -113,6 +122,10 @@ const view = (uuid: string): void => {
 
 const selected = (uuid: string): void => {
   emit('selected', uuid)
+}
+
+const statusToggled = (uuid: string, isActive: boolean): void => {
+  emit('status-toggled', uuid, isActive)
 }
 </script>
 

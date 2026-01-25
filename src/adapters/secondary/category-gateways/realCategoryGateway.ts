@@ -1,10 +1,13 @@
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import { Category } from '@core/entities/category'
-import { CategoryGateway } from '@core/gateways/categoryGateway'
-import { UUID } from '@core/types/types'
-import { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
-import { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
+import type { Category, CategoryStatus } from '@core/entities/category'
+import type {
+  CategoryGateway,
+  ToggleCategoryStatusResult
+} from '@core/gateways/categoryGateway'
+import type { UUID } from '@core/types/types'
+import type { CreateCategoryDTO } from '@core/usecases/categories/category-creation/createCategory'
+import type { EditCategoryDTO } from '@core/usecases/categories/category-edition/editCategory'
 
 export class RealCategoryGateway
   extends RealGateway
@@ -69,5 +72,19 @@ export class RealCategoryGateway
       }
     )
     return res.data.items.sort((a: Category, b: Category) => a.order - b.order)
+  }
+
+  async toggleStatus(
+    uuid: UUID,
+    status: CategoryStatus
+  ): Promise<ToggleCategoryStatusResult> {
+    const res = await axiosWithBearer.patch(
+      `${this.baseUrl}/categories/${uuid}/status`,
+      { status }
+    )
+    return {
+      category: res.data.item,
+      cascadedCategories: res.data.cascadedCategories
+    }
   }
 }

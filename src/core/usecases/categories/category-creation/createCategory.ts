@@ -1,17 +1,18 @@
-import { Category } from '@core/entities/category'
-import { CategoryGateway } from '@core/gateways/categoryGateway'
-import { ProductGateway } from '@core/gateways/productGateway'
-import { UUID } from '@core/types/types'
+import type { Category, CategoryStatus } from '@core/entities/category'
+import type { CategoryGateway } from '@core/gateways/categoryGateway'
+import type { ProductGateway } from '@core/gateways/productGateway'
+import type { UUID } from '@core/types/types'
 import { useCategoryStore } from '@store/categoryStore'
 import { useProductStore } from '@store/productStore'
 
 export type CreateCategoryDTO = Omit<
   Category,
-  'uuid' | 'image' | 'miniature' | 'order'
+  'uuid' | 'image' | 'miniature' | 'order' | 'status'
 > & {
   productsAdded: Array<UUID>
   image?: File
   miniature?: File
+  status?: CategoryStatus
 }
 
 export const createCategory = async (

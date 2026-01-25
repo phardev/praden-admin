@@ -7,7 +7,7 @@
       )
         .list-item(@click="toggle(item)")
           .flex.justify-between.items-center.p-2.cursor-pointer.bg-hover(
-            :class="{ 'parent-selected bg-contrast': hasSelectedChild(item) }"
+            :class="{ 'parent-selected bg-contrast': hasSelectedChild(item), 'grayscale': item.data.status === 'INACTIVE' }"
           )
             div.flex.items-center.justify-center.space-x-4
               ft-checkbox(
@@ -20,10 +20,17 @@
               )
               img.w-8.h-8(:src="item.data.miniature")
               span {{ item.data.name }}
-            div.flex.items-center.justify-center
+            div.flex.items-center.justify-center.space-x-4
+              ft-toggle(
+                v-if="showStatusToggle"
+                :model-value="item.data.status === 'ACTIVE'"
+                :aria-label="item.data.status === 'ACTIVE' ? $t('common.active') : $t('common.inactive')"
+                @click.stop
+                @update:model-value="(value) => statusToggled(item.data.uuid, value)"
+              )
               icon.icon-md.text-link(
                 name="mdi-eye-outline"
-                @click.prevent="view(item.data.uuid)"
+                @click.stop.prevent="view(item.data.uuid)"
               ) Voir
               span(
                 v-if="item.children.length"
@@ -48,10 +55,12 @@
               :disabled="disabled"
               :selectable="selectable"
               :selection="selection"
+              :show-status-toggle="showStatusToggle"
               @view="view"
               @update:open-items="updateOpenItems"
               @selected="selected"
               @clicked.prevent="view"
+              @status-toggled="statusToggled"
             )
 </template>
 <script setup lang="ts">
@@ -92,6 +101,12 @@ const props = defineProps({
     default: () => {
       return []
     }
+  },
+  showStatusToggle: {
+    type: Boolean,
+    default: () => {
+      return false
+    }
   }
 })
 
@@ -114,6 +129,7 @@ const emit = defineEmits<{
   (e: 'view', uuid: string): void
   (e: 'selected', uuid: string): void
   (e: 'update:open-items', items: Array<UUID>): void
+  (e: 'status-toggled', uuid: string, isActive: boolean): void
 }>()
 
 const view = (uuid: string): void => {
@@ -128,6 +144,10 @@ const selected = async (uuid: string) => {
   if (!props.disabled) {
     emit('selected', uuid)
   }
+}
+
+const statusToggled = (uuid: string, isActive: boolean): void => {
+  emit('status-toggled', uuid, isActive)
 }
 
 const isIndeterminate = (item: TreeNode<TreeCategoryNodeVM>): boolean => {
