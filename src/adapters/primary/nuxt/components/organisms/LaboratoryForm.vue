@@ -176,12 +176,12 @@ const searchChanged = (e: Event) => {
 }
 
 const addProducts = () => {
-  currentVM.value.addProducts(availableProductSelector.get())
+  currentVM.value?.addProducts(availableProductSelector.get())
   availableProductSelector.clear()
 }
 
 const removeProducts = () => {
-  currentVM.value.removeProducts(addedProductSelector.get())
+  currentVM.value?.removeProducts(addedProductSelector.get())
   addedProductSelector.clear()
 }
 

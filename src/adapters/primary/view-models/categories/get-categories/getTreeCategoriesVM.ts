@@ -11,6 +11,7 @@ export interface TreeCategoryNodeVM {
   uuid: UUID
   name: string
   miniature: string
+  isActive: boolean
 }
 
 export type TreeCategoriesVM = Array<TreeNode<TreeCategoryNodeVM>>
@@ -28,7 +29,8 @@ const getChildren = (uuid: UUID): TreeCategoriesVM => {
       data: {
         uuid: c.uuid,
         name: c.name,
-        miniature: c.miniature || ''
+        miniature: c.miniature || '',
+        isActive: c.status === 'ACTIVE'
       },
       children: getChildren(c.uuid)
     }
@@ -45,7 +47,8 @@ export const getTreeCategoriesVM = (): CategoriesVM => {
         data: {
           uuid: c.uuid,
           name: c.name,
-          miniature: c.miniature || ''
+          miniature: c.miniature || '',
+          isActive: c.status === 'ACTIVE'
         },
         children: getChildren(c.uuid)
       }

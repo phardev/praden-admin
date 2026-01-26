@@ -32,6 +32,17 @@ export const useCategoryStore = defineStore('CategoryStore', {
         })
         .sort((a, b) => a.order - b.order)
     },
+    editMany(categories: Array<Category>) {
+      const updatedUuids = categories.map((c) => c.uuid)
+      this.items = this.items
+        .map((c) => {
+          if (updatedUuids.includes(c.uuid)) {
+            return categories.find((cat) => cat.uuid === c.uuid)!
+          }
+          return c
+        })
+        .sort((a, b) => a.order - b.order)
+    },
     setCurrentCategory(category: Category) {
       this.current = {
         category: JSON.parse(JSON.stringify(category)),
@@ -54,7 +65,8 @@ export const useCategoryStore = defineStore('CategoryStore', {
             parentUuid: undefined,
             miniature: undefined,
             image: undefined,
-            order: 0
+            order: 0,
+            status: 'ACTIVE'
           },
           products: []
         }

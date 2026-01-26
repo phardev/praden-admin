@@ -33,7 +33,7 @@ import { PermissionResource } from '@core/entities/permissionResource'
 // Meta and SEO
 definePageMeta({
   title: 'Créer un nouveau rôle',
-  layout: 'default'
+  layout: 'main'
 })
 
 useSeoMeta({

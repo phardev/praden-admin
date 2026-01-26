@@ -24,7 +24,7 @@ const emit = defineEmits<{
 
 const onCategoryClick = (category: ProductByCategory) => {
   if (category && props.data.length > 1) {
-    emit('select-category', category)
+    emit('select-category', category.uuid)
   }
 }
 

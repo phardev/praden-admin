@@ -7,7 +7,7 @@
       )
         .list-item(@click="toggle(item)")
           .flex.justify-between.items-center.p-2.cursor-pointer.bg-hover(
-            :class="{ 'parent-selected bg-contrast': hasSelectedChild(item) }"
+            :class="{ 'parent-selected bg-contrast': hasSelectedChild(item), 'category-inactive': !item.data.isActive }"
           )
             div.flex.items-center.justify-center.space-x-4
               ft-checkbox(
@@ -20,10 +20,15 @@
               )
               img.w-8.h-8(:src="item.data.miniature")
               span {{ item.data.name }}
-            div.flex.items-center.justify-center
+            div.flex.items-center.justify-center.space-x-4
+              ft-toggle(
+                :model-value="item.data.isActive"
+                @click.stop
+                @update:model-value="toggleStatus(item.data.uuid, $event)"
+              )
               icon.icon-md.text-link(
                 name="mdi-eye-outline"
-                @click.prevent="view(item.data.uuid)"
+                @click.stop.prevent="view(item.data.uuid)"
               ) Voir
               span(
                 v-if="item.children.length"
@@ -52,10 +57,12 @@
               @update:open-items="updateOpenItems"
               @selected="selected"
               @clicked.prevent="view"
+              @toggle-status="toggleStatus"
             )
 </template>
 <script setup lang="ts">
 import FtCheckbox from '@adapters/primary/nuxt/components/atoms/FtCheckbox.vue'
+import FtToggle from '@adapters/primary/nuxt/components/atoms/FtToggle.vue'
 import type {
   TreeCategoryNodeVM,
   TreeNode
@@ -114,6 +121,7 @@ const emit = defineEmits<{
   (e: 'view', uuid: string): void
   (e: 'selected', uuid: string): void
   (e: 'update:open-items', items: Array<UUID>): void
+  (e: 'toggle-status', uuid: string, isActive: boolean): void
 }>()
 
 const view = (uuid: string): void => {
@@ -128,6 +136,10 @@ const selected = async (uuid: string) => {
   if (!props.disabled) {
     emit('selected', uuid)
   }
+}
+
+const toggleStatus = (uuid: string, isActive: boolean): void => {
+  emit('toggle-status', uuid, isActive)
 }
 
 const isIndeterminate = (item: TreeNode<TreeCategoryNodeVM>): boolean => {
@@ -167,6 +179,10 @@ const hasSelectedChild = (item: TreeNode<TreeCategoryNodeVM>): boolean => {
 <style scoped>
 .parent-selected {
   font-weight: bold;
+}
+
+.category-inactive {
+  opacity: 0.5;
 }
 
 .slide-fade-enter-active,

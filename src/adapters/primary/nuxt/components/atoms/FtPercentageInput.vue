@@ -24,13 +24,13 @@ const props = defineProps({
 })
 
 onMounted(() => {
-  rawValue.value = parseFloat(props.modelValue)
+  rawValue.value = props.modelValue
 })
 
 watch(
   () => props.modelValue,
   (value) => {
-    rawValue.value = parseFloat(value)
+    rawValue.value = value
   }
 )
 

@@ -33,7 +33,8 @@ const emit = defineEmits(['update:model-value', 'close'])
 const date = computed({
   get: () => props.modelValue,
   set: (value) => {
-    const tmp = new Date(value)
+    if (value === null || value === undefined) return
+    const tmp = new Date(value as Date)
     if (props.isEndDate) {
       tmp.setHours(23, 59, 59, 999)
     }

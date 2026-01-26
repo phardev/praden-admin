@@ -255,7 +255,7 @@ const props = defineProps({
 const currentVM = toRef(props, 'vm')
 
 const codeChanged = (code: string) => {
-  currentVM.value.set('code', code)
+  currentVM.value?.set('code', code)
 }
 
 const amountChanged = (amount: string) => {
@@ -264,23 +264,23 @@ const amountChanged = (amount: string) => {
 }
 
 const startDateChanged = (date: number) => {
-  currentVM.value.set('startDate', date)
+  currentVM.value?.set('startDate', date)
 }
 
 const clearStartDate = () => {
-  currentVM.value.set('startDate', undefined)
+  currentVM.value?.set('startDate', undefined)
 }
 
 const endDateChanged = (date: number) => {
-  currentVM.value.set('endDate', date)
+  currentVM.value?.set('endDate', date)
 }
 
 const clearEndDate = () => {
-  currentVM.value.set('endDate', undefined)
+  currentVM.value?.set('endDate', undefined)
 }
 
 const maximumUsageChanged = (value: string) => {
-  currentVM.value.set('maximumUsage', value)
+  currentVM.value?.set('maximumUsage', value)
 }
 
 const minimumAmountChanged = (value: string) => {
@@ -289,15 +289,15 @@ const minimumAmountChanged = (value: string) => {
 }
 
 const deliveryMethodChanged = (uuid: string) => {
-  currentVM.value.set('deliveryMethodUuid', uuid)
+  currentVM.value?.set('deliveryMethodUuid', uuid)
 }
 
 const clearDeliveryMethod = () => {
-  currentVM.value.set('deliveryMethodUuid', undefined)
+  currentVM.value?.set('deliveryMethodUuid', undefined)
 }
 
 const maxWeightChanged = (value: string) => {
-  currentVM.value.set('maxWeight', value)
+  currentVM.value?.set('maxWeight', value)
 }
 
 const getReductionTypeIcon = (type: ReductionType) => {
@@ -326,12 +326,12 @@ const searchChanged = (e: Event) => {
 }
 
 const addProducts = () => {
-  currentVM.value.addProducts(availableProductSelector.get())
+  currentVM.value?.addProducts(availableProductSelector.get())
   availableProductSelector.clear()
 }
 
 const removeProducts = () => {
-  currentVM.value.removeProducts(addedProductSelector.get())
+  currentVM.value?.removeProducts(addedProductSelector.get())
   addedProductSelector.clear()
 }
 
