@@ -30,9 +30,11 @@ div(v-if="isLoading")
     :open-items="openItems"
     :disabled="disabled"
     :selectable="selectable"
+    :toggleable="toggleable"
     :selection="selection"
     @selected="selected"
     @view="view"
+    @toggle-status="toggleStatus"
     @update:open-items="updateOpenItems"
   )
 </template>
@@ -73,6 +75,12 @@ const props = defineProps({
     default: () => {
       return []
     }
+  },
+  toggleable: {
+    type: Boolean,
+    default: () => {
+      return false
+    }
   }
 })
 
@@ -105,6 +113,7 @@ const emit = defineEmits<{
   (e: 'view', uuid: string): void
   (e: 'selected', uuid: string): void
   (e: 'update:open-items', items: Array<UUID>): void
+  (e: 'toggle-status', uuid: string, isActive: boolean): void
 }>()
 
 const view = (uuid: string): void => {
@@ -113,6 +122,10 @@ const view = (uuid: string): void => {
 
 const selected = (uuid: string): void => {
   emit('selected', uuid)
+}
+
+const toggleStatus = (uuid: string, isActive: boolean): void => {
+  emit('toggle-status', uuid, isActive)
 }
 </script>
 

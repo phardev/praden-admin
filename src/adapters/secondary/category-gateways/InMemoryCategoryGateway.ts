@@ -1,4 +1,4 @@
-import { Category } from '@core/entities/category'
+import { Category, CategoryStatus } from '@core/entities/category'
 import { CategoryDoesNotExistsError } from '@core/errors/CategoryDoesNotExistsError'
 import { ParentCategoryDoesNotExistsError } from '@core/errors/ParentCategoryDoesNotExistsError'
 import { CategoryGateway } from '@core/gateways/categoryGateway'
@@ -28,7 +28,8 @@ export class InMemoryCategoryGateway implements CategoryGateway {
       uuid: this.uuidGenerator.generate(),
       name: dto.name,
       description: dto.description,
-      order: this.categories.length
+      order: this.categories.length,
+      status: CategoryStatus.Active
     }
     this.categories.push(category)
     return Promise.resolve(category)
@@ -64,6 +65,39 @@ export class InMemoryCategoryGateway implements CategoryGateway {
     }
     this.categories = this.categories.sort((a, b) => a.order - b.order)
     return Promise.resolve(JSON.parse(JSON.stringify(this.categories)))
+  }
+
+  async enable(uuid: UUID): Promise<Array<Category>> {
+    const categoriesToEnable = this.getCategoryWithDescendants(uuid)
+    for (const cat of categoriesToEnable) {
+      cat.status = CategoryStatus.Active
+    }
+    return Promise.resolve(JSON.parse(JSON.stringify(categoriesToEnable)))
+  }
+
+  async disable(uuid: UUID): Promise<Array<Category>> {
+    const categoriesToDisable = this.getCategoryWithDescendants(uuid)
+    for (const cat of categoriesToDisable) {
+      cat.status = CategoryStatus.Inactive
+    }
+    return Promise.resolve(JSON.parse(JSON.stringify(categoriesToDisable)))
+  }
+
+  private getCategoryWithDescendants(uuid: UUID): Array<Category> {
+    const category = this.categories.find((c) => c.uuid === uuid)
+    if (!category) throw new CategoryDoesNotExistsError(uuid)
+    const descendants = this.getDescendants(uuid)
+    return [category, ...descendants]
+  }
+
+  private getDescendants(uuid: UUID): Array<Category> {
+    const children = this.categories.filter((c) => c.parentUuid === uuid)
+    const result: Array<Category> = []
+    for (const child of children) {
+      result.push(child)
+      result.push(...this.getDescendants(child.uuid))
+    }
+    return result
   }
 
   private categoryExists(uuid: UUID) {

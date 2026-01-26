@@ -1,4 +1,4 @@
-import { Category } from '@core/entities/category'
+import { Category, CategoryStatus } from '@core/entities/category'
 import { UUID } from '@core/types/types'
 import { useCategoryStore } from '@store/categoryStore'
 
@@ -11,6 +11,7 @@ export interface TreeCategoryNodeVM {
   uuid: UUID
   name: string
   miniature: string
+  status: CategoryStatus
 }
 
 export type TreeCategoriesVM = Array<TreeNode<TreeCategoryNodeVM>>
@@ -28,7 +29,8 @@ const getChildren = (uuid: UUID): TreeCategoriesVM => {
       data: {
         uuid: c.uuid,
         name: c.name,
-        miniature: c.miniature || ''
+        miniature: c.miniature || '',
+        status: c.status
       },
       children: getChildren(c.uuid)
     }
@@ -45,7 +47,8 @@ export const getTreeCategoriesVM = (): CategoriesVM => {
         data: {
           uuid: c.uuid,
           name: c.name,
-          miniature: c.miniature || ''
+          miniature: c.miniature || '',
+          status: c.status
         },
         children: getChildren(c.uuid)
       }

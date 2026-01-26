@@ -7,7 +7,7 @@
       )
         .list-item(@click="toggle(item)")
           .flex.justify-between.items-center.p-2.cursor-pointer.bg-hover(
-            :class="{ 'parent-selected bg-contrast': hasSelectedChild(item) }"
+            :class="{ 'parent-selected bg-contrast': hasSelectedChild(item), 'opacity-50': !isActive(item) }"
           )
             div.flex.items-center.justify-center.space-x-4
               ft-checkbox(
@@ -20,10 +20,16 @@
               )
               img.w-8.h-8(:src="item.data.miniature")
               span {{ item.data.name }}
-            div.flex.items-center.justify-center
+            div.flex.items-center.justify-center.space-x-2
+              ft-toggle(
+                v-if="toggleable"
+                :model-value="isActive(item)"
+                @click.stop
+                @update:model-value="toggleStatus(item)"
+              )
               icon.icon-md.text-link(
                 name="mdi-eye-outline"
-                @click.prevent="view(item.data.uuid)"
+                @click.stop.prevent="view(item.data.uuid)"
               ) Voir
               span(
                 v-if="item.children.length"
@@ -47,19 +53,23 @@
               :open-items="openItems"
               :disabled="disabled"
               :selectable="selectable"
+              :toggleable="toggleable"
               :selection="selection"
               @view="view"
               @update:open-items="updateOpenItems"
               @selected="selected"
+              @toggle-status="toggleStatus"
               @clicked.prevent="view"
             )
 </template>
 <script setup lang="ts">
 import FtCheckbox from '@adapters/primary/nuxt/components/atoms/FtCheckbox.vue'
+import FtToggle from '@adapters/primary/nuxt/components/atoms/FtToggle.vue'
 import type {
   TreeCategoryNodeVM,
   TreeNode
 } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
+import { CategoryStatus } from '@core/entities/category'
 import type { UUID } from '@core/types/types'
 
 const props = defineProps({
@@ -92,6 +102,12 @@ const props = defineProps({
     default: () => {
       return []
     }
+  },
+  toggleable: {
+    type: Boolean,
+    default: () => {
+      return false
+    }
   }
 })
 
@@ -114,6 +130,7 @@ const emit = defineEmits<{
   (e: 'view', uuid: string): void
   (e: 'selected', uuid: string): void
   (e: 'update:open-items', items: Array<UUID>): void
+  (e: 'toggle-status', uuid: string, isActive: boolean): void
 }>()
 
 const view = (uuid: string): void => {
@@ -161,6 +178,14 @@ const hasSelectedChild = (item: TreeNode<TreeCategoryNodeVM>): boolean => {
     (child: TreeNode<TreeCategoryNodeVM>) =>
       isSelected(child.data.uuid) || hasSelectedChild(child)
   )
+}
+
+const isActive = (item: TreeNode<TreeCategoryNodeVM>): boolean => {
+  return item.data.status === CategoryStatus.Active
+}
+
+const toggleStatus = (item: TreeNode<TreeCategoryNodeVM>): void => {
+  emit('toggle-status', item.data.uuid, !isActive(item))
 }
 </script>
 
