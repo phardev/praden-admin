@@ -90,7 +90,8 @@ export class NewCategoryFormInitializer implements FormInitializer {
       parentUuid: undefined,
       miniature: undefined,
       image: undefined,
-      products: []
+      products: [],
+      status: 'ACTIVE'
     })
   }
 }
@@ -152,7 +153,8 @@ export class CategoryFormCreateVM extends CategoryFormVM {
       description: this.fieldsReader.get('description'),
       productsAdded,
       miniature: this.fieldsReader.get('miniature'),
-      image: this.fieldsReader.get('newImage')
+      image: this.fieldsReader.get('newImage'),
+      status: this.fieldsReader.get('status')
     }
   }
 

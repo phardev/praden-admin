@@ -1,5 +1,5 @@
-import { Category, CategoryWithProducts } from '@core/entities/category'
-import { Product } from '@core/entities/product'
+import type { Category, CategoryWithProducts } from '@core/entities/category'
+import type { Product } from '@core/entities/product'
 import { defineStore } from 'pinia'
 
 export const useCategoryStore = defineStore('CategoryStore', {
@@ -32,6 +32,13 @@ export const useCategoryStore = defineStore('CategoryStore', {
         })
         .sort((a, b) => a.order - b.order)
     },
+    editMany(categories: Array<Category>) {
+      const updatedUuids = new Set(categories.map((c) => c.uuid))
+      const categoryMap = new Map(categories.map((c) => [c.uuid, c]))
+      this.items = this.items
+        .map((c) => (updatedUuids.has(c.uuid) ? categoryMap.get(c.uuid)! : c))
+        .sort((a, b) => a.order - b.order)
+    },
     setCurrentCategory(category: Category) {
       this.current = {
         category: JSON.parse(JSON.stringify(category)),
@@ -54,7 +61,8 @@ export const useCategoryStore = defineStore('CategoryStore', {
             parentUuid: undefined,
             miniature: undefined,
             image: undefined,
-            order: 0
+            order: 0,
+            status: 'ACTIVE'
           },
           products: []
         }

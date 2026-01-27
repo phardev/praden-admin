@@ -40,6 +40,16 @@ div(v-if="!currentVM || currentVM.isLoading()")
     .flex.flex-row-reverse.mt-4
       .h-12.w-32.bg-gray-200.rounded.animate-pulse
 form(v-else)
+  UFormGroup.pb-4(
+    v-if="currentVM.get('status')"
+    :label="currentVM.get('status').value === 'ACTIVE' ? 'Actif' : 'Inactif'"
+    name="status"
+  )
+    ft-toggle(
+      :model-value="currentVM.get('status').value === 'ACTIVE'"
+      :disabled="!currentVM.get('status').canEdit"
+      @update:model-value="statusChanged"
+    )
   UFormGroup.pb-4(label="Nom" name="name")
     ft-text-field(
       :model-value="currentVM.get('name').value"
@@ -223,9 +233,14 @@ const productSelected = (uuid: string) => {
 
 const emit = defineEmits<{
   (e: 'validate'): void
+  (e: 'toggle-status', enabled: boolean): void
 }>()
 
 const validate = async () => {
   emit('validate')
+}
+
+const statusChanged = (enabled: boolean) => {
+  emit('toggle-status', enabled)
 }
 </script>
