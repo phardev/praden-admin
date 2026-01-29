@@ -5,9 +5,9 @@
         v-for="item in items"
         :key="item.data.uuid"
       )
-        .list-item(@click="toggle(item)")
+        .list-item(@click="toggleOpen(item)")
           .flex.justify-between.items-center.p-2.cursor-pointer.bg-hover(
-            :class="{ 'parent-selected bg-contrast': hasSelectedChild(item) }"
+            :class="{ 'parent-selected bg-contrast': hasSelectedChild(item), 'category-disabled': item.data.status === 'INACTIVE' }"
           )
             div.flex.items-center.justify-center.space-x-4
               ft-checkbox(
@@ -17,6 +17,12 @@
                 :disabled="disabled"
                 :model-value="isSelected(item.data.uuid)"
                 @click.stop.prevent="selected(item.data.uuid)"
+              )
+              ft-toggle(
+                v-if="!selectable"
+                :model-value="item.data.status === 'ACTIVE'"
+                @click.stop
+                @update:model-value="toggleStatus(item.data.uuid, $event)"
               )
               img.w-8.h-8(:src="item.data.miniature")
               span {{ item.data.name }}
@@ -52,10 +58,13 @@
               @update:open-items="updateOpenItems"
               @selected="selected"
               @clicked.prevent="view"
+              @enable="onEnable"
+              @disable="onDisable"
             )
 </template>
 <script setup lang="ts">
 import FtCheckbox from '@adapters/primary/nuxt/components/atoms/FtCheckbox.vue'
+import FtToggle from '@adapters/primary/nuxt/components/atoms/FtToggle.vue'
 import type {
   TreeCategoryNodeVM,
   TreeNode
@@ -95,7 +104,7 @@ const props = defineProps({
   }
 })
 
-const toggle = (item: TreeNode<TreeCategoryNodeVM>): void => {
+const toggleOpen = (item: TreeNode<TreeCategoryNodeVM>): void => {
   const uuid = item.data.uuid
   const newOpenItems = [...props.openItems]
   if (newOpenItems.includes(uuid)) {
@@ -114,7 +123,25 @@ const emit = defineEmits<{
   (e: 'view', uuid: string): void
   (e: 'selected', uuid: string): void
   (e: 'update:open-items', items: Array<UUID>): void
+  (e: 'enable', uuid: string): void
+  (e: 'disable', uuid: string): void
 }>()
+
+const toggleStatus = (uuid: string, enabled: boolean): void => {
+  if (enabled) {
+    emit('enable', uuid)
+  } else {
+    emit('disable', uuid)
+  }
+}
+
+const onEnable = (uuid: string): void => {
+  emit('enable', uuid)
+}
+
+const onDisable = (uuid: string): void => {
+  emit('disable', uuid)
+}
 
 const view = (uuid: string): void => {
   emit('view', uuid)
@@ -167,6 +194,11 @@ const hasSelectedChild = (item: TreeNode<TreeCategoryNodeVM>): boolean => {
 <style scoped>
 .parent-selected {
   font-weight: bold;
+}
+
+.category-disabled {
+  filter: grayscale(100%);
+  opacity: 0.6;
 }
 
 .slide-fade-enter-active,

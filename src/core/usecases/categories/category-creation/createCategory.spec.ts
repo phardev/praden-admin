@@ -45,7 +45,8 @@ describe('Create category', () => {
       name: 'Created',
       description: 'The description',
       uuid,
-      order: 0
+      order: 0,
+      status: 'ACTIVE'
     }
     beforeEach(async () => {
       await whenCreateCategory(uuid, categoryDTO)
@@ -71,7 +72,8 @@ describe('Create category', () => {
         name: 'Child category',
         description: 'The child description',
         uuid,
-        order: 1
+        order: 1,
+        status: 'ACTIVE'
       }
       beforeEach(async () => {
         categoryGateway.feedWith(dents)
