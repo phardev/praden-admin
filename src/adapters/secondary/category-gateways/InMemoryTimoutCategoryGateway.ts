@@ -52,4 +52,20 @@ export class InMemoryTimoutCategoryGateway extends InMemoryCategoryGateway {
       }, this.timeoutInMs)
     })
   }
+
+  override enable(uuid: UUID): Promise<Array<Category>> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(super.enable(uuid))
+      }, this.timeoutInMs)
+    })
+  }
+
+  override disable(uuid: UUID): Promise<Array<Category>> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(super.disable(uuid))
+      }, this.timeoutInMs)
+    })
+  }
 }

@@ -400,7 +400,8 @@ describe('Category form create VM', () => {
           description: 'description',
           miniature: undefined,
           image: undefined,
-          productsAdded: []
+          productsAdded: [],
+          status: 'ACTIVE'
         }
         vm.set('name', expectedDTO.name)
         vm.set('parentUuid', expectedDTO.parentUuid)
@@ -416,7 +417,8 @@ describe('Category form create VM', () => {
           description: '',
           miniature: undefined,
           image: undefined,
-          productsAdded: [chamomilla.uuid]
+          productsAdded: [chamomilla.uuid],
+          status: 'ACTIVE'
         }
         givenExistingProducts(chamomilla)
         vm.addProducts([chamomilla.uuid])
@@ -429,7 +431,8 @@ describe('Category form create VM', () => {
           description: '',
           miniature: undefined,
           image: undefined,
-          productsAdded: [ultraLevure.uuid, chamomilla.uuid]
+          productsAdded: [ultraLevure.uuid, chamomilla.uuid],
+          status: 'ACTIVE'
         }
         givenExistingProducts(ultraLevure, chamomilla)
         vm.addProducts([ultraLevure.uuid, chamomilla.uuid])
@@ -442,7 +445,8 @@ describe('Category form create VM', () => {
           description: '',
           miniature: undefined,
           image: undefined,
-          productsAdded: [dolodent.uuid]
+          productsAdded: [dolodent.uuid],
+          status: 'ACTIVE'
         }
         givenExistingProducts(dolodent)
         vm.addProducts([dolodent.uuid])
@@ -459,7 +463,12 @@ describe('Category form create VM', () => {
           description: baby.description,
           miniature: undefined,
           image: undefined,
-          productsAdded: [ultraLevure.uuid, chamomilla.uuid, anaca3Minceur.uuid]
+          productsAdded: [
+            ultraLevure.uuid,
+            chamomilla.uuid,
+            anaca3Minceur.uuid
+          ],
+          status: 'ACTIVE'
         }
         givenExistingProducts(ultraLevure, chamomilla, anaca3Minceur)
         vm.set('name', baby.name)
@@ -484,7 +493,8 @@ describe('Category form create VM', () => {
           description: '',
           miniature: undefined,
           image: newImage,
-          productsAdded: []
+          productsAdded: [],
+          status: 'ACTIVE'
         }
         await vm.set('image', newImage)
         expect(vm.getDto()).toStrictEqual(expectedDTO)

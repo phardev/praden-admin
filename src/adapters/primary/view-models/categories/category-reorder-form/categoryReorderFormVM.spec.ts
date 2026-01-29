@@ -15,9 +15,10 @@ const createTreeNode = (
   uuid: string,
   name: string,
   miniature: string,
-  children: CategoryTree = []
+  children: CategoryTree = [],
+  status: 'ACTIVE' | 'INACTIVE' = 'ACTIVE'
 ): TreeNode<TreeCategoryNodeVM> => ({
-  data: { uuid, name, miniature },
+  data: { uuid, name, miniature, status },
   children
 })
 

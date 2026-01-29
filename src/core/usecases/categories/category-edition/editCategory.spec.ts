@@ -103,7 +103,8 @@ describe('Category Edition', () => {
             name: dents.name,
             description: dents.description,
             productsAdded: [],
-            productsRemoved: []
+            productsRemoved: [],
+            status: 'ACTIVE'
           })
         ).rejects.toThrow(ParentCategoryDoesNotExistsError)
       })
@@ -116,7 +117,8 @@ describe('Category Edition', () => {
           name: minceur.name,
           description: minceur.description,
           productsAdded: [dolodent.uuid, calmosine.uuid],
-          productsRemoved: []
+          productsRemoved: [],
+          status: minceur.status
         }
         await whenEditCategory(minceur.uuid, dto)
         expectedProducts = [
@@ -193,7 +195,8 @@ describe('Category Edition', () => {
           name: minceur.name,
           description: minceur.description,
           productsRemoved: [anaca3Minceur.uuid],
-          productsAdded: []
+          productsAdded: [],
+          status: minceur.status
         }
         await whenEditCategory(minceur.uuid, dto)
         expectedProducts = [
@@ -266,7 +269,8 @@ describe('Category Edition', () => {
           name: 'NewName',
           description: 'NewDescription',
           productsAdded: [],
-          productsRemoved: []
+          productsRemoved: [],
+          status: 'ACTIVE'
         })
       ).rejects.toThrow(CategoryDoesNotExistsError)
     })

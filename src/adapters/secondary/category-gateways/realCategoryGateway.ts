@@ -70,4 +70,18 @@ export class RealCategoryGateway
     )
     return res.data.items.sort((a: Category, b: Category) => a.order - b.order)
   }
+
+  async enable(uuid: UUID): Promise<Array<Category>> {
+    const res = await axiosWithBearer.post(
+      `${this.baseUrl}/categories/${uuid}/enable`
+    )
+    return res.data.items.sort((a: Category, b: Category) => a.order - b.order)
+  }
+
+  async disable(uuid: UUID): Promise<Array<Category>> {
+    const res = await axiosWithBearer.post(
+      `${this.baseUrl}/categories/${uuid}/disable`
+    )
+    return res.data.items.sort((a: Category, b: Category) => a.order - b.order)
+  }
 }

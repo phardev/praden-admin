@@ -1,7 +1,10 @@
 <template lang="pug">
 .section(v-if="vm")
-  .flex.flex-row-reverse
+  .flex.flex-row-reverse.items-center.gap-4
     ft-button.button-solid.text-xl.px-6(@click="edit") Editer catégorie
+    span.px-3.py-1.rounded-full.text-sm.font-medium(
+      :class="vm.get('status').value === 'ACTIVE' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'"
+    ) {{ vm.get('status').value === 'ACTIVE' ? 'Actif' : 'Inactif' }}
   h1.text-title Voir catégorie
   category-form(
     :vm="vm"

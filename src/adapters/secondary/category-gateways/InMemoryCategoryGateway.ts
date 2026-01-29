@@ -28,7 +28,8 @@ export class InMemoryCategoryGateway implements CategoryGateway {
       uuid: this.uuidGenerator.generate(),
       name: dto.name,
       description: dto.description,
-      order: this.categories.length
+      order: this.categories.length,
+      status: dto.status
     }
     this.categories.push(category)
     return Promise.resolve(category)
@@ -64,6 +65,47 @@ export class InMemoryCategoryGateway implements CategoryGateway {
     }
     this.categories = this.categories.sort((a, b) => a.order - b.order)
     return Promise.resolve(JSON.parse(JSON.stringify(this.categories)))
+  }
+
+  async enable(uuid: UUID): Promise<Array<Category>> {
+    const category = this.categories.find((c) => c.uuid === uuid)
+    if (!category) {
+      throw new CategoryDoesNotExistsError(uuid)
+    }
+    category.status = 'ACTIVE'
+    const descendants = this.getDescendants(uuid)
+    for (const desc of descendants) {
+      desc.status = 'ACTIVE'
+    }
+    return Promise.resolve(JSON.parse(JSON.stringify(this.categories)))
+  }
+
+  async disable(uuid: UUID): Promise<Array<Category>> {
+    const category = this.categories.find((c) => c.uuid === uuid)
+    if (!category) {
+      throw new CategoryDoesNotExistsError(uuid)
+    }
+    category.status = 'INACTIVE'
+    const descendants = this.getDescendants(uuid)
+    for (const desc of descendants) {
+      desc.status = 'INACTIVE'
+    }
+    return Promise.resolve(JSON.parse(JSON.stringify(this.categories)))
+  }
+
+  private getDescendants(uuid: UUID): Array<Category> {
+    const result: Array<Category> = []
+    const traverse = (parentUuid: UUID) => {
+      const children = this.categories.filter(
+        (c) => c.parentUuid === parentUuid
+      )
+      for (const child of children) {
+        result.push(child)
+        traverse(child.uuid)
+      }
+    }
+    traverse(uuid)
+    return result
   }
 
   private categoryExists(uuid: UUID) {

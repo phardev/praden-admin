@@ -152,7 +152,8 @@ export class CategoryFormCreateVM extends CategoryFormVM {
       description: this.fieldsReader.get('description'),
       productsAdded,
       miniature: this.fieldsReader.get('miniature'),
-      image: this.fieldsReader.get('newImage')
+      image: this.fieldsReader.get('newImage'),
+      status: 'ACTIVE'
     }
   }
 

@@ -54,7 +54,8 @@ export const useCategoryStore = defineStore('CategoryStore', {
             parentUuid: undefined,
             miniature: undefined,
             image: undefined,
-            order: 0
+            order: 0,
+            status: 'ACTIVE'
           },
           products: []
         }
