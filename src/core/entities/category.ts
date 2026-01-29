@@ -9,6 +9,7 @@ export interface Category {
   miniature?: string
   image?: string
   order: number
+  status: 'ACTIVE' | 'INACTIVE'
 }
 
 export interface CategoryWithProducts {

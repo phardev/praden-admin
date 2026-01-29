@@ -18,8 +18,16 @@
                 :model-value="isSelected(item.data.uuid)"
                 @click.stop.prevent="selected(item.data.uuid)"
               )
-              img.w-8.h-8(:src="item.data.miniature")
-              span {{ item.data.name }}
+              img.w-8.h-8(
+                :src="item.data.miniature"
+                :class="{ 'grayscale opacity-50': item.data.status === 'INACTIVE' }"
+              )
+              span(:class="{ 'text-gray-400': item.data.status === 'INACTIVE' }") {{ item.data.name }}
+              ft-toggle.ml-2(
+                :model-value="item.data.status === 'ACTIVE'"
+                @click.stop
+                @update:model-value="toggleStatus(item.data.uuid, $event)"
+              )
             div.flex.items-center.justify-center
               icon.icon-md.text-link(
                 name="mdi-eye-outline"
@@ -52,6 +60,7 @@
               @update:open-items="updateOpenItems"
               @selected="selected"
               @clicked.prevent="view"
+              @toggle-status="toggleStatus"
             )
 </template>
 <script setup lang="ts">
@@ -114,6 +123,7 @@ const emit = defineEmits<{
   (e: 'view', uuid: string): void
   (e: 'selected', uuid: string): void
   (e: 'update:open-items', items: Array<UUID>): void
+  (e: 'toggle-status', uuid: string, enabled: boolean): void
 }>()
 
 const view = (uuid: string): void => {
@@ -122,6 +132,10 @@ const view = (uuid: string): void => {
 
 const updateOpenItems = (openItems: Array<UUID>): void => {
   emit('update:open-items', openItems)
+}
+
+const toggleStatus = (uuid: string, enabled: boolean): void => {
+  emit('toggle-status', uuid, enabled)
 }
 
 const selected = async (uuid: string) => {

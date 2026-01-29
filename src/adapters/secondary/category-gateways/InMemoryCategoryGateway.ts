@@ -28,7 +28,8 @@ export class InMemoryCategoryGateway implements CategoryGateway {
       uuid: this.uuidGenerator.generate(),
       name: dto.name,
       description: dto.description,
-      order: this.categories.length
+      order: this.categories.length,
+      status: 'ACTIVE'
     }
     this.categories.push(category)
     return Promise.resolve(category)
@@ -64,6 +65,55 @@ export class InMemoryCategoryGateway implements CategoryGateway {
     }
     this.categories = this.categories.sort((a, b) => a.order - b.order)
     return Promise.resolve(JSON.parse(JSON.stringify(this.categories)))
+  }
+
+  async enable(uuid: UUID): Promise<Array<Category>> {
+    const category = this.categories.find((c) => c.uuid === uuid)
+    if (!category) throw new CategoryDoesNotExistsError(uuid)
+
+    const descendants = this.getDescendants(uuid)
+    const toEnable = [category, ...descendants]
+
+    toEnable.forEach((cat) => {
+      const index = this.categories.findIndex((c) => c.uuid === cat.uuid)
+      if (index >= 0) {
+        this.categories[index] = { ...this.categories[index], status: 'ACTIVE' }
+      }
+    })
+
+    return JSON.parse(
+      JSON.stringify(toEnable.map((c) => ({ ...c, status: 'ACTIVE' })))
+    )
+  }
+
+  async disable(uuid: UUID): Promise<Array<Category>> {
+    const category = this.categories.find((c) => c.uuid === uuid)
+    if (!category) throw new CategoryDoesNotExistsError(uuid)
+
+    const descendants = this.getDescendants(uuid)
+    const toDisable = [category, ...descendants]
+
+    toDisable.forEach((cat) => {
+      const index = this.categories.findIndex((c) => c.uuid === cat.uuid)
+      if (index >= 0) {
+        this.categories[index] = {
+          ...this.categories[index],
+          status: 'INACTIVE'
+        }
+      }
+    })
+
+    return JSON.parse(
+      JSON.stringify(toDisable.map((c) => ({ ...c, status: 'INACTIVE' })))
+    )
+  }
+
+  private getDescendants(uuid: UUID): Array<Category> {
+    const children = this.categories.filter((c) => c.parentUuid === uuid)
+    return children.flatMap((child) => [
+      child,
+      ...this.getDescendants(child.uuid)
+    ])
   }
 
   private categoryExists(uuid: UUID) {

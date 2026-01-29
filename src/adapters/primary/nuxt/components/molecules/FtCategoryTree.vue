@@ -34,6 +34,7 @@ div(v-if="isLoading")
     @selected="selected"
     @view="view"
     @update:open-items="updateOpenItems"
+    @toggle-status="toggleStatus"
   )
 </template>
 <script setup lang="ts">
@@ -105,6 +106,7 @@ const emit = defineEmits<{
   (e: 'view', uuid: string): void
   (e: 'selected', uuid: string): void
   (e: 'update:open-items', items: Array<UUID>): void
+  (e: 'toggle-status', uuid: string, enabled: boolean): void
 }>()
 
 const view = (uuid: string): void => {
@@ -113,6 +115,10 @@ const view = (uuid: string): void => {
 
 const selected = (uuid: string): void => {
   emit('selected', uuid)
+}
+
+const toggleStatus = (uuid: string, enabled: boolean): void => {
+  emit('toggle-status', uuid, enabled)
 }
 </script>
 

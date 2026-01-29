@@ -41,7 +41,16 @@
     "expandAll": "Voir tout",
     "collapseAll": "Cacher tout",
     "active": "Actif",
-    "inactive": "Inactif"
+    "inactive": "Inactif",
+    "status": "Statut"
+  },
+  "categories": {
+    "enabled": "Activé",
+    "disabled": "Désactivé",
+    "enableSuccess": "Catégorie activée avec succès",
+    "disableSuccess": "Catégorie désactivée avec succès",
+    "enableError": "Erreur lors de l'activation de la catégorie",
+    "disableError": "Erreur lors de la désactivation de la catégorie"
   },
   "deliveryPriceRules": {
     "title": "Règles de prix de livraison",
