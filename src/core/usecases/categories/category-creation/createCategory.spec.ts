@@ -1,7 +1,7 @@
 import { InMemoryCategoryGateway } from '@adapters/secondary/category-gateways/InMemoryCategoryGateway'
 import { InMemoryProductGateway } from '@adapters/secondary/product-gateways/InMemoryProductGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { Category } from '@core/entities/category'
+import { Category, CategoryStatus } from '@core/entities/category'
 import { Product } from '@core/entities/product'
 import { ParentCategoryDoesNotExistsError } from '@core/errors/ParentCategoryDoesNotExistsError'
 import { UUID } from '@core/types/types'
@@ -45,7 +45,8 @@ describe('Create category', () => {
       name: 'Created',
       description: 'The description',
       uuid,
-      order: 0
+      order: 0,
+      status: CategoryStatus.Active
     }
     beforeEach(async () => {
       await whenCreateCategory(uuid, categoryDTO)
@@ -71,7 +72,8 @@ describe('Create category', () => {
         name: 'Child category',
         description: 'The child description',
         uuid,
-        order: 1
+        order: 1,
+        status: CategoryStatus.Active
       }
       beforeEach(async () => {
         categoryGateway.feedWith(dents)
@@ -109,7 +111,8 @@ describe('Create category', () => {
         name: 'new-category',
         description: 'The description',
         uuid,
-        order: 0
+        order: 0,
+        status: CategoryStatus.Active
       }
       await whenCreateCategory(uuid, dto)
       expectedProducts = [

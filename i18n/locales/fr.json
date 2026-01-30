@@ -43,6 +43,13 @@
     "active": "Actif",
     "inactive": "Inactif"
   },
+  "categories": {
+    "status": {
+      "label": "Statut",
+      "active": "Activée",
+      "inactive": "Désactivée"
+    }
+  },
   "deliveryPriceRules": {
     "title": "Règles de prix de livraison",
     "create": "Créer une règle",

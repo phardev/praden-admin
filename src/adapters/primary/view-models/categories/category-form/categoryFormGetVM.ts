@@ -8,7 +8,7 @@ import {
   FormInitializer
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
 import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import type { Category } from '@core/entities/category'
+import type { Category, CategoryStatus } from '@core/entities/category'
 import { useCategoryStore } from '@store/categoryStore'
 import { useFormStore } from '@store/formStore'
 
@@ -62,6 +62,10 @@ export class CategoryFormFieldsReader extends FormFieldsReader {
       }
     })
   }
+
+  getCurrentCategoryStatus(): CategoryStatus | undefined {
+    return this.categoryStore.current?.category?.status
+  }
 }
 
 export class CategoryFormGetVM extends CategoryFormVM {
@@ -105,6 +109,13 @@ export class CategoryFormGetVM extends CategoryFormVM {
 
   getCanValidate(): boolean {
     return false
+  }
+
+  getStatus(): Field<CategoryStatus | undefined> {
+    return {
+      value: this.fieldsReader.getCurrentCategoryStatus(),
+      canEdit: false
+    }
   }
 }
 

@@ -40,6 +40,16 @@ div(v-if="!currentVM || currentVM.isLoading()")
     .flex.flex-row-reverse.mt-4
       .h-12.w-32.bg-gray-200.rounded.animate-pulse
 form(v-else)
+  UFormGroup.pb-4(
+    v-if="currentVM.getStatus"
+    :label="$t('categories.status.label')"
+    name="status"
+  )
+    UBadge(
+      :color="currentVM.getStatus().value === 'ACTIVE' ? 'success' : 'gray'"
+      variant="subtle"
+      size="lg"
+    ) {{ currentVM.getStatus().value === 'ACTIVE' ? $t('categories.status.active') : $t('categories.status.inactive') }}
   UFormGroup.pb-4(label="Nom" name="name")
     ft-text-field(
       :model-value="currentVM.get('name').value"
