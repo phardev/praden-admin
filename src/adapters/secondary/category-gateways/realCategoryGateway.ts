@@ -75,13 +75,13 @@ export class RealCategoryGateway
     const response = await axiosWithBearer.post(
       `${this.baseUrl}/categories/${uuid}/enable`
     )
-    return response.data.categories
+    return response.data.categories.items
   }
 
   async disable(uuid: UUID): Promise<Array<Category>> {
     const response = await axiosWithBearer.post(
       `${this.baseUrl}/categories/${uuid}/disable`
     )
-    return response.data.categories
+    return response.data.categories.items
   }
 }
