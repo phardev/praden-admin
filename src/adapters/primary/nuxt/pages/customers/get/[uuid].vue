@@ -6,6 +6,8 @@
   customer-form(
     :vm="vm"
   )
+  .mt-8
+    customer-loyalty-card(:vm="loyaltyVM")
   h2.text-subtitle.mt-4 {{ $t('customers.ordersHistory') }}
   orders-list(
     :vm="ordersVM"
@@ -18,18 +20,30 @@
 
 <script lang="ts" setup>
 import { customerFormGetVM } from '@adapters/primary/view-models/customers/customer-form/customerFormGetVM'
+import type { CustomerLoyaltyVM } from '@adapters/primary/view-models/loyalty/customer-loyalty/customerLoyaltyVM'
+import { customerLoyaltyVM } from '@adapters/primary/view-models/loyalty/customer-loyalty/customerLoyaltyVM'
 import { getOrdersVM } from '@adapters/primary/view-models/orders/get-orders/getOrdersVM'
 import { getCustomer } from '@core/usecases/customers/customer-get/getCustomer'
 import { listCustomers } from '@core/usecases/customers/customer-listing/listCustomer'
+import { getCustomerLoyalty } from '@core/usecases/loyalty/get-customer-loyalty/getCustomerLoyalty'
 import { searchOrders } from '@core/usecases/order/orders-searching/searchOrders'
 import { getCustomerTickets } from '@core/usecases/support/getCustomerTickets'
 import { useCustomerGateway } from '../../../../../../../gateways/customerGateway'
+import { useLoyaltyGateway } from '../../../../../../../gateways/loyaltyGateway'
 import { useSearchGateway } from '../../../../../../../gateways/searchGateway'
 import { useTicketGateway } from '../../../../../../../gateways/ticketGateway'
 
 definePageMeta({ layout: 'main' })
 
 const vm = ref()
+const loyaltyVM = ref<CustomerLoyaltyVM>({
+  balance: 0,
+  balanceFormatted: '0 points',
+  totalEarned: 0,
+  totalEarnedFormatted: '0 points',
+  transactions: [],
+  hasHistory: false
+})
 const route = useRoute()
 const customerUuid = route.params.uuid as string
 const router = useRouter()
@@ -43,7 +57,10 @@ onMounted(async () => {
   await getCustomer(customerUuid, customerGateway)
   const ticketGateway = useTicketGateway()
   await getCustomerTickets(customerUuid, ticketGateway)
+  const loyaltyGateway = useLoyaltyGateway()
+  await getCustomerLoyalty(customerUuid, loyaltyGateway)
   vm.value = customerFormGetVM(routeName)
+  loyaltyVM.value = customerLoyaltyVM(customerUuid)
 })
 
 const ordersVM = computed(() => {

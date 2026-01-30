@@ -438,6 +438,23 @@
   "systemResources": {
     "noResources": "Aucune ressource système disponible"
   },
+  "loyalty": {
+    "configTitle": "Configuration des points de fidélité",
+    "eurosPerPoint": "Euros par point",
+    "eurosPerPointHelp": "Nombre d'euros dépensés pour gagner 1 point",
+    "saveConfig": "Enregistrer",
+    "configSaved": "Configuration enregistrée",
+    "customerPoints": "Points de fidélité",
+    "currentBalance": "Solde actuel",
+    "totalEarned": "Total gagné",
+    "history": "Historique",
+    "points": "points",
+    "earnedOn": "Gagné le",
+    "expiresOn": "Expire le",
+    "expired": "Expiré",
+    "orderRef": "Commande",
+    "noHistory": "Aucun historique de points"
+  },
   "shopManagement": {
     "title": "Gestion de la boutique",
     "overview": {
@@ -445,7 +462,8 @@
       "announcementBarCard": "Barre d'annonce",
       "categoryOrderCard": "Ordre des catégories",
       "pharmacistSelectionCard": "Sélection du pharmacien",
-      "emergencyPharmaciesCard": "Pharmacies de garde"
+      "emergencyPharmaciesCard": "Pharmacies de garde",
+      "loyaltyConfigCard": "Points de fidélité"
     },
     "announcementBar": {
       "title": "Barres d'annonce",
@@ -530,6 +548,10 @@
       "deleteSuccess": "Pharmacie de garde supprimée",
       "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette pharmacie de garde ?",
       "groupedByDate": "Pharmacies par date"
+    },
+    "loyaltyConfig": {
+      "title": "Configuration des points de fidélité",
+      "description": "Configurez le programme de fidélité de votre boutique"
     }
   }
 }
