@@ -7,7 +7,7 @@
       )
         .list-item(@click="toggle(item)")
           .flex.justify-between.items-center.p-2.cursor-pointer.bg-hover(
-            :class="{ 'parent-selected bg-contrast': hasSelectedChild(item) }"
+            :class="{ 'parent-selected bg-contrast': hasSelectedChild(item), 'grayscale opacity-60': item.data.status === 'INACTIVE' }"
           )
             div.flex.items-center.justify-center.space-x-4
               ft-checkbox(
@@ -20,14 +20,17 @@
               )
               img.w-8.h-8(:src="item.data.miniature")
               span {{ item.data.name }}
-            div.flex.items-center.justify-center
+            div.flex.items-center.justify-center.space-x-4
               icon.icon-md.text-link(
                 name="mdi-eye-outline"
-                @click.prevent="view(item.data.uuid)"
+                @click.stop.prevent="view(item.data.uuid)"
               ) Voir
+              ft-toggle(
+                :model-value="item.data.status === 'ACTIVE'"
+                @click.stop.prevent="toggleStatus(item.data.uuid, item.data.status)"
+              )
               span(
                 v-if="item.children.length"
-                class="ml-4"
               )
                 icon.icon-md(
                   v-if="isOpen(item.data.uuid)"
@@ -52,10 +55,12 @@
               @update:open-items="updateOpenItems"
               @selected="selected"
               @clicked.prevent="view"
+              @toggle-status="toggleStatus"
             )
 </template>
 <script setup lang="ts">
 import FtCheckbox from '@adapters/primary/nuxt/components/atoms/FtCheckbox.vue'
+import FtToggle from '@adapters/primary/nuxt/components/atoms/FtToggle.vue'
 import type {
   TreeCategoryNodeVM,
   TreeNode
@@ -114,10 +119,17 @@ const emit = defineEmits<{
   (e: 'view', uuid: string): void
   (e: 'selected', uuid: string): void
   (e: 'update:open-items', items: Array<UUID>): void
+  (e: 'toggle-status', uuid: string, currentStatus: string): void
 }>()
 
 const view = (uuid: string): void => {
   emit('view', uuid)
+}
+
+const toggleStatus = (uuid: string, currentStatus: string): void => {
+  if (!props.disabled) {
+    emit('toggle-status', uuid, currentStatus)
+  }
 }
 
 const updateOpenItems = (openItems: Array<UUID>): void => {
