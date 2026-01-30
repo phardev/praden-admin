@@ -89,7 +89,23 @@
     "viewTitle": "Voir client",
     "editButton": "Editer client",
     "ordersHistory": "Historique des commandes",
-    "supportTickets": "Tickets de support"
+    "supportTickets": "Tickets de support",
+    "loyaltyPoints": "Points de fidélité",
+    "loyaltyBalance": "Solde actuel",
+    "loyaltyHistory": "Historique des points",
+    "loyaltyDate": "Date",
+    "loyaltyType": "Type",
+    "loyaltyPointsColumn": "Points",
+    "loyaltyOrder": "Commande",
+    "loyaltyExpires": "Expire le",
+    "loyaltyEarned": "Gagné",
+    "loyaltyRedeemed": "Utilisé",
+    "loyaltyExpired": "Expiré",
+    "loyaltyAdjusted": "Ajusté",
+    "loyaltyUnknown": "Inconnu",
+    "pointsUnit": "points",
+    "viewOrder": "Voir",
+    "noLoyaltyHistory": "Aucun historique de points"
   },
   "orders": {
     "supportTickets": "Tickets de support"

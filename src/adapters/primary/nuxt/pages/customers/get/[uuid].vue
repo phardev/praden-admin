@@ -6,7 +6,16 @@
   customer-form(
     :vm="vm"
   )
-  h2.text-subtitle.mt-4 {{ $t('customers.ordersHistory') }}
+  h2.text-subtitle.mt-8 {{ $t('customers.loyaltyPoints') }}
+  .mb-4
+    UCard
+      template(#header)
+        .flex.items-center.justify-between
+          span.text-lg.font-medium {{ $t('customers.loyaltyBalance') }}
+          span.text-2xl.font-bold.text-primary {{ loyaltyVM.balance }} {{ $t('customers.pointsUnit') }}
+  h3.text-lg.font-medium.mb-4 {{ $t('customers.loyaltyHistory') }}
+  customer-loyalty-history(:vm="loyaltyVM")
+  h2.text-subtitle.mt-8 {{ $t('customers.ordersHistory') }}
   orders-list(
     :vm="ordersVM"
     :search-key="routeName"
@@ -18,6 +27,7 @@
 
 <script lang="ts" setup>
 import { customerFormGetVM } from '@adapters/primary/view-models/customers/customer-form/customerFormGetVM'
+import { customerLoyaltyVM } from '@adapters/primary/view-models/customers/customer-loyalty/customerLoyaltyVM'
 import { getOrdersVM } from '@adapters/primary/view-models/orders/get-orders/getOrdersVM'
 import { getCustomer } from '@core/usecases/customers/customer-get/getCustomer'
 import { listCustomers } from '@core/usecases/customers/customer-listing/listCustomer'
@@ -45,6 +55,8 @@ onMounted(async () => {
   await getCustomerTickets(customerUuid, ticketGateway)
   vm.value = customerFormGetVM(routeName)
 })
+
+const loyaltyVM = computed(() => customerLoyaltyVM())
 
 const ordersVM = computed(() => {
   return getOrdersVM(routeName)

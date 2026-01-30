@@ -27,7 +27,8 @@ describe('Create customer', () => {
       email: 'jeanbon@example.com',
       phone: '0987654321',
       ordersCount: 0,
-      ordersTotal: 0
+      ordersTotal: 0,
+      loyaltyPointsBalance: 0
     }
     const expectedCustomer: Customer = {
       ...customerDTO,
@@ -52,7 +53,8 @@ describe('Create customer', () => {
       email: 'jeannedarc@another-example.fr',
       phone: '0123456789',
       ordersCount: 0,
-      ordersTotal: 0
+      ordersTotal: 0,
+      loyaltyPointsBalance: 0
     }
     const expectedCustomer: Customer = {
       ...customerDTO,

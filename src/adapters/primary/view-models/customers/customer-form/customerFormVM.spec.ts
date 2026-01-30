@@ -175,7 +175,8 @@ describe('Customer form', () => {
             email: 'jeanbon@email.com',
             phone: '0987654321',
             ordersCount: 0,
-            ordersTotal: 0
+            ordersTotal: 0,
+            loyaltyPointsBalance: 0
           }
           vm.set('firstname', expectedDTO.firstname)
           vm.set('lastname', expectedDTO.lastname)
@@ -228,7 +229,8 @@ describe('Customer form', () => {
             email: 'jeanbon@email.com',
             phone: '0987654321',
             ordersCount: 0,
-            ordersTotal: 0
+            ordersTotal: 0,
+            loyaltyPointsBalance: 0
           }
           vm.set('firstname', expectedDTO.firstname)
           vm.set('lastname', expectedDTO.lastname)

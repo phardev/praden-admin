@@ -1,5 +1,6 @@
-import { Mail, UUID } from '@core/types/types'
-import { NewsletterSubscription } from './newsletterSubscription'
+import type { Mail, UUID } from '@core/types/types'
+import type { LoyaltyTransaction } from './loyaltyTransaction'
+import type { NewsletterSubscription } from './newsletterSubscription'
 
 export interface Customer {
   uuid: UUID
@@ -11,4 +12,6 @@ export interface Customer {
   ordersTotal: number
   lastOrderDate?: Date | string
   newsletterSubscription?: NewsletterSubscription
+  loyaltyPointsBalance: number
+  loyaltyPointsHistory?: Array<LoyaltyTransaction>
 }

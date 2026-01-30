@@ -68,7 +68,8 @@ export class CustomerFormCreateVM {
       email: this.fieldsReader.get('email'),
       phone: this.fieldsReader.get('phone'),
       ordersCount: 0,
-      ordersTotal: 0
+      ordersTotal: 0,
+      loyaltyPointsBalance: 0
     }
   }
 
