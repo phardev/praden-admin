@@ -89,7 +89,24 @@
     "viewTitle": "Voir client",
     "editButton": "Editer client",
     "ordersHistory": "Historique des commandes",
-    "supportTickets": "Tickets de support"
+    "supportTickets": "Tickets de support",
+    "loyaltyPoints": "Points de fidélité",
+    "loyaltyBalance": "points",
+    "loyaltyExpiringPoints": "points expirant bientôt",
+    "loyaltyNoTransactions": "Aucune transaction de fidélité",
+    "loyaltyCreditPoints": "Créditer des points",
+    "loyaltyCreditPointsAmount": "Nombre de points",
+    "loyaltyCreditPointsPlaceholder": "Ex: 50",
+    "loyaltyCreditReason": "Raison",
+    "loyaltyCreditReasonPlaceholder": "Ex: Geste commercial",
+    "loyaltyCreditSubmit": "Créditer",
+    "loyaltyOrderRef": "Commande",
+    "loyaltyTransactionTypes": {
+      "EARNING": "Achat",
+      "MANUAL_CREDIT": "Crédit manuel",
+      "EXPIRATION": "Expiration",
+      "REDEMPTION": "Utilisation"
+    }
   },
   "orders": {
     "supportTickets": "Tickets de support"

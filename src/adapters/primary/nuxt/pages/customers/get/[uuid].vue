@@ -14,6 +14,15 @@
   )
   h2.text-subtitle.mt-8 {{ $t('customers.supportTickets') }}
   customer-tickets-list(:customer-uuid="customerUuid")
+  h2.text-subtitle.mt-8 {{ $t('customers.loyaltyPoints') }}
+  loyalty-points-list
+  credit-points-modal(
+    v-model="showCreditModal"
+    :customer-uuid="customerUuid"
+    @submitted="onCreditSubmitted"
+  )
+  .mt-4
+    ft-button(@click="openCreditModal") {{ $t('customers.loyaltyCreditPoints') }}
 </template>
 
 <script lang="ts" setup>
@@ -21,9 +30,12 @@ import { customerFormGetVM } from '@adapters/primary/view-models/customers/custo
 import { getOrdersVM } from '@adapters/primary/view-models/orders/get-orders/getOrdersVM'
 import { getCustomer } from '@core/usecases/customers/customer-get/getCustomer'
 import { listCustomers } from '@core/usecases/customers/customer-listing/listCustomer'
+import { creditLoyaltyPoints } from '@core/usecases/loyalty/credit-loyalty-points/creditLoyaltyPoints'
+import { getLoyaltyTransactions } from '@core/usecases/loyalty/get-loyalty-transactions/getLoyaltyTransactions'
 import { searchOrders } from '@core/usecases/order/orders-searching/searchOrders'
 import { getCustomerTickets } from '@core/usecases/support/getCustomerTickets'
 import { useCustomerGateway } from '../../../../../../../gateways/customerGateway'
+import { useLoyaltyGateway } from '../../../../../../../gateways/loyaltyGateway'
 import { useSearchGateway } from '../../../../../../../gateways/searchGateway'
 import { useTicketGateway } from '../../../../../../../gateways/ticketGateway'
 
@@ -34,6 +46,7 @@ const route = useRoute()
 const customerUuid = route.params.uuid as string
 const router = useRouter()
 const routeName = router.currentRoute.value.name as string
+const showCreditModal = ref(false)
 
 onMounted(async () => {
   const searchGateway = useSearchGateway()
@@ -43,6 +56,8 @@ onMounted(async () => {
   await getCustomer(customerUuid, customerGateway)
   const ticketGateway = useTicketGateway()
   await getCustomerTickets(customerUuid, ticketGateway)
+  const loyaltyGateway = useLoyaltyGateway()
+  await getLoyaltyTransactions(customerUuid, loyaltyGateway)
   vm.value = customerFormGetVM(routeName)
 })
 
@@ -52,5 +67,15 @@ const ordersVM = computed(() => {
 
 const edit = () => {
   router.push(`/customers/edit/${customerUuid}`)
+}
+
+const openCreditModal = () => {
+  showCreditModal.value = true
+}
+
+const onCreditSubmitted = async (points: number, reason: string) => {
+  const loyaltyGateway = useLoyaltyGateway()
+  await creditLoyaltyPoints(customerUuid, points, reason, loyaltyGateway)
+  showCreditModal.value = false
 }
 </script>
