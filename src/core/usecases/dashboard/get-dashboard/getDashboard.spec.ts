@@ -1,5 +1,5 @@
-import { Dashboard } from '@core/entities/dashboard'
-import { DashboardParams } from '@core/gateways/dashboardGateway'
+import type { Dashboard } from '@core/entities/dashboard'
+import type { DashboardParams } from '@core/gateways/dashboardGateway'
 import { InMemoryDashboardGateway } from '@core/usecases/dashboard/get-dashboard/inMemoryDashboardGateway'
 import { useStatsStore } from '@store/statsStore'
 import { createPinia, setActivePinia } from 'pinia'
@@ -180,7 +180,20 @@ describe('GetDashboard', () => {
           count: 200,
           parentUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608'
         }
-      ]
+      ],
+      userStatistics: {
+        totalCustomers: 1250,
+        customersWithOrders: 820,
+        newsletterSubscribers: 680,
+        monthlyNewsletterSubscriptions: [
+          { month: '2026-01', count: 78 },
+          { month: '2026-02', count: 86 }
+        ],
+        newsletterAdoptionRate: {
+          subscribers: 680,
+          nonSubscribers: 570
+        }
+      }
     }
     dashboardGateway.feedWith(mockData)
   })
@@ -218,7 +231,8 @@ describe('GetDashboard', () => {
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
       ordersByLaboratory: mockData.ordersByLaboratory,
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
-      productStockStats: mockData.productStockStats
+      productStockStats: mockData.productStockStats,
+      userStatistics: mockData.userStatistics
     })
   })
 
@@ -243,7 +257,8 @@ describe('GetDashboard', () => {
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
       ordersByLaboratory: mockData.ordersByLaboratory,
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
-      productStockStats: mockData.productStockStats
+      productStockStats: mockData.productStockStats,
+      userStatistics: mockData.userStatistics
     })
   })
 
@@ -261,7 +276,8 @@ describe('GetDashboard', () => {
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
       ordersByLaboratory: mockData.ordersByLaboratory,
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
-      productStockStats: mockData.productStockStats
+      productStockStats: mockData.productStockStats,
+      userStatistics: mockData.userStatistics
     })
   })
 
@@ -279,7 +295,8 @@ describe('GetDashboard', () => {
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
       ordersByLaboratory: mockData.ordersByLaboratory,
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
-      productStockStats: mockData.productStockStats
+      productStockStats: mockData.productStockStats,
+      userStatistics: mockData.userStatistics
     })
   })
 

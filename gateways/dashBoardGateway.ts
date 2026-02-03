@@ -146,6 +146,29 @@ gateway.feedWith({
   productStockStats: {
     inStockCount: 450,
     outOfStockCount: 50
+  },
+  userStatistics: {
+    totalCustomers: 1250,
+    customersWithOrders: 820,
+    newsletterSubscribers: 680,
+    monthlyNewsletterSubscriptions: [
+      { month: '2025-03', count: 45 },
+      { month: '2025-04', count: 52 },
+      { month: '2025-05', count: 38 },
+      { month: '2025-06', count: 61 },
+      { month: '2025-07', count: 55 },
+      { month: '2025-08', count: 48 },
+      { month: '2025-09', count: 72 },
+      { month: '2025-10', count: 68 },
+      { month: '2025-11', count: 85 },
+      { month: '2025-12', count: 92 },
+      { month: '2026-01', count: 78 },
+      { month: '2026-02', count: 86 }
+    ],
+    newsletterAdoptionRate: {
+      subscribers: 680,
+      nonSubscribers: 570
+    }
   }
 })
 

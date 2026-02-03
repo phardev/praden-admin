@@ -133,6 +133,16 @@
       "laboratory": "Laboratoire",
       "orderCount": "Nombre de boites vendues",
       "downloadCsv": "Télécharger CSV"
+    },
+    "userStatistics": {
+      "title": "Statistiques Utilisateurs",
+      "totalCustomers": "Clients inscrits",
+      "customersWithOrders": "Clients avec commande",
+      "newsletterSubscribers": "Abonnés newsletter",
+      "monthlyTrend": "Tendance mensuelle des inscriptions newsletter",
+      "adoptionRate": "Taux d'adoption newsletter",
+      "subscribers": "Abonnés",
+      "nonSubscribers": "Non-abonnés"
     }
   },
   "preparations": {
