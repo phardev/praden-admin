@@ -5,7 +5,8 @@ import type {
   ProductByCategory,
   ProductStockStats,
   TopProduct,
-  TotalSales
+  TotalSales,
+  UserStatistics
 } from '@core/entities/dashboard'
 import { useStatsStore } from '@store/statsStore'
 
@@ -51,6 +52,7 @@ export interface DashboardVM {
   ordersByLaboratory: OrderByLaboratory[]
   productQuantitiesByCategory: ProductByCategory[]
   productStockStats: ProductStockStats
+  userStatistics: UserStatistics
 }
 
 export const getDashboardVM = (): DashboardVM => {
@@ -81,6 +83,16 @@ export const getDashboardVM = (): DashboardVM => {
       productStockStats: {
         inStockCount: 0,
         outOfStockCount: 0
+      },
+      userStatistics: {
+        totalCustomers: 0,
+        customersWithOrders: 0,
+        newsletterSubscribers: 0,
+        monthlyNewsletterSubscriptions: [],
+        newsletterAdoptionRate: {
+          subscribers: 0,
+          nonSubscribers: 0
+        }
       }
     }
   }
@@ -116,6 +128,7 @@ export const getDashboardVM = (): DashboardVM => {
     ordersByDeliveryMethod: dashboard.ordersByDeliveryMethod,
     ordersByLaboratory: dashboard.ordersByLaboratory,
     productQuantitiesByCategory: dashboard.productQuantitiesByCategory,
-    productStockStats: dashboard.productStockStats
+    productStockStats: dashboard.productStockStats,
+    userStatistics: dashboard.userStatistics
   }
 }

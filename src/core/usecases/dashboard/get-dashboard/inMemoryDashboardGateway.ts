@@ -1,5 +1,5 @@
-import { Dashboard } from '@core/entities/dashboard'
-import {
+import type { Dashboard } from '@core/entities/dashboard'
+import type {
   DashboardGateway,
   DashboardParams
 } from '@core/gateways/dashboardGateway'
@@ -33,6 +33,16 @@ export class InMemoryDashboardGateway implements DashboardGateway {
       productStockStats: {
         inStockCount: 0,
         outOfStockCount: 0
+      },
+      userStatistics: {
+        totalCustomers: 0,
+        customersWithOrders: 0,
+        newsletterSubscribers: 0,
+        monthlyNewsletterSubscriptions: [],
+        newsletterAdoptionRate: {
+          subscribers: 0,
+          nonSubscribers: 0
+        }
       }
     }
   }
@@ -97,7 +107,8 @@ export class InMemoryDashboardGateway implements DashboardGateway {
       ordersByDeliveryMethod: this.mockData.ordersByDeliveryMethod,
       ordersByLaboratory: this.mockData.ordersByLaboratory,
       productQuantitiesByCategory: this.mockData.productQuantitiesByCategory,
-      productStockStats: this.mockData.productStockStats
+      productStockStats: this.mockData.productStockStats,
+      userStatistics: this.mockData.userStatistics
     }
   }
 

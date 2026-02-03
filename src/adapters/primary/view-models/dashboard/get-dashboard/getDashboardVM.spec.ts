@@ -111,6 +111,19 @@ describe('getDashboardVM', () => {
       productStockStats: {
         inStockCount: 750,
         outOfStockCount: 250
+      },
+      userStatistics: {
+        totalCustomers: 1250,
+        customersWithOrders: 820,
+        newsletterSubscribers: 680,
+        monthlyNewsletterSubscriptions: [
+          { month: '2026-01', count: 78 },
+          { month: '2026-02', count: 86 }
+        ],
+        newsletterAdoptionRate: {
+          subscribers: 680,
+          nonSubscribers: 570
+        }
       }
     }
 
@@ -151,7 +164,8 @@ describe('getDashboardVM', () => {
       ordersByDeliveryMethod: mockDashboard.ordersByDeliveryMethod,
       ordersByLaboratory: mockDashboard.ordersByLaboratory,
       productQuantitiesByCategory: mockDashboard.productQuantitiesByCategory,
-      productStockStats: mockDashboard.productStockStats
+      productStockStats: mockDashboard.productStockStats,
+      userStatistics: mockDashboard.userStatistics
     })
   })
 
@@ -182,6 +196,16 @@ describe('getDashboardVM', () => {
       productStockStats: {
         inStockCount: 0,
         outOfStockCount: 0
+      },
+      userStatistics: {
+        totalCustomers: 0,
+        customersWithOrders: 0,
+        newsletterSubscribers: 0,
+        monthlyNewsletterSubscriptions: [],
+        newsletterAdoptionRate: {
+          subscribers: 0,
+          nonSubscribers: 0
+        }
       }
     })
   })

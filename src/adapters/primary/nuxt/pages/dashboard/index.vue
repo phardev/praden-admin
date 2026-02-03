@@ -195,6 +195,43 @@ div(v-if="permissions.canAccessDashboard")
           .h-80
             MonthlyCanceledTurnoverChart(:data="dashboard.previousYearMonthlySales" :next-year-data="dashboard.monthlySales")
 
+    h3.text-lg.font-bold.text-primary-700.mb-4.mt-8(v-if="!areProductFiltersApplied") {{ $t('dashboard.userStatistics.title') }}
+    .grid.grid-cols-1.gap-4.mb-8(v-if="!areProductFiltersApplied" class="md:grid-cols-3")
+      UCard
+        template(#header)
+          .text-center
+            h3.text-lg.font-medium {{ $t('dashboard.userStatistics.totalCustomers') }}
+        template(#default)
+          .text-center
+            p.text-2xl.font-bold {{ dashboard.userStatistics.totalCustomers.toLocaleString() }}
+      UCard
+        template(#header)
+          .text-center
+            h3.text-lg.font-medium {{ $t('dashboard.userStatistics.customersWithOrders') }}
+        template(#default)
+          .text-center
+            p.text-2xl.font-bold {{ dashboard.userStatistics.customersWithOrders.toLocaleString() }}
+      UCard
+        template(#header)
+          .text-center
+            h3.text-lg.font-medium {{ $t('dashboard.userStatistics.newsletterSubscribers') }}
+        template(#default)
+          .text-center
+            p.text-2xl.font-bold {{ dashboard.userStatistics.newsletterSubscribers.toLocaleString() }}
+    .grid.grid-cols-1.gap-6.mb-8(v-if="!areProductFiltersApplied" class="lg:grid-cols-2")
+      UCard
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.userStatistics.monthlyTrend') }}
+        template(#default)
+          .h-80
+            MonthlyNewsletterChart(:data="dashboard.userStatistics.monthlyNewsletterSubscriptions")
+      UCard
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.userStatistics.adoptionRate') }}
+        template(#default)
+          .h-80
+            NewsletterAdoptionPieChart(:data="dashboard.userStatistics.newsletterAdoptionRate")
+
     UCard.mt-16
       template(#header)
         .flex.justify-between.items-center
@@ -245,6 +282,8 @@ import { getPermissionsVM } from '../../../view-models/permissions/getPermission
 import CategoriesPieChart from '../../components/molecules/CategoriesPieChart.vue'
 import DeliveryMethodsPieChart from '../../components/molecules/DeliveryMethodsPieChart.vue'
 import LaboratoriesPieChart from '../../components/molecules/LaboratoriesPieChart.vue'
+import MonthlyNewsletterChart from '../../components/molecules/MonthlyNewsletterChart.vue'
+import NewsletterAdoptionPieChart from '../../components/molecules/NewsletterAdoptionPieChart.vue'
 import ProductStockPieChart from '../../components/molecules/ProductStockPieChart.vue'
 import { useDashboardData } from '../../composables/useDashboardData'
 
