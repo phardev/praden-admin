@@ -448,6 +448,70 @@
   "systemResources": {
     "noResources": "Aucune ressource système disponible"
   },
+  "loyalty": {
+    "title": "Programme de fidélité",
+    "config": {
+      "title": "Configuration",
+      "pointsRatio": "Points par euro dépensé",
+      "pointsRatioHelp": "Exemple: 10 = 1 point pour 10€ dépensés",
+      "save": "Enregistrer",
+      "updateSuccess": "Configuration mise à jour avec succès",
+      "updateError": "Erreur lors de la mise à jour de la configuration"
+    },
+    "multipliers": {
+      "title": "Multiplicateurs",
+      "createButton": "Créer un multiplicateur",
+      "name": "Nom",
+      "multiplierValue": "Valeur du multiplicateur",
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "status": "Statut",
+      "active": "Actif",
+      "inactive": "Inactif",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce multiplicateur ?",
+      "noMultipliers": "Aucun multiplicateur configuré",
+      "createSuccess": "Multiplicateur créé avec succès",
+      "updateSuccess": "Multiplicateur mis à jour avec succès",
+      "deleteSuccess": "Multiplicateur supprimé avec succès",
+      "form": {
+        "title": {
+          "create": "Créer un multiplicateur",
+          "edit": "Modifier le multiplicateur"
+        },
+        "namePlaceholder": "Ex: Double points été",
+        "multiplierValueHelp": "Ex: 2 = points doublés"
+      }
+    },
+    "customerPoints": {
+      "title": "Points de fidélité",
+      "balance": "Solde actuel",
+      "points": "points",
+      "history": "Historique",
+      "earned": "Gagné",
+      "manualCredit": "Crédit manuel",
+      "expired": "Expiré",
+      "order": "Commande",
+      "reason": "Raison",
+      "creditedBy": "Crédité par",
+      "expiresAt": "Expire le",
+      "createdAt": "Date",
+      "type": "Type",
+      "noTransactions": "Aucune transaction",
+      "manualCreditButton": "Créditer des points",
+      "creditForm": {
+        "title": "Créditer des points",
+        "points": "Nombre de points",
+        "reason": "Raison",
+        "reasonPlaceholder": "Ex: Geste commercial",
+        "submit": "Créditer",
+        "cancel": "Annuler"
+      },
+      "creditSuccess": "Points crédités avec succès",
+      "creditError": "Erreur lors du crédit des points"
+    }
+  },
   "shopManagement": {
     "title": "Gestion de la boutique",
     "overview": {
