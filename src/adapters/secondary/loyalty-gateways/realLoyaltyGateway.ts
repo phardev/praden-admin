@@ -71,11 +71,10 @@ export class RealLoyaltyGateway extends RealGateway implements LoyaltyGateway {
     customerUuid: UUID,
     points: number,
     description?: string
-  ): Promise<PointsTransaction> {
-    const res = await axiosWithBearer.post(
+  ): Promise<void> {
+    await axiosWithBearer.post(
       `${this.baseUrl}/customers/${customerUuid}/credit-points`,
       { points, description }
     )
-    return res.data
   }
 }

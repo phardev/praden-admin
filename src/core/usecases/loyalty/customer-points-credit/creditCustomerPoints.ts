@@ -8,11 +8,8 @@ export const creditCustomerPoints = async (
   loyaltyGateway: LoyaltyGateway,
   description?: string
 ): Promise<void> => {
-  const transaction = await loyaltyGateway.creditPoints(
-    customerUuid,
-    points,
-    description
-  )
+  await loyaltyGateway.creditPoints(customerUuid, points, description)
+  const loyalty = await loyaltyGateway.getCustomerLoyalty(customerUuid)
   const loyaltyStore = useLoyaltyStore()
-  loyaltyStore.addTransaction(transaction)
+  loyaltyStore.setCustomerLoyalty(loyalty)
 }

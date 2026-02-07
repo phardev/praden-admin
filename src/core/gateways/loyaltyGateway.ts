@@ -35,5 +35,5 @@ export interface LoyaltyGateway {
     customerUuid: UUID,
     points: number,
     description?: string
-  ): Promise<PointsTransaction>
+  ): Promise<void>
 }

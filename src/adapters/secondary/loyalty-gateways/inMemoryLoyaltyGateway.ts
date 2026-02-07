@@ -92,7 +92,7 @@ export class InMemoryLoyaltyGateway implements LoyaltyGateway {
     customerUuid: UUID,
     points: number,
     description?: string
-  ): Promise<PointsTransaction> {
+  ): Promise<void> {
     const transaction: PointsTransaction = {
       uuid: this.uuidGenerator.generate(),
       customerUuid,
@@ -102,7 +102,7 @@ export class InMemoryLoyaltyGateway implements LoyaltyGateway {
       createdAt: new Date().toISOString()
     }
     this.transactions.push(transaction)
-    return Promise.resolve(JSON.parse(JSON.stringify(transaction)))
+    return Promise.resolve()
   }
 
   feedWithConfig(config: LoyaltyConfig): void {

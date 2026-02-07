@@ -27,20 +27,17 @@ describe('Credit customer points', () => {
     }
 
     beforeEach(() => {
-      loyaltyStore.setCustomerLoyalty({
-        pointsBalance: 50,
-        transactions: [existingTransaction]
-      })
+      loyaltyGateway.feedWithTransactions(existingTransaction)
     })
 
     describe('For crediting points with description', () => {
-      it('should add the transaction to the store', async () => {
+      it('should refresh the store with all transactions from the gateway', async () => {
         uuidGenerator.setNext('tx-new')
         await whenCreditCustomerPoints('customer-1', 25, 'Bonus points')
         expect(loyaltyStore.customerLoyalty!.transactions).toHaveLength(2)
       })
 
-      it('should update the balance in the store', async () => {
+      it('should refresh the store with the correct balance', async () => {
         uuidGenerator.setNext('tx-new')
         await whenCreditCustomerPoints('customer-1', 25, 'Bonus points')
         expect(loyaltyStore.customerLoyalty!.pointsBalance).toBe(75)
@@ -50,18 +47,18 @@ describe('Credit customer points', () => {
         uuidGenerator.setNext('tx-new')
         await whenCreditCustomerPoints('customer-1', 25, 'Bonus points')
         const transactions = loyaltyGateway.getTransactions()
-        expect(transactions).toHaveLength(1)
+        expect(transactions).toHaveLength(2)
       })
     })
 
     describe('For crediting points without description', () => {
-      it('should add the transaction to the store', async () => {
+      it('should refresh the store with all transactions from the gateway', async () => {
         uuidGenerator.setNext('tx-no-desc')
         await whenCreditCustomerPoints('customer-1', 10)
         expect(loyaltyStore.customerLoyalty!.transactions).toHaveLength(2)
       })
 
-      it('should update the balance in the store', async () => {
+      it('should refresh the store with the correct balance', async () => {
         uuidGenerator.setNext('tx-no-desc')
         await whenCreditCustomerPoints('customer-1', 10)
         expect(loyaltyStore.customerLoyalty!.pointsBalance).toBe(60)
@@ -70,14 +67,19 @@ describe('Credit customer points', () => {
   })
 
   describe('For another amount', () => {
+    const existingTransaction: PointsTransaction = {
+      uuid: 'tx-existing-2',
+      customerUuid: 'customer-2',
+      type: 'EARNED',
+      points: 100,
+      createdAt: '2024-01-01T00:00:00.000Z'
+    }
+
     beforeEach(() => {
-      loyaltyStore.setCustomerLoyalty({
-        pointsBalance: 100,
-        transactions: []
-      })
+      loyaltyGateway.feedWithTransactions(existingTransaction)
     })
 
-    it('should update the balance correctly', async () => {
+    it('should refresh the store with the correct balance', async () => {
       uuidGenerator.setNext('tx-another')
       await whenCreditCustomerPoints('customer-2', 200, 'Large bonus')
       expect(loyaltyStore.customerLoyalty!.pointsBalance).toBe(300)
