@@ -406,7 +406,8 @@
       "delivery-price-rules": "Règles de prix de livraison",
       "carriers": "Transporteurs",
       "roles": "Rôles et permissions",
-      "shop-management": "Gestion boutique"
+      "shop-management": "Gestion boutique",
+      "loyalty": "Fidélité"
     }
   },
   "promotionCode": {
@@ -443,6 +444,38 @@
       "netSales": "Ventes nettes",
       "discount": "Réductions",
       "tooltipLabel": "Montant"
+    }
+  },
+  "loyalty": {
+    "navigation": "Fidélité",
+    "config": {
+      "title": "Configuration du programme de fidélité",
+      "pointsPerEuro": "Points par euro dépensé",
+      "save": "Enregistrer",
+      "saved": "Configuration enregistrée"
+    },
+    "multiplierRules": {
+      "title": "Règles de multiplicateur",
+      "multiplier": "Multiplicateur",
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "create": "Ajouter une règle",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette règle ?",
+      "noRules": "Aucune règle de multiplicateur"
+    },
+    "customer": {
+      "pointsBalance": "Solde de points",
+      "history": "Historique des points",
+      "earned": "Gagné",
+      "expired": "Expiré",
+      "manualCredit": "Crédit manuel",
+      "creditPoints": "Créditer des points",
+      "points": "Points",
+      "description": "Description",
+      "credit": "Créditer",
+      "noTransactions": "Aucune transaction"
     }
   },
   "systemResources": {
