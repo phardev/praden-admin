@@ -181,6 +181,11 @@ describe('Get navigation menu VM', () => {
                 name: 'SAV',
                 icon: 'streamline:interface-help-customer-support-2-customer-headphones-headset-help-microphone-phone-person-support',
                 href: '/support'
+              },
+              {
+                name: 'Fidélité',
+                icon: 'mdi:star-outline',
+                href: '/loyalty'
               }
             ]
           },

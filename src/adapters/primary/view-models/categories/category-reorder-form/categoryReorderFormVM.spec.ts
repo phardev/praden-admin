@@ -2,6 +2,7 @@ import type {
   TreeCategoryNodeVM,
   TreeNode
 } from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
+import type { CategoryStatus } from '@core/entities/category'
 import { useCategoryStore } from '@store/categoryStore'
 import { useFormStore } from '@store/formStore'
 import { baby, dents, mum } from '@utils/testData/categories'
@@ -15,9 +16,10 @@ const createTreeNode = (
   uuid: string,
   name: string,
   miniature: string,
+  status: CategoryStatus,
   children: CategoryTree = []
 ): TreeNode<TreeCategoryNodeVM> => ({
-  data: { uuid, name, miniature },
+  data: { uuid, name, miniature, status },
   children
 })
 
@@ -45,9 +47,19 @@ describe('Category Reorder Form VM', () => {
       const vm = categoryReorderFormVM()
 
       expect(vm.tree).toStrictEqual([
-        createTreeNode(dents.uuid, dents.name, dents.miniature || ''),
-        createTreeNode(mum.uuid, mum.name, mum.miniature || '', [
-          createTreeNode(baby.uuid, baby.name, baby.miniature || '')
+        createTreeNode(
+          dents.uuid,
+          dents.name,
+          dents.miniature || '',
+          dents.status
+        ),
+        createTreeNode(mum.uuid, mum.name, mum.miniature || '', mum.status, [
+          createTreeNode(
+            baby.uuid,
+            baby.name,
+            baby.miniature || '',
+            baby.status
+          )
         ])
       ])
     })
@@ -79,8 +91,13 @@ describe('Category Reorder Form VM', () => {
 
       const vm = categoryReorderFormVM()
       const newTree = [
-        createTreeNode(mum.uuid, mum.name, mum.miniature || ''),
-        createTreeNode(dents.uuid, dents.name, dents.miniature || '')
+        createTreeNode(mum.uuid, mum.name, mum.miniature || '', mum.status),
+        createTreeNode(
+          dents.uuid,
+          dents.name,
+          dents.miniature || '',
+          dents.status
+        )
       ]
       vm.updateTree(newTree)
 
@@ -93,8 +110,13 @@ describe('Category Reorder Form VM', () => {
 
       const vm = categoryReorderFormVM()
       const newTree = [
-        createTreeNode(mum.uuid, mum.name, mum.miniature || ''),
-        createTreeNode(dents.uuid, dents.name, dents.miniature || '')
+        createTreeNode(mum.uuid, mum.name, mum.miniature || '', mum.status),
+        createTreeNode(
+          dents.uuid,
+          dents.name,
+          dents.miniature || '',
+          dents.status
+        )
       ]
       vm.updateTree(newTree)
 
@@ -107,8 +129,13 @@ describe('Category Reorder Form VM', () => {
 
       const vm = categoryReorderFormVM()
       const sameTree = [
-        createTreeNode(dents.uuid, dents.name, dents.miniature || ''),
-        createTreeNode(mum.uuid, mum.name, mum.miniature || '')
+        createTreeNode(
+          dents.uuid,
+          dents.name,
+          dents.miniature || '',
+          dents.status
+        ),
+        createTreeNode(mum.uuid, mum.name, mum.miniature || '', mum.status)
       ]
       vm.updateTree(sameTree)
 
@@ -122,13 +149,20 @@ describe('Category Reorder Form VM', () => {
       categoryStore.items = [dents, mum]
 
       const vm = categoryReorderFormVM()
-      const newTree = [createTreeNode(mum.uuid, mum.name, mum.miniature || '')]
+      const newTree = [
+        createTreeNode(mum.uuid, mum.name, mum.miniature || '', mum.status)
+      ]
       vm.updateTree(newTree)
       vm.reset()
 
       expect(vm.tree).toStrictEqual([
-        createTreeNode(dents.uuid, dents.name, dents.miniature || ''),
-        createTreeNode(mum.uuid, mum.name, mum.miniature || '')
+        createTreeNode(
+          dents.uuid,
+          dents.name,
+          dents.miniature || '',
+          dents.status
+        ),
+        createTreeNode(mum.uuid, mum.name, mum.miniature || '', mum.status)
       ])
     })
 
@@ -137,7 +171,9 @@ describe('Category Reorder Form VM', () => {
       categoryStore.items = [dents, mum]
 
       const vm = categoryReorderFormVM()
-      const newTree = [createTreeNode(mum.uuid, mum.name, mum.miniature || '')]
+      const newTree = [
+        createTreeNode(mum.uuid, mum.name, mum.miniature || '', mum.status)
+      ]
       vm.updateTree(newTree)
       vm.reset()
 

@@ -143,6 +143,18 @@ UForm(v-else :state="currentVM")
         )
           template(#option="{ option: laboratory }")
             span {{ laboratory.name }}
+      UFormGroup.pb-4(
+        v-if="currentVM.get('scope').value === PromotionScope.Delivery"
+        label="Poids maximum de la commande (kg)"
+        name="maxWeight"
+      )
+        ft-text-field(
+          :model-value="currentVM.get('maxWeight').value"
+          :disabled="!currentVM.get('maxWeight').canEdit"
+          type="number"
+          step="0.1"
+          @update:model-value="maxWeightChanged"
+        )
   ft-text-field(
     v-if="currentVM.get('products').canEdit"
     v-model="search"
@@ -210,7 +222,7 @@ definePageMeta({ layout: 'main' })
 
 const search = ref('')
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = String(router.currentRoute.value.name ?? '')
 const availableProductSelector = useSelection()
 const addedProductSelector = useSelection()
 
@@ -284,6 +296,10 @@ const clearDeliveryMethod = () => {
   currentVM.value.set('deliveryMethodUuid', undefined)
 }
 
+const maxWeightChanged = (value: string) => {
+  currentVM.value.set('maxWeight', value)
+}
+
 const getReductionTypeIcon = (type: ReductionType) => {
   return type === ReductionType.Fixed ? 'solar:euro-bold' : 'ic:twotone-percent'
 }
@@ -294,14 +310,15 @@ const getScopeIcon = (scope: PromotionScope) => {
     : 'material-symbols-light:delivery-truck-speed-outline'
 }
 
-let debounceTimer
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
 const minimumQueryLength = 3
 
-const searchChanged = (e: any) => {
+const searchChanged = (e: Event) => {
   if (debounceTimer) clearTimeout(debounceTimer)
   debounceTimer = setTimeout(() => {
+    const target = e.target as HTMLInputElement
     const filters = {
-      query: e.target.value,
+      query: target.value,
       minimumQueryLength
     }
     searchProducts(routeName, filters, useSearchGateway())

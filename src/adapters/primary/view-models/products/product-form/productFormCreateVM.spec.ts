@@ -1,5 +1,5 @@
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
-import { ProductStatus } from '@core/entities/product'
+import { ProductStatus, StockManagementMode } from '@core/entities/product'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import { useFormStore } from '@store/formStore'
 import { useLaboratoryStore } from '@store/laboratoryStore'
@@ -203,7 +203,7 @@ describe('Product form create VM', () => {
           locations: {},
           availableStock: 21,
           minStockToSell: 6,
-          stockManagementMode: 'WINPHARMA',
+          stockManagementMode: StockManagementMode.WINPHARMA,
           description: '<p>description</p>',
           instructionsForUse: '<p>instructionsForUse</p>',
           composition: '<p>composition</p>',
@@ -262,7 +262,7 @@ describe('Product form create VM', () => {
           locations: {},
           availableStock: 21,
           minStockToSell: 6,
-          stockManagementMode: 'WINPHARMA',
+          stockManagementMode: StockManagementMode.WINPHARMA,
           description: '<p>description</p>',
           instructionsForUse: '<p>instructionsForUse</p>',
           composition: '<p>composition</p>',
@@ -321,7 +321,7 @@ describe('Product form create VM', () => {
           locations: {},
           availableStock: 21,
           minStockToSell: 6,
-          stockManagementMode: 'WINPHARMA',
+          stockManagementMode: StockManagementMode.WINPHARMA,
           description: '<p>description</p>',
           instructionsForUse: '<p>instructionsForUse</p>',
           composition: '<p>composition</p>',
@@ -376,7 +376,7 @@ describe('Product form create VM', () => {
           locations: {},
           availableStock: 21,
           minStockToSell: 6,
-          stockManagementMode: 'WINPHARMA',
+          stockManagementMode: StockManagementMode.WINPHARMA,
           description: '<p>description</p>',
           instructionsForUse: '<p>instructionsForUse</p>',
           composition: '<p>composition</p>',

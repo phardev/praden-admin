@@ -12,7 +12,10 @@ describe('List roles usecase', () => {
     setActivePinia(createPinia())
     roleStore = useRoleStore()
     roleGateway = {
-      list: vi.fn()
+      list: vi.fn(),
+      reorder: vi.fn(),
+      create: vi.fn(),
+      edit: vi.fn()
     }
   })
 

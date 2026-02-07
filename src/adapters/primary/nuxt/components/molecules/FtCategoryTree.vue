@@ -34,9 +34,16 @@ div(v-if="isLoading")
     @selected="selected"
     @view="view"
     @update:open-items="updateOpenItems"
+    @toggle-status="toggleStatus"
   )
 </template>
 <script setup lang="ts">
+import type {
+  TreeCategoryNodeVM,
+  TreeNode
+} from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
+import type { UUID } from '@core/types/types'
+
 const props = defineProps({
   isLoading: {
     type: Boolean,
@@ -45,7 +52,7 @@ const props = defineProps({
     }
   },
   items: {
-    type: Array,
+    type: Array<TreeNode<TreeCategoryNodeVM>>,
     default: () => {
       return []
     }
@@ -70,11 +77,13 @@ const props = defineProps({
   }
 })
 
-const openItems = ref([])
+const openItems = ref<Array<UUID>>([])
 
 const expandAll = () => {
-  const expandRecursive = (items) => {
-    items.forEach((item) => {
+  const expandRecursive = (
+    items: Array<TreeNode<TreeCategoryNodeVM>>
+  ): void => {
+    items.forEach((item: TreeNode<TreeCategoryNodeVM>) => {
       if (!openItems.value.includes(item.data.uuid)) {
         openItems.value.push(item.data.uuid)
       }
@@ -90,13 +99,14 @@ const collapseAll = () => {
   openItems.value = []
 }
 
-const updateOpenItems = (newOpenItems) => {
+const updateOpenItems = (newOpenItems: Array<UUID>): void => {
   openItems.value = newOpenItems
 }
 const emit = defineEmits<{
   (e: 'view', uuid: string): void
   (e: 'selected', uuid: string): void
-  (e: 'update:open-items', items: Array<any>): void
+  (e: 'update:open-items', items: Array<UUID>): void
+  (e: 'toggle-status', uuid: string, currentStatus: string): void
 }>()
 
 const view = (uuid: string): void => {
@@ -105,6 +115,10 @@ const view = (uuid: string): void => {
 
 const selected = (uuid: string): void => {
   emit('selected', uuid)
+}
+
+const toggleStatus = (uuid: string, currentStatus: string): void => {
+  emit('toggle-status', uuid, currentStatus)
 }
 </script>
 

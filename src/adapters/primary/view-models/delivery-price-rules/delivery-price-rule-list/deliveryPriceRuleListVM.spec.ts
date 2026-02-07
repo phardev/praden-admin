@@ -15,8 +15,30 @@ describe('deliveryPriceRuleListVM', () => {
     setActivePinia(createPinia())
     const deliveryMethodStore = useDeliveryMethodStore()
     deliveryMethodStore.list([
-      { uuid: 'delivery-colissimo', name: 'Colissimo', price: 590 },
-      { uuid: 'delivery-mondial-relay', name: 'Mondial Relay', price: 390 }
+      {
+        uuid: 'delivery-colissimo',
+        name: 'Colissimo',
+        description: 'Livraison Colissimo',
+        type: 'DELIVERY' as any,
+        carrier: {
+          uuid: 'carrier-colissimo',
+          name: 'Colissimo',
+          type: 'COLISSIMO' as any
+        },
+        priceRanges: []
+      },
+      {
+        uuid: 'delivery-mondial-relay',
+        name: 'Mondial Relay',
+        description: 'Livraison Mondial Relay',
+        type: 'DELIVERY' as any,
+        carrier: {
+          uuid: 'carrier-mondial-relay',
+          name: 'Mondial Relay',
+          type: 'DPD' as any
+        },
+        priceRanges: []
+      }
     ])
   })
 

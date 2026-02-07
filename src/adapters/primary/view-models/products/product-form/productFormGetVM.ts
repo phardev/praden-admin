@@ -148,7 +148,8 @@ export class ExistingProductFormInitializer implements FormInitializer {
       weight: (product.weight / 1000).toString(),
       maxQuantityForOrder: product.maxQuantityForOrder,
       isMedicine: product.isMedicine,
-      arePromotionsAllowed: product.flags.arePromotionsAllowed
+      arePromotionsAllowed:
+        product.flags.arePromotionsAllowed && !product.isMedicine
     })
   }
 }

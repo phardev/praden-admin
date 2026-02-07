@@ -40,6 +40,16 @@ div(v-if="!currentVM || currentVM.isLoading()")
     .flex.flex-row-reverse.mt-4
       .h-12.w-32.bg-gray-200.rounded.animate-pulse
 form(v-else)
+  UFormGroup.pb-4(
+    v-if="currentVM.getStatus"
+    :label="$t('categories.status.label')"
+    name="status"
+  )
+    UBadge(
+      :color="currentVM.getStatus().value === 'ACTIVE' ? 'success' : 'gray'"
+      variant="subtle"
+      size="lg"
+    ) {{ currentVM.getStatus().value === 'ACTIVE' ? $t('categories.status.active') : $t('categories.status.inactive') }}
   UFormGroup.pb-4(label="Nom" name="name")
     ft-text-field(
       :model-value="currentVM.get('name').value"
@@ -163,7 +173,7 @@ const props = defineProps({
 
 const currentVM = toRef(props, 'vm')
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = String(router.currentRoute.value.name ?? '')
 const availableProductSelector = useSelection()
 const addedProductSelector = useSelection()
 const search = ref('')
@@ -184,14 +194,15 @@ const descriptionChanged = (description: string) => {
   currentVM?.value?.set('description', description)
 }
 
-let debounceTimer
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
 const minimumQueryLength = 3
 
-const searchChanged = (e: any) => {
+const searchChanged = (e: Event) => {
   if (debounceTimer) clearTimeout(debounceTimer)
   debounceTimer = setTimeout(() => {
+    const target = e.target as HTMLInputElement
     const filters = {
-      query: e.target.value,
+      query: target.value,
       minimumQueryLength
     }
     searchProducts(routeName, filters, useSearchGateway())

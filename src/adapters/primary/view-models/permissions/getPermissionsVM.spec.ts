@@ -40,7 +40,8 @@ describe('Get permissions VM', () => {
         canAccessShopManagement: false,
         canAccessBanners: false,
         canAccessStaff: false,
-        canAccessResearch: false
+        canAccessResearch: false,
+        canAccessLoyalty: false
       })
     })
   })
@@ -67,7 +68,8 @@ describe('Get permissions VM', () => {
         canAccessShopManagement: false,
         canAccessBanners: false,
         canAccessStaff: false,
-        canAccessResearch: false
+        canAccessResearch: false,
+        canAccessLoyalty: false
       })
     })
   })
@@ -94,7 +96,8 @@ describe('Get permissions VM', () => {
         canAccessShopManagement: false,
         canAccessBanners: false,
         canAccessStaff: false,
-        canAccessResearch: false
+        canAccessResearch: false,
+        canAccessLoyalty: false
       })
     })
   })
@@ -121,7 +124,8 @@ describe('Get permissions VM', () => {
         canAccessShopManagement: true,
         canAccessBanners: true,
         canAccessStaff: false,
-        canAccessResearch: false
+        canAccessResearch: false,
+        canAccessLoyalty: true
       })
     })
   })
@@ -148,7 +152,8 @@ describe('Get permissions VM', () => {
         canAccessShopManagement: true,
         canAccessBanners: true,
         canAccessStaff: true,
-        canAccessResearch: true
+        canAccessResearch: true,
+        canAccessLoyalty: true
       })
     })
   })

@@ -2,6 +2,7 @@ import { PermissionResource } from '@core/entities/permissionResource'
 import { useUserProfileStore } from '@store/userProfileStore'
 
 export interface GetPermissionsVM {
+  [key: string]: boolean
   canAccessDashboard: boolean
   canAccessReminders: boolean
   canAccessProducts: boolean
@@ -20,6 +21,7 @@ export interface GetPermissionsVM {
   canAccessBanners: boolean
   canAccessStaff: boolean
   canAccessResearch: boolean
+  canAccessLoyalty: boolean
 }
 
 export const getPermissionsVM = (): GetPermissionsVM => {
@@ -75,6 +77,7 @@ export const getPermissionsVM = (): GetPermissionsVM => {
     canAccessStaff: userProfileStore.hasPermission(PermissionResource.STAFF),
     canAccessResearch: userProfileStore.hasPermission(
       PermissionResource.RESEARCH
-    )
+    ),
+    canAccessLoyalty: userProfileStore.hasPermission(PermissionResource.LOYALTY)
   }
 }

@@ -14,6 +14,8 @@
   )
   h2.text-subtitle.mt-8 {{ $t('customers.supportTickets') }}
   customer-tickets-list(:customer-uuid="customerUuid")
+  h2.text-subtitle.mt-8 {{ $t('loyalty.customer.history') }}
+  customer-loyalty-section(:customer-uuid="customerUuid")
 </template>
 
 <script lang="ts" setup>

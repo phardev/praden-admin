@@ -10,7 +10,7 @@ import { getOrdersVM } from '@adapters/primary/view-models/orders/get-orders/get
 definePageMeta({ layout: 'main' })
 
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = String(router.currentRoute.value.name ?? '')
 
 const ordersVM = computed(() => {
   return getOrdersVM(routeName)

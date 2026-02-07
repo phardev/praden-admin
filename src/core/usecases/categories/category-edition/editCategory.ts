@@ -11,6 +11,7 @@ export type EditCategoryDTO = Omit<CreateCategoryDTO, 'image' | 'miniature'> & {
   miniature?: string
   newImage?: File
   newMiniature?: File
+  order?: number
 }
 
 export const editCategory = async (

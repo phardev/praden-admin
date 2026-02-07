@@ -34,14 +34,15 @@
           )
     template(#name="{ item }")
       .font-medium.text-default {{ item.name }}
+    template(#infinite)
+      InfiniteLoading(@infinite="load")
+        template(#complete)
+          div
   .mt-4.flex.gap-4
     ft-button.button-solid.text-base(
       :disabled="!productSelector.get().length"
       @click="openBulkEditDialog"
     ) Modifier la sélection
-  InfiniteLoading(@infinite="load")
-    template(#complete)
-      div
   ft-bulk-edit-product-modal(
     v-model="isBulkEditProductModalOpened"
     :selected-count="productSelector.get().length"
@@ -52,6 +53,7 @@
 
 <script lang="ts" setup>
 import { getProductsVM } from '@adapters/primary/view-models/products/get-products/getProductsVM'
+import type { ProductStatus } from '@core/entities/product'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { listProducts } from '@core/usecases/product/product-listing/listProducts'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
@@ -62,15 +64,20 @@ import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
 import { useProductGateway } from '../../../../../../gateways/productGateway'
 import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 import 'v3-infinite-loading/lib/style.css'
-import { ProductStatus } from '@core/entities/product'
 import { bulkEditProduct } from '@core/usecases/product/product-edition/bulkEditProduct'
 import { useSelection } from '../../composables/useSelection'
+
+interface InfiniteLoadingState {
+  loaded: () => void
+  complete: () => void
+}
 
 definePageMeta({ layout: 'main' })
 
 const productGateway = useProductGateway()
 const limit = 25
 let offset = 0
+let searchOffset = 0
 const productSelector = useSelection()
 const isBulkEditProductModalOpened = ref(false)
 
@@ -91,35 +98,65 @@ onMounted(() => {
 })
 
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = String(router.currentRoute.value.name ?? '')
 
 const productsVM = computed(() => {
   return getProductsVM(routeName)
 })
 
-const load = async ($state) => {
-  if (!search.value) {
+const load = async ($state: InfiniteLoadingState) => {
+  if (!search.value && !productStatus.value) {
     await listProducts(limit, offset, productGateway)
     offset += limit
-    if (productsVM.hasMore) {
+    if (productsVM.value.hasMore) {
       $state.loaded()
     } else {
       $state.complete()
     }
   } else {
-    $state.complete()
+    if (productsVM.value.isSearchLoading) {
+      return
+    }
+    if (!productsVM.value.hasMoreSearch) {
+      $state.complete()
+      return
+    }
+    await searchProducts(
+      String(routeName),
+      buildFilters({
+        query: search.value,
+        status: productStatus.value,
+        minimumQueryLength,
+        size: limit,
+        from: searchOffset
+      }),
+      useSearchGateway()
+    )
+    searchOffset += limit
+    if (productsVM.value.hasMoreSearch) {
+      $state.loaded()
+    } else {
+      $state.complete()
+    }
   }
 }
 
 const search = ref(productsVM.value.currentSearch?.query)
 const productStatus = ref(productsVM.value.currentSearch?.status)
 const minimumQueryLength = 3
-let debounceTimer
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
-const buildFilters = (partial) => {
+const buildFilters = (partial: {
+  query?: string
+  status?: ProductStatus
+  minimumQueryLength?: number
+  size?: number
+  from?: number
+}) => {
   return {
     query: search.value,
     status: productStatus.value,
+    size: limit,
     ...partial
   }
 }
@@ -127,23 +164,35 @@ const buildFilters = (partial) => {
 const searchChanged = (e: any) => {
   if (debounceTimer) clearTimeout(debounceTimer)
   debounceTimer = setTimeout(() => {
+    searchOffset = 0
     const filters = {
       query: e.target.value,
-      minimumQueryLength
+      minimumQueryLength,
+      from: 0
     }
-    searchProducts(routeName, buildFilters({ ...filters }), useSearchGateway())
+    searchProducts(
+      String(routeName),
+      buildFilters({ ...filters }),
+      useSearchGateway()
+    )
   }, 300)
 }
 
 const productStatusChanged = (status: ProductStatus) => {
-  searchProducts(routeName, buildFilters({ status }), useSearchGateway())
+  searchOffset = 0
+  searchProducts(
+    String(routeName),
+    buildFilters({ status, from: 0 }),
+    useSearchGateway()
+  )
 }
 
 const clearProductStatus = () => {
+  searchOffset = 0
   productStatus.value = undefined
   searchProducts(
-    routeName,
-    buildFilters({ status: undefined }),
+    String(routeName),
+    buildFilters({ status: undefined, from: 0 }),
     useSearchGateway()
   )
 }
