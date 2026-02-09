@@ -80,8 +80,16 @@ const statusColor = (status: string) => {
 }
 
 onMounted(async () => {
-  await getLoyaltyConfig(loyaltyGateway)
-  earningRate.value = vm.value.earningRate
+  try {
+    await getLoyaltyConfig(loyaltyGateway)
+    earningRate.value = vm.value.earningRate
+  } catch {
+    const toast = useToast()
+    toast.add({
+      title: t('error.unknown'),
+      color: 'red'
+    })
+  }
 })
 
 const saveConfig = async () => {

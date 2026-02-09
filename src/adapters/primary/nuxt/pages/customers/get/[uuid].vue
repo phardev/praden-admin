@@ -62,8 +62,12 @@ onMounted(async () => {
   await getCustomer(customerUuid, customerGateway)
   const ticketGateway = useTicketGateway()
   await getCustomerTickets(customerUuid, ticketGateway)
-  await getCustomerLoyalty(customerUuid, loyaltyGateway)
   vm.value = customerFormGetVM(routeName)
+  try {
+    await getCustomerLoyalty(customerUuid, loyaltyGateway)
+  } catch (error) {
+    console.error('Failed to load loyalty data:', error)
+  }
 })
 
 const ordersVM = computed(() => {
