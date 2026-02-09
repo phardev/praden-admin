@@ -61,3 +61,26 @@
   - Never mutate stores directly from components - use usecases
 - Add to memory "A usecase NEVER returns a value"
 - Add to memory that we must import type in vue file
+
+## Frontend Responsibilities
+
+### Display Logic Only
+- Frontend is for DISPLAY logic only, not business logic
+- Business rules (validation, cascades, calculations) belong in backend
+- Frontend should call ONE endpoint, not loop calling endpoints
+
+### Anti-Patterns to Avoid
+- DON'T loop over items and call API for each (N+1 calls)
+- DON'T implement business rules in Vue components or usecases
+- DON'T calculate derived data that backend should provide
+
+### Correct Pattern
+```typescript
+// BAD: Frontend looping
+for (const category of categories) {
+  await api.disableCategory(category.id)
+}
+
+// GOOD: Single backend call with batch/cascade
+await api.disableCategoryWithChildren(parentCategoryId)
+```

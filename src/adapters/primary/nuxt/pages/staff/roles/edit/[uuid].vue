@@ -56,7 +56,7 @@ const route = useRoute()
 const roleUuid = route.params.uuid as string
 
 // Composables
-const { $router } = useNuxtApp()
+const router = useRouter()
 const { updateRole } = useRoleForm()
 const roleGateway = useRoleGateway()
 
@@ -113,6 +113,6 @@ const handleSubmit = async () => {
 }
 
 const navigateBack = () => {
-  $router.push('/staff')
+  router.push('/staff')
 }
 </script>

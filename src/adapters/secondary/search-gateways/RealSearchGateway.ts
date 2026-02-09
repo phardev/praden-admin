@@ -10,7 +10,10 @@ import {
   PaymentStatus
 } from '@core/entities/order'
 import { Product } from '@core/entities/product'
-import { SearchGateway } from '@core/gateways/searchGateway'
+import {
+  SearchGateway,
+  SearchProductsResult
+} from '@core/gateways/searchGateway'
 import { SearchCustomersDTO } from '@core/usecases/customers/customer-searching/searchCustomer'
 import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
 import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
@@ -24,16 +27,23 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
 
   async searchProducts(
     filters: SearchProductsFilters
-  ): Promise<Array<Product>> {
+  ): Promise<SearchProductsResult> {
     const res = await axiosWithBearer.post(
       `${this.baseUrl}/search/products`,
       filters
     )
-    return Promise.resolve(
-      res.data.items.sort(
-        (a: Product, b: Product) => b.availableStock - a.availableStock
-      )
+    const items = res.data.items.sort(
+      (a: Product, b: Product) => b.availableStock - a.availableStock
     )
+    const pagination = res.data.pagination
+    const size = filters.size ?? 25
+    const from = filters.from ?? 0
+    const hasMore = items.length === size && pagination.total > from + size
+    return Promise.resolve({
+      items,
+      pagination,
+      hasMore
+    })
   }
 
   async indexProducts(limit: number, offset: number): Promise<number> {

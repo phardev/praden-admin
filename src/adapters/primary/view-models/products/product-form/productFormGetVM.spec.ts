@@ -26,6 +26,7 @@ import {
   dolodent,
   hemoclar,
   productWithDecimalPrice,
+  productWithForbiddenPromotion,
   productWithoutLaboratory,
   ultraLevure
 } from '@utils/testData/products'
@@ -53,6 +54,7 @@ describe('Product form get VM', () => {
     {
       product: ultraLevure,
       expectedIsActive: false,
+      expectedArePromotionsAllowed: false,
       expectedPriceWithoutTax: '4.32',
       expectedPriceWithTax: '4.75',
       expectedLocations: {
@@ -119,6 +121,7 @@ describe('Product form get VM', () => {
     {
       product: dolodent,
       expectedIsActive: true,
+      expectedArePromotionsAllowed: false,
       expectedPriceWithoutTax: '5.00',
       expectedPriceWithTax: '5.50',
       expectedLocations: {
@@ -156,6 +159,7 @@ describe('Product form get VM', () => {
     {
       product: productWithoutLaboratory,
       expectedIsActive: true,
+      expectedArePromotionsAllowed: true,
       expectedPriceWithoutTax: '5.90',
       expectedPriceWithTax: '6.49',
       expectedLocations: {},
@@ -191,6 +195,43 @@ describe('Product form get VM', () => {
     {
       product: productWithDecimalPrice,
       expectedIsActive: true,
+      expectedArePromotionsAllowed: true,
+      expectedPriceWithoutTax: '3.33',
+      expectedPriceWithTax: '3.99',
+      expectedLocations: {},
+      expectedWeight: '0.12',
+      promotion: undefined,
+      expectedPromotion: undefined,
+      availableLocations: [zoneGeo, magasin],
+      expectedAvailableLocations: [
+        {
+          uuid: zoneGeo.uuid,
+          name: zoneGeo.name
+        },
+        {
+          uuid: magasin.uuid,
+          name: magasin.name
+        }
+      ],
+      availableCategories: [minceur],
+      expectedAvailableCategories: [
+        {
+          uuid: minceur.uuid,
+          name: minceur.name
+        }
+      ],
+      availableLaboratories: [anaca3],
+      expectedAvailableLaboratories: [
+        {
+          uuid: anaca3.uuid,
+          name: anaca3.name
+        }
+      ]
+    },
+    {
+      product: productWithForbiddenPromotion,
+      expectedIsActive: true,
+      expectedArePromotionsAllowed: false,
       expectedPriceWithoutTax: '3.33',
       expectedPriceWithTax: '3.99',
       expectedLocations: {},
@@ -230,6 +271,7 @@ describe('Product form get VM', () => {
       ({
         product,
         expectedIsActive,
+        expectedArePromotionsAllowed,
         expectedPriceWithoutTax,
         expectedPriceWithTax,
         expectedLocations,
@@ -273,6 +315,10 @@ describe('Product form get VM', () => {
             expected: product.maxQuantityForOrder
           },
           { field: 'isMedicine', expected: product.isMedicine },
+          {
+            field: 'arePromotionsAllowed',
+            expected: expectedArePromotionsAllowed
+          },
           { field: 'priceWithoutTax', expected: expectedPriceWithoutTax },
           { field: 'priceWithTax', expected: expectedPriceWithTax },
           { field: 'locations', expected: expectedLocations },

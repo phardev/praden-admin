@@ -42,7 +42,7 @@ describe('Add private note to ticket', () => {
             uuid: 'private-note-uuid',
             content: "Note privée pour l'équipe",
             type: TicketMessageType.PRIVATE,
-            authorName: 'Opérateur Support',
+            authorUuid: 'private-note-uuid',
             sentAt: now,
             attachments: []
           }
@@ -63,7 +63,7 @@ describe('Add private note to ticket', () => {
             uuid: 'private-note-uuid',
             content: 'Note privée',
             type: TicketMessageType.PRIVATE,
-            authorName: 'Opérateur Support',
+            authorUuid: 'private-note-uuid',
             sentAt: now,
             attachments: []
           }
@@ -86,7 +86,7 @@ describe('Add private note to ticket', () => {
             uuid: 'private-note-uuid',
             content: 'Note privée',
             type: TicketMessageType.PRIVATE,
-            authorName: 'Opérateur Support',
+            authorUuid: 'private-note-uuid',
             sentAt: now,
             attachments: []
           }

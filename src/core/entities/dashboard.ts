@@ -1,8 +1,26 @@
-import { UUID } from '@core/types/types'
+import type { UUID } from '@core/types/types'
 
 export interface ProductStockStats {
   inStockCount: number
   outOfStockCount: number
+}
+
+export interface MonthlyNewsletterSubscription {
+  month: string
+  count: number
+}
+
+export interface NewsletterAdoption {
+  subscribers: number
+  nonSubscribers: number
+}
+
+export interface UserStatistics {
+  totalCustomers: number
+  customersWithOrders: number
+  newsletterSubscribers: number
+  monthlyNewsletterSubscriptions: MonthlyNewsletterSubscription[]
+  newsletterAdoptionRate: NewsletterAdoption
 }
 
 export interface MonthlySales {
@@ -35,6 +53,7 @@ export interface TopProductLaboratory {
 export interface TopProduct {
   productUuid: string
   name: string
+  ean13: string
   count: number
   categories: Array<TopProductCategory>
   laboratory: TopProductLaboratory
@@ -61,10 +80,13 @@ export interface ProductByCategory {
 
 export interface Dashboard {
   monthlySales: MonthlySales[]
+  previousYearMonthlySales: MonthlySales[]
   totalSales: TotalSales
+  previousYearTotalSales: TotalSales
   topProducts: TopProduct[]
   ordersByDeliveryMethod: OrderByDeliveryMethod[]
   ordersByLaboratory: OrderByLaboratory[]
   productQuantitiesByCategory: ProductByCategory[]
   productStockStats: ProductStockStats
+  userStatistics: UserStatistics
 }

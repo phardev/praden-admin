@@ -28,14 +28,18 @@
           @update:model-value="toggleNewsletterSubscription(item)"
           @click.stop
         )
-  InfiniteLoading(@infinite="load")
-    template(#complete)
-      div
+    template(#infinite)
+      InfiniteLoading(@infinite="load")
+        template(#complete)
+          div
 
 </template>
 
 <script lang="ts" setup>
-import { getCustomersVM } from '@adapters/primary/view-models/customers/get-customers/getCustomersVM'
+import {
+  type GetCustomersItemVM,
+  getCustomersVM
+} from '@adapters/primary/view-models/customers/get-customers/getCustomersVM'
 import { listCustomers } from '@core/usecases/customers/customer-listing/listCustomer'
 import { searchCustomers } from '@core/usecases/customers/customer-searching/searchCustomer'
 import { useSearchStore } from '@store/searchStore'
@@ -51,11 +55,16 @@ definePageMeta({ layout: 'main' })
 const limit = 100
 let offset = 0
 
-const load = async ($state) => {
+interface InfiniteLoadingState {
+  loaded: () => void
+  complete: () => void
+}
+
+const load = async ($state: InfiniteLoadingState) => {
   if (!search.value) {
     await listCustomers(limit, offset, useCustomerGateway())
     offset += limit
-    if (customersVM.hasMore) {
+    if (customersVM.value.hasMore) {
       $state.loaded()
     } else {
       $state.complete()
@@ -65,7 +74,7 @@ const load = async ($state) => {
   }
 }
 const router = useRouter()
-const routeName = router.currentRoute.value.name as string
+const routeName = String(router.currentRoute.value.name ?? '')
 
 const customersVM = computed(() => {
   return getCustomersVM(routeName)
@@ -78,17 +87,18 @@ const customerSelected = (uuid: string) => {
 const search = ref(customersVM.value?.currentSearch?.query || '')
 
 const minimumQueryLength = 3
-let debounceTimer
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
-const searchChanged = (e: any) => {
+const searchChanged = (e: Event) => {
   if (debounceTimer) {
     clearTimeout(debounceTimer)
   }
   debounceTimer = setTimeout(() => {
-    const query = e.target.value
+    const target = e.target as HTMLInputElement
+    const query = target.value
     if (!query) {
       const searchStore = useSearchStore()
-      searchStore.set(routeName, undefined)
+      searchStore.set(routeName, [])
       searchStore.setFilter(routeName, undefined)
       searchStore.setError(routeName, undefined)
     } else {
@@ -101,13 +111,17 @@ const searchChanged = (e: any) => {
   }, 300)
 }
 
-const toggleNewsletterSubscription = (item: Customer) => {
+const toggleNewsletterSubscription = (item: GetCustomersItemVM) => {
   const newsletterGateway = useNewsletterGateway()
   const customerGateway = useCustomerGateway()
   if (item.newsletterSubscription) {
     unsubscribeFromNewsletter(item.email, newsletterGateway, customerGateway)
   } else {
-    subscribeToNewsletter(item, newsletterGateway, customerGateway)
+    subscribeToNewsletter(
+      { email: item.email, customerUuid: item.uuid },
+      newsletterGateway,
+      customerGateway
+    )
   }
 }
 </script>

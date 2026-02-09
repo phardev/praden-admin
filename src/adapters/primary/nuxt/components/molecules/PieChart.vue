@@ -63,7 +63,7 @@ const createChart = () => {
     )
 
   const normalizeData = (): DataItem[] => {
-    return props.data.map((item) => ({
+    return props.data.map((item: any) => ({
       id: item[props.config.idField],
       name: item[props.config.nameField],
       count: item[props.config.countField || 'countField']
@@ -296,7 +296,7 @@ const createChart = () => {
           processedData.reduce((sum, item) => sum + item.count, 0)) *
         100
       ).toFixed(0)
-      return percent > 5 ? `${percent}%` : ''
+      return Number(percent) > 5 ? `${percent}%` : ''
     })
 
   const tooltip = d3
