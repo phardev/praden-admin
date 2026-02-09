@@ -541,5 +541,49 @@
       "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette pharmacie de garde ?",
       "groupedByDate": "Pharmacies par date"
     }
+  },
+  "loyalty": {
+    "title": "Programme de fidélité",
+    "config": {
+      "title": "Configuration",
+      "earningRate": "Taux de gain",
+      "earningRateDescription": "Points gagnés par euro dépensé",
+      "save": "Enregistrer",
+      "saved": "Configuration enregistrée"
+    },
+    "multipliers": {
+      "title": "Périodes multiplicatrices",
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "multiplier": "Multiplicateur",
+      "create": "Créer une période",
+      "delete": "Supprimer",
+      "noMultipliers": "Aucune période multiplicatrice",
+      "active": "Actif",
+      "expired": "Expiré",
+      "upcoming": "À venir"
+    },
+    "points": {
+      "title": "Points de fidélité",
+      "balance": "Solde actuel",
+      "history": "Historique des points",
+      "credit": "Créditer des points",
+      "earned": "Gagné",
+      "manualCredit": "Crédit manuel",
+      "date": "Date",
+      "type": "Type",
+      "pointsLabel": "Points",
+      "order": "Commande",
+      "reason": "Raison",
+      "expiresAt": "Expire le",
+      "noHistory": "Aucun historique de points",
+      "creditModal": {
+        "title": "Créditer des points",
+        "points": "Nombre de points",
+        "reason": "Raison du crédit",
+        "confirm": "Créditer",
+        "cancel": "Annuler"
+      }
+    }
   }
 }
