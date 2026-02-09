@@ -89,7 +89,8 @@
     "viewTitle": "Voir client",
     "editButton": "Editer client",
     "ordersHistory": "Historique des commandes",
-    "supportTickets": "Tickets de support"
+    "supportTickets": "Tickets de support",
+    "loyaltyPoints": "Points de fidélité"
   },
   "orders": {
     "supportTickets": "Tickets de support"
@@ -448,6 +449,36 @@
   "systemResources": {
     "noResources": "Aucune ressource système disponible"
   },
+  "loyalty": {
+    "title": "Programme de fidélité",
+    "balance": "Solde de points",
+    "points": "points",
+    "history": "Historique des points",
+    "earned": "Gagné",
+    "manualCredit": "Crédit manuel",
+    "expired": "Expiré",
+    "creditPoints": "Créditer des points",
+    "reason": "Raison",
+    "pointsAmount": "Nombre de points",
+    "noTransactions": "Aucune transaction",
+    "expiresAt": "Expire le",
+    "order": "Commande",
+    "config": {
+      "title": "Configuration fidélité",
+      "pointsPerEuro": "Points par euro dépensé",
+      "save": "Enregistrer"
+    },
+    "multipliers": {
+      "title": "Multiplicateurs de points",
+      "create": "Créer un multiplicateur",
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "multiplier": "Multiplicateur",
+      "noMultipliers": "Aucun multiplicateur configuré",
+      "confirmDelete": "Supprimer ce multiplicateur ?",
+      "confirmDeleteMessage": "Cette action est irréversible."
+    }
+  },
   "shopManagement": {
     "title": "Gestion de la boutique",
     "overview": {
@@ -455,7 +486,8 @@
       "announcementBarCard": "Barre d'annonce",
       "categoryOrderCard": "Ordre des catégories",
       "pharmacistSelectionCard": "Sélection du pharmacien",
-      "emergencyPharmaciesCard": "Pharmacies de garde"
+      "emergencyPharmaciesCard": "Pharmacies de garde",
+      "loyaltyCard": "Programme de fidélité"
     },
     "announcementBar": {
       "title": "Barres d'annonce",

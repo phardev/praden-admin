@@ -6,6 +6,11 @@
   customer-form(
     :vm="vm"
   )
+  h2.text-subtitle.mt-4 {{ $t('customers.loyaltyPoints') }}
+  customer-loyalty-section(
+    :customer-uuid="customerUuid"
+    :loyalty-gateway="loyaltyGateway"
+  )
   h2.text-subtitle.mt-4 {{ $t('customers.ordersHistory') }}
   orders-list(
     :vm="ordersVM"
@@ -17,6 +22,7 @@
 </template>
 
 <script lang="ts" setup>
+import CustomerLoyaltySection from '@adapters/primary/nuxt/components/organisms/CustomerLoyaltySection.vue'
 import { customerFormGetVM } from '@adapters/primary/view-models/customers/customer-form/customerFormGetVM'
 import { getOrdersVM } from '@adapters/primary/view-models/orders/get-orders/getOrdersVM'
 import { getCustomer } from '@core/usecases/customers/customer-get/getCustomer'
@@ -24,6 +30,7 @@ import { listCustomers } from '@core/usecases/customers/customer-listing/listCus
 import { searchOrders } from '@core/usecases/order/orders-searching/searchOrders'
 import { getCustomerTickets } from '@core/usecases/support/getCustomerTickets'
 import { useCustomerGateway } from '../../../../../../../gateways/customerGateway'
+import { useLoyaltyGateway } from '../../../../../../../gateways/loyaltyGateway'
 import { useSearchGateway } from '../../../../../../../gateways/searchGateway'
 import { useTicketGateway } from '../../../../../../../gateways/ticketGateway'
 
@@ -34,6 +41,7 @@ const route = useRoute()
 const customerUuid = route.params.uuid as string
 const router = useRouter()
 const routeName = router.currentRoute.value.name as string
+const loyaltyGateway = useLoyaltyGateway()
 
 onMounted(async () => {
   const searchGateway = useSearchGateway()
