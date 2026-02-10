@@ -58,6 +58,11 @@ export const fullMenu: NavigationMenu = {
           href: '/customers'
         },
         {
+          name: 'Fidélité',
+          icon: 'heroicons:gift',
+          href: '/loyalty'
+        },
+        {
           name: 'Newsletter',
           icon: 'mdi:email-newsletter',
           href: '/newsletter-subscriptions'
