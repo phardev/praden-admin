@@ -26,20 +26,20 @@ describe('Create manual order', () => {
         phone: '0123456789'
       },
       deliveryAddress: {
-        name: 'Jean Bon',
+        firstname: 'Jean',
+        lastname: 'Bon',
         address: '10 rue des peupliers',
         zip: '12345',
         city: 'PlopLand',
-        country: 'Plop',
-        phone: '0123456789'
+        country: 'Plop'
       },
       billingAddress: {
-        name: 'Jean Bon',
+        firstname: 'Jean',
+        lastname: 'Bon',
         address: '10 rue des peupliers',
         zip: '12345',
         city: 'PlopLand',
-        country: 'Plop',
-        phone: '0123456789'
+        country: 'Plop'
       },
       lines: [
         {
@@ -72,20 +72,20 @@ describe('Create manual order', () => {
         phone: '0123456789'
       },
       deliveryAddress: {
-        name: 'Jean Bon',
+        firstname: 'Jean',
+        lastname: 'Bon',
         address: '10 rue des peupliers',
         zip: '12345',
         city: 'PlopLand',
-        country: 'Plop',
-        phone: '0123456789'
+        country: 'Plop'
       },
       billingAddress: {
-        name: 'Jean Bon',
+        firstname: 'Jean',
+        lastname: 'Bon',
         address: '10 rue des peupliers',
         zip: '12345',
         city: 'PlopLand',
-        country: 'Plop',
-        phone: '0123456789'
+        country: 'Plop'
       },
       lines: [
         {

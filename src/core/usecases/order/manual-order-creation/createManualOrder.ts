@@ -10,20 +10,20 @@ export interface CreateManualOrderDTO {
     phone: string
   }
   deliveryAddress: {
-    name: string
+    firstname: string
+    lastname: string
     address: string
-    zip: string
     city: string
+    zip: string
     country: string
-    phone: string
   }
   billingAddress: {
-    name: string
+    firstname: string
+    lastname: string
     address: string
-    zip: string
     city: string
+    zip: string
     country: string
-    phone: string
   }
   lines: Array<{
     productUuid: string

@@ -52,12 +52,12 @@ describe('createOrderVM', () => {
         phone: '0600000000'
       })
       vm.set('deliveryAddress', {
-        name: 'Jean Dupont',
+        firstname: 'Jean',
+        lastname: 'Dupont',
         address: '1 rue de Paris',
         zip: '75001',
         city: 'Paris',
-        country: 'France',
-        phone: '0600000000'
+        country: 'France'
       })
       expect(vm.canGoNext()).toStrictEqual(true)
     })
@@ -71,12 +71,12 @@ describe('createOrderVM', () => {
         phone: '0600000000'
       })
       vm.set('deliveryAddress', {
-        name: 'Jean Dupont',
+        firstname: 'Jean',
+        lastname: 'Dupont',
         address: '1 rue de Paris',
         zip: '75001',
         city: 'Paris',
-        country: 'France',
-        phone: '0600000000'
+        country: 'France'
       })
       vm.nextStep()
       expect(vm.canGoNext()).toStrictEqual(false)
@@ -91,12 +91,12 @@ describe('createOrderVM', () => {
         phone: '0600000000'
       })
       vm.set('deliveryAddress', {
-        name: 'Jean Dupont',
+        firstname: 'Jean',
+        lastname: 'Dupont',
         address: '1 rue de Paris',
         zip: '75001',
         city: 'Paris',
-        country: 'France',
-        phone: '0600000000'
+        country: 'France'
       })
       vm.nextStep()
       vm.addLine({
@@ -119,12 +119,12 @@ describe('createOrderVM', () => {
         phone: '0600000000'
       })
       vm.set('deliveryAddress', {
-        name: 'Jean Dupont',
+        firstname: 'Jean',
+        lastname: 'Dupont',
         address: '1 rue de Paris',
         zip: '75001',
         city: 'Paris',
-        country: 'France',
-        phone: '0600000000'
+        country: 'France'
       })
       vm.nextStep()
       vm.addLine({
@@ -148,12 +148,12 @@ describe('createOrderVM', () => {
         phone: '0600000000'
       })
       vm.set('deliveryAddress', {
-        name: 'Jean Dupont',
+        firstname: 'Jean',
+        lastname: 'Dupont',
         address: '1 rue de Paris',
         zip: '75001',
         city: 'Paris',
-        country: 'France',
-        phone: '0600000000'
+        country: 'France'
       })
       vm.nextStep()
       vm.addLine({
@@ -303,12 +303,12 @@ describe('createOrderVM', () => {
   describe('copyDeliveryToBilling', () => {
     it('should copy delivery address to billing address', () => {
       const address = {
-        name: 'Jean Dupont',
+        firstname: 'Jean',
+        lastname: 'Dupont',
         address: '1 rue de Paris',
         zip: '75001',
         city: 'Paris',
-        country: 'France',
-        phone: '0600000000'
+        country: 'France'
       }
       vm.set('deliveryAddress', address)
       vm.copyDeliveryToBilling()
@@ -326,12 +326,12 @@ describe('createOrderVM', () => {
         phone: '0600000000'
       })
       vm.set('deliveryAddress', {
-        name: 'Jean Dupont',
+        firstname: 'Jean',
+        lastname: 'Dupont',
         address: '1 rue de Paris',
         zip: '75001',
         city: 'Paris',
-        country: 'France',
-        phone: '0600000000'
+        country: 'France'
       })
       vm.nextStep()
       expect(vm.getStep()).toStrictEqual(1)
@@ -346,12 +346,12 @@ describe('createOrderVM', () => {
         phone: '0600000000'
       })
       vm.set('deliveryAddress', {
-        name: 'Jean Dupont',
+        firstname: 'Jean',
+        lastname: 'Dupont',
         address: '1 rue de Paris',
         zip: '75001',
         city: 'Paris',
-        country: 'France',
-        phone: '0600000000'
+        country: 'France'
       })
       vm.nextStep()
       vm.prevStep()
@@ -374,20 +374,20 @@ describe('createOrderVM', () => {
         phone: '0600000000'
       })
       vm.set('deliveryAddress', {
-        name: 'Jean Dupont',
+        firstname: 'Jean',
+        lastname: 'Dupont',
         address: '1 rue de Paris',
         zip: '75001',
         city: 'Paris',
-        country: 'France',
-        phone: '0600000000'
+        country: 'France'
       })
       vm.set('billingAddress', {
-        name: 'Jean Dupont',
+        firstname: 'Jean',
+        lastname: 'Dupont',
         address: '1 rue de Paris',
         zip: '75001',
         city: 'Paris',
-        country: 'France',
-        phone: '0600000000'
+        country: 'France'
       })
       vm.addLine({
         productUuid: 'prod-1',
@@ -410,20 +410,20 @@ describe('createOrderVM', () => {
           phone: '0600000000'
         },
         deliveryAddress: {
-          name: 'Jean Dupont',
+          firstname: 'Jean',
+          lastname: 'Dupont',
           address: '1 rue de Paris',
           zip: '75001',
           city: 'Paris',
-          country: 'France',
-          phone: '0600000000'
+          country: 'France'
         },
         billingAddress: {
-          name: 'Jean Dupont',
+          firstname: 'Jean',
+          lastname: 'Dupont',
           address: '1 rue de Paris',
           zip: '75001',
           city: 'Paris',
-          country: 'France',
-          phone: '0600000000'
+          country: 'France'
         },
         lines: [
           {

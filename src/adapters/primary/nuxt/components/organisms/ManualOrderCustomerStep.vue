@@ -49,15 +49,15 @@ div
   .mb-6
     h3.text-lg.font-semibold.mb-4 {{ $t('orders.create.deliveryAddress') }}
     .grid.grid-cols-2.gap-4
-      UFormGroup(:label="$t('orders.create.addressName')" name="deliveryName")
+      UFormGroup(:label="$t('orders.create.firstname')" name="deliveryFirstname")
         ft-text-field(
-          :model-value="currentVM.get('deliveryAddress').name"
-          @update:model-value="deliveryFieldChanged('name', $event)"
+          :model-value="currentVM.get('deliveryAddress').firstname"
+          @update:model-value="deliveryFieldChanged('firstname', $event)"
         )
-      UFormGroup(:label="$t('orders.create.phone')" name="deliveryPhone")
+      UFormGroup(:label="$t('orders.create.lastname')" name="deliveryLastname")
         ft-text-field(
-          :model-value="currentVM.get('deliveryAddress').phone"
-          @update:model-value="deliveryFieldChanged('phone', $event)"
+          :model-value="currentVM.get('deliveryAddress').lastname"
+          @update:model-value="deliveryFieldChanged('lastname', $event)"
         )
       UFormGroup.col-span-2(:label="$t('orders.create.address')" name="deliveryAddress")
         ft-text-field(
@@ -88,15 +88,15 @@ div
       @update:model-value="sameAsDeliveryChanged"
     )
     .grid.grid-cols-2.gap-4(v-if="!currentVM.get('sameAsDelivery')")
-      UFormGroup(:label="$t('orders.create.addressName')" name="billingName")
+      UFormGroup(:label="$t('orders.create.firstname')" name="billingFirstname")
         ft-text-field(
-          :model-value="currentVM.get('billingAddress').name"
-          @update:model-value="billingFieldChanged('name', $event)"
+          :model-value="currentVM.get('billingAddress').firstname"
+          @update:model-value="billingFieldChanged('firstname', $event)"
         )
-      UFormGroup(:label="$t('orders.create.phone')" name="billingPhone")
+      UFormGroup(:label="$t('orders.create.lastname')" name="billingLastname")
         ft-text-field(
-          :model-value="currentVM.get('billingAddress').phone"
-          @update:model-value="billingFieldChanged('phone', $event)"
+          :model-value="currentVM.get('billingAddress').lastname"
+          @update:model-value="billingFieldChanged('lastname', $event)"
         )
       UFormGroup.col-span-2(:label="$t('orders.create.address')" name="billingAddress")
         ft-text-field(
@@ -162,11 +162,10 @@ const handleCustomerSelected = (customer: Customer) => {
     email: customer.email,
     phone: customer.phone
   })
-  const addressName = `${customer.firstname} ${customer.lastname}`
   currentVM.value.set('deliveryAddress', {
     ...currentVM.value.get('deliveryAddress'),
-    name: addressName,
-    phone: customer.phone
+    firstname: customer.firstname,
+    lastname: customer.lastname
   })
   customerSearch.value = ''
   searchStore.set(namespace, [])

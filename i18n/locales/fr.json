@@ -126,14 +126,17 @@
       "lastname": "Nom",
       "email": "Email",
       "phone": "Téléphone",
-      "addressName": "Nom",
+      "addressFirstname": "Prénom",
+      "addressLastname": "Nom",
       "address": "Adresse",
       "zip": "Code postal",
       "city": "Ville",
       "country": "Pays",
       "customer": "Client",
       "product": "Produit",
-      "weight": "Poids"
+      "weight": "Poids",
+      "deliveryMethodsLoadError": "Impossible de charger les modes de livraison",
+      "retry": "Réessayer"
     }
   },
   "dashboard": {

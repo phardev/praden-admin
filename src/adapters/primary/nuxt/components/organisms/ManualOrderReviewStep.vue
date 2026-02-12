@@ -17,20 +17,18 @@ div
     .border.rounded.p-4
       h3.text-lg.font-semibold.mb-3 {{ $t('orders.create.deliveryAddress') }}
       .text-sm
-        div {{ deliveryAddress.name }}
+        div {{ deliveryAddress.firstname }} {{ deliveryAddress.lastname }}
         div {{ deliveryAddress.address }}
         div {{ deliveryAddress.zip }} {{ deliveryAddress.city }}
         div {{ deliveryAddress.country }}
-        div {{ deliveryAddress.phone }}
 
     .border.rounded.p-4
       h3.text-lg.font-semibold.mb-3 {{ $t('orders.create.billingAddress') }}
       .text-sm
-        div {{ billingAddress.name }}
+        div {{ billingAddress.firstname }} {{ billingAddress.lastname }}
         div {{ billingAddress.address }}
         div {{ billingAddress.zip }} {{ billingAddress.city }}
         div {{ billingAddress.country }}
-        div {{ billingAddress.phone }}
 
     .border.rounded.p-4
       h3.text-lg.font-semibold.mb-3 {{ $t('orders.create.productsStep') }}

@@ -2,7 +2,10 @@
 div
   .mb-6
     h3.text-lg.font-semibold.mb-4 {{ $t('orders.create.deliveryMethod') }}
-    .space-y-3
+    .p-4.text-center.text-red-500(v-if="loadError && deliveryMethods.length === 0")
+      p.mb-2 {{ $t('orders.create.deliveryMethodsLoadError') }}
+      UButton(color="gray" @click="retryLoad") {{ $t('orders.create.retry') }}
+    .space-y-3(v-else)
       .p-4.border.rounded.cursor-pointer.transition-colors(
         v-for="method in deliveryMethods"
         :key="method.uuid"
@@ -43,8 +46,10 @@ const props = defineProps<{
   vm: CreateOrderVM
 }>()
 
+const { t } = useI18n()
 const currentVM = toRef(props, 'vm')
 const deliveryMethodStore = useDeliveryMethodStore()
+const loadError = ref(false)
 
 const formatter = new Intl.NumberFormat('fr-FR', {
   style: 'currency',
@@ -75,9 +80,27 @@ const customerMessageChanged = (value: string) => {
   currentVM.value.set('customerMessage', value || undefined)
 }
 
+const loadDeliveryMethods = async () => {
+  loadError.value = false
+  try {
+    await listDeliveryMethods(useDeliveryMethodGateway())
+  } catch {
+    loadError.value = true
+    const toast = useToast()
+    toast.add({
+      title: t('error.unknown'),
+      color: 'red'
+    })
+  }
+}
+
+const retryLoad = () => {
+  loadDeliveryMethods()
+}
+
 onMounted(() => {
   if (deliveryMethodStore.items.length === 0) {
-    listDeliveryMethods(useDeliveryMethodGateway())
+    loadDeliveryMethods()
   }
 })
 </script>

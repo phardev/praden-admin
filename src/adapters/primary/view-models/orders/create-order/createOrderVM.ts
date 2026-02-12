@@ -41,12 +41,12 @@ export interface CreateOrderVM {
 }
 
 const EMPTY_ADDRESS = {
-  name: '',
+  firstname: '',
+  lastname: '',
   address: '',
   zip: '',
   city: '',
-  country: '',
-  phone: ''
+  country: ''
 }
 
 const EMPTY_CUSTOMER = {
@@ -78,12 +78,12 @@ const isCustomerStepValid = (state: any): boolean => {
     !!customer.lastname &&
     !!customer.email &&
     !!customer.phone &&
-    !!address.name &&
+    !!address.firstname &&
+    !!address.lastname &&
     !!address.address &&
     !!address.zip &&
     !!address.city &&
-    !!address.country &&
-    !!address.phone
+    !!address.country
   )
 }
 
