@@ -2,6 +2,7 @@ import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemor
 import { Order } from '@core/entities/order'
 import { DateProvider } from '@core/gateways/dateProvider'
 import { UUID } from '@core/types/types'
+import type { CreateManualOrderDTO } from '@core/usecases/order/manual-order-creation/createManualOrder'
 
 export class InMemoryTimoutOrderGateway extends InMemoryOrderGateway {
   private readonly timeoutInMs: number
@@ -71,6 +72,14 @@ export class InMemoryTimoutOrderGateway extends InMemoryOrderGateway {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.cancelPreparation(preparation))
+      }, this.timeoutInMs)
+    })
+  }
+
+  override async create(dto: CreateManualOrderDTO): Promise<Order> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(super.create(dto))
       }, this.timeoutInMs)
     })
   }
