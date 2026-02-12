@@ -6,16 +6,19 @@
     template(#header)
       h2.text-subtitle {{ $t('loyalty.config.title') }}
     .space-y-4
-      UFormGroup(:label="$t('loyalty.config.earningRate')" name="earningRate")
-        UInput(
-          v-model.number="earningRate"
-          type="number"
-          min="0"
-          step="0.1"
-        )
-        p.text-sm.text-gray-500.mt-1 {{ $t('loyalty.config.earningRateDescription') }}
+      p.font-medium {{ $t('loyalty.config.earningRule') }}
+      .flex.items-center.gap-2.flex-wrap
+        span {{ $t('loyalty.config.earningRulePrefix') }}
+        UInput.w-20(v-model.number="pointsPerThreshold" type="number" min="1" step="1")
+        span {{ $t('loyalty.config.earningRulePoints') }}
+        UInput.w-24(v-model.number="eurosPerThreshold" type="number" min="1" step="1")
+        span {{ $t('loyalty.config.earningRuleSuffix') }}
+      .bg-gray-50.rounded-lg.p-4.space-y-1(v-if="eurosPerThreshold > 0 && pointsPerThreshold > 0")
+        p.text-sm.font-medium.text-gray-600 {{ $t('loyalty.config.earningRulePreview') }}
+        p.text-sm.text-gray-500(v-for="example in previewExamples" :key="example.amount")
+          | {{ $t('loyalty.config.earningRuleExample', { amount: example.amount, points: example.points }) }}
       .flex.justify-end
-        ft-button.button-solid(@click="saveConfig") {{ $t('loyalty.config.save') }}
+        ft-button.button-solid(:loading="vm.isLoading" @click="saveConfig") {{ $t('loyalty.config.save') }}
 
   UCard.mt-6
     template(#header)
@@ -48,7 +51,12 @@
 </template>
 
 <script lang="ts" setup>
-import { loyaltyConfigVM } from '@adapters/primary/view-models/loyalty/loyalty-config-vm/loyaltyConfigVM'
+import {
+  earningRateToForm,
+  formToEarningRate,
+  loyaltyConfigVM,
+  previewPoints
+} from '@adapters/primary/view-models/loyalty/loyalty-config-vm/loyaltyConfigVM'
 import type { UUID } from '@core/types/types'
 import { createMultiplier } from '@core/usecases/loyalty/create-multiplier/createMultiplier'
 import { deleteMultiplier } from '@core/usecases/loyalty/delete-multiplier/deleteMultiplier'
@@ -59,11 +67,24 @@ import { useLoyaltyGateway } from '../../../../../../gateways/loyaltyGateway'
 definePageMeta({ layout: 'main' })
 
 const { t } = useI18n()
+const toast = useToast()
 const loyaltyGateway = useLoyaltyGateway()
-const earningRate = ref(0)
+const pointsPerThreshold = ref(1)
+const eurosPerThreshold = ref(10)
 const showMultiplierModal = ref(false)
 
 const vm = computed(() => loyaltyConfigVM())
+
+const previewExamples = computed(() => {
+  const rate = formToEarningRate(
+    pointsPerThreshold.value,
+    eurosPerThreshold.value
+  )
+  return [25, 9.99, 50].map((amount) => ({
+    amount: amount.toFixed(2).replace('.', ','),
+    points: previewPoints(amount, rate)
+  }))
+})
 
 const multiplierColumns = [
   { key: 'startDate', label: t('loyalty.multipliers.startDate') },
@@ -82,9 +103,10 @@ const statusColor = (status: string) => {
 onMounted(async () => {
   try {
     await getLoyaltyConfig(loyaltyGateway)
-    earningRate.value = vm.value.earningRate
+    const form = earningRateToForm(vm.value.earningRate)
+    pointsPerThreshold.value = form.points
+    eurosPerThreshold.value = form.euros
   } catch {
-    const toast = useToast()
     toast.add({
       title: t('error.unknown'),
       color: 'red'
@@ -93,7 +115,22 @@ onMounted(async () => {
 })
 
 const saveConfig = async () => {
-  await saveLoyaltyConfig(earningRate.value, loyaltyGateway)
+  const rate = formToEarningRate(
+    pointsPerThreshold.value,
+    eurosPerThreshold.value
+  )
+  try {
+    await saveLoyaltyConfig(rate, loyaltyGateway)
+    toast.add({
+      title: t('loyalty.config.saved'),
+      color: 'green'
+    })
+  } catch {
+    toast.add({
+      title: t('error.unknown'),
+      color: 'red'
+    })
+  }
 }
 
 const onMultiplierCreated = async (data: {

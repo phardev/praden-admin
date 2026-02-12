@@ -8,7 +8,12 @@ import {
 } from '@utils/testData/loyaltyConfig'
 import { createPinia, setActivePinia } from 'pinia'
 import type { LoyaltyConfigVM } from './loyaltyConfigVM'
-import { loyaltyConfigVM } from './loyaltyConfigVM'
+import {
+  earningRateToForm,
+  formToEarningRate,
+  loyaltyConfigVM,
+  previewPoints
+} from './loyaltyConfigVM'
 
 describe('Loyalty config VM', () => {
   let loyaltyStore: ReturnType<typeof useLoyaltyStore>
@@ -43,6 +48,11 @@ describe('Loyalty config VM', () => {
         multipliers: [],
         isLoading: false
       })
+    })
+
+    it('should return empty multipliers when multipliers is undefined', () => {
+      loyaltyStore.setConfig({ earningRate: 1 } as LoyaltyConfig)
+      expect(loyaltyConfigVM().multipliers).toStrictEqual([])
     })
   })
 
@@ -130,4 +140,38 @@ describe('Loyalty config VM', () => {
   const givenConfig = (config: LoyaltyConfig) => {
     loyaltyStore.setConfig(config)
   }
+})
+
+describe('earningRateToForm', () => {
+  it('should convert 0.001 to 1 point per 10 euros', () => {
+    expect(earningRateToForm(0.001)).toStrictEqual({ points: 1, euros: 10 })
+  })
+
+  it('should convert 0.01 to 1 point per 1 euro', () => {
+    expect(earningRateToForm(0.01)).toStrictEqual({ points: 1, euros: 1 })
+  })
+})
+
+describe('formToEarningRate', () => {
+  it('should convert 1 point per 10 euros to 0.001', () => {
+    expect(formToEarningRate(1, 10)).toStrictEqual(0.001)
+  })
+
+  it('should convert 1 point per 1 euro to 0.01', () => {
+    expect(formToEarningRate(1, 1)).toStrictEqual(0.01)
+  })
+})
+
+describe('previewPoints', () => {
+  it('should floor 25 euros at 0.001 rate to 2 points', () => {
+    expect(previewPoints(25, 0.001)).toStrictEqual(2)
+  })
+
+  it('should floor 9.99 euros at 0.001 rate to 0 points', () => {
+    expect(previewPoints(9.99, 0.001)).toStrictEqual(0)
+  })
+
+  it('should calculate 50 euros at 0.001 rate to 5 points', () => {
+    expect(previewPoints(50, 0.001)).toStrictEqual(5)
+  })
 })

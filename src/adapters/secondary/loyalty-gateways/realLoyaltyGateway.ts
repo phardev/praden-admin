@@ -37,7 +37,10 @@ export class RealLoyaltyGateway extends RealGateway implements LoyaltyGateway {
 
   async getConfig(): Promise<LoyaltyConfig> {
     const res = await axiosWithBearer.get(`${this.baseUrl}/loyalty/config`)
-    return res.data
+    return {
+      earningRate: res.data.config.earningRate,
+      multipliers: res.data.multipliers
+    }
   }
 
   async saveConfig(earningRate: number): Promise<LoyaltyConfig> {

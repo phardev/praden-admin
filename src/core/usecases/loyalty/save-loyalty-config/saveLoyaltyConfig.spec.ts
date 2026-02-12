@@ -41,6 +41,21 @@ describe('Save loyalty config', () => {
     })
   })
 
+  describe('Loading', () => {
+    it('should be aware during loading', async () => {
+      const unsubscribe = store.$subscribe((mutation: any, state: any) => {
+        expect(state.isLoading).toBe(true)
+        unsubscribe()
+      })
+      await whenSaveLoyaltyConfig(1)
+    })
+
+    it('should be aware that loading is over', async () => {
+      await whenSaveLoyaltyConfig(1)
+      expect(store.isLoading).toBe(false)
+    })
+  })
+
   const givenConfig = (config: LoyaltyConfig) => {
     gateway.feedWithConfig(config)
   }

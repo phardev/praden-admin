@@ -5,7 +5,12 @@ export const saveLoyaltyConfig = async (
   earningRate: number,
   loyaltyGateway: LoyaltyGateway
 ): Promise<void> => {
-  const config = await loyaltyGateway.saveConfig(earningRate)
   const store = useLoyaltyStore()
-  store.setConfig(config)
+  try {
+    store.startLoading()
+    const config = await loyaltyGateway.saveConfig(earningRate)
+    store.setConfig(config)
+  } finally {
+    store.stopLoading()
+  }
 }

@@ -41,6 +41,25 @@ const computeStatus = (
   return MultiplierStatus.Active
 }
 
+export const earningRateToForm = (
+  earningRate: number
+): { points: number; euros: number } => {
+  const euros = Math.round(1 / (earningRate * 100))
+  return { points: 1, euros: Math.max(euros, 1) }
+}
+
+export const formToEarningRate = (points: number, euros: number): number => {
+  return points / (euros * 100)
+}
+
+export const previewPoints = (
+  orderEuros: number,
+  earningRate: number
+): number => {
+  const amountCents = Math.round(orderEuros * 100)
+  return Math.floor(amountCents * earningRate)
+}
+
 export const loyaltyConfigVM = (): LoyaltyConfigVM => {
   const loyaltyStore = useLoyaltyStore()
   const config = loyaltyStore.config
@@ -55,7 +74,7 @@ export const loyaltyConfigVM = (): LoyaltyConfigVM => {
 
   return {
     earningRate: config.earningRate,
-    multipliers: config.multipliers.map((m) => ({
+    multipliers: (config.multipliers ?? []).map((m) => ({
       uuid: m.uuid,
       startDate: formatDate(m.startDate),
       endDate: formatDate(m.endDate),

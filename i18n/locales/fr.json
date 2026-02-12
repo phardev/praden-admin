@@ -546,8 +546,12 @@
     "title": "Programme de fidélité",
     "config": {
       "title": "Configuration",
-      "earningRate": "Taux de gain",
-      "earningRateDescription": "Points gagnés par euro dépensé",
+      "earningRule": "Règle de gain",
+      "earningRulePrefix": "Le client gagne",
+      "earningRulePoints": "point(s) tous les",
+      "earningRuleSuffix": "€",
+      "earningRulePreview": "Aperçu",
+      "earningRuleExample": "Commande de {amount} € → {points} point(s)",
       "save": "Enregistrer",
       "saved": "Configuration enregistrée"
     },
@@ -583,7 +587,9 @@
         "reason": "Raison du crédit",
         "confirm": "Créditer",
         "cancel": "Annuler"
-      }
+      },
+      "creditSuccess": "Points crédités avec succès",
+      "creditError": "Erreur lors du crédit des points"
     }
   }
 }
