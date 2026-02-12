@@ -1,11 +1,5 @@
 {
   "name": "plop",
-  "home": {
-    "christmas": {
-      "title": "Joyeuses Fêtes de fin d'année !",
-      "message": "Nous vous souhaitons des joyeuses fêtes de fin d'année !"
-    }
-  },
   "validation": {
     "name": {
       "required": "Le nom est requis."
@@ -49,6 +43,13 @@
     "active": "Actif",
     "inactive": "Inactif"
   },
+  "categories": {
+    "status": {
+      "label": "Statut",
+      "active": "Activée",
+      "inactive": "Désactivée"
+    }
+  },
   "deliveryPriceRules": {
     "title": "Règles de prix de livraison",
     "create": "Créer une règle",
@@ -91,10 +92,56 @@
     "supportTickets": "Tickets de support"
   },
   "orders": {
-    "supportTickets": "Tickets de support"
+    "supportTickets": "Tickets de support",
+    "createOrder": "Créer une commande",
+    "create": {
+      "customerStep": "Client",
+      "productsStep": "Produits",
+      "deliveryStep": "Livraison",
+      "reviewStep": "Récapitulatif",
+      "searchCustomer": "Rechercher un client...",
+      "createNewCustomer": "Créer un nouveau client",
+      "searchProduct": "Rechercher un produit...",
+      "quantity": "Quantité",
+      "unitPrice": "Prix unitaire HT",
+      "lineTotal": "Total TTC",
+      "orderTotal": "Total commande",
+      "deliveryMethod": "Mode de livraison",
+      "deliveryPrice": "Frais de livraison",
+      "promotionCode": "Code promo",
+      "applyPromo": "Appliquer",
+      "customerMessage": "Message client",
+      "sameAsDelivery": "Identique à l'adresse de livraison",
+      "billingAddress": "Adresse de facturation",
+      "deliveryAddress": "Adresse de livraison",
+      "review": "Vérifier et confirmer",
+      "confirm": "Confirmer la commande",
+      "back": "Retour",
+      "next": "Suivant",
+      "addProduct": "Ajouter un produit",
+      "removeProduct": "Retirer",
+      "overridePrice": "Modifier le prix",
+      "noProducts": "Aucun produit ajouté",
+      "firstname": "Prénom",
+      "lastname": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "addressFirstname": "Prénom",
+      "addressLastname": "Nom",
+      "address": "Adresse",
+      "zip": "Code postal",
+      "city": "Ville",
+      "country": "Pays",
+      "customer": "Client",
+      "product": "Produit",
+      "weight": "Poids",
+      "deliveryMethodsLoadError": "Impossible de charger les modes de livraison",
+      "retry": "Réessayer"
+    }
   },
   "dashboard": {
     "title": "Tableau de bord",
+    "filenamePrefix": "produits-plus-vendus",
     "selectDateRange": "Sélectionner une période",
     "productLimit": "Nombre de produits",
     "promotionOnly": "Produits en promotion uniquement",
@@ -117,12 +164,30 @@
     "laboratoriesDistribution": "Répartition des ventes par laboratoire",
     "categoriesDistribution": "Répartition des ventes par catégorie",
     "productStockDistribution": "Répartition des produits par stock disponible",
+    "evolution": {
+      "title": "Évolution par rapport à l'année précédente",
+      "titleSuffix": "Chiffre d'affaire",
+      "salesLabel": "Ventes",
+      "turnoverLabel": "CA"
+    },
     "topProducts": {
       "title": "Produits les plus vendus",
       "productName": "Nom du produit",
+      "ean13": "EAN13",
       "categories": "Catégories",
       "laboratory": "Laboratoire",
-      "orderCount": "Nombre de boites vendues"
+      "orderCount": "Nombre de boites vendues",
+      "downloadCsv": "Télécharger CSV"
+    },
+    "userStatistics": {
+      "title": "Statistiques Utilisateurs",
+      "totalCustomers": "Clients inscrits",
+      "customersWithOrders": "Clients avec commande",
+      "newsletterSubscribers": "Abonnés newsletter",
+      "monthlyTrend": "Tendance mensuelle des inscriptions newsletter",
+      "adoptionRate": "Taux d'adoption newsletter",
+      "subscribers": "Abonnés",
+      "nonSubscribers": "Non-abonnés"
     }
   },
   "preparations": {

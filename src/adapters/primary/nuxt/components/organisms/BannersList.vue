@@ -44,6 +44,7 @@ tab-group.border-b.border-gray-200(as="div")
 
 <script lang="ts" setup>
 import BannerListItem from '@adapters/primary/nuxt/components/molecules/BannerListItem.vue'
+import type { Banner } from '@core/entities/banner'
 import { reorderBanners } from '@core/usecases/banners/banners-reorder/reorderBanners'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue'
 import draggable from 'vuedraggable'
@@ -60,7 +61,7 @@ const props = defineProps({
   }
 })
 
-const allBanners = ref([])
+const allBanners = ref<Banner[]>([])
 
 watch(
   () => props.bannersVm,

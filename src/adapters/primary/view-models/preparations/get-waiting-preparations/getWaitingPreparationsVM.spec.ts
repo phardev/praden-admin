@@ -77,6 +77,7 @@ describe('Get orders to prepare VM', () => {
                   reference: orderWaitingForClientAnswer2.uuid,
                   href: `/preparations/${orderWaitingForClientAnswer2.uuid}`,
                   client: "J. D'arc",
+                  carrier: 'Pharmacie',
                   createdDate: '21 janv. 2023, 03:59',
                   createdDatetime: new Date('2023-01-21T03:59:59.954Z'),
                   total: '19,75\u00A0€'
@@ -85,6 +86,7 @@ describe('Get orders to prepare VM', () => {
                   reference: orderWaitingForClientAnswer1.uuid,
                   href: `/preparations/${orderWaitingForClientAnswer1.uuid}`,
                   client: 'J. Bon',
+                  carrier: 'Pharmacie',
                   createdDate: '21 janv. 2023, 04:03',
                   createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
                   total: '11,00\u00A0€'
@@ -117,6 +119,7 @@ describe('Get orders to prepare VM', () => {
                   reference: orderInPreparation1.uuid,
                   href: `/preparations/${orderInPreparation1.uuid}`,
                   client: 'J. Bon',
+                  carrier: 'Pharmacie',
                   createdDate: '5 févr. 2023, 02:33',
                   createdDatetime: new Date('2023-02-05T02:33:40.539Z'),
                   total: '11,00\u00A0€'

@@ -123,9 +123,17 @@ div(v-if="permissions.canAccessDashboard")
           .text-center
             h3.text-lg.font-medium {{ stat.title }}
         template(#default)
-          .text-center
-            p.text-3xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
-            p.text-sm.text-gray-500 {{ stat.description }}
+          .flex.justify-center.gap-6(v-if="stat.showDualYear")
+            .text-center
+              p.text-xs.text-gray-500.mb-1.font-medium {{ previousYear }}
+              p.text-xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.previousYearValue : areProductFiltersApplied ? 'N/A' : stat.previousYearValue }}
+            .border-l.border-gray-200
+            .text-center
+              p.text-xs.text-gray-500.mb-1.font-medium {{ currentYear }}
+              p.text-xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
+          .text-center(v-else)
+            p.text-2xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
+          p.text-sm.text-gray-500.text-center.mt-2 {{ stat.description }}
 
     .grid.grid-cols-1.gap-6.mb-8(class="lg:grid-cols-2")
       UCard
@@ -133,13 +141,23 @@ div(v-if="permissions.canAccessDashboard")
           h3.text-lg.font-medium {{ $t('dashboard.monthlySales') }}
         template(#default)
           .h-80
-            MonthlySalesChart(:data="dashboard.monthlySales")
+            MonthlySalesChart(:data="dashboard.previousYearMonthlySales" :next-year-data="dashboard.monthlySales")
       UCard
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.monthlyTurnover') }}
         template(#default)
           .h-80
-            MonthlyTurnoverChart(:data="dashboard.monthlySales")
+            MonthlyTurnoverChart(:data="dashboard.previousYearMonthlySales" :next-year-data="dashboard.monthlySales")
+
+    UCard.mb-8(v-if="dashboard.previousYearMonthlySales.length > 0")
+      template(#header)
+        h3.text-lg.font-medium {{ $t('dashboard.evolution.title') }} (
+          span.text-primary {{ $t('dashboard.evolution.titleSuffix') }}
+          | )
+      template(#default)
+        MonthlyEvolutionChart(:current-year-data="dashboard.monthlySales" :previous-year-data="dashboard.previousYearMonthlySales")
+
+    .grid.grid-cols-1.gap-6.mb-8(class="lg:grid-cols-2")
       UCard()
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.categoriesDistribution') }}
@@ -163,7 +181,7 @@ div(v-if="permissions.canAccessDashboard")
           h3.text-lg.font-medium {{ $t('dashboard.monthlyDeliveryPrice') }}
         template(#default)
           .h-80
-            MonthlyDeliveryPriceChart(:data="dashboard.monthlySales")
+            MonthlyDeliveryPriceChart(:data="dashboard.previousYearMonthlySales" :next-year-data="dashboard.monthlySales")
       UCard(v-if="!areDateFiltersApplied")
         template(#header)
           h3.text-lg.font-medium {{ $t('dashboard.productStockDistribution') }}
@@ -175,11 +193,58 @@ div(v-if="permissions.canAccessDashboard")
           h3.text-lg.font-medium {{ $t('dashboard.monthlyCanceledTurnover') }}
         template(#default)
           .h-80
-            MonthlyCanceledTurnoverChart(:data="dashboard.monthlySales")
+            MonthlyCanceledTurnoverChart(:data="dashboard.previousYearMonthlySales" :next-year-data="dashboard.monthlySales")
+
+    h3.text-lg.font-bold.text-primary-700.mb-4.mt-8(v-if="!areProductFiltersApplied") {{ $t('dashboard.userStatistics.title') }}
+    .grid.grid-cols-1.gap-4.mb-8(v-if="!areProductFiltersApplied" class="md:grid-cols-3")
+      UCard
+        template(#header)
+          .text-center
+            h3.text-lg.font-medium {{ $t('dashboard.userStatistics.totalCustomers') }}
+        template(#default)
+          .text-center
+            p.text-2xl.font-bold {{ dashboard.userStatistics.totalCustomers.toLocaleString() }}
+      UCard
+        template(#header)
+          .text-center
+            h3.text-lg.font-medium {{ $t('dashboard.userStatistics.customersWithOrders') }}
+        template(#default)
+          .text-center
+            p.text-2xl.font-bold {{ dashboard.userStatistics.customersWithOrders.toLocaleString() }}
+      UCard
+        template(#header)
+          .text-center
+            h3.text-lg.font-medium {{ $t('dashboard.userStatistics.newsletterSubscribers') }}
+        template(#default)
+          .text-center
+            p.text-2xl.font-bold {{ dashboard.userStatistics.newsletterSubscribers.toLocaleString() }}
+    .grid.grid-cols-1.gap-6.mb-8(v-if="!areProductFiltersApplied" class="lg:grid-cols-2")
+      UCard
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.userStatistics.monthlyTrend') }}
+        template(#default)
+          .h-80
+            MonthlyNewsletterChart(:data="dashboard.userStatistics.monthlyNewsletterSubscriptions")
+      UCard
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.userStatistics.adoptionRate') }}
+        template(#default)
+          .h-80
+            NewsletterAdoptionPieChart(:data="dashboard.userStatistics.newsletterAdoptionRate")
 
     UCard.mt-16
       template(#header)
-        h3.text-lg.font-medium {{ $t('dashboard.topProducts.title') }}
+        .flex.justify-between.items-center
+          h3.text-lg.font-medium {{ $t('dashboard.topProducts.title') }}
+          UButton(
+            color="primary"
+            variant="soft"
+            icon="i-heroicons-arrow-down-tray"
+            size="sm"
+            :disabled="dashboard.topProducts.length === 0"
+            @click="downloadTopProductsCsv"
+          )
+            | {{ $t('dashboard.topProducts.downloadCsv') }}
       template(#default)
         UTable(:columns="topProductsColumns" :rows="dashboard.topProducts")
           template(#categories-data="{ row }")
@@ -198,12 +263,18 @@ div.p-8.text-center(v-else)
 
 <script lang="ts" setup>
 import { useUserProfileStore } from '@store/userProfileStore'
+import { formatCurrency } from '@utils/formatters'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import { formatCurrency } from '@/src/utils/formatters'
 import { useCategoryGateway } from '../../../../../../gateways/categoryGateway'
+import { useDateProvider } from '../../../../../../gateways/dateProvider'
+import { useFileDownloadService } from '../../../../../../gateways/fileDownloadService'
 import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
 import { listCategories } from '../../../../../core/usecases/categories/list-categories/listCategories'
+import {
+  type ExportTopProductsLabels,
+  exportTopProductsCSV
+} from '../../../../../core/usecases/dashboard/export-top-products-csv/exportTopProductsCSV'
 import { listLaboratories } from '../../../../../core/usecases/laboratories/laboratory-listing/listLaboratories'
 import { getCategoriesVM } from '../../../view-models/categories/get-categories/getCategoriesVM'
 import { getLaboratoriesVM } from '../../../view-models/laboratories/get-laboratories/getLaboratoriesVM'
@@ -211,6 +282,8 @@ import { getPermissionsVM } from '../../../view-models/permissions/getPermission
 import CategoriesPieChart from '../../components/molecules/CategoriesPieChart.vue'
 import DeliveryMethodsPieChart from '../../components/molecules/DeliveryMethodsPieChart.vue'
 import LaboratoriesPieChart from '../../components/molecules/LaboratoriesPieChart.vue'
+import MonthlyNewsletterChart from '../../components/molecules/MonthlyNewsletterChart.vue'
+import NewsletterAdoptionPieChart from '../../components/molecules/NewsletterAdoptionPieChart.vue'
 import ProductStockPieChart from '../../components/molecules/ProductStockPieChart.vue'
 import { useDashboardData } from '../../composables/useDashboardData'
 
@@ -256,36 +329,69 @@ const categoriesVM = computed(() => {
 const areProductFiltersApplied = ref(false)
 const areDateFiltersApplied = ref(false)
 
+const currentYear = computed(() => {
+  if (endDate.value) {
+    return new Date(endDate.value).getFullYear().toString()
+  }
+  return new Date().getFullYear().toString()
+})
+
+const previousYear = computed(() => {
+  if (endDate.value) {
+    return (new Date(endDate.value).getFullYear() - 1).toString()
+  }
+  return (new Date().getFullYear() - 1).toString()
+})
+
 const statsCards = computed(() => [
   {
     title: t('dashboard.totalSales'),
     value: dashboard.value.totalSales.count.toLocaleString(),
+    previousYearValue:
+      dashboard.value.previousYearTotalSales.count.toLocaleString(),
     description: t('dashboard.orders'),
-    isApplicableWithProductFilters: true
+    isApplicableWithProductFilters: true,
+    showDualYear: true
   },
   {
     title: t('dashboard.totalTurnover'),
     value: formatCurrency(dashboard.value.totalSales.turnover),
+    previousYearValue: formatCurrency(
+      dashboard.value.previousYearTotalSales.turnover
+    ),
     description: t('dashboard.revenue'),
-    isApplicableWithProductFilters: true
+    isApplicableWithProductFilters: true,
+    showDualYear: true
   },
   {
     title: t('dashboard.canceledTurnover'),
     value: formatCurrency(dashboard.value.totalSales.canceledTurnover),
+    previousYearValue: formatCurrency(
+      dashboard.value.previousYearTotalSales.canceledTurnover
+    ),
     description: t('dashboard.canceledRevenue'),
-    isApplicableWithProductFilters: true
+    isApplicableWithProductFilters: true,
+    showDualYear: false
   },
   {
     title: t('dashboard.deliveryPrice'),
     value: formatCurrency(dashboard.value.totalSales.deliveryPrice),
+    previousYearValue: formatCurrency(
+      dashboard.value.previousYearTotalSales.deliveryPrice
+    ),
     description: t('dashboard.deliveryRevenue'),
-    isApplicableWithProductFilters: false
+    isApplicableWithProductFilters: false,
+    showDualYear: false
   },
   {
     title: t('dashboard.averageBasket'),
     value: formatCurrency(dashboard.value.totalSales.averageBasketValue),
+    previousYearValue: formatCurrency(
+      dashboard.value.previousYearTotalSales.averageBasketValue
+    ),
     description: t('dashboard.perOrder'),
-    isApplicableWithProductFilters: false
+    isApplicableWithProductFilters: false,
+    showDualYear: false
   }
 ])
 
@@ -293,6 +399,10 @@ const topProductsColumns = [
   {
     key: 'name',
     label: t('dashboard.topProducts.productName')
+  },
+  {
+    key: 'ean13',
+    label: t('dashboard.topProducts.ean13')
   },
   {
     key: 'categories',
@@ -463,5 +573,20 @@ const laboratorySearch = (query: string) => {
     const normalizedName = normalizeText(optionName)
     return normalizedName.includes(normalizedQuery)
   })
+}
+
+const downloadTopProductsCsv = () => {
+  const labels: ExportTopProductsLabels = {
+    filenamePrefix: t('dashboard.filenamePrefix'),
+    productName: t('dashboard.topProducts.productName'),
+    ean13: t('dashboard.topProducts.ean13'),
+    orderCount: t('dashboard.topProducts.orderCount')
+  }
+  exportTopProductsCSV(
+    dashboard.value.topProducts,
+    useFileDownloadService(),
+    useDateProvider(),
+    labels
+  )
 }
 </script>

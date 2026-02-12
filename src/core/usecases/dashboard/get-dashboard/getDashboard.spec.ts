@@ -1,5 +1,5 @@
-import { Dashboard } from '@core/entities/dashboard'
-import { DashboardParams } from '@core/gateways/dashboardGateway'
+import type { Dashboard } from '@core/entities/dashboard'
+import type { DashboardParams } from '@core/gateways/dashboardGateway'
 import { InMemoryDashboardGateway } from '@core/usecases/dashboard/get-dashboard/inMemoryDashboardGateway'
 import { useStatsStore } from '@store/statsStore'
 import { createPinia, setActivePinia } from 'pinia'
@@ -18,6 +18,24 @@ describe('GetDashboard', () => {
     params = {}
     mockData = {
       monthlySales: [
+        {
+          month: '2026-01',
+          count: 220,
+          turnover: 1100000,
+          averageBasketValue: 5000,
+          canceledTurnover: 0,
+          deliveryPrice: 0
+        },
+        {
+          month: '2026-02',
+          count: 330,
+          turnover: 1650000,
+          averageBasketValue: 5000,
+          canceledTurnover: 0,
+          deliveryPrice: 0
+        }
+      ],
+      previousYearMonthlySales: [
         {
           month: '2025-01',
           count: 200,
@@ -44,6 +62,13 @@ describe('GetDashboard', () => {
         }
       ],
       totalSales: {
+        count: 550,
+        turnover: 2750000,
+        averageBasketValue: 5000,
+        canceledTurnover: 0,
+        deliveryPrice: 0
+      },
+      previousYearTotalSales: {
         count: 1000,
         turnover: 4500000,
         averageBasketValue: 4500,
@@ -54,6 +79,7 @@ describe('GetDashboard', () => {
         {
           productUuid: 'product-1',
           name: 'Modilac Expert Riz 3 Lait dès 12 mois 800 g',
+          ean13: '3401598753214',
           count: 52,
           categories: [
             {
@@ -69,6 +95,7 @@ describe('GetDashboard', () => {
         {
           productUuid: 'product-2',
           name: 'Product 2',
+          ean13: '3401598753215',
           count: 45,
           categories: [
             {
@@ -84,6 +111,7 @@ describe('GetDashboard', () => {
         {
           productUuid: 'product-3',
           name: 'Product 3',
+          ean13: '3401598753216',
           count: 38,
           categories: [
             {
@@ -152,7 +180,20 @@ describe('GetDashboard', () => {
           count: 200,
           parentUuid: '67362b96-80f7-452b-9ef0-7b85b90d7608'
         }
-      ]
+      ],
+      userStatistics: {
+        totalCustomers: 1250,
+        customersWithOrders: 820,
+        newsletterSubscribers: 680,
+        monthlyNewsletterSubscriptions: [
+          { month: '2026-01', count: 78 },
+          { month: '2026-02', count: 86 }
+        ],
+        newsletterAdoptionRate: {
+          subscribers: 680,
+          nonSubscribers: 570
+        }
+      }
     }
     dashboardGateway.feedWith(mockData)
   })
@@ -183,23 +224,27 @@ describe('GetDashboard', () => {
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: mockData.monthlySales,
+      previousYearMonthlySales: mockData.previousYearMonthlySales,
       totalSales: mockData.totalSales,
+      previousYearTotalSales: mockData.previousYearTotalSales,
       topProducts: [mockData.topProducts[0], mockData.topProducts[1]],
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
       ordersByLaboratory: mockData.ordersByLaboratory,
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
-      productStockStats: mockData.productStockStats
+      productStockStats: mockData.productStockStats,
+      userStatistics: mockData.userStatistics
     })
   })
 
   it('should filter monthly sales based on date range', async () => {
     params = {
-      startDate: new Date('2025-02-01'),
-      endDate: new Date('2025-02-28')
+      startDate: new Date('2026-02-01'),
+      endDate: new Date('2026-02-28')
     }
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: [mockData.monthlySales[1]],
+      previousYearMonthlySales: mockData.previousYearMonthlySales,
       totalSales: {
         count: mockData.monthlySales[1].count,
         turnover: mockData.monthlySales[1].turnover,
@@ -207,11 +252,13 @@ describe('GetDashboard', () => {
         canceledTurnover: mockData.monthlySales[1].canceledTurnover,
         deliveryPrice: mockData.monthlySales[1].deliveryPrice
       },
+      previousYearTotalSales: mockData.previousYearTotalSales,
       topProducts: mockData.topProducts,
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
       ordersByLaboratory: mockData.ordersByLaboratory,
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
-      productStockStats: mockData.productStockStats
+      productStockStats: mockData.productStockStats,
+      userStatistics: mockData.userStatistics
     })
   })
 
@@ -222,12 +269,15 @@ describe('GetDashboard', () => {
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: mockData.monthlySales,
+      previousYearMonthlySales: mockData.previousYearMonthlySales,
       totalSales: mockData.totalSales,
+      previousYearTotalSales: mockData.previousYearTotalSales,
       topProducts: [mockData.topProducts[0]],
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
       ordersByLaboratory: mockData.ordersByLaboratory,
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
-      productStockStats: mockData.productStockStats
+      productStockStats: mockData.productStockStats,
+      userStatistics: mockData.userStatistics
     })
   })
 
@@ -238,12 +288,15 @@ describe('GetDashboard', () => {
     await whenGetDashboardData()
     expect(statsStore.dashboard).toStrictEqual({
       monthlySales: mockData.monthlySales,
+      previousYearMonthlySales: mockData.previousYearMonthlySales,
       totalSales: mockData.totalSales,
+      previousYearTotalSales: mockData.previousYearTotalSales,
       topProducts: [mockData.topProducts[2]],
       ordersByDeliveryMethod: mockData.ordersByDeliveryMethod,
       ordersByLaboratory: mockData.ordersByLaboratory,
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
-      productStockStats: mockData.productStockStats
+      productStockStats: mockData.productStockStats,
+      userStatistics: mockData.userStatistics
     })
   })
 

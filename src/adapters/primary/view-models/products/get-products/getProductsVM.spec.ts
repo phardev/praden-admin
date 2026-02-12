@@ -328,14 +328,40 @@ describe('Get products VM', () => {
     })
   })
 
+  describe('Search pagination', () => {
+    it('should expose hasMoreSearch from search store', () => {
+      searchStore.setPagination(key, { total: 100, from: 0, hasMore: true })
+      expectedVM = {
+        hasMoreSearch: true
+      }
+      expectVMToMatch(expectedVM)
+    })
+    it('should expose hasMoreSearch as false when no more results', () => {
+      searchStore.setPagination(key, { total: 10, from: 0, hasMore: false })
+      expectedVM = {
+        hasMoreSearch: false
+      }
+      expectVMToMatch(expectedVM)
+    })
+    it('should expose isSearchLoading from search store', () => {
+      searchStore.startLoading(key)
+      expectedVM = {
+        isSearchLoading: true
+      }
+      expectVMToMatch(expectedVM)
+    })
+  })
+
   const expectVMToMatch = (expectedVM: Partial<GetProductsVM>) => {
     const emptyVM: GetProductsVM = {
       headers: expectedHeaders,
       items: [],
       hasMore: false,
+      hasMoreSearch: false,
       currentSearch: undefined,
       searchError: undefined,
-      isLoading: false
+      isLoading: false,
+      isSearchLoading: false
     }
     expect(getProductsVM(key)).toMatchObject({ ...emptyVM, ...expectedVM })
   }

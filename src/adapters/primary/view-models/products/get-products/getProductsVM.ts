@@ -25,9 +25,11 @@ export interface GetProductsVM {
   headers: Array<Header>
   items: Array<GetProductsItemVM>
   hasMore: boolean
+  hasMoreSearch: boolean
   currentSearch: SearchProductsFilters | undefined
   searchError: string | undefined
   isLoading: boolean
+  isSearchLoading: boolean
 }
 
 export const getProductsVM = (key: string): GetProductsVM => {
@@ -38,6 +40,8 @@ export const getProductsVM = (key: string): GetProductsVM => {
   const searchResult = searchStore.get(key)
   const searchFilter = searchStore.getFilter(key)
   const searchError = searchStore.getError(key)
+  const hasMoreSearch = searchStore.hasMoreSearch(key)
+  const isSearchLoading = searchStore.isLoading(key)
   const products = searchResult !== undefined ? searchResult : allProducts
   const formatter = priceFormatter('fr-FR', 'EUR')
   const headers: Array<Header> = [
@@ -107,6 +111,8 @@ export const getProductsVM = (key: string): GetProductsVM => {
       ? 'Veuillez saisir au moins 3 caractères pour lancer la recherche.'
       : undefined,
     hasMore: productStore.hasMore.valueOf(),
-    isLoading
+    hasMoreSearch,
+    isLoading,
+    isSearchLoading
   }
 }

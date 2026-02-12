@@ -18,9 +18,9 @@ definePageMeta({ layout: 'main' })
 
 const vm = ref()
 const route = useRoute()
-const laboratoryUuid = route.params.uuid
+const laboratoryUuid = String(route.params.uuid)
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = String(router.currentRoute.value.name ?? '')
 
 onMounted(async () => {
   await getLaboratory(

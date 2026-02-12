@@ -82,7 +82,7 @@ import { useOrderGateway } from '../../../../../../gateways/orderGateway'
 definePageMeta({ layout: 'main' })
 
 const route = useRoute()
-const preparationUuid = route.params.uuid
+const preparationUuid = String(route.params.uuid)
 
 onMounted(() => {
   getPreparation(preparationUuid, useOrderGateway())

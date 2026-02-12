@@ -1,6 +1,9 @@
 <template lang="pug">
 .section
-  h1.text-page-title.flex-grow Commandes
+  .flex.items-center.justify-between.mb-4
+    h1.text-page-title.flex-grow Commandes
+    nuxt-link(to="/orders/new")
+      ft-button {{ $t('orders.createOrder') }}
   orders-list(:vm="ordersVM" :search-key="routeName")
 </template>
 
@@ -10,7 +13,7 @@ import { getOrdersVM } from '@adapters/primary/view-models/orders/get-orders/get
 definePageMeta({ layout: 'main' })
 
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = String(router.currentRoute.value.name ?? '')
 
 const ordersVM = computed(() => {
   return getOrdersVM(routeName)

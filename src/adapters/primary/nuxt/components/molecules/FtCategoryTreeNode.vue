@@ -7,7 +7,7 @@
       )
         .list-item(@click="toggle(item)")
           .flex.justify-between.items-center.p-2.cursor-pointer.bg-hover(
-            :class="{ 'parent-selected bg-contrast': hasSelectedChild(item) }"
+            :class="{ 'parent-selected bg-contrast': hasSelectedChild(item), 'grayscale opacity-60': item.data.status === 'INACTIVE' }"
           )
             div.flex.items-center.justify-center.space-x-4
               ft-checkbox(
@@ -20,14 +20,17 @@
               )
               img.w-8.h-8(:src="item.data.miniature")
               span {{ item.data.name }}
-            div.flex.items-center.justify-center
+            div.flex.items-center.justify-center.space-x-4
               icon.icon-md.text-link(
                 name="mdi-eye-outline"
-                @click.prevent="view(item.data.uuid)"
+                @click.stop.prevent="view(item.data.uuid)"
               ) Voir
+              ft-toggle(
+                :model-value="item.data.status === 'ACTIVE'"
+                @click.stop.prevent="toggleStatus(item.data.uuid, item.data.status)"
+              )
               span(
                 v-if="item.children.length"
-                class="ml-4"
               )
                 icon.icon-md(
                   v-if="isOpen(item.data.uuid)"
@@ -52,20 +55,27 @@
               @update:open-items="updateOpenItems"
               @selected="selected"
               @clicked.prevent="view"
+              @toggle-status="toggleStatus"
             )
 </template>
 <script setup lang="ts">
 import FtCheckbox from '@adapters/primary/nuxt/components/atoms/FtCheckbox.vue'
+import FtToggle from '@adapters/primary/nuxt/components/atoms/FtToggle.vue'
+import type {
+  TreeCategoryNodeVM,
+  TreeNode
+} from '@adapters/primary/view-models/categories/get-categories/getTreeCategoriesVM'
+import type { UUID } from '@core/types/types'
 
 const props = defineProps({
   items: {
-    type: Array,
+    type: Array<TreeNode<TreeCategoryNodeVM>>,
     default: () => {
       return []
     }
   },
   openItems: {
-    type: Array,
+    type: Array<UUID>,
     default: () => {
       return []
     }
@@ -90,7 +100,7 @@ const props = defineProps({
   }
 })
 
-const toggle = (item) => {
+const toggle = (item: TreeNode<TreeCategoryNodeVM>): void => {
   const uuid = item.data.uuid
   const newOpenItems = [...props.openItems]
   if (newOpenItems.includes(uuid)) {
@@ -101,21 +111,28 @@ const toggle = (item) => {
   updateOpenItems(newOpenItems)
 }
 
-const isSelected = (uuid) => props.selection.includes(uuid)
+const isSelected = (uuid: UUID): boolean => props.selection.includes(uuid)
 
-const isOpen = (uuid) => props.openItems.includes(uuid)
+const isOpen = (uuid: UUID): boolean => props.openItems.includes(uuid)
 
 const emit = defineEmits<{
   (e: 'view', uuid: string): void
   (e: 'selected', uuid: string): void
-  (e: 'update:open-items', items: Array<any>): void
+  (e: 'update:open-items', items: Array<UUID>): void
+  (e: 'toggle-status', uuid: string, currentStatus: string): void
 }>()
 
 const view = (uuid: string): void => {
   emit('view', uuid)
 }
 
-const updateOpenItems = (openItems: Array<any>): void => {
+const toggleStatus = (uuid: string, currentStatus: string): void => {
+  if (!props.disabled) {
+    emit('toggle-status', uuid, currentStatus)
+  }
+}
+
+const updateOpenItems = (openItems: Array<UUID>): void => {
   emit('update:open-items', openItems)
 }
 
@@ -125,31 +142,36 @@ const selected = async (uuid: string) => {
   }
 }
 
-const isIndeterminate = (item) => {
+const isIndeterminate = (item: TreeNode<TreeCategoryNodeVM>): boolean => {
   if (item.children.length === 0) return false
 
-  const childIndeterminateStates = item.children.map((child) =>
-    isIndeterminate(child)
+  const childIndeterminateStates = item.children.map(
+    (child: TreeNode<TreeCategoryNodeVM>) => isIndeterminate(child)
   )
-  const childSelectedStates = item.children.map((child) =>
-    isSelected(child.data.uuid)
+  const childSelectedStates = item.children.map(
+    (child: TreeNode<TreeCategoryNodeVM>) => isSelected(child.data.uuid)
   )
 
-  const hasSelectedChildren = childSelectedStates.some((state) => state)
-  const hasUnselectedChildren = childSelectedStates.some((state) => !state)
+  const hasSelectedChildren = childSelectedStates.some(
+    (state: boolean) => state
+  )
+  const hasUnselectedChildren = childSelectedStates.some(
+    (state: boolean) => !state
+  )
 
   return (
     (!isSelected(item.data.uuid) &&
       hasSelectedChildren &&
       hasUnselectedChildren) ||
-    childIndeterminateStates.some((state) => state)
+    childIndeterminateStates.some((state: boolean) => state)
   )
 }
 
-const hasSelectedChild = (item) => {
+const hasSelectedChild = (item: TreeNode<TreeCategoryNodeVM>): boolean => {
   if (!item.children || !item.children.length) return false
   return item.children.some(
-    (child) => isSelected(child.data.uuid) || hasSelectedChild(child)
+    (child: TreeNode<TreeCategoryNodeVM>) =>
+      isSelected(child.data.uuid) || hasSelectedChild(child)
   )
 }
 </script>
