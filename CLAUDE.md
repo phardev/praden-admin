@@ -62,6 +62,14 @@
 - Add to memory "A usecase NEVER returns a value"
 - Add to memory that we must import type in vue file
 
+## Async Operations UX
+
+All async operations MUST provide feedback:
+- Prefer **skeleton** over spinner (less jarring, shows structure)
+- Disable interactive elements during operation
+- Provide error feedback on failure
+- Consider optimistic updates with rollback
+
 ## Frontend Responsibilities
 
 ### Display Logic Only

@@ -25,23 +25,12 @@ describe('Get navigation menu VM', () => {
   })
 
   describe('User with no profile loaded', () => {
-    it('should return only unpermissioned links when no user profile is loaded', () => {
+    it('should return empty menu when no user profile is loaded', () => {
       whenGetNavigationMenuVM()
       expectVMToEqual({
         logo: fullMenu.logo,
         title: fullMenu.title,
-        sections: [
-          {
-            title: 'Clients',
-            links: [
-              {
-                name: 'Fidélité',
-                icon: 'mdi:star-outline',
-                href: '/loyalty'
-              }
-            ]
-          }
-        ]
+        sections: []
       })
     })
   })
@@ -94,11 +83,6 @@ describe('Get navigation menu VM', () => {
                 name: 'SAV',
                 icon: 'streamline:interface-help-customer-support-2-customer-headphones-headset-help-microphone-phone-person-support',
                 href: '/support'
-              },
-              {
-                name: 'Fidélité',
-                icon: 'mdi:star-outline',
-                href: '/loyalty'
               }
             ]
           },
