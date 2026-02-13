@@ -6,7 +6,10 @@
   customer-form(
     :vm="vm"
   )
-  h2.text-subtitle.mt-4 {{ $t('customers.ordersHistory') }}
+  .mt-8
+    customer-loyalty-points(:customer-uuid="customerUuid")
+
+  h2.text-subtitle.mt-8 {{ $t('customers.ordersHistory') }}
   orders-list(
     :vm="ordersVM"
     :search-key="routeName"
