@@ -22,6 +22,21 @@
 
   UCard.mt-6
     template(#header)
+      h2.text-subtitle {{ $t('loyalty.config.redemptionRate') }}
+    .space-y-4
+      .flex.items-center.gap-2.flex-wrap
+        span {{ $t('loyalty.config.redemptionRatePrefix') }}
+        UInput.w-24(v-model.number="eurosPerPoint" type="number" min="0.01" step="0.01")
+        span {{ $t('loyalty.config.redemptionRateSuffix') }}
+      .bg-gray-50.rounded-lg.p-4.space-y-1(v-if="eurosPerPoint > 0")
+        p.text-sm.font-medium.text-gray-600 {{ $t('loyalty.config.redemptionRatePreview') }}
+        p.text-sm.text-gray-500(v-for="example in redemptionPreviewExamples" :key="example.points")
+          | {{ $t('loyalty.config.redemptionRateExample', { points: example.points, amount: example.amount }) }}
+      .flex.justify-end
+        ft-button.button-solid(:loading="vm.isLoading" @click="saveConfig") {{ $t('loyalty.config.save') }}
+
+  UCard.mt-6
+    template(#header)
       .flex.justify-between.items-center
         h2.text-subtitle {{ $t('loyalty.multipliers.title') }}
         ft-button.button-solid(@click="showMultiplierModal = true") {{ $t('loyalty.multipliers.create') }}
@@ -55,7 +70,8 @@ import {
   earningRateToForm,
   formToEarningRate,
   loyaltyConfigVM,
-  previewPoints
+  previewPoints,
+  redemptionPreviewDiscount
 } from '@adapters/primary/view-models/loyalty/loyalty-config-vm/loyaltyConfigVM'
 import type { UUID } from '@core/types/types'
 import { createMultiplier } from '@core/usecases/loyalty/create-multiplier/createMultiplier'
@@ -71,6 +87,7 @@ const toast = useToast()
 const loyaltyGateway = useLoyaltyGateway()
 const pointsPerThreshold = ref(1)
 const eurosPerThreshold = ref(10)
+const eurosPerPoint = ref(1)
 const showMultiplierModal = ref(false)
 
 const vm = computed(() => loyaltyConfigVM())
@@ -83,6 +100,16 @@ const previewExamples = computed(() => {
   return [25, 9.99, 50].map((amount) => ({
     amount: amount.toFixed(2).replace('.', ','),
     points: previewPoints(amount, rate)
+  }))
+})
+
+const redemptionPreviewExamples = computed(() => {
+  const rateCentimes = Math.round(eurosPerPoint.value * 100)
+  return [10, 50, 100].map((points) => ({
+    points,
+    amount: redemptionPreviewDiscount(points, rateCentimes)
+      .toFixed(2)
+      .replace('.', ',')
   }))
 })
 
@@ -106,6 +133,7 @@ onMounted(async () => {
     const form = earningRateToForm(vm.value.earningRate)
     pointsPerThreshold.value = form.points
     eurosPerThreshold.value = form.euros
+    eurosPerPoint.value = vm.value.redemptionRate / 100
   } catch {
     toast.add({
       title: t('error.unknown'),
@@ -115,12 +143,13 @@ onMounted(async () => {
 })
 
 const saveConfig = async () => {
-  const rate = formToEarningRate(
+  const earningRate = formToEarningRate(
     pointsPerThreshold.value,
     eurosPerThreshold.value
   )
+  const redemptionRate = Math.round(eurosPerPoint.value * 100)
   try {
-    await saveLoyaltyConfig(rate, loyaltyGateway)
+    await saveLoyaltyConfig(earningRate, redemptionRate, loyaltyGateway)
     toast.add({
       title: t('loyalty.config.saved'),
       color: 'green'

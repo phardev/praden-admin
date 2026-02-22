@@ -1,4 +1,7 @@
-import type { CustomerLoyalty } from '@core/entities/loyaltyPointsTransaction'
+import type {
+  CustomerLoyalty,
+  LoyaltyPointsTransaction
+} from '@core/entities/loyaltyPointsTransaction'
 import { LoyaltyTransactionType } from '@core/entities/loyaltyPointsTransaction'
 import { useLoyaltyStore } from '@store/loyaltyStore'
 import {
@@ -82,6 +85,36 @@ describe('Customer loyalty VM', () => {
         orderUuid: undefined,
         reason: 'Compensation for delayed order',
         expiresAt: '15 nov. 2024',
+        isExpired: true
+      })
+    })
+  })
+
+  describe('Customer has redeemed transaction', () => {
+    it('should format redeemed transaction with negative points', () => {
+      const redeemedTransaction: LoyaltyPointsTransaction = {
+        uuid: 'loyalty-tx-redeemed-1',
+        customerUuid: 'customer-1',
+        type: LoyaltyTransactionType.Redeemed,
+        points: -50,
+        orderUuid: 'order-2',
+        earnedAt: 1700200000000,
+        expiresAt: 1731736000000,
+        createdAt: 1700200000000,
+        createdBy: 'system'
+      }
+      givenCustomerLoyalty({
+        balance: 100,
+        transactions: [redeemedTransaction]
+      })
+      expect(customerLoyaltyVM().transactions[0]).toStrictEqual({
+        uuid: 'loyalty-tx-redeemed-1',
+        date: '17 nov. 2023',
+        type: LoyaltyTransactionType.Redeemed,
+        points: -50,
+        orderUuid: 'order-2',
+        reason: undefined,
+        expiresAt: '16 nov. 2024',
         isExpired: true
       })
     })

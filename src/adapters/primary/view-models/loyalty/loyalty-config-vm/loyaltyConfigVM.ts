@@ -19,6 +19,7 @@ export interface MultiplierItemVM {
 
 export interface LoyaltyConfigVM {
   earningRate: number
+  redemptionRate: number
   multipliers: Array<MultiplierItemVM>
   isLoading: boolean
 }
@@ -60,6 +61,13 @@ export const previewPoints = (
   return Math.floor(amountCents * earningRate)
 }
 
+export const redemptionPreviewDiscount = (
+  points: number,
+  rate: number
+): number => {
+  return (points * rate) / 100
+}
+
 export const loyaltyConfigVM = (): LoyaltyConfigVM => {
   const loyaltyStore = useLoyaltyStore()
   const config = loyaltyStore.config
@@ -67,6 +75,7 @@ export const loyaltyConfigVM = (): LoyaltyConfigVM => {
   if (!config) {
     return {
       earningRate: 0,
+      redemptionRate: 0,
       multipliers: [],
       isLoading: loyaltyStore.isLoading
     }
@@ -74,6 +83,7 @@ export const loyaltyConfigVM = (): LoyaltyConfigVM => {
 
   return {
     earningRate: config.earningRate,
+    redemptionRate: config.redemptionRate,
     multipliers: (config.multipliers ?? []).map((m) => ({
       uuid: m.uuid,
       startDate: formatDate(m.startDate),

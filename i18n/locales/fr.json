@@ -554,7 +554,12 @@
       "earningRulePreview": "Aperçu",
       "earningRuleExample": "Commande de {amount} € → {points} point(s)",
       "save": "Enregistrer",
-      "saved": "Configuration enregistrée"
+      "saved": "Configuration enregistrée",
+      "redemptionRate": "Taux de conversion",
+      "redemptionRatePrefix": "1 point vaut",
+      "redemptionRateSuffix": "€",
+      "redemptionRatePreview": "Aperçu",
+      "redemptionRateExample": "{points} points → {amount} € de réduction"
     },
     "multipliers": {
       "title": "Périodes multiplicatrices",
@@ -575,6 +580,7 @@
       "credit": "Créditer des points",
       "earned": "Gagné",
       "manualCredit": "Crédit manuel",
+      "redeemed": "Utilisé",
       "date": "Date",
       "type": "Type",
       "pointsLabel": "Points",

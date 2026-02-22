@@ -27,10 +27,12 @@ export const multiplierPeriod2: MultiplierPeriod = {
 
 export const loyaltyConfigWithMultipliers: LoyaltyConfig = {
   earningRate: 1,
+  redemptionRate: 100,
   multipliers: [multiplierPeriod1, multiplierPeriod2]
 }
 
 export const loyaltyConfigEmpty: LoyaltyConfig = {
   earningRate: 1,
+  redemptionRate: 100,
   multipliers: []
 }

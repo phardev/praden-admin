@@ -13,7 +13,11 @@ import type { UUID } from '@core/types/types'
 
 export class InMemoryLoyaltyGateway implements LoyaltyGateway {
   private loyaltyByCustomer: Map<UUID, CustomerLoyalty> = new Map()
-  private config: LoyaltyConfig = { earningRate: 1, multipliers: [] }
+  private config: LoyaltyConfig = {
+    earningRate: 1,
+    redemptionRate: 100,
+    multipliers: []
+  }
   private uuidGenerator: UuidGenerator
 
   constructor(uuidGenerator: UuidGenerator) {
@@ -61,8 +65,11 @@ export class InMemoryLoyaltyGateway implements LoyaltyGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(this.config)))
   }
 
-  saveConfig(earningRate: number): Promise<LoyaltyConfig> {
-    this.config = { ...this.config, earningRate }
+  saveConfig(
+    earningRate: number,
+    redemptionRate: number
+  ): Promise<LoyaltyConfig> {
+    this.config = { ...this.config, earningRate, redemptionRate }
     return Promise.resolve(JSON.parse(JSON.stringify(this.config)))
   }
 

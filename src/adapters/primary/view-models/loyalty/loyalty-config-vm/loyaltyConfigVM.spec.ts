@@ -12,7 +12,8 @@ import {
   earningRateToForm,
   formToEarningRate,
   loyaltyConfigVM,
-  previewPoints
+  previewPoints,
+  redemptionPreviewDiscount
 } from './loyaltyConfigVM'
 
 describe('Loyalty config VM', () => {
@@ -27,6 +28,7 @@ describe('Loyalty config VM', () => {
     it('should return empty VM when no config exists', () => {
       expect(loyaltyConfigVM()).toStrictEqual({
         earningRate: 0,
+        redemptionRate: 0,
         multipliers: [],
         isLoading: false
       })
@@ -45,13 +47,17 @@ describe('Loyalty config VM', () => {
       givenConfig(loyaltyConfigEmpty)
       expect(loyaltyConfigVM()).toStrictEqual({
         earningRate: 1,
+        redemptionRate: 100,
         multipliers: [],
         isLoading: false
       })
     })
 
     it('should return empty multipliers when multipliers is undefined', () => {
-      loyaltyStore.setConfig({ earningRate: 1 } as LoyaltyConfig)
+      loyaltyStore.setConfig({
+        earningRate: 1,
+        redemptionRate: 100
+      } as LoyaltyConfig)
       expect(loyaltyConfigVM().multipliers).toStrictEqual([])
     })
   })
@@ -63,6 +69,10 @@ describe('Loyalty config VM', () => {
 
     it('should return the earning rate', () => {
       expect(loyaltyConfigVM().earningRate).toStrictEqual(1)
+    })
+
+    it('should return the redemption rate', () => {
+      expect(loyaltyConfigVM().redemptionRate).toStrictEqual(100)
     })
 
     it('should return the correct number of multipliers', () => {
@@ -95,6 +105,7 @@ describe('Loyalty config VM', () => {
       const now = Date.now()
       givenConfig({
         earningRate: 1,
+        redemptionRate: 100,
         multipliers: [
           {
             ...multiplierPeriod1,
@@ -110,6 +121,7 @@ describe('Loyalty config VM', () => {
       const now = Date.now()
       givenConfig({
         earningRate: 1,
+        redemptionRate: 100,
         multipliers: [
           {
             ...multiplierPeriod1,
@@ -126,6 +138,7 @@ describe('Loyalty config VM', () => {
     it('should format decimal multiplier', () => {
       givenConfig({
         earningRate: 1,
+        redemptionRate: 100,
         multipliers: [
           {
             ...multiplierPeriod1,
@@ -173,5 +186,19 @@ describe('previewPoints', () => {
 
   it('should calculate 50 euros at 0.001 rate to 5 points', () => {
     expect(previewPoints(50, 0.001)).toStrictEqual(5)
+  })
+})
+
+describe('redemptionPreviewDiscount', () => {
+  it('should calculate 100 points at rate 100 to 100 euros', () => {
+    expect(redemptionPreviewDiscount(100, 100)).toStrictEqual(100)
+  })
+
+  it('should calculate 50 points at rate 50 to 25 euros', () => {
+    expect(redemptionPreviewDiscount(50, 50)).toStrictEqual(25)
+  })
+
+  it('should calculate 100 points at rate 1 to 1 euro', () => {
+    expect(redemptionPreviewDiscount(100, 1)).toStrictEqual(1)
   })
 })
