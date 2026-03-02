@@ -13,5 +13,6 @@ export interface MultiplierPeriod {
 
 export interface LoyaltyConfig {
   earningRate: number
+  redemptionRate: number
   multipliers: Array<MultiplierPeriod>
 }

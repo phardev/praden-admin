@@ -554,10 +554,17 @@
       "earningRulePreview": "Aperçu",
       "earningRuleExample": "Commande de {amount} € → {points} point(s)",
       "save": "Enregistrer",
-      "saved": "Configuration enregistrée"
+      "saved": "Configuration enregistrée",
+      "redemptionRule": "Règle d'utilisation",
+      "redemptionRulePrefix": "Le client obtient",
+      "redemptionRuleEuros": "€ de réduction pour",
+      "redemptionRuleSuffix": "point(s)",
+      "redemptionRulePreview": "Aperçu",
+      "redemptionRuleExample": "{points} points = {euros} € de réduction"
     },
     "multipliers": {
-      "title": "Périodes multiplicatrices",
+      "title": "Multiplicateurs de gain",
+      "description": "Multipliez les points gagnés pendant une période donnée.",
       "startDate": "Date de début",
       "endDate": "Date de fin",
       "multiplier": "Multiplicateur",

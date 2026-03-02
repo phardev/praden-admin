@@ -25,6 +25,7 @@
       .flex.justify-between.items-center
         h2.text-subtitle {{ $t('loyalty.multipliers.title') }}
         ft-button.button-solid(@click="showMultiplierModal = true") {{ $t('loyalty.multipliers.create') }}
+    p.text-sm.text-gray-500.mb-4 {{ $t('loyalty.multipliers.description') }}
     div(v-if="vm.multipliers.length === 0")
       p.text-gray-500.text-center.py-4 {{ $t('loyalty.multipliers.noMultipliers') }}
     UTable(
@@ -44,6 +45,23 @@
           @click="onDeleteMultiplier(row.uuid)"
         ) {{ $t('loyalty.multipliers.delete') }}
 
+  UCard.mt-6
+    template(#header)
+      h2.text-subtitle {{ $t('loyalty.config.redemptionRule') }}
+    .space-y-4
+      .flex.items-center.gap-2.flex-wrap
+        span {{ $t('loyalty.config.redemptionRulePrefix') }}
+        UInput.w-24(v-model.number="redemptionEuros" type="number" min="0.01" step="0.01")
+        span {{ $t('loyalty.config.redemptionRuleEuros') }}
+        UInput.w-20(v-model.number="redemptionPoints" type="number" min="1" step="1")
+        span {{ $t('loyalty.config.redemptionRuleSuffix') }}
+      .bg-gray-50.rounded-lg.p-4.space-y-1(v-if="redemptionPoints > 0 && redemptionEuros > 0")
+        p.text-sm.font-medium.text-gray-600 {{ $t('loyalty.config.redemptionRulePreview') }}
+        p.text-sm.text-gray-500(v-for="example in redemptionExamples" :key="example.points")
+          | {{ $t('loyalty.config.redemptionRuleExample', { points: example.points, euros: example.euros }) }}
+      .flex.justify-end
+        ft-button.button-solid(:loading="vm.isLoading" @click="saveConfig") {{ $t('loyalty.config.save') }}
+
   create-multiplier-modal(
     v-model="showMultiplierModal"
     @created="onMultiplierCreated"
@@ -54,8 +72,11 @@
 import {
   earningRateToForm,
   formToEarningRate,
+  formToRedemptionRate,
   loyaltyConfigVM,
-  previewPoints
+  previewPoints,
+  previewReduction,
+  redemptionRateToForm
 } from '@adapters/primary/view-models/loyalty/loyalty-config-vm/loyaltyConfigVM'
 import type { UUID } from '@core/types/types'
 import { createMultiplier } from '@core/usecases/loyalty/create-multiplier/createMultiplier'
@@ -71,6 +92,8 @@ const toast = useToast()
 const loyaltyGateway = useLoyaltyGateway()
 const pointsPerThreshold = ref(1)
 const eurosPerThreshold = ref(10)
+const redemptionPoints = ref(1)
+const redemptionEuros = ref(0.01)
 const showMultiplierModal = ref(false)
 
 const vm = computed(() => loyaltyConfigVM())
@@ -83,6 +106,17 @@ const previewExamples = computed(() => {
   return [25, 9.99, 50].map((amount) => ({
     amount: amount.toFixed(2).replace('.', ','),
     points: previewPoints(amount, rate)
+  }))
+})
+
+const redemptionExamples = computed(() => {
+  const rate = formToRedemptionRate(
+    redemptionPoints.value,
+    redemptionEuros.value
+  )
+  return [50, 100, 200].map((pts) => ({
+    points: pts,
+    euros: previewReduction(pts, rate).toFixed(2).replace('.', ',')
   }))
 })
 
@@ -106,6 +140,9 @@ onMounted(async () => {
     const form = earningRateToForm(vm.value.earningRate)
     pointsPerThreshold.value = form.points
     eurosPerThreshold.value = form.euros
+    const redemptionForm = redemptionRateToForm(vm.value.redemptionRate)
+    redemptionPoints.value = redemptionForm.points
+    redemptionEuros.value = redemptionForm.euros
   } catch {
     toast.add({
       title: t('error.unknown'),
@@ -119,8 +156,12 @@ const saveConfig = async () => {
     pointsPerThreshold.value,
     eurosPerThreshold.value
   )
+  const redemptionRate = formToRedemptionRate(
+    redemptionPoints.value,
+    redemptionEuros.value
+  )
   try {
-    await saveLoyaltyConfig(rate, loyaltyGateway)
+    await saveLoyaltyConfig(rate, redemptionRate, loyaltyGateway)
     toast.add({
       title: t('loyalty.config.saved'),
       color: 'green'

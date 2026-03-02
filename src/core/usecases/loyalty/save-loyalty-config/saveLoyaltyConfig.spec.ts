@@ -20,22 +20,24 @@ describe('Save loyalty config', () => {
     gateway = new InMemoryLoyaltyGateway(new FakeUuidGenerator())
   })
 
-  describe('Update earning rate', () => {
+  describe('Update rates', () => {
     it('should update the config in the store', async () => {
       givenConfig(loyaltyConfigWithMultipliers)
-      await whenSaveLoyaltyConfig(2.5)
+      await whenSaveLoyaltyConfig(2.5, 0.05)
       expect(store.config).toStrictEqual({
         earningRate: 2.5,
+        redemptionRate: 0.05,
         multipliers: [multiplierPeriod1, multiplierPeriod2]
       })
     })
   })
 
-  describe('Update earning rate with no multipliers', () => {
+  describe('Update rates with no multipliers', () => {
     it('should update the config in the store', async () => {
-      await whenSaveLoyaltyConfig(5)
+      await whenSaveLoyaltyConfig(5, 0.02)
       expect(store.config).toStrictEqual({
         earningRate: 5,
+        redemptionRate: 0.02,
         multipliers: []
       })
     })
@@ -47,11 +49,11 @@ describe('Save loyalty config', () => {
         expect(state.isLoading).toBe(true)
         unsubscribe()
       })
-      await whenSaveLoyaltyConfig(1)
+      await whenSaveLoyaltyConfig(1, 0.01)
     })
 
     it('should be aware that loading is over', async () => {
-      await whenSaveLoyaltyConfig(1)
+      await whenSaveLoyaltyConfig(1, 0.01)
       expect(store.isLoading).toBe(false)
     })
   })
@@ -60,7 +62,10 @@ describe('Save loyalty config', () => {
     gateway.feedWithConfig(config)
   }
 
-  const whenSaveLoyaltyConfig = async (earningRate: number) => {
-    await saveLoyaltyConfig(earningRate, gateway)
+  const whenSaveLoyaltyConfig = async (
+    earningRate: number,
+    redemptionRate: number
+  ) => {
+    await saveLoyaltyConfig(earningRate, redemptionRate, gateway)
   }
 })

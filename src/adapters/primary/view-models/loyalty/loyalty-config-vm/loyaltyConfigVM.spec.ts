@@ -11,8 +11,11 @@ import type { LoyaltyConfigVM } from './loyaltyConfigVM'
 import {
   earningRateToForm,
   formToEarningRate,
+  formToRedemptionRate,
   loyaltyConfigVM,
-  previewPoints
+  previewPoints,
+  previewReduction,
+  redemptionRateToForm
 } from './loyaltyConfigVM'
 
 describe('Loyalty config VM', () => {
@@ -27,6 +30,7 @@ describe('Loyalty config VM', () => {
     it('should return empty VM when no config exists', () => {
       expect(loyaltyConfigVM()).toStrictEqual({
         earningRate: 0,
+        redemptionRate: 0,
         multipliers: [],
         isLoading: false
       })
@@ -45,6 +49,7 @@ describe('Loyalty config VM', () => {
       givenConfig(loyaltyConfigEmpty)
       expect(loyaltyConfigVM()).toStrictEqual({
         earningRate: 1,
+        redemptionRate: 0.01,
         multipliers: [],
         isLoading: false
       })
@@ -95,6 +100,7 @@ describe('Loyalty config VM', () => {
       const now = Date.now()
       givenConfig({
         earningRate: 1,
+        redemptionRate: 0.01,
         multipliers: [
           {
             ...multiplierPeriod1,
@@ -110,6 +116,7 @@ describe('Loyalty config VM', () => {
       const now = Date.now()
       givenConfig({
         earningRate: 1,
+        redemptionRate: 0.01,
         multipliers: [
           {
             ...multiplierPeriod1,
@@ -126,6 +133,7 @@ describe('Loyalty config VM', () => {
     it('should format decimal multiplier', () => {
       givenConfig({
         earningRate: 1,
+        redemptionRate: 0.01,
         multipliers: [
           {
             ...multiplierPeriod1,
@@ -173,5 +181,39 @@ describe('previewPoints', () => {
 
   it('should calculate 50 euros at 0.001 rate to 5 points', () => {
     expect(previewPoints(50, 0.001)).toStrictEqual(5)
+  })
+})
+
+describe('redemptionRateToForm', () => {
+  it('should convert 0.05 to 1 point for 0.05 euros', () => {
+    expect(redemptionRateToForm(0.05)).toStrictEqual({ points: 1, euros: 0.05 })
+  })
+
+  it('should convert 0.01 to 1 point for 0.01 euros', () => {
+    expect(redemptionRateToForm(0.01)).toStrictEqual({ points: 1, euros: 0.01 })
+  })
+})
+
+describe('formToRedemptionRate', () => {
+  it('should convert 1 point for 0.05 euros to 0.05', () => {
+    expect(formToRedemptionRate(1, 0.05)).toStrictEqual(0.05)
+  })
+
+  it('should convert 1 point for 0.01 euros to 0.01', () => {
+    expect(formToRedemptionRate(1, 0.01)).toStrictEqual(0.01)
+  })
+})
+
+describe('previewReduction', () => {
+  it('should calculate 100 points at 0.05 rate to 5 euros', () => {
+    expect(previewReduction(100, 0.05)).toStrictEqual(5)
+  })
+
+  it('should calculate 50 points at 0.05 rate to 2.5 euros', () => {
+    expect(previewReduction(50, 0.05)).toStrictEqual(2.5)
+  })
+
+  it('should calculate 200 points at 0.01 rate to 2 euros', () => {
+    expect(previewReduction(200, 0.01)).toStrictEqual(2)
   })
 })
