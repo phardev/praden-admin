@@ -570,6 +570,7 @@
       "multiplier": "Multiplicateur",
       "create": "Créer une période",
       "delete": "Supprimer",
+      "status": "Statut",
       "noMultipliers": "Aucune période multiplicatrice",
       "active": "Actif",
       "expired": "Expiré",

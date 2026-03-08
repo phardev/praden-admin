@@ -17,8 +17,6 @@
         p.text-sm.font-medium.text-gray-600 {{ $t('loyalty.config.earningRulePreview') }}
         p.text-sm.text-gray-500(v-for="example in previewExamples" :key="example.amount")
           | {{ $t('loyalty.config.earningRuleExample', { amount: example.amount, points: example.points }) }}
-      .flex.justify-end
-        ft-button.button-solid(:loading="vm.isLoading" @click="saveConfig") {{ $t('loyalty.config.save') }}
 
   UCard.mt-6
     template(#header)
@@ -59,8 +57,9 @@
         p.text-sm.font-medium.text-gray-600 {{ $t('loyalty.config.redemptionRulePreview') }}
         p.text-sm.text-gray-500(v-for="example in redemptionExamples" :key="example.points")
           | {{ $t('loyalty.config.redemptionRuleExample', { points: example.points, euros: example.euros }) }}
-      .flex.justify-end
-        ft-button.button-solid(:loading="vm.isLoading" @click="saveConfig") {{ $t('loyalty.config.save') }}
+
+  .flex.justify-end.mt-6
+    ft-button.button-solid(:loading="vm.isLoading" @click="saveConfig") {{ $t('loyalty.config.save') }}
 
   create-multiplier-modal(
     v-model="showMultiplierModal"
@@ -83,12 +82,14 @@ import { createMultiplier } from '@core/usecases/loyalty/create-multiplier/creat
 import { deleteMultiplier } from '@core/usecases/loyalty/delete-multiplier/deleteMultiplier'
 import { getLoyaltyConfig } from '@core/usecases/loyalty/get-loyalty-config/getLoyaltyConfig'
 import { saveLoyaltyConfig } from '@core/usecases/loyalty/save-loyalty-config/saveLoyaltyConfig'
+import { useDateProvider } from '../../../../../../gateways/dateProvider'
 import { useLoyaltyGateway } from '../../../../../../gateways/loyaltyGateway'
 
 definePageMeta({ layout: 'main' })
 
 const { t } = useI18n()
 const toast = useToast()
+const dateProvider = useDateProvider()
 const loyaltyGateway = useLoyaltyGateway()
 const pointsPerThreshold = ref(1)
 const eurosPerThreshold = ref(10)
@@ -96,7 +97,7 @@ const redemptionPoints = ref(1)
 const redemptionEuros = ref(0.01)
 const showMultiplierModal = ref(false)
 
-const vm = computed(() => loyaltyConfigVM())
+const vm = computed(() => loyaltyConfigVM(dateProvider))
 
 const previewExamples = computed(() => {
   const rate = formToEarningRate(
@@ -124,7 +125,7 @@ const multiplierColumns = [
   { key: 'startDate', label: t('loyalty.multipliers.startDate') },
   { key: 'endDate', label: t('loyalty.multipliers.endDate') },
   { key: 'multiplier', label: t('loyalty.multipliers.multiplier') },
-  { key: 'status', label: 'Statut' },
+  { key: 'status', label: t('loyalty.multipliers.status') },
   { key: 'actions', label: '' }
 ]
 

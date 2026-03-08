@@ -1,3 +1,4 @@
+import type { DateProvider } from '@core/gateways/dateProvider'
 import type { UUID } from '@core/types/types'
 import { useLoyaltyStore } from '@store/loyaltyStore'
 import { timestampToLocaleString } from '@utils/formatters'
@@ -34,9 +35,9 @@ const formatMultiplier = (value: number): string => {
 
 const computeStatus = (
   startDate: number,
-  endDate: number
+  endDate: number,
+  now: number
 ): MultiplierStatus => {
-  const now = Date.now()
   if (now < startDate) return MultiplierStatus.Upcoming
   if (now > endDate) return MultiplierStatus.Expired
   return MultiplierStatus.Active
@@ -79,9 +80,12 @@ export const previewReduction = (
   return Math.round(points * redemptionRate * 100) / 100
 }
 
-export const loyaltyConfigVM = (): LoyaltyConfigVM => {
+export const loyaltyConfigVM = (
+  dateProvider: DateProvider
+): LoyaltyConfigVM => {
   const loyaltyStore = useLoyaltyStore()
   const config = loyaltyStore.config
+  const now = dateProvider.now()
 
   if (!config) {
     return {
@@ -100,7 +104,7 @@ export const loyaltyConfigVM = (): LoyaltyConfigVM => {
       startDate: formatDate(m.startDate),
       endDate: formatDate(m.endDate),
       multiplier: formatMultiplier(m.multiplier),
-      status: computeStatus(m.startDate, m.endDate)
+      status: computeStatus(m.startDate, m.endDate, now)
     })),
     isLoading: loyaltyStore.isLoading
   }

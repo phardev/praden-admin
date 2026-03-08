@@ -48,11 +48,11 @@ export class RealLoyaltyGateway extends RealGateway implements LoyaltyGateway {
     earningRate: number,
     redemptionRate: number
   ): Promise<LoyaltyConfig> {
-    const res = await axiosWithBearer.post(`${this.baseUrl}/loyalty/config`, {
+    await axiosWithBearer.post(`${this.baseUrl}/loyalty/config`, {
       earningRate,
       redemptionRate
     })
-    return res.data
+    return this.getConfig()
   }
 
   async createMultiplier(

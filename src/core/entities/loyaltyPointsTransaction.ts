@@ -15,7 +15,7 @@ export interface LoyaltyPointsTransaction {
   orderUuid?: UUID
   reason?: string
   earnedAt: Timestamp
-  expiresAt: Timestamp
+  expiresAt: Timestamp | null
   createdAt: Timestamp
   createdBy: string
 }
