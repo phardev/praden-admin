@@ -2,7 +2,8 @@ import type { Timestamp, UUID } from '@core/types/types'
 
 export const LoyaltyTransactionType = {
   Earned: 'EARNED',
-  ManualCredit: 'MANUAL_CREDIT'
+  ManualCredit: 'MANUAL_CREDIT',
+  Redeemed: 'REDEEMED'
 } as const
 export type LoyaltyTransactionType =
   (typeof LoyaltyTransactionType)[keyof typeof LoyaltyTransactionType]

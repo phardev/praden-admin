@@ -28,6 +28,18 @@ export const manualCreditTransaction: LoyaltyPointsTransaction = {
   createdBy: 'admin'
 }
 
+export const redeemedTransaction: LoyaltyPointsTransaction = {
+  uuid: 'loyalty-tx-redeemed-1',
+  customerUuid: 'customer-1',
+  type: LoyaltyTransactionType.Redeemed,
+  points: -30,
+  orderUuid: 'order-2',
+  earnedAt: 1700200000000,
+  expiresAt: null,
+  createdAt: 1700200000000,
+  createdBy: 'system'
+}
+
 export const customerLoyaltyWithTransactions: CustomerLoyalty = {
   balance: 150,
   transactions: [earnedTransaction, manualCreditTransaction]
