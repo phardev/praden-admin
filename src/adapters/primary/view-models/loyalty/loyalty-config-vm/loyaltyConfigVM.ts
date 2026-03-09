@@ -1,3 +1,4 @@
+import type { DateProvider } from '@core/gateways/dateProvider'
 import type { UUID } from '@core/types/types'
 import { useLoyaltyStore } from '@store/loyaltyStore'
 import { timestampToLocaleString } from '@utils/formatters'
@@ -19,6 +20,7 @@ export interface MultiplierItemVM {
 
 export interface LoyaltyConfigVM {
   earningRate: number
+  redemptionRate: number
   multipliers: Array<MultiplierItemVM>
   isLoading: boolean
 }
@@ -33,9 +35,9 @@ const formatMultiplier = (value: number): string => {
 
 const computeStatus = (
   startDate: number,
-  endDate: number
+  endDate: number,
+  now: number
 ): MultiplierStatus => {
-  const now = Date.now()
   if (now < startDate) return MultiplierStatus.Upcoming
   if (now > endDate) return MultiplierStatus.Expired
   return MultiplierStatus.Active
@@ -60,13 +62,35 @@ export const previewPoints = (
   return Math.floor(amountCents * earningRate)
 }
 
-export const loyaltyConfigVM = (): LoyaltyConfigVM => {
+export const redemptionRateToForm = (
+  redemptionRate: number
+): { points: number; euros: number } => {
+  const euros = Math.round(redemptionRate * 100) / 100
+  return { points: 1, euros: Math.max(euros, 0.01) }
+}
+
+export const formToRedemptionRate = (points: number, euros: number): number => {
+  return euros / points
+}
+
+export const previewReduction = (
+  points: number,
+  redemptionRate: number
+): number => {
+  return Math.round(points * redemptionRate * 100) / 100
+}
+
+export const loyaltyConfigVM = (
+  dateProvider: DateProvider
+): LoyaltyConfigVM => {
   const loyaltyStore = useLoyaltyStore()
   const config = loyaltyStore.config
+  const now = dateProvider.now()
 
   if (!config) {
     return {
       earningRate: 0,
+      redemptionRate: 0,
       multipliers: [],
       isLoading: loyaltyStore.isLoading
     }
@@ -74,12 +98,13 @@ export const loyaltyConfigVM = (): LoyaltyConfigVM => {
 
   return {
     earningRate: config.earningRate,
+    redemptionRate: config.redemptionRate,
     multipliers: (config.multipliers ?? []).map((m) => ({
       uuid: m.uuid,
       startDate: formatDate(m.startDate),
       endDate: formatDate(m.endDate),
       multiplier: formatMultiplier(m.multiplier),
-      status: computeStatus(m.startDate, m.endDate)
+      status: computeStatus(m.startDate, m.endDate, now)
     })),
     isLoading: loyaltyStore.isLoading
   }

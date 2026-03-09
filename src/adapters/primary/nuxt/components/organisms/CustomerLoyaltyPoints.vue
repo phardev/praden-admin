@@ -134,6 +134,8 @@ const getTypeBadgeColor = (type: LoyaltyTransactionType): string => {
       return 'green'
     case LoyaltyTransactionType.ManualCredit:
       return 'blue'
+    case LoyaltyTransactionType.Redeemed:
+      return 'orange'
     default:
       return 'gray'
   }
@@ -145,6 +147,8 @@ const getTypeLabel = (type: LoyaltyTransactionType): string => {
       return t('loyalty.points.earned')
     case LoyaltyTransactionType.ManualCredit:
       return t('loyalty.points.manualCredit')
+    case LoyaltyTransactionType.Redeemed:
+      return t('loyalty.points.redeemed')
     default:
       return type
   }

@@ -16,7 +16,10 @@ export interface LoyaltyGateway {
     reason: string
   ): Promise<LoyaltyPointsTransaction>
   getConfig(): Promise<LoyaltyConfig>
-  saveConfig(earningRate: number): Promise<LoyaltyConfig>
+  saveConfig(
+    earningRate: number,
+    redemptionRate: number
+  ): Promise<LoyaltyConfig>
   createMultiplier(
     startDate: number,
     endDate: number,

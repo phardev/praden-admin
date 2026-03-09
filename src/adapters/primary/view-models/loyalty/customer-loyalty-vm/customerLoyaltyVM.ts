@@ -24,8 +24,14 @@ const formatDate = (timestamp: number): string => {
   return timestampToLocaleString(timestamp, 'fr-FR')
 }
 
-const isExpired = (expiresAt: number): boolean => {
+const isExpired = (expiresAt: number | null): boolean => {
+  if (expiresAt === null) return false
   return expiresAt < Date.now()
+}
+
+const formatExpiresAt = (expiresAt: number | null): string => {
+  if (expiresAt === null) return '-'
+  return formatDate(expiresAt)
 }
 
 export const customerLoyaltyVM = (): CustomerLoyaltyVM => {
@@ -49,7 +55,7 @@ export const customerLoyaltyVM = (): CustomerLoyaltyVM => {
       points: tx.points,
       orderUuid: tx.orderUuid,
       reason: tx.reason,
-      expiresAt: formatDate(tx.expiresAt),
+      expiresAt: formatExpiresAt(tx.expiresAt),
       isExpired: isExpired(tx.expiresAt)
     })),
     isLoading: loyaltyStore.isLoading

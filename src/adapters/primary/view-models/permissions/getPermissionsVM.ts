@@ -78,8 +78,6 @@ export const getPermissionsVM = (): GetPermissionsVM => {
     canAccessResearch: userProfileStore.hasPermission(
       PermissionResource.RESEARCH
     ),
-    canAccessLoyalty: userProfileStore.hasPermission(
-      PermissionResource.LOYALTY
-    )
+    canAccessLoyalty: userProfileStore.hasPermission(PermissionResource.LOYALTY)
   }
 }
