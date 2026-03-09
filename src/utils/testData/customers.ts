@@ -9,6 +9,7 @@ export const elodieDurand: Customer = {
   phone: '+33612345678',
   ordersCount: 2,
   ordersTotal: 10000,
+  lastOrderDate: '2024-03-15T10:30:00.000Z',
   newsletterSubscription: elodieDurandNewsletterSubscription
 }
 
@@ -19,7 +20,8 @@ export const lucasLefevre: Customer = {
   email: 'lucas.lefevre@example.com',
   phone: '+33687654321',
   ordersCount: 1,
-  ordersTotal: 5000
+  ordersTotal: 5000,
+  lastOrderDate: '2024-02-20T14:15:00.000Z'
 }
 
 export const sophieMartinez: Customer = {

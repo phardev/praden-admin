@@ -16,5 +16,6 @@ export enum PermissionResource {
   BANNERS = 'banners',
   STAFF = 'staff',
   RESEARCH = 'research',
-  DELIVERY_PRICE_RULES = 'delivery-price-rules'
+  DELIVERY_PRICE_RULES = 'delivery-price-rules',
+  LOYALTY = 'loyalty'
 }

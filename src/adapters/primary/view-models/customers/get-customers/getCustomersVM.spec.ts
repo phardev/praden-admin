@@ -42,6 +42,10 @@ const expectedHeaders: Array<Header> = [
   {
     name: 'Total des commandes',
     value: 'ordersTotal'
+  },
+  {
+    name: 'Date dernière commande',
+    value: 'lastOrderDate'
   }
 ]
 
@@ -141,7 +145,8 @@ describe('Get customers VM', () => {
       items: [],
       isLoading: false,
       hasMore: false,
-      currentSearch: undefined
+      currentSearch: undefined,
+      searchError: undefined
     }
     expect(getCustomersVM(key)).toMatchObject({ ...emptyVM, ...expectedVM })
   }
@@ -151,6 +156,16 @@ describe('Get customers VM', () => {
       style: 'currency',
       currency: 'EUR'
     })
+    const formatLastOrderDate = (date: Date | string | undefined): string => {
+      if (!date) {
+        return '-'
+      }
+      return new Intl.DateTimeFormat('fr-FR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      }).format(new Date(date))
+    }
     return {
       uuid: customer.uuid,
       firstname: customer.firstname,
@@ -159,7 +174,8 @@ describe('Get customers VM', () => {
       phone: customer.phone,
       newsletterSubscription: !!customer.newsletterSubscription,
       ordersCount: customer.ordersCount,
-      ordersTotal: formatter.format(customer.ordersTotal / 100)
+      ordersTotal: formatter.format(customer.ordersTotal / 100),
+      lastOrderDate: formatLastOrderDate(customer.lastOrderDate)
     }
   }
 })

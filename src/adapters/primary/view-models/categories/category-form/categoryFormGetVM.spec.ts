@@ -5,6 +5,7 @@ import {
 import { CategoryProductItemVM } from '@adapters/primary/view-models/categories/category-form/categoryFormVM'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { CategoryStatus } from '@core/entities/category'
 import { Product } from '@core/entities/product'
 import { useCategoryStore } from '@store/categoryStore'
 import { useFormStore } from '@store/formStore'
@@ -154,6 +155,27 @@ describe('Category form get VM', () => {
       it('should not allow to validate', () => {
         expect(vm.getCanValidate()).toBe(false)
       })
+    })
+  })
+  describe('Status', () => {
+    it('should return the category status as read-only when active', () => {
+      categoryStore.current = { category: minceur, products: [] }
+      vm = getVM()
+      const expectedStatusField = {
+        value: CategoryStatus.Active,
+        canEdit: false
+      }
+      expect(vm.getStatus()).toStrictEqual(expectedStatusField)
+    })
+    it('should return the category status as read-only when inactive', () => {
+      const inactiveCategory = { ...baby, status: CategoryStatus.Inactive }
+      categoryStore.current = { category: inactiveCategory, products: [] }
+      vm = getVM()
+      const expectedStatusField = {
+        value: CategoryStatus.Inactive,
+        canEdit: false
+      }
+      expect(vm.getStatus()).toStrictEqual(expectedStatusField)
     })
   })
 

@@ -7,6 +7,7 @@ import { Product } from '@core/entities/product'
 import { ReductionType } from '@core/entities/promotion'
 import { PromotionScope } from '@core/entities/promotionCode'
 import { UUID } from '@core/types/types'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 import { useFormStore } from '@store/formStore'
 import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
@@ -22,7 +23,8 @@ export class PromotionCodeFormFieldsWriter extends FormFieldsWriter {
     super(key)
     this.fieldsReader = fieldsReader
     this.fieldHandlers = {
-      reductionType: this.setReductionType.bind(this)
+      reductionType: this.setReductionType.bind(this),
+      scope: this.setScope.bind(this)
     }
   }
 
@@ -60,6 +62,15 @@ export class PromotionCodeFormFieldsWriter extends FormFieldsWriter {
     this.set('amount', undefined)
     super.set('reductionType', type)
   }
+
+  private setScope(scope: PromotionScope): void {
+    if (scope === PromotionScope.Delivery) {
+      super.set('maxWeight', 5)
+    } else {
+      super.set('maxWeight', undefined)
+    }
+    super.set('scope', scope)
+  }
 }
 
 export class NewPromotionCodeFormInitializer implements FormInitializer {
@@ -82,7 +93,8 @@ export class NewPromotionCodeFormInitializer implements FormInitializer {
       maximumUsage: undefined,
       minimumAmount: undefined,
       deliveryMethodUuid: undefined,
-      products: []
+      products: [],
+      maxWeight: undefined
     })
   }
 }
@@ -106,16 +118,16 @@ export class PromotionCodeFormCreateVM extends PromotionCodeFormVM {
 
   getAvailableProducts() {
     const productStore = useProductStore()
-    const allProducts: Array<Product> = productStore.items
+    const allProducts: Array<ProductListItem> = productStore.items
     const searchStore = useSearchStore()
-    const filteredProducts: Array<Product> = searchStore.get(this.key)
+    const filteredProducts: Array<ProductListItem> = searchStore.get(this.key)
     const addedProducts = this.fieldsReader.get('products')
     const res = (filteredProducts || allProducts).filter(
-      (p: Product) =>
+      (p: ProductListItem) =>
         !addedProducts.map((p: Product) => p.uuid).includes(p.uuid)
     )
     return {
-      value: res.map((p: Product) => {
+      value: res.map((p: ProductListItem) => {
         return {
           uuid: p.uuid,
           name: p.name,

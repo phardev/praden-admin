@@ -61,7 +61,10 @@ export class ExistingPromotionCodeFormInitializer implements FormInitializer {
       products:
         promotionCode && promotionCode.conditions.products
           ? promotionCode.conditions.products
-          : []
+          : [],
+      maxWeight: promotionCode.conditions.maxWeight
+        ? (promotionCode.conditions.maxWeight / 1000).toString()
+        : undefined
     })
   }
 }

@@ -2,18 +2,20 @@ import { InMemoryCustomerGateway } from '@adapters/secondary/customer-gateways/i
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { InMemoryOrderGateway } from '@adapters/secondary/order-gateways/InMemoryOrderGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { Customer } from '@core/entities/customer'
-import { Order } from '@core/entities/order'
+import type { Customer } from '@core/entities/customer'
+import type { Order } from '@core/entities/order'
 import { CustomerDoesNotExistsError } from '@core/errors/CustomerDoesNotExistsError'
-import { UUID } from '@core/types/types'
+import type { UUID } from '@core/types/types'
 import { getCustomer } from '@core/usecases/customers/customer-get/getCustomer'
 import { useCustomerStore } from '@store/customerStore'
+import { useLoyaltyStore } from '@store/loyaltyStore'
 import { useOrderStore } from '@store/orderStore'
 import {
   elodieDurand,
   lucasLefevre,
   sophieMartinez
 } from '@utils/testData/customers'
+import { customerLoyaltyWithTransactions } from '@utils/testData/loyaltyPointsTransactions'
 import {
   elodieDurandOrder1,
   elodieDurandOrder2,
@@ -23,14 +25,16 @@ import {
 import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get customer', () => {
-  let customerStore: any
+  let customerStore: ReturnType<typeof useCustomerStore>
+  let loyaltyStore: ReturnType<typeof useLoyaltyStore>
   let customerGateway: InMemoryCustomerGateway
-  let orderStore: any
+  let orderStore: ReturnType<typeof useOrderStore>
   let orderGateway: InMemoryOrderGateway
 
   beforeEach(() => {
     setActivePinia(createPinia())
     customerStore = useCustomerStore()
+    loyaltyStore = useLoyaltyStore()
     orderStore = useOrderStore()
     customerGateway = new InMemoryCustomerGateway(new FakeUuidGenerator())
     orderGateway = new InMemoryOrderGateway(new FakeDateProvider())
@@ -43,6 +47,30 @@ describe('Get customer', () => {
     })
     it('should store it in customer store', () => {
       expect(customerStore.current).toStrictEqual(lucasLefevre)
+    })
+  })
+  describe('The customer has loyalty data', () => {
+    beforeEach(async () => {
+      const customerWithLoyalty: Customer = {
+        ...sophieMartinez,
+        loyalty: customerLoyaltyWithTransactions
+      }
+      givenExistingCustomers(customerWithLoyalty)
+      await whenGetCustomer(sophieMartinez.uuid)
+    })
+    it('should populate loyalty store', () => {
+      expect(loyaltyStore.customerLoyalty).toStrictEqual(
+        customerLoyaltyWithTransactions
+      )
+    })
+  })
+  describe('The customer has no loyalty data', () => {
+    beforeEach(async () => {
+      givenExistingCustomers(lucasLefevre)
+      await whenGetCustomer(lucasLefevre.uuid)
+    })
+    it('should not populate loyalty store', () => {
+      expect(loyaltyStore.customerLoyalty).toStrictEqual(undefined)
     })
   })
   describe('There is already loaded orders', () => {

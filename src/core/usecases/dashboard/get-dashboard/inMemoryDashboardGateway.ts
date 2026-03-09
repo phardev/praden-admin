@@ -1,5 +1,5 @@
-import { Dashboard } from '@core/entities/dashboard'
-import {
+import type { Dashboard } from '@core/entities/dashboard'
+import type {
   DashboardGateway,
   DashboardParams
 } from '@core/gateways/dashboardGateway'
@@ -11,7 +11,15 @@ export class InMemoryDashboardGateway implements DashboardGateway {
   constructor() {
     this.mockData = {
       monthlySales: [],
+      previousYearMonthlySales: [],
       totalSales: {
+        count: 0,
+        turnover: 0,
+        averageBasketValue: 0,
+        canceledTurnover: 0,
+        deliveryPrice: 0
+      },
+      previousYearTotalSales: {
         count: 0,
         turnover: 0,
         averageBasketValue: 0,
@@ -25,6 +33,16 @@ export class InMemoryDashboardGateway implements DashboardGateway {
       productStockStats: {
         inStockCount: 0,
         outOfStockCount: 0
+      },
+      userStatistics: {
+        totalCustomers: 0,
+        customersWithOrders: 0,
+        newsletterSubscribers: 0,
+        monthlyNewsletterSubscriptions: [],
+        newsletterAdoptionRate: {
+          subscribers: 0,
+          nonSubscribers: 0
+        }
       }
     }
   }
@@ -76,6 +94,7 @@ export class InMemoryDashboardGateway implements DashboardGateway {
 
     return {
       monthlySales: filteredMonthlySales,
+      previousYearMonthlySales: this.mockData.previousYearMonthlySales,
       totalSales: {
         count: totalCount,
         turnover: totalTurnover,
@@ -83,11 +102,13 @@ export class InMemoryDashboardGateway implements DashboardGateway {
         canceledTurnover: 0,
         deliveryPrice: 0
       },
+      previousYearTotalSales: this.mockData.previousYearTotalSales,
       topProducts: filteredTopProducts,
       ordersByDeliveryMethod: this.mockData.ordersByDeliveryMethod,
       ordersByLaboratory: this.mockData.ordersByLaboratory,
       productQuantitiesByCategory: this.mockData.productQuantitiesByCategory,
-      productStockStats: this.mockData.productStockStats
+      productStockStats: this.mockData.productStockStats,
+      userStatistics: this.mockData.userStatistics
     }
   }
 

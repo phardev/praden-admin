@@ -17,9 +17,9 @@ definePageMeta({ layout: 'main' })
 
 const vm = ref()
 const route = useRoute()
-const code = route.params.code
+const code = String(route.params.code)
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = String(router.currentRoute.value.name ?? '')
 
 onMounted(async () => {
   await getPromotionCode(code, usePromotionCodeGateway())

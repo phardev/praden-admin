@@ -8,7 +8,7 @@
   div(:class="{'mt-4': hasSearchSlot}")
     slot(name="search")
   .-mx-4.ring-1.ring-light(class='sm:-mx-6 md:mx-0 md:rounded-lg')
-    div(class="overflow-y-auto" style="max-height: 400px;")
+    div.ft-table-scroll(class="overflow-y-auto" style="max-height: 400px;")
       table.min-w-full.divide-y.divide-light
         thead.bg-contrast
           tr
@@ -27,7 +27,7 @@
               :class="[headerIndex === 0 ? 'pl-4 pr-3 sm:pl-6' : 'px-3 lg:table-cell', 'text-left text-sm font-semibold text-default py-3.5']"
               scope='col'
             ) {{ header.name }}
-        tbody(v-if="isLoading")
+        tbody(v-if="isLoading && items.length === 0")
           tr(v-for="i in 5" :key="i")
             td(v-if="selectable" class="relative w-12 px-6 sm:w-16 sm:px-8")
               USkeleton(class="h-4 w-4")
@@ -52,6 +52,7 @@
               :key="headerIndex"
             )
               slot(:name="header.value" :item="item") {{ getValue(item, header.value) }}
+      slot(name="infinite")
 </template>
 
 <script lang="ts" setup>
@@ -133,8 +134,10 @@ const selectAll = () => {
   )
 }
 
-const getValue = (item, key) => {
-  return key.split('.').reduce((item, key) => item && item[key], item)
+const getValue = (item: any, key: string) => {
+  return key
+    .split('.')
+    .reduce((item: any, key: string) => item && item[key], item)
 }
 </script>
 

@@ -1,4 +1,4 @@
-import { TicketGateway } from '@core/gateways/TicketGateway'
+import { TicketGateway } from '@core/gateways/ticketGateway'
 import { UUID } from '@core/types/types'
 import { useTicketStore } from '@store/ticketStore'
 

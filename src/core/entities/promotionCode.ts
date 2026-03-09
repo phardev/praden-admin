@@ -26,6 +26,7 @@ export interface PromotionCodeConditions {
   maximumUsage?: number
   deliveryMethodUuid?: UUID
   products?: Array<Product>
+  maxWeight?: number
 }
 
 export const isPromotionCodeStarted = (

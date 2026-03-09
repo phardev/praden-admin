@@ -1,11 +1,5 @@
 {
   "name": "plop",
-  "home": {
-    "christmas": {
-      "title": "Joyeuses Fêtes de fin d'année !",
-      "message": "Nous vous souhaitons des joyeuses fêtes de fin d'année !"
-    }
-  },
   "validation": {
     "name": {
       "required": "Le nom est requis."
@@ -48,6 +42,13 @@
     "collapseAll": "Cacher tout",
     "active": "Actif",
     "inactive": "Inactif"
+  },
+  "categories": {
+    "status": {
+      "label": "Statut",
+      "active": "Activée",
+      "inactive": "Désactivée"
+    }
   },
   "deliveryPriceRules": {
     "title": "Règles de prix de livraison",
@@ -95,6 +96,7 @@
   },
   "dashboard": {
     "title": "Tableau de bord",
+    "filenamePrefix": "produits-plus-vendus",
     "selectDateRange": "Sélectionner une période",
     "productLimit": "Nombre de produits",
     "promotionOnly": "Produits en promotion uniquement",
@@ -117,12 +119,30 @@
     "laboratoriesDistribution": "Répartition des ventes par laboratoire",
     "categoriesDistribution": "Répartition des ventes par catégorie",
     "productStockDistribution": "Répartition des produits par stock disponible",
+    "evolution": {
+      "title": "Évolution par rapport à l'année précédente",
+      "titleSuffix": "Chiffre d'affaire",
+      "salesLabel": "Ventes",
+      "turnoverLabel": "CA"
+    },
     "topProducts": {
       "title": "Produits les plus vendus",
       "productName": "Nom du produit",
+      "ean13": "EAN13",
       "categories": "Catégories",
       "laboratory": "Laboratoire",
-      "orderCount": "Nombre de boites vendues"
+      "orderCount": "Nombre de boites vendues",
+      "downloadCsv": "Télécharger CSV"
+    },
+    "userStatistics": {
+      "title": "Statistiques Utilisateurs",
+      "totalCustomers": "Clients inscrits",
+      "customersWithOrders": "Clients avec commande",
+      "newsletterSubscribers": "Abonnés newsletter",
+      "monthlyTrend": "Tendance mensuelle des inscriptions newsletter",
+      "adoptionRate": "Taux d'adoption newsletter",
+      "subscribers": "Abonnés",
+      "nonSubscribers": "Non-abonnés"
     }
   },
   "preparations": {
@@ -386,7 +406,8 @@
       "delivery-price-rules": "Règles de prix de livraison",
       "carriers": "Transporteurs",
       "roles": "Rôles et permissions",
-      "shop-management": "Gestion boutique"
+      "shop-management": "Gestion boutique",
+      "loyalty": "Fidélité"
     }
   },
   "promotionCode": {
@@ -520,6 +541,56 @@
       "deleteSuccess": "Pharmacie de garde supprimée",
       "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette pharmacie de garde ?",
       "groupedByDate": "Pharmacies par date"
+    }
+  },
+  "loyalty": {
+    "title": "Programme de fidélité",
+    "config": {
+      "title": "Configuration",
+      "earningRule": "Règle de gain",
+      "earningRulePrefix": "Le client gagne",
+      "earningRulePoints": "point(s) tous les",
+      "earningRuleSuffix": "€",
+      "earningRulePreview": "Aperçu",
+      "earningRuleExample": "Commande de {amount} € → {points} point(s)",
+      "save": "Enregistrer",
+      "saved": "Configuration enregistrée"
+    },
+    "multipliers": {
+      "title": "Périodes multiplicatrices",
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "multiplier": "Multiplicateur",
+      "create": "Créer une période",
+      "delete": "Supprimer",
+      "noMultipliers": "Aucune période multiplicatrice",
+      "active": "Actif",
+      "expired": "Expiré",
+      "upcoming": "À venir"
+    },
+    "points": {
+      "title": "Points de fidélité",
+      "balance": "Solde actuel",
+      "history": "Historique des points",
+      "credit": "Créditer des points",
+      "earned": "Gagné",
+      "manualCredit": "Crédit manuel",
+      "date": "Date",
+      "type": "Type",
+      "pointsLabel": "Points",
+      "order": "Commande",
+      "reason": "Raison",
+      "expiresAt": "Expire le",
+      "noHistory": "Aucun historique de points",
+      "creditModal": {
+        "title": "Créditer des points",
+        "points": "Nombre de points",
+        "reason": "Raison du crédit",
+        "confirm": "Créditer",
+        "cancel": "Annuler"
+      },
+      "creditSuccess": "Points crédités avec succès",
+      "creditError": "Erreur lors du crédit des points"
     }
   }
 }

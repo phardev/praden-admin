@@ -6,6 +6,17 @@ import { useCustomerStore } from '@store/customerStore'
 import { useSearchStore } from '@store/searchStore'
 import { priceFormatter } from '@utils/formatters'
 
+const formatLastOrderDate = (date: Date | string | undefined): string => {
+  if (!date) {
+    return '-'
+  }
+  return new Intl.DateTimeFormat('fr-FR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  }).format(new Date(date))
+}
+
 const headers: Array<Header> = [
   {
     name: 'Prénom',
@@ -34,6 +45,10 @@ const headers: Array<Header> = [
   {
     name: 'Total des commandes',
     value: 'ordersTotal'
+  },
+  {
+    name: 'Date dernière commande',
+    value: 'lastOrderDate'
   }
 ]
 
@@ -46,6 +61,7 @@ export interface GetCustomersItemVM {
   newsletterSubscription: boolean
   ordersCount: number
   ordersTotal: string
+  lastOrderDate: string
 }
 
 export interface GetCustomersVM {
@@ -74,7 +90,8 @@ export const getCustomersVM = (key: string): GetCustomersVM => {
       phone: customer.phone,
       newsletterSubscription: !!customer.newsletterSubscription,
       ordersCount: customer.ordersCount,
-      ordersTotal: formatter.format(customer.ordersTotal / 100)
+      ordersTotal: formatter.format(customer.ordersTotal / 100),
+      lastOrderDate: formatLastOrderDate(customer.lastOrderDate)
     })),
     isLoading: false,
     hasMore: customerStore.hasMore,

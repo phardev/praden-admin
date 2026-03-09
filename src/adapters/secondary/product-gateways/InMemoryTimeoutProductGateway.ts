@@ -5,6 +5,7 @@ import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { UUID } from '@core/types/types'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
+import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 
 export class InMemoryTimeoutProductGateway extends InMemoryProductGateway {
   private readonly timeoutInMs: number
@@ -14,7 +15,10 @@ export class InMemoryTimeoutProductGateway extends InMemoryProductGateway {
     this.timeoutInMs = timeoutInMs
   }
 
-  override async list(limit: number, offset: number): Promise<Array<Product>> {
+  override async list(
+    limit: number,
+    offset: number
+  ): Promise<Array<ProductListItem>> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.list(limit, offset))

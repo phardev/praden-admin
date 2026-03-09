@@ -22,7 +22,7 @@ const sizeClasses = computed(() => {
     sm: 'text-sm px-2 py-1',
     md: 'text-sm px-3 py-1'
   }
-  return sizes[props.size]
+  return sizes[props.size as keyof typeof sizes]
 })
 
 const badgeClass = computed(() => {

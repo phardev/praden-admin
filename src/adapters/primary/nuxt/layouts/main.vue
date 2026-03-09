@@ -25,8 +25,8 @@ const sidebarDialog = useDialog()
 
 const { t } = useI18n()
 
-const errorMessage = ref(undefined)
-const errorTitle = ref(undefined)
+const errorMessage = ref<string | undefined>(undefined)
+const errorTitle = ref<string | undefined>(undefined)
 
 const route = useRoute()
 watch(
@@ -37,7 +37,14 @@ watch(
   }
 )
 
-const getError = (err) => {
+interface ErrorWithResponse {
+  response?: {
+    status: number
+    data: unknown
+  }
+}
+
+const getError = (err: ErrorWithResponse) => {
   console.log(err)
   if (err.response) {
     const status = err.response.status
@@ -86,14 +93,18 @@ const translateValidationErrors = (errors: unknown): string => {
     return errors
   }
 
+  if (!Array.isArray(errors)) {
+    return String(errors)
+  }
+
   return errors
-    .map((error) => {
-      const parts = error.split(':').map((p) => p.trim())
+    .map((error: string) => {
+      const parts = error.split(':').map((p: string) => p.trim())
       if (parts.length === 2) {
         const field = parts[0]
         const message = parts[1].toLowerCase()
         let validationType = ''
-        let params: Record<string, any> = {}
+        let params: Record<string, string> = {}
         if (message.includes('required')) {
           validationType = 'required'
         } else if (message.includes('must be greater than')) {

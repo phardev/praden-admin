@@ -21,12 +21,12 @@ definePageMeta({ layout: 'main' })
 
 const vm = ref()
 const route = useRoute()
-const promotionUuid = route.params.uuid
+const promotionUuid = String(route.params.uuid)
 const router = useRouter()
-const routeName = router.currentRoute.value.name
+const routeName = String(router.currentRoute.value.name ?? '')
 
 onMounted(async () => {
-  listProducts(useProductGateway())
+  listProducts(0, 1000, useProductGateway())
   listCategories(useCategoryGateway())
   await getPromotion(promotionUuid, usePromotionGateway())
   vm.value = promotionFormEditVM(routeName)

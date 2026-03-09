@@ -311,6 +311,73 @@ describe('Search products', () => {
     })
   })
 
+  describe('Pagination', () => {
+    beforeEach(() => {
+      searchGateway.feedWith(dolodent, chamomilla, calmosine)
+    })
+
+    describe('Initial search (from=0)', () => {
+      it('should replace items with search results', async () => {
+        givenQueryIs('mo')
+        givenSizeIs(1)
+        givenFromIs(0)
+        await whenSearchForProducts()
+        expectSearchResultToEqual(chamomilla)
+      })
+      it('should set pagination with hasMore true when more results exist', async () => {
+        givenQueryIs('mo')
+        givenSizeIs(1)
+        givenFromIs(0)
+        await whenSearchForProducts()
+        expectHasMoreToBe(true)
+      })
+    })
+
+    describe('Subsequent search (from>0) appends items', () => {
+      it('should append items when from is greater than 0', async () => {
+        givenQueryIs('mo')
+        givenSizeIs(1)
+        givenFromIs(0)
+        await whenSearchForProducts()
+        givenFromIs(1)
+        await whenSearchForProducts()
+        expectSearchResultToEqual(chamomilla, calmosine)
+      })
+      it('should set hasMore false when no more results', async () => {
+        givenQueryIs('mo')
+        givenSizeIs(1)
+        givenFromIs(0)
+        await whenSearchForProducts()
+        givenFromIs(1)
+        await whenSearchForProducts()
+        expectHasMoreToBe(false)
+      })
+    })
+
+    describe('Query change resets pagination', () => {
+      it('should replace items when query changes', async () => {
+        givenQueryIs('mo')
+        givenSizeIs(1)
+        givenFromIs(0)
+        await whenSearchForProducts()
+        givenQueryIs('dol')
+        givenFromIs(0)
+        await whenSearchForProducts()
+        expectSearchResultToEqual(dolodent)
+      })
+    })
+
+    describe('Empty results', () => {
+      it('should set hasMore false when no results', async () => {
+        givenQueryIs('nonexistent')
+        givenSizeIs(25)
+        givenFromIs(0)
+        await whenSearchForProducts()
+        expectHasMoreToBe(false)
+      })
+    })
+  })
+
   const givenQueryIs = (q: string) => {
     filters.query = q
   }
@@ -321,6 +388,14 @@ describe('Search products', () => {
 
   const givenMinimumQueryLength = (length: number) => {
     filters.minimumQueryLength = length
+  }
+
+  const givenSizeIs = (size: number) => {
+    filters.size = size
+  }
+
+  const givenFromIs = (from: number) => {
+    filters.from = from
   }
 
   const whenSearchForProducts = async () => {
@@ -351,5 +426,9 @@ describe('Search products', () => {
 
   const expectSearchResultToBeUndefined = () => {
     expect(searchStore.get(url)).toBeUndefined()
+  }
+
+  const expectHasMoreToBe = (expected: boolean) => {
+    expect(searchStore.hasMoreSearch(url)).toBe(expected)
   }
 })
