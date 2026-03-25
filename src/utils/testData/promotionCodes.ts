@@ -77,7 +77,7 @@ export const deliveryPromotionCode: PromotionCode = {
   scope: PromotionScope.Delivery,
   amount: 100,
   conditions: {
-    deliveryMethodUuid: deliveryInRelayPoint.uuid
+    deliveryMethodUuids: [deliveryInRelayPoint.uuid]
   }
 }
 

@@ -92,7 +92,7 @@ export class NewPromotionCodeFormInitializer implements FormInitializer {
       endDate: undefined,
       maximumUsage: undefined,
       minimumAmount: undefined,
-      deliveryMethodUuid: undefined,
+      deliveryMethodUuids: [],
       products: [],
       maxWeight: undefined
     })
