@@ -84,7 +84,7 @@ describe('Promotion code form edit VM', () => {
         { field: 'endDate' },
         { field: 'maximumUsage' },
         { field: 'minimumAmount' },
-        { field: 'deliveryMethodUuid' }
+        { field: 'deliveryMethodUuids' }
       ]
       describe.each([
         {
@@ -105,7 +105,7 @@ describe('Promotion code form edit VM', () => {
             endDate: undefined,
             maximumUsage: undefined,
             minimumAmount: undefined,
-            deliveryMethodUuid: undefined
+            deliveryMethodUuids: []
           }
         },
         {
@@ -126,7 +126,7 @@ describe('Promotion code form edit VM', () => {
             endDate: undefined,
             maximumUsage: undefined,
             minimumAmount: undefined,
-            deliveryMethodUuid: undefined
+            deliveryMethodUuids: []
           }
         },
         {
@@ -147,7 +147,7 @@ describe('Promotion code form edit VM', () => {
             endDate: limitedInTimePromotionCode.endDate,
             maximumUsage: undefined,
             minimumAmount: undefined,
-            deliveryMethodUuid: undefined
+            deliveryMethodUuids: []
           }
         },
         {
@@ -180,7 +180,7 @@ describe('Promotion code form edit VM', () => {
             endDate: limitedPromotionCode.endDate,
             maximumUsage: limitedPromotionCode.conditions.maximumUsage,
             minimumAmount: undefined,
-            deliveryMethodUuid: undefined
+            deliveryMethodUuids: []
           }
         },
         {
@@ -197,7 +197,7 @@ describe('Promotion code form edit VM', () => {
             maximumUsage:
               fifteenPercentIfMiniumAmountPromotionCode.conditions.maximumUsage,
             minimumAmount: '20',
-            deliveryMethodUuid: undefined
+            deliveryMethodUuids: []
           }
         },
         {
@@ -218,8 +218,8 @@ describe('Promotion code form edit VM', () => {
             endDate: deliveryPromotionCode.endDate,
             maximumUsage: undefined,
             minimumAmount: undefined,
-            deliveryMethodUuid:
-              deliveryPromotionCode.conditions.deliveryMethodUuid
+            deliveryMethodUuids:
+              deliveryPromotionCode.conditions.deliveryMethodUuids
           }
         }
       ])(
@@ -306,9 +306,9 @@ describe('Promotion code form edit VM', () => {
           expectedValue: '80'
         },
         {
-          field: 'deliveryMethodUuid',
-          value: deliveryInRelayPoint.uuid,
-          expectedValue: deliveryInRelayPoint.uuid
+          field: 'deliveryMethodUuids',
+          value: [deliveryInRelayPoint.uuid],
+          expectedValue: [deliveryInRelayPoint.uuid]
         }
       ])('Simple fields', ({ field, value, expectedValue }) => {
         beforeEach(() => {
@@ -362,7 +362,7 @@ describe('Promotion code form edit VM', () => {
         conditions: {
           maximumUsage: 25,
           minimumAmount: 5000,
-          deliveryMethodUuid: express.uuid
+          deliveryMethodUuids: [express.uuid]
         }
       }
       vm.set('code', expectedDto.code)
@@ -373,7 +373,7 @@ describe('Promotion code form edit VM', () => {
       vm.set('endDate', expectedDto.endDate)
       vm.set('maximumUsage', expectedDto.conditions.maximumUsage!.toString())
       vm.set('minimumAmount', '50')
-      vm.set('deliveryMethodUuid', expectedDto.conditions.deliveryMethodUuid)
+      vm.set('deliveryMethodUuids', expectedDto.conditions.deliveryMethodUuids)
       expect(vm.getDto()).toStrictEqual(expectedDto)
     })
     it('should return the dto for fixed reduction', () => {
@@ -387,7 +387,7 @@ describe('Promotion code form edit VM', () => {
         conditions: {
           maximumUsage: 42,
           minimumAmount: 10000,
-          deliveryMethodUuid: express.uuid
+          deliveryMethodUuids: [express.uuid]
         }
       }
       vm.set('code', expectedDto.code)
@@ -398,7 +398,7 @@ describe('Promotion code form edit VM', () => {
       vm.set('endDate', expectedDto.endDate)
       vm.set('maximumUsage', expectedDto.conditions.maximumUsage!.toString())
       vm.set('minimumAmount', '100')
-      vm.set('deliveryMethodUuid', expectedDto.conditions.deliveryMethodUuid)
+      vm.set('deliveryMethodUuids', expectedDto.conditions.deliveryMethodUuids)
       expect(vm.getDto()).toStrictEqual(expectedDto)
     })
   })
