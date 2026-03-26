@@ -1,6 +1,9 @@
 <template lang="pug">
 .section
-  h1.text-page-title.flex-grow Commandes
+  .flex.items-center.justify-between.mb-4
+    h1.text-page-title.flex-grow Commandes
+    nuxt-link(to="/orders/new")
+      ft-button {{ $t('orders.createOrder') }}
   orders-list(:vm="ordersVM" :search-key="routeName")
 </template>
 

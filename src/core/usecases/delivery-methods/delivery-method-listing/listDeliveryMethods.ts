@@ -6,7 +6,10 @@ export const listDeliveryMethods = async (
 ) => {
   const deliveryMethodStore = useDeliveryMethodStore()
   deliveryMethodStore.startLoading()
-  const deliveryMethods = await deliveryMethodGateway.list()
-  deliveryMethodStore.list(deliveryMethods)
-  deliveryMethodStore.stopLoading()
+  try {
+    const deliveryMethods = await deliveryMethodGateway.list()
+    deliveryMethodStore.list(deliveryMethods)
+  } finally {
+    deliveryMethodStore.stopLoading()
+  }
 }

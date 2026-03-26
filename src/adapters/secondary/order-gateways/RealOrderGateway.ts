@@ -8,6 +8,7 @@ import {
 } from '@core/entities/order'
 import { OrderGateway } from '@core/gateways/orderGateway'
 import type { HashTable, UUID } from '@core/types/types'
+import type { CreateManualOrderDTO } from '@core/usecases/order/manual-order-creation/createManualOrder'
 
 export abstract class RealGateway {
   protected readonly baseUrl: string
@@ -51,6 +52,14 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   batch(uuids: Array<UUID>): Promise<Array<Order>> {
     throw new Error('Method not implemented.')
+  }
+
+  async create(dto: CreateManualOrderDTO): Promise<Order> {
+    const res = await axiosWithBearer.post(
+      `${this.baseUrl}/orders/create/`,
+      dto
+    )
+    return this.convertToOrder(res.data.item)
   }
 
   async askHowToFinish(preparation: Order): Promise<Order> {

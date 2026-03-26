@@ -11,11 +11,13 @@ import { PreparationDoesNotExistsError } from '@core/errors/PreparationDoesNotEx
 import { DateProvider } from '@core/gateways/dateProvider'
 import { OrderGateway } from '@core/gateways/orderGateway'
 import { UUID } from '@core/types/types'
+import type { CreateManualOrderDTO } from '@core/usecases/order/manual-order-creation/createManualOrder'
 
 export class InMemoryOrderGateway implements OrderGateway {
   private orders: Array<Order> = []
   private printed: Array<UUID> = []
   private dateProvider: DateProvider
+  private createdOrder: Order | undefined
 
   constructor(dateProvider: DateProvider) {
     this.dateProvider = dateProvider
@@ -136,7 +138,17 @@ export class InMemoryOrderGateway implements OrderGateway {
     return this.printed
   }
 
+  async create(_dto: CreateManualOrderDTO): Promise<Order> {
+    const order = this.createdOrder!
+    this.orders.push(order)
+    return Promise.resolve(JSON.parse(JSON.stringify(order)))
+  }
+
   feedWith(...orders: Array<Order>) {
     this.orders = orders
+  }
+
+  feedWithCreated(order: Order) {
+    this.createdOrder = order
   }
 }

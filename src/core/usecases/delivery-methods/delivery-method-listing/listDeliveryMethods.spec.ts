@@ -1,5 +1,6 @@
 import { InMemoryDeliveryMethodGateway } from '@adapters/secondary/delivery-method-gateways/inMemoryDeliveryMethodGateway'
 import { DeliveryMethod } from '@core/entities/order'
+import { DeliveryMethodGateway } from '@core/gateways/deliveryMethodGateway'
 import { listDeliveryMethods } from '@core/usecases/delivery-methods/delivery-method-listing/listDeliveryMethods'
 import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
 import {
@@ -49,6 +50,13 @@ describe('Delivery method listing', () => {
     })
     it('should be aware that loading is over', async () => {
       await whenListDeliveryMethods()
+      expect(deliveryMethodStore.isLoading).toBe(false)
+    })
+    it('should stop loading when gateway throws', async () => {
+      const failingGateway: DeliveryMethodGateway = {
+        list: () => Promise.reject(new Error('Network error'))
+      }
+      await listDeliveryMethods(failingGateway).catch(() => {})
       expect(deliveryMethodStore.isLoading).toBe(false)
     })
   })
