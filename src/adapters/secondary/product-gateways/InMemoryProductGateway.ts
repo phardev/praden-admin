@@ -1,8 +1,11 @@
 import { Category } from '@core/entities/category'
-import { Product } from '@core/entities/product'
+import { isEligibleToPromotion, Product } from '@core/entities/product'
 import { isExistingImage, type ProductImage } from '@core/entities/productImage'
 import { ProductDoesNotExistsError } from '@core/errors/ProductDoesNotExistsError'
-import { ProductGateway } from '@core/gateways/productGateway'
+import {
+  ProductGateway,
+  ResolveByEan13Result
+} from '@core/gateways/productGateway'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { UUID } from '@core/types/types'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
@@ -231,6 +234,21 @@ export class InMemoryProductGateway implements ProductGateway {
           this.products.filter((p) => productUuids.includes(p.uuid))
         )
       )
+    )
+  }
+
+  async resolveByEan13s(ean13s: Array<string>): Promise<ResolveByEan13Result> {
+    const found = this.products.filter((p) => ean13s.includes(p.ean13))
+    const foundEan13s = found.map((p) => p.ean13)
+    const notFound = ean13s.filter((e) => !foundEan13s.includes(e))
+    const eligible = found
+      .filter((p) => isEligibleToPromotion(p))
+      .map(this.toListItem)
+    const ineligibleCount = found.filter(
+      (p) => !isEligibleToPromotion(p)
+    ).length
+    return Promise.resolve(
+      JSON.parse(JSON.stringify({ eligible, ineligibleCount, notFound }))
     )
   }
 
