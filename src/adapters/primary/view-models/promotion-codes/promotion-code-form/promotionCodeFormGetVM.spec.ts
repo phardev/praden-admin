@@ -74,7 +74,7 @@ describe('Promotion code form get VM', () => {
         { field: 'endDate' },
         { field: 'maximumUsage' },
         { field: 'minimumAmount' },
-        { field: 'deliveryMethodUuids' }
+        { field: 'deliveryMethodUuid' }
       ]
       describe.each([
         {
@@ -95,7 +95,7 @@ describe('Promotion code form get VM', () => {
             endDate: undefined,
             maximumUsage: undefined,
             minimumAmount: undefined,
-            deliveryMethodUuids: []
+            deliveryMethodUuid: undefined
           }
         },
         {
@@ -116,7 +116,7 @@ describe('Promotion code form get VM', () => {
             endDate: undefined,
             maximumUsage: undefined,
             minimumAmount: undefined,
-            deliveryMethodUuids: []
+            deliveryMethodUuid: undefined
           }
         },
         {
@@ -137,7 +137,7 @@ describe('Promotion code form get VM', () => {
             endDate: limitedInTimePromotionCode.endDate,
             maximumUsage: undefined,
             minimumAmount: undefined,
-            deliveryMethodUuids: []
+            deliveryMethodUuid: undefined
           }
         },
         {
@@ -170,7 +170,7 @@ describe('Promotion code form get VM', () => {
             endDate: limitedPromotionCode.endDate,
             maximumUsage: limitedPromotionCode.conditions.maximumUsage,
             minimumAmount: undefined,
-            deliveryMethodUuids: []
+            deliveryMethodUuid: undefined
           }
         },
         {
@@ -187,7 +187,7 @@ describe('Promotion code form get VM', () => {
             maximumUsage:
               fifteenPercentIfMiniumAmountPromotionCode.conditions.maximumUsage,
             minimumAmount: '20',
-            deliveryMethodUuids: []
+            deliveryMethodUuid: undefined
           }
         },
         {
@@ -208,8 +208,8 @@ describe('Promotion code form get VM', () => {
             endDate: deliveryPromotionCode.endDate,
             maximumUsage: undefined,
             minimumAmount: undefined,
-            deliveryMethodUuids:
-              deliveryPromotionCode.conditions.deliveryMethodUuids
+            deliveryMethodUuid:
+              deliveryPromotionCode.conditions.deliveryMethodUuid
           }
         }
       ])(

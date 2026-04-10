@@ -139,9 +139,9 @@ export abstract class PromotionCodeFormVM {
     if (minimumAmount) {
       res.conditions.minimumAmount = +minimumAmount * 100
     }
-    const deliveryMethodUuids = this.fieldsReader.get('deliveryMethodUuids')
-    if (deliveryMethodUuids && deliveryMethodUuids.length > 0) {
-      res.conditions.deliveryMethodUuids = deliveryMethodUuids
+    const deliveryMethodUuid = this.fieldsReader.get('deliveryMethodUuid')
+    if (deliveryMethodUuid) {
+      res.conditions.deliveryMethodUuid = deliveryMethodUuid
     }
     const products = this.fieldsReader.get('products')
     if (products.length) {

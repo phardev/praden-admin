@@ -1,4 +1,4 @@
-const readFile = (file: File, mode: 'text' | 'dataUrl'): Promise<string> => {
+export const getFileContent = (file: File): Promise<string> => {
   const reader = new FileReader()
   return new Promise<string>((resolve, reject) => {
     reader.onload = (e: ProgressEvent<FileReader>) => {
@@ -14,11 +14,6 @@ const readFile = (file: File, mode: 'text' | 'dataUrl'): Promise<string> => {
       reject(new Error('Error reading file'))
     }
 
-    if (mode === 'text') reader.readAsText(file)
-    else reader.readAsDataURL(file)
+    reader.readAsDataURL(file)
   })
 }
-
-export const readFileAsText = (file: File) => readFile(file, 'text')
-
-export const getFileContent = (file: File) => readFile(file, 'dataUrl')

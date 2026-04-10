@@ -3,13 +3,7 @@ import { UUID } from '@core/types/types'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
-import type { Product } from '../entities/product'
-
-export interface ResolveByEan13Result {
-  eligible: Array<ProductListItem>
-  ineligibleCount: number
-  notFound: Array<string>
-}
+import { Product } from '../entities/product'
 
 export interface ProductGateway {
   list(limit: number, offset: number): Promise<Array<ProductListItem>>
@@ -33,5 +27,4 @@ export interface ProductGateway {
     category: Category,
     productUuids: Array<UUID>
   ): Promise<Array<Product>>
-  resolveByEan13s(ean13s: Array<string>): Promise<ResolveByEan13Result>
 }

@@ -24,7 +24,7 @@ export interface PromotionCode {
 export interface PromotionCodeConditions {
   minimumAmount?: number
   maximumUsage?: number
-  deliveryMethodUuids?: Array<UUID>
+  deliveryMethodUuid?: UUID
   products?: Array<Product>
   maxWeight?: number
 }

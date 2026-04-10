@@ -63,7 +63,7 @@ describe('Promotion code creation', () => {
         conditions: {
           minimumAmount: 80,
           maximumUsage: 100,
-          deliveryMethodUuids: ['delivery-method-uuid']
+          deliveryMethodUuid: 'delivery-method-uuid'
         },
         reductionType: ReductionType.Fixed,
         scope: PromotionScope.Delivery

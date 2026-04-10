@@ -53,10 +53,3 @@ export const isProduct = (object: any): object is Product => {
 export const isProductActive = (product: Product): boolean => {
   return product.status === ProductStatus.Active
 }
-
-export const isEligibleToPromotion = (product: {
-  isMedicine: boolean
-  flags: Record<string, boolean>
-}): boolean => {
-  return Boolean(product.flags.arePromotionsAllowed && !product.isMedicine)
-}

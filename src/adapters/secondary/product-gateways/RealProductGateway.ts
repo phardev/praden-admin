@@ -3,10 +3,7 @@ import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway
 import { Category } from '@core/entities/category'
 import { Product } from '@core/entities/product'
 import type { ProductImage } from '@core/entities/productImage'
-import {
-  ProductGateway,
-  ResolveByEan13Result
-} from '@core/gateways/productGateway'
+import { ProductGateway } from '@core/gateways/productGateway'
 import { UUID } from '@core/types/types'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
@@ -210,19 +207,6 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     newImages.forEach((img, index) => {
       formData.append(`orderedImages_files[${index}]`, img.source.file)
     })
-  }
-
-  async resolveByEan13s(ean13s: Array<string>): Promise<ResolveByEan13Result> {
-    const res = await axiosWithBearer.post(
-      `${this.baseUrl}/products/resolve-by-ean13`,
-      { ean13s },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    )
-    return res.data
   }
 
   async create(dto: CreateProductDTO): Promise<Product> {

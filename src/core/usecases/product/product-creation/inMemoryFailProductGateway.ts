@@ -1,9 +1,6 @@
 import { Category } from '@core/entities/category'
 import { Product } from '@core/entities/product'
-import type {
-  ProductGateway,
-  ResolveByEan13Result
-} from '@core/gateways/productGateway'
+import { ProductGateway } from '@core/gateways/productGateway'
 import { UUID } from '@core/types/types'
 import { EditProductDTO } from '../product-edition/editProduct'
 import { ProductListItem } from '../product-listing/productListItem'
@@ -65,10 +62,6 @@ export class InMemoryFailProductGateway implements ProductGateway {
     category: Category,
     productUuids: Array<UUID>
   ): Promise<Array<Product>> {
-    throw new Error(this.errorMessage)
-  }
-
-  resolveByEan13s(ean13s: Array<string>): Promise<ResolveByEan13Result> {
     throw new Error(this.errorMessage)
   }
 

@@ -79,48 +79,6 @@ div(v-if="currentVM")
             @update:model-value="endDateChanged"
             @close="close"
           )
-  div.flex.items-center.gap-4.mb-4(v-if="currentVM.get('products').canEdit")
-    ft-button.button-solid(
-      :disabled="isImporting"
-      :loading="isImporting"
-      @click="triggerFileInput"
-    )
-      icon.icon-md.mr-2(v-if="!isImporting" name="ic:baseline-upload-file")
-      | {{ isImporting ? 'Import en cours...' : 'Importer depuis CSV' }}
-    input.hidden(
-      ref="csvFileInput"
-      type="file"
-      accept=".csv"
-      @change="handleCSVImport"
-    )
-  div.flex.flex-col.gap-2.mb-4(v-if="importFeedback")
-    UAlert(
-      v-if="importFeedback.addedCount > 0"
-      :title="`${importFeedback.addedCount} produit(s) ajouté(s)`"
-      color="green"
-      :close-button="{ icon: 'i-heroicons-x-mark-20-solid' }"
-      @close="clearImportFeedback"
-    )
-    UAlert(
-      v-if="importFeedback.ineligibleCount > 0"
-      :title="`${importFeedback.ineligibleCount} produit(s) non éligible(s) aux promotions`"
-      color="orange"
-    )
-    UAlert(
-      v-if="importFeedback.notFoundCodes.length > 0"
-      :title="`${importFeedback.notFoundCodes.length} code(s) EAN13 non trouvé(s)`"
-      color="orange"
-    )
-      template(#description)
-        div.max-h-32.overflow-y-auto.text-sm.font-mono
-          | {{ importFeedback.notFoundCodes.join(', ') }}
-    UAlert(
-      v-if="importFeedback.error"
-      :title="importFeedback.error"
-      color="red"
-      :close-button="{ icon: 'i-heroicons-x-mark-20-solid' }"
-      @close="clearImportFeedback"
-    )
   ft-text-field(
     v-if="currentVM.get('products').canEdit"
     v-model="search"
@@ -176,10 +134,8 @@ div(v-if="currentVM")
 import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'
 import { ReductionType } from '@core/entities/promotion'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
-import { importPromotionProductsCSV } from '@core/usecases/promotions/import-promotion-products-csv/importPromotionProductsCSV'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import { useProductGateway } from '../../../../../../gateways/productGateway'
 import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 
 definePageMeta({ layout: 'main' })
@@ -199,55 +155,6 @@ const routeName = String(router.currentRoute.value.name ?? '')
 const availableProductSelector = useSelection()
 const addedProductSelector = useSelection()
 const search = ref('')
-const csvFileInput = ref<HTMLInputElement>()
-const isImporting = ref(false)
-
-interface ImportFeedback {
-  addedCount: number
-  ineligibleCount: number
-  notFoundCodes: Array<string>
-  error?: string
-}
-
-const importFeedback = ref<ImportFeedback>()
-
-const triggerFileInput = () => {
-  csvFileInput.value?.click()
-}
-
-const handleCSVImport = async (e: Event) => {
-  const target = e.target as HTMLInputElement
-  const file = target.files?.[0]
-  if (!file) return
-
-  isImporting.value = true
-  try {
-    const result = await importPromotionProductsCSV(
-      file,
-      useProductGateway(),
-      (uuids) => currentVM.value.addProducts(uuids)
-    )
-    importFeedback.value = {
-      addedCount: result.addedCount,
-      ineligibleCount: result.ineligibleCount,
-      notFoundCodes: result.notFoundCodes
-    }
-  } catch {
-    importFeedback.value = {
-      addedCount: 0,
-      ineligibleCount: 0,
-      notFoundCodes: [],
-      error: "Une erreur est survenue lors de l'import"
-    }
-  } finally {
-    isImporting.value = false
-    target.value = ''
-  }
-}
-
-const clearImportFeedback = () => {
-  importFeedback.value = undefined
-}
 
 const nameChanged = (name: string) => {
   currentVM.value.set('name', name)
