@@ -57,7 +57,7 @@ export class ExistingPromotionCodeFormInitializer implements FormInitializer {
       minimumAmount: promotionCode.conditions.minimumAmount
         ? (promotionCode.conditions.minimumAmount / 100).toString()
         : undefined,
-      deliveryMethodUuid: promotionCode.conditions.deliveryMethodUuid,
+      deliveryMethodUuids: promotionCode.conditions.deliveryMethodUuids || [],
       products:
         promotionCode && promotionCode.conditions.products
           ? promotionCode.conditions.products

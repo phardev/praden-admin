@@ -130,19 +130,28 @@ UForm(v-else :state="currentVM")
           @update:model-value="minimumAmountChanged"
         )
       UFormGroup.pb-4(label="Methode de livraison" name="deliveryMethod")
-        ft-autocomplete(
-          :model-value="currentVM.get('deliveryMethodUuid').value"
-          :disabled="!currentVM.get('deliveryMethodUuid').canEdit"
+        USelectMenu(
+          :model-value="currentVM.get('deliveryMethodUuids').value"
           :options="currentVM.getAvailableDeliveryMethods()"
-          placeholder="Rechercher un methode de livraison"
-          by="uuid"
-          option-attribute="name"
+          :disabled="!currentVM.get('deliveryMethodUuids').canEdit"
+          multiple
           value-attribute="uuid"
-          @update:model-value="deliveryMethodChanged"
-          @clear="clearDeliveryMethod"
+          option-attribute="name"
+          placeholder="Rechercher une methode de livraison"
+          @update:model-value="deliveryMethodsChanged"
         )
-          template(#option="{ option: laboratory }")
-            span {{ laboratory.name }}
+          template(#label)
+            span.flex.flex-wrap.gap-1(v-if="selectedDeliveryMethods.length")
+              UBadge(
+                v-for="method in selectedDeliveryMethods"
+                :key="method.uuid"
+                color="gray"
+                variant="solid"
+                size="xs"
+              ) {{ method.name }}
+            span.text-gray-400(v-else) Rechercher une methode de livraison
+          template(#option="{ option }")
+            span {{ option.name }}
       UFormGroup.pb-4(
         v-if="currentVM.get('scope').value === PromotionScope.Delivery"
         label="Poids maximum de la commande (kg)"
@@ -254,6 +263,12 @@ const props = defineProps({
 
 const currentVM = toRef(props, 'vm')
 
+const selectedDeliveryMethods = computed(() => {
+  const uuids = currentVM.value?.get('deliveryMethodUuids')?.value || []
+  const all = currentVM.value?.getAvailableDeliveryMethods() || []
+  return all.filter((m: { uuid: string }) => uuids.includes(m.uuid))
+})
+
 const codeChanged = (code: string) => {
   currentVM.value.set('code', code)
 }
@@ -288,12 +303,8 @@ const minimumAmountChanged = (value: string) => {
     currentVM.value.set('minimumAmount', value)
 }
 
-const deliveryMethodChanged = (uuid: string) => {
-  currentVM.value.set('deliveryMethodUuid', uuid)
-}
-
-const clearDeliveryMethod = () => {
-  currentVM.value.set('deliveryMethodUuid', undefined)
+const deliveryMethodsChanged = (uuids: Array<string>) => {
+  currentVM.value.set('deliveryMethodUuids', uuids)
 }
 
 const maxWeightChanged = (value: string) => {

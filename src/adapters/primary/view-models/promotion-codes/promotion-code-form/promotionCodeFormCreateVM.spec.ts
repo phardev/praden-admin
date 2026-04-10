@@ -72,7 +72,7 @@ describe('Promotion code form create VM', () => {
         endDate: undefined,
         maximumUsage: undefined,
         minimumAmount: undefined,
-        deliveryMethodUuid: undefined
+        deliveryMethodUuids: []
       }
       const fields = [
         { field: 'code' },
@@ -83,7 +83,7 @@ describe('Promotion code form create VM', () => {
         { field: 'endDate' },
         { field: 'maximumUsage' },
         { field: 'minimumAmount' },
-        { field: 'deliveryMethodUuid' }
+        { field: 'deliveryMethodUuids' }
       ]
       describe.each(fields)('For promotion code', ({ field }) => {
         it(`should initialize ${field}"`, () => {
@@ -148,9 +148,9 @@ describe('Promotion code form create VM', () => {
           expectedValue: '80'
         },
         {
-          field: 'deliveryMethodUuid',
-          value: deliveryInRelayPoint.uuid,
-          expectedValue: deliveryInRelayPoint.uuid
+          field: 'deliveryMethodUuids',
+          value: [deliveryInRelayPoint.uuid],
+          expectedValue: [deliveryInRelayPoint.uuid]
         }
       ])('Simple fields', ({ field, value, expectedValue }) => {
         beforeEach(() => {
@@ -221,7 +221,7 @@ describe('Promotion code form create VM', () => {
         conditions: {
           maximumUsage: 25,
           minimumAmount: 5000,
-          deliveryMethodUuid: express.uuid
+          deliveryMethodUuids: [express.uuid]
         }
       }
       vm.set('code', expectedDto.code)
@@ -232,7 +232,7 @@ describe('Promotion code form create VM', () => {
       vm.set('endDate', expectedDto.endDate)
       vm.set('maximumUsage', expectedDto.conditions.maximumUsage!.toString())
       vm.set('minimumAmount', '50')
-      vm.set('deliveryMethodUuid', expectedDto.conditions.deliveryMethodUuid)
+      vm.set('deliveryMethodUuids', expectedDto.conditions.deliveryMethodUuids)
       expect(vm.getDto()).toStrictEqual(expectedDto)
     })
     it('should return the dto for fixed reduction', () => {
@@ -246,7 +246,7 @@ describe('Promotion code form create VM', () => {
         conditions: {
           maximumUsage: 42,
           minimumAmount: 10000,
-          deliveryMethodUuid: express.uuid
+          deliveryMethodUuids: [express.uuid]
         }
       }
       vm.set('code', expectedDto.code)
@@ -257,7 +257,7 @@ describe('Promotion code form create VM', () => {
       vm.set('endDate', expectedDto.endDate)
       vm.set('maximumUsage', expectedDto.conditions.maximumUsage!.toString())
       vm.set('minimumAmount', '100')
-      vm.set('deliveryMethodUuid', expectedDto.conditions.deliveryMethodUuid)
+      vm.set('deliveryMethodUuids', expectedDto.conditions.deliveryMethodUuids)
       expect(vm.getDto()).toStrictEqual(expectedDto)
     })
     it('should return the dto with maxWeight converted from kg to grams', () => {
