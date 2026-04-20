@@ -1,5 +1,6 @@
-import { Order } from '@core/entities/order'
-import { UUID } from '@core/types/types'
+import type { Order } from '@core/entities/order'
+import type { UUID } from '@core/types/types'
+import type { CreateManualOrderDTO } from '@core/usecases/order/manual-order-creation/createManualOrder'
 
 export interface OrderGateway {
   list(): Promise<Array<Order>>
@@ -11,4 +12,5 @@ export interface OrderGateway {
   askHowToFinish(preparation: Order): Promise<Order>
   cancelPreparation(preparation: Order): Promise<Order>
   batch(uuids: Array<UUID>): Promise<Array<Order>>
+  create(dto: CreateManualOrderDTO): Promise<Order>
 }
