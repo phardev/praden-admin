@@ -15,6 +15,7 @@ export class InMemoryDashboardGateway implements DashboardGateway {
       totalSales: {
         count: 0,
         turnover: 0,
+        turnoverHT: 0,
         averageBasketValue: 0,
         canceledTurnover: 0,
         deliveryPrice: 0
@@ -22,6 +23,7 @@ export class InMemoryDashboardGateway implements DashboardGateway {
       previousYearTotalSales: {
         count: 0,
         turnover: 0,
+        turnoverHT: 0,
         averageBasketValue: 0,
         canceledTurnover: 0,
         deliveryPrice: 0
@@ -43,7 +45,8 @@ export class InMemoryDashboardGateway implements DashboardGateway {
           subscribers: 0,
           nonSubscribers: 0
         }
-      }
+      },
+      revenueByTaxRate: []
     }
   }
 
@@ -98,6 +101,7 @@ export class InMemoryDashboardGateway implements DashboardGateway {
       totalSales: {
         count: totalCount,
         turnover: totalTurnover,
+        turnoverHT: this.mockData.totalSales.turnoverHT,
         averageBasketValue,
         canceledTurnover: 0,
         deliveryPrice: 0
@@ -108,7 +112,8 @@ export class InMemoryDashboardGateway implements DashboardGateway {
       ordersByLaboratory: this.mockData.ordersByLaboratory,
       productQuantitiesByCategory: this.mockData.productQuantitiesByCategory,
       productStockStats: this.mockData.productStockStats,
-      userStatistics: this.mockData.userStatistics
+      userStatistics: this.mockData.userStatistics,
+      revenueByTaxRate: this.mockData.revenueByTaxRate
     }
   }
 
