@@ -52,6 +52,7 @@ gateway.feedWith({
   totalSales: {
     count: 550,
     turnover: 2750000,
+    turnoverHT: 2400000,
     averageBasketValue: 5000,
     canceledTurnover: 0,
     deliveryPrice: 0
@@ -59,6 +60,7 @@ gateway.feedWith({
   previousYearTotalSales: {
     count: 1000,
     turnover: 4500000,
+    turnoverHT: 3900000,
     averageBasketValue: 4500,
     canceledTurnover: 0,
     deliveryPrice: 0
@@ -169,7 +171,14 @@ gateway.feedWith({
       subscribers: 680,
       nonSubscribers: 570
     }
-  }
+  },
+  revenueByTaxRate: [
+    { percentTaxRate: 2.1, revenueTTC: 450000, kind: 'PRODUCT' },
+    { percentTaxRate: 5.5, revenueTTC: 950000, kind: 'PRODUCT' },
+    { percentTaxRate: 10, revenueTTC: 650000, kind: 'PRODUCT' },
+    { percentTaxRate: 20, revenueTTC: 700000, kind: 'PRODUCT' },
+    { percentTaxRate: 20, revenueTTC: 120000, kind: 'DELIVERY' }
+  ]
 })
 
 export const useDashboardGateway = (): DashboardGateway => {

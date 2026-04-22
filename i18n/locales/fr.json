@@ -105,6 +105,14 @@
     "orders": "commandes",
     "totalTurnover": "Chiffre d'affaires total",
     "revenue": "de revenus",
+    "totalTurnoverHT": "Chiffre d'affaires HT",
+    "revenueHT": "de revenus HT",
+    "turnoverByTaxRate": {
+      "title": "CA TTC par taux de TVA",
+      "productLabel": "Produit {rate}%",
+      "deliveryLabel": "Livraison {rate}%",
+      "tooltip": "CA TTC (€)"
+    },
     "canceledTurnover": "Chiffre d'affaires annulé",
     "canceledRevenue": "de revenus annulés",
     "deliveryPrice": "Frais de livraison",
