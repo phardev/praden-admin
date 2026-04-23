@@ -64,6 +64,7 @@ describe('GetDashboard', () => {
       totalSales: {
         count: 550,
         turnover: 2750000,
+        turnoverHT: 2400000,
         averageBasketValue: 5000,
         canceledTurnover: 0,
         deliveryPrice: 0
@@ -71,6 +72,7 @@ describe('GetDashboard', () => {
       previousYearTotalSales: {
         count: 1000,
         turnover: 4500000,
+        turnoverHT: 3900000,
         averageBasketValue: 4500,
         canceledTurnover: 0,
         deliveryPrice: 0
@@ -193,7 +195,13 @@ describe('GetDashboard', () => {
           subscribers: 680,
           nonSubscribers: 570
         }
-      }
+      },
+      revenueByTaxRate: [
+        { percentTaxRate: 2.1, revenueTTC: 450000, kind: 'PRODUCT' },
+        { percentTaxRate: 5.5, revenueTTC: 950000, kind: 'PRODUCT' },
+        { percentTaxRate: 20, revenueTTC: 1350000, kind: 'PRODUCT' },
+        { percentTaxRate: 20, revenueTTC: 80000, kind: 'DELIVERY' }
+      ]
     }
     dashboardGateway.feedWith(mockData)
   })
@@ -232,7 +240,8 @@ describe('GetDashboard', () => {
       ordersByLaboratory: mockData.ordersByLaboratory,
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
       productStockStats: mockData.productStockStats,
-      userStatistics: mockData.userStatistics
+      userStatistics: mockData.userStatistics,
+      revenueByTaxRate: mockData.revenueByTaxRate
     })
   })
 
@@ -248,6 +257,7 @@ describe('GetDashboard', () => {
       totalSales: {
         count: mockData.monthlySales[1].count,
         turnover: mockData.monthlySales[1].turnover,
+        turnoverHT: mockData.totalSales.turnoverHT,
         averageBasketValue: mockData.monthlySales[1].averageBasketValue,
         canceledTurnover: mockData.monthlySales[1].canceledTurnover,
         deliveryPrice: mockData.monthlySales[1].deliveryPrice
@@ -258,7 +268,8 @@ describe('GetDashboard', () => {
       ordersByLaboratory: mockData.ordersByLaboratory,
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
       productStockStats: mockData.productStockStats,
-      userStatistics: mockData.userStatistics
+      userStatistics: mockData.userStatistics,
+      revenueByTaxRate: mockData.revenueByTaxRate
     })
   })
 
@@ -277,7 +288,8 @@ describe('GetDashboard', () => {
       ordersByLaboratory: mockData.ordersByLaboratory,
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
       productStockStats: mockData.productStockStats,
-      userStatistics: mockData.userStatistics
+      userStatistics: mockData.userStatistics,
+      revenueByTaxRate: mockData.revenueByTaxRate
     })
   })
 
@@ -296,7 +308,8 @@ describe('GetDashboard', () => {
       ordersByLaboratory: mockData.ordersByLaboratory,
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
       productStockStats: mockData.productStockStats,
-      userStatistics: mockData.userStatistics
+      userStatistics: mockData.userStatistics,
+      revenueByTaxRate: mockData.revenueByTaxRate
     })
   })
 

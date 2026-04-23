@@ -57,6 +57,7 @@ describe('getDashboardVM', () => {
       totalSales: {
         count: 370,
         turnover: 3250000,
+        turnoverHT: 2800000,
         canceledTurnover: 49000,
         averageBasketValue: 8784,
         deliveryPrice: 27000
@@ -64,6 +65,7 @@ describe('getDashboardVM', () => {
       previousYearTotalSales: {
         count: 350,
         turnover: 3050000,
+        turnoverHT: 2600000,
         canceledTurnover: 45000,
         averageBasketValue: 8714,
         deliveryPrice: 25000
@@ -124,7 +126,12 @@ describe('getDashboardVM', () => {
           subscribers: 680,
           nonSubscribers: 570
         }
-      }
+      },
+      revenueByTaxRate: [
+        { percentTaxRate: 2.1, revenueTTC: 500000, kind: 'PRODUCT' },
+        { percentTaxRate: 20, revenueTTC: 1200000, kind: 'PRODUCT' },
+        { percentTaxRate: 20, revenueTTC: 80000, kind: 'DELIVERY' }
+      ]
     }
 
     statsStore.dashboard = mockDashboard
@@ -147,6 +154,7 @@ describe('getDashboardVM', () => {
       totalSales: {
         count: mockDashboard.totalSales.count,
         turnover: mockDashboard.totalSales.turnover / 100,
+        turnoverHT: mockDashboard.totalSales.turnoverHT / 100,
         canceledTurnover: mockDashboard.totalSales.canceledTurnover / 100,
         averageBasketValue: mockDashboard.totalSales.averageBasketValue / 100,
         deliveryPrice: mockDashboard.totalSales.deliveryPrice / 100
@@ -154,6 +162,7 @@ describe('getDashboardVM', () => {
       previousYearTotalSales: {
         count: mockDashboard.previousYearTotalSales.count,
         turnover: mockDashboard.previousYearTotalSales.turnover / 100,
+        turnoverHT: mockDashboard.previousYearTotalSales.turnoverHT / 100,
         canceledTurnover:
           mockDashboard.previousYearTotalSales.canceledTurnover / 100,
         averageBasketValue:
@@ -165,7 +174,12 @@ describe('getDashboardVM', () => {
       ordersByLaboratory: mockDashboard.ordersByLaboratory,
       productQuantitiesByCategory: mockDashboard.productQuantitiesByCategory,
       productStockStats: mockDashboard.productStockStats,
-      userStatistics: mockDashboard.userStatistics
+      userStatistics: mockDashboard.userStatistics,
+      revenueByTaxRate: mockDashboard.revenueByTaxRate.map((entry) => ({
+        percentTaxRate: entry.percentTaxRate,
+        revenueTTC: entry.revenueTTC / 100,
+        kind: entry.kind
+      }))
     })
   })
 
@@ -178,6 +192,7 @@ describe('getDashboardVM', () => {
       totalSales: {
         count: 0,
         turnover: 0,
+        turnoverHT: 0,
         canceledTurnover: 0,
         averageBasketValue: 0,
         deliveryPrice: 0
@@ -185,6 +200,7 @@ describe('getDashboardVM', () => {
       previousYearTotalSales: {
         count: 0,
         turnover: 0,
+        turnoverHT: 0,
         canceledTurnover: 0,
         averageBasketValue: 0,
         deliveryPrice: 0
@@ -206,7 +222,8 @@ describe('getDashboardVM', () => {
           subscribers: 0,
           nonSubscribers: 0
         }
-      }
+      },
+      revenueByTaxRate: []
     })
   })
 })

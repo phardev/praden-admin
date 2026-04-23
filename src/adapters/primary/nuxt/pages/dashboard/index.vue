@@ -117,22 +117,19 @@ div(v-if="permissions.canAccessDashboard")
   .flex.justify-center.items-center.h-64(v-if="isLoading")
     icon.animate-spin.h-8.w-8(name="i-heroicons-arrow-path")
   .dashboard-content(v-else)
-    .grid.grid-cols-1.gap-4.mb-8(class="md:grid-cols-5")
+    .grid.grid-cols-1.gap-4.mb-8(class="md:grid-cols-2 lg:grid-cols-3")
       UCard(v-for="(stat, index) in statsCards" :key="index")
         template(#header)
           .text-center
             h3.text-lg.font-medium {{ stat.title }}
         template(#default)
-          .flex.justify-center.gap-6(v-if="stat.showDualYear")
-            .text-center
-              p.text-xs.text-gray-500.mb-1.font-medium {{ previousYear }}
-              p.text-xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.previousYearValue : areProductFiltersApplied ? 'N/A' : stat.previousYearValue }}
-            .border-l.border-gray-200
-            .text-center
-              p.text-xs.text-gray-500.mb-1.font-medium {{ currentYear }}
-              p.text-xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
+          .text-center(v-if="stat.showDualYear")
+            p.font-bold.tabular-nums.whitespace-nowrap(class="text-2xl") {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
+            p.text-xs.text-gray-500.mt-1.tabular-nums.whitespace-nowrap
+              | {{ previousYear }}:&nbsp;
+              span.font-medium {{ stat.isApplicableWithProductFilters ? stat.previousYearValue : areProductFiltersApplied ? 'N/A' : stat.previousYearValue }}
           .text-center(v-else)
-            p.text-2xl.font-bold {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
+            p.font-bold.tabular-nums.whitespace-nowrap(class="text-2xl") {{ stat.isApplicableWithProductFilters ? stat.value : areProductFiltersApplied ? 'N/A' : stat.value }}
           p.text-sm.text-gray-500.text-center.mt-2 {{ stat.description }}
 
     .grid.grid-cols-1.gap-6.mb-8(class="lg:grid-cols-2")
@@ -194,6 +191,12 @@ div(v-if="permissions.canAccessDashboard")
         template(#default)
           .h-80
             MonthlyCanceledTurnoverChart(:data="dashboard.previousYearMonthlySales" :next-year-data="dashboard.monthlySales")
+      UCard
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.turnoverByTaxRate.title') }}
+        template(#default)
+          .h-80
+            TurnoverByTaxRatePieChart(:data="dashboard.revenueByTaxRate")
 
     h3.text-lg.font-bold.text-primary-700.mb-4.mt-8(v-if="!areProductFiltersApplied") {{ $t('dashboard.userStatistics.title') }}
     .grid.grid-cols-1.gap-4.mb-8(v-if="!areProductFiltersApplied" class="md:grid-cols-3")
@@ -360,6 +363,16 @@ const statsCards = computed(() => [
       dashboard.value.previousYearTotalSales.turnover
     ),
     description: t('dashboard.revenue'),
+    isApplicableWithProductFilters: true,
+    showDualYear: true
+  },
+  {
+    title: t('dashboard.totalTurnoverHT'),
+    value: formatCurrency(dashboard.value.totalSales.turnoverHT),
+    previousYearValue: formatCurrency(
+      dashboard.value.previousYearTotalSales.turnoverHT
+    ),
+    description: t('dashboard.revenueHT'),
     isApplicableWithProductFilters: true,
     showDualYear: true
   },

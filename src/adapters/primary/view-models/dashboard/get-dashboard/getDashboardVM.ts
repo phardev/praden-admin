@@ -4,6 +4,8 @@ import type {
   OrderByLaboratory,
   ProductByCategory,
   ProductStockStats,
+  RevenueByTaxRate,
+  RevenueByTaxRateKind,
   TopProduct,
   TotalSales,
   UserStatistics
@@ -34,12 +36,23 @@ export interface MonthlySalesVM
 export interface TotalSalesVM
   extends Omit<
     TotalSales,
-    'turnover' | 'canceledTurnover' | 'deliveryPrice' | 'averageBasketValue'
+    | 'turnover'
+    | 'turnoverHT'
+    | 'canceledTurnover'
+    | 'deliveryPrice'
+    | 'averageBasketValue'
   > {
   turnover: number
+  turnoverHT: number
   canceledTurnover: number
   deliveryPrice: number
   averageBasketValue: number
+}
+
+export interface RevenueByTaxRateVM {
+  percentTaxRate: number
+  revenueTTC: number
+  kind: RevenueByTaxRateKind
 }
 
 export interface DashboardVM {
@@ -53,6 +66,7 @@ export interface DashboardVM {
   productQuantitiesByCategory: ProductByCategory[]
   productStockStats: ProductStockStats
   userStatistics: UserStatistics
+  revenueByTaxRate: RevenueByTaxRateVM[]
 }
 
 export const getDashboardVM = (): DashboardVM => {
@@ -65,6 +79,7 @@ export const getDashboardVM = (): DashboardVM => {
       totalSales: {
         count: 0,
         turnover: 0,
+        turnoverHT: 0,
         canceledTurnover: 0,
         deliveryPrice: 0,
         averageBasketValue: 0
@@ -72,6 +87,7 @@ export const getDashboardVM = (): DashboardVM => {
       previousYearTotalSales: {
         count: 0,
         turnover: 0,
+        turnoverHT: 0,
         canceledTurnover: 0,
         deliveryPrice: 0,
         averageBasketValue: 0
@@ -93,7 +109,8 @@ export const getDashboardVM = (): DashboardVM => {
           subscribers: 0,
           nonSubscribers: 0
         }
-      }
+      },
+      revenueByTaxRate: []
     }
   }
 
@@ -112,6 +129,7 @@ export const getDashboardVM = (): DashboardVM => {
     totalSales: {
       ...dashboard.totalSales,
       turnover: dashboard.totalSales.turnover / 100,
+      turnoverHT: dashboard.totalSales.turnoverHT / 100,
       canceledTurnover: dashboard.totalSales.canceledTurnover / 100,
       deliveryPrice: dashboard.totalSales.deliveryPrice / 100,
       averageBasketValue: dashboard.totalSales.averageBasketValue / 100
@@ -119,6 +137,7 @@ export const getDashboardVM = (): DashboardVM => {
     previousYearTotalSales: {
       ...dashboard.previousYearTotalSales,
       turnover: dashboard.previousYearTotalSales.turnover / 100,
+      turnoverHT: dashboard.previousYearTotalSales.turnoverHT / 100,
       canceledTurnover: dashboard.previousYearTotalSales.canceledTurnover / 100,
       deliveryPrice: dashboard.previousYearTotalSales.deliveryPrice / 100,
       averageBasketValue:
@@ -129,6 +148,11 @@ export const getDashboardVM = (): DashboardVM => {
     ordersByLaboratory: dashboard.ordersByLaboratory,
     productQuantitiesByCategory: dashboard.productQuantitiesByCategory,
     productStockStats: dashboard.productStockStats,
-    userStatistics: dashboard.userStatistics
+    userStatistics: dashboard.userStatistics,
+    revenueByTaxRate: dashboard.revenueByTaxRate.map((entry) => ({
+      percentTaxRate: entry.percentTaxRate,
+      revenueTTC: entry.revenueTTC / 100,
+      kind: entry.kind
+    }))
   }
 }

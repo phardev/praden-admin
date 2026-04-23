@@ -35,9 +35,18 @@ export interface MonthlySales {
 export interface TotalSales {
   count: number
   turnover: number
+  turnoverHT: number
   canceledTurnover: number
   deliveryPrice: number
   averageBasketValue: number
+}
+
+export type RevenueByTaxRateKind = 'PRODUCT' | 'DELIVERY'
+
+export interface RevenueByTaxRate {
+  percentTaxRate: number
+  revenueTTC: number
+  kind: RevenueByTaxRateKind
 }
 
 export interface TopProductCategory {
@@ -89,4 +98,5 @@ export interface Dashboard {
   productQuantitiesByCategory: ProductByCategory[]
   productStockStats: ProductStockStats
   userStatistics: UserStatistics
+  revenueByTaxRate: RevenueByTaxRate[]
 }
