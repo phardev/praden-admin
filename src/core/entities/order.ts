@@ -1,4 +1,5 @@
 import { Delivery, DeliveryStatus } from '@core/entities/delivery'
+import { TimelineEntry } from '@core/entities/orderTimeline'
 import { Promotion } from '@core/entities/promotion'
 import { Timestamp, UUID } from '@core/types/types'
 import { addTaxToPrice } from '@utils/price'
@@ -101,6 +102,7 @@ export interface BaseOrder {
   invoiceNumber?: string
   customerMessage?: string
   promotionCode?: PromotionCode
+  timeline?: Array<TimelineEntry>
 }
 
 export interface CustomerOrder extends BaseOrder {

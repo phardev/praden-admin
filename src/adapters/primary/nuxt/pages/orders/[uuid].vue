@@ -22,7 +22,7 @@
       div.flex.items-center
         p Statut du paiement :
         ft-payment-status-badge.ml-2(:status="orderVM.paymentStatus")
-  ft-preparation-table(:vm="preparationVM")
+  ft-preparation-table.mt-8(:vm="preparationVM")
   div.flex.flex-row-reverse.gap-4
     div(v-if="orderVM.invoiceNumber")
       ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
@@ -68,6 +68,7 @@
           variant="outline"
           @click="downloadLabel(item)"
         ) Télécharger
+  ft-order-timeline.mt-8(:entries="timelineVM.entries")
   h2.text-subtitle.mt-8 {{ $t('orders.supportTickets') }}
   order-tickets-list(:order-uuid="orderUuid")
 
@@ -75,6 +76,7 @@
 
 <script lang="ts" setup>
 import { getOrderVM } from '@adapters/primary/view-models/orders/get-order/getOrderVM'
+import { getOrderTimelineVM } from '@adapters/primary/view-models/orders/get-order-timeline/getOrderTimelineVM'
 import { getPreparationVM } from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
 import { downloadDeliveryLabel } from '@core/usecases/deliveries/delivery-label-download/downloadDeliveryLabel'
 import { printDeliveryLabel } from '@core/usecases/deliveries/delivery-label-printing/printDeliveryLabel'
@@ -107,6 +109,10 @@ const preparationVM = computed(() => {
 
 const orderVM = computed(() => {
   return getOrderVM()
+})
+
+const timelineVM = computed(() => {
+  return getOrderTimelineVM()
 })
 
 const printLabel = (delivery: { uuid: string }) => {
