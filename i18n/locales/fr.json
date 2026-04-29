@@ -92,7 +92,26 @@
     "supportTickets": "Tickets de support"
   },
   "orders": {
-    "supportTickets": "Tickets de support"
+    "supportTickets": "Tickets de support",
+    "timeline": {
+      "title": "Historique",
+      "empty": "Aucun événement à afficher",
+      "events": {
+        "placed": "Commande passée",
+        "paid": "Paiement confirmé",
+        "paymentRejected": "Paiement rejeté",
+        "preparationStarted": "Préparation démarrée",
+        "preparationSaved": "Préparation sauvegardée",
+        "preparationValidated": "Préparation validée",
+        "preparationCanceled": "Préparation annulée",
+        "shipped": "Expédiée",
+        "delivered": "Livrée"
+      },
+      "actor": {
+        "system": "Système",
+        "unknown": "Inconnu"
+      }
+    }
   },
   "dashboard": {
     "title": "Tableau de bord",
