@@ -6,6 +6,8 @@ export class InMemoryDeliveryGateway implements DeliveryGateway {
   private deliveries: Array<Delivery> = []
   private printed: Array<UUID> = []
   private downloaded: Array<UUID> = []
+  private generatedPickups: Array<UUID> = []
+  private generatePickupError: Error | null = null
 
   list(): Promise<Array<Delivery>> {
     return Promise.resolve(JSON.parse(JSON.stringify(this.deliveries)))
@@ -41,12 +43,28 @@ export class InMemoryDeliveryGateway implements DeliveryGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(this.deliveries[index])))
   }
 
+  generatePickup(orderUuid: UUID): Promise<void> {
+    if (this.generatePickupError) {
+      return Promise.reject(this.generatePickupError)
+    }
+    this.generatedPickups.push(orderUuid)
+    return Promise.resolve()
+  }
+
   listPrinted(): Array<UUID> {
     return this.printed
   }
 
   listDownloaded(): Array<UUID> {
     return this.downloaded
+  }
+
+  listGeneratedPickups(): Array<UUID> {
+    return this.generatedPickups
+  }
+
+  feedGeneratePickupError(error: Error) {
+    this.generatePickupError = error
   }
 
   feedWith(...deliveries: Array<Delivery>) {

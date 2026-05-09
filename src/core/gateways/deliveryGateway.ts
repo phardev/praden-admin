@@ -7,4 +7,5 @@ export interface DeliveryGateway {
   printLabel(uuid: UUID): Promise<void>
   downloadLabel(uuid: UUID): Promise<Blob>
   markAsDelivered(uuid: UUID): Promise<Delivery>
+  generatePickup(orderUuid: UUID): Promise<void>
 }

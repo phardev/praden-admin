@@ -444,7 +444,11 @@ describe('Get order VM', () => {
       trackingNumber: delivery.trackingNumber ?? '',
       weight: delivery.weight / 1000,
       status: delivery.status,
-      canMarkAsDelivered: delivery.method.type === DeliveryType.ClickAndCollect
+      canMarkAsDelivered: delivery.method.type === DeliveryType.ClickAndCollect,
+      canGenerateLabel:
+        delivery.method.type === DeliveryType.Delivery &&
+        delivery.status === DeliveryStatus.Prepared &&
+        !delivery.trackingNumber
     }
     if (delivery.trackingNumber) {
       res.followUrl = `https://laposte.fr/outils/suivre-vos-envois?code=${delivery.trackingNumber}`

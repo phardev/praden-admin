@@ -93,6 +93,10 @@
   },
   "orders": {
     "supportTickets": "Tickets de support",
+    "deliveries": {
+      "generateLabel": "Générer l'étiquette",
+      "generateLabelError": "Échec de la génération de l'étiquette. Veuillez réessayer."
+    },
     "timeline": {
       "title": "Historique",
       "empty": "Aucun événement à afficher",
