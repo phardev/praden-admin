@@ -59,6 +59,10 @@ export class RealDeliveryGateway
     return new Blob([res.data], { type: 'application/pdf' })
   }
 
+  async generatePickup(orderUuid: UUID): Promise<void> {
+    await axiosWithBearer.post(`${this.baseUrl}/pickup`, { orderUuid })
+  }
+
   private convertToDelivery(delivery: any) {
     return {
       ...delivery,
