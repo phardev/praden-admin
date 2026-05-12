@@ -225,6 +225,37 @@ describe('Search orders', () => {
         expectSearchResultToEqual(elodieDurandOrder2)
       })
     })
+    describe('Pagination', () => {
+      beforeEach(() => {
+        givenExistingOrders(orderToPrepare1, orderPrepared1, orderNotPayed1)
+      })
+      it('should set the search result on the first page', async () => {
+        dto.size = 2
+        dto.from = 0
+        await whenSearchForOrders(dto)
+        expectSearchResultToEqual(orderToPrepare1, orderPrepared1)
+      })
+      it('should append on subsequent pages', async () => {
+        dto.size = 2
+        dto.from = 0
+        await whenSearchForOrders(dto)
+        dto.from = 2
+        await whenSearchForOrders(dto)
+        expectSearchResultToEqual(
+          orderToPrepare1,
+          orderPrepared1,
+          orderNotPayed1
+        )
+      })
+      it('should expose hasMore as false on a short last page', async () => {
+        dto.size = 2
+        dto.from = 0
+        await whenSearchForOrders(dto)
+        dto.from = 2
+        await whenSearchForOrders(dto)
+        expect(searchStore.hasMoreSearch(url)).toBe(false)
+      })
+    })
     describe('Apply mulitple filters in multiple steps', () => {
       it('should apply all filters', async () => {
         givenExistingOrders(

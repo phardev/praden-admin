@@ -23,6 +23,9 @@ div.hidden.printme.mx-2
           vueQr(
             :text="order.href"
           )
+    div.mt-4(v-if="order.customerEmail")
+      div.text-lg.mb-2 Email du client
+      div {{ order.customerEmail }}
     div.flex.mt-4
       div.grow
         div.text-lg.mb-2 Adresse de livraison

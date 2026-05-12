@@ -14,6 +14,8 @@ describe('List orders', () => {
   let orderStore: any
   let orderGateway: InMemoryOrderGateway
 
+  const defaultLimit = 25
+
   beforeEach(() => {
     setActivePinia(createPinia())
     orderStore = useOrderStore()
@@ -24,6 +26,10 @@ describe('List orders', () => {
     it('should list nothing', async () => {
       await whenListOrders()
       expectOrderStoreToContains()
+    })
+    it('should mark hasMore as false', async () => {
+      await whenListOrders()
+      expect(orderStore.hasMore).toBe(false)
     })
   })
 
@@ -36,6 +42,17 @@ describe('List orders', () => {
         orderPrepared1,
         orderNotPayed1
       )
+    })
+    it('should mark hasMore as true', async () => {
+      givenExistingOrders(orderToPrepare1)
+      await whenListOrders()
+      expect(orderStore.hasMore).toBe(true)
+    })
+    it('should append on subsequent pages', async () => {
+      givenExistingOrders(orderToPrepare1, orderPrepared1, orderNotPayed1)
+      await listOrders(1, 0, orderGateway)
+      await listOrders(1, 1, orderGateway)
+      expectOrderStoreToContains(orderToPrepare1, orderPrepared1)
     })
   })
 
@@ -58,7 +75,7 @@ describe('List orders', () => {
   }
 
   const whenListOrders = async () => {
-    await listOrders(orderGateway)
+    await listOrders(defaultLimit, 0, orderGateway)
   }
 
   const expectOrderStoreToContains = (...orders: Array<Order>) => {

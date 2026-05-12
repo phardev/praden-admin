@@ -3,7 +3,6 @@ import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway
 import { Customer } from '@core/entities/customer'
 import { DeliveryStatus } from '@core/entities/delivery'
 import {
-  getOrderStatus,
   Order,
   OrderLine,
   OrderLineStatus,
@@ -18,7 +17,6 @@ import { SearchCustomersDTO } from '@core/usecases/customers/customer-searching/
 import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
 import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
 import { useLocationStore } from '@store/locationStore'
-import { useOrderStore } from '@store/orderStore'
 
 export class RealSearchGateway extends RealGateway implements SearchGateway {
   constructor(url: string) {
@@ -66,87 +64,40 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
       [DeliveryStatus.Shipped]: 'SHIPPED',
       [DeliveryStatus.Delivered]: 'DELIVERED'
     }
+    const orderStatusMap = {
+      [OrderLineStatus.Created]: 'CREATED',
+      [OrderLineStatus.Started]: 'STARTED',
+      [OrderLineStatus.Prepared]: 'PREPARED',
+      [OrderLineStatus.Canceled]: 'CANCELED'
+    }
 
     const body = {
+      query: dto.query && dto.query.length ? dto.query : undefined,
       startDate: dto.startDate,
       endDate: dto.endDate,
+      orderStatus:
+        dto.orderStatus !== undefined
+          ? orderStatusMap[dto.orderStatus]
+          : undefined,
       paymentStatus:
         dto.paymentStatus !== undefined
           ? paymentStatusMap[dto.paymentStatus]
           : undefined,
       customerUuid: dto.customerUuid,
-      deliveryStatus: dto.deliveryStatus
-        ? deliveryStatusMap[dto.deliveryStatus]
-        : undefined
+      deliveryStatus:
+        dto.deliveryStatus !== undefined
+          ? deliveryStatusMap[dto.deliveryStatus]
+          : undefined,
+      limit: dto.size,
+      offset: dto.from
     }
-    const orderStore = useOrderStore()
-    let orders = orderStore.items
-    if (
-      body.startDate ||
-      body.endDate ||
-      body.paymentStatus !== undefined ||
-      body.deliveryStatus !== undefined ||
-      body.customerUuid
-    ) {
-      const res = await axiosWithBearer.post(
-        `${this.baseUrl}/search/orders`,
-        body
-      )
-      orders = res.data.items.map((d: any) => {
-        return this.convertToOrder(d)
-      })
-    }
-    let query: string | undefined = undefined
-    if (dto.query && dto.query.length) {
-      query = dto.query
-    }
-    const localFilters: SearchOrdersDTO = {
-      query,
-      orderStatus: dto.orderStatus
-    }
-    const filteredOrders = orders.filter((order) =>
-      this.applyOrderFilters(order, localFilters)
+    const res = await axiosWithBearer.post(
+      `${this.baseUrl}/search/orders`,
+      body
     )
-    return Promise.resolve(filteredOrders)
-  }
-
-  private applyOrderFilters(order: Order, filters: SearchOrdersDTO): boolean {
-    if (filters.query) {
-      if (!this.applyQueryFilters(order, filters.query)) {
-        return false
-      }
-    }
-    if (filters.orderStatus) {
-      if (!this.applyOrderStatusFilter(order, filters.orderStatus)) {
-        return false
-      }
-    }
-    return true
-  }
-
-  private applyQueryFilters(order: Order, query: string): boolean {
-    const normalize = (str: string): string =>
-      str.normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Remove diacritics
-
-    const queryNormalized = normalize(query)
-
-    const queryRegex = new RegExp(queryNormalized, 'i')
-    const fullname = `${order.deliveryAddress.firstname} ${order.deliveryAddress.lastname}`
-    const reversedFullname = `${order.deliveryAddress.lastname} ${order.deliveryAddress.firstname}`
-    const fullnameNormalized = normalize(fullname)
-    const reversedFullnameNormalized = normalize(reversedFullname)
-    return !(
-      !queryRegex.test(order.uuid) &&
-      !queryRegex.test(fullnameNormalized) &&
-      !queryRegex.test(reversedFullnameNormalized)
+    return Promise.resolve(
+      res.data.items.map((d: any) => this.convertToOrder(d))
     )
-  }
-
-  private applyOrderStatusFilter(
-    order: Order,
-    orderStatus: OrderLineStatus
-  ): boolean {
-    return getOrderStatus(order) === orderStatus
   }
 
   async searchCustomers(dto: SearchCustomersDTO): Promise<Array<Customer>> {
