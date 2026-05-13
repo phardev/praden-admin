@@ -30,9 +30,11 @@ describe('RoleFormCreateVM', () => {
       expect(permissions.every((p) => !p.selected)).toBe(true)
     })
 
-    it('should have all available permission resources', () => {
+    it('should have all available permission resources except hidden ones', () => {
       const permissions = vm.getAvailablePermissions()
-      const expectedResourceCount = Object.values(PermissionResource).length
+      const expectedResourceCount = Object.values(PermissionResource).filter(
+        (resource) => resource !== PermissionResource.REMINDERS
+      ).length
       expect(permissions).toHaveLength(expectedResourceCount)
     })
   })

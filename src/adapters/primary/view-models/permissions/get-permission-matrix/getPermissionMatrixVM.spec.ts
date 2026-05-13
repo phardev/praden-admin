@@ -37,7 +37,6 @@ describe('Get permission matrix view model', () => {
 
       expect(result.permissions['role-admin']).toStrictEqual({
         dashboard: true,
-        reminders: true,
         products: true,
         laboratories: true,
         categories: true,
@@ -62,7 +61,6 @@ describe('Get permission matrix view model', () => {
 
       expect(result.permissions['role-pharmacist']).toStrictEqual({
         dashboard: true,
-        reminders: true,
         products: true,
         laboratories: true,
         categories: true,
@@ -87,7 +85,6 @@ describe('Get permission matrix view model', () => {
 
       expect(result.permissions['role-assistant']).toStrictEqual({
         dashboard: true,
-        reminders: true,
         products: false,
         laboratories: false,
         categories: false,

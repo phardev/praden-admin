@@ -1,6 +1,11 @@
+import { PermissionResource } from '@core/entities/permissionResource'
 import { Role } from '@core/entities/role'
 import { useRoleStore } from '@store/roleStore'
 import { useSystemResourceStore } from '@store/systemResourceStore'
+
+const HIDDEN_PERMISSION_RESOURCES: Array<string> = [
+  PermissionResource.REMINDERS
+]
 
 export interface PermissionMatrixVM {
   systemResources: Array<string>
@@ -13,7 +18,9 @@ export const getPermissionMatrixVM = (): PermissionMatrixVM => {
   const roleStore = useRoleStore()
   const systemResourceStore = useSystemResourceStore()
 
-  const systemResources = systemResourceStore.items
+  const systemResources = systemResourceStore.items.filter(
+    (resource: string) => !HIDDEN_PERMISSION_RESOURCES.includes(resource)
+  )
   const roles = roleStore.items
 
   const permissions: Record<string, Record<string, boolean>> = {}
