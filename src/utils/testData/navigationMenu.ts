@@ -11,11 +11,6 @@ export const fullMenu: NavigationMenu = {
           name: 'Tableau de bord',
           icon: 'akar-icons:statistic-up',
           href: '/dashboard'
-        },
-        {
-          name: 'Relances',
-          icon: 'mdi:bell-outline',
-          href: '/reminders'
         }
       ]
     },

@@ -103,9 +103,7 @@ const getOrderItemVM = (order: Order): GetOrdersItemVM => {
   }
 }
 
-const isAnyFilterActive = (
-  filter: SearchOrdersDTO | undefined
-): boolean => {
+const isAnyFilterActive = (filter: SearchOrdersDTO | undefined): boolean => {
   if (!filter) return false
   return Boolean(
     filter.query ||

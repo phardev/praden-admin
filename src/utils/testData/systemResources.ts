@@ -2,7 +2,6 @@ import { PermissionResource } from '@core/entities/permissionResource'
 
 export const systemResources = [
   PermissionResource.DASHBOARD,
-  PermissionResource.REMINDERS,
   PermissionResource.PRODUCTS,
   PermissionResource.LABORATORIES,
   PermissionResource.CATEGORIES,
