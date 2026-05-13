@@ -20,7 +20,7 @@ ft-table(
     div.flex.items-center.justify-center.space-x-4
       ft-text-field.flex-grow(
         v-model="search"
-        placeholder="Rechercher par référence, client"
+        placeholder="Rechercher par référence, client, email"
         for="search"
         type='text'
         name='search'
@@ -87,22 +87,31 @@ ft-table(
           @update:model-value="paymentStatusChanged"
           @clear="clearPaymentStatus"
         )
+  template(#infinite)
+    InfiniteLoading(@infinite="load")
+      template(#complete)
+        div
 </template>
 
 <script lang="ts" setup>
 import FtTable from '@adapters/primary/nuxt/components/molecules/FtTable.vue'
 import { listOrders } from '@core/usecases/order/list-orders/listOrders'
 import { searchOrders } from '@core/usecases/order/orders-searching/searchOrders'
+import { useOrderStore } from '@store/orderStore'
+import { useSearchStore } from '@store/searchStore'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
+import InfiniteLoading from 'v3-infinite-loading'
 import { useOrderGateway } from '../../../../../../gateways/orderGateway'
 import { useSearchGateway } from '../../../../../../gateways/searchGateway'
+import 'v3-infinite-loading/lib/style.css'
+
+interface InfiniteLoadingState {
+  loaded: () => void
+  complete: () => void
+}
 
 definePageMeta({ layout: 'main' })
-
-onMounted(() => {
-  listOrders(useOrderGateway())
-})
 
 const props = defineProps({
   vm: {
@@ -123,6 +132,23 @@ const props = defineProps({
       return {}
     }
   }
+})
+
+const limit = 25
+let offset = 0
+let searchOffset = 0
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
+const debounceDelay = 300
+
+const orderStore = useOrderStore()
+const searchStore = useSearchStore()
+
+onMounted(() => {
+  orderStore.items = []
+  orderStore.hasMore = true
+  searchStore.clear(props.searchKey)
+  offset = 0
+  searchOffset = 0
 })
 
 const search = ref(props.vm.value?.currentSearch?.query || undefined)
@@ -148,6 +174,18 @@ watch(
   },
   { immediate: true, deep: true }
 )
+const isSearchMode = () => {
+  return Boolean(
+    search.value ||
+      startDate.value ||
+      endDate.value ||
+      orderStatus.value !== undefined ||
+      deliveryStatus.value !== undefined ||
+      paymentStatus.value !== undefined ||
+      props.initialFilters?.customerUuid
+  )
+}
+
 const dto = (partial: Record<string, any>) => {
   return {
     ...props.initialFilters,
@@ -157,95 +195,103 @@ const dto = (partial: Record<string, any>) => {
     orderStatus: orderStatus.value,
     deliveryStatus: deliveryStatus.value,
     paymentStatus: paymentStatus.value,
+    size: limit,
+    from: 0,
     ...partial
   }
 }
 
-const searchChanged = (e: any) => {
-  searchOrders(
+const load = async ($state: InfiniteLoadingState) => {
+  if (!isSearchMode()) {
+    await listOrders(limit, offset, useOrderGateway())
+    offset += limit
+    if (orderStore.hasMore) {
+      $state.loaded()
+    } else {
+      $state.complete()
+    }
+    return
+  }
+  if (searchStore.isLoading(props.searchKey)) {
+    return
+  }
+  if (!searchStore.hasMoreSearch(props.searchKey)) {
+    $state.complete()
+    return
+  }
+  await searchOrders(
     props.searchKey,
-    dto({ query: e.target.value }),
+    dto({ from: searchOffset }),
     useSearchGateway()
   )
+  searchOffset += limit
+  if (searchStore.hasMoreSearch(props.searchKey)) {
+    $state.loaded()
+  } else {
+    $state.complete()
+  }
+}
+
+const triggerSearch = () => {
+  searchStore.clear(props.searchKey)
+  searchOffset = limit
+  searchOrders(props.searchKey, dto({ from: 0 }), useSearchGateway())
+}
+
+const searchChanged = (e: any) => {
+  search.value = e.target.value
+  if (debounceTimer) clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(triggerSearch, debounceDelay)
 }
 
 const startDateChanged = (date: number) => {
-  searchOrders(props.searchKey, dto({ startDate: date }), useSearchGateway())
+  startDate.value = date
+  triggerSearch()
 }
 
 const clearStartDate = () => {
   startDate.value = undefined
-  searchOrders(
-    props.searchKey,
-    dto({ startDate: undefined }),
-    useSearchGateway()
-  )
+  triggerSearch()
 }
 
 const endDateChanged = (date: number) => {
-  searchOrders(props.searchKey, dto({ endDate: date }), useSearchGateway())
+  endDate.value = date
+  triggerSearch()
 }
 
 const clearEndDate = () => {
   endDate.value = undefined
-  searchOrders(props.searchKey, dto({ endDate: undefined }), useSearchGateway())
+  triggerSearch()
 }
 
 const deliveryStatusChanged = (stringStatus: string) => {
-  const status = +stringStatus
-  deliveryStatus.value = status
-  searchOrders(
-    props.searchKey,
-    dto({ deliveryStatus: status }),
-    useSearchGateway()
-  )
+  deliveryStatus.value = +stringStatus
+  triggerSearch()
 }
 
 const clearDeliveryStatus = () => {
   deliveryStatus.value = undefined
-  searchOrders(
-    props.searchKey,
-    dto({ deliveryStatus: undefined }),
-    useSearchGateway()
-  )
+  triggerSearch()
 }
 
 const orderStatusChanged = (stringStatus: string) => {
-  const status = +stringStatus
-  orderStatus.value = status
-  searchOrders(
-    props.searchKey,
-    dto({ orderStatus: status }),
-    useSearchGateway()
-  )
+  orderStatus.value = +stringStatus
+  triggerSearch()
 }
 
 const clearOrderStatus = () => {
   orderStatus.value = undefined
-  searchOrders(
-    props.searchKey,
-    dto({ orderStatus: undefined }),
-    useSearchGateway()
-  )
+  triggerSearch()
 }
 
 const paymentStatusChanged = (stringStatus: string) => {
-  const status = +stringStatus
-  paymentStatus.value = status
-  searchOrders(
-    props.searchKey,
-    dto({ paymentStatus: status }),
-    useSearchGateway()
-  )
+  paymentStatus.value = +stringStatus
+  triggerSearch()
 }
 
 const clearPaymentStatus = () => {
   paymentStatus.value = undefined
-  searchOrders(
-    props.searchKey,
-    dto({ paymentStatus: undefined }),
-    useSearchGateway()
-  )
+  triggerSearch()
 }
 
 const clicked = (reference: string) => {

@@ -5,7 +5,12 @@ import {
 } from '@core/gateways/searchGateway'
 import '@utils/strings'
 import { Customer } from '@core/entities/customer'
-import { getDeliveryStatus, getOrderStatus, Order } from '@core/entities/order'
+import {
+  getDeliveryStatus,
+  getOrderStatus,
+  isAnonymousOrder,
+  Order
+} from '@core/entities/order'
 import { Timestamp } from '@core/types/types'
 import { SearchCustomersDTO } from '@core/usecases/customers/customer-searching/searchCustomer'
 import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
@@ -107,7 +112,9 @@ export class FakeSearchGateway implements SearchGateway {
         customerUuidMatch
       )
     })
-    return Promise.resolve(res)
+    const from = dto.from ?? 0
+    const size = dto.size ?? res.length
+    return Promise.resolve(res.slice(from, from + size))
   }
 
   private ordersQueryMatch = (order: Order, query: string): boolean => {
@@ -115,7 +122,11 @@ export class FakeSearchGateway implements SearchGateway {
     const fullName =
       order.deliveryAddress.firstname + ' ' + order.deliveryAddress.lastname
     const isClientNameMatching = fullName.includesWithoutCase(query)
-    return isReferenceMatching || isClientNameMatching
+    const email = isAnonymousOrder(order)
+      ? order.contact.email
+      : (order.deliveries?.[0]?.receiver?.contact?.email ?? '')
+    const isEmailMatching = email ? email.includesWithoutCase(query) : false
+    return isReferenceMatching || isClientNameMatching || isEmailMatching
   }
 
   private ordersDateMatch = (

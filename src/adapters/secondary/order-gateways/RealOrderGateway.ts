@@ -76,8 +76,10 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
     return Promise.resolve(this.convertToOrder(res.data.item))
   }
 
-  async list(): Promise<Array<Order>> {
-    const res = await axiosWithBearer.get(`${this.baseUrl}/orders/`)
+  async list(limit?: number, offset?: number): Promise<Array<Order>> {
+    const res = await axiosWithBearer.get(`${this.baseUrl}/orders`, {
+      params: { limit, offset }
+    })
     return Promise.resolve(
       res.data.items.map((d: any) => {
         return this.convertToOrder(d)

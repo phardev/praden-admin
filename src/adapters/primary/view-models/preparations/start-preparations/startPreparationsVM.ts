@@ -29,6 +29,7 @@ export interface PreparationLineDetailVM {
   reference: string
   deliveryMethodName: string
   clientLastname: string
+  customerEmail?: string
   clientMessage?: string
   pickingDate?: string
   createdDate: string
@@ -190,6 +191,12 @@ const getDetailPreparationLineVM = (
       })
       .sort(pickingSort),
     totalWithTax: formatter.format(getTotalWithTax(order))
+  }
+  const customerEmail = isAnonymousOrder(order)
+    ? order.contact.email
+    : (order.deliveries[0]?.receiver?.contact?.email ?? '')
+  if (customerEmail) {
+    detail.customerEmail = customerEmail
   }
   if (order.customerMessage) {
     detail.clientMessage = order.customerMessage

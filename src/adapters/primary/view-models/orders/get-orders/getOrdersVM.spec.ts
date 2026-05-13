@@ -23,6 +23,10 @@ const expectedHeaders: Array<Header> = [
     value: 'client'
   },
   {
+    name: 'Email',
+    value: 'email'
+  },
+  {
     name: 'Date',
     value: 'createdDate'
   },
@@ -73,10 +77,11 @@ describe('Get orders VM', () => {
               reference: orderToPrepare1.uuid,
               href: `/orders/${orderToPrepare1.uuid}`,
               client: 'J. Bon',
+              email: orderToPrepare1.contact.email,
               createdDate: '21 janv. 2023, 03:54',
               createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
               status: OrderLineStatus.Created,
-              total: '11,00\u00A0€',
+              total: '11,00 €',
               paymentStatus: orderToPrepare1.payment!.status,
               deliveryStatus: orderToPrepare1.deliveries[0].status
             },
@@ -84,10 +89,11 @@ describe('Get orders VM', () => {
               reference: orderPrepared1.uuid,
               href: `/orders/${orderPrepared1.uuid}`,
               client: 'J. Bon',
+              email: orderPrepared1.contact.email,
               createdDate: '5 févr. 2023, 02:33',
               createdDatetime: new Date('2023-02-05T02:33:40.539Z'),
               status: OrderLineStatus.Prepared,
-              total: '11,00\u00A0€',
+              total: '11,00 €',
               paymentStatus: orderPrepared1.payment!.status,
               deliveryStatus: orderPrepared1.deliveries[0].status
             },
@@ -95,10 +101,11 @@ describe('Get orders VM', () => {
               reference: orderNotPayed1.uuid,
               href: `/orders/${orderNotPayed1.uuid}`,
               client: 'J. Bon',
+              email: orderNotPayed1.contact.email,
               createdDate: '21 janv. 2023, 04:03',
               createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
               status: OrderLineStatus.Created,
-              total: '11,00\u00A0€',
+              total: '11,00 €',
               paymentStatus: orderNotPayed1.payment!.status,
               deliveryStatus: orderNotPayed1.deliveries[0].status
             }
@@ -115,10 +122,11 @@ describe('Get orders VM', () => {
               reference: orderWithPromotionCode.uuid,
               href: `/orders/${orderWithPromotionCode.uuid}`,
               client: 'J. Bon',
+              email: orderWithPromotionCode.contact.email,
               createdDate: '21 janv. 2023, 03:54',
               createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
               status: OrderLineStatus.Created,
-              total: '6,00\u00A0€',
+              total: '6,00 €',
               paymentStatus: orderWithPromotionCode.payment!.status,
               deliveryStatus: orderWithPromotionCode.deliveries[0].status
             }
@@ -129,17 +137,20 @@ describe('Get orders VM', () => {
     })
     describe('There is some filters', () => {
       it('should get all search result orders vm', () => {
+        searchStore.setFilter(key, { query: 'jean' })
         searchStore.set(key, [orderToPrepare1, orderNotPayed1])
         const expectedVM: Partial<GetOrdersVM> = {
+          currentSearch: { query: 'jean' },
           items: [
             {
               reference: orderToPrepare1.uuid,
               href: `/orders/${orderToPrepare1.uuid}`,
               client: 'J. Bon',
+              email: orderToPrepare1.contact.email,
               createdDate: '21 janv. 2023, 03:54',
               createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
               status: OrderLineStatus.Created,
-              total: '11,00\u00A0€',
+              total: '11,00 €',
               paymentStatus: orderToPrepare1.payment!.status,
               deliveryStatus: orderToPrepare1.deliveries[0].status
             },
@@ -147,10 +158,11 @@ describe('Get orders VM', () => {
               reference: orderNotPayed1.uuid,
               href: `/orders/${orderNotPayed1.uuid}`,
               client: 'J. Bon',
+              email: orderNotPayed1.contact.email,
               createdDate: '21 janv. 2023, 04:03',
               createdDatetime: new Date('2023-01-21T04:03:09.000Z'),
               status: OrderLineStatus.Created,
-              total: '11,00\u00A0€',
+              total: '11,00 €',
               paymentStatus: orderNotPayed1.payment!.status,
               deliveryStatus: orderNotPayed1.deliveries[0].status
             }
@@ -189,16 +201,45 @@ describe('Get orders VM', () => {
             reference: orderWithoutDelivery.uuid,
             href: `/orders/${orderWithoutDelivery.uuid}`,
             client: 'J. Bon',
+            email: orderWithoutDelivery.contact.email,
             createdDate: '21 janv. 2023, 03:54',
             createdDatetime: new Date('2023-01-21T03:54:39.000Z'),
             status: OrderLineStatus.Created,
-            total: '11,00\u00A0€',
+            total: '11,00 €',
             paymentStatus: orderWithoutDelivery.payment!.status,
             deliveryStatus: DeliveryStatus.Created
           }
         ]
       }
       expectVMToMatch(expectedVM)
+    })
+  })
+
+  describe('Loading display during search', () => {
+    it('returns empty items while a search filter is active and the store has no results yet', () => {
+      givenExistingOrders(orderToPrepare1, orderPrepared1, orderNotPayed1)
+      searchStore.setFilter(key, { query: 'jean' })
+      expect(getOrdersVM(key).items).toStrictEqual([])
+    })
+    it('keeps falling back to orderStore.items when a search ran with no filter values', () => {
+      givenExistingOrders(orderToPrepare1)
+      searchStore.setFilter(key, {})
+      expect(getOrdersVM(key).items).toHaveLength(1)
+    })
+  })
+
+  describe('Pagination flags', () => {
+    it('should expose hasMore from the order store', () => {
+      orderStore.hasMore = true
+      expect(getOrdersVM(key).hasMore).toBe(true)
+    })
+    it('should expose hasMoreSearch from the search store', () => {
+      searchStore.setPagination(key, { total: 1, from: 0, hasMore: true })
+      expect(getOrdersVM(key).hasMoreSearch).toBe(true)
+    })
+    it('should expose isSearchLoading from the search store', () => {
+      searchStore.startLoading(key)
+      expect(getOrdersVM(key).isSearchLoading).toBe(true)
     })
   })
 
@@ -211,6 +252,9 @@ describe('Get orders VM', () => {
       headers: expectedHeaders,
       items: [],
       isLoading: false,
+      hasMore: false,
+      hasMoreSearch: false,
+      isSearchLoading: false,
       currentSearch: undefined
     }
     expect(getOrdersVM(key)).toMatchObject({ ...emptyVM, ...expectedVM })
