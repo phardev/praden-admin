@@ -22,7 +22,7 @@
       div.flex.items-center
         p Statut du paiement :
         ft-payment-status-badge.ml-2(:status="orderVM.paymentStatus")
-  ft-preparation-table(:vm="preparationVM")
+  ft-preparation-table.mt-8(:vm="preparationVM")
   div.flex.flex-row-reverse.gap-4
     div(v-if="orderVM.invoiceNumber")
       ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
@@ -46,28 +46,36 @@
   )
     template(#title) Livraison
     template(#actions="{ item }")
-      div.flex.items-center.gap-4
-        nuxt-link(
-          v-if="item.followUrl"
-          :to="item.followUrl"
-          target="_blank"
-        )
-          ft-button.button-default.py-4.px-4(variant="outline" @click.stop) Suivre le colis
-        ft-button.button-default.py-4.px-4(
-          v-if="item.canMarkAsDelivered"
-          variant="outline"
-          @click="markAsDelivered(item)"
-        ) Marquer comme livré
-        ft-button.button-default.py-4.px-4(
-          v-if="item.followUrl"
-          variant="outline"
-          @click="printLabel(item)"
-        ) Etiquette
-        ft-button.button-default.py-4.px-4(
-          v-if="item.followUrl"
-          variant="outline"
-          @click="downloadLabel(item)"
-        ) Télécharger
+      div.flex.flex-col.items-end.gap-1
+        div.flex.items-center.gap-4
+          ft-button.button-default.py-4.px-4(
+            v-if="item.canGenerateLabel"
+            variant="outline"
+            @click="generateLabel"
+          ) {{ $t('orders.deliveries.generateLabel') }}
+          nuxt-link(
+            v-if="item.followUrl"
+            :to="item.followUrl"
+            target="_blank"
+          )
+            ft-button.button-default.py-4.px-4(variant="outline" @click.stop) Suivre le colis
+          ft-button.button-default.py-4.px-4(
+            v-if="item.canMarkAsDelivered"
+            variant="outline"
+            @click="markAsDelivered(item)"
+          ) Marquer comme livré
+          ft-button.button-default.py-4.px-4(
+            v-if="item.followUrl"
+            variant="outline"
+            @click="printLabel(item)"
+          ) Etiquette
+          ft-button.button-default.py-4.px-4(
+            v-if="item.followUrl"
+            variant="outline"
+            @click="downloadLabel(item)"
+          ) Télécharger
+        div.text-red-600.text-sm(v-if="generateLabelError") {{ generateLabelError }}
+  ft-order-timeline.mt-8(:entries="timelineVM.entries")
   h2.text-subtitle.mt-8 {{ $t('orders.supportTickets') }}
   order-tickets-list(:order-uuid="orderUuid")
 
@@ -75,9 +83,11 @@
 
 <script lang="ts" setup>
 import { getOrderVM } from '@adapters/primary/view-models/orders/get-order/getOrderVM'
+import { getOrderTimelineVM } from '@adapters/primary/view-models/orders/get-order-timeline/getOrderTimelineVM'
 import { getPreparationVM } from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
 import { downloadDeliveryLabel } from '@core/usecases/deliveries/delivery-label-download/downloadDeliveryLabel'
 import { printDeliveryLabel } from '@core/usecases/deliveries/delivery-label-printing/printDeliveryLabel'
+import { generatePickup } from '@core/usecases/deliveries/delivery-pickup-generation/generatePickup'
 import { markDeliveryAsDelivered } from '@core/usecases/deliveries/mark-delivery-as-delivered/markDeliveryAsDelivered'
 import { getOrder } from '@core/usecases/order/get-order/getOrder'
 import { getPreparation } from '@core/usecases/order/get-preparation/getPreparation'
@@ -94,6 +104,8 @@ const route = useRoute()
 const orderUuid = String(route.params.uuid)
 const router = useRouter()
 const deliveryStore = useDeliveryStore()
+const { t } = useI18n()
+const generateLabelError = ref<string | null>(null)
 
 onMounted(() => {
   getPreparation(orderUuid, useOrderGateway())
@@ -109,8 +121,22 @@ const orderVM = computed(() => {
   return getOrderVM()
 })
 
+const timelineVM = computed(() => {
+  return getOrderTimelineVM()
+})
+
 const printLabel = (delivery: { uuid: string }) => {
   printDeliveryLabel(delivery.uuid, useDeliveryGateway())
+}
+
+const generateLabel = async () => {
+  generateLabelError.value = null
+  try {
+    await generatePickup(orderUuid, useDeliveryGateway())
+    await getOrder(orderUuid, useOrderGateway(), useCustomerGateway())
+  } catch {
+    generateLabelError.value = t('orders.deliveries.generateLabelError')
+  }
 }
 
 const downloadLabel = async (delivery: { uuid: string }) => {

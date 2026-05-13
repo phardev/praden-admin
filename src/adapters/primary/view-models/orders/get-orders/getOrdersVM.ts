@@ -2,6 +2,7 @@ import { DeliveryStatus } from '@core/entities/delivery'
 import {
   getDeliveryStatus,
   getOrderStatus,
+  isAnonymousOrder,
   Order,
   OrderLineStatus,
   PaymentStatus
@@ -19,6 +20,7 @@ export interface GetOrdersItemVM {
   reference: string
   href: string
   client: string
+  email: string
   createdDate: string
   createdDatetime: Date
   status: OrderLineStatus
@@ -31,6 +33,9 @@ export interface GetOrdersVM {
   headers: Array<Header>
   items: Array<GetOrdersItemVM>
   isLoading: boolean
+  hasMore: boolean
+  hasMoreSearch: boolean
+  isSearchLoading: boolean
   currentSearch: SearchOrdersDTO | undefined
 }
 
@@ -42,6 +47,10 @@ const headers: Array<Header> = [
   {
     name: 'Client',
     value: 'client'
+  },
+  {
+    name: 'Email',
+    value: 'email'
   },
   {
     name: 'Date',
@@ -65,6 +74,11 @@ const headers: Array<Header> = [
   }
 ]
 
+const getOrderEmail = (order: Order): string => {
+  if (isAnonymousOrder(order)) return order.contact.email
+  return order.deliveries[0]?.receiver?.contact?.email ?? ''
+}
+
 const getOrderItemVM = (order: Order): GetOrdersItemVM => {
   const formatter = priceFormatter('fr-FR', 'EUR')
   const total = computeTotalWithTaxForOrder(order)
@@ -79,6 +93,7 @@ const getOrderItemVM = (order: Order): GetOrdersItemVM => {
     reference: order.uuid,
     href: `/orders/${order.uuid}`,
     client: `${order.deliveryAddress.firstname[0]}. ${order.deliveryAddress.lastname}`,
+    email: getOrderEmail(order),
     createdDate: timestampToLocaleString(order.createdAt, 'fr-FR', options),
     createdDatetime: new Date(order.createdAt),
     status: getOrderStatus(order),
@@ -88,15 +103,33 @@ const getOrderItemVM = (order: Order): GetOrdersItemVM => {
   }
 }
 
+const isAnyFilterActive = (filter: SearchOrdersDTO | undefined): boolean => {
+  if (!filter) return false
+  return Boolean(
+    filter.query ||
+      filter.startDate ||
+      filter.endDate ||
+      filter.orderStatus !== undefined ||
+      filter.deliveryStatus !== undefined ||
+      filter.paymentStatus !== undefined ||
+      filter.customerUuid
+  )
+}
+
 export const getOrdersVM = (key: string): GetOrdersVM => {
   const searchStore = useSearchStore()
   const orderStore = useOrderStore()
-  const orders = searchStore.get(key) || orderStore.items
   const searchFilter = searchStore.getFilter(key)
+  const orders = isAnyFilterActive(searchFilter)
+    ? (searchStore.get(key) ?? [])
+    : orderStore.items
   return {
     headers,
     items: orders.map((o) => getOrderItemVM(o)),
-    isLoading: false,
+    isLoading: orderStore.isLoading || searchStore.isLoading(key),
+    hasMore: orderStore.hasMore,
+    hasMoreSearch: searchStore.hasMoreSearch(key),
+    isSearchLoading: searchStore.isLoading(key),
     currentSearch: searchFilter
   }
 }

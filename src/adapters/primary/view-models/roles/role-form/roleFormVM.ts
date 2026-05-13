@@ -42,9 +42,8 @@ export class RoleFormFieldsReader extends FormFieldsReader {
       (this.get('permissions') as Array<Permission>) || []
     const selectedResources = selectedPermissions.map((p) => p.resource)
 
-    const permissionLabels: Record<PermissionResource, string> = {
+    const permissionLabels: Partial<Record<PermissionResource, string>> = {
       [PermissionResource.DASHBOARD]: 'Tableau de bord',
-      [PermissionResource.REMINDERS]: 'Rappels',
       [PermissionResource.PRODUCTS]: 'Produits',
       [PermissionResource.LABORATORIES]: 'Laboratoires',
       [PermissionResource.CATEGORIES]: 'Catégories',
@@ -64,11 +63,13 @@ export class RoleFormFieldsReader extends FormFieldsReader {
       [PermissionResource.LOYALTY]: 'Fidélité'
     }
 
-    return Object.values(PermissionResource).map((resource) => ({
-      resource,
-      label: permissionLabels[resource],
-      selected: selectedResources.includes(resource)
-    }))
+    return Object.values(PermissionResource)
+      .filter((resource) => permissionLabels[resource] !== undefined)
+      .map((resource) => ({
+        resource,
+        label: permissionLabels[resource] as string,
+        selected: selectedResources.includes(resource)
+      }))
   }
 }
 

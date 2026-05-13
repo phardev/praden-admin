@@ -43,7 +43,7 @@ describe('Get navigation menu VM', () => {
     })
   })
 
-  describe('Assistant user (dashboard, reminders, customers, newsletter, support, preparations and orders permissions)', () => {
+  describe('Assistant user (dashboard, customers, newsletter, support, preparations and orders permissions)', () => {
     it('should show only pages assistant has permission for', () => {
       givenUserProfile(assistantUserProfile)
       whenGetNavigationMenuVM()
@@ -58,11 +58,6 @@ describe('Get navigation menu VM', () => {
                 name: 'Tableau de bord',
                 icon: 'akar-icons:statistic-up',
                 href: '/dashboard'
-              },
-              {
-                name: 'Relances',
-                icon: 'mdi:bell-outline',
-                href: '/reminders'
               }
             ]
           },
@@ -126,11 +121,6 @@ describe('Get navigation menu VM', () => {
                 name: 'Tableau de bord',
                 icon: 'akar-icons:statistic-up',
                 href: '/dashboard'
-              },
-              {
-                name: 'Relances',
-                icon: 'mdi:bell-outline',
-                href: '/reminders'
               }
             ]
           },

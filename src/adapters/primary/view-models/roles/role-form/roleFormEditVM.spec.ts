@@ -72,9 +72,11 @@ describe('RoleFormEditVM', () => {
   })
 
   describe('Available permissions', () => {
-    it('should provide all permission resources', () => {
+    it('should provide all permission resources except hidden ones', () => {
       const permissions = vm.getAvailablePermissions()
-      const expectedCount = Object.values(PermissionResource).length
+      const expectedCount = Object.values(PermissionResource).filter(
+        (resource) => resource !== PermissionResource.REMINDERS
+      ).length
 
       expect(permissions).toHaveLength(expectedCount)
     })

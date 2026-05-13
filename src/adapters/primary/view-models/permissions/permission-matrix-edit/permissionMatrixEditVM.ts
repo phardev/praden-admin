@@ -1,8 +1,13 @@
 import { Permission } from '@core/entities/permission'
+import { PermissionResource } from '@core/entities/permissionResource'
 import { Role } from '@core/entities/role'
 import { UUID } from '@core/types/types'
 import { useRoleStore } from '@store/roleStore'
 import { useSystemResourceStore } from '@store/systemResourceStore'
+
+const HIDDEN_PERMISSION_RESOURCES: Array<string> = [
+  PermissionResource.REMINDERS
+]
 
 export interface PermissionMatrixRole {
   uuid: UUID
@@ -33,7 +38,7 @@ export class PermissionMatrixEditVM {
   private buildPermissionsFromStore(): Record<string, Record<string, boolean>> {
     const permissions: Record<string, Record<string, boolean>> = {}
     const roles = this.roleStore.items
-    const systemResources = this.systemResourceStore.items
+    const systemResources = this.visibleSystemResources()
 
     roles.forEach((role: Role) => {
       permissions[role.uuid] = {}
@@ -71,7 +76,13 @@ export class PermissionMatrixEditVM {
   }
 
   get systemResources(): Array<string> {
-    return this.systemResourceStore.items
+    return this.visibleSystemResources()
+  }
+
+  private visibleSystemResources(): Array<string> {
+    return this.systemResourceStore.items.filter(
+      (resource: string) => !HIDDEN_PERMISSION_RESOURCES.includes(resource)
+    )
   }
 
   get roles(): Array<PermissionMatrixRole> {

@@ -30,6 +30,7 @@ export interface OrderDeliveriesItemVM {
   status: DeliveryStatus
   followUrl?: string
   canMarkAsDelivered: boolean
+  canGenerateLabel: boolean
 }
 
 export interface GetOrderVM {
@@ -107,7 +108,11 @@ export const getOrderVM = (): GetOrderVM => {
         weight: delivery.weight / 1000,
         status: delivery.status,
         canMarkAsDelivered:
-          delivery.method.type === DeliveryType.ClickAndCollect
+          delivery.method.type === DeliveryType.ClickAndCollect,
+        canGenerateLabel:
+          delivery.method.type === DeliveryType.Delivery &&
+          delivery.status === DeliveryStatus.Prepared &&
+          !delivery.trackingNumber
       }
       if (delivery.trackingNumber) {
         res.followUrl = `https://laposte.fr/outils/suivre-vos-envois?code=${delivery.trackingNumber}`

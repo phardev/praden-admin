@@ -11,10 +11,10 @@ export class InMemoryTimoutOrderGateway extends InMemoryOrderGateway {
     this.timeoutInMs = timeoutInMs
   }
 
-  override list(): Promise<Array<Order>> {
+  override list(limit?: number, offset?: number): Promise<Array<Order>> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(super.list())
+        resolve(super.list(limit, offset))
       }, this.timeoutInMs)
     })
   }

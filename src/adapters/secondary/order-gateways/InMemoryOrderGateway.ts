@@ -21,8 +21,12 @@ export class InMemoryOrderGateway implements OrderGateway {
     this.dateProvider = dateProvider
   }
 
-  list(): Promise<Array<Order>> {
-    return Promise.resolve(this.orders)
+  list(limit?: number, offset?: number): Promise<Array<Order>> {
+    if (limit === undefined) {
+      return Promise.resolve(this.orders)
+    }
+    const start = offset ?? 0
+    return Promise.resolve(this.orders.slice(start, start + limit))
   }
 
   listOrdersToPrepare(): Promise<Array<Order>> {
