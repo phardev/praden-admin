@@ -88,7 +88,7 @@ ft-table(
           @clear="clearPaymentStatus"
         )
   template(#infinite)
-    InfiniteLoading(@infinite="load")
+    InfiniteLoading(:identifier="infiniteIdentifier" @infinite="load")
       template(#complete)
         div
 </template>
@@ -139,6 +139,7 @@ let offset = 0
 let searchOffset = 0
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
 const debounceDelay = 300
+const infiniteIdentifier = ref(0)
 
 const orderStore = useOrderStore()
 const searchStore = useSearchStore()
@@ -215,7 +216,7 @@ const load = async ($state: InfiniteLoadingState) => {
   if (searchStore.isLoading(props.searchKey)) {
     return
   }
-  if (!searchStore.hasMoreSearch(props.searchKey)) {
+  if (searchOffset > 0 && !searchStore.hasMoreSearch(props.searchKey)) {
     $state.complete()
     return
   }
@@ -232,10 +233,19 @@ const load = async ($state: InfiniteLoadingState) => {
   }
 }
 
-const triggerSearch = () => {
+const triggerSearch = async () => {
   searchStore.clear(props.searchKey)
-  searchOffset = limit
-  searchOrders(props.searchKey, dto({ from: 0 }), useSearchGateway())
+  offset = 0
+  orderStore.items = []
+  orderStore.hasMore = true
+  if (isSearchMode()) {
+    searchOffset = limit
+    await searchOrders(props.searchKey, dto({ from: 0 }), useSearchGateway())
+  } else {
+    searchStore.setFilter(props.searchKey, undefined)
+    searchOffset = 0
+  }
+  infiniteIdentifier.value++
 }
 
 const searchChanged = (e: any) => {
