@@ -23,3 +23,19 @@ export type CreateDeliveryPriceRuleDTO = Omit<
 >
 
 export type EditDeliveryPriceRuleDTO = Partial<CreateDeliveryPriceRuleDTO>
+
+export type DeliveryPriceRuleStatus =
+  | 'disabled'
+  | 'upcoming'
+  | 'active'
+  | 'expired'
+
+export const computeDeliveryPriceRuleStatus = (
+  rule: DeliveryPriceRule,
+  now: Timestamp
+): DeliveryPriceRuleStatus => {
+  if (!rule.isActive) return 'disabled'
+  if (rule.startDate && now < rule.startDate) return 'upcoming'
+  if (rule.endDate && now >= rule.endDate) return 'expired'
+  return 'active'
+}
