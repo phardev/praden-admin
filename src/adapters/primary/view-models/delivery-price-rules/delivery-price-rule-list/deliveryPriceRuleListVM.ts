@@ -1,4 +1,10 @@
-import type { DeliveryPriceRule } from '@core/entities/deliveryPriceRule'
+import {
+  computeDeliveryPriceRuleStatus,
+  type DeliveryPriceRule,
+  type DeliveryPriceRuleStatus
+} from '@core/entities/deliveryPriceRule'
+import type { DateProvider } from '@core/gateways/dateProvider'
+import type { Timestamp } from '@core/types/types'
 import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
 import { useDeliveryPriceRuleStore } from '@store/deliveryPriceRuleStore'
 import { formatCurrency, timestampToLocaleString } from '@utils/formatters'
@@ -13,7 +19,7 @@ export interface DeliveryPriceRuleListItemVM {
   formattedMaxWeight: string
   formattedDateRange: string
   priority: number
-  isActive: boolean
+  status: DeliveryPriceRuleStatus
 }
 
 const formatWeight = (weightInGrams: number): string => {
@@ -38,7 +44,8 @@ const formatDateRange = (
 
 const mapToVM = (
   rule: DeliveryPriceRule,
-  deliveryMethodName: string
+  deliveryMethodName: string,
+  now: Timestamp
 ): DeliveryPriceRuleListItemVM => {
   return {
     uuid: rule.uuid,
@@ -50,24 +57,26 @@ const mapToVM = (
     formattedMaxWeight: formatWeight(rule.maxWeight),
     formattedDateRange: formatDateRange(rule.startDate, rule.endDate),
     priority: rule.priority,
-    isActive: rule.isActive
+    status: computeDeliveryPriceRuleStatus(rule, now)
   }
 }
 
-export const getDeliveryPriceRuleListVM =
-  (): Array<DeliveryPriceRuleListItemVM> => {
-    const deliveryPriceRuleStore = useDeliveryPriceRuleStore()
-    const deliveryMethodStore = useDeliveryMethodStore()
+export const getDeliveryPriceRuleListVM = (
+  dateProvider: DateProvider
+): Array<DeliveryPriceRuleListItemVM> => {
+  const deliveryPriceRuleStore = useDeliveryPriceRuleStore()
+  const deliveryMethodStore = useDeliveryMethodStore()
+  const now = dateProvider.now()
 
-    const rules = [...deliveryPriceRuleStore.items].sort(
-      (a, b) => b.priority - a.priority
+  const rules = [...deliveryPriceRuleStore.items].sort(
+    (a, b) => b.priority - a.priority
+  )
+
+  return rules.map((rule) => {
+    const deliveryMethod = deliveryMethodStore.items.find(
+      (dm) => dm.uuid === rule.deliveryMethodUuid
     )
-
-    return rules.map((rule) => {
-      const deliveryMethod = deliveryMethodStore.items.find(
-        (dm) => dm.uuid === rule.deliveryMethodUuid
-      )
-      const deliveryMethodName = deliveryMethod?.name || ''
-      return mapToVM(rule, deliveryMethodName)
-    })
-  }
+    const deliveryMethodName = deliveryMethod?.name || ''
+    return mapToVM(rule, deliveryMethodName, now)
+  })
+}

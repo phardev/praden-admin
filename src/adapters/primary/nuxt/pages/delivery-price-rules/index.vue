@@ -47,9 +47,8 @@
         template(#formattedDateRange-data="{ row }")
           span {{ row.formattedDateRange }}
 
-        template(#isActive-data="{ row }")
-          UBadge(:color="row.isActive ? 'green' : 'gray'")
-            | {{ row.isActive ? $t('common.active') : $t('common.inactive') }}
+        template(#status-data="{ row }")
+          FtDeliveryPriceRuleStatusBadge(:status="row.status")
 
         template(#actions-data="{ row }")
           .flex.space-x-2
@@ -97,6 +96,7 @@ import { listDeliveryMethods } from '@core/usecases/delivery-methods/delivery-me
 import { deleteDeliveryPriceRule } from '@core/usecases/delivery-price-rules/delete-delivery-price-rule/deleteDeliveryPriceRule'
 import { listDeliveryPriceRules } from '@core/usecases/delivery-price-rules/list-delivery-price-rules/listDeliveryPriceRules'
 import { useDeliveryPriceRuleStore } from '@store/deliveryPriceRuleStore'
+import { useDateProvider } from '../../../../../../gateways/dateProvider'
 import { useDeliveryMethodGateway } from '../../../../../../gateways/deliveryMethodGateway'
 import { useDeliveryPriceRuleGateway } from '../../../../../../gateways/deliveryPriceRuleGateway'
 
@@ -133,7 +133,7 @@ const columns = computed(() => [
     key: 'formattedDateRange',
     label: t('deliveryPriceRules.fields.dateRange')
   },
-  { key: 'isActive', label: t('deliveryPriceRules.fields.isActive') },
+  { key: 'status', label: t('deliveryPriceRules.fields.isActive') },
   { key: 'actions', label: '' }
 ])
 
@@ -142,7 +142,8 @@ onMounted(async () => {
   await listDeliveryPriceRules(deliveryPriceRuleGateway)
 })
 
-const listVM = computed(() => getDeliveryPriceRuleListVM())
+const dateProvider = useDateProvider()
+const listVM = computed(() => getDeliveryPriceRuleListVM(dateProvider))
 
 const openDeleteModal = (rule: DeliveryPriceRuleListItemVM) => {
   ruleToDelete.value = rule
