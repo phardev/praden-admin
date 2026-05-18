@@ -83,6 +83,12 @@
       "weightUnit": "kg",
       "selectStartDate": "Sélectionner une date de début",
       "selectEndDate": "Sélectionner une date de fin"
+    },
+    "status": {
+      "disabled": "Désactivée",
+      "upcoming": "À venir",
+      "active": "Active",
+      "expired": "Expirée"
     }
   },
   "customers": {
