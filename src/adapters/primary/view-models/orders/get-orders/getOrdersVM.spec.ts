@@ -3,6 +3,7 @@ import { DeliveryStatus } from '@core/entities/delivery'
 import { Order, OrderLineStatus, PaymentStatus } from '@core/entities/order'
 import { useOrderStore } from '@store/orderStore'
 import { useSearchStore } from '@store/searchStore'
+import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import {
   orderNotPayed1,
   orderPrepared1,
@@ -141,6 +142,7 @@ describe('Get orders VM', () => {
         searchStore.set(key, [orderToPrepare1, orderNotPayed1])
         const expectedVM: Partial<GetOrdersVM> = {
           currentSearch: { query: 'jean' },
+          activeFilters: [{ key: 'query', label: 'Recherche : "jean"' }],
           items: [
             {
               reference: orderToPrepare1.uuid,
@@ -185,10 +187,60 @@ describe('Get orders VM', () => {
             endDate: 9234567890,
             orderStatus: OrderLineStatus.Started,
             paymentStatus: PaymentStatus.Payed
-          }
+          },
+          activeFilters: [
+            { key: 'query', label: 'Recherche : "test"' },
+            {
+              key: 'startDate',
+              label: `Depuis le ${timestampToLocaleString(1234567890, 'fr-FR')}`
+            },
+            {
+              key: 'endDate',
+              label: `Jusqu'au ${timestampToLocaleString(9234567890, 'fr-FR')}`
+            },
+            { key: 'orderStatus', label: 'Statut : En préparation' },
+            { key: 'paymentStatus', label: 'Paiement : Payé' }
+          ]
         }
         expectVMToMatch(expectedVM)
       })
+    })
+  })
+
+  describe('Active filters chips', () => {
+    it('should expose a chip for each active filter and each total condition', () => {
+      const low = 1000
+      const high = 2000
+      searchStore.setFilter(key, {
+        query: 'jean',
+        orderStatus: OrderLineStatus.Prepared,
+        totalTtcConditions: [
+          { operator: 'gte', value: low },
+          { operator: 'lte', value: high }
+        ]
+      })
+      const formatter = priceFormatter('fr-FR', 'EUR')
+      expect(getOrdersVM(key).activeFilters).toStrictEqual([
+        { key: 'query', label: 'Recherche : "jean"' },
+        { key: 'orderStatus', label: 'Statut : Préparé' },
+        {
+          key: 'totalTtc',
+          index: 0,
+          label: `Total TTC ≥ ${formatter.format(low / 100)}`
+        },
+        {
+          key: 'totalTtc',
+          index: 1,
+          label: `Total TTC ≤ ${formatter.format(high / 100)}`
+        }
+      ])
+    })
+    it('should use the search results when only the total filter is active', () => {
+      givenExistingOrders(orderToPrepare1)
+      searchStore.setFilter(key, {
+        totalTtcConditions: [{ operator: 'gte', value: 1 }]
+      })
+      expect(getOrdersVM(key).items).toStrictEqual([])
     })
   })
 
@@ -255,7 +307,8 @@ describe('Get orders VM', () => {
       hasMore: false,
       hasMoreSearch: false,
       isSearchLoading: false,
-      currentSearch: undefined
+      currentSearch: undefined,
+      activeFilters: []
     }
     expect(getOrdersVM(key)).toMatchObject({ ...emptyVM, ...expectedVM })
   }

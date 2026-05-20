@@ -4,6 +4,7 @@ import {
   SearchProductsResult
 } from '@core/gateways/searchGateway'
 import '@utils/strings'
+import { computeTotalWithTaxForOrder } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { Customer } from '@core/entities/customer'
 import {
   getDeliveryStatus,
@@ -13,7 +14,10 @@ import {
 } from '@core/entities/order'
 import { Timestamp } from '@core/types/types'
 import { SearchCustomersDTO } from '@core/usecases/customers/customer-searching/searchCustomer'
-import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
+import {
+  SearchOrdersDTO,
+  TotalTtcCondition
+} from '@core/usecases/order/orders-searching/searchOrders'
 import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
 import { useCustomerStore } from '@store/customerStore'
 import { useOrderStore } from '@store/orderStore'
@@ -103,13 +107,17 @@ export class FakeSearchGateway implements SearchGateway {
         dto.customerUuid !== undefined
           ? dto.customerUuid === o.customerUuid
           : true
+      const totalTtcMatch = dto.totalTtcConditions?.length
+        ? this.ordersTotalTtcMatch(o, dto.totalTtcConditions)
+        : true
       return (
         queryMatch &&
         dateMatch &&
         orderStatusMatch &&
         deliveryStatusMatch &&
         paymentStatusMatch &&
-        customerUuidMatch
+        customerUuidMatch &&
+        totalTtcMatch
       )
     })
     const from = dto.from ?? 0
@@ -127,6 +135,18 @@ export class FakeSearchGateway implements SearchGateway {
       : (order.deliveries?.[0]?.receiver?.contact?.email ?? '')
     const isEmailMatching = email ? email.includesWithoutCase(query) : false
     return isReferenceMatching || isClientNameMatching || isEmailMatching
+  }
+
+  private ordersTotalTtcMatch = (
+    order: Order,
+    conditions: Array<TotalTtcCondition>
+  ): boolean => {
+    const total = computeTotalWithTaxForOrder(order)
+    return conditions.every(({ operator, value }) => {
+      if (operator === 'lte') return total <= value
+      if (operator === 'gte') return total >= value
+      return Math.abs(total - value) < 1
+    })
   }
 
   private ordersDateMatch = (

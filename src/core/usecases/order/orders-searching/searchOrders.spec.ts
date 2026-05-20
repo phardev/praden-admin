@@ -1,3 +1,4 @@
+import { computeTotalWithTaxForOrder } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { FakeSearchGateway } from '@adapters/secondary/search-gateways/FakeSearchGateway'
 import { DeliveryStatus } from '@core/entities/delivery'
 import { Order, OrderLineStatus, PaymentStatus } from '@core/entities/order'
@@ -225,6 +226,77 @@ describe('Search orders', () => {
         expectSearchResultToEqual(elodieDurandOrder2)
       })
     })
+    describe('Filter on total TTC', () => {
+      const expensiveOrder: Order = {
+        ...orderToPrepare1,
+        uuid: 'EXPENSIVE',
+        lines: [
+          {
+            ...orderToPrepare1.lines[0],
+            expectedQuantity: orderToPrepare1.lines[0].expectedQuantity + 1
+          }
+        ]
+      }
+      beforeEach(() => {
+        givenExistingOrders(orderToPrepare1, expensiveOrder)
+      })
+      it('should keep orders with total lower or equal to the value', async () => {
+        dto.totalTtcConditions = [
+          {
+            operator: 'lte',
+            value: computeTotalWithTaxForOrder(orderToPrepare1)
+          }
+        ]
+        await whenSearchForOrders(dto)
+        expectSearchResultToEqual(orderToPrepare1)
+      })
+      it('should keep orders with total greater or equal to the value', async () => {
+        dto.totalTtcConditions = [
+          {
+            operator: 'gte',
+            value: computeTotalWithTaxForOrder(expensiveOrder)
+          }
+        ]
+        await whenSearchForOrders(dto)
+        expectSearchResultToEqual(expensiveOrder)
+      })
+      it('should keep orders with total equal to the value', async () => {
+        dto.totalTtcConditions = [
+          {
+            operator: 'eq',
+            value: computeTotalWithTaxForOrder(orderToPrepare1)
+          }
+        ]
+        await whenSearchForOrders(dto)
+        expectSearchResultToEqual(orderToPrepare1)
+      })
+      it('should keep orders matching all conditions combined (between)', async () => {
+        dto.totalTtcConditions = [
+          {
+            operator: 'gte',
+            value: computeTotalWithTaxForOrder(orderToPrepare1)
+          },
+          {
+            operator: 'lte',
+            value: computeTotalWithTaxForOrder(expensiveOrder) - 1
+          }
+        ]
+        await whenSearchForOrders(dto)
+        expectSearchResultToEqual(orderToPrepare1)
+      })
+      it('should combine the total filter with the query filter', async () => {
+        dto.totalTtcConditions = [
+          {
+            operator: 'gte',
+            value: computeTotalWithTaxForOrder(orderToPrepare1)
+          }
+        ]
+        dto.query = orderToPrepare1.uuid
+        await whenSearchForOrders(dto)
+        expectSearchResultToEqual(orderToPrepare1)
+      })
+    })
+
     describe('Pagination', () => {
       beforeEach(() => {
         givenExistingOrders(orderToPrepare1, orderPrepared1, orderNotPayed1)

@@ -1,6 +1,6 @@
 <template lang="pug">
-div.flex.items-center.justify-center
-  USelectMenu.w-32(
+div.flex.items-center.gap-2
+  USelectMenu.flex-grow(
     v-model="model"
     :options="options"
   )
