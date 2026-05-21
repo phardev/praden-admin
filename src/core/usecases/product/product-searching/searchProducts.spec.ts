@@ -272,6 +272,30 @@ describe('Search products', () => {
           })
         })
       })
+      describe('Sort by priceWithoutTax', () => {
+        it('should sort the whole catalog by price HT ascending', async () => {
+          givenSortIs({ field: 'priceWithoutTax', direction: 'asc' })
+          await whenSearchForProducts()
+          expectSearchResultToEqual(dolodent, chamomilla, calmosine)
+        })
+        it('should sort the whole catalog by price HT descending', async () => {
+          givenSortIs({ field: 'priceWithoutTax', direction: 'desc' })
+          await whenSearchForProducts()
+          expectSearchResultToEqual(calmosine, chamomilla, dolodent)
+        })
+      })
+      describe('Sort by priceWithTax', () => {
+        it('should sort the whole catalog by price TTC ascending', async () => {
+          givenSortIs({ field: 'priceWithTax', direction: 'asc' })
+          await whenSearchForProducts()
+          expectSearchResultToEqual(dolodent, chamomilla, calmosine)
+        })
+        it('should sort the whole catalog by price TTC descending', async () => {
+          givenSortIs({ field: 'priceWithTax', direction: 'desc' })
+          await whenSearchForProducts()
+          expectSearchResultToEqual(calmosine, chamomilla, dolodent)
+        })
+      })
     })
     describe('Status filter', () => {
       beforeEach(() => {

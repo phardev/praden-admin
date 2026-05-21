@@ -69,11 +69,13 @@ export const getProductsVM = (key: string): GetProductsVM => {
     },
     {
       name: 'Prix HT',
-      value: 'priceWithoutTax'
+      value: 'priceWithoutTax',
+      sortable: true
     },
     {
       name: 'Prix TTC',
-      value: 'priceWithTax'
+      value: 'priceWithTax',
+      sortable: true
     },
     {
       name: 'Stock',
