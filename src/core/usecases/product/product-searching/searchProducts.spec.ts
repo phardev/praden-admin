@@ -254,6 +254,25 @@ describe('Search products', () => {
         })
       })
     })
+    describe('Sort filter', () => {
+      beforeEach(() => {
+        searchGateway.feedWith(dolodent, chamomilla, calmosine)
+      })
+      describe('Sort only, without query or status', () => {
+        beforeEach(async () => {
+          givenSortIs({ field: 'availableStock', direction: 'asc' })
+          await whenSearchForProducts()
+        })
+        it('should search the whole catalog sorted by stock', () => {
+          expectSearchResultToEqual(chamomilla, calmosine, dolodent)
+        })
+        it('should save the sort filter', () => {
+          expectCurrentFiltersToEqual({
+            sort: { field: 'availableStock', direction: 'asc' }
+          })
+        })
+      })
+    })
     describe('Status filter', () => {
       beforeEach(() => {
         searchGateway.feedWith(dolodent, ultraLevure, chamomilla)
@@ -308,6 +327,15 @@ describe('Search products', () => {
       givenQueryIs('')
       await whenSearchForProducts()
       expectLoadingToBe(false)
+    })
+
+    it('should clear previous results while a fresh search is loading', async () => {
+      givenQueryIs('cha')
+      await whenSearchForProducts()
+      givenQueryIs('dol')
+      const promise = whenSearchForProducts()
+      expectSearchResultToEqual()
+      await promise
     })
   })
 
@@ -396,6 +424,10 @@ describe('Search products', () => {
 
   const givenFromIs = (from: number) => {
     filters.from = from
+  }
+
+  const givenSortIs = (sort: SearchProductsFilters['sort']) => {
+    filters.sort = sort
   }
 
   const whenSearchForProducts = async () => {

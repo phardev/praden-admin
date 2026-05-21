@@ -9,9 +9,11 @@
     :is-loading="productsVM.isLoading"
     :selectable="true"
     :selection="productSelector.get()"
+    :sort="productsVM.sort"
     @item-selected="productSelector.toggleSelect"
     @select-all="productSelector.toggleSelectAll"
     @clicked="productSelected"
+    @sort="stockSortChanged"
   )
     template(#title) Produits
     template(#search)
@@ -105,7 +107,7 @@ const productsVM = computed(() => {
 })
 
 const load = async ($state: InfiniteLoadingState) => {
-  if (!search.value && !productStatus.value) {
+  if (!search.value && !productStatus.value && !stockSort.value) {
     await listProducts(limit, offset, productGateway)
     offset += limit
     if (productsVM.value.hasMore) {
@@ -114,7 +116,7 @@ const load = async ($state: InfiniteLoadingState) => {
       $state.complete()
     }
   } else {
-    if (productsVM.value.isSearchLoading) {
+    if (productsVM.value.isLoading) {
       return
     }
     if (!productsVM.value.hasMoreSearch) {
@@ -143,6 +145,9 @@ const load = async ($state: InfiniteLoadingState) => {
 
 const search = ref(productsVM.value.currentSearch?.query)
 const productStatus = ref(productsVM.value.currentSearch?.status)
+const stockSort = ref<'asc' | 'desc' | undefined>(
+  productsVM.value.currentSearch?.sort?.direction
+)
 const minimumQueryLength = 3
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
@@ -157,8 +162,28 @@ const buildFilters = (partial: {
     query: search.value,
     status: productStatus.value,
     size: limit,
+    sort: stockSort.value
+      ? { field: 'availableStock', direction: stockSort.value }
+      : undefined,
     ...partial
   }
+}
+
+const nextStockSort = (current: 'asc' | 'desc' | undefined) => {
+  if (current === undefined) return 'asc'
+  if (current === 'asc') return 'desc'
+  return undefined
+}
+
+const stockSortChanged = (field: string) => {
+  if (field !== 'availableStock') return
+  stockSort.value = nextStockSort(stockSort.value)
+  searchOffset = 0
+  searchProducts(
+    String(routeName),
+    buildFilters({ from: 0 }),
+    useSearchGateway()
+  )
 }
 
 const searchChanged = (e: any) => {
