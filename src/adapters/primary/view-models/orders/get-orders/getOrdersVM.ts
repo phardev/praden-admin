@@ -1,3 +1,4 @@
+import { ActiveFilterVM } from '@adapters/primary/view-models/shared/filters'
 import { DeliveryStatus } from '@core/entities/delivery'
 import {
   getDeliveryStatus,
@@ -30,21 +31,6 @@ export interface GetOrdersItemVM {
   total: string
   paymentStatus: PaymentStatus
   deliveryStatus: DeliveryStatus
-}
-
-export type ActiveFilterKey =
-  | 'query'
-  | 'startDate'
-  | 'endDate'
-  | 'orderStatus'
-  | 'deliveryStatus'
-  | 'paymentStatus'
-  | 'totalTtc'
-
-export interface ActiveFilterVM {
-  key: ActiveFilterKey
-  index?: number
-  label: string
 }
 
 export interface GetOrdersVM {

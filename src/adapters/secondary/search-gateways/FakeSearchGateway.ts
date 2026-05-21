@@ -18,7 +18,10 @@ import {
   SearchOrdersDTO,
   TotalTtcCondition
 } from '@core/usecases/order/orders-searching/searchOrders'
-import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
+import {
+  PriceTtcCondition,
+  SearchProductsFilters
+} from '@core/usecases/product/product-searching/searchProducts'
 import { useCustomerStore } from '@store/customerStore'
 import { useOrderStore } from '@store/orderStore'
 import { addTaxToPrice } from '@utils/price'
@@ -38,27 +41,14 @@ export class FakeSearchGateway implements SearchGateway {
   ): Promise<SearchProductsResult> {
     const products = this.items.filter((i) => isProduct(i))
     const filtered = products.filter((p) => {
-      if (filters.query) {
-        const query = filters.query
-        const isCategoryNameMatching = p.categories.some((c) =>
-          c.name.includesWithoutCase(query)
-        )
-        const isNameMatching = p.name.includesWithoutCase(query)
-        const isLaboratoryMatching = p.laboratory
-          ? p.laboratory.name.includesWithoutCase(query)
-          : false
-        const isCip13Matching = p.cip13.includes(query)
-        return (
-          isNameMatching ||
-          isLaboratoryMatching ||
-          isCategoryNameMatching ||
-          isCip13Matching
-        )
-      }
-      if (filters.status) {
-        return p.status === filters.status
-      }
-      return true
+      const queryMatch = filters.query
+        ? this.productQueryMatch(p, filters.query)
+        : true
+      const statusMatch = filters.status ? p.status === filters.status : true
+      const priceTtcMatch = filters.priceTtcConditions?.length
+        ? this.productPriceTtcMatch(p, filters.priceTtcConditions)
+        : true
+      return queryMatch && statusMatch && priceTtcMatch
     })
     const sorted = this.sortProducts(filtered, filters)
     const total = sorted.length
@@ -77,6 +67,38 @@ export class FakeSearchGateway implements SearchGateway {
         totalPages
       },
       hasMore
+    })
+  }
+
+  private productQueryMatch = (product: any, query: string): boolean => {
+    const isCategoryNameMatching = product.categories.some((c: any) =>
+      c.name.includesWithoutCase(query)
+    )
+    const isNameMatching = product.name.includesWithoutCase(query)
+    const isLaboratoryMatching = product.laboratory
+      ? product.laboratory.name.includesWithoutCase(query)
+      : false
+    const isCip13Matching = product.cip13.includes(query)
+    return (
+      isNameMatching ||
+      isLaboratoryMatching ||
+      isCategoryNameMatching ||
+      isCip13Matching
+    )
+  }
+
+  private productPriceTtcMatch = (
+    product: any,
+    conditions: Array<PriceTtcCondition>
+  ): boolean => {
+    const priceWithTax = addTaxToPrice(
+      product.priceWithoutTax,
+      product.percentTaxRate
+    )
+    return conditions.every(({ operator, value }) => {
+      if (operator === 'lte') return priceWithTax <= value
+      if (operator === 'gte') return priceWithTax >= value
+      return Math.abs(priceWithTax - value) < 1
     })
   }
 

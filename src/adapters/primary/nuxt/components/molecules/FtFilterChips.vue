@@ -19,7 +19,7 @@ div.flex.flex-wrap.items-center.gap-2(v-if="filters.length")
 </template>
 
 <script lang="ts" setup>
-import type { ActiveFilterVM } from '@adapters/primary/view-models/orders/get-orders/getOrdersVM'
+import type { ActiveFilterVM } from '@adapters/primary/view-models/shared/filters'
 
 defineProps<{
   filters: Array<ActiveFilterVM>

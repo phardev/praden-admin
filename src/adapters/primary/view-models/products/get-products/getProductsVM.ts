@@ -1,4 +1,5 @@
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { ActiveFilterVM } from '@adapters/primary/view-models/shared/filters'
 import { ProductStatus } from '@core/entities/product'
 import { UUID } from '@core/types/types'
 import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
@@ -6,6 +7,7 @@ import {
   ProductsSort,
   SearchProductsFilters
 } from '@core/usecases/product/product-searching/searchProducts'
+import { PriceFilterOperator } from '@core/usecases/shared/priceFilter'
 import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
 import { priceFormatter } from '@utils/formatters'
@@ -33,6 +35,29 @@ export interface GetProductsVM {
   sort: ProductsSort | undefined
   searchError: string | undefined
   isLoading: boolean
+  activeFilters: Array<ActiveFilterVM>
+}
+
+const priceTtcOperatorSymbols: Record<PriceFilterOperator, string> = {
+  lte: '≤',
+  eq: '=',
+  gte: '≥'
+}
+
+const buildActiveFilters = (
+  filter: SearchProductsFilters | undefined
+): Array<ActiveFilterVM> => {
+  if (!filter) return []
+  const formatter = priceFormatter('fr-FR', 'EUR')
+  const activeFilters: Array<ActiveFilterVM> = []
+  filter.priceTtcConditions?.forEach((condition, index) => {
+    activeFilters.push({
+      key: 'priceTtc',
+      index,
+      label: `Prix TTC ${priceTtcOperatorSymbols[condition.operator]} ${formatter.format(condition.value / 100)}`
+    })
+  })
+  return activeFilters
 }
 
 export const getProductsVM = (key: string): GetProductsVM => {
@@ -118,6 +143,7 @@ export const getProductsVM = (key: string): GetProductsVM => {
       : undefined,
     hasMore: productStore.hasMore.valueOf(),
     hasMoreSearch,
-    isLoading
+    isLoading,
+    activeFilters: buildActiveFilters(searchFilter)
   }
 }

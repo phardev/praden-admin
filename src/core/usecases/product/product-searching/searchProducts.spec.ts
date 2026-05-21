@@ -1,10 +1,12 @@
 import { FakeSearchGateway } from '@adapters/secondary/search-gateways/FakeSearchGateway'
-import { ProductStatus } from '@core/entities/product'
+import { Product, ProductStatus } from '@core/entities/product'
 import {
+  PriceTtcCondition,
   SearchProductsFilters,
   searchProducts
 } from '@core/usecases/product/product-searching/searchProducts'
 import { useSearchStore } from '@store/searchStore'
+import { addTaxToPrice } from '@utils/price'
 import { baby, dents } from '@utils/testData/categories'
 import {
   calmosine,
@@ -15,6 +17,9 @@ import {
   ultraLevure
 } from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
+
+const ttc = (product: Product): number =>
+  addTaxToPrice(product.priceWithoutTax, product.percentTaxRate)
 
 describe('Search products', () => {
   let searchStore: any
@@ -320,6 +325,40 @@ describe('Search products', () => {
         })
       })
     })
+    describe('Price TTC conditions filter', () => {
+      beforeEach(() => {
+        searchGateway.feedWith(dolodent, chamomilla, calmosine)
+      })
+      it('should get the products with price lower than or equal', async () => {
+        givenPriceTtcConditionsAre({ operator: 'lte', value: ttc(chamomilla) })
+        await whenSearchForProducts()
+        expectSearchResultToEqual(dolodent, chamomilla)
+      })
+      it('should get the products with price greater than or equal', async () => {
+        givenPriceTtcConditionsAre({ operator: 'gte', value: ttc(chamomilla) })
+        await whenSearchForProducts()
+        expectSearchResultToEqual(chamomilla, calmosine)
+      })
+      it('should get the products with price equal', async () => {
+        givenPriceTtcConditionsAre({ operator: 'eq', value: ttc(calmosine) })
+        await whenSearchForProducts()
+        expectSearchResultToEqual(calmosine)
+      })
+      it('should combine conditions with AND to get a price range', async () => {
+        givenPriceTtcConditionsAre(
+          { operator: 'gte', value: ttc(dolodent) },
+          { operator: 'lte', value: ttc(chamomilla) }
+        )
+        await whenSearchForProducts()
+        expectSearchResultToEqual(dolodent, chamomilla)
+      })
+      it('should combine the price condition with the query filter', async () => {
+        givenQueryIs('mo')
+        givenPriceTtcConditionsAre({ operator: 'gte', value: ttc(calmosine) })
+        await whenSearchForProducts()
+        expectSearchResultToEqual(calmosine)
+      })
+    })
   })
 
   describe('Loading state', () => {
@@ -436,6 +475,12 @@ describe('Search products', () => {
 
   const givenStatusFilterIs = (status: ProductStatus) => {
     filters.status = status
+  }
+
+  const givenPriceTtcConditionsAre = (
+    ...conditions: Array<PriceTtcCondition>
+  ) => {
+    filters.priceTtcConditions = conditions
   }
 
   const givenMinimumQueryLength = (length: number) => {

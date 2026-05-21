@@ -20,10 +20,10 @@ div.space-y-2
 </template>
 
 <script lang="ts" setup>
-import type { TotalTtcOperator } from '@core/usecases/order/orders-searching/searchOrders'
+import type { PriceFilterOperator } from '@core/usecases/shared/priceFilter'
 
 interface PriceConditionRow {
-  operator: TotalTtcOperator
+  operator: PriceFilterOperator
   amount: number | undefined
 }
 
@@ -35,7 +35,7 @@ const emit = defineEmits<{
   (e: 'update:conditions', value: Array<PriceConditionRow>): void
 }>()
 
-const updateOperator = (index: number, operator: TotalTtcOperator) => {
+const updateOperator = (index: number, operator: PriceFilterOperator) => {
   emit(
     'update:conditions',
     props.conditions.map((condition: PriceConditionRow, i: number) =>
