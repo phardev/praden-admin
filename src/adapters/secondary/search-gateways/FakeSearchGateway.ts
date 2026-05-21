@@ -21,6 +21,7 @@ import {
 import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
 import { useCustomerStore } from '@store/customerStore'
 import { useOrderStore } from '@store/orderStore'
+import { addTaxToPrice } from '@utils/price'
 
 export class FakeSearchGateway implements SearchGateway {
   private items: Array<any> = []
@@ -89,12 +90,21 @@ export class FakeSearchGateway implements SearchGateway {
     const { field, direction } = filters.sort
     const factor = direction === 'asc' ? 1 : -1
     return [...products].sort((a: any, b: any) => {
+      const aValue = this.sortValue(a, field)
+      const bValue = this.sortValue(b, field)
       const primary =
-        typeof a[field] === 'number' && typeof b[field] === 'number'
-          ? (a[field] - b[field]) * factor
-          : String(a[field]).localeCompare(String(b[field])) * factor
+        typeof aValue === 'number' && typeof bValue === 'number'
+          ? (aValue - bValue) * factor
+          : String(aValue).localeCompare(String(bValue)) * factor
       return primary !== 0 ? primary : a.uuid.localeCompare(b.uuid)
     })
+  }
+
+  private sortValue(product: any, field: string): unknown {
+    if (field === 'priceWithTax') {
+      return addTaxToPrice(product.priceWithoutTax, product.percentTaxRate)
+    }
+    return product[field]
   }
 
   indexProducts(limit: number, offset: number): Promise<number> {

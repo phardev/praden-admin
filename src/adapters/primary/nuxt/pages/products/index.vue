@@ -13,7 +13,7 @@
     @item-selected="productSelector.toggleSelect"
     @select-all="productSelector.toggleSelectAll"
     @clicked="productSelected"
-    @sort="stockSortChanged"
+    @sort="sortChanged"
   )
     template(#title) Produits
     template(#search)
@@ -58,6 +58,7 @@ import { getProductsVM } from '@adapters/primary/view-models/products/get-produc
 import type { ProductStatus } from '@core/entities/product'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { listProducts } from '@core/usecases/product/product-listing/listProducts'
+import type { ProductsSort } from '@core/usecases/product/product-searching/searchProducts'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
 import { useCategoryStore } from '@store/categoryStore'
 import { dents, diarrhee } from '@utils/testData/categories'
@@ -107,7 +108,7 @@ const productsVM = computed(() => {
 })
 
 const load = async ($state: InfiniteLoadingState) => {
-  if (!search.value && !productStatus.value && !stockSort.value) {
+  if (!search.value && !productStatus.value && !sort.value) {
     await listProducts(limit, offset, productGateway)
     offset += limit
     if (productsVM.value.hasMore) {
@@ -145,9 +146,7 @@ const load = async ($state: InfiniteLoadingState) => {
 
 const search = ref(productsVM.value.currentSearch?.query)
 const productStatus = ref(productsVM.value.currentSearch?.status)
-const stockSort = ref<'asc' | 'desc' | undefined>(
-  productsVM.value.currentSearch?.sort?.direction
-)
+const sort = ref<ProductsSort | undefined>(productsVM.value.currentSearch?.sort)
 const minimumQueryLength = 3
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
@@ -162,22 +161,22 @@ const buildFilters = (partial: {
     query: search.value,
     status: productStatus.value,
     size: limit,
-    sort: stockSort.value
-      ? { field: 'availableStock', direction: stockSort.value }
-      : undefined,
+    sort: sort.value,
     ...partial
   }
 }
 
-const nextStockSort = (current: 'asc' | 'desc' | undefined) => {
-  if (current === undefined) return 'asc'
-  if (current === 'asc') return 'desc'
+const nextSort = (
+  current: ProductsSort | undefined,
+  field: string
+): ProductsSort | undefined => {
+  if (!current || current.field !== field) return { field, direction: 'asc' }
+  if (current.direction === 'asc') return { field, direction: 'desc' }
   return undefined
 }
 
-const stockSortChanged = (field: string) => {
-  if (field !== 'availableStock') return
-  stockSort.value = nextStockSort(stockSort.value)
+const sortChanged = (field: string) => {
+  sort.value = nextSort(sort.value, field)
   searchOffset = 0
   searchProducts(
     String(routeName),

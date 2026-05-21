@@ -48,11 +48,13 @@ describe('Get products VM', () => {
     },
     {
       name: 'Prix HT',
-      value: 'priceWithoutTax'
+      value: 'priceWithoutTax',
+      sortable: true
     },
     {
       name: 'Prix TTC',
-      value: 'priceWithTax'
+      value: 'priceWithTax',
+      sortable: true
     },
     {
       name: 'Stock',
@@ -285,6 +287,22 @@ describe('Get products VM', () => {
               sort: { field: 'availableStock', direction: 'asc' }
             },
             sort: { field: 'availableStock', direction: 'asc' }
+          }
+          expectVMToMatch(expectedVM)
+        })
+      })
+      describe('There is a price sort', () => {
+        beforeEach(() => {
+          searchStore.setFilter(key, {
+            sort: { field: 'priceWithTax', direction: 'desc' }
+          })
+        })
+        it('should expose the current sort', () => {
+          expectedVM = {
+            currentSearch: {
+              sort: { field: 'priceWithTax', direction: 'desc' }
+            },
+            sort: { field: 'priceWithTax', direction: 'desc' }
           }
           expectVMToMatch(expectedVM)
         })
