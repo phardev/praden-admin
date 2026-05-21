@@ -57,11 +57,13 @@ export class FakeSearchGateway implements SearchGateway {
       if (filters.status) {
         return p.status === filters.status
       }
+      return true
     })
-    const total = filtered.length
+    const sorted = this.sortProducts(filtered, filters)
+    const total = sorted.length
     const from = filters.from ?? 0
     const size = filters.size ?? 25
-    const items = filtered.slice(from, from + size)
+    const items = sorted.slice(from, from + size)
     const page = Math.floor(from / size) + 1
     const totalPages = Math.ceil(total / size)
     const hasMore = items.length === size && total > from + size
@@ -74,6 +76,24 @@ export class FakeSearchGateway implements SearchGateway {
         totalPages
       },
       hasMore
+    })
+  }
+
+  private sortProducts(
+    products: Array<Product>,
+    filters: SearchProductsFilters
+  ): Array<Product> {
+    if (!filters.sort) {
+      return products
+    }
+    const { field, direction } = filters.sort
+    const factor = direction === 'asc' ? 1 : -1
+    return [...products].sort((a: any, b: any) => {
+      const primary =
+        typeof a[field] === 'number' && typeof b[field] === 'number'
+          ? (a[field] - b[field]) * factor
+          : String(a[field]).localeCompare(String(b[field])) * factor
+      return primary !== 0 ? primary : a.uuid.localeCompare(b.uuid)
     })
   }
 

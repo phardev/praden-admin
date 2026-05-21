@@ -2,12 +2,18 @@ import { ProductStatus } from '@core/entities/product'
 import { SearchGateway } from '@core/gateways/searchGateway'
 import { useSearchStore } from '@store/searchStore'
 
+export interface ProductsSort {
+  field: string
+  direction: 'asc' | 'desc'
+}
+
 export interface SearchProductsFilters {
   query?: string
   minimumQueryLength?: number
   status?: ProductStatus
   size?: number
   from?: number
+  sort?: ProductsSort
 }
 
 export const searchProducts = async (
@@ -26,14 +32,17 @@ export const searchProducts = async (
     searchStore.set(key, [])
     searchStore.setPagination(key, { total: 0, from: 0, hasMore: false })
     searchStore.endLoading(key)
-  } else if (!filters.query && !filters.status) {
+  } else if (!filters.query && !filters.status && !filters.sort) {
     searchStore.clear(key)
     searchStore.setError(key, undefined)
     searchStore.endLoading(key)
   } else {
     searchStore.startLoading(key)
-    const searchResult = await searchGateway.searchProducts(filters)
     const isAppending = (filters.from ?? 0) > 0
+    if (!isAppending) {
+      searchStore.set(key, [])
+    }
+    const searchResult = await searchGateway.searchProducts(filters)
     if (isAppending) {
       searchStore.append(key, searchResult.items)
     } else {

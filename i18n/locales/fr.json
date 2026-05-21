@@ -41,7 +41,8 @@
     "expandAll": "Voir tout",
     "collapseAll": "Cacher tout",
     "active": "Actif",
-    "inactive": "Inactif"
+    "inactive": "Inactif",
+    "sortBy": "Trier par {name}"
   },
   "categories": {
     "status": {

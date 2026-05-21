@@ -56,7 +56,8 @@ describe('Get products VM', () => {
     },
     {
       name: 'Stock',
-      value: 'availableStock'
+      value: 'availableStock',
+      sortable: true
     },
     {
       name: 'Statut',
@@ -272,6 +273,22 @@ describe('Get products VM', () => {
           expectVMToMatch(expectedVM)
         })
       })
+      describe('There is a sort', () => {
+        beforeEach(() => {
+          searchStore.setFilter(key, {
+            sort: { field: 'availableStock', direction: 'asc' }
+          })
+        })
+        it('should expose the current sort', () => {
+          expectedVM = {
+            currentSearch: {
+              sort: { field: 'availableStock', direction: 'asc' }
+            },
+            sort: { field: 'availableStock', direction: 'asc' }
+          }
+          expectVMToMatch(expectedVM)
+        })
+      })
       describe('Search performed but no results found', () => {
         beforeEach(() => {
           productStore.items = [dolodentListItem, ultraLevureListItem]
@@ -343,10 +360,10 @@ describe('Get products VM', () => {
       }
       expectVMToMatch(expectedVM)
     })
-    it('should expose isSearchLoading from search store', () => {
+    it('should be loading while a search is in progress', () => {
       searchStore.startLoading(key)
       expectedVM = {
-        isSearchLoading: true
+        isLoading: true
       }
       expectVMToMatch(expectedVM)
     })
@@ -359,9 +376,9 @@ describe('Get products VM', () => {
       hasMore: false,
       hasMoreSearch: false,
       currentSearch: undefined,
+      sort: undefined,
       searchError: undefined,
-      isLoading: false,
-      isSearchLoading: false
+      isLoading: false
     }
     expect(getProductsVM(key)).toMatchObject({ ...emptyVM, ...expectedVM })
   }
