@@ -85,6 +85,7 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
         dto.deliveryStatus !== undefined
           ? deliveryStatusMap[dto.deliveryStatus]
           : undefined,
+      totalTtcConditions: dto.totalTtcConditions,
       limit: dto.size,
       offset: dto.from
     }
