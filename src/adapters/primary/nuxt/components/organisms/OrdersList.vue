@@ -130,7 +130,7 @@ ft-table(
 
 <script lang="ts" setup>
 import FtTable from '@adapters/primary/nuxt/components/molecules/FtTable.vue'
-import type { ActiveFilterVM } from '@adapters/primary/view-models/orders/get-orders/getOrdersVM'
+import type { ActiveFilterVM } from '@adapters/primary/view-models/shared/filters'
 import { listOrders } from '@core/usecases/order/list-orders/listOrders'
 import type { TotalTtcOperator } from '@core/usecases/order/orders-searching/searchOrders'
 import { searchOrders } from '@core/usecases/order/orders-searching/searchOrders'

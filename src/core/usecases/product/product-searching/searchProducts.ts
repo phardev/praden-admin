@@ -1,5 +1,6 @@
 import { ProductStatus } from '@core/entities/product'
 import { SearchGateway } from '@core/gateways/searchGateway'
+import { PriceFilterOperator } from '@core/usecases/shared/priceFilter'
 import { useSearchStore } from '@store/searchStore'
 
 export interface ProductsSort {
@@ -7,10 +8,16 @@ export interface ProductsSort {
   direction: 'asc' | 'desc'
 }
 
+export interface PriceTtcCondition {
+  operator: PriceFilterOperator
+  value: number
+}
+
 export interface SearchProductsFilters {
   query?: string
   minimumQueryLength?: number
   status?: ProductStatus
+  priceTtcConditions?: Array<PriceTtcCondition>
   size?: number
   from?: number
   sort?: ProductsSort
@@ -32,7 +39,12 @@ export const searchProducts = async (
     searchStore.set(key, [])
     searchStore.setPagination(key, { total: 0, from: 0, hasMore: false })
     searchStore.endLoading(key)
-  } else if (!filters.query && !filters.status && !filters.sort) {
+  } else if (
+    !filters.query &&
+    !filters.status &&
+    !filters.sort &&
+    !filters.priceTtcConditions?.length
+  ) {
     searchStore.clear(key)
     searchStore.setError(key, undefined)
     searchStore.endLoading(key)
