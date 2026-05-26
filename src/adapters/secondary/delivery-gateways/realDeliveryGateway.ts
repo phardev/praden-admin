@@ -1,8 +1,13 @@
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
 import { Delivery, DeliveryStatus } from '@core/entities/delivery'
+import {
+  CarrierErrorDetail,
+  CarrierLabelError
+} from '@core/errors/CarrierLabelError'
 import { DeliveryGateway } from '@core/gateways/deliveryGateway'
 import { UUID } from '@core/types/types'
+import axios, { AxiosError } from 'axios'
 
 export class RealDeliveryGateway
   extends RealGateway
@@ -46,21 +51,73 @@ export class RealDeliveryGateway
   }
 
   async printLabel(uuid: UUID): Promise<void> {
-    await axiosWithBearer.post(`${this.baseUrl}/deliveries/${uuid}/print-label`)
+    try {
+      await axiosWithBearer.post(
+        `${this.baseUrl}/deliveries/${uuid}/print-label`
+      )
+    } catch (e) {
+      throw await this.toCarrierError(e)
+    }
   }
 
   async downloadLabel(uuid: UUID): Promise<Blob> {
-    const res = await axiosWithBearer.get(
-      `${this.baseUrl}/deliveries/${uuid}/download-label`,
-      {
-        responseType: 'blob'
-      }
-    )
-    return new Blob([res.data], { type: 'application/pdf' })
+    try {
+      const res = await axiosWithBearer.get(
+        `${this.baseUrl}/deliveries/${uuid}/download-label`,
+        {
+          responseType: 'blob'
+        }
+      )
+      return new Blob([res.data], { type: 'application/pdf' })
+    } catch (e) {
+      throw await this.toCarrierError(e)
+    }
   }
 
   async generatePickup(orderUuid: UUID): Promise<void> {
-    await axiosWithBearer.post(`${this.baseUrl}/pickup`, { orderUuid })
+    try {
+      await axiosWithBearer.post(`${this.baseUrl}/pickup`, { orderUuid })
+    } catch (e) {
+      throw await this.toCarrierError(e)
+    }
+  }
+
+  private async toCarrierError(error: unknown): Promise<unknown> {
+    if (axios.isAxiosError(error) && error.response?.status === 500) {
+      const detail = await this.readCarrierErrorDetail(error)
+      if (detail !== undefined) {
+        return new CarrierLabelError(detail)
+      }
+    }
+    return error
+  }
+
+  private async readCarrierErrorDetail(
+    error: AxiosError
+  ): Promise<CarrierErrorDetail | null | undefined> {
+    const data = error.response?.data
+    if (data instanceof Blob) {
+      const text = await data.text()
+      try {
+        const parsed = JSON.parse(text) as { carrierError?: unknown }
+        return this.extractCarrierError(parsed)
+      } catch {
+        return undefined
+      }
+    }
+    if (typeof data === 'object' && data !== null) {
+      return this.extractCarrierError(data as Record<string, unknown>)
+    }
+    return undefined
+  }
+
+  private extractCarrierError(
+    body: Record<string, unknown> | { carrierError?: unknown }
+  ): CarrierErrorDetail | null | undefined {
+    if (!('carrierError' in body)) return undefined
+    const carrierError = (body as { carrierError: unknown }).carrierError
+    if (carrierError === null) return null
+    return carrierError as CarrierErrorDetail
   }
 
   private convertToDelivery(delivery: any) {

@@ -48,15 +48,18 @@ describe('Get products VM', () => {
     },
     {
       name: 'Prix HT',
-      value: 'priceWithoutTax'
+      value: 'priceWithoutTax',
+      sortable: true
     },
     {
       name: 'Prix TTC',
-      value: 'priceWithTax'
+      value: 'priceWithTax',
+      sortable: true
     },
     {
       name: 'Stock',
-      value: 'availableStock'
+      value: 'availableStock',
+      sortable: true
     },
     {
       name: 'Statut',
@@ -272,6 +275,111 @@ describe('Get products VM', () => {
           expectVMToMatch(expectedVM)
         })
       })
+      describe('There is a sort', () => {
+        beforeEach(() => {
+          searchStore.setFilter(key, {
+            sort: { field: 'availableStock', direction: 'asc' }
+          })
+        })
+        it('should expose the current sort', () => {
+          expectedVM = {
+            currentSearch: {
+              sort: { field: 'availableStock', direction: 'asc' }
+            },
+            sort: { field: 'availableStock', direction: 'asc' }
+          }
+          expectVMToMatch(expectedVM)
+        })
+      })
+      describe('There is a price sort', () => {
+        beforeEach(() => {
+          searchStore.setFilter(key, {
+            sort: { field: 'priceWithTax', direction: 'desc' }
+          })
+        })
+        it('should expose the current sort', () => {
+          expectedVM = {
+            currentSearch: {
+              sort: { field: 'priceWithTax', direction: 'desc' }
+            },
+            sort: { field: 'priceWithTax', direction: 'desc' }
+          }
+          expectVMToMatch(expectedVM)
+        })
+      })
+      describe('Active filters', () => {
+        it('should expose no active filter without a price condition', () => {
+          searchStore.setFilter(key, { query: 'dol' })
+          expectedVM = {
+            currentSearch: { query: 'dol' },
+            activeFilters: []
+          }
+          expectVMToMatch(expectedVM)
+        })
+        it('should expose a chip for a lower-or-equal price condition', () => {
+          searchStore.setFilter(key, {
+            priceTtcConditions: [{ operator: 'lte', value: 999 }]
+          })
+          expectedVM = {
+            currentSearch: {
+              priceTtcConditions: [{ operator: 'lte', value: 999 }]
+            },
+            activeFilters: [
+              { key: 'priceTtc', index: 0, label: 'Prix TTC ≤ 9,99 €' }
+            ]
+          }
+          expectVMToMatch(expectedVM)
+        })
+        it('should expose a chip for an equal price condition', () => {
+          searchStore.setFilter(key, {
+            priceTtcConditions: [{ operator: 'eq', value: 1550 }]
+          })
+          expectedVM = {
+            currentSearch: {
+              priceTtcConditions: [{ operator: 'eq', value: 1550 }]
+            },
+            activeFilters: [
+              { key: 'priceTtc', index: 0, label: 'Prix TTC = 15,50 €' }
+            ]
+          }
+          expectVMToMatch(expectedVM)
+        })
+        it('should expose a chip for a greater-or-equal price condition', () => {
+          searchStore.setFilter(key, {
+            priceTtcConditions: [{ operator: 'gte', value: 500 }]
+          })
+          expectedVM = {
+            currentSearch: {
+              priceTtcConditions: [{ operator: 'gte', value: 500 }]
+            },
+            activeFilters: [
+              { key: 'priceTtc', index: 0, label: 'Prix TTC ≥ 5,00 €' }
+            ]
+          }
+          expectVMToMatch(expectedVM)
+        })
+        it('should expose one chip per condition with its index', () => {
+          searchStore.setFilter(key, {
+            priceTtcConditions: [
+              { operator: 'gte', value: 500 },
+              { operator: 'lte', value: 999 }
+            ]
+          })
+          expectedVM = {
+            currentSearch: {
+              priceTtcConditions: [
+                { operator: 'gte', value: 500 },
+                { operator: 'lte', value: 999 }
+              ]
+            },
+            activeFilters: [
+              { key: 'priceTtc', index: 0, label: 'Prix TTC ≥ 5,00 €' },
+              { key: 'priceTtc', index: 1, label: 'Prix TTC ≤ 9,99 €' }
+            ]
+          }
+          expectVMToMatch(expectedVM)
+        })
+      })
       describe('Search performed but no results found', () => {
         beforeEach(() => {
           productStore.items = [dolodentListItem, ultraLevureListItem]
@@ -343,10 +451,10 @@ describe('Get products VM', () => {
       }
       expectVMToMatch(expectedVM)
     })
-    it('should expose isSearchLoading from search store', () => {
+    it('should be loading while a search is in progress', () => {
       searchStore.startLoading(key)
       expectedVM = {
-        isSearchLoading: true
+        isLoading: true
       }
       expectVMToMatch(expectedVM)
     })
@@ -359,9 +467,10 @@ describe('Get products VM', () => {
       hasMore: false,
       hasMoreSearch: false,
       currentSearch: undefined,
+      sort: undefined,
       searchError: undefined,
       isLoading: false,
-      isSearchLoading: false
+      activeFilters: []
     }
     expect(getProductsVM(key)).toMatchObject({ ...emptyVM, ...expectedVM })
   }

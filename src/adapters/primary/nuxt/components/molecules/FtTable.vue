@@ -26,7 +26,21 @@
               :key="headerIndex"
               :class="[headerIndex === 0 ? 'pl-4 pr-3 sm:pl-6' : 'px-3 lg:table-cell', 'text-left text-sm font-semibold text-default py-3.5']"
               scope='col'
-            ) {{ header.name }}
+              :aria-sort="ariaSort(header)"
+            )
+              button.inline-flex.items-center.gap-1.rounded(
+                v-if="header.sortable"
+                type="button"
+                class="cursor-pointer transition-colors duration-200 hover:text-colored focus:outline-none focus-visible:ring-2 focus-visible:ring-colored"
+                :aria-label="$t('common.sortBy', { name: header.name })"
+                @click.stop="sortBy(header.value)"
+              )
+                span {{ header.name }}
+                UIcon.h-4.w-4(
+                  :name="sortIcon(header)"
+                  :class="isSorted(header) ? 'text-colored' : 'text-gray-400'"
+                )
+              template(v-else) {{ header.name }}
         tbody(v-if="isLoading && items.length === 0")
           tr(v-for="i in 5" :key="i")
             td(v-if="selectable" class="relative w-12 px-6 sm:w-16 sm:px-8")
@@ -92,6 +106,10 @@ const props = defineProps({
     default: () => {
       return false
     }
+  },
+  sort: {
+    type: Object as PropType<{ field: string; direction: 'asc' | 'desc' }>,
+    default: undefined
   }
 })
 
@@ -104,7 +122,27 @@ const emit = defineEmits<{
   (e: 'clicked', value: any): void
   (e: 'item-selected', value: any): void
   (e: 'select-all', value: Array<any>): void
+  (e: 'sort', value: string): void
 }>()
+
+const isSorted = (header: any) => props.sort?.field === header.value
+
+const ariaSort = (header: any) => {
+  if (!header.sortable) return undefined
+  if (!isSorted(header)) return 'none'
+  return props.sort?.direction === 'asc' ? 'ascending' : 'descending'
+}
+
+const sortIcon = (header: any) => {
+  if (!isSorted(header)) return 'i-heroicons-chevron-up-down-20-solid'
+  return props.sort?.direction === 'asc'
+    ? 'i-heroicons-chevron-up-20-solid'
+    : 'i-heroicons-chevron-down-20-solid'
+}
+
+const sortBy = (value: string) => {
+  emit('sort', value)
+}
 
 const indeterminate = computed(() => {
   return (

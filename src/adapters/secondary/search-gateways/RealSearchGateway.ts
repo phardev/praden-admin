@@ -8,7 +8,6 @@ import {
   OrderLineStatus,
   PaymentStatus
 } from '@core/entities/order'
-import { Product } from '@core/entities/product'
 import {
   SearchGateway,
   SearchProductsResult
@@ -30,9 +29,7 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
       `${this.baseUrl}/search/products`,
       filters
     )
-    const items = res.data.items.sort(
-      (a: Product, b: Product) => b.availableStock - a.availableStock
-    )
+    const items = res.data.items
     const pagination = res.data.pagination
     const size = filters.size ?? 25
     const from = filters.from ?? 0
@@ -88,6 +85,7 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
         dto.deliveryStatus !== undefined
           ? deliveryStatusMap[dto.deliveryStatus]
           : undefined,
+      totalTtcConditions: dto.totalTtcConditions,
       limit: dto.size,
       offset: dto.from
     }

@@ -4,6 +4,7 @@ import {
   SearchProductsResult
 } from '@core/gateways/searchGateway'
 import '@utils/strings'
+import { computeTotalWithTaxForOrder } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { Customer } from '@core/entities/customer'
 import {
   getDeliveryStatus,
@@ -13,10 +14,17 @@ import {
 } from '@core/entities/order'
 import { Timestamp } from '@core/types/types'
 import { SearchCustomersDTO } from '@core/usecases/customers/customer-searching/searchCustomer'
-import { SearchOrdersDTO } from '@core/usecases/order/orders-searching/searchOrders'
-import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
+import {
+  SearchOrdersDTO,
+  TotalTtcCondition
+} from '@core/usecases/order/orders-searching/searchOrders'
+import {
+  PriceTtcCondition,
+  SearchProductsFilters
+} from '@core/usecases/product/product-searching/searchProducts'
 import { useCustomerStore } from '@store/customerStore'
 import { useOrderStore } from '@store/orderStore'
+import { addTaxToPrice } from '@utils/price'
 
 export class FakeSearchGateway implements SearchGateway {
   private items: Array<any> = []
@@ -33,31 +41,20 @@ export class FakeSearchGateway implements SearchGateway {
   ): Promise<SearchProductsResult> {
     const products = this.items.filter((i) => isProduct(i))
     const filtered = products.filter((p) => {
-      if (filters.query) {
-        const query = filters.query
-        const isCategoryNameMatching = p.categories.some((c) =>
-          c.name.includesWithoutCase(query)
-        )
-        const isNameMatching = p.name.includesWithoutCase(query)
-        const isLaboratoryMatching = p.laboratory
-          ? p.laboratory.name.includesWithoutCase(query)
-          : false
-        const isCip13Matching = p.cip13.includes(query)
-        return (
-          isNameMatching ||
-          isLaboratoryMatching ||
-          isCategoryNameMatching ||
-          isCip13Matching
-        )
-      }
-      if (filters.status) {
-        return p.status === filters.status
-      }
+      const queryMatch = filters.query
+        ? this.productQueryMatch(p, filters.query)
+        : true
+      const statusMatch = filters.status ? p.status === filters.status : true
+      const priceTtcMatch = filters.priceTtcConditions?.length
+        ? this.productPriceTtcMatch(p, filters.priceTtcConditions)
+        : true
+      return queryMatch && statusMatch && priceTtcMatch
     })
-    const total = filtered.length
+    const sorted = this.sortProducts(filtered, filters)
+    const total = sorted.length
     const from = filters.from ?? 0
     const size = filters.size ?? 25
-    const items = filtered.slice(from, from + size)
+    const items = sorted.slice(from, from + size)
     const page = Math.floor(from / size) + 1
     const totalPages = Math.ceil(total / size)
     const hasMore = items.length === size && total > from + size
@@ -71,6 +68,65 @@ export class FakeSearchGateway implements SearchGateway {
       },
       hasMore
     })
+  }
+
+  private productQueryMatch = (product: any, query: string): boolean => {
+    const isCategoryNameMatching = product.categories.some((c: any) =>
+      c.name.includesWithoutCase(query)
+    )
+    const isNameMatching = product.name.includesWithoutCase(query)
+    const isLaboratoryMatching = product.laboratory
+      ? product.laboratory.name.includesWithoutCase(query)
+      : false
+    const isCip13Matching = product.cip13.includes(query)
+    return (
+      isNameMatching ||
+      isLaboratoryMatching ||
+      isCategoryNameMatching ||
+      isCip13Matching
+    )
+  }
+
+  private productPriceTtcMatch = (
+    product: any,
+    conditions: Array<PriceTtcCondition>
+  ): boolean => {
+    const priceWithTax = addTaxToPrice(
+      product.priceWithoutTax,
+      product.percentTaxRate
+    )
+    return conditions.every(({ operator, value }) => {
+      if (operator === 'lte') return priceWithTax <= value
+      if (operator === 'gte') return priceWithTax >= value
+      return Math.abs(priceWithTax - value) < 1
+    })
+  }
+
+  private sortProducts(
+    products: Array<Product>,
+    filters: SearchProductsFilters
+  ): Array<Product> {
+    if (!filters.sort) {
+      return products
+    }
+    const { field, direction } = filters.sort
+    const factor = direction === 'asc' ? 1 : -1
+    return [...products].sort((a: any, b: any) => {
+      const aValue = this.sortValue(a, field)
+      const bValue = this.sortValue(b, field)
+      const primary =
+        typeof aValue === 'number' && typeof bValue === 'number'
+          ? (aValue - bValue) * factor
+          : String(aValue).localeCompare(String(bValue)) * factor
+      return primary !== 0 ? primary : a.uuid.localeCompare(b.uuid)
+    })
+  }
+
+  private sortValue(product: any, field: string): unknown {
+    if (field === 'priceWithTax') {
+      return addTaxToPrice(product.priceWithoutTax, product.percentTaxRate)
+    }
+    return product[field]
   }
 
   indexProducts(limit: number, offset: number): Promise<number> {
@@ -103,13 +159,17 @@ export class FakeSearchGateway implements SearchGateway {
         dto.customerUuid !== undefined
           ? dto.customerUuid === o.customerUuid
           : true
+      const totalTtcMatch = dto.totalTtcConditions?.length
+        ? this.ordersTotalTtcMatch(o, dto.totalTtcConditions)
+        : true
       return (
         queryMatch &&
         dateMatch &&
         orderStatusMatch &&
         deliveryStatusMatch &&
         paymentStatusMatch &&
-        customerUuidMatch
+        customerUuidMatch &&
+        totalTtcMatch
       )
     })
     const from = dto.from ?? 0
@@ -127,6 +187,18 @@ export class FakeSearchGateway implements SearchGateway {
       : (order.deliveries?.[0]?.receiver?.contact?.email ?? '')
     const isEmailMatching = email ? email.includesWithoutCase(query) : false
     return isReferenceMatching || isClientNameMatching || isEmailMatching
+  }
+
+  private ordersTotalTtcMatch = (
+    order: Order,
+    conditions: Array<TotalTtcCondition>
+  ): boolean => {
+    const total = computeTotalWithTaxForOrder(order)
+    return conditions.every(({ operator, value }) => {
+      if (operator === 'lte') return total <= value
+      if (operator === 'gte') return total >= value
+      return Math.abs(total - value) < 1
+    })
   }
 
   private ordersDateMatch = (

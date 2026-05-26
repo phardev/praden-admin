@@ -1,8 +1,9 @@
 <template lang="pug">
-div.flex.items-center.justify-center
+div.flex.items-center.gap-1
   USelectMenu.w-44(
     v-model="model"
     :options="options"
+    size="lg"
   )
     template(#label)
       ft-product-status-badge(v-if="model !== undefined" :status="model")

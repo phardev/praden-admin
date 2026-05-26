@@ -27,6 +27,7 @@ export interface GetPreparationsItemVM {
 export interface Header {
   name: string
   value: string
+  sortable?: boolean
 }
 
 interface GetPreparationsGroupVM {

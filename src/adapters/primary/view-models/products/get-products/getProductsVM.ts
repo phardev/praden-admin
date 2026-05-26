@@ -1,8 +1,13 @@
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
+import { ActiveFilterVM } from '@adapters/primary/view-models/shared/filters'
 import { ProductStatus } from '@core/entities/product'
 import { UUID } from '@core/types/types'
 import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
-import { SearchProductsFilters } from '@core/usecases/product/product-searching/searchProducts'
+import {
+  ProductsSort,
+  SearchProductsFilters
+} from '@core/usecases/product/product-searching/searchProducts'
+import { PriceFilterOperator } from '@core/usecases/shared/priceFilter'
 import { useProductStore } from '@store/productStore'
 import { useSearchStore } from '@store/searchStore'
 import { priceFormatter } from '@utils/formatters'
@@ -27,21 +32,43 @@ export interface GetProductsVM {
   hasMore: boolean
   hasMoreSearch: boolean
   currentSearch: SearchProductsFilters | undefined
+  sort: ProductsSort | undefined
   searchError: string | undefined
   isLoading: boolean
-  isSearchLoading: boolean
+  activeFilters: Array<ActiveFilterVM>
+}
+
+const priceTtcOperatorSymbols: Record<PriceFilterOperator, string> = {
+  lte: '≤',
+  eq: '=',
+  gte: '≥'
+}
+
+const buildActiveFilters = (
+  filter: SearchProductsFilters | undefined
+): Array<ActiveFilterVM> => {
+  if (!filter) return []
+  const formatter = priceFormatter('fr-FR', 'EUR')
+  const activeFilters: Array<ActiveFilterVM> = []
+  filter.priceTtcConditions?.forEach((condition, index) => {
+    activeFilters.push({
+      key: 'priceTtc',
+      index,
+      label: `Prix TTC ${priceTtcOperatorSymbols[condition.operator]} ${formatter.format(condition.value / 100)}`
+    })
+  })
+  return activeFilters
 }
 
 export const getProductsVM = (key: string): GetProductsVM => {
   const productStore = useProductStore()
-  const isLoading = productStore.isLoading
   const searchStore = useSearchStore()
   const allProducts = productStore.items
   const searchResult = searchStore.get(key)
   const searchFilter = searchStore.getFilter(key)
   const searchError = searchStore.getError(key)
   const hasMoreSearch = searchStore.hasMoreSearch(key)
-  const isSearchLoading = searchStore.isLoading(key)
+  const isLoading = productStore.isLoading || searchStore.isLoading(key)
   const products = searchResult !== undefined ? searchResult : allProducts
   const formatter = priceFormatter('fr-FR', 'EUR')
   const headers: Array<Header> = [
@@ -67,15 +94,18 @@ export const getProductsVM = (key: string): GetProductsVM => {
     },
     {
       name: 'Prix HT',
-      value: 'priceWithoutTax'
+      value: 'priceWithoutTax',
+      sortable: true
     },
     {
       name: 'Prix TTC',
-      value: 'priceWithTax'
+      value: 'priceWithTax',
+      sortable: true
     },
     {
       name: 'Stock',
-      value: 'availableStock'
+      value: 'availableStock',
+      sortable: true
     },
     {
       name: 'Statut',
@@ -107,12 +137,13 @@ export const getProductsVM = (key: string): GetProductsVM => {
       }
     }),
     currentSearch: searchFilter,
+    sort: searchFilter?.sort,
     searchError: searchError
       ? 'Veuillez saisir au moins 3 caractères pour lancer la recherche.'
       : undefined,
     hasMore: productStore.hasMore.valueOf(),
     hasMoreSearch,
     isLoading,
-    isSearchLoading
+    activeFilters: buildActiveFilters(searchFilter)
   }
 }

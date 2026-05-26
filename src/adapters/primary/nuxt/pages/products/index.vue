@@ -9,29 +9,46 @@
     :is-loading="productsVM.isLoading"
     :selectable="true"
     :selection="productSelector.get()"
+    :sort="productsVM.sort"
     @item-selected="productSelector.toggleSelect"
     @select-all="productSelector.toggleSelectAll"
     @clicked="productSelected"
+    @sort="sortChanged"
   )
     template(#title) Produits
     template(#search)
-      .flex.items-center.justify-center.space-x-4
-        .flex-grow
-          ft-text-field(
-            v-model="search"
-            placeholder="Rechercher par nom, référence, catégorie, laboratoire"
-            for="search"
-            type='text'
-            name='search'
-            @input="searchChanged"
-          ) Rechercher un produit
-          p.warning.text-warning(v-if="productsVM.searchError") {{ productsVM.searchError }}
-        UFormGroup.pb-4(label="Statut" name="productStatus")
-          ft-product-status-select(
-            v-model="productStatus"
-            @update:model-value="productStatusChanged"
-            @clear="clearProductStatus"
+      div.space-y-3
+        div.flex.flex-wrap.items-start.gap-4
+          UFormGroup(
+            class="flex-1 min-w-[16rem] max-w-md"
+            label="Recherche"
+            name="search"
           )
+            ft-text-field(
+              v-model="search"
+              placeholder="Rechercher par nom, référence, catégorie, laboratoire"
+              for="search"
+              type='text'
+              name='search'
+              @input="searchChanged"
+            )
+            p.warning.text-warning(v-if="productsVM.searchError") {{ productsVM.searchError }}
+          UFormGroup.shrink-0(label="Statut" name="productStatus")
+            ft-product-status-select(
+              v-model="productStatus"
+              @update:model-value="productStatusChanged"
+              @clear="clearProductStatus"
+            )
+          UFormGroup.shrink-0(class="w-72" label="Prix TTC" name="priceTtc")
+            ft-price-conditions(
+              :conditions="priceTtcConditions"
+              @update:conditions="priceConditionsChanged"
+            )
+        ft-filter-chips(
+          :filters="productsVM.activeFilters || []"
+          @remove="removeFilter"
+          @clear-all="clearAllFilters"
+        )
     template(#name="{ item }")
       .font-medium.text-default {{ item.name }}
     template(#infinite)
@@ -53,10 +70,13 @@
 
 <script lang="ts" setup>
 import { getProductsVM } from '@adapters/primary/view-models/products/get-products/getProductsVM'
+import type { ActiveFilterVM } from '@adapters/primary/view-models/shared/filters'
 import type { ProductStatus } from '@core/entities/product'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { listProducts } from '@core/usecases/product/product-listing/listProducts'
+import type { ProductsSort } from '@core/usecases/product/product-searching/searchProducts'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
+import type { PriceFilterOperator } from '@core/usecases/shared/priceFilter'
 import { useCategoryStore } from '@store/categoryStore'
 import { dents, diarrhee } from '@utils/testData/categories'
 import InfiniteLoading from 'v3-infinite-loading'
@@ -70,6 +90,11 @@ import { useSelection } from '../../composables/useSelection'
 interface InfiniteLoadingState {
   loaded: () => void
   complete: () => void
+}
+
+interface PriceConditionRow {
+  operator: PriceFilterOperator
+  amount: number | undefined
 }
 
 definePageMeta({ layout: 'main' })
@@ -105,7 +130,12 @@ const productsVM = computed(() => {
 })
 
 const load = async ($state: InfiniteLoadingState) => {
-  if (!search.value && !productStatus.value) {
+  if (
+    !search.value &&
+    !productStatus.value &&
+    !sort.value &&
+    !validPriceConditions().length
+  ) {
     await listProducts(limit, offset, productGateway)
     offset += limit
     if (productsVM.value.hasMore) {
@@ -114,7 +144,7 @@ const load = async ($state: InfiniteLoadingState) => {
       $state.complete()
     }
   } else {
-    if (productsVM.value.isSearchLoading) {
+    if (productsVM.value.isLoading) {
       return
     }
     if (!productsVM.value.hasMoreSearch) {
@@ -143,8 +173,34 @@ const load = async ($state: InfiniteLoadingState) => {
 
 const search = ref(productsVM.value.currentSearch?.query)
 const productStatus = ref(productsVM.value.currentSearch?.status)
+const sort = ref<ProductsSort | undefined>(productsVM.value.currentSearch?.sort)
 const minimumQueryLength = 3
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
+
+const emptyPriceCondition = (): PriceConditionRow => ({
+  operator: 'lte',
+  amount: undefined
+})
+const restorePriceConditions = (): Array<PriceConditionRow> => {
+  const persisted = productsVM.value.currentSearch?.priceTtcConditions
+  if (!persisted?.length) return [emptyPriceCondition()]
+  return persisted.map((condition) => ({
+    operator: condition.operator,
+    amount: condition.value / 100
+  }))
+}
+const priceTtcConditions = ref<Array<PriceConditionRow>>(
+  restorePriceConditions()
+)
+const isValidPriceRow = (condition: PriceConditionRow) =>
+  condition.amount != null && condition.amount > 0
+const validPriceConditions = () =>
+  priceTtcConditions.value.filter(isValidPriceRow)
+const toSearchConditions = (rows: Array<PriceConditionRow>) =>
+  rows.filter(isValidPriceRow).map((condition) => ({
+    operator: condition.operator,
+    value: Math.round((condition.amount as number) * 100)
+  }))
 
 const buildFilters = (partial: {
   query?: string
@@ -153,12 +209,36 @@ const buildFilters = (partial: {
   size?: number
   from?: number
 }) => {
+  const priceTtcConditionsFilter = toSearchConditions(priceTtcConditions.value)
   return {
     query: search.value,
     status: productStatus.value,
+    priceTtcConditions: priceTtcConditionsFilter.length
+      ? priceTtcConditionsFilter
+      : undefined,
     size: limit,
+    sort: sort.value,
     ...partial
   }
+}
+
+const nextSort = (
+  current: ProductsSort | undefined,
+  field: string
+): ProductsSort | undefined => {
+  if (!current || current.field !== field) return { field, direction: 'asc' }
+  if (current.direction === 'asc') return { field, direction: 'desc' }
+  return undefined
+}
+
+const sortChanged = (field: string) => {
+  sort.value = nextSort(sort.value, field)
+  searchOffset = 0
+  searchProducts(
+    String(routeName),
+    buildFilters({ from: 0 }),
+    useSearchGateway()
+  )
 }
 
 const searchChanged = (e: any) => {
@@ -195,6 +275,38 @@ const clearProductStatus = () => {
     buildFilters({ status: undefined, from: 0 }),
     useSearchGateway()
   )
+}
+
+const searchWithCurrentFilters = () => {
+  searchOffset = 0
+  searchProducts(
+    String(routeName),
+    buildFilters({ from: 0 }),
+    useSearchGateway()
+  )
+}
+
+const priceConditionsChanged = (conditions: Array<PriceConditionRow>) => {
+  const before = JSON.stringify(toSearchConditions(priceTtcConditions.value))
+  priceTtcConditions.value = conditions
+  if (JSON.stringify(toSearchConditions(conditions)) === before) return
+  if (debounceTimer) clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(searchWithCurrentFilters, 300)
+}
+
+const removeFilter = (filter: ActiveFilterVM) => {
+  if (filter.key === 'priceTtc' && filter.index !== undefined) {
+    const target = validPriceConditions()[filter.index]
+    priceTtcConditions.value = priceTtcConditions.value.filter(
+      (condition) => condition !== target
+    )
+  }
+  searchWithCurrentFilters()
+}
+
+const clearAllFilters = () => {
+  priceTtcConditions.value = [emptyPriceCondition()]
+  searchWithCurrentFilters()
 }
 
 const productSelected = (uuid: string) => {

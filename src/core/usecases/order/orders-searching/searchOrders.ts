@@ -9,6 +9,13 @@ export interface SearchDTO {
   minimumQueryLength?: number
 }
 
+export type TotalTtcOperator = 'lte' | 'eq' | 'gte'
+
+export interface TotalTtcCondition {
+  operator: TotalTtcOperator
+  value: number
+}
+
 export interface SearchOrdersDTO extends SearchDTO {
   startDate?: Timestamp
   endDate?: Timestamp
@@ -16,6 +23,7 @@ export interface SearchOrdersDTO extends SearchDTO {
   deliveryStatus?: DeliveryStatus
   paymentStatus?: PaymentStatus
   customerUuid?: UUID
+  totalTtcConditions?: Array<TotalTtcCondition>
   size?: number
   from?: number
 }

@@ -1,10 +1,12 @@
 import { FakeSearchGateway } from '@adapters/secondary/search-gateways/FakeSearchGateway'
-import { ProductStatus } from '@core/entities/product'
+import { Product, ProductStatus } from '@core/entities/product'
 import {
+  PriceTtcCondition,
   SearchProductsFilters,
   searchProducts
 } from '@core/usecases/product/product-searching/searchProducts'
 import { useSearchStore } from '@store/searchStore'
+import { addTaxToPrice } from '@utils/price'
 import { baby, dents } from '@utils/testData/categories'
 import {
   calmosine,
@@ -15,6 +17,9 @@ import {
   ultraLevure
 } from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
+
+const ttc = (product: Product): number =>
+  addTaxToPrice(product.priceWithoutTax, product.percentTaxRate)
 
 describe('Search products', () => {
   let searchStore: any
@@ -254,6 +259,49 @@ describe('Search products', () => {
         })
       })
     })
+    describe('Sort filter', () => {
+      beforeEach(() => {
+        searchGateway.feedWith(dolodent, chamomilla, calmosine)
+      })
+      describe('Sort only, without query or status', () => {
+        beforeEach(async () => {
+          givenSortIs({ field: 'availableStock', direction: 'asc' })
+          await whenSearchForProducts()
+        })
+        it('should search the whole catalog sorted by stock', () => {
+          expectSearchResultToEqual(chamomilla, calmosine, dolodent)
+        })
+        it('should save the sort filter', () => {
+          expectCurrentFiltersToEqual({
+            sort: { field: 'availableStock', direction: 'asc' }
+          })
+        })
+      })
+      describe('Sort by priceWithoutTax', () => {
+        it('should sort the whole catalog by price HT ascending', async () => {
+          givenSortIs({ field: 'priceWithoutTax', direction: 'asc' })
+          await whenSearchForProducts()
+          expectSearchResultToEqual(dolodent, chamomilla, calmosine)
+        })
+        it('should sort the whole catalog by price HT descending', async () => {
+          givenSortIs({ field: 'priceWithoutTax', direction: 'desc' })
+          await whenSearchForProducts()
+          expectSearchResultToEqual(calmosine, chamomilla, dolodent)
+        })
+      })
+      describe('Sort by priceWithTax', () => {
+        it('should sort the whole catalog by price TTC ascending', async () => {
+          givenSortIs({ field: 'priceWithTax', direction: 'asc' })
+          await whenSearchForProducts()
+          expectSearchResultToEqual(dolodent, chamomilla, calmosine)
+        })
+        it('should sort the whole catalog by price TTC descending', async () => {
+          givenSortIs({ field: 'priceWithTax', direction: 'desc' })
+          await whenSearchForProducts()
+          expectSearchResultToEqual(calmosine, chamomilla, dolodent)
+        })
+      })
+    })
     describe('Status filter', () => {
       beforeEach(() => {
         searchGateway.feedWith(dolodent, ultraLevure, chamomilla)
@@ -275,6 +323,40 @@ describe('Search products', () => {
         it('should get all active products', () => {
           expectSearchResultToEqual(ultraLevure)
         })
+      })
+    })
+    describe('Price TTC conditions filter', () => {
+      beforeEach(() => {
+        searchGateway.feedWith(dolodent, chamomilla, calmosine)
+      })
+      it('should get the products with price lower than or equal', async () => {
+        givenPriceTtcConditionsAre({ operator: 'lte', value: ttc(chamomilla) })
+        await whenSearchForProducts()
+        expectSearchResultToEqual(dolodent, chamomilla)
+      })
+      it('should get the products with price greater than or equal', async () => {
+        givenPriceTtcConditionsAre({ operator: 'gte', value: ttc(chamomilla) })
+        await whenSearchForProducts()
+        expectSearchResultToEqual(chamomilla, calmosine)
+      })
+      it('should get the products with price equal', async () => {
+        givenPriceTtcConditionsAre({ operator: 'eq', value: ttc(calmosine) })
+        await whenSearchForProducts()
+        expectSearchResultToEqual(calmosine)
+      })
+      it('should combine conditions with AND to get a price range', async () => {
+        givenPriceTtcConditionsAre(
+          { operator: 'gte', value: ttc(dolodent) },
+          { operator: 'lte', value: ttc(chamomilla) }
+        )
+        await whenSearchForProducts()
+        expectSearchResultToEqual(dolodent, chamomilla)
+      })
+      it('should combine the price condition with the query filter', async () => {
+        givenQueryIs('mo')
+        givenPriceTtcConditionsAre({ operator: 'gte', value: ttc(calmosine) })
+        await whenSearchForProducts()
+        expectSearchResultToEqual(calmosine)
       })
     })
   })
@@ -308,6 +390,15 @@ describe('Search products', () => {
       givenQueryIs('')
       await whenSearchForProducts()
       expectLoadingToBe(false)
+    })
+
+    it('should clear previous results while a fresh search is loading', async () => {
+      givenQueryIs('cha')
+      await whenSearchForProducts()
+      givenQueryIs('dol')
+      const promise = whenSearchForProducts()
+      expectSearchResultToEqual()
+      await promise
     })
   })
 
@@ -386,6 +477,12 @@ describe('Search products', () => {
     filters.status = status
   }
 
+  const givenPriceTtcConditionsAre = (
+    ...conditions: Array<PriceTtcCondition>
+  ) => {
+    filters.priceTtcConditions = conditions
+  }
+
   const givenMinimumQueryLength = (length: number) => {
     filters.minimumQueryLength = length
   }
@@ -396,6 +493,10 @@ describe('Search products', () => {
 
   const givenFromIs = (from: number) => {
     filters.from = from
+  }
+
+  const givenSortIs = (sort: SearchProductsFilters['sort']) => {
+    filters.sort = sort
   }
 
   const whenSearchForProducts = async () => {

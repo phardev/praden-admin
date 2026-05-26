@@ -24,10 +24,8 @@ import { customerFormGetVM } from '@adapters/primary/view-models/customers/custo
 import { getOrdersVM } from '@adapters/primary/view-models/orders/get-orders/getOrdersVM'
 import { getCustomer } from '@core/usecases/customers/customer-get/getCustomer'
 import { listCustomers } from '@core/usecases/customers/customer-listing/listCustomer'
-import { searchOrders } from '@core/usecases/order/orders-searching/searchOrders'
 import { getCustomerTickets } from '@core/usecases/support/getCustomerTickets'
 import { useCustomerGateway } from '../../../../../../../gateways/customerGateway'
-import { useSearchGateway } from '../../../../../../../gateways/searchGateway'
 import { useTicketGateway } from '../../../../../../../gateways/ticketGateway'
 
 definePageMeta({ layout: 'main' })
@@ -39,8 +37,6 @@ const router = useRouter()
 const routeName = router.currentRoute.value.name as string
 
 onMounted(async () => {
-  const searchGateway = useSearchGateway()
-  await searchOrders(routeName, { customerUuid }, searchGateway)
   const customerGateway = useCustomerGateway()
   await listCustomers(100, 0, customerGateway)
   await getCustomer(customerUuid, customerGateway)
