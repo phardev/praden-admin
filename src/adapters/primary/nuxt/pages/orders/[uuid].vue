@@ -46,35 +46,48 @@
   )
     template(#title) Livraison
     template(#actions="{ item }")
-      div.flex.flex-col.items-end.gap-1
-        div.flex.items-center.gap-4
-          ft-button.button-default.py-4.px-4(
-            v-if="item.canGenerateLabel"
-            variant="outline"
-            @click="generateLabel"
-          ) {{ $t('orders.deliveries.generateLabel') }}
-          nuxt-link(
-            v-if="item.followUrl"
-            :to="item.followUrl"
-            target="_blank"
-          )
-            ft-button.button-default.py-4.px-4(variant="outline" @click.stop) Suivre le colis
-          ft-button.button-default.py-4.px-4(
-            v-if="item.canMarkAsDelivered"
-            variant="outline"
-            @click="markAsDelivered(item)"
-          ) Marquer comme livré
-          ft-button.button-default.py-4.px-4(
-            v-if="item.followUrl"
-            variant="outline"
-            @click="printLabel(item)"
-          ) Etiquette
-          ft-button.button-default.py-4.px-4(
-            v-if="item.followUrl"
-            variant="outline"
-            @click="downloadLabel(item)"
-          ) Télécharger
-        div.text-red-600.text-sm(v-if="generateLabelError") {{ generateLabelError }}
+      div.flex.items-center.gap-4.justify-end
+        ft-button.button-default.py-4.px-4(
+          v-if="item.canGenerateLabel"
+          variant="outline"
+          @click="generateLabel(item)"
+        ) {{ $t('orders.deliveries.generateLabel') }}
+        nuxt-link(
+          v-if="item.followUrl"
+          :to="item.followUrl"
+          target="_blank"
+        )
+          ft-button.button-default.py-4.px-4(variant="outline" @click.stop) Suivre le colis
+        ft-button.button-default.py-4.px-4(
+          v-if="item.canMarkAsDelivered"
+          variant="outline"
+          @click="markAsDelivered(item)"
+        ) Marquer comme livré
+        ft-button.button-default.py-4.px-4(
+          v-if="item.followUrl"
+          variant="outline"
+          @click="printLabel(item)"
+        ) Etiquette
+        ft-button.button-default.py-4.px-4(
+          v-if="item.followUrl"
+          variant="outline"
+          @click="downloadLabel(item)"
+        ) Télécharger
+  div.mt-4.flex.flex-col.gap-2(v-if="activeLabelErrors.length > 0")
+    UAlert(
+      v-for="entry in activeLabelErrors"
+      :key="entry.uuid"
+      color="red"
+      variant="soft"
+      icon="i-heroicons-exclamation-triangle"
+      :title="entry.content.title"
+      :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'red', variant: 'link', padded: true }"
+      role="alert"
+      @close="dismissLabelError(entry.uuid)"
+    )
+      template(#description)
+        div.text-xs.font-medium.opacity-80 {{ entry.deliveryLabel }}
+        div.mt-1 {{ entry.content.description }}
   ft-order-timeline.mt-8(:entries="timelineVM.entries")
   h2.text-subtitle.mt-8 {{ $t('orders.supportTickets') }}
   order-tickets-list(:order-uuid="orderUuid")
@@ -82,9 +95,11 @@
 </template>
 
 <script lang="ts" setup>
+import { carrierErrorToFrench } from '@adapters/primary/nuxt/utils/carrierErrorMessage'
 import { getOrderVM } from '@adapters/primary/view-models/orders/get-order/getOrderVM'
 import { getOrderTimelineVM } from '@adapters/primary/view-models/orders/get-order-timeline/getOrderTimelineVM'
 import { getPreparationVM } from '@adapters/primary/view-models/preparations/get-preparation/getPreparationVM'
+import { CarrierLabelError } from '@core/errors/CarrierLabelError'
 import { downloadDeliveryLabel } from '@core/usecases/deliveries/delivery-label-download/downloadDeliveryLabel'
 import { printDeliveryLabel } from '@core/usecases/deliveries/delivery-label-printing/printDeliveryLabel'
 import { generatePickup } from '@core/usecases/deliveries/delivery-pickup-generation/generatePickup'
@@ -98,6 +113,13 @@ import { useDeliveryGateway } from '../../../../../../gateways/deliveryGateway'
 import { useOrderGateway } from '../../../../../../gateways/orderGateway'
 import { useTicketGateway } from '../../../../../../gateways/ticketGateway'
 
+type LabelErrorContent = { title: string; description: string }
+type LabelErrorEntry = {
+  uuid: string
+  deliveryLabel: string
+  content: LabelErrorContent
+}
+
 definePageMeta({ layout: 'main' })
 
 const route = useRoute()
@@ -105,7 +127,22 @@ const orderUuid = String(route.params.uuid)
 const router = useRouter()
 const deliveryStore = useDeliveryStore()
 const { t } = useI18n()
-const generateLabelError = ref<string | null>(null)
+const labelErrors = ref<Record<string, LabelErrorContent | null>>({})
+
+const buildLabelError = (
+  titleKey: string,
+  error: unknown
+): LabelErrorContent => {
+  const detail = error instanceof CarrierLabelError ? error.detail : null
+  return {
+    title: t(titleKey),
+    description: carrierErrorToFrench(detail, t)
+  }
+}
+
+const dismissLabelError = (uuid: string) => {
+  labelErrors.value[uuid] = null
+}
 
 onMounted(() => {
   getPreparation(orderUuid, useOrderGateway())
@@ -125,21 +162,47 @@ const timelineVM = computed(() => {
   return getOrderTimelineVM()
 })
 
-const printLabel = (delivery: { uuid: string }) => {
-  printDeliveryLabel(delivery.uuid, useDeliveryGateway())
+const activeLabelErrors = computed<Array<LabelErrorEntry>>(() => {
+  return orderVM.value.deliveries
+    .map((delivery): LabelErrorEntry | null => {
+      const content = labelErrors.value[delivery.uuid]
+      if (!content) return null
+      return {
+        uuid: delivery.uuid,
+        deliveryLabel: `${delivery.method} · ${delivery.client}`,
+        content
+      }
+    })
+    .filter((entry): entry is LabelErrorEntry => entry !== null)
+})
+
+const printLabel = async (delivery: { uuid: string }) => {
+  labelErrors.value[delivery.uuid] = null
+  try {
+    await printDeliveryLabel(delivery.uuid, useDeliveryGateway())
+  } catch (error) {
+    labelErrors.value[delivery.uuid] = buildLabelError(
+      'orders.deliveries.printLabelError',
+      error
+    )
+  }
 }
 
-const generateLabel = async () => {
-  generateLabelError.value = null
+const generateLabel = async (delivery: { uuid: string }) => {
+  labelErrors.value[delivery.uuid] = null
   try {
     await generatePickup(orderUuid, useDeliveryGateway())
     await getOrder(orderUuid, useOrderGateway(), useCustomerGateway())
-  } catch {
-    generateLabelError.value = t('orders.deliveries.generateLabelError')
+  } catch (error) {
+    labelErrors.value[delivery.uuid] = buildLabelError(
+      'orders.deliveries.generateLabelError',
+      error
+    )
   }
 }
 
 const downloadLabel = async (delivery: { uuid: string }) => {
+  labelErrors.value[delivery.uuid] = null
   const newWindow = window.open('about:blank', '_blank')
 
   if (!newWindow) {
@@ -165,8 +228,11 @@ const downloadLabel = async (delivery: { uuid: string }) => {
       newWindow.close()
     }
   } catch (error) {
-    console.error('Error downloading label: ', error)
     newWindow.close()
+    labelErrors.value[delivery.uuid] = buildLabelError(
+      'orders.deliveries.downloadLabelError',
+      error
+    )
   }
 }
 

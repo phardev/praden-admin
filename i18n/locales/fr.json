@@ -96,7 +96,11 @@
     "supportTickets": "Tickets de support",
     "deliveries": {
       "generateLabel": "Générer l'étiquette",
-      "generateLabelError": "Échec de la génération de l'étiquette. Veuillez réessayer."
+      "generateLabelError": "Échec de la génération de l'étiquette.",
+      "printLabelError": "Échec de l'impression de l'étiquette.",
+      "downloadLabelError": "Échec du téléchargement de l'étiquette.",
+      "carrierGenericError": "Aucun détail fourni par le transporteur. Vérifiez l'adresse et le point relais, puis réessayez.",
+      "carrierRawError": "Le transporteur a refusé la demande : {reason}"
     },
     "timeline": {
       "title": "Historique",
