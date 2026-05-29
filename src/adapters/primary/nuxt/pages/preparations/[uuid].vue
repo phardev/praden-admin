@@ -14,26 +14,31 @@
       ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
         variant="outline"
         :loading="preparationVM.isLoading"
+        :disabled="preparationVM.isLoading"
         @click="save"
       ) Sauvegarder
       ft-button.button-default.mt-4.mr-0.py-4.px-4.text-xl(
         variant="outline"
         :loading="preparationVM.isLoading"
+        :disabled="preparationVM.isLoading"
         @click="openActionDialog"
       ) Actions particulières
     ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
       v-if="preparationVM.canValidate"
       :loading="preparationVM.isLoading"
+      :disabled="preparationVM.isLoading"
       @click="validate"
     ) Valider la commande
     ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
       v-if="preparationVM.canCancel"
       :loading="preparationVM.isLoading"
+      :disabled="preparationVM.isLoading"
       @click="cancel"
     ) Annuler la commande
     ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
       v-if="preparationVM.canAskHowToFinish"
       :loading="preparationVM.isLoading"
+      :disabled="preparationVM.isLoading"
       @click="askHowToFinish"
     ) Envoyer demande au client
   div.w-full.flex.justify-between
@@ -142,6 +147,7 @@ const changeProductReference = (oldReference: string, newReference: string) => {
 const router = useRouter()
 
 const validate = async () => {
+  if (preparationVM.value.isLoading) return
   closeActionsModal()
 
   const useManualPrint = false
