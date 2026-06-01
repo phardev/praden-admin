@@ -8,6 +8,8 @@ export class InMemoryDeliveryGateway implements DeliveryGateway {
   private downloaded: Array<UUID> = []
   private generatedPickups: Array<UUID> = []
   private generatePickupError: Error | null = null
+  private printLabelError: Error | null = null
+  private downloadLabelError: Error | null = null
 
   list(): Promise<Array<Delivery>> {
     return Promise.resolve(JSON.parse(JSON.stringify(this.deliveries)))
@@ -26,11 +28,17 @@ export class InMemoryDeliveryGateway implements DeliveryGateway {
   }
 
   printLabel(uuid: UUID): Promise<void> {
+    if (this.printLabelError) {
+      return Promise.reject(this.printLabelError)
+    }
     this.printed.push(uuid)
     return Promise.resolve()
   }
 
   downloadLabel(uuid: UUID): Promise<Blob> {
+    if (this.downloadLabelError) {
+      return Promise.reject(this.downloadLabelError)
+    }
     this.downloaded.push(uuid)
     return Promise.resolve(new Blob([uuid], { type: 'application/pdf' }))
   }
@@ -65,6 +73,14 @@ export class InMemoryDeliveryGateway implements DeliveryGateway {
 
   feedGeneratePickupError(error: Error) {
     this.generatePickupError = error
+  }
+
+  feedPrintLabelError(error: Error) {
+    this.printLabelError = error
+  }
+
+  feedDownloadLabelError(error: Error) {
+    this.downloadLabelError = error
   }
 
   feedWith(...deliveries: Array<Delivery>) {
