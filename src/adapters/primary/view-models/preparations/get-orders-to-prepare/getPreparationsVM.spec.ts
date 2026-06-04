@@ -341,6 +341,41 @@ describe('Get orders to prepare VM', () => {
     })
   })
 
+  describe('Confirm action per group', () => {
+    it('should only start preparations on the to-prepare groups', () => {
+      const startsPreparationByGroup = Object.fromEntries(
+        Object.entries(getPreparationsVM().items).map(([name, group]) => [
+          name,
+          group.startsPreparation
+        ])
+      )
+      expect(startsPreparationByGroup).toStrictEqual({
+        'Click & Collect': true,
+        'Domicile / Relais': true,
+        'À terminer': false,
+        'À completer': false,
+        'À expedier': false,
+        'À annuler': false
+      })
+    })
+    it('should label the confirm action per group', () => {
+      const confirmLabelByGroup = Object.fromEntries(
+        Object.entries(getPreparationsVM().items).map(([name, group]) => [
+          name,
+          group.confirmLabel
+        ])
+      )
+      expect(confirmLabelByGroup).toStrictEqual({
+        'Click & Collect': 'Commencer les préparations',
+        'Domicile / Relais': 'Commencer les préparations',
+        'À terminer': 'Imprimer les BL',
+        'À completer': 'Imprimer les BL',
+        'À expedier': 'Imprimer les BL',
+        'À annuler': 'Imprimer les BL'
+      })
+    })
+  })
+
   const givenStockIs = (stock: Stock) => {
     productStore.stock = stock
   }

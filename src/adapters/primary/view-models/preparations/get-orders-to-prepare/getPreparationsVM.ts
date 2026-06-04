@@ -33,6 +33,8 @@ export interface Header {
 interface GetPreparationsGroupVM {
   count: number
   canSelect: boolean
+  startsPreparation?: boolean
+  confirmLabel?: string
   table: TableVM<GetPreparationsItemVM>
 }
 
@@ -208,6 +210,8 @@ export const filterPreparationsByGroup = (
     res[group.name] = {
       count: items.length,
       canSelect: group.canSelect,
+      startsPreparation: group.startsPreparation,
+      confirmLabel: group.confirmLabel,
       table: {
         headers: group.headers,
         items
@@ -223,36 +227,48 @@ export const getPreparationsVM = (): GetPreparationsVM => {
       name: 'Click & Collect',
       filter: clickAndCollectFilter,
       canSelect: true,
+      startsPreparation: true,
+      confirmLabel: 'Commencer les préparations',
       headers: getClickAndCollectPreparationsVMHeaders
     },
     {
       name: 'Domicile / Relais',
       filter: deliveryFilter,
       canSelect: true,
+      startsPreparation: true,
+      confirmLabel: 'Commencer les préparations',
       headers: getPreparationsVMHeaders
     },
     {
       name: 'À terminer',
       filter: toContinueFilter,
       canSelect: true,
+      startsPreparation: false,
+      confirmLabel: 'Imprimer les BL',
       headers: getPreparationsVMHeaders
     },
     {
       name: 'À completer',
       filter: toCompleteFilter,
       canSelect: false,
+      startsPreparation: false,
+      confirmLabel: 'Imprimer les BL',
       headers: getPreparationsVMHeaders
     },
     {
       name: 'À expedier',
       filter: toShipFilter,
       canSelect: false,
+      startsPreparation: false,
+      confirmLabel: 'Imprimer les BL',
       headers: getPreparationsVMHeaders
     },
     {
       name: 'À annuler',
       filter: toCancelFilter,
       canSelect: false,
+      startsPreparation: false,
+      confirmLabel: 'Imprimer les BL',
       headers: getPreparationsVMHeaders
     }
   ]

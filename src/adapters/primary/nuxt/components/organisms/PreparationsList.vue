@@ -65,8 +65,8 @@ tab-group.border-b.border-gray-200.mt-4(as="div")
       div.w-full.flex.flex-row-reverse
         ft-button.button-solid.mt-4.mr-0.py-4.px-4.text-xl(
           v-if="ordersSelectedVM.items.length > 0"
-          @click="start"
-        ) {{ index < 2 ? 'Commencer les préparations' : 'Imprimer les BL' }}
+          @click="onPrimaryAction(group)"
+        ) {{ group.confirmLabel }}
 </template>
 
 <script lang="ts" setup>
@@ -125,8 +125,9 @@ const resetSelection = () => {
 
 const router = useRouter()
 
-const start = () => {
+const onPrimaryAction = (group: { startsPreparation?: boolean }) => {
   window.print()
+  if (!group.startsPreparation) return
   startPreparations(useOrderGateway())
   router.push('/preparations')
 }
