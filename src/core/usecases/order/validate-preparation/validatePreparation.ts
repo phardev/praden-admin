@@ -8,7 +8,9 @@ export const validatePreparation = async (orderGateway: OrderGateway) => {
     preparationStore.startLoading()
     const preparation = preparationStore.current
     if (!preparation) throw new NoPreparationSelectedError()
+    if (preparationStore.validatedUuids.includes(preparation.uuid)) return
     const validated = await orderGateway.validatePreparation(preparation)
+    preparationStore.markValidated(validated.uuid)
     preparationStore.remove(validated.uuid)
   } finally {
     preparationStore.stopLoading()

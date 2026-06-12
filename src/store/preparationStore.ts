@@ -10,7 +10,8 @@ export const usePreparationStore = defineStore('PreparationStore', {
       selected: [] as Array<UUID>,
       current: undefined as Order | undefined,
       error: undefined as PreparationError | undefined,
-      isLoading: false
+      isLoading: false,
+      validatedUuids: [] as Array<UUID>
     }
   },
   getters: {
@@ -23,7 +24,10 @@ export const usePreparationStore = defineStore('PreparationStore', {
   },
   actions: {
     list(orders: Array<Order>) {
-      this.items = orders
+      this.items = orders.filter((o) => !this.validatedUuids.includes(o.uuid))
+    },
+    markValidated(uuid: UUID) {
+      this.validatedUuids.push(uuid)
     },
     remove(uuid: UUID) {
       const index = this.items.findIndex((o) => o.uuid === uuid)

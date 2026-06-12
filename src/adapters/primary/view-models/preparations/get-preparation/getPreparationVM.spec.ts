@@ -434,6 +434,19 @@ describe('Get preparation VM', () => {
     })
   })
 
+  describe('The preparation was already validated during the session', () => {
+    it('should not allow to validate it again', () => {
+      const order = JSON.parse(JSON.stringify(orderToPrepare1))
+      order.lines[0].preparedQuantity = order.lines[0].expectedQuantity
+      givenCurrentPreparationIs(order)
+      preparationStore.markValidated(order.uuid)
+      const expectedVM: Partial<GetPreparationVM> = {
+        canValidate: false
+      }
+      expectVMToMatch(expectedVM)
+    })
+  })
+
   const givenCurrentPreparationIs = (order: Order) => {
     preparationStore.current = order
   }

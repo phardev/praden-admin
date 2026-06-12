@@ -182,7 +182,9 @@ export const getPreparationVM = (): GetPreparationVM => {
     lines,
     deliveries: getDeliveriesVM(preparation.deliveries),
     messages: getMessagesVM(preparation.messages),
-    canValidate: canValidate(lines, preparation.messages),
+    canValidate:
+      canValidate(lines, preparation.messages) &&
+      !preparationStore.validatedUuids.includes(preparation.uuid),
     canCancel: canCancel(preparation.messages),
     canAskHowToFinish: canAskHowToFinish(lines, preparation),
     error,

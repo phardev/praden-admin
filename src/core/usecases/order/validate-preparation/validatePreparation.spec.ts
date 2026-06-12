@@ -47,6 +47,9 @@ describe('Validate preparation', () => {
     it('should remove it from preparation store', async () => {
       expectPreparationStoreToEqual()
     })
+    it('should remember it was validated during the session', () => {
+      expect(preparationStore.validatedUuids).toStrictEqual([order.uuid])
+    })
   })
   describe('Another preparation is fully prepared', () => {
     const order: Order = JSON.parse(JSON.stringify(orderToPrepare2))
@@ -183,6 +186,19 @@ describe('Validate preparation', () => {
       await expect(whenValidatePreparation()).rejects.toThrow(
         NoPreparationSelectedError
       )
+    })
+  })
+
+  describe('The preparation was already validated during the session', () => {
+    const order: Order = JSON.parse(JSON.stringify(orderToPrepare1))
+    beforeEach(async () => {
+      givenThereIsExistingOrders(order)
+      givenThereIsAPreparationSelected(order)
+      preparationStore.markValidated(order.uuid)
+      await whenValidatePreparation()
+    })
+    it('should not validate it again', async () => {
+      expect(await orderGateway.list()).toStrictEqual([order])
     })
   })
 

@@ -91,6 +91,12 @@ describe('List orders to prepare', () => {
       await whenListOrdersToPrepare()
       expectPreparationStoreToContains()
     })
+    it('should not list orders already validated during the session', async () => {
+      givenExistingOrders(orderToPrepare1, orderToPrepare2)
+      preparationStore.markValidated(orderToPrepare1.uuid)
+      await whenListOrdersToPrepare()
+      expectPreparationStoreToContains(orderToPrepare2)
+    })
   })
 
   describe('With lot of orders', () => {
