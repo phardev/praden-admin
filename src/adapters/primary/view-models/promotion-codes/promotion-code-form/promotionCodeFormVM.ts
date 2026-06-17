@@ -135,6 +135,10 @@ export abstract class PromotionCodeFormVM {
     if (maximumUsage) {
       res.conditions.maximumUsage = +maximumUsage
     }
+    const maxUsagePerCustomer = this.fieldsReader.get('maxUsagePerCustomer')
+    if (maxUsagePerCustomer) {
+      res.conditions.maxUsagePerCustomer = +maxUsagePerCustomer
+    }
     const minimumAmount = this.fieldsReader.get('minimumAmount')
     if (minimumAmount) {
       res.conditions.minimumAmount = +minimumAmount * 100

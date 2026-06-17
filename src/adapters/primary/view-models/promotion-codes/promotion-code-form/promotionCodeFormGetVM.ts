@@ -54,6 +54,7 @@ export class ExistingPromotionCodeFormInitializer implements FormInitializer {
           : promotionCode.amount.toString()
         : undefined,
       maximumUsage: promotionCode.conditions.maximumUsage,
+      maxUsagePerCustomer: promotionCode.conditions.maxUsagePerCustomer,
       minimumAmount: promotionCode.conditions.minimumAmount
         ? (promotionCode.conditions.minimumAmount / 100).toString()
         : undefined,

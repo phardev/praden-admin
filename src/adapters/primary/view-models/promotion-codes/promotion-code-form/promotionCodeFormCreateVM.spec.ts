@@ -71,6 +71,7 @@ describe('Promotion code form create VM', () => {
         startDate: undefined,
         endDate: undefined,
         maximumUsage: undefined,
+        maxUsagePerCustomer: undefined,
         minimumAmount: undefined,
         deliveryMethodUuids: []
       }
@@ -82,6 +83,7 @@ describe('Promotion code form create VM', () => {
         { field: 'startDate' },
         { field: 'endDate' },
         { field: 'maximumUsage' },
+        { field: 'maxUsagePerCustomer' },
         { field: 'minimumAmount' },
         { field: 'deliveryMethodUuids' }
       ]
@@ -142,6 +144,11 @@ describe('Promotion code form create VM', () => {
         { field: 'startDate', value: '123456789', expectedValue: '123456789' },
         { field: 'endDate', value: '987654321', expectedValue: '987654321' },
         { field: 'maximumUsage', value: '250', expectedValue: '250' },
+        {
+          field: 'maxUsagePerCustomer',
+          value: '3',
+          expectedValue: '3'
+        },
         {
           field: 'minimumAmount',
           value: '80',
@@ -258,6 +265,26 @@ describe('Promotion code form create VM', () => {
       vm.set('maximumUsage', expectedDto.conditions.maximumUsage!.toString())
       vm.set('minimumAmount', '100')
       vm.set('deliveryMethodUuids', expectedDto.conditions.deliveryMethodUuids)
+      expect(vm.getDto()).toStrictEqual(expectedDto)
+    })
+    it('should return the dto with maxUsagePerCustomer', () => {
+      const expectedDto: CreatePromotionCodeDTO = {
+        code: 'TEST_PER_CUSTOMER',
+        reductionType: ReductionType.Percentage,
+        scope: PromotionScope.Products,
+        amount: 10,
+        conditions: {
+          maxUsagePerCustomer: 2
+        }
+      }
+      vm.set('code', expectedDto.code)
+      vm.set('reductionType', expectedDto.reductionType)
+      vm.set('scope', expectedDto.scope)
+      vm.set('amount', expectedDto.amount.toString())
+      vm.set(
+        'maxUsagePerCustomer',
+        expectedDto.conditions.maxUsagePerCustomer!.toString()
+      )
       expect(vm.getDto()).toStrictEqual(expectedDto)
     })
     it('should return the dto with maxWeight converted from kg to grams', () => {

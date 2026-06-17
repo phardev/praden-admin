@@ -123,6 +123,13 @@ UForm(v-else :state="currentVM")
           :disabled="!currentVM.get('maximumUsage').canEdit"
           @update:model-value="maximumUsageChanged"
         )
+      UFormGroup.pb-4(label="Nombre d'utilisations maximum par client" name="maxUsagePerCustomer")
+        ft-text-field(
+          :model-value="currentVM.get('maxUsagePerCustomer').value"
+          :disabled="!currentVM.get('maxUsagePerCustomer').canEdit"
+          type="number"
+          @update:model-value="maxUsagePerCustomerChanged"
+        )
       UFormGroup.pb-4(label="Montant minimum total de la commande (hors médicaments et produits non-eligible aux promotions)(€)" name="minimumAmount")
         ft-currency-input(
           v-model="currentVM.get('minimumAmount').value"
@@ -296,6 +303,10 @@ const clearEndDate = () => {
 
 const maximumUsageChanged = (value: string) => {
   currentVM.value.set('maximumUsage', value)
+}
+
+const maxUsagePerCustomerChanged = (value: string) => {
+  currentVM.value.set('maxUsagePerCustomer', value)
 }
 
 const minimumAmountChanged = (value: string) => {

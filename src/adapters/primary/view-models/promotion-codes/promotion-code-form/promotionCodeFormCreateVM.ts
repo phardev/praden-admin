@@ -91,6 +91,7 @@ export class NewPromotionCodeFormInitializer implements FormInitializer {
       startDate: undefined,
       endDate: undefined,
       maximumUsage: undefined,
+      maxUsagePerCustomer: undefined,
       minimumAmount: undefined,
       deliveryMethodUuids: [],
       products: [],
