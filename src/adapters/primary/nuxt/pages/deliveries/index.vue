@@ -41,10 +41,15 @@ div.hidden.printme.mx-2
           :selection="selectedUuids"
           :is-loading="deliveriesVM.isLoading"
           item-key="uuid"
-          @item-selected="selection.toggleSelect"
-          @select-all="selection.toggleSelectAll(deliveriesVM.items[groupName].table.items)"
+          @item-selected="onItemSelected"
+          @select-all="onSelectAll(groupName)"
         )
           template(#title) {{ $t('deliveries.title') }}
+          template(#trackingNumber="{ item }")
+            span(v-if="item.hasLabel") {{ item.trackingNumber }}
+            span.inline-flex.items-center.gap-1.text-red-600.font-medium(v-else)
+              UIcon.h-4.w-4(name="i-heroicons-exclamation-triangle")
+              | {{ $t('deliveries.missingLabel') }}
           template(#status="{ item }")
             ft-delivery-status-badge(:status="item.status")
         div.w-full.flex.flex-row-reverse.gap-4
@@ -60,6 +65,7 @@ div.hidden.printme.mx-2
 
 <script lang="ts" setup>
 import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'
+import type { GetDeliveriesItemsVM } from '@adapters/primary/view-models/deliveries/get-deliveries-vm/getDeliveriesVM'
 import { getDeliveriesVM } from '@adapters/primary/view-models/deliveries/get-deliveries-vm/getDeliveriesVM'
 import { listCarriers } from '@core/usecases/carriers/carrier-listing/listCarriers'
 import { listDeliveries } from '@core/usecases/deliveries/delivery-listing/listDeliveries'
@@ -130,6 +136,28 @@ const selectedUuids = computed(() => {
   }
   return sel
 })
+
+const itemByUuid = computed(() => {
+  const map: Record<string, GetDeliveriesItemsVM> = {}
+  Object.values(deliveriesVM.value.items ?? {}).forEach((group) => {
+    group.table.items.forEach((item) => {
+      map[item.uuid] = item
+    })
+  })
+  return map
+})
+
+const onItemSelected = (uuid: string) => {
+  if (!itemByUuid.value[uuid]?.hasLabel) return
+  selection.toggleSelect(uuid)
+}
+
+const onSelectAll = (groupName: string) => {
+  const shippableUuids = deliveriesVM.value.items[groupName].table.items
+    .filter((item) => item.hasLabel)
+    .map((item) => item.uuid)
+  selection.toggleSelectAll(shippableUuids)
+}
 
 const onTabChange = () => {
   selection.clear()

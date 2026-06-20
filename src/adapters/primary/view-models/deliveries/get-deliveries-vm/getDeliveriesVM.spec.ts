@@ -92,6 +92,7 @@ describe('Get deliveries VM', () => {
                   method: deliveryOrderToPrepare3.method.name,
                   client: "Jeanne D'arc",
                   trackingNumber: deliveryOrderToPrepare3.trackingNumber!,
+                  hasLabel: true,
                   weight: 1.5,
                   status: deliveryOrderToPrepare3.status
                 }
@@ -108,6 +109,7 @@ describe('Get deliveries VM', () => {
                   method: deliveryOrderDelivered2.method.name,
                   client: "Jeanne D'arc",
                   trackingNumber: '',
+                  hasLabel: false,
                   weight: 2.2,
                   status: deliveryOrderDelivered2.status
                 }

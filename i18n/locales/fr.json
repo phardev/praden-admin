@@ -196,7 +196,8 @@
     "title": "Livraisons",
     "refresh": "Actualiser",
     "printSummary": "Imprimer récapitulatif",
-    "validateShipping": "Valider l'expédition"
+    "validateShipping": "Valider l'expédition",
+    "missingLabel": "Étiquette manquante"
   },
   "reminders": {
     "title": "Relances",
