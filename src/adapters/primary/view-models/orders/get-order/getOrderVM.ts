@@ -31,6 +31,7 @@ export interface OrderDeliveriesItemVM {
   followUrl?: string
   canMarkAsDelivered: boolean
   canGenerateLabel: boolean
+  canAddTrackingNumber: boolean
 }
 
 export interface GetOrderVM {
@@ -110,6 +111,10 @@ export const getOrderVM = (): GetOrderVM => {
         canMarkAsDelivered:
           delivery.method.type === DeliveryType.ClickAndCollect,
         canGenerateLabel:
+          delivery.method.type === DeliveryType.Delivery &&
+          delivery.status === DeliveryStatus.Prepared &&
+          !delivery.trackingNumber,
+        canAddTrackingNumber:
           delivery.method.type === DeliveryType.Delivery &&
           delivery.status === DeliveryStatus.Prepared &&
           !delivery.trackingNumber

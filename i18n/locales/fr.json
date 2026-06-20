@@ -97,6 +97,10 @@
     "deliveries": {
       "generateLabel": "Générer l'étiquette",
       "generateLabelError": "Échec de la génération de l'étiquette.",
+      "addTrackingNumber": "Ajouter un n° de suivi",
+      "addTrackingNumberLabel": "Numéro de suivi",
+      "addTrackingNumberValidate": "Valider",
+      "addTrackingNumberError": "Échec de l'enregistrement du numéro de suivi.",
       "printLabelError": "Échec de l'impression de l'étiquette.",
       "downloadLabelError": "Échec du téléchargement de l'étiquette.",
       "carrierGenericError": "Aucun détail fourni par le transporteur. Vérifiez l'adresse et le point relais, puis réessayez.",

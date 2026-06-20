@@ -7,7 +7,10 @@ export class InMemoryDeliveryGateway implements DeliveryGateway {
   private printed: Array<UUID> = []
   private downloaded: Array<UUID> = []
   private generatedPickups: Array<UUID> = []
+  private settedTrackingNumbers: Array<{ uuid: UUID; trackingNumber: string }> =
+    []
   private generatePickupError: Error | null = null
+  private setTrackingNumberError: Error | null = null
   private printLabelError: Error | null = null
   private downloadLabelError: Error | null = null
 
@@ -57,6 +60,22 @@ export class InMemoryDeliveryGateway implements DeliveryGateway {
     }
     this.generatedPickups.push(orderUuid)
     return Promise.resolve()
+  }
+
+  setTrackingNumber(uuid: UUID, trackingNumber: string): Promise<void> {
+    if (this.setTrackingNumberError) {
+      return Promise.reject(this.setTrackingNumberError)
+    }
+    this.settedTrackingNumbers.push({ uuid, trackingNumber })
+    return Promise.resolve()
+  }
+
+  listSettedTrackingNumbers(): Array<{ uuid: UUID; trackingNumber: string }> {
+    return this.settedTrackingNumbers
+  }
+
+  feedSetTrackingNumberError(error: Error) {
+    this.setTrackingNumberError = error
   }
 
   listPrinted(): Array<UUID> {

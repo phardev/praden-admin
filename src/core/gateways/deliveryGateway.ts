@@ -8,4 +8,5 @@ export interface DeliveryGateway {
   downloadLabel(uuid: UUID): Promise<Blob>
   markAsDelivered(uuid: UUID): Promise<Delivery>
   generatePickup(orderUuid: UUID): Promise<void>
+  setTrackingNumber(uuid: UUID, trackingNumber: string): Promise<void>
 }

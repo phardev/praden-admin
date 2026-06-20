@@ -52,6 +52,11 @@
           variant="outline"
           @click="generateLabel(item)"
         ) {{ $t('orders.deliveries.generateLabel') }}
+        ft-button.button-default.py-4.px-4(
+          v-if="item.canAddTrackingNumber"
+          variant="outline"
+          @click="openTrackingNumberModal(item)"
+        ) {{ $t('orders.deliveries.addTrackingNumber') }}
         nuxt-link(
           v-if="item.followUrl"
           :to="item.followUrl"
@@ -88,6 +93,11 @@
       template(#description)
         div.text-xs.font-medium.opacity-80 {{ entry.deliveryLabel }}
         div.mt-1 {{ entry.content.description }}
+  ft-add-tracking-number-modal(
+    v-model="trackingNumberModalOpen"
+    :loading="trackingNumberSaving"
+    @tracking-number-added="addTrackingNumber"
+  )
   ft-order-timeline.mt-8(:entries="timelineVM.entries")
   h2.text-subtitle.mt-8 {{ $t('orders.supportTickets') }}
   order-tickets-list(:order-uuid="orderUuid")
@@ -103,6 +113,7 @@ import { CarrierLabelError } from '@core/errors/CarrierLabelError'
 import { downloadDeliveryLabel } from '@core/usecases/deliveries/delivery-label-download/downloadDeliveryLabel'
 import { printDeliveryLabel } from '@core/usecases/deliveries/delivery-label-printing/printDeliveryLabel'
 import { generatePickup } from '@core/usecases/deliveries/delivery-pickup-generation/generatePickup'
+import { setTrackingNumber } from '@core/usecases/deliveries/delivery-tracking-number-setting/setTrackingNumber'
 import { markDeliveryAsDelivered } from '@core/usecases/deliveries/mark-delivery-as-delivered/markDeliveryAsDelivered'
 import { getOrder } from '@core/usecases/order/get-order/getOrder'
 import { getPreparation } from '@core/usecases/order/get-preparation/getPreparation'
@@ -128,6 +139,9 @@ const router = useRouter()
 const deliveryStore = useDeliveryStore()
 const { t } = useI18n()
 const labelErrors = ref<Record<string, LabelErrorContent | null>>({})
+const trackingNumberModalOpen = ref(false)
+const trackingNumberDeliveryUuid = ref<string | null>(null)
+const trackingNumberSaving = ref(false)
 
 const buildLabelError = (
   titleKey: string,
@@ -198,6 +212,32 @@ const generateLabel = async (delivery: { uuid: string }) => {
       'orders.deliveries.generateLabelError',
       error
     )
+  }
+}
+
+const openTrackingNumberModal = (delivery: { uuid: string }) => {
+  trackingNumberDeliveryUuid.value = delivery.uuid
+  trackingNumberModalOpen.value = true
+}
+
+const addTrackingNumber = async (trackingNumber: string) => {
+  const uuid = trackingNumberDeliveryUuid.value
+  if (!uuid) {
+    return
+  }
+  labelErrors.value[uuid] = null
+  trackingNumberSaving.value = true
+  try {
+    await setTrackingNumber(uuid, trackingNumber, useDeliveryGateway())
+    await getOrder(orderUuid, useOrderGateway(), useCustomerGateway())
+  } catch {
+    labelErrors.value[uuid] = {
+      title: t('orders.deliveries.addTrackingNumberError'),
+      description: ''
+    }
+  } finally {
+    trackingNumberSaving.value = false
+    trackingNumberModalOpen.value = false
   }
 }
 

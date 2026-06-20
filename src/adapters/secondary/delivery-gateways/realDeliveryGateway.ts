@@ -82,6 +82,13 @@ export class RealDeliveryGateway
     }
   }
 
+  async setTrackingNumber(uuid: UUID, trackingNumber: string): Promise<void> {
+    await axiosWithBearer.patch(
+      `${this.baseUrl}/deliveries/${uuid}/tracking-number`,
+      { trackingNumber }
+    )
+  }
+
   private async toCarrierError(error: unknown): Promise<unknown> {
     if (axios.isAxiosError(error) && error.response?.status === 500) {
       const detail = await this.readCarrierErrorDetail(error)

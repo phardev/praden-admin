@@ -448,6 +448,10 @@ describe('Get order VM', () => {
       canGenerateLabel:
         delivery.method.type === DeliveryType.Delivery &&
         delivery.status === DeliveryStatus.Prepared &&
+        !delivery.trackingNumber,
+      canAddTrackingNumber:
+        delivery.method.type === DeliveryType.Delivery &&
+        delivery.status === DeliveryStatus.Prepared &&
         !delivery.trackingNumber
     }
     if (delivery.trackingNumber) {
