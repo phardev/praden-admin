@@ -81,6 +81,11 @@ export const fullMenu: NavigationMenu = {
           name: 'Règles de prix',
           icon: 'mdi:truck-delivery-outline',
           href: '/delivery-price-rules'
+        },
+        {
+          name: 'Transporteurs',
+          icon: 'mdi:truck-outline',
+          href: '/carriers'
         }
       ]
     },

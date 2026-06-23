@@ -10,6 +10,7 @@ export enum PermissionResource {
   NEWSLETTER = 'newsletter',
   SUPPORT = 'support',
   DELIVERIES = 'deliveries',
+  CARRIERS = 'carriers',
   PREPARATIONS = 'preparations',
   ORDERS = 'orders',
   SHOP_MANAGEMENT = 'shop-management',

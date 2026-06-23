@@ -63,13 +63,16 @@ export interface PriceWeightRange {
   price: number
 }
 
+export type PriceRangesByCountry = Record<string, Array<PriceWeightRange>>
+
 export interface DeliveryMethod {
   uuid: UUID
   name: string
   description: string
+  delay?: string
   type: DeliveryType
   carrier: Carrier
-  priceRanges: Array<PriceWeightRange>
+  priceRanges: PriceRangesByCountry
 }
 
 export enum MessageContent {

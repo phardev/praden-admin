@@ -86,6 +86,23 @@
       "selectEndDate": "Sélectionner une date de fin"
     }
   },
+  "carriers": {
+    "title": "Transporteurs",
+    "subtitle": "Tarifs de livraison par transporteur",
+    "loading": "Chargement des transporteurs...",
+    "empty": "Aucun transporteur configuré",
+    "noPriceRanges": "Aucun tarif configuré",
+    "methodsLabelSingular": "mode de livraison",
+    "methodsLabelPlural": "modes de livraison",
+    "fields": {
+      "weightRange": "Tranche de poids"
+    },
+    "types": {
+      "COLISSIMO": "Colissimo",
+      "DPD": "DPD",
+      "NONE": "Retrait en pharmacie"
+    }
+  },
   "customers": {
     "viewTitle": "Voir client",
     "editButton": "Editer client",

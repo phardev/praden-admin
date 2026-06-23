@@ -191,6 +191,11 @@ describe('Get navigation menu VM', () => {
                 name: 'Règles de prix',
                 icon: 'mdi:truck-delivery-outline',
                 href: '/delivery-price-rules'
+              },
+              {
+                name: 'Transporteurs',
+                icon: 'mdi:truck-outline',
+                href: '/carriers'
               }
             ]
           },

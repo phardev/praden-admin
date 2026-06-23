@@ -53,6 +53,7 @@ export class RoleFormFieldsReader extends FormFieldsReader {
       [PermissionResource.NEWSLETTER]: 'Newsletter',
       [PermissionResource.SUPPORT]: 'SAV',
       [PermissionResource.DELIVERIES]: 'Livraisons',
+      [PermissionResource.CARRIERS]: 'Transporteurs',
       [PermissionResource.PREPARATIONS]: 'Préparations',
       [PermissionResource.ORDERS]: 'Commandes',
       [PermissionResource.BANNERS]: 'Bannières',

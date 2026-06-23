@@ -14,6 +14,7 @@ export interface GetPermissionsVM {
   canAccessNewsletter: boolean
   canAccessSupport: boolean
   canAccessDeliveries: boolean
+  canAccessCarriers: boolean
   canAccessDeliveryPriceRules: boolean
   canAccessPreparations: boolean
   canAccessOrders: boolean
@@ -60,6 +61,9 @@ export const getPermissionsVM = (): GetPermissionsVM => {
     ),
     canAccessDeliveries: userProfileStore.hasPermission(
       PermissionResource.DELIVERIES
+    ),
+    canAccessCarriers: userProfileStore.hasPermission(
+      PermissionResource.CARRIERS
     ),
     canAccessDeliveryPriceRules: userProfileStore.hasPermission(
       PermissionResource.DELIVERY_PRICE_RULES

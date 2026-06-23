@@ -25,7 +25,7 @@ describe('deliveryPriceRuleListVM', () => {
           name: 'Colissimo',
           type: 'COLISSIMO' as any
         },
-        priceRanges: []
+        priceRanges: {}
       },
       {
         uuid: 'delivery-mondial-relay',
@@ -37,7 +37,7 @@ describe('deliveryPriceRuleListVM', () => {
           name: 'Mondial Relay',
           type: 'DPD' as any
         },
-        priceRanges: []
+        priceRanges: {}
       }
     ])
   })
