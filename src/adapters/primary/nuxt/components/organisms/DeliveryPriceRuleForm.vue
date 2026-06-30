@@ -95,6 +95,7 @@ UForm(:state="formState" @submit="onSubmit")
           template(#panel="{ close }")
             ft-date-picker(
               :model-value="formState.endDate"
+              :is-end-date="true"
               @update:model-value="endDateChanged"
               @close="close"
             )
