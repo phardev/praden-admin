@@ -16,6 +16,16 @@ export interface Promotion {
   endDate?: Timestamp
 }
 
+export interface ProductPromotion {
+  uuid: UUID
+  name?: string
+  type: ReductionType
+  amount: number
+  startDate?: Timestamp
+  endDate?: Timestamp
+  createdAt?: Timestamp
+}
+
 export type CreatePromotionDTO = Omit<Promotion, 'uuid'>
 
 export type EditPromotionDTO = Partial<CreatePromotionDTO>

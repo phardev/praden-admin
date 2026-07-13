@@ -38,6 +38,7 @@ export const ROUTE_PERMISSION_MAP: Record<string, PermissionResource> = {
   '/preparations': PermissionResource.PREPARATIONS,
   '/waitingPreparations': PermissionResource.PREPARATIONS,
   '/orders': PermissionResource.ORDERS,
+  '/orders/new': PermissionResource.ORDERS,
   '/shop-management': PermissionResource.SHOP_MANAGEMENT,
   '/shop-management/announcement-bar': PermissionResource.SHOP_MANAGEMENT,
   '/shop-management/category-order': PermissionResource.SHOP_MANAGEMENT,

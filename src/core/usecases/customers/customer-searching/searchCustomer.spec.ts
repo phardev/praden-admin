@@ -145,6 +145,41 @@ describe('Customer searching', () => {
           minimumQueryLength: 3
         })
       })
+      it('should not be loading', () => {
+        expectLoadingToBe(false)
+      })
+    })
+  })
+
+  describe('Loading state', () => {
+    describe('The search is in progress', () => {
+      it('should be loading', () => {
+        dto.query = 'Elodi'
+        const search = whenSearchForCustomers(dto)
+        expectLoadingToBe(true)
+        return search
+      })
+    })
+    describe('The search is done', () => {
+      beforeEach(async () => {
+        dto.query = 'Elodi'
+        await whenSearchForCustomers(dto)
+      })
+      it('should not be loading anymore', () => {
+        expectLoadingToBe(false)
+      })
+    })
+    describe('The search succeeds after an error', () => {
+      beforeEach(async () => {
+        dto.query = '76'
+        dto.minimumQueryLength = 3
+        await whenSearchForCustomers(dto)
+        dto.query = 'Elodi'
+        await whenSearchForCustomers(dto)
+      })
+      it('should clear the error', () => {
+        expectErrorToBe(undefined)
+      })
     })
   })
 
@@ -173,5 +208,9 @@ describe('Customer searching', () => {
 
   const expectErrorToBe = (expected: string | undefined) => {
     expect(searchStore.getError(url)).toStrictEqual(expected)
+  }
+
+  const expectLoadingToBe = (expected: boolean) => {
+    expect(searchStore.isLoading(url)).toStrictEqual(expected)
   }
 })

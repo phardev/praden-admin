@@ -117,6 +117,113 @@
   },
   "orders": {
     "supportTickets": "Tickets de support",
+    "create": {
+      "cta": "Créer une commande",
+      "title": "Créer une commande",
+      "success": "Commande créée",
+      "submit": "Créer la commande",
+      "payment": {
+        "title": "Paiement",
+        "alreadyPaid": "Paiement déjà encaissé",
+        "payOnPaymentPage": "Payer par carte via la page de paiement",
+        "sendPaymentLink": "Envoyer le lien de paiement au client par email",
+        "redirectNotice": "Après création, vous serez redirigé vers la page de paiement sécurisée pour saisir les informations de carte du client. La commande sera marquée payée à la validation du paiement.",
+        "paymentLinkNotice": "Un email contenant le lien de paiement sécurisé sera envoyé au client. La commande sera marquée payée dès que le client aura réglé."
+      },
+      "paymentLinkSent": "Commande créée, lien de paiement envoyé au client",
+      "sendConfirmationEmail": "Envoyer l'email de confirmation au client",
+      "maxQuantityAlert": "Certaines quantités dépassent le maximum autorisé par commande. Corrigez-les puis réessayez.",
+      "customer": {
+        "title": "Client",
+        "searchLabel": "Rechercher un client",
+        "searchPlaceholder": "Rechercher par nom, email",
+        "minimumSearch": "Saisissez au moins 3 caractères",
+        "noResults": "Aucun client trouvé",
+        "select": "Sélectionner",
+        "change": "Changer",
+        "loyaltyPoints": "{count} points de fidélité"
+      },
+      "products": {
+        "title": "Produits",
+        "searchLabel": "Rechercher un produit",
+        "searchPlaceholder": "Nom, EAN13 ou scan de code-barres",
+        "minimumSearch": "Saisissez au moins 3 caractères",
+        "noResults": "Aucun produit trouvé",
+        "add": "Ajouter",
+        "added": "Ajouté",
+        "stock": "Stock : {stock}",
+        "scanNotFound": "Aucun produit ne correspond au code scanné",
+        "scanAdded": "« {name} » ajouté à la commande",
+        "promo": "Promo",
+        "linesTitle": "Produits de la commande",
+        "maxQuantity": "Quantité max dépassée (max {max})",
+        "stockWarning": "Stock insuffisant ({stock} disponibles)",
+        "headers": {
+          "product": "Produit",
+          "unitPrice": "PU TTC",
+          "quantity": "Quantité",
+          "total": "Total TTC"
+        }
+      },
+      "delivery": {
+        "title": "Livraison",
+        "free": "Gratuit",
+        "relayNotAvailable": "Non disponible depuis l'admin",
+        "addProductsFirst": "Ajoutez d'abord des produits",
+        "notAvailableForCountry": "Indisponible pour ce pays",
+        "pickingDate": "Date de retrait",
+        "selectPickingDate": "Choisissez une date",
+        "relaySearch": {
+          "title": "Point relais",
+          "zip": "Code postal",
+          "city": "Ville",
+          "search": "Rechercher",
+          "selected": "Point relais sélectionné",
+          "noResult": "Aucun point relais trouvé pour cette adresse",
+          "choose": "Choisir un point relais",
+          "colissimoTitle": "Sélectionnez un point relais Colissimo"
+        },
+        "pickingHour": "Heure de retrait",
+        "selectPickingHour": "Choisissez une heure",
+        "noPickingHourLeft": "Plus de créneau disponible ce jour (3h de délai minimum), choisissez une autre date"
+      },
+      "addresses": {
+        "title": "Adresses",
+        "delivery": "Adresse de livraison",
+        "billing": "Adresse de facturation",
+        "sameBilling": "Adresse de facturation identique à la livraison",
+        "firstname": "Prénom",
+        "lastname": "Nom",
+        "address": "Adresse",
+        "appartement": "Complément d'adresse",
+        "zip": "Code postal",
+        "city": "Ville",
+        "country": "Pays"
+      },
+      "contact": {
+        "title": "Contact",
+        "email": "Email",
+        "phone": "Téléphone"
+      },
+      "summary": {
+        "title": "Récapitulatif",
+        "lines": "Articles ({count})",
+        "delivery": "Livraison",
+        "total": "Total TTC"
+      },
+      "blockers": {
+        "title": "Avant de créer la commande :",
+        "selectCustomer": "Sélectionnez un client",
+        "addProducts": "Ajoutez au moins un produit",
+        "fixQuantities": "Corrigez les quantités dépassant le maximum",
+        "selectDeliveryMethod": "Choisissez un mode de livraison",
+        "deliveryMethodUnavailable": "Le mode de livraison sélectionné n'est plus disponible, choisissez-en un autre",
+        "selectRelayPoint": "Sélectionnez un point relais",
+        "fillAddresses": "Complétez les adresses",
+        "fillContact": "Renseignez l'email et le téléphone de contact",
+        "selectPickingSlot": "Choisissez la date et l'heure de retrait"
+      }
+    },
     "deliveries": {
       "generateLabel": "Générer l'étiquette",
       "generateLabelError": "Échec de la génération de l'étiquette.",

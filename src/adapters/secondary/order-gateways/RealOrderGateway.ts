@@ -8,6 +8,7 @@ import {
 } from '@core/entities/order'
 import { OrderGateway } from '@core/gateways/orderGateway'
 import type { HashTable, UUID } from '@core/types/types'
+import { CreateManualOrderDTO } from '@core/usecases/order/manual-order-creation/createManualOrder'
 
 export abstract class RealGateway {
   protected readonly baseUrl: string
@@ -69,6 +70,15 @@ export class RealOrderGateway extends RealGateway implements OrderGateway {
       JSON.stringify(body)
     )
     return this.convertToOrder(res.data.item)
+  }
+
+  async create(dto: CreateManualOrderDTO): Promise<Order> {
+    const res = await axiosWithBearer.post(`${this.baseUrl}/orders`, dto)
+    const order = this.convertToOrder(res.data.item)
+    if (res.data.paymentPageUrl && order.payment) {
+      order.payment.paymentPageUrl = res.data.paymentPageUrl
+    }
+    return order
   }
 
   async getByUuid(uuid: UUID): Promise<Order> {

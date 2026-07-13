@@ -18,9 +18,13 @@ export const searchCustomers = async (
   ) {
     searchStore.setError(from, 'query is too short')
     searchStore.set(from, [])
+    searchStore.endLoading(from)
   } else {
+    searchStore.startLoading(from)
     const searchResult = await searchGateway.searchCustomers(dto)
     searchStore.set(from, searchResult)
+    searchStore.setError(from, undefined)
+    searchStore.endLoading(from)
   }
   return Promise.resolve()
 }

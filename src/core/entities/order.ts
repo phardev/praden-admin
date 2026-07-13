@@ -45,6 +45,7 @@ export enum PaymentStatus {
 export interface Payment {
   status: PaymentStatus
   amount?: number
+  paymentPageUrl?: string
 }
 
 export interface Contact {
