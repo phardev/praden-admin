@@ -47,6 +47,12 @@ export const useCustomerStore = defineStore('CustomerStore', {
     },
     setCurrent(customer: Customer) {
       this.current = JSON.parse(JSON.stringify(customer))
+    },
+    remove(uuid: UUID) {
+      this.items = this.items.filter((c) => c.uuid !== uuid)
+      if (this.current?.uuid === uuid) {
+        this.current = undefined
+      }
     }
   }
 })

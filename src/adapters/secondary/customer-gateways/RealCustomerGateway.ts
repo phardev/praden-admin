@@ -1,10 +1,12 @@
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
 import { Customer } from '@core/entities/customer'
+import { CustomerDoesNotExistsError } from '@core/errors/CustomerDoesNotExistsError'
 import { CustomerGateway } from '@core/gateways/customerGateway'
 import { UUID } from '@core/types/types'
 import { CreateCustomerDTO } from '@core/usecases/customers/customer-creation/createCustomer'
 import { EditCustomerDTO } from '@core/usecases/customers/customer-edition/editCustomer'
+import { isAxiosError } from 'axios'
 
 export class RealCustomerGateway
   extends RealGateway
@@ -25,8 +27,15 @@ export class RealCustomerGateway
   }
 
   async getByUuid(uuid: UUID): Promise<Customer> {
-    const res = await axiosWithBearer.get(`${this.baseUrl}/customers/${uuid}`)
-    return res.data
+    try {
+      const res = await axiosWithBearer.get(`${this.baseUrl}/customers/${uuid}`)
+      return res.data
+    } catch (error: unknown) {
+      if (isAxiosError(error) && error.response?.status === 404) {
+        throw new CustomerDoesNotExistsError(uuid)
+      }
+      throw error
+    }
   }
   async create(dto: CreateCustomerDTO): Promise<Customer> {
     const res = await axiosWithBearer.post(`${this.baseUrl}/customers`, dto)
@@ -39,5 +48,9 @@ export class RealCustomerGateway
       dto
     )
     return res.data
+  }
+
+  async delete(uuid: UUID): Promise<void> {
+    await axiosWithBearer.delete(`${this.baseUrl}/customers/${uuid}`)
   }
 }

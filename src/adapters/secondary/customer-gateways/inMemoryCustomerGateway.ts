@@ -41,6 +41,13 @@ export class InMemoryCustomerGateway implements CustomerGateway {
     return Promise.resolve(this.customers[index])
   }
 
+  delete(uuid: UUID): Promise<void> {
+    const index = this.customers.findIndex((c) => c.uuid === uuid)
+    if (index < 0) throw new CustomerDoesNotExistsError(uuid)
+    this.customers.splice(index, 1)
+    return Promise.resolve()
+  }
+
   feedWith(...customers: Array<Customer>): void {
     this.customers = customers
   }

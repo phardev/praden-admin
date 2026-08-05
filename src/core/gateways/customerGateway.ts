@@ -8,4 +8,5 @@ export interface CustomerGateway {
   getByUuid(uuid: UUID): Promise<Customer>
   create(dto: CreateCustomerDTO): Promise<Customer>
   edit(uuid: UUID, dto: EditCustomerDTO): Promise<Customer>
+  delete(uuid: UUID): Promise<void>
 }

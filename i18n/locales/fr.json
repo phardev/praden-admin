@@ -112,8 +112,14 @@
   "customers": {
     "viewTitle": "Voir client",
     "editButton": "Editer client",
+    "deleteButton": "Supprimer le compte",
     "ordersHistory": "Historique des commandes",
-    "supportTickets": "Tickets de support"
+    "supportTickets": "Tickets de support",
+    "delete": {
+      "title": "Supprimer le compte",
+      "description": "Cette action est irréversible"
+    },
+    "notFound": "Client introuvable"
   },
   "orders": {
     "supportTickets": "Tickets de support",
