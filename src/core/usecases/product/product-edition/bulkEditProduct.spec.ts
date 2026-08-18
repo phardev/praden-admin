@@ -4,6 +4,7 @@ import { Product } from '@core/entities/product'
 import { UUID } from '@core/types/types'
 import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
 import {
   chamomillaListItem,
   dolodentListItem,
@@ -20,12 +21,18 @@ describe('bulkEditProduct usecase', () => {
   let productUuids: Array<UUID>
   let bulkEditDto: EditProductDTO
   let expectedProducts: Array<Product>
+  let searchStore: ReturnType<typeof useSearchStore>
 
   beforeEach(async () => {
     setActivePinia(createPinia())
     productGateway = new InMemoryProductGateway(new FakeUuidGenerator())
     productStore = useProductStore()
+    searchStore = useSearchStore()
     givenExistingProducts([chamomilla, ultraLevure, dolodent])
+    searchStore.set(
+      'products',
+      JSON.parse(JSON.stringify([dolodent, ultraLevure]))
+    )
     givenBulkEditDto({
       flags: { arePromotionsAllowed: false }
     })
@@ -49,6 +56,13 @@ describe('bulkEditProduct usecase', () => {
 
   it('should update all targeted products in the store', async () => {
     await expectStoreProductsToMatchGateway()
+  })
+
+  it('should update all targeted products in the search results', () => {
+    expect(searchStore.get('products')).toStrictEqual([
+      expectedProducts[2],
+      expectedProducts[1]
+    ])
   })
 
   const givenExistingProducts = (products: Array<Product>) => {

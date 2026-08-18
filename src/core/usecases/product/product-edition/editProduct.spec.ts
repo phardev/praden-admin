@@ -17,6 +17,7 @@ import { ProductListItem } from '@core/usecases/product/product-listing/productL
 import { useCategoryStore } from '@store/categoryStore'
 import { useLocationStore } from '@store/locationStore'
 import { useProductStore } from '@store/productStore'
+import { useSearchStore } from '@store/searchStore'
 import { baby, mum } from '@utils/testData/categories'
 import {
   chamomillaListItem,
@@ -77,6 +78,44 @@ describe('Product edition', () => {
         ])
       })
     })
+    describe('The product is in search results', () => {
+      let searchStore: any
+
+      beforeEach(async () => {
+        searchStore = useSearchStore()
+        searchStore.set(
+          'products',
+          JSON.parse(JSON.stringify([dolodent, ultraLevure]))
+        )
+        searchStore.set(
+          'create-order',
+          JSON.parse(JSON.stringify([chamomilla, dolodent]))
+        )
+        givenEditingProductIs(dolodent)
+        dto = {
+          name: 'The new name'
+        }
+        expectedProduct = {
+          ...product,
+          flags: { arePromotionsAllowed: true },
+          name: dto.name!
+        }
+        await whenEditProduct(product.uuid, dto)
+      })
+      it('should edit the product in the search results', async () => {
+        expect(searchStore.get('products')).toStrictEqual([
+          expectedProduct,
+          ultraLevure
+        ])
+      })
+      it('should edit the product in every search results', async () => {
+        expect(searchStore.get('create-order')).toStrictEqual([
+          chamomilla,
+          expectedProduct
+        ])
+      })
+    })
+
     describe('Price change', () => {
       beforeEach(async () => {
         givenEditingProductIs(dolodent)

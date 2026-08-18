@@ -1,7 +1,7 @@
 import { ProductGateway } from '@core/gateways/productGateway'
 import { UUID } from '@core/types/types'
 import { useProductStore } from '@store/productStore'
-import { EditProductDTO } from './editProduct'
+import { EditProductDTO, updateSearchResults } from './editProduct'
 
 export interface BulkEditProductDependencies {
   productGateway: ProductGateway
@@ -22,6 +22,7 @@ export const bulkEditProduct =
       const updatedProducts = await productGateway.bulkEdit(dto, uuids)
       updatedProducts.forEach((product) => {
         productStore.edit(product)
+        updateSearchResults(product)
       })
     } finally {
       productStore.stopLoading()
