@@ -408,6 +408,24 @@ describe('Product form edit VM', () => {
       }
       laboratoryStore.items = [avene, sanofiAventis]
     })
+    describe.each([
+      { field: 'availableStock' },
+      { field: 'minStockToSell' },
+      { field: 'maxQuantityForOrder' }
+    ])('For a numeric field set to zero', ({ field }) => {
+      it(`should send ${field} as 0`, async () => {
+        vm = productFormEditVM(key)
+        await vm.set(field, 0)
+        expect(vm.getDto()[field as keyof EditProductDTO]).toStrictEqual(0)
+      })
+    })
+    describe('For an emptied available stock', () => {
+      it('should not send available stock', async () => {
+        vm = productFormEditVM(key)
+        await vm.set('availableStock', '')
+        expect(vm.getDto().availableStock).toStrictEqual(undefined)
+      })
+    })
     describe('For a dto with orderedImages from existing product', () => {
       it('should include existing images as orderedImages', () => {
         vm = productFormEditVM(key)

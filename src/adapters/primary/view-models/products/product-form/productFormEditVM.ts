@@ -27,6 +27,12 @@ import { useProductStore } from '@store/productStore'
 import { getFileContent } from '@utils/file'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 
+const parseOptionalInteger = (value: unknown): number | undefined => {
+  if (value === undefined || value === null || value === '') return undefined
+  const parsed = parseInt(String(value))
+  return Number.isNaN(parsed) ? undefined : parsed
+}
+
 export class ProductFormEditVM extends ProductFormVM {
   private fieldsReader: ProductFormFieldsReader
   private fieldsWriter: ProductFormFieldsWriter
@@ -146,9 +152,9 @@ export class ProductFormEditVM extends ProductFormVM {
     const percentTaxRate = this.fieldsReader.get('percentTaxRate')
       ? parseFloat(this.fieldsReader.get('percentTaxRate'))
       : undefined
-    const availableStock = this.fieldsReader.get('availableStock')
-      ? parseInt(this.fieldsReader.get('availableStock'))
-      : undefined
+    const availableStock = parseOptionalInteger(
+      this.fieldsReader.get('availableStock')
+    )
     const laboratoryStore = useLaboratoryStore()
     const laboratory = laboratoryStore.getByUuid(
       this.fieldsReader.get('laboratory')
@@ -172,9 +178,9 @@ export class ProductFormEditVM extends ProductFormVM {
       percentTaxRate,
       locations: this.fieldsReader.get('locations'),
       availableStock,
-      minStockToSell: this.fieldsReader.get('minStockToSell')
-        ? parseInt(this.fieldsReader.get('minStockToSell'))
-        : undefined,
+      minStockToSell: parseOptionalInteger(
+        this.fieldsReader.get('minStockToSell')
+      ),
       stockManagementMode: this.fieldsReader.get('stockManagementMode') as
         | StockManagementMode
         | undefined,
@@ -182,9 +188,9 @@ export class ProductFormEditVM extends ProductFormVM {
       instructionsForUse: this.fieldsReader.get('instructionsForUse'),
       composition: this.fieldsReader.get('composition'),
       weight: +this.fieldsReader.get('weight') * 1000,
-      maxQuantityForOrder: this.fieldsReader.get('maxQuantityForOrder')
-        ? +this.fieldsReader.get('maxQuantityForOrder')
-        : undefined,
+      maxQuantityForOrder: parseOptionalInteger(
+        this.fieldsReader.get('maxQuantityForOrder')
+      ),
       flags: {
         arePromotionsAllowed: this.fieldsReader.get('arePromotionsAllowed')
       }
