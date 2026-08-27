@@ -22,6 +22,10 @@ export interface AddressVM {
   appartement?: string
 }
 
+export interface DeliveryAddressVM extends AddressVM {
+  pickupName?: string
+}
+
 interface SummaryValueVM {
   invoiceNumber: string
   invoiceDate: string
@@ -66,7 +70,7 @@ export interface GetInvoiceVM {
   createdDate: string
   createdDatetime: Date
   supplierAddress: AddressVM
-  deliveryAddress: AddressVM
+  deliveryAddress: DeliveryAddressVM
   billingAddress: AddressVM
   summaryTable: TableVM<SummaryValueVM>
   orderLinesTable: TableVM<OrderLineVM>
@@ -162,8 +166,16 @@ const getSupplierAddress = (): AddressVM => {
   }
 }
 
-export const getDeliveryAddressVM = (order: Order): AddressVM => {
+export const getPickupNameVM = (
+  order: Order
+): Pick<DeliveryAddressVM, 'pickupName'> => {
+  const pickupName = order.deliveries[0]?.pickupName
+  return pickupName ? { pickupName } : {}
+}
+
+export const getDeliveryAddressVM = (order: Order): DeliveryAddressVM => {
   return {
+    ...getPickupNameVM(order),
     name: `${order.deliveryAddress.firstname} ${order.deliveryAddress.lastname}`,
     address: order.deliveryAddress.address,
     city: order.deliveryAddress.city,

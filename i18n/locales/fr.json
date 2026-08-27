@@ -231,6 +231,7 @@
       }
     },
     "deliveries": {
+      "pickupPoint": "Point relais",
       "generateLabel": "Générer l'étiquette",
       "generateLabelError": "Échec de la génération de l'étiquette.",
       "addTrackingNumber": "Ajouter un n° de suivi",

@@ -1,4 +1,7 @@
-import { AddressVM } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
+import {
+  DeliveryAddressVM,
+  getPickupNameVM
+} from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { DeliveryStatus } from '@core/entities/delivery'
 import {
@@ -37,7 +40,7 @@ export interface OrderDeliveriesItemVM {
 export interface GetOrderVM {
   reference: string
   customer: OrderCustomerVM
-  deliveryAddress: AddressVM
+  deliveryAddress: DeliveryAddressVM
   orderStatus: OrderLineStatus
   deliveryStatus: DeliveryStatus
   deliveriesHeaders: Array<Header>
@@ -92,6 +95,7 @@ export const getOrderVM = (): GetOrderVM => {
       phone: customer.phone
     },
     deliveryAddress: {
+      ...getPickupNameVM(currentOrder),
       name: `${customer.firstname} ${customer.lastname}`.trimStart(),
       address: currentOrder.deliveryAddress.address,
       city: currentOrder.deliveryAddress.city,

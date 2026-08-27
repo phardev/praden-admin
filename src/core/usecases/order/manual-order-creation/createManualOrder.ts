@@ -22,6 +22,7 @@ export interface CreateManualOrderDTO {
   billingAddress: Address
   contact: Contact
   pickupId?: string
+  pickupName?: string
   pickingDate?: Timestamp
   sendConfirmationEmail?: boolean
   paymentMode?: ManualOrderPaymentMode

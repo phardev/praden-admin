@@ -164,6 +164,7 @@ describe('Get order VM', () => {
               phone: lucasLefevre.phone
             },
             deliveryAddress: {
+              pickupName: 'Tabac Le Marigny',
               name: 'Lucas Lefèvre',
               address: '12 rue des peupliers',
               city: 'PlopLand',

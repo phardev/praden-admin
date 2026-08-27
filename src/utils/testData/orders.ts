@@ -1139,6 +1139,7 @@ export const orderPartiallyShipped1: AnonymousOrder = {
       method: deliveryInRelayPoint,
       weight: 987,
       pickupId: '741852',
+      pickupName: 'Tabac Le Marigny',
       trackingNumber: 'PartiallyShipped-584214',
       sender: {
         contact: {
@@ -1711,6 +1712,7 @@ export const lucasLefevreOrder2: CustomerOrder = {
       method: deliveryInRelayPoint,
       weight: 987,
       pickupId: '7894561',
+      pickupName: 'Tabac Le Marigny',
       trackingNumber: 'Lucas2-021451',
       sender: {
         contact: {

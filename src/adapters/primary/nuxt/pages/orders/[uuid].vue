@@ -4,6 +4,7 @@
   div.flex.items-start.justify-between.mt-8
     div
       h3.text-subtitle.mb-4 Nom
+      div.font-semibold(v-if="orderVM.deliveryAddress.pickupName") {{ $t('orders.deliveries.pickupPoint') }} : {{ orderVM.deliveryAddress.pickupName }}
       div {{ orderVM.deliveryAddress.name }}
       h3.text-subtitle.my-4 Adresse
       div {{ orderVM.deliveryAddress.address }}

@@ -58,6 +58,7 @@ export const buildCreateManualOrderDto = (
     formState.selectedRelayPoint !== undefined
   ) {
     dto.pickupId = formState.selectedRelayPoint.id
+    dto.pickupName = formState.selectedRelayPoint.name
   }
   return dto
 }

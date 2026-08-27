@@ -30,6 +30,7 @@
                 div {{ invoiceVM.supplierAddress.phone }}
               div
                 div.text-lg.mb-2 Adresse de livraison
+                div.font-semibold(v-if="invoiceVM.deliveryAddress.pickupName") {{ invoiceVM.deliveryAddress.pickupName }}
                 div {{ invoiceVM.deliveryAddress.name }}
                 div {{ invoiceVM.deliveryAddress.address }}
                 div {{ invoiceVM.deliveryAddress.zip }}

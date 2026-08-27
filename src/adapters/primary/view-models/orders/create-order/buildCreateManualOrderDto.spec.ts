@@ -105,8 +105,8 @@ describe('Build create manual order DTO', () => {
     })
   })
 
-  describe('Given a DPD relay method with a selected point, when building the DTO, then the pickup id is included', () => {
-    it('should attach the selected relay point id as pickupId', () => {
+  describe('Given a DPD relay method with a selected point, when building the DTO, then the pickup id and name are included', () => {
+    it('should attach the selected relay point id and name', () => {
       const formState: OrderCreateFormState = {
         ...baseFormState(),
         deliveryMethod: deliveryInRelayPointDPD,
@@ -127,6 +127,7 @@ describe('Build create manual order DTO', () => {
         billingAddress: deliveryAddress,
         contact,
         pickupId: dpdRelayPointAlesCentre.id,
+        pickupName: dpdRelayPointAlesCentre.name,
         sendConfirmationEmail: false,
         paymentMode: ManualOrderPaymentMode.AlreadyPaid
       }

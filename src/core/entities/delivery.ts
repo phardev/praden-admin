@@ -12,6 +12,7 @@ export interface Delivery {
   uuid: string
   price: number
   pickupId?: string
+  pickupName?: string
   trackingNumber?: string
   pickingDate?: Timestamp
   method: DeliveryMethod

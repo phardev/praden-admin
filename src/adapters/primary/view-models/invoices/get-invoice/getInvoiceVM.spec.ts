@@ -441,6 +441,7 @@ describe('Get invoice VM', () => {
       beforeEach(() => {
         invoiceStore.current = invoice
       })
+
       it('should also cancel the delivery', () => {
         const expected: Partial<GetInvoiceVM> = {
           totals: {
@@ -564,6 +565,20 @@ describe('Get invoice VM', () => {
     describe('Without promotion code', () => {
       beforeEach(() => {
         invoiceStore.current = invoice
+      })
+      it('should get delivery address with the pickup point name', () => {
+        const expected: Partial<GetInvoiceVM> = {
+          deliveryAddress: {
+            pickupName: 'Tabac Le Marigny',
+            name: 'Jean Bon',
+            address: '10 rue des peupliers',
+            city: 'PlopLand',
+            zip: '12345',
+            country: 'Plop',
+            phone: '0123456789'
+          }
+        }
+        expectVMToMatch(expected)
       })
       it('should display only prepared quantity', () => {
         const expected: Partial<GetInvoiceVM> = {
