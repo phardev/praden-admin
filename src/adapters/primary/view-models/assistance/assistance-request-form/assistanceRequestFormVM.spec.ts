@@ -62,10 +62,6 @@ describe('Assistance request form VM', () => {
       })
     })
 
-    it('should be prefilled from the page', () => {
-      expect(vm.isPrefilledFromPage()).toBe(true)
-    })
-
     it('should not need a subject', () => {
       expect(vm.needsSubject()).toBe(false)
     })
@@ -150,10 +146,6 @@ describe('Assistance request form VM', () => {
         vm.startChangingSubject()
       })
 
-      it('should no longer be prefilled from the page', () => {
-        expect(vm.isPrefilledFromPage()).toBe(false)
-      })
-
       it('should drop the subject so that a new one can be picked', () => {
         expect(vm.needsSubject()).toBe(true)
       })
@@ -192,10 +184,6 @@ describe('Assistance request form VM', () => {
         value: undefined,
         canEdit: true
       })
-    })
-
-    it('should not be prefilled from the page', () => {
-      expect(vm.isPrefilledFromPage()).toBe(false)
     })
 
     it('should start with an empty description', () => {

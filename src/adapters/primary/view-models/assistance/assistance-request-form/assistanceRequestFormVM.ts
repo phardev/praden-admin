@@ -160,17 +160,6 @@ export class AssistanceRequestFormVM {
     return this.fieldsReader.get('changingSubject')
   }
 
-  isPrefilledFromPage(): boolean {
-    const subject = this.subject()
-    const pageSubject = this.pageSubject()
-    return (
-      !!subject &&
-      !!pageSubject &&
-      subject.uuid === pageSubject.uuid &&
-      !this.isChangingSubject()
-    )
-  }
-
   needsSubject(): boolean {
     const category = this.category()
     return (

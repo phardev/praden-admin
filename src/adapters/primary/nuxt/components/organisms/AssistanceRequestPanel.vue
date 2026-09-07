@@ -18,35 +18,28 @@ ft-slideover(:model-value="isOpen" @update:model-value="onToggle" @close="close"
     div.flex-1.overflow-y-auto.px-6.py-5.flex.flex-col.gap-5
       div
         p.text-sm.font-medium.text-gray-700.mb-1 {{ $t('assistance.panel.subject') }}
-        assistance-subject-card(
-          v-if="vm.isPrefilledFromPage() && subject"
+        ft-category-chips(
+          ref="chips"
+          :options="categoryOptions"
+          :model-value="category"
+          @update:model-value="setCategory"
+        )
+        assistance-subject-card.mt-3(
+          v-if="subject && category"
           :category="category"
           :subject="subject"
           @change="vm.startChangingSubject()"
         )
-        template(v-else)
-          ft-category-chips(
-            ref="chips"
-            :options="categoryOptions"
-            :model-value="category"
-            @update:model-value="setCategory"
-          )
-          assistance-subject-card.mt-3(
-            v-if="subject && category"
-            :category="category"
-            :subject="subject"
-            @change="vm.startChangingSubject()"
-          )
-          assistance-subject-picker.mt-3(
-            v-else-if="vm.needsSubject() && subjectType && category"
-            ref="picker"
-            :key="subjectType"
-            :subject-type="subjectType"
-            :category="category"
-            :query="subjectQuery"
-            @update:query="setSubjectQuery"
-            @selected="setSubject"
-          )
+        assistance-subject-picker.mt-3(
+          v-else-if="vm.needsSubject() && subjectType && category"
+          ref="picker"
+          :key="subjectType"
+          :subject-type="subjectType"
+          :category="category"
+          :query="subjectQuery"
+          @update:query="setSubjectQuery"
+          @selected="setSubject"
+        )
       UFormGroup(
         :label="$t('assistance.panel.description')"
         :help="$t('assistance.panel.descriptionHint')"
