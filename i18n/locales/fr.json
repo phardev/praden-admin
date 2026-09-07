@@ -572,6 +572,7 @@
       "customers": "Clients",
       "newsletter": "Newsletter",
       "support": "SAV",
+      "assistance": "Assistance",
       "deliveries": "Livraisons",
       "preparations": "Préparations",
       "orders": "Commandes",
@@ -769,6 +770,134 @@
       },
       "creditSuccess": "Points crédités avec succès",
       "creditError": "Erreur lors du crédit des points"
+    }
+  },
+  "assistance": {
+    "title": "Mes demandes",
+    "report": "Signaler un problème",
+    "tabs": {
+      "open": "En cours",
+      "resolved": "Résolues"
+    },
+    "columns": {
+      "reference": "N°",
+      "subject": "Concerne",
+      "title": "Problème",
+      "author": "Par",
+      "status": "Statut",
+      "lastActivity": "Dernière activité"
+    },
+    "empty": {
+      "open": "Aucune demande en cours.",
+      "resolved": "Aucune demande résolue.",
+      "loadFailed": "Impossible de charger vos demandes.",
+      "retry": "Réessayer"
+    },
+    "status": {
+      "received": "Reçue",
+      "in_progress": "Prise en charge",
+      "waiting_for_your_answer": "En attente de votre réponse",
+      "on_hold": "En attente",
+      "resolved": "Résolue",
+      "cancelled": "Annulée"
+    },
+    "category": {
+      "order": "Commande",
+      "product": "Produit",
+      "delivery": "Livraison / étiquette",
+      "customer": "Client",
+      "other": "Autre"
+    },
+    "categoryShort": {
+      "order": "Commande",
+      "product": "Produit",
+      "delivery": "Livraison",
+      "customer": "Client",
+      "other": "Autre"
+    },
+    "time": {
+      "justNow": "à l'instant",
+      "minutesAgo": "il y a {n} min",
+      "hoursAgo": "il y a {n} h",
+      "today": "{time}",
+      "yesterday": "hier, {time}",
+      "date": "{date}",
+      "dateTime": "{date}, {time}"
+    },
+    "size": {
+      "bytes": "{n} o",
+      "kilo": "{n} Ko",
+      "mega": "{n} Mo"
+    },
+    "panel": {
+      "title": "Signaler un problème",
+      "close": "Fermer",
+      "subject": "Concerne",
+      "which": {
+        "order": "Quelle commande ?",
+        "delivery": "Quelle commande ?",
+        "product": "Quel produit ?",
+        "customer": "Quel client ?"
+      },
+      "searchPlaceholder": {
+        "order": "Nom du client, e-mail…",
+        "product": "Nom du produit, EAN…",
+        "customer": "Nom, e-mail…"
+      },
+      "minimumSearch": "Saisissez au moins 3 caractères",
+      "noResults": "Aucun résultat",
+      "change": "Changer",
+      "description": "Que se passe-t-il ?",
+      "descriptionPlaceholder": "Ex. : le client dit avoir payé mais la commande est toujours en attente de paiement.",
+      "descriptionHint": "Décrivez ce que vous avez fait et ce qui s'est passé.",
+      "screenshot": "Capture d'écran",
+      "optional": "(facultatif)",
+      "dropzone": {
+        "paste": "Coller (Ctrl+V)",
+        "dragOr": ", glisser ou ",
+        "choose": "choisir un fichier"
+      },
+      "attachmentErrors": {
+        "tooMany": "5 images maximum.",
+        "notImage": "Seules les images sont acceptées.",
+        "tooLarge": "Chaque image doit faire moins de 10 Mo."
+      },
+      "removeAttachment": "Retirer la pièce jointe",
+      "submit": "Envoyer la demande",
+      "footerHint": "Vous retrouverez votre demande dans",
+      "footerLink": "Mes demandes",
+      "submitFailed": "L'envoi a échoué. Votre saisie est conservée, réessayez.",
+      "toast": {
+        "title": "Demande #{reference} envoyée",
+        "description": "Phardev a été prévenu. Suivez son avancement dans Mes demandes.",
+        "action": "Voir la demande"
+      }
+    },
+    "details": {
+      "back": "Retour à mes demandes",
+      "openPage": {
+        "order": "Ouvrir la page commande",
+        "product": "Ouvrir la page produit",
+        "customer": "Ouvrir la page client"
+      },
+      "resolve": "C'est résolu",
+      "steps": {
+        "received": "Reçue",
+        "inProgress": "Prise en charge",
+        "resolved": "Résolue",
+        "cancelled": "Annulée"
+      },
+      "phardev": "Phardev",
+      "replyPlaceholder": "Répondre à {name}…",
+      "replyPlaceholderDefault": "Votre réponse…",
+      "send": "Envoyer",
+      "attach": "Joindre une image",
+      "openImage": "Ouvrir l'image",
+      "closedNotice": "Cette demande est close. Pour un nouveau problème, créez une nouvelle demande.",
+      "notFound": "Cette demande n'existe pas.",
+      "sendFailed": "L'envoi a échoué, réessayez.",
+      "resolveFailed": "Impossible de marquer la demande comme résolue, réessayez.",
+      "resolvedToast": "Demande #{reference} marquée comme résolue"
     }
   }
 }

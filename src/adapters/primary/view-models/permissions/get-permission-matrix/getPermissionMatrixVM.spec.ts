@@ -52,7 +52,8 @@ describe('Get permission matrix view model', () => {
         'shop-management': true,
         banners: true,
         staff: true,
-        research: true
+        research: true,
+        assistance: true
       })
     })
 
@@ -76,7 +77,8 @@ describe('Get permission matrix view model', () => {
         'shop-management': true,
         banners: true,
         staff: false,
-        research: false
+        research: false,
+        assistance: true
       })
     })
 
@@ -100,7 +102,8 @@ describe('Get permission matrix view model', () => {
         'shop-management': false,
         banners: false,
         staff: false,
-        research: false
+        research: false,
+        assistance: false
       })
     })
 

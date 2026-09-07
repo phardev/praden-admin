@@ -17,6 +17,8 @@ div.flex.min-h-screen
           )
           slot
         slot
+    assistance-request-panel
+  UNotifications
 </template>
 <script lang="ts" setup>
 import { useDialog } from '@adapters/primary/nuxt/composables/useDialog'

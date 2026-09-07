@@ -23,6 +23,7 @@ export interface GetPermissionsVM {
   canAccessStaff: boolean
   canAccessResearch: boolean
   canAccessLoyalty: boolean
+  canAccessAssistance: boolean
 }
 
 export const getPermissionsVM = (): GetPermissionsVM => {
@@ -82,6 +83,11 @@ export const getPermissionsVM = (): GetPermissionsVM => {
     canAccessResearch: userProfileStore.hasPermission(
       PermissionResource.RESEARCH
     ),
-    canAccessLoyalty: userProfileStore.hasPermission(PermissionResource.LOYALTY)
+    canAccessLoyalty: userProfileStore.hasPermission(
+      PermissionResource.LOYALTY
+    ),
+    canAccessAssistance: userProfileStore.hasPermission(
+      PermissionResource.ASSISTANCE
+    )
   }
 }

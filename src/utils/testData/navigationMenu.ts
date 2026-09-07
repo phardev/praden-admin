@@ -110,6 +110,16 @@ export const fullMenu: NavigationMenu = {
       ]
     },
     {
+      title: 'Assistance',
+      links: [
+        {
+          name: 'Mes demandes',
+          icon: 'heroicons:lifebuoy',
+          href: '/assistance'
+        }
+      ]
+    },
+    {
       title: 'Boutique',
       links: [
         {

@@ -10,6 +10,8 @@ export const adminUserProfile: UserProfile = {
 export const pharmacistUserProfile: UserProfile = {
   uuid: 'user-pharmacist',
   email: 'pharmacist@phardev.fr',
+  firstname: 'Marie',
+  lastname: 'Dupont',
   role: pharmacistRole
 }
 

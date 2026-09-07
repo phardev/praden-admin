@@ -61,7 +61,8 @@ export class RoleFormFieldsReader extends FormFieldsReader {
       [PermissionResource.RESEARCH]: 'Recherche',
       [PermissionResource.SHOP_MANAGEMENT]: 'Gestion Boutique',
       [PermissionResource.DELIVERY_PRICE_RULES]: 'Règles de prix de livraison',
-      [PermissionResource.LOYALTY]: 'Fidélité'
+      [PermissionResource.LOYALTY]: 'Fidélité',
+      [PermissionResource.ASSISTANCE]: 'Assistance'
     }
 
     return Object.values(PermissionResource)

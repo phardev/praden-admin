@@ -17,5 +17,6 @@ export const systemResources = [
   PermissionResource.SHOP_MANAGEMENT,
   PermissionResource.BANNERS,
   PermissionResource.STAFF,
-  PermissionResource.RESEARCH
+  PermissionResource.RESEARCH,
+  PermissionResource.ASSISTANCE
 ]

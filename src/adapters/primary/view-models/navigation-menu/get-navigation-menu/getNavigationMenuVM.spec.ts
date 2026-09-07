@@ -220,6 +220,16 @@ describe('Get navigation menu VM', () => {
             ]
           },
           {
+            title: 'Assistance',
+            links: [
+              {
+                name: 'Mes demandes',
+                icon: 'heroicons:lifebuoy',
+                href: '/assistance'
+              }
+            ]
+          },
+          {
             title: 'Boutique',
             links: [
               {

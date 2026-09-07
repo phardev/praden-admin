@@ -42,7 +42,8 @@ describe('Get permissions VM', () => {
         canAccessBanners: false,
         canAccessStaff: false,
         canAccessResearch: false,
-        canAccessLoyalty: false
+        canAccessLoyalty: false,
+        canAccessAssistance: false
       })
     })
   })
@@ -71,7 +72,8 @@ describe('Get permissions VM', () => {
         canAccessBanners: false,
         canAccessStaff: false,
         canAccessResearch: false,
-        canAccessLoyalty: false
+        canAccessLoyalty: false,
+        canAccessAssistance: false
       })
     })
   })
@@ -100,7 +102,8 @@ describe('Get permissions VM', () => {
         canAccessBanners: false,
         canAccessStaff: false,
         canAccessResearch: false,
-        canAccessLoyalty: false
+        canAccessLoyalty: false,
+        canAccessAssistance: false
       })
     })
   })
@@ -129,7 +132,8 @@ describe('Get permissions VM', () => {
         canAccessBanners: true,
         canAccessStaff: false,
         canAccessResearch: false,
-        canAccessLoyalty: true
+        canAccessLoyalty: true,
+        canAccessAssistance: true
       })
     })
   })
@@ -158,7 +162,8 @@ describe('Get permissions VM', () => {
         canAccessBanners: true,
         canAccessStaff: true,
         canAccessResearch: true,
-        canAccessLoyalty: true
+        canAccessLoyalty: true,
+        canAccessAssistance: true
       })
     })
   })

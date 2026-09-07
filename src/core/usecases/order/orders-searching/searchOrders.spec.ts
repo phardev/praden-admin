@@ -24,11 +24,18 @@ import {
 } from '@utils/testData/orders'
 import { createPinia, setActivePinia } from 'pinia'
 
+class FailingSearchGateway extends FakeSearchGateway {
+  override searchOrders(): Promise<Array<Order>> {
+    return Promise.reject(new Error('search failed'))
+  }
+}
+
 describe('Search orders', () => {
   let searchStore: any
   let url = 'https://localhost:3000/'
   let searchGateway: FakeSearchGateway
   let dto: SearchOrdersDTO
+  const minimumQueryLength = 3
 
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -328,6 +335,64 @@ describe('Search orders', () => {
         expect(searchStore.hasMoreSearch(url)).toBe(false)
       })
     })
+    describe('Query length', () => {
+      beforeEach(() => {
+        givenExistingOrders(orderPrepared1, orderToPrepare1)
+        dto.minimumQueryLength = minimumQueryLength
+      })
+      describe('The query is not long enough', () => {
+        beforeEach(async () => {
+          dto.query = 'jo'
+          await whenSearchForOrders(dto)
+        })
+        it('should have an error', () => {
+          expectErrorToBe('query is too short')
+        })
+        it('should not have a result', () => {
+          expectSearchResultToEqual()
+        })
+        it('should save the search query', () => {
+          expectCurrentFilterToBe(dto)
+        })
+        it('should not be loading', () => {
+          expectLoadingToBe(false)
+        })
+      })
+      describe('The query was not long enough but now works', () => {
+        beforeEach(async () => {
+          dto.query = 'jo'
+          await whenSearchForOrders(dto)
+          dto.query = 'jour'
+          await whenSearchForOrders(dto)
+        })
+        it('should not have an error', () => {
+          expectErrorToBe(undefined)
+        })
+        it('should have a result', () => {
+          expectSearchResultToEqual(orderPrepared1)
+        })
+      })
+    })
+    describe('Loading state', () => {
+      beforeEach(() => {
+        givenExistingOrders(orderPrepared1)
+        dto.query = 'jour'
+      })
+      it('should be loading while searching', () => {
+        const promise = whenSearchForOrders(dto)
+        expectLoadingToBe(true)
+        return promise
+      })
+      it('should stop loading once the search completes', async () => {
+        await whenSearchForOrders(dto)
+        expectLoadingToBe(false)
+      })
+      it('should stop loading when the gateway fails', async () => {
+        searchGateway = new FailingSearchGateway()
+        await whenSearchForOrders(dto).catch(() => undefined)
+        expectLoadingToBe(false)
+      })
+    })
     describe('Apply mulitple filters in multiple steps', () => {
       it('should apply all filters', async () => {
         givenExistingOrders(
@@ -365,5 +430,13 @@ describe('Search orders', () => {
 
   const expectCurrentFilterToBe = (currentFilter: Partial<SearchOrdersDTO>) => {
     expect(searchStore.getFilter(url)).toStrictEqual(currentFilter)
+  }
+
+  const expectErrorToBe = (expected: string | undefined) => {
+    expect(searchStore.getError(url)).toStrictEqual(expected)
+  }
+
+  const expectLoadingToBe = (expected: boolean) => {
+    expect(searchStore.isLoading(url)).toBe(expected)
   }
 })

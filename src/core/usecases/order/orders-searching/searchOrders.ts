@@ -37,19 +37,35 @@ export const searchOrders = async (
 ): Promise<void> => {
   const searchStore = useSearchStore()
   searchStore.setFilter(key, dto)
-  searchStore.startLoading(key)
-  const items = await searchGateway.searchOrders(dto)
-  const offset = dto.from ?? 0
-  const size = dto.size ?? DEFAULT_PAGE_SIZE
-  if (offset > 0) {
-    searchStore.append(key, items)
-  } else {
-    searchStore.set(key, items)
+  if (isQueryTooShort(dto)) {
+    searchStore.setError(key, 'query is too short')
+    searchStore.set(key, [])
+    searchStore.setPagination(key, { total: 0, from: 0, hasMore: false })
+    searchStore.endLoading(key)
+    return
   }
-  searchStore.setPagination(key, {
-    total: items.length + offset,
-    from: offset,
-    hasMore: items.length === size
-  })
-  searchStore.endLoading(key)
+  searchStore.startLoading(key)
+  try {
+    const items = await searchGateway.searchOrders(dto)
+    const offset = dto.from ?? 0
+    const size = dto.size ?? DEFAULT_PAGE_SIZE
+    if (offset > 0) {
+      searchStore.append(key, items)
+    } else {
+      searchStore.set(key, items)
+    }
+    searchStore.setPagination(key, {
+      total: items.length + offset,
+      from: offset,
+      hasMore: items.length === size
+    })
+    searchStore.setError(key, undefined)
+  } finally {
+    searchStore.endLoading(key)
+  }
 }
+
+const isQueryTooShort = (dto: SearchOrdersDTO): boolean =>
+  !!dto.query &&
+  !!dto.minimumQueryLength &&
+  dto.query.length < dto.minimumQueryLength
