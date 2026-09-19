@@ -4,6 +4,7 @@ import { Category } from '@core/entities/category'
 import { Product } from '@core/entities/product'
 import type { ProductImage } from '@core/entities/productImage'
 import {
+  Ean13ResolutionScope,
   ProductGateway,
   ResolveByEan13Result
 } from '@core/gateways/productGateway'
@@ -212,10 +213,13 @@ export class RealProductGateway extends RealGateway implements ProductGateway {
     })
   }
 
-  async resolveByEan13s(ean13s: Array<string>): Promise<ResolveByEan13Result> {
+  async resolveByEan13s(
+    ean13s: Array<string>,
+    scope: Ean13ResolutionScope
+  ): Promise<ResolveByEan13Result> {
     const res = await axiosWithBearer.post(
       `${this.baseUrl}/products/resolve-by-ean13`,
-      { ean13s },
+      { ean13s, scope },
       {
         headers: {
           'Content-Type': 'application/json'

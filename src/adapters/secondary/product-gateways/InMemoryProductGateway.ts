@@ -3,6 +3,7 @@ import { isEligibleToPromotion, Product } from '@core/entities/product'
 import { isExistingImage, type ProductImage } from '@core/entities/productImage'
 import { ProductDoesNotExistsError } from '@core/errors/ProductDoesNotExistsError'
 import {
+  Ean13ResolutionScope,
   ProductGateway,
   ResolveByEan13Result
 } from '@core/gateways/productGateway'
@@ -237,16 +238,17 @@ export class InMemoryProductGateway implements ProductGateway {
     )
   }
 
-  async resolveByEan13s(ean13s: Array<string>): Promise<ResolveByEan13Result> {
+  async resolveByEan13s(
+    ean13s: Array<string>,
+    scope: Ean13ResolutionScope
+  ): Promise<ResolveByEan13Result> {
     const found = this.products.filter((p) => ean13s.includes(p.ean13))
     const foundEan13s = found.map((p) => p.ean13)
     const notFound = ean13s.filter((e) => !foundEan13s.includes(e))
-    const eligible = found
-      .filter((p) => isEligibleToPromotion(p))
-      .map(this.toListItem)
-    const ineligibleCount = found.filter(
-      (p) => !isEligibleToPromotion(p)
-    ).length
+    const isEligible = (product: Product) =>
+      scope === 'ALL' || isEligibleToPromotion(product)
+    const eligible = found.filter(isEligible).map(this.toListItem)
+    const ineligibleCount = found.length - eligible.length
     return Promise.resolve(
       JSON.parse(JSON.stringify({ eligible, ineligibleCount, notFound }))
     )

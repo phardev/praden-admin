@@ -918,6 +918,14 @@
     "form": {
       "createError": "Le produit n’a pas pu être créé.",
       "editError": "Le produit n’a pas pu être enregistré."
+    },
+    "csvImport": {
+      "button": "Importer depuis CSV",
+      "loading": "Import en cours...",
+      "added": "{count} produit(s) ajouté(s)",
+      "ineligible": "{count} produit(s) non éligible(s) aux promotions",
+      "notFound": "{count} code(s) EAN13 non trouvé(s)",
+      "error": "Une erreur est survenue lors de l’import"
     }
   }
 }

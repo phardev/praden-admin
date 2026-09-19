@@ -1,6 +1,7 @@
 import { Category } from '@core/entities/category'
 import { Product } from '@core/entities/product'
 import type {
+  Ean13ResolutionScope,
   ProductGateway,
   ResolveByEan13Result
 } from '@core/gateways/productGateway'
@@ -68,7 +69,10 @@ export class InMemoryFailProductGateway implements ProductGateway {
     throw new Error(this.errorMessage)
   }
 
-  resolveByEan13s(ean13s: Array<string>): Promise<ResolveByEan13Result> {
+  resolveByEan13s(
+    ean13s: Array<string>,
+    scope: Ean13ResolutionScope
+  ): Promise<ResolveByEan13Result> {
     throw new Error(this.errorMessage)
   }
 

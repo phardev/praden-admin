@@ -1,7 +1,11 @@
-import type { ProductGateway } from '@core/gateways/productGateway'
+import type {
+  Ean13ResolutionScope,
+  ProductGateway
+} from '@core/gateways/productGateway'
+import type { UUID } from '@core/types/types'
 import { useProductStore } from '@store/productStore'
 import { readFileAsText } from '@utils/file'
-import { parsePromotionCSV } from './parsePromotionCSV'
+import { parseEan13CSV } from './parseEan13CSV'
 
 export interface ImportResult {
   addedCount: number
@@ -9,21 +13,22 @@ export interface ImportResult {
   notFoundCodes: Array<string>
 }
 
-export const importPromotionProductsCSV = async (
+export const importProductsFromCSV = async (
   file: File,
+  scope: Ean13ResolutionScope,
   productGateway: ProductGateway,
-  addProducts: (uuids: Array<string>) => void
+  addProducts: (uuids: Array<UUID>) => void
 ): Promise<ImportResult> => {
   const productStore = useProductStore()
 
   const csvContent = await readFileAsText(file)
-  const ean13s = parsePromotionCSV(csvContent)
+  const ean13s = parseEan13CSV(csvContent)
 
   if (ean13s.length === 0) {
     return { addedCount: 0, ineligibleCount: 0, notFoundCodes: [] }
   }
 
-  const result = await productGateway.resolveByEan13s(ean13s)
+  const result = await productGateway.resolveByEan13s(ean13s, scope)
 
   productStore.list(result.eligible)
   addProducts(result.eligible.map((p) => p.uuid))

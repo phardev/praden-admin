@@ -1,4 +1,4 @@
-export const parsePromotionCSV = (csvContent: string): Array<string> => {
+export const parseEan13CSV = (csvContent: string): Array<string> => {
   const content = csvContent.replace(/^\uFEFF/, '')
   const lines = content.split(/\r?\n/)
   const dataLines = lines.slice(1)

@@ -101,6 +101,11 @@ form(v-else)
       accept="image/*"
       @input="imageChanged"
     )
+  products-csv-import(
+    v-if="currentVM.get('products').canEdit"
+    scope="ALL"
+    @imported="productsImported"
+  )
   ft-text-field(
     v-if="currentVM.get('products').canEdit"
     v-model="search"
@@ -157,6 +162,7 @@ form(v-else)
 
 <script lang="ts" setup>
 import { useSelection } from '@adapters/primary/nuxt/composables/useSelection'
+import type { UUID } from '@core/types/types'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
 import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 
@@ -212,6 +218,10 @@ const searchChanged = (e: Event) => {
 const addProducts = () => {
   currentVM.value.addProducts(availableProductSelector.get())
   availableProductSelector.clear()
+}
+
+const productsImported = (uuids: Array<UUID>) => {
+  currentVM.value.addProducts(uuids)
 }
 
 const removeProducts = () => {

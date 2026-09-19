@@ -5,6 +5,8 @@ import { EditProductDTO } from '@core/usecases/product/product-edition/editProdu
 import { ProductListItem } from '@core/usecases/product/product-listing/productListItem'
 import type { Product } from '../entities/product'
 
+export type Ean13ResolutionScope = 'PROMOTION_ELIGIBLE' | 'ALL'
+
 export interface ResolveByEan13Result {
   eligible: Array<ProductListItem>
   ineligibleCount: number
@@ -33,5 +35,8 @@ export interface ProductGateway {
     category: Category,
     productUuids: Array<UUID>
   ): Promise<Array<Product>>
-  resolveByEan13s(ean13s: Array<string>): Promise<ResolveByEan13Result>
+  resolveByEan13s(
+    ean13s: Array<string>,
+    scope: Ean13ResolutionScope
+  ): Promise<ResolveByEan13Result>
 }
