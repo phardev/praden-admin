@@ -3,10 +3,10 @@
   UCard.welcome-card.mb-8
     template(#header)
       .flex.items-center.justify-between
-        h1.text-2xl.font-bold Pharmacie Agnes Praden
-        img.h-12(src="https://www.pharmabest.com/images/header/pharmabest-header.svg" alt="Pharmacie Agnes Praden")
+        h1.text-2xl.font-bold Pharmacie Démo
+        img.h-12(src="https://www.pharmabest.com/images/header/pharmabest-header.svg" alt="Pharmacie Démo")
     template(#default)
-      p.text-gray-600.mb-4 Bienvenue sur le portail d'administration de la Pharmacie Agnes Praden. Accédez rapidement à toutes les fonctionnalités.
+      p.text-gray-600.mb-4 Bienvenue sur le portail d'administration de la Pharmacie Démo. Accédez rapidement à toutes les fonctionnalités.
 
   .grid.grid-cols-1.gap-6(class="md:grid-cols-2 lg:grid-cols-4")
     UCard.dashboard-card.transition-all.duration-300(

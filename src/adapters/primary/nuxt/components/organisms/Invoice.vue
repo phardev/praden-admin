@@ -10,7 +10,7 @@
         br
         | Tél : {{ invoiceVM.supplierAddress.phone }}
         br
-        | Numéro de Siret: 494 972 664 00028
+        | Numéro de Siret: 000 000 000 00000
   table
     tbody
       tr

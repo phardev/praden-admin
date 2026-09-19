@@ -2,7 +2,7 @@ import { NavigationMenu } from '@core/usecases/navigation-menu/navigation-menu-g
 
 export const fullMenu: NavigationMenu = {
   logo: 'https://www.pharmabest.com/images/header/pharmabest-header.svg',
-  title: 'Pharmacie Agnes Praden',
+  title: 'Pharmacie Démo',
   sections: [
     {
       title: 'Statistiques',
@@ -174,7 +174,7 @@ export const fullMenu: NavigationMenu = {
 
 export const prodMenu: NavigationMenu = {
   logo: 'https://www.pharmabest.com/images/header/pharmabest-header.svg',
-  title: 'Pharmacie Agnes Praden',
+  title: 'Pharmacie Démo',
   sections: [
     {
       title: 'Commandes',

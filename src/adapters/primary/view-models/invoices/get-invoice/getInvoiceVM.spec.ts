@@ -101,7 +101,7 @@ describe('Get invoice VM', () => {
     })
     it('should get supplier logo', () => {
       const expected: Partial<GetInvoiceVM> = {
-        logo: 'http://praden-logo.svg'
+        logo: 'https://praden.s3.eu-west-3.amazonaws.com/public/praden-logo.png'
       }
       expectVMToMatch(expected)
     })
@@ -121,13 +121,12 @@ describe('Get invoice VM', () => {
     it('should get supplier address', () => {
       const expected: Partial<GetInvoiceVM> = {
         supplierAddress: {
-          name: 'Pharmacie Agnes Praden',
-          address:
-            '198 Avenue des Frères lumières\nCentre commercial Intermarché, Les Allemandes',
-          city: 'ALES',
-          zip: '30100',
+          name: 'Pharmacie Démo',
+          address: '12 Avenue de la République',
+          city: 'MONTPELLIER',
+          zip: '34000',
           country: 'France',
-          phone: '0466303360'
+          phone: '0400000000'
         }
       }
       expectVMToMatch(expected)
@@ -258,7 +257,7 @@ describe('Get invoice VM', () => {
     })
     it('should get supplier logo', () => {
       const expected: Partial<GetInvoiceVM> = {
-        logo: 'http://praden-logo.svg'
+        logo: 'https://praden.s3.eu-west-3.amazonaws.com/public/praden-logo.png'
       }
       expectVMToMatch(expected)
     })
@@ -278,13 +277,12 @@ describe('Get invoice VM', () => {
     it('should get supplier address', () => {
       const expected: Partial<GetInvoiceVM> = {
         supplierAddress: {
-          name: 'Pharmacie Agnes Praden',
-          address:
-            '198 Avenue des Frères lumières\nCentre commercial Intermarché, Les Allemandes',
-          city: 'ALES',
-          zip: '30100',
+          name: 'Pharmacie Démo',
+          address: '12 Avenue de la République',
+          city: 'MONTPELLIER',
+          zip: '34000',
           country: 'France',
-          phone: '0466303360'
+          phone: '0400000000'
         }
       }
       expectVMToMatch(expected)

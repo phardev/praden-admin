@@ -52,7 +52,7 @@ const menu = {
         {
           name: 'Ma boutique',
           icon: 'ion:cart-outline',
-          href: 'https://pharmacieagnespraden.com/'
+          href: 'https://www.phardev.fr'
         }
       ]
     }

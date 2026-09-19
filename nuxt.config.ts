@@ -23,7 +23,7 @@ export default defineNuxtConfig({
         process.env.PREPARATION_STARTED_TEMPLATE_ID,
       SEND_EMAIL_URL: process.env.SEND_EMAIL_URL,
       BACKEND_URL: process.env.BACKEND_URL,
-      SHOP_URL: process.env.SHOP_URL || 'https://pharmacieagnespraden.com',
+      SHOP_URL: process.env.SHOP_URL || 'https://www.phardev.fr',
       KEYCLOAK_URL: process.env.KEYCLOAK_URL,
       KEYCLOAK_REALM: process.env.KEYCLOAK_REALM,
       KEYCLOAK_CLIENT_ID: process.env.KEYCLOAK_CLIENT_ID
@@ -39,7 +39,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'Praden Admin'
+      title: 'Démo Admin'
     }
   },
 
