@@ -9,14 +9,28 @@
       "unique": "Le code EAN-13 existe déjà."
     },
     "priceWithoutTax": {
-      "required": "Le prix HT est requis."
+      "required": "Le prix HT est requis.",
+      "gte": "Le prix HT doit être supérieur ou égal à {min}."
     },
     "percentTaxRate": {
-      "required": "Le taux de TVA est requis."
+      "required": "Le taux de TVA est requis.",
+      "gte": "Le taux de TVA doit être supérieur ou égal à {min}."
     },
     "weight": {
       "required": "Le poids est requis.",
       "gt": "Le poids doit être supérieur à {min}."
+    },
+    "availableStock": {
+      "gte": "Le stock disponible doit être supérieur ou égal à {min}."
+    },
+    "minStockToSell": {
+      "gte": "Le stock minimum pour vendre en ligne doit être supérieur ou égal à {min}."
+    },
+    "maxQuantityForOrder": {
+      "gte": "La quantité limite pour une commande doit être supérieure ou égale à {min}."
+    },
+    "images": {
+      "file": "Une des images est vide ou illisible. Retirez-la et ajoutez-la à nouveau."
     }
   },
   "error": {
@@ -898,6 +912,12 @@
       "sendFailed": "L'envoi a échoué, réessayez.",
       "resolveFailed": "Impossible de marquer la demande comme résolue, réessayez.",
       "resolvedToast": "Demande #{reference} marquée comme résolue"
+    }
+  },
+  "products": {
+    "form": {
+      "createError": "Le produit n’a pas pu être créé.",
+      "editError": "Le produit n’a pas pu être enregistré."
     }
   }
 }

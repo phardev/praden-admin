@@ -1,5 +1,7 @@
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { SequentialUuidGenerator } from '@adapters/secondary/uuid-generators/SequentialUuidGenerator'
 import { ProductStatus, StockManagementMode } from '@core/entities/product'
+import type { ProductImage } from '@core/entities/productImage'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import { useFormStore } from '@store/formStore'
 import { useLaboratoryStore } from '@store/laboratoryStore'
@@ -8,9 +10,12 @@ import { anaca3, avene, sanofiAventis } from '@utils/testData/laboratories'
 import { createPinia, setActivePinia } from 'pinia'
 import {
   CreateProductLaboratoriesVM,
+  NewProductFormInitializer,
   ProductFormCreateVM,
+  ProductFormFieldsWriter,
   productFormCreateVM
 } from './productFormCreateVM'
+import { ProductFormFieldsReader } from './productFormGetVM'
 
 describe('Product form create VM', () => {
   let vm: ProductFormCreateVM
@@ -35,8 +40,7 @@ describe('Product form create VM', () => {
       ean13: '',
       miniature: undefined,
       newMiniature: undefined,
-      images: [],
-      newImages: [],
+      productImages: [],
       priceWithoutTax: undefined,
       percentTaxRate: undefined,
       priceWithTax: undefined,
@@ -59,7 +63,7 @@ describe('Product form create VM', () => {
       { field: 'cip7', expected: expected.cip7 },
       { field: 'cip13', expected: expected.cip13 },
       { field: 'ean13', expected: expected.ean13 },
-      { field: 'images', expected: expected.images },
+      { field: 'productImages', expected: expected.productImages },
       { field: 'percentTaxRate', expected: expected.percentTaxRate },
       { field: 'availableStock', expected: expected.availableStock },
       { field: 'laboratory', expected: expected.laboratory },
@@ -216,7 +220,7 @@ describe('Product form create VM', () => {
         vm.set('cip13', expectedDTO.cip13)
         vm.set('ean13', expectedDTO.ean13)
         await vm.set('miniature', newMiniature)
-        await vm.set('newImages', newImages)
+        await vm.addImages(newImages)
         expectedDTO.categoryUuids.forEach((uuid) => {
           vm.toggleCategory(uuid)
         })
@@ -276,7 +280,7 @@ describe('Product form create VM', () => {
         vm.set('cip13', expectedDTO.cip13)
         vm.set('ean13', expectedDTO.ean13)
         await vm.set('miniature', newMiniature)
-        await vm.set('newImages', newImages)
+        await vm.addImages(newImages)
         expectedDTO.categoryUuids.forEach((uuid) => {
           vm.toggleCategory(uuid)
         })
@@ -334,7 +338,7 @@ describe('Product form create VM', () => {
         vm.set('cip13', expectedDTO.cip13)
         vm.set('ean13', expectedDTO.ean13)
         await vm.set('miniature', newMiniature)
-        await vm.set('newImages', newImages)
+        await vm.addImages(newImages)
         vm.set('laboratory', expectedDTO.laboratory!.uuid)
         vm.set('priceWithoutTax', '12')
         vm.set('percentTaxRate', '5')
@@ -389,7 +393,7 @@ describe('Product form create VM', () => {
         vm.set('cip13', expectedDTO.cip13)
         vm.set('ean13', expectedDTO.ean13)
         await vm.set('miniature', newMiniature)
-        await vm.set('newImages', newImages)
+        await vm.addImages(newImages)
         vm.set('laboratory', expectedDTO.laboratory!.uuid)
         vm.set('priceWithoutTax', '12')
         vm.set('percentTaxRate', '5')
@@ -404,16 +408,144 @@ describe('Product form create VM', () => {
       })
     })
   })
+  describe('Decimal separator', () => {
+    it('should read a weight typed with a comma', () => {
+      vm.set('weight', '0,5')
+      expect(vm.getDto().weight).toBe(500)
+    })
+    it('should read a price typed with a comma', () => {
+      vm.set('priceWithoutTax', '12,50')
+      expect(vm.getDto().priceWithoutTax).toBe(1250)
+    })
+    it('should read a price formatted by the currency input', () => {
+      vm.set('priceWithoutTax', '12,50 €')
+      expect(vm.getDto().priceWithoutTax).toBe(1250)
+    })
+  })
+
   describe('Validation', () => {
+    const fillRequiredFields = () => {
+      vm.set('name', 'Doliprane 1000mg')
+      vm.set('ean13', '1234567890123')
+      vm.set('weight', '0,5')
+      vm.set('priceWithoutTax', '12,50')
+      vm.set('percentTaxRate', '20')
+    }
     describe('Display validate', () => {
       it('should always display the validate button', () => {
         expect(vm.getDisplayValidate()).toBe(true)
       })
     })
     describe('Can validate', () => {
-      it('should allow to validate at start', () => {
+      it('should not allow to validate at start', () => {
+        expect(vm.getCanValidate()).toBe(false)
+      })
+      it('should list every missing required field at start', () => {
+        expect(vm.getValidationErrors()).toStrictEqual([
+          { key: 'validation.name.required' },
+          { key: 'validation.ean13.required' },
+          { key: 'validation.weight.required' },
+          { key: 'validation.priceWithoutTax.required' },
+          { key: 'validation.percentTaxRate.required' }
+        ])
+      })
+      it('should refuse an empty price', () => {
+        fillRequiredFields()
+        vm.set('priceWithoutTax', '')
+        expect(vm.getValidationErrors()).toStrictEqual([
+          { key: 'validation.priceWithoutTax.required' }
+        ])
+      })
+      it('should refuse an empty tax rate', () => {
+        fillRequiredFields()
+        vm.set('percentTaxRate', '')
+        expect(vm.getValidationErrors()).toStrictEqual([
+          { key: 'validation.percentTaxRate.required' }
+        ])
+      })
+      it('should accept a price deliberately set to zero', () => {
+        fillRequiredFields()
+        vm.set('priceWithoutTax', '0')
+        expect(vm.getValidationErrors()).toStrictEqual([])
+      })
+      it('should accept a tax rate deliberately set to zero', () => {
+        fillRequiredFields()
+        vm.set('percentTaxRate', '0')
+        expect(vm.getValidationErrors()).toStrictEqual([])
+      })
+      it('should allow to validate once required fields are filled', () => {
+        fillRequiredFields()
         expect(vm.getCanValidate()).toBe(true)
       })
+      it('should refuse a weight that is not a positive number', () => {
+        fillRequiredFields()
+        vm.set('weight', 'abc')
+        expect(vm.getValidationErrors()).toStrictEqual([
+          { key: 'validation.weight.gt', params: { min: 0 } }
+        ])
+      })
+      it('should refuse a blank name', () => {
+        fillRequiredFields()
+        vm.set('name', '   ')
+        expect(vm.getValidationErrors()).toStrictEqual([
+          { key: 'validation.name.required' }
+        ])
+      })
+    })
+  })
+
+  describe('Product images', () => {
+    const uuidGenerator = new SequentialUuidGenerator('img')
+    const fileA = new File(['a'], 'a.png', { type: 'image/png' })
+    const fileB = new File(['b'], 'b.png', { type: 'image/png' })
+    const fileC = new File(['c'], 'c.png', { type: 'image/png' })
+
+    beforeEach(() => {
+      uuidGenerator.reset()
+      const fieldsReader = new ProductFormFieldsReader(key)
+      const fieldsWriter = new ProductFormFieldsWriter(key, fieldsReader)
+      vm = new ProductFormCreateVM(
+        new NewProductFormInitializer(key),
+        fieldsReader,
+        fieldsWriter,
+        uuidGenerator
+      )
+    })
+
+    it('should keep the added images in the form store', async () => {
+      await vm.addImages([fileA, fileB])
+      const productImages = formStore.get(key)
+        .productImages as Array<ProductImage>
+      expect(productImages.map((image) => image.order)).toStrictEqual([0, 1])
+    })
+
+    it('should display the added images in order', async () => {
+      await vm.addImages([fileA, fileB])
+      expect(
+        vm.getProductImagesForDisplay().map((image) => image.id)
+      ).toStrictEqual(['img-0', 'img-1'])
+    })
+
+    it('should remove an image by its id', async () => {
+      await vm.addImages([fileA, fileB, fileC])
+      vm.removeImageById('img-1')
+      expect(
+        vm.getProductImagesForDisplay().map((image) => image.id)
+      ).toStrictEqual(['img-0', 'img-2'])
+    })
+
+    it('should reorder images', async () => {
+      await vm.addImages([fileA, fileB, fileC])
+      vm.reorderImages(2, 0)
+      expect(
+        vm.getProductImagesForDisplay().map((image) => image.id)
+      ).toStrictEqual(['img-2', 'img-0', 'img-1'])
+    })
+
+    it('should send the files in display order in the dto', async () => {
+      await vm.addImages([fileA, fileB, fileC])
+      vm.reorderImages(2, 0)
+      expect(vm.getDto().images).toStrictEqual([fileC, fileA, fileB])
     })
   })
   describe('Loading', () => {

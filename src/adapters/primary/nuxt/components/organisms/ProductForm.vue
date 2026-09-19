@@ -251,12 +251,15 @@ UForm(v-else)
           :disabled="!currentVM.get('composition').canEdit"
           @update:model-value="compositionChanged"
         )
-  div.flex.flex-row-reverse.mt-4
+  div.flex.flex-row-reverse.items-center.gap-4.mt-4
     ft-button.px-6.text-xl(
       v-if="currentVM.getDisplayValidate()"
       :disabled="!currentVM.getCanValidate()"
       @click.prevent="validate"
     ) Valider
+    ul.text-error.text-sm(v-if="currentVM.getDisplayValidate()")
+      li(v-for="error in currentVM.getValidationErrors()" :key="error.key")
+        | {{ $t(error.key, error.params || {}) }}
 </template>
 
 <script lang="ts" setup>
@@ -314,11 +317,11 @@ const treeCategoriesVM = computed(() => {
 const currentVM = toRef(props, 'vm')
 
 const productImagesDisplay = computed(() => {
-  return currentVM.value?.getProductImagesForDisplay?.() || []
+  return currentVM.value.getProductImagesForDisplay()
 })
 
 const canEditImages = computed(() => {
-  return currentVM.value?.get?.('productImages')?.canEdit ?? false
+  return currentVM.value.get('productImages').canEdit
 })
 
 const stockManagementModeOptions = [
@@ -373,21 +376,18 @@ const miniatureChanged = async (value: any) => {
 }
 
 const imagesChanged = async (value: FileList) => {
-  await currentVM?.value?.addImages?.(Array.from(value))
+  await currentVM.value.addImages(Array.from(value))
 }
 
 const removeImageById = (imageId: string) => {
-  currentVM?.value?.removeImageById?.(imageId)
+  currentVM.value.removeImageById(imageId)
 }
 
 const onImageReorder = (event: {
   moved?: { oldIndex: number; newIndex: number }
 }) => {
   if (event.moved) {
-    currentVM?.value?.reorderImages?.(
-      event.moved.oldIndex,
-      event.moved.newIndex
-    )
+    currentVM.value.reorderImages(event.moved.oldIndex, event.moved.newIndex)
   }
 }
 

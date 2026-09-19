@@ -37,3 +37,10 @@ export const isExistingImage = (image: ProductImage): boolean =>
 
 export const isNewImage = (image: ProductImage): boolean =>
   image.source.type === 'new'
+
+export const getNewImageFiles = (images: Array<ProductImage>): Array<File> =>
+  images.reduce<Array<File>>(
+    (files, image) =>
+      image.source.type === 'new' ? [...files, image.source.file] : files,
+    []
+  )

@@ -10,22 +10,23 @@ import {
   ProductFormFieldsReader,
   ProductFormVM
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import {
+  getProductFormValidationErrors,
+  ProductFormValidationError
+} from '@adapters/primary/view-models/products/product-form/productFormValidation'
+import { ProductImagesEditor } from '@adapters/primary/view-models/products/product-form/productImagesEditor'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { RealUuidGenerator } from '@adapters/secondary/uuid-generators/RealUuidGenerator'
 import { ProductStatus, StockManagementMode } from '@core/entities/product'
-import {
-  createNewImage,
-  getDisplayUrl,
-  type ProductImage
-} from '@core/entities/productImage'
+import { type ProductImage } from '@core/entities/productImage'
 import { ReductionType } from '@core/entities/promotion'
 import type { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { UUID } from '@core/types/types'
 import { EditProductDTO } from '@core/usecases/product/product-edition/editProduct'
 import { useLaboratoryStore } from '@store/laboratoryStore'
 import { useProductStore } from '@store/productStore'
-import { getFileContent } from '@utils/file'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
+import { parseDecimal } from '@utils/number'
 
 const parseOptionalInteger = (value: unknown): number | undefined => {
   if (value === undefined || value === null || value === '') return undefined
@@ -36,7 +37,7 @@ const parseOptionalInteger = (value: unknown): number | undefined => {
 export class ProductFormEditVM extends ProductFormVM {
   private fieldsReader: ProductFormFieldsReader
   private fieldsWriter: ProductFormFieldsWriter
-  private uuidGenerator: UuidGenerator
+  private imagesEditor: ProductImagesEditor
 
   constructor(
     initializer: ExistingProductFormInitializer,
@@ -48,7 +49,11 @@ export class ProductFormEditVM extends ProductFormVM {
     initializer.init()
     this.fieldsReader = fieldsReader
     this.fieldsWriter = fieldsWriter
-    this.uuidGenerator = uuidGenerator
+    this.imagesEditor = new ProductImagesEditor(
+      fieldsReader,
+      fieldsWriter,
+      uuidGenerator
+    )
   }
 
   get(fieldName: string): any {
@@ -83,54 +88,19 @@ export class ProductFormEditVM extends ProductFormVM {
   }
 
   removeImageById(imageId: string): void {
-    const productImages: Array<ProductImage> =
-      this.fieldsReader.get('productImages')
-    const filtered = productImages.filter((img) => img.id !== imageId)
-    filtered.forEach((img, index) => {
-      img.order = index
-    })
-    this.fieldsWriter.set('productImages', filtered)
+    this.imagesEditor.removeById(imageId)
   }
 
   reorderImages(fromIndex: number, toIndex: number): void {
-    const productImages: Array<ProductImage> = [
-      ...this.fieldsReader.get('productImages')
-    ]
-    const [moved] = productImages.splice(fromIndex, 1)
-    productImages.splice(toIndex, 0, moved)
-    productImages.forEach((img, index) => {
-      img.order = index
-    })
-    this.fieldsWriter.set('productImages', productImages)
+    this.imagesEditor.reorder(fromIndex, toIndex)
   }
 
   async addImages(files: Array<File>): Promise<void> {
-    const productImages: Array<ProductImage> =
-      this.fieldsReader.get('productImages')
-    const startOrder = productImages.length
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i]
-      const previewUrl = await getFileContent(file)
-      const newImage = createNewImage(
-        file,
-        this.uuidGenerator.generate(),
-        startOrder + i,
-        previewUrl
-      )
-      productImages.push(newImage)
-    }
-    this.fieldsWriter.set('productImages', productImages)
+    await this.imagesEditor.add(files)
   }
 
   getProductImagesForDisplay(): Array<{ id: string; url: string }> {
-    const productImages: Array<ProductImage> =
-      this.fieldsReader.get('productImages') || []
-    return [...productImages]
-      .sort((a, b) => a.order - b.order)
-      .map((img) => ({
-        id: img.id,
-        url: getDisplayUrl(img)
-      }))
+    return this.imagesEditor.forDisplay()
   }
 
   getAvailableCategories(): CreateProductCategoriesVM {
@@ -147,10 +117,10 @@ export class ProductFormEditVM extends ProductFormVM {
 
   getDto(): EditProductDTO {
     const priceWithoutTax = this.fieldsReader.get('priceWithoutTax')
-      ? parseFloat(this.fieldsReader.get('priceWithoutTax')) * 100
+      ? parseDecimal(this.fieldsReader.get('priceWithoutTax')) * 100
       : undefined
     const percentTaxRate = this.fieldsReader.get('percentTaxRate')
-      ? parseFloat(this.fieldsReader.get('percentTaxRate'))
+      ? parseDecimal(this.fieldsReader.get('percentTaxRate'))
       : undefined
     const availableStock = parseOptionalInteger(
       this.fieldsReader.get('availableStock')
@@ -159,9 +129,7 @@ export class ProductFormEditVM extends ProductFormVM {
     const laboratory = laboratoryStore.getByUuid(
       this.fieldsReader.get('laboratory')
     )
-    const productImages: Array<ProductImage> =
-      this.fieldsReader.get('productImages') || []
-    const orderedImages = [...productImages].sort((a, b) => a.order - b.order)
+    const orderedImages: Array<ProductImage> = this.imagesEditor.ordered()
     return {
       name: this.fieldsReader.get('name'),
       status: this.fieldsReader.get('isActive')
@@ -187,7 +155,7 @@ export class ProductFormEditVM extends ProductFormVM {
       description: this.fieldsReader.get('description'),
       instructionsForUse: this.fieldsReader.get('instructionsForUse'),
       composition: this.fieldsReader.get('composition'),
-      weight: +this.fieldsReader.get('weight') * 1000,
+      weight: parseDecimal(this.fieldsReader.get('weight')) * 1000,
       maxQuantityForOrder: parseOptionalInteger(
         this.fieldsReader.get('maxQuantityForOrder')
       ),
@@ -221,8 +189,12 @@ export class ProductFormEditVM extends ProductFormVM {
     return true
   }
 
+  getValidationErrors(): Array<ProductFormValidationError> {
+    return getProductFormValidationErrors(this.fieldsReader)
+  }
+
   getCanValidate(): boolean {
-    return true
+    return this.getValidationErrors().length === 0
   }
 }
 

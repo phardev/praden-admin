@@ -3,6 +3,7 @@ import {
   CreateProductLaboratoriesVM,
   CreateProductLocationsVM
 } from '@adapters/primary/view-models/products/product-form/productFormCreateVM'
+import type { ProductFormValidationError } from '@adapters/primary/view-models/products/product-form/productFormValidation'
 import type { Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
 import { RealUuidGenerator } from '@adapters/secondary/uuid-generators/RealUuidGenerator'
 import type { Category } from '@core/entities/category'
@@ -231,6 +232,10 @@ export class ProductFormGetVM extends ProductFormVM {
 
   getDisplayValidate(): boolean {
     return false
+  }
+
+  getValidationErrors(): Array<ProductFormValidationError> {
+    return []
   }
 
   getCanValidate(): boolean {

@@ -8,6 +8,10 @@
 </template>
 
 <script lang="ts" setup>
+import {
+  type ErrorWithResponse,
+  useApiErrorMessage
+} from '@adapters/primary/nuxt/composables/useApiErrorMessage'
 import { productFormEditVM } from '@adapters/primary/view-models/products/product-form/productFormEditVM'
 import { listCategories } from '@core/usecases/categories/list-categories/listCategories'
 import { getProduct } from '@core/usecases/product/get-product/getProduct'
@@ -38,8 +42,20 @@ onMounted(async () => {
   vm.value = productFormEditVM(routeName)
 })
 
+const { t } = useI18n()
+const { fromError } = useApiErrorMessage()
 const validate = async () => {
-  await editProduct(productUuid, vm.value.getDto(), useProductGateway())
+  try {
+    await editProduct(productUuid, vm.value.getDto(), useProductGateway())
+  } catch (error: unknown) {
+    const { title, message } = fromError(error as ErrorWithResponse)
+    useToast().add({
+      title: t('products.form.editError'),
+      description: message || title,
+      color: 'red'
+    })
+    return
+  }
   router.push('/products/')
 }
 </script>

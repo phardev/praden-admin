@@ -3,11 +3,19 @@ import {
   ProductFormFieldsReader,
   ProductFormVM
 } from '@adapters/primary/view-models/products/product-form/productFormGetVM'
+import {
+  getProductFormValidationErrors,
+  ProductFormValidationError
+} from '@adapters/primary/view-models/products/product-form/productFormValidation'
+import { ProductImagesEditor } from '@adapters/primary/view-models/products/product-form/productImagesEditor'
 import { type Field } from '@adapters/primary/view-models/promotions/promotion-form/promotionFormCreateVM'
+import { RealUuidGenerator } from '@adapters/secondary/uuid-generators/RealUuidGenerator'
 import { type Category } from '@core/entities/category'
 import { Laboratory } from '@core/entities/laboratory'
 import { Location } from '@core/entities/location'
 import { ProductStatus, StockManagementMode } from '@core/entities/product'
+import { getNewImageFiles } from '@core/entities/productImage'
+import type { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { UUID } from '@core/types/types'
 import { CreateProductDTO } from '@core/usecases/product/product-creation/createProduct'
 import { useFormStore } from '@store/formStore'
@@ -15,6 +23,7 @@ import { useLaboratoryStore } from '@store/laboratoryStore'
 import { useLocationStore } from '@store/locationStore'
 import { useProductStore } from '@store/productStore'
 import { getFileContent } from '@utils/file'
+import { parseDecimal } from '@utils/number'
 import { addTaxToPrice, removeTaxFromPrice } from '@utils/price'
 
 export type CreateProductCategoriesVM = Array<Pick<Category, 'uuid' | 'name'>>
@@ -52,7 +61,6 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
       percentTaxRate: this.setPercentTaxRate.bind(this),
       priceWithTax: this.setPriceWithTax.bind(this),
       miniature: this.setMiniature.bind(this),
-      newImages: this.setNewImages.bind(this),
       locations: this.setLocations.bind(this)
     }
   }
@@ -121,18 +129,6 @@ export class ProductFormFieldsWriter extends FormFieldsWriter {
     super.set('newMiniature', miniature)
   }
 
-  async setNewImages(newImages: Array<File>): Promise<void> {
-    const existingNewImages = this.fieldsReader.get('newImages')
-    const updatedNewImages = [...existingNewImages, ...newImages]
-    super.set('newImages', updatedNewImages)
-    const images = this.fieldsReader.get('images')
-    for (const image of newImages) {
-      const content = await getFileContent(image)
-      images.push(content)
-    }
-    super.set('images', images)
-  }
-
   setLocations(location: any): void {
     if (location.uuid) {
       const locations = this.fieldsReader.get('locations')
@@ -171,8 +167,7 @@ export class NewProductFormInitializer implements FormInitializer {
       availableStock: '',
       minStockToSell: 6,
       stockManagementMode: 'WINPHARMA',
-      newImages: [],
-      images: [],
+      productImages: [],
       description: '',
       instructionsForUse: '',
       composition: '',
@@ -186,16 +181,23 @@ export class NewProductFormInitializer implements FormInitializer {
 export class ProductFormCreateVM extends ProductFormVM {
   private fieldsReader: ProductFormFieldsReader
   private fieldsWriter: ProductFormFieldsWriter
+  private imagesEditor: ProductImagesEditor
 
   constructor(
     initializer: NewProductFormInitializer,
     fieldsReader: ProductFormFieldsReader,
-    fieldsWriter: ProductFormFieldsWriter
+    fieldsWriter: ProductFormFieldsWriter,
+    uuidGenerator: UuidGenerator
   ) {
     super()
     initializer.init()
     this.fieldsReader = fieldsReader
     this.fieldsWriter = fieldsWriter
+    this.imagesEditor = new ProductImagesEditor(
+      fieldsReader,
+      fieldsWriter,
+      uuidGenerator
+    )
   }
 
   get(fieldName: string): any {
@@ -234,21 +236,20 @@ export class ProductFormCreateVM extends ProductFormVM {
     await this.fieldsWriter.set(fieldName, value)
   }
 
-  async removeImage(data: string) {
-    const images = this.fieldsReader.get('images')
-    if (images.find((i: string) => i === data)) {
-      const updated = images.filter((image: string) => image !== data)
-      await this.set('images', updated)
-    }
-    const newImages = this.fieldsReader.get('newImages')
-    const newImagesData = []
-    for (const file of newImages) {
-      newImagesData.push(await getFileContent(file))
-    }
-    const index = newImagesData.findIndex((i) => i === data)
-    if (index >= 0) {
-      newImages.splice(index, 1)
-    }
+  async addImages(files: Array<File>): Promise<void> {
+    await this.imagesEditor.add(files)
+  }
+
+  removeImageById(imageId: string): void {
+    this.imagesEditor.removeById(imageId)
+  }
+
+  reorderImages(fromIndex: number, toIndex: number): void {
+    this.imagesEditor.reorder(fromIndex, toIndex)
+  }
+
+  getProductImagesForDisplay(): Array<{ id: string; url: string }> {
+    return this.imagesEditor.forDisplay()
   }
 
   getAvailableCategories(): CreateProductCategoriesVM {
@@ -265,10 +266,10 @@ export class ProductFormCreateVM extends ProductFormVM {
 
   getDto(): CreateProductDTO {
     const priceWithoutTax = this.fieldsReader.get('priceWithoutTax')
-      ? parseFloat(this.fieldsReader.get('priceWithoutTax')) * 100
+      ? parseDecimal(this.fieldsReader.get('priceWithoutTax')) * 100
       : 0
     const percentTaxRate = this.fieldsReader.get('percentTaxRate')
-      ? parseFloat(this.fieldsReader.get('percentTaxRate'))
+      ? parseDecimal(this.fieldsReader.get('percentTaxRate'))
       : 0
     const availableStock = this.fieldsReader.get('availableStock')
       ? parseInt(this.fieldsReader.get('availableStock'))
@@ -288,7 +289,7 @@ export class ProductFormCreateVM extends ProductFormVM {
       categoryUuids: this.fieldsReader.get('categoryUuids'),
       laboratory,
       miniature: this.fieldsReader.get('newMiniature'),
-      images: this.fieldsReader.get('newImages'),
+      images: getNewImageFiles(this.imagesEditor.ordered()),
       priceWithoutTax,
       percentTaxRate,
       locations: this.fieldsReader.get('locations'),
@@ -302,7 +303,7 @@ export class ProductFormCreateVM extends ProductFormVM {
       description: this.fieldsReader.get('description'),
       instructionsForUse: this.fieldsReader.get('instructionsForUse'),
       composition: this.fieldsReader.get('composition'),
-      weight: +this.fieldsReader.get('weight') * 1000,
+      weight: parseDecimal(this.fieldsReader.get('weight')) * 1000,
       maxQuantityForOrder: this.fieldsReader.get('maxQuantityForOrder')
         ? +this.fieldsReader.get('maxQuantityForOrder')
         : undefined,
@@ -320,8 +321,12 @@ export class ProductFormCreateVM extends ProductFormVM {
     return true
   }
 
+  getValidationErrors(): Array<ProductFormValidationError> {
+    return getProductFormValidationErrors(this.fieldsReader)
+  }
+
   getCanValidate(): boolean {
-    return true
+    return this.getValidationErrors().length === 0
   }
 }
 
@@ -329,5 +334,10 @@ export const productFormCreateVM = (key: string): ProductFormCreateVM => {
   const initializer = new NewProductFormInitializer(key)
   const getter = new ProductFormFieldsReader(key)
   const setter = new ProductFormFieldsWriter(key, getter)
-  return new ProductFormCreateVM(initializer, getter, setter)
+  return new ProductFormCreateVM(
+    initializer,
+    getter,
+    setter,
+    new RealUuidGenerator()
+  )
 }

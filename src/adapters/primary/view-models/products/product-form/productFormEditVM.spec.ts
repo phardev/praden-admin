@@ -494,6 +494,28 @@ describe('Product form edit VM', () => {
     })
   })
 
+  describe('Decimal separator', () => {
+    beforeEach(() => {
+      productStore.current = { product: dolodent }
+      locationStore.items = [zoneGeo]
+      categoryStore.items = [baby]
+      laboratoryStore.items = [sanofiAventis]
+      vm = productFormEditVM(key)
+    })
+    it('should read a weight typed with a comma', () => {
+      vm.set('weight', '0,5')
+      expect(vm.getDto().weight).toBe(500)
+    })
+    it('should read a price typed with a comma', () => {
+      vm.set('priceWithoutTax', '12,50')
+      expect(vm.getDto().priceWithoutTax).toBe(1250)
+    })
+    it('should read a price formatted by the currency input', () => {
+      vm.set('priceWithoutTax', '12,50 €')
+      expect(vm.getDto().priceWithoutTax).toBe(1250)
+    })
+  })
+
   describe('Validation', () => {
     describe('Display validate', () => {
       it('should always display the validate button', () => {
@@ -501,6 +523,18 @@ describe('Product form edit VM', () => {
       })
     })
     describe('Can validate', () => {
+      it('should refuse an empty weight', () => {
+        const weightKey = 'edit-product-weight-key'
+        productStore.current = { product: dolodent }
+        locationStore.items = [zoneGeo]
+        categoryStore.items = [baby]
+        laboratoryStore.items = [sanofiAventis]
+        const weightVM = productFormEditVM(weightKey)
+        weightVM.set('weight', '')
+        expect(weightVM.getValidationErrors()).toStrictEqual([
+          { key: 'validation.weight.required' }
+        ])
+      })
       it('should allow to validate at start', () => {
         expect(vm.getCanValidate()).toBe(true)
       })
