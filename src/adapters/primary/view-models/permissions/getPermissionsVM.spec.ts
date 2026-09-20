@@ -41,6 +41,7 @@ describe('Get permissions VM', () => {
         canAccessShopManagement: false,
         canAccessBanners: false,
         canAccessStaff: false,
+        canAccessOperatorStatistics: false,
         canAccessResearch: false,
         canAccessLoyalty: false,
         canAccessAssistance: false
@@ -71,6 +72,7 @@ describe('Get permissions VM', () => {
         canAccessShopManagement: false,
         canAccessBanners: false,
         canAccessStaff: false,
+        canAccessOperatorStatistics: false,
         canAccessResearch: false,
         canAccessLoyalty: false,
         canAccessAssistance: false
@@ -101,6 +103,7 @@ describe('Get permissions VM', () => {
         canAccessShopManagement: false,
         canAccessBanners: false,
         canAccessStaff: false,
+        canAccessOperatorStatistics: false,
         canAccessResearch: false,
         canAccessLoyalty: false,
         canAccessAssistance: false
@@ -131,6 +134,7 @@ describe('Get permissions VM', () => {
         canAccessShopManagement: true,
         canAccessBanners: true,
         canAccessStaff: false,
+        canAccessOperatorStatistics: false,
         canAccessResearch: false,
         canAccessLoyalty: true,
         canAccessAssistance: true
@@ -161,6 +165,7 @@ describe('Get permissions VM', () => {
         canAccessShopManagement: true,
         canAccessBanners: true,
         canAccessStaff: true,
+        canAccessOperatorStatistics: true,
         canAccessResearch: true,
         canAccessLoyalty: true,
         canAccessAssistance: true

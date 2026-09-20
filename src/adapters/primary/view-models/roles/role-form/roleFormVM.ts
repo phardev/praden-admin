@@ -58,6 +58,7 @@ export class RoleFormFieldsReader extends FormFieldsReader {
       [PermissionResource.ORDERS]: 'Commandes',
       [PermissionResource.BANNERS]: 'Bannières',
       [PermissionResource.STAFF]: 'Équipe',
+      [PermissionResource.OPERATOR_STATISTICS]: 'Statistiques opérateurs',
       [PermissionResource.RESEARCH]: 'Recherche',
       [PermissionResource.SHOP_MANAGEMENT]: 'Gestion Boutique',
       [PermissionResource.DELIVERY_PRICE_RULES]: 'Règles de prix de livraison',

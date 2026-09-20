@@ -23,6 +23,7 @@ export const adminRole: Role = {
     { resource: PermissionResource.ORDERS },
     { resource: PermissionResource.BANNERS },
     { resource: PermissionResource.STAFF },
+    { resource: PermissionResource.OPERATOR_STATISTICS },
     { resource: PermissionResource.SHOP_MANAGEMENT },
     { resource: PermissionResource.RESEARCH },
     { resource: PermissionResource.LOYALTY },

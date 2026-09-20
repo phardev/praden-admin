@@ -21,6 +21,7 @@ export interface GetPermissionsVM {
   canAccessShopManagement: boolean
   canAccessBanners: boolean
   canAccessStaff: boolean
+  canAccessOperatorStatistics: boolean
   canAccessResearch: boolean
   canAccessLoyalty: boolean
   canAccessAssistance: boolean
@@ -80,6 +81,9 @@ export const getPermissionsVM = (): GetPermissionsVM => {
       PermissionResource.BANNERS
     ),
     canAccessStaff: userProfileStore.hasPermission(PermissionResource.STAFF),
+    canAccessOperatorStatistics: userProfileStore.hasPermission(
+      PermissionResource.OPERATOR_STATISTICS
+    ),
     canAccessResearch: userProfileStore.hasPermission(
       PermissionResource.RESEARCH
     ),
