@@ -1,6 +1,7 @@
 import { Staff } from '@core/entities/staff'
 import { UUID } from '@core/types/types'
 import { useStaffStore } from '@store/staffStore'
+import { getStaffDisplayName } from '@utils/staff'
 
 export interface GetStaffItemVM {
   uuid: UUID
@@ -17,19 +18,6 @@ export interface GetStaffVM {
   isLoading: boolean
 }
 
-const getDisplayName = (staff: Staff): string => {
-  if (staff.firstname && staff.lastname) {
-    return `${staff.firstname} ${staff.lastname}`
-  }
-  if (staff.firstname) {
-    return staff.firstname
-  }
-  if (staff.lastname) {
-    return staff.lastname
-  }
-  return staff.email
-}
-
 export const getStaffVM = (): GetStaffVM => {
   const staffStore = useStaffStore()
   const staff = staffStore.items
@@ -41,7 +29,7 @@ export const getStaffVM = (): GetStaffVM => {
         firstname: s.firstname,
         lastname: s.lastname,
         email: s.email,
-        displayName: getDisplayName(s),
+        displayName: getStaffDisplayName(s),
         roleUuid: s.role.uuid,
         roleName: s.role.name
       }

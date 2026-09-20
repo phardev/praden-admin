@@ -143,6 +143,11 @@ export const fullMenu: NavigationMenu = {
           href: '/staff'
         },
         {
+          name: 'Statistiques opérateurs',
+          icon: 'material-symbols:bar-chart',
+          href: '/staff/statistics'
+        },
+        {
           name: 'Recherche',
           icon: 'material-symbols:search-rounded',
           href: '/research'

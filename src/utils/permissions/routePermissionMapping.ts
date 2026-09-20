@@ -52,6 +52,7 @@ export const ROUTE_PERMISSION_MAP: Record<string, PermissionResource> = {
   '/banners/new': PermissionResource.BANNERS,
   '/banners/edit': PermissionResource.BANNERS,
   '/staff': PermissionResource.STAFF,
+  '/staff/statistics': PermissionResource.STAFF,
   '/research': PermissionResource.RESEARCH,
   '/loyalty': PermissionResource.LOYALTY,
   '/assistance': PermissionResource.ASSISTANCE

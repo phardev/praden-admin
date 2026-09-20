@@ -36,3 +36,12 @@ export const formatCurrency = (value: number, includeSymbol = true): string => {
   })
   return formatter.format(value)
 }
+
+export const formatCount = (value: number): string =>
+  new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 }).format(value)
+
+export const formatAverage = (value: number): string =>
+  new Intl.NumberFormat('fr-FR', {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1
+  }).format(value)

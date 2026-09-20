@@ -56,7 +56,15 @@
     "collapseAll": "Cacher tout",
     "active": "Actif",
     "inactive": "Inactif",
-    "sortBy": "Trier par {name}"
+    "sortBy": "Trier par {name}",
+    "period": {
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "selectDate": "Choisir une date",
+      "last7Days": "7 jours",
+      "last30Days": "30 jours",
+      "currentMonth": "Mois en cours"
+    }
   },
   "categories": {
     "status": {
@@ -511,6 +519,39 @@
       },
       "role": {
         "label": "Rôle"
+      }
+    },
+    "statistics": {
+      "title": "Statistiques opérateurs",
+      "operators": "Opérateurs",
+      "team": "Toute l'équipe",
+      "evolution": "Évolution — {name}",
+      "showData": "Voir les données",
+      "noData": "Aucune préparation validée sur cette période.",
+      "dataAvailableFrom": "Les statistiques opérateurs sont disponibles à partir du 27/04/2026.",
+      "inactiveStaff": "Sans activité sur la période : {count}",
+      "chartAriaLabel": "Courbe des {metric} par jour pour {name}, du {period}",
+      "kpi": {
+        "ordersPerDay": "Commandes / jour travaillé",
+        "linesPerDay": "Lignes / jour travaillé",
+        "boxesPerDay": "Boîtes / jour travaillé",
+        "total": "{total} au total"
+      },
+      "metric": {
+        "legend": "Métrique affichée",
+        "orders": "Commandes",
+        "lines": "Lignes",
+        "boxes": "Boîtes"
+      },
+      "table": {
+        "select": "Sélectionner l'opérateur",
+        "operator": "Opérateur",
+        "activeDays": "Jours travaillés",
+        "day": "Jour",
+        "orders": "Commandes",
+        "lines": "Lignes",
+        "boxes": "Boîtes",
+        "perDay": "{value} / jour"
       }
     }
   },
