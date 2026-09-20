@@ -691,7 +691,8 @@
       "announcementBarCard": "Barre d'annonce",
       "categoryOrderCard": "Ordre des catégories",
       "pharmacistSelectionCard": "Sélection du pharmacien",
-      "emergencyPharmaciesCard": "Pharmacies de garde"
+      "emergencyPharmaciesCard": "Pharmacies de garde",
+      "contentPagesCard": "Pages éditoriales"
     },
     "announcementBar": {
       "title": "Barres d'annonce",
@@ -776,6 +777,50 @@
       "deleteSuccess": "Pharmacie de garde supprimée",
       "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette pharmacie de garde ?",
       "groupedByDate": "Pharmacies par date"
+    },
+    "contentPages": {
+      "title": "Pages éditoriales",
+      "description": "Modifiez le contenu et le référencement des pages du site",
+      "lastUpdated": {
+        "staff": "Modifiée le {date} par {author}",
+        "system": "Modifiée le {date} lors de l'installation",
+        "unknown": "Modifiée le {date} par un utilisateur supprimé"
+      },
+      "save": "Enregistrer",
+      "fields": {
+        "title": "Titre de la page",
+        "titleHelp": "Affiché dans l'onglet du navigateur et les résultats Google. Le titre visible en haut de la page se modifie dans le contenu HTML (balise h1).",
+        "metaDescription": "Description SEO",
+        "metaDescriptionHelp": "{count}/320 caractères. Affichée dans les résultats Google.",
+        "html": "Contenu HTML",
+        "htmlHelp": "Code HTML brut, titre h1 inclus. Les balises courantes (h1, h2, h3, p, ul, li, a, strong, table) sont mises en forme automatiquement par le site. La mise en page propre à cette page est définie dans le bloc « style » en tête du contenu : modifiez-la ici."
+      },
+      "preview": {
+        "title": "Aperçu",
+        "show": "Afficher",
+        "hide": "Masquer",
+        "disclaimer": "Aperçu indicatif de la structure. Le rendu final peut légèrement différer sur la boutique."
+      },
+      "updateSuccess": "Page mise à jour avec succès",
+      "updateError": "Erreur lors de la mise à jour de la page",
+      "pages": {
+        "cgv": "Conditions Générales de Vente",
+        "mentions-legales": "Mentions légales",
+        "confidentialite": "Politique de confidentialité",
+        "paiement": "Paiement sécurisé",
+        "pharmacie": "Présentation de la pharmacie",
+        "engagement": "Nos engagements",
+        "recrutement": "Recrutement",
+        "article": "On parle de nous"
+      },
+      "list": {
+        "page": "Page",
+        "lastUpdate": "Dernière modification",
+        "edit": "Éditer",
+        "empty": "Aucune page éditoriale"
+      },
+      "viewOnline": "Voir la page en ligne",
+      "leavePageConfirm": "Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ?"
     }
   },
   "loyalty": {

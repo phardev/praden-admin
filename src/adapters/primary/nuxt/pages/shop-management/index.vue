@@ -67,6 +67,25 @@
 
     UCard.settings-card.transition-all.duration-300(
       class="hover:shadow-lg hover:scale-105 cursor-pointer"
+      @click="navigateTo('/shop-management/content-pages')"
+    )
+      template(#header)
+        .flex.items-center.justify-between
+          h2.text-lg.font-semibold {{ $t('shopManagement.overview.contentPagesCard') }}
+          icon(name="i-heroicons-document-text" class="text-2xl text-primary")
+      template(#default)
+        p.text-sm.text-gray-600.mb-4 {{ $t('shopManagement.contentPages.description') }}
+        UButton(
+          color="primary"
+          variant="soft"
+          block
+          icon="i-heroicons-arrow-right"
+          :label="$t('common.edit')"
+          @click.stop="navigateTo('/shop-management/content-pages')"
+        )
+
+    UCard.settings-card.transition-all.duration-300(
+      class="hover:shadow-lg hover:scale-105 cursor-pointer"
       @click="navigateTo('/shop-management/emergency-pharmacies')"
     )
       template(#header)

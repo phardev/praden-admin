@@ -43,6 +43,8 @@ export const ROUTE_PERMISSION_MAP: Record<string, PermissionResource> = {
   '/shop-management/announcement-bar': PermissionResource.SHOP_MANAGEMENT,
   '/shop-management/category-order': PermissionResource.SHOP_MANAGEMENT,
   '/shop-management/pharmacist-selection': PermissionResource.SHOP_MANAGEMENT,
+  '/shop-management/content-pages': PermissionResource.SHOP_MANAGEMENT,
+  '/shop-management/content-pages/edit': PermissionResource.SHOP_MANAGEMENT,
   '/shop-management/emergency-pharmacies': PermissionResource.SHOP_MANAGEMENT,
   '/shop-management/emergency-pharmacies/new':
     PermissionResource.SHOP_MANAGEMENT,
