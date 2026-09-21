@@ -4,12 +4,15 @@ import {
   KanbanColumnWithKey
 } from '@adapters/primary/view-models/support/get-support-tickets/getSupportTicketsVM'
 import { useTicketStore } from '@store/ticketStore'
+import { timestampToLocaleString } from '@utils/formatters'
 import {
   lowPriorityTicket,
   newTicket,
   notWaitingForAnswerTicket,
   resolvedTicket,
   startedTicket,
+  ticketFromCustomerWithFirstnameOnly,
+  ticketFromCustomerWithoutName,
   urgentTicket,
   waitingForAnswerTicket
 } from '@utils/testData/tickets'
@@ -143,6 +146,74 @@ describe('Get support tickets VM', () => {
     })
   })
 
+  describe('Given a ticket from a customer without firstname nor lastname', () => {
+    beforeEach(() => {
+      ticketStore.setTickets([ticketFromCustomerWithoutName])
+    })
+
+    it('should display the customer email', () => {
+      expectFirstNewTicketCustomerNameToBe(
+        ticketFromCustomerWithoutName.customer.email
+      )
+    })
+  })
+
+  describe('Given a ticket from a customer with a firstname only', () => {
+    beforeEach(() => {
+      ticketStore.setTickets([ticketFromCustomerWithFirstnameOnly])
+    })
+
+    it('should display the firstname', () => {
+      expectFirstNewTicketCustomerNameToBe(
+        ticketFromCustomerWithFirstnameOnly.customer.firstname!
+      )
+    })
+  })
+
+  describe('Given no filter is applied', () => {
+    it('should expose no active filter', () => {
+      expect(getSupportTicketsVM().activeFilters).toStrictEqual([])
+    })
+  })
+
+  describe('Given filters are applied', () => {
+    beforeEach(() => {
+      ticketStore.setFilters({
+        customerQuery: 'durand',
+        startDate: newTicket.createdAt,
+        endDate: resolvedTicket.createdAt
+      })
+    })
+
+    it('should expose the applied filters', () => {
+      expect(getSupportTicketsVM().currentFilters).toStrictEqual({
+        customerQuery: 'durand',
+        startDate: newTicket.createdAt,
+        endDate: resolvedTicket.createdAt
+      })
+    })
+
+    it('should expose one removable chip per filter', () => {
+      expect(getSupportTicketsVM().activeFilters).toStrictEqual([
+        { key: 'customerQuery', label: 'Client : "durand"' },
+        {
+          key: 'startDate',
+          label: `Depuis le ${timestampToLocaleString(newTicket.createdAt, 'fr-FR')}`
+        },
+        {
+          key: 'endDate',
+          label: `Jusqu'au ${timestampToLocaleString(resolvedTicket.createdAt, 'fr-FR')}`
+        }
+      ])
+    })
+  })
+
+  const expectFirstNewTicketCustomerNameToBe = (customerName: string) => {
+    expect(getSupportTicketsVM().columns[0].tickets[0].customerName).toBe(
+      customerName
+    )
+  }
+
   const expectVMToMatch = (expectedVM: Partial<GetSupportTicketsVM>) => {
     const emptyColumns: Array<KanbanColumnWithKey> = [
       {
@@ -168,6 +239,8 @@ describe('Get support tickets VM', () => {
     ]
     const emptyVM: GetSupportTicketsVM = {
       columns: emptyColumns,
+      currentFilters: {},
+      activeFilters: [],
       isLoading: false
     }
     expect(getSupportTicketsVM()).toMatchObject({ ...emptyVM, ...expectedVM })

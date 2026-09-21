@@ -5,7 +5,10 @@ import {
 } from '@adapters/primary/view-models/support/get-support-ticket-details/getTicketDetailsVM'
 import { TicketMessageType } from '@core/entities/ticket'
 import { useTicketStore } from '@store/ticketStore'
-import { startedTicket } from '@utils/testData/tickets'
+import {
+  startedTicket,
+  ticketFromCustomerWithoutName
+} from '@utils/testData/tickets'
 import { createPinia, setActivePinia } from 'pinia'
 
 describe('Get ticket details VM', () => {
@@ -130,6 +133,26 @@ describe('Get ticket details VM', () => {
     it('should indicate if not loading', () => {
       const vm = getTicketDetailsVM()
       expect(vm?.isLoading).toBe(false)
+    })
+  })
+
+  describe('Given the current ticket comes from a customer without firstname nor lastname', () => {
+    beforeEach(() => {
+      ticketStore.setCurrentTicket(ticketFromCustomerWithoutName)
+    })
+
+    it('should display the customer email as name', () => {
+      const vm = getTicketDetailsVM()
+      expect(vm?.item?.customer.name).toBe(
+        ticketFromCustomerWithoutName.customer.email
+      )
+    })
+
+    it('should display the customer email as the author of his messages', () => {
+      const vm = getTicketDetailsVM()
+      expect(vm?.item?.messages[0].author.name).toBe(
+        ticketFromCustomerWithoutName.customer.email
+      )
     })
   })
 })

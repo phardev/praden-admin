@@ -37,8 +37,8 @@ export interface TicketMessage {
 export interface TicketCustomer {
   uuid: UUID
   email: Mail
-  firstname: string
-  lastname: string
+  firstname?: string
+  lastname?: string
 }
 
 export interface Ticket {

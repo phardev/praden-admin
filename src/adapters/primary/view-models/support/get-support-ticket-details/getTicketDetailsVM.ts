@@ -8,6 +8,7 @@ import {
 } from '@core/entities/ticket'
 import { Timestamp, UUID } from '@core/types/types'
 import { useTicketStore } from '@store/ticketStore'
+import { getDisplayName } from '@utils/displayName'
 
 export interface TicketMessageVM {
   uuid: UUID
@@ -75,7 +76,7 @@ export const getTicketDetailsVM = (): GetTicketDetailsVM => {
     }
   }
 
-  const customerName = `${currentTicket.customer.firstname} ${currentTicket.customer.lastname}`
+  const customerName = getDisplayName(currentTicket.customer)
 
   return {
     item: {

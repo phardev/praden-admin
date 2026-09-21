@@ -1,9 +1,15 @@
 <template lang="pug">
 .section(class="space-y-8")
   .mb-10
-    .flex.items-center.gap-4.mb-3
+    .flex.items-center.gap-4.mb-6
       .w-1.h-8.bg-customPrimary-500.rounded-full
       h1.text-page-title.text-gray-900 {{ $t('support.title') }}
+
+    ft-support-tickets-filters(
+      :current-filters="supportTicketsVM.currentFilters"
+      :active-filters="supportTicketsVM.activeFilters"
+      @change="applyFilters"
+    )
 
   div(v-if="supportTicketsVM.isLoading")
     .kanban-board(class="flex gap-6 overflow-x-auto pb-4")
@@ -73,6 +79,7 @@
 
 <script lang="ts" setup>
 import { getSupportTicketsVM } from '@adapters/primary/view-models/support/get-support-tickets/getSupportTicketsVM'
+import type { SupportTicketsFilters } from '@core/usecases/support/getSupportTickets'
 import { getSupportTickets } from '@core/usecases/support/getSupportTickets'
 import { useTicketGateway } from '../../../../../../gateways/ticketGateway'
 
@@ -83,12 +90,20 @@ const ticketGateway = useTicketGateway()
 
 const supportTicketsVM = computed(() => getSupportTicketsVM())
 
-onMounted(async () => {
+const loadTickets = async (filters: SupportTicketsFilters = {}) => {
   try {
-    await getSupportTickets(ticketGateway)
+    await getSupportTickets(ticketGateway, filters)
   } catch (error) {
     console.error('Error loading support tickets:', error)
   }
+}
+
+const applyFilters = async (filters: SupportTicketsFilters) => {
+  await loadTickets(filters)
+}
+
+onMounted(async () => {
+  await loadTickets(supportTicketsVM.value.currentFilters)
 })
 
 const navigateToTicket = (ticketUuid: string) => {

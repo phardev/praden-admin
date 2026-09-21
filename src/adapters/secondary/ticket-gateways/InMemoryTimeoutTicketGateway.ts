@@ -2,6 +2,7 @@ import { Ticket, TicketPriority } from '@core/entities/ticket'
 import { DateProvider } from '@core/gateways/dateProvider'
 import { TicketGateway } from '@core/gateways/ticketGateway'
 import { UUID } from '@core/types/types'
+import { SupportTicketsFilters } from '@core/usecases/support/getSupportTickets'
 import { InMemoryTicketGateway } from './InMemoryTicketGateway'
 
 export class InMemoryTimeoutTicketGateway
@@ -15,10 +16,10 @@ export class InMemoryTimeoutTicketGateway
     this.timeoutInMs = timeoutInMs
   }
 
-  override list(): Promise<Array<Ticket>> {
+  override list(filters: SupportTicketsFilters = {}): Promise<Array<Ticket>> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(super.list())
+        resolve(super.list(filters))
       }, this.timeoutInMs)
     })
   }

@@ -374,6 +374,9 @@
   },
   "support": {
     "title": "Support Client",
+    "filters": {
+      "customerPlaceholder": "Rechercher un client (nom, email)"
+    },
     "tickets": {
       "new": "Nouveaux",
       "started": "En cours",

@@ -1,13 +1,17 @@
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { InMemoryTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTicketGateway'
 import { Ticket } from '@core/entities/ticket'
-import { getSupportTickets } from '@core/usecases/support/getSupportTickets'
+import {
+  getSupportTickets,
+  SupportTicketsFilters
+} from '@core/usecases/support/getSupportTickets'
 import { useTicketStore } from '@store/ticketStore'
 import {
   lowPriorityTicket,
   newTicket,
   resolvedTicket,
   startedTicket,
+  ticketFromCustomerWithoutName,
   urgentTicket,
   waitingForAnswerTicket
 } from '@utils/testData/tickets'
@@ -26,12 +30,14 @@ describe('Get support tickets', () => {
   let ticketStore: any
   let ticketGateway: InMemoryTicketGateway
   let dateProvider: FakeDateProvider
+  let filters: SupportTicketsFilters
 
   beforeEach(() => {
     setActivePinia(createPinia())
     ticketStore = useTicketStore()
     dateProvider = new FakeDateProvider()
     ticketGateway = new InMemoryTicketGateway(dateProvider)
+    filters = {}
   })
 
   describe('Given there are no tickets', () => {
@@ -49,6 +55,39 @@ describe('Get support tickets', () => {
 
     it('should list all of them', () => {
       expect(ticketStore.items).toStrictEqual(allTickets)
+    })
+  })
+
+  describe('Given a customer filter', () => {
+    beforeEach(async () => {
+      givenExistingTickets(...allTickets, ticketFromCustomerWithoutName)
+      filters = { customerQuery: ticketFromCustomerWithoutName.customer.email }
+      await whenGetSupportTickets()
+    })
+
+    it('should list the matching tickets only', () => {
+      expect(ticketStore.items).toStrictEqual([ticketFromCustomerWithoutName])
+    })
+
+    it('should keep the applied filters', () => {
+      expect(ticketStore.filters).toStrictEqual(filters)
+    })
+  })
+
+  describe('Given a date range filter', () => {
+    beforeEach(async () => {
+      givenExistingTickets(...allTickets)
+      filters = {
+        startDate: newTicket.createdAt,
+        endDate: newTicket.createdAt
+      }
+      await whenGetSupportTickets()
+    })
+
+    it('should list the tickets created inside the range', () => {
+      expect(ticketStore.items).toStrictEqual(
+        allTickets.filter((ticket) => ticket.createdAt === newTicket.createdAt)
+      )
     })
   })
 
@@ -77,6 +116,6 @@ describe('Get support tickets', () => {
   }
 
   const whenGetSupportTickets = async () => {
-    await getSupportTickets(ticketGateway)
+    await getSupportTickets(ticketGateway, filters)
   }
 })

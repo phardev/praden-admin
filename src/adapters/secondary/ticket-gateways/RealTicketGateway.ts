@@ -2,6 +2,7 @@ import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { Ticket, TicketPriority } from '@core/entities/ticket'
 import { TicketGateway } from '@core/gateways/ticketGateway'
 import { UUID } from '@core/types/types'
+import { SupportTicketsFilters } from '@core/usecases/support/getSupportTickets'
 import { RealGateway } from '../order-gateways/RealOrderGateway'
 
 export class RealTicketGateway extends RealGateway implements TicketGateway {
@@ -9,8 +10,10 @@ export class RealTicketGateway extends RealGateway implements TicketGateway {
     super(url)
   }
 
-  async list(): Promise<Array<Ticket>> {
-    const res = await axiosWithBearer.get(`${this.baseUrl}/tickets`)
+  async list(filters: SupportTicketsFilters = {}): Promise<Array<Ticket>> {
+    const res = await axiosWithBearer.get(`${this.baseUrl}/tickets`, {
+      params: filters
+    })
     return Promise.resolve(res.data.items)
   }
 

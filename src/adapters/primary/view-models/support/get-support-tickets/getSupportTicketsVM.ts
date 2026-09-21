@@ -1,3 +1,4 @@
+import { ActiveFilterVM } from '@adapters/primary/view-models/shared/filters'
 import {
   Ticket,
   TicketMessageType,
@@ -5,7 +6,10 @@ import {
   TicketStatus
 } from '@core/entities/ticket'
 import { UUID } from '@core/types/types'
+import { SupportTicketsFilters } from '@core/usecases/support/getSupportTickets'
 import { useTicketStore } from '@store/ticketStore'
+import { getDisplayName } from '@utils/displayName'
+import { timestampToLocaleString } from '@utils/formatters'
 
 export interface TicketItemVM {
   uuid: UUID
@@ -28,6 +32,8 @@ export interface KanbanColumnWithKey extends KanbanColumn {
 
 export interface GetSupportTicketsVM {
   columns: Array<KanbanColumnWithKey>
+  currentFilters: SupportTicketsFilters
+  activeFilters: Array<ActiveFilterVM>
   isLoading: boolean
 }
 
@@ -50,12 +56,37 @@ const mapTicketToVM = (ticket: Ticket): TicketItemVM => ({
   uuid: ticket.uuid,
   ticketNumber: ticket.ticketNumber,
   subject: ticket.subject,
-  customerName: `${ticket.customer.firstname} ${ticket.customer.lastname}`,
+  customerName: getDisplayName(ticket.customer),
   priority: ticket.priority,
   createdAt: ticket.createdAt,
   firstMessageContent:
     ticket.messages.length > 0 ? ticket.messages[0].content : ticket.description
 })
+
+const buildActiveFilters = (
+  filters: SupportTicketsFilters
+): Array<ActiveFilterVM> => {
+  const activeFilters: Array<ActiveFilterVM> = []
+  if (filters.customerQuery) {
+    activeFilters.push({
+      key: 'customerQuery',
+      label: `Client : "${filters.customerQuery}"`
+    })
+  }
+  if (filters.startDate) {
+    activeFilters.push({
+      key: 'startDate',
+      label: `Depuis le ${timestampToLocaleString(filters.startDate, 'fr-FR')}`
+    })
+  }
+  if (filters.endDate) {
+    activeFilters.push({
+      key: 'endDate',
+      label: `Jusqu'au ${timestampToLocaleString(filters.endDate, 'fr-FR')}`
+    })
+  }
+  return activeFilters
+}
 
 const isWaitingForAnswer = (ticket: Ticket): boolean => {
   if (ticket.status !== TicketStatus.STARTED || ticket.messages.length === 0) {
@@ -113,6 +144,8 @@ export const getSupportTicketsVM = (): GetSupportTicketsVM => {
 
   return {
     columns,
+    currentFilters: ticketStore.filters,
+    activeFilters: buildActiveFilters(ticketStore.filters),
     isLoading: ticketStore.isLoading
   }
 }

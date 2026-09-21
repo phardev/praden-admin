@@ -285,3 +285,54 @@ export const notWaitingForAnswerTicket: Ticket = {
   updatedAt: 1705842000000,
   orderUuid: orderDelivered1.uuid
 }
+
+export const ticketFromCustomerWithoutName: Ticket = {
+  uuid: 'ticket-customer-without-name-1',
+  ticketNumber: 'TICKET_2024_0008',
+  subject: 'Question sur un produit',
+  description: 'Bonjour, ce produit est-il compatible avec un traitement ?',
+  status: TicketStatus.NEW,
+  priority: TicketPriority.LOW,
+  customer: {
+    uuid: 'customer-without-name',
+    email: 'sans.nom@phardev.fr'
+  },
+  messages: [
+    {
+      uuid: 'message-customer-without-name',
+      content: 'Bonjour, ce produit est-il compatible avec un traitement ?',
+      type: TicketMessageType.PUBLIC,
+      sentAt: 1705920000000,
+      authorUuid: 'customer-without-name',
+      attachments: []
+    }
+  ],
+  createdAt: 1705920000000,
+  updatedAt: 1705920000000
+}
+
+export const ticketFromCustomerWithFirstnameOnly: Ticket = {
+  uuid: 'ticket-customer-firstname-only-1',
+  ticketNumber: 'TICKET_2024_0009',
+  subject: 'Suivi de commande',
+  description: 'Bonjour, où en est ma commande ?',
+  status: TicketStatus.NEW,
+  priority: TicketPriority.LOW,
+  customer: {
+    uuid: 'customer-firstname-only',
+    email: 'prenom.seul@phardev.fr',
+    firstname: 'Camille'
+  },
+  messages: [
+    {
+      uuid: 'message-customer-firstname-only',
+      content: 'Bonjour, où en est ma commande ?',
+      type: TicketMessageType.PUBLIC,
+      sentAt: 1705910000000,
+      authorUuid: 'customer-firstname-only',
+      attachments: []
+    }
+  ],
+  createdAt: 1705910000000,
+  updatedAt: 1705910000000
+}

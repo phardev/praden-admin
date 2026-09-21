@@ -1,5 +1,6 @@
 import { Ticket } from '@core/entities/ticket'
 import { UUID } from '@core/types/types'
+import { SupportTicketsFilters } from '@core/usecases/support/getSupportTickets'
 import { defineStore } from 'pinia'
 
 export const useTicketStore = defineStore('TicketStore', {
@@ -9,6 +10,7 @@ export const useTicketStore = defineStore('TicketStore', {
       currentTicket: undefined as Ticket | undefined,
       customerTickets: {} as Record<UUID, Array<Ticket>>,
       orderTickets: {} as Record<UUID, Array<Ticket>>,
+      filters: {} as SupportTicketsFilters,
       isLoading: false
     }
   },
@@ -32,6 +34,9 @@ export const useTicketStore = defineStore('TicketStore', {
   actions: {
     setTickets(tickets: Array<Ticket>) {
       this.items = tickets
+    },
+    setFilters(filters: SupportTicketsFilters) {
+      this.filters = filters
     },
     setCustomerTickets(customerUuid: UUID, tickets: Array<Ticket>) {
       this.customerTickets[customerUuid] = tickets

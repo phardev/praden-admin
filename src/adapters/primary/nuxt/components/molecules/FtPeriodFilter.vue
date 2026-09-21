@@ -53,7 +53,7 @@ import { fr } from 'date-fns/locale'
 
 type PresetKey = 'last7Days' | 'last30Days' | 'currentMonth'
 
-defineProps<{
+const props = defineProps<{
   start: number | null
   end: number | null
 }>()
@@ -69,8 +69,6 @@ const presets: Array<{ key: PresetKey; labelKey: string }> = [
   { key: 'last30Days', labelKey: 'common.period.last30Days' },
   { key: 'currentMonth', labelKey: 'common.period.currentMonth' }
 ]
-
-const activePreset = ref<PresetKey | null>('last30Days')
 
 const startOfDay = (date: Date): number => {
   date.setHours(0, 0, 0, 0)
@@ -96,22 +94,28 @@ const buildPresetRange = (key: PresetKey): [number, number] => {
   return [startOfDay(from), endOfDay(new Date(today))]
 }
 
+const activePreset = computed<PresetKey | null>(() => {
+  if (!props.start || !props.end) return null
+  const matching = presets.find((preset) => {
+    const [from, to] = buildPresetRange(preset.key)
+    return from === props.start && to === props.end
+  })
+  return matching ? matching.key : null
+})
+
 const applyPreset = (key: PresetKey) => {
   const [from, to] = buildPresetRange(key)
-  activePreset.value = key
   emit('update:start', from)
   emit('update:end', to)
   emit('apply')
 }
 
 const onStartChange = (value: number | null) => {
-  activePreset.value = null
   emit('update:start', value)
   emit('apply')
 }
 
 const onEndChange = (value: number | null) => {
-  activePreset.value = null
   emit('update:end', value)
   emit('apply')
 }

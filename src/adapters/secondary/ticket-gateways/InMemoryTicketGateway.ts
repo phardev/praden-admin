@@ -11,6 +11,7 @@ import { DateProvider } from '@core/gateways/dateProvider'
 import { TicketGateway } from '@core/gateways/ticketGateway'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { UUID } from '@core/types/types'
+import { SupportTicketsFilters } from '@core/usecases/support/getSupportTickets'
 import { getFileContent } from '@utils/file'
 
 export class InMemoryTicketGateway implements TicketGateway {
@@ -22,8 +23,8 @@ export class InMemoryTicketGateway implements TicketGateway {
     private uuidGenerator?: UuidGenerator
   ) {}
 
-  list(): Promise<Array<Ticket>> {
-    const res = this.tickets.slice()
+  list(filters: SupportTicketsFilters = {}): Promise<Array<Ticket>> {
+    const res = this.tickets.filter((ticket) => matchesFilters(ticket, filters))
     return Promise.resolve(JSON.parse(JSON.stringify(res)))
   }
 
@@ -191,4 +192,27 @@ export class InMemoryTicketGateway implements TicketGateway {
     this.ticketCounter++
     return `TICKET_${year}_${number}`
   }
+}
+
+const matchesFilters = (
+  ticket: Ticket,
+  filters: SupportTicketsFilters
+): boolean => {
+  if (filters.startDate && ticket.createdAt < filters.startDate) return false
+  if (filters.endDate && ticket.createdAt > filters.endDate) return false
+  if (
+    filters.customerQuery &&
+    !matchesCustomer(ticket, filters.customerQuery)
+  ) {
+    return false
+  }
+  return true
+}
+
+const matchesCustomer = (ticket: Ticket, customerQuery: string): boolean => {
+  const { firstname, lastname, email } = ticket.customer
+  const queryRegex = new RegExp(customerQuery, 'i')
+  return [firstname, lastname, email].some(
+    (field) => field !== undefined && queryRegex.test(field)
+  )
 }

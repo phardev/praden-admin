@@ -1,8 +1,9 @@
 import { Ticket, TicketPriority } from '@core/entities/ticket'
 import { UUID } from '@core/types/types'
+import { SupportTicketsFilters } from '@core/usecases/support/getSupportTickets'
 
 export interface TicketGateway {
-  list(): Promise<Array<Ticket>>
+  list(filters?: SupportTicketsFilters): Promise<Array<Ticket>>
   getByUuid(uuid: UUID): Promise<Ticket>
   getByCustomerUuid(customerUuid: UUID): Promise<Array<Ticket>>
   getByOrderUuid(orderUuid: UUID): Promise<Array<Ticket>>
