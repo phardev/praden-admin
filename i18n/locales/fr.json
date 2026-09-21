@@ -692,7 +692,8 @@
       "categoryOrderCard": "Ordre des catégories",
       "pharmacistSelectionCard": "Sélection du pharmacien",
       "emergencyPharmaciesCard": "Pharmacies de garde",
-      "contentPagesCard": "Pages éditoriales"
+      "contentPagesCard": "Pages éditoriales",
+      "blogPostsCard": "Blog"
     },
     "announcementBar": {
       "title": "Barres d'annonce",
@@ -821,6 +822,85 @@
       },
       "viewOnline": "Voir la page en ligne",
       "leavePageConfirm": "Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ?"
+    },
+    "blogPosts": {
+      "title": "Blog",
+      "description": "Rédigez les articles du blog et choisissez ceux mis en avant sur la page d'accueil",
+      "create": "Nouvel article",
+      "editTitle": "Modifier l'article",
+      "createTitle": "Nouvel article",
+      "viewOnline": "Voir en ligne",
+      "save": "Enregistrer",
+      "status": {
+        "DRAFT": "Brouillon",
+        "PUBLISHED": "Publié"
+      },
+      "publish": "Publier",
+      "unpublish": "Repasser en brouillon",
+      "publishSuccess": "L'article est en ligne",
+      "unpublishSuccess": "L'article est repassé en brouillon",
+      "lastUpdated": {
+        "staff": "Modifié le {date} par {author}",
+        "system": "Modifié le {date} lors de la reprise",
+        "unknown": "Modifié le {date} par un utilisateur supprimé"
+      },
+      "publishedOn": "Publié le {date}",
+      "highlights": {
+        "title": "À la une sur la page d'accueil",
+        "description": "Glissez les articles pour choisir leur ordre dans le bloc de la page d'accueil. Chaque déplacement est enregistré aussitôt.",
+        "empty": "Aucun article à la une : le bloc blog n'apparaît pas sur la page d'accueil.",
+        "add": "Mettre à la une",
+        "remove": "Retirer de la une",
+        "draftWarning": "En brouillon, donc absent de la page d'accueil",
+        "updateSuccess": "Ordre de la une enregistré",
+        "updateError": "L'ordre de la une n'a pas pu être enregistré"
+      },
+      "list": {
+        "otherArticles": "Tous les articles",
+        "empty": "Aucun article pour le moment",
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "title": "Supprimer l'article",
+        "confirm": "L'article sera définitivement supprimé et son adresse renverra une erreur 404 aux visiteurs et à Google.",
+        "success": "L'article a été supprimé",
+        "error": "L'article n'a pas pu être supprimé"
+      },
+      "fields": {
+        "title": "Titre de l'article",
+        "titleHelp": "Affiché sur les cartes du blog et dans l'onglet du navigateur. Le titre visible en haut de l'article se modifie dans le contenu HTML (balise h1).",
+        "slug": "Adresse de la page",
+        "slugHelp": "L'article sera publié à l'adresse {url} — elle ne pourra plus être modifiée ensuite, car la changer casserait les liens et le référencement.",
+        "slugLocked": "L'article est publié à l'adresse {url}. L'adresse d'un article publié ne se modifie pas.",
+        "slugInvalid": "Uniquement des minuscules, des chiffres et des tirets.",
+        "metaTitle": "Titre SEO",
+        "metaTitleHelp": "Optionnel. S'il est vide, le titre de l'article est utilisé dans les résultats Google.",
+        "metaDescription": "Description SEO",
+        "metaDescriptionHelp": "{count}/320 caractères. Affichée dans les résultats Google.",
+        "image": "Image de couverture",
+        "imageHelp": "Collez l'adresse d'une image ou importez un fichier. Elle illustre les cartes du blog et de la page d'accueil.",
+        "imageUrl": "Adresse de l'image",
+        "imageUpload": "Importer un fichier",
+        "imageReplace": "Remplacer le fichier",
+        "imageMissing": "Image introuvable à cette adresse",
+        "publishedAt": "Date de publication",
+        "publishedAtHelp": "Affichée sur l'article et utilisée pour classer le blog du plus récent au plus ancien.",
+        "tags": "Tags",
+        "tagsHelp": "Affichés en bas de l'article. Tapez un tag puis validez avec Entrée.",
+        "tagsPlaceholder": "Ajouter un tag",
+        "status": "Statut",
+        "statusHelp": "Un brouillon n'est visible ni sur le blog ni sur la page d'accueil.",
+        "html": "Contenu de l'article",
+        "htmlHelp": "Code HTML brut, titre h1 inclus. Les balises courantes (h1, h2, h3, p, ul, li, a, strong) sont mises en forme automatiquement par le site.",
+        "slugPlaceholder": "bien-choisir-sa-creme-solaire"
+      },
+      "createSuccess": "L'article a été créé en brouillon",
+      "createError": "L'article n'a pas pu être créé",
+      "updateSuccess": "L'article a été enregistré",
+      "updateError": "L'article n'a pas pu être enregistré",
+      "slugAlreadyUsed": "Un article utilise déjà cette adresse",
+      "leavePageConfirm": "Des modifications ne sont pas enregistrées. Quitter la page ?"
     }
   },
   "loyalty": {
