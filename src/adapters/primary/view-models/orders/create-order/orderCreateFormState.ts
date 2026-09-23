@@ -25,6 +25,7 @@ export interface OrderCreateFormState {
   pickingHour?: string
   sendConfirmationEmail: boolean
   paymentMode: ManualOrderPaymentMode
+  voucherCode: string
 }
 
 export const emptyAddress = (): Address => {
@@ -54,6 +55,7 @@ export const emptyOrderCreateFormState = (): OrderCreateFormState => {
     pickingDate: undefined,
     pickingHour: undefined,
     sendConfirmationEmail: false,
-    paymentMode: ManualOrderPaymentMode.AlreadyPaid
+    paymentMode: ManualOrderPaymentMode.AlreadyPaid,
+    voucherCode: ''
   }
 }

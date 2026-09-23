@@ -237,7 +237,8 @@
         "title": "Récapitulatif",
         "lines": "Articles ({count})",
         "delivery": "Livraison",
-        "total": "Total TTC"
+        "total": "Total TTC",
+        "voucher": "Bon d'achat {code}"
       },
       "blockers": {
         "title": "Avant de créer la commande :",
@@ -250,6 +251,13 @@
         "fillAddresses": "Complétez les adresses",
         "fillContact": "Renseignez l'email et le téléphone de contact",
         "selectPickingSlot": "Choisissez la date et l'heure de retrait"
+      },
+      "voucher": {
+        "title": "Bon d'achat",
+        "placeholder": "Code du bon d'achat",
+        "apply": "Appliquer",
+        "remove": "Retirer",
+        "disabledHint": "Choisissez un client, des produits et un mode de livraison pour appliquer un bon d'achat."
       }
     },
     "deliveries": {
@@ -645,7 +653,8 @@
       "carriers": "Transporteurs",
       "roles": "Rôles et permissions",
       "shop-management": "Gestion boutique",
-      "loyalty": "Fidélité"
+      "loyalty": "Fidélité",
+      "vouchers": "Bons d'achat"
     }
   },
   "promotionCode": {
@@ -1096,6 +1105,71 @@
       "ineligible": "{count} produit(s) non éligible(s) aux promotions",
       "notFound": "{count} code(s) EAN13 non trouvé(s)",
       "error": "Une erreur est survenue lors de l’import"
+    }
+  },
+  "voucher": {
+    "listTitle": "Bons d'achat",
+    "createTitle": "Créer un bon d'achat",
+    "viewTitle": "Voir le bon d'achat",
+    "createButton": "Créer un bon d'achat",
+    "validate": "Valider",
+    "seeOrder": "Voir la commande associée",
+    "fields": {
+      "customer": "Client",
+      "code": "Code",
+      "amount": "Montant (€)",
+      "expirationDate": "Date d'expiration",
+      "status": "Statut"
+    },
+    "tabs": {
+      "unused": "Non utilisés",
+      "used": "Utilisés"
+    },
+    "status": {
+      "unused": "Non utilisé",
+      "used": "Utilisé le {date}",
+      "expired": "Expiré le {date}"
+    },
+    "editTitle": "Modifier le bon d'achat",
+    "editButton": "Éditer",
+    "deleteButton": "Supprimer",
+    "deleteConfirm": "Supprimer définitivement ce bon d'achat ?",
+    "headers": {
+      "code": "Code",
+      "customer": "Client",
+      "amount": "Montant",
+      "expirationDate": "Date d'expiration",
+      "usedAt": "Date d'utilisation"
+    },
+    "hints": {
+      "selectCustomer": "Sélectionnez un client.",
+      "amountMustBePositive": "Le montant doit être supérieur à 0 €."
+    },
+    "selectExpirationDate": "Sans date d'expiration",
+    "clearExpirationDate": "Retirer la date d'expiration",
+    "noExpirationDate": "Aucune",
+    "createSuccess": "Bon d'achat créé",
+    "editSuccess": "Bon d'achat modifié",
+    "deleteSuccess": "Bon d'achat supprimé",
+    "orderLine": "Bon d'achat {code}",
+    "printLine": "Bon d'achat : {code}",
+    "errors": {
+      "notFound": "Ce bon d'achat n'existe pas.",
+      "codeAlreadyExists": "Ce code est déjà utilisé par un autre bon d'achat.",
+      "alreadyUsed": "Ce bon d'achat a déjà été utilisé : il ne peut plus être modifié ni supprimé.",
+      "attachedToOrder": "Ce bon d'achat est rattaché à une commande : il ne peut plus être modifié ni supprimé.",
+      "invalidAmount": "Le montant doit être supérieur à 0 €.",
+      "expirationInThePast": "La date d'expiration ne peut pas être dans le passé.",
+      "customerNotFound": "Ce client n'existe pas.",
+      "promotionCodeCannotBeApplied": "Le code promotion ne peut pas être appliqué.",
+      "cannotBeApplied": {
+        "customerNotIdentified": "Le client doit être identifié pour utiliser un bon d'achat.",
+        "belongsToAnotherCustomer": "Ce bon d'achat appartient à un autre client.",
+        "alreadyUsed": "Ce bon d'achat a déjà été utilisé.",
+        "expired": "Ce bon d'achat a expiré.",
+        "insufficientEligibleAmount": "Le montant éligible de la commande doit dépasser celui du bon d'achat.",
+        "unknown": "Ce bon d'achat ne peut pas être appliqué."
+      }
     }
   }
 }

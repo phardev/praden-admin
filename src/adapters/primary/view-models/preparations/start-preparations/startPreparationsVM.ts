@@ -42,6 +42,10 @@ export interface PreparationLineDetailVM {
     code: string
     discount: string
   }
+  voucher?: {
+    code: string
+    discount: string
+  }
 }
 
 export interface StartPreparationsVM {
@@ -219,6 +223,12 @@ const getDetailPreparationLineVM = (
     detail.promotionCode = {
       code: order.promotionCode.code,
       discount: formatter.format((order.promotionCode.discount / 100) * -1)
+    }
+  }
+  if (order.voucher) {
+    detail.voucher = {
+      code: order.voucher.code,
+      discount: formatter.format((order.voucher.discount / 100) * -1)
     }
   }
   return detail

@@ -40,10 +40,12 @@ import { useOrderStore } from '@store/orderStore'
 import { useDeliveryMethodGateway } from '../../../../../../gateways/deliveryMethodGateway'
 import { useDeliveryPriceRuleGateway } from '../../../../../../gateways/deliveryPriceRuleGateway'
 import { useOrderGateway } from '../../../../../../gateways/orderGateway'
+import { useVoucherErrorToast } from '../../composables/useVoucherErrorToast'
 
 definePageMeta({ layout: 'main' })
 
 const { t } = useI18n()
+const { showVoucherError } = useVoucherErrorToast()
 const isSaving = ref(false)
 const maxQuantityViolations = ref<Array<MaxQuantityViolation>>([])
 
@@ -103,11 +105,7 @@ const onSubmit = async (dto: CreateManualOrderDTO) => {
   } catch (error) {
     maxQuantityViolations.value = extractMaxQuantityViolations(error)
     if (!hasMaxQuantityViolations.value) {
-      const toast = useToast()
-      toast.add({
-        title: t('error.unknown'),
-        color: 'red'
-      })
+      showVoucherError(error)
     }
   } finally {
     isSaving.value = false

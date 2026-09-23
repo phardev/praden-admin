@@ -6,6 +6,7 @@ export enum PermissionResource {
   CATEGORIES = 'categories',
   PROMOTIONS = 'promotions',
   PROMOTION_CODES = 'promotion-codes',
+  VOUCHERS = 'vouchers',
   CUSTOMERS = 'customers',
   NEWSLETTER = 'newsletter',
   SUPPORT = 'support',

@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  div(v-if="!selectedCustomer")
+  div(v-if="!vm.selected")
     ft-text-field(
       v-model="search"
       :placeholder="$t('orders.create.customer.searchPlaceholder')"
@@ -9,17 +9,17 @@ div
       name="order-create-customer-search"
       @input="searchChanged"
     ) {{ $t('orders.create.customer.searchLabel') }}
-    p.text-sm.text-warning.mt-1(v-if="hasSearchError") {{ $t('orders.create.customer.minimumSearch') }}
-    .space-y-3.mt-4(v-if="isLoading")
+    p.text-sm.text-warning.mt-1(v-if="vm.hasError") {{ $t('orders.create.customer.minimumSearch') }}
+    .space-y-3.mt-4(v-if="vm.isLoading")
       USkeleton.h-16(v-for="n in 3" :key="n")
-    .space-y-2.mt-4(v-else-if="results.length > 0")
+    .space-y-2.mt-4(v-else-if="vm.results.length > 0")
       .p-4.bg-white.border.rounded.flex.items-center.justify-between(
-        v-for="customer in results"
+        v-for="customer in vm.results"
         :key="customer.uuid"
       )
         .flex-1
-          .font-medium {{ customer.firstname }} {{ customer.lastname }}
-          .text-sm.text-gray-600 {{ customer.email }} · {{ customer.phone }}
+          .font-medium {{ customer.fullname }}
+          .text-sm.text-gray-600 {{ customer.contact }}
         UButton(
           color="primary"
           variant="soft"
@@ -27,14 +27,14 @@ div
           :label="$t('orders.create.customer.select')"
           @click="$emit('selected', customer.uuid)"
         )
-    .text-center.py-4.text-gray-500(v-else-if="hasSearchedQuery")
+    .text-center.py-4.text-gray-500(v-else-if="vm.hasSearchedQuery")
       p {{ $t('orders.create.customer.noResults') }}
   UCard(v-else)
     .flex.items-center.justify-between
       div
-        .font-medium {{ selectedCustomer.firstname }} {{ selectedCustomer.lastname }}
-        .text-sm.text-gray-600 {{ selectedCustomer.email }} · {{ selectedCustomer.phone }}
-        .text-sm.text-colored.mt-1(v-if="selectedCustomer.loyalty") {{ $t('orders.create.customer.loyaltyPoints', { count: selectedCustomer.loyalty.balance }) }}
+        .font-medium {{ vm.selected.fullname }}
+        .text-sm.text-gray-600 {{ vm.selected.contact }}
+        .text-sm.text-colored.mt-1(v-if="vm.selected.loyaltyBalance !== undefined") {{ $t('orders.create.customer.loyaltyPoints', { count: vm.selected.loyaltyBalance }) }}
       UButton(
         color="gray"
         variant="ghost"
@@ -44,43 +44,31 @@ div
 </template>
 
 <script lang="ts" setup>
-import type { Customer } from '@core/entities/customer'
+import type { SearchableCustomer } from '@adapters/primary/view-models/customers/customer-search/customerSearchVM'
+import { customerSearchVM } from '@adapters/primary/view-models/customers/customer-search/customerSearchVM'
 import { searchCustomers } from '@core/usecases/customers/customer-searching/searchCustomer'
-import { useSearchStore } from '@store/searchStore'
+import { clearSearch } from '@core/usecases/search/search-clearing/clearSearch'
 import { useSearchGateway } from '../../../../../../gateways/searchGateway'
 
-defineProps<{
-  selectedCustomer?: Customer
-}>()
+const props = withDefaults(
+  defineProps<{
+    selectedCustomer?: SearchableCustomer
+    namespace?: string
+  }>(),
+  { selectedCustomer: undefined, namespace: 'order-create-customer' }
+)
 
 defineEmits<{
   (e: 'selected', customerUuid: string): void
   (e: 'change'): void
 }>()
 
-const namespace = 'order-create-customer'
+const namespace = props.namespace
 const minimumQueryLength = 3
 const search = ref('')
-const searchStore = useSearchStore()
 
-const results = computed<Array<Customer>>(() => {
-  return searchStore.get(namespace) || []
-})
-
-const hasSearchError = computed(() => {
-  return !!searchStore.getError(namespace)
-})
-
-const isLoading = computed(() => {
-  return searchStore.isLoading(namespace)
-})
-
-const hasSearchedQuery = computed(() => {
-  return (
-    !!searchStore.getFilter(namespace)?.query &&
-    !hasSearchError.value &&
-    !isLoading.value
-  )
+const vm = computed(() => {
+  return customerSearchVM(namespace, props.selectedCustomer)
 })
 
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
@@ -93,9 +81,7 @@ const searchChanged = (e: Event) => {
     const target = e.target as HTMLInputElement
     const query = target.value
     if (!query) {
-      searchStore.set(namespace, [])
-      searchStore.setFilter(namespace, undefined)
-      searchStore.setError(namespace, undefined)
+      clearSearch(namespace)
     } else {
       searchCustomers(
         namespace,

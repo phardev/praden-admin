@@ -1,5 +1,6 @@
 import { Address, DeliveryType } from '@core/entities/order'
 import type { CreateManualOrderDTO } from '@core/usecases/order/manual-order-creation/createManualOrder'
+import type { AppliedVoucher } from '@store/voucherStore'
 import { requiresPickupPoint } from './deliveryMethodChoicesVM'
 import type { OrderCreateFormState } from './orderCreateFormState'
 import { combinePickingDateAndHour } from './pickingSlotsVM'
@@ -24,7 +25,8 @@ const resolveBillingAddress = (
 }
 
 export const buildCreateManualOrderDto = (
-  formState: OrderCreateFormState
+  formState: OrderCreateFormState,
+  appliedVoucher?: AppliedVoucher
 ): CreateManualOrderDTO => {
   const isClickAndCollect =
     formState.deliveryMethod?.type === DeliveryType.ClickAndCollect
@@ -59,6 +61,9 @@ export const buildCreateManualOrderDto = (
   ) {
     dto.pickupId = formState.selectedRelayPoint.id
     dto.pickupName = formState.selectedRelayPoint.name
+  }
+  if (appliedVoucher !== undefined) {
+    dto.voucherCode = appliedVoucher.request.code
   }
   return dto
 }

@@ -49,6 +49,7 @@ export class RoleFormFieldsReader extends FormFieldsReader {
       [PermissionResource.CATEGORIES]: 'Catégories',
       [PermissionResource.PROMOTIONS]: 'Promotions',
       [PermissionResource.PROMOTION_CODES]: 'Codes de promotion',
+      [PermissionResource.VOUCHERS]: "Bons d'achat",
       [PermissionResource.CUSTOMERS]: 'Clients',
       [PermissionResource.NEWSLETTER]: 'Newsletter',
       [PermissionResource.SUPPORT]: 'SAV',

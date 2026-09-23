@@ -267,6 +267,39 @@
           .flex.justify-between(v-if="summaryVM.formattedDeliveryFee !== undefined")
             span {{ $t('orders.create.summary.delivery') }} — {{ formState.deliveryMethod?.name }}
             span {{ summaryVM.formattedDeliveryFee }}
+          .flex.justify-between.items-center.text-green-700(v-if="voucherVM.applied")
+            span {{ $t('orders.create.summary.voucher', { code: voucherVM.applied.code }) }}
+            .flex.items-center.gap-1
+              span {{ voucherVM.applied.formattedDiscount }}
+              UButton(
+                color="gray"
+                variant="ghost"
+                size="xs"
+                icon="i-heroicons-x-mark-20-solid"
+                :aria-label="$t('orders.create.voucher.remove')"
+                @click="appliedVoucherRemoved"
+              )
+          div
+            p.text-sm.font-medium.mb-2 {{ $t('orders.create.voucher.title') }}
+            .flex.items-center.gap-2
+              ft-text-field.flex-1(
+                v-model="formState.voucherCode"
+                :placeholder="$t('orders.create.voucher.placeholder')"
+                :disabled="!voucherVM.canEditCode"
+                for="order-create-voucher-code"
+                type="text"
+                name="order-create-voucher-code"
+                @keyup.enter="voucherCodeApplied"
+              )
+              UButton(
+                color="primary"
+                variant="soft"
+                :label="$t('orders.create.voucher.apply')"
+                :loading="voucherVM.isApplying"
+                :disabled="!voucherVM.canApply"
+                @click="voucherCodeApplied"
+              )
+            p.text-xs.text-gray-500.mt-1(v-if="!voucherVM.canEditCode") {{ $t('orders.create.voucher.disabledHint') }}
           UDivider
           .flex.justify-between.font-bold.text-lg
             span {{ $t('orders.create.summary.total') }}
@@ -351,6 +384,11 @@ import type { MaxQuantityViolation } from '@adapters/primary/view-models/orders/
 import { orderCreateLinesVM } from '@adapters/primary/view-models/orders/create-order/orderCreateLinesVM'
 import { orderCreateProductSearchVM } from '@adapters/primary/view-models/orders/create-order/orderCreateProductSearchVM'
 import { orderCreateSummaryVM } from '@adapters/primary/view-models/orders/create-order/orderCreateSummaryVM'
+import {
+  buildApplyVoucherDto,
+  currentAppliedVoucher,
+  orderCreateVoucherVM
+} from '@adapters/primary/view-models/orders/create-order/orderCreateVoucherVM'
 import { availablePickingHours } from '@adapters/primary/view-models/orders/create-order/pickingSlotsVM'
 import type { ProductWithPromotions } from '@adapters/primary/view-models/orders/create-order/productPromotionPricing'
 import { parseProductSearchInput } from '@adapters/primary/view-models/orders/create-order/productSearchInputVM'
@@ -362,6 +400,8 @@ import { searchDpdRelayPoints } from '@core/usecases/dpd/dpd-relay-point-search/
 import type { CreateManualOrderDTO } from '@core/usecases/order/manual-order-creation/createManualOrder'
 import { ManualOrderPaymentMode } from '@core/usecases/order/manual-order-creation/createManualOrder'
 import { searchProducts } from '@core/usecases/product/product-searching/searchProducts'
+import { applyVoucher } from '@core/usecases/vouchers/voucher-application/applyVoucher'
+import { removeAppliedVoucher } from '@core/usecases/vouchers/voucher-removal/removeAppliedVoucher'
 import { useCustomerStore } from '@store/customerStore'
 import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
 import { useDeliveryPriceRuleStore } from '@store/deliveryPriceRuleStore'
@@ -373,6 +413,8 @@ import { useCustomerGateway } from '../../../../../../gateways/customerGateway'
 import { useDateProvider } from '../../../../../../gateways/dateProvider'
 import { useDpdPickupGateway } from '../../../../../../gateways/dpdPickupGateway'
 import { useSearchGateway } from '../../../../../../gateways/searchGateway'
+import { useVoucherGateway } from '../../../../../../gateways/voucherGateway'
+import { useVoucherErrorToast } from '../../composables/useVoucherErrorToast'
 
 const props = defineProps<{
   isSaving: boolean
@@ -447,13 +489,44 @@ const selectedDeliveryChoice = computed(() => {
   )
 })
 
+const appliedVoucher = computed(() => {
+  return currentAppliedVoucher(formState)
+})
+
+const voucherVM = computed(() => {
+  return orderCreateVoucherVM(formState)
+})
+
 const summaryVM = computed(() => {
   return orderCreateSummaryVM(
     formState,
     selectedDeliveryChoice.value,
-    dateProvider.now()
+    dateProvider.now(),
+    appliedVoucher.value?.discount
   )
 })
+
+const { showVoucherError } = useVoucherErrorToast()
+
+onMounted(() => {
+  removeAppliedVoucher()
+})
+
+const voucherCodeApplied = async () => {
+  if (!voucherVM.value.canApply) {
+    return
+  }
+  try {
+    await applyVoucher(buildApplyVoucherDto(formState), useVoucherGateway())
+  } catch (error) {
+    showVoucherError(error)
+  }
+}
+
+const appliedVoucherRemoved = () => {
+  formState.voucherCode = ''
+  removeAppliedVoucher()
+}
 
 const isClickAndCollect = computed(() => {
   return formState.deliveryMethod?.type === DeliveryType.ClickAndCollect
@@ -707,6 +780,6 @@ const submit = () => {
   if (!summaryVM.value.canSubmit) {
     return
   }
-  emit('submit', buildCreateManualOrderDto(formState))
+  emit('submit', buildCreateManualOrderDto(formState, appliedVoucher.value))
 }
 </script>

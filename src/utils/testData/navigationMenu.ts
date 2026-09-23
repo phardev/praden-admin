@@ -41,6 +41,11 @@ export const fullMenu: NavigationMenu = {
           name: 'Codes promotion',
           icon: 'ic:outline-discount',
           href: '/promotion-codes'
+        },
+        {
+          name: "Bons d'achat",
+          icon: 'mdi:gift-outline',
+          href: '/vouchers'
         }
       ]
     },

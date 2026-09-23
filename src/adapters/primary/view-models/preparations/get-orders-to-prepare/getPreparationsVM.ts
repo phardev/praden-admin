@@ -51,18 +51,18 @@ export const computeTotalWithTaxForOrder = (order: Order) => {
         line.expectedQuantity
     )
   }, 0)
+  const promotionDiscount = order.promotionCode
+    ? order.promotionCode.discount
+    : 0
+  const voucherDiscount = order.voucher ? order.voucher.discount : 0
+  const discount = promotionDiscount + voucherDiscount
   const delivery = order.deliveries[0]
   if (!delivery) {
-    return order.promotionCode
-      ? Math.max(0, total - order.promotionCode.discount)
-      : total
+    return Math.max(0, total - discount)
   }
   const deliveryPrice = Math.round(addTaxToPrice(delivery.price, 20))
-  const totalWithDelivery = total + deliveryPrice
 
-  return order.promotionCode
-    ? Math.max(0, totalWithDelivery - order.promotionCode.discount)
-    : totalWithDelivery
+  return Math.max(0, total + deliveryPrice - discount)
 }
 
 const clickAndCollectFilter = (o: Order) => {

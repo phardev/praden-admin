@@ -9,6 +9,7 @@ import {
 } from '@utils/testData/deliveryMethods'
 import { dpdRelayPointAlesCentre } from '@utils/testData/dpdRelayPoints'
 import { dolodent, ultraLevure } from '@utils/testData/products'
+import { unusedVoucher } from '@utils/testData/vouchers'
 import { buildCreateManualOrderDto } from './buildCreateManualOrderDto'
 import type { OrderCreateFormState } from './orderCreateFormState'
 import { emptyOrderCreateFormState } from './orderCreateFormState'
@@ -220,6 +221,45 @@ describe('Build create manual order DTO', () => {
         paymentMode: ManualOrderPaymentMode.PaymentLink
       }
       expect(buildCreateManualOrderDto(formState)).toStrictEqual(expectedDTO)
+    })
+  })
+
+  describe('Given an applied voucher, when building the DTO, then the voucher code is included', () => {
+    it('should send the code of the applied voucher', () => {
+      const formState: OrderCreateFormState = {
+        ...baseFormState(),
+        billingSameAsDelivery: true,
+        voucherCode: unusedVoucher.code
+      }
+      const expectedDTO: CreateManualOrderDTO = {
+        customerUuid: elodieDurand.uuid,
+        lines: [
+          { productUuid: dolodent.uuid, quantity: 2 },
+          {
+            productUuid: ultraLevure.uuid,
+            quantity: ultraLevure.maxQuantityForOrder!
+          }
+        ],
+        deliveryMethodUuid: express.uuid,
+        deliveryAddress,
+        billingAddress: deliveryAddress,
+        contact,
+        sendConfirmationEmail: false,
+        paymentMode: ManualOrderPaymentMode.AlreadyPaid,
+        voucherCode: unusedVoucher.code
+      }
+      expect(
+        buildCreateManualOrderDto(formState, {
+          request: {
+            code: unusedVoucher.code,
+            customerUuid: elodieDurand.uuid,
+            lines: expectedDTO.lines,
+            deliveryAddress,
+            deliveryMethodUuid: express.uuid
+          },
+          discount: unusedVoucher.amount
+        })
+      ).toStrictEqual(expectedDTO)
     })
   })
 })

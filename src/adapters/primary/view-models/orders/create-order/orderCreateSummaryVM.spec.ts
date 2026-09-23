@@ -10,6 +10,7 @@ import {
 import { dpdRelayPointAlesCentre } from '@utils/testData/dpdRelayPoints'
 import { productPromotionPercentage } from '@utils/testData/productPromotions'
 import { dolodent, ultraLevure } from '@utils/testData/products'
+import { unusedVoucher } from '@utils/testData/vouchers'
 import type { DeliveryMethodChoiceVM } from './deliveryMethodChoicesVM'
 import type { OrderCreateFormState } from './orderCreateFormState'
 import { emptyOrderCreateFormState } from './orderCreateFormState'
@@ -341,6 +342,66 @@ describe('Order create summary VM', () => {
       expect(orderCreateSummaryVM(formState, expressChoice, NOW)).toStrictEqual(
         expectedVM
       )
+    })
+  })
+
+  describe('Given an applied voucher, when getting summary, then the total is reduced by its discount', () => {
+    it('should subtract the voucher discount from the total', () => {
+      const linesTotal =
+        2 *
+        Math.round(
+          addTaxToPrice(dolodent.priceWithoutTax, dolodent.percentTaxRate)
+        )
+      const deliveryFeeWithTax = Math.round(
+        addTaxToPrice(expressChoice.fee!, 20)
+      )
+      const expectedVM: OrderCreateSummaryVM = {
+        linesCount: 2,
+        formattedLinesTotal: formatter.format(linesTotal / 100),
+        formattedDeliveryFee: formatter.format(deliveryFeeWithTax / 100),
+        formattedTotal: formatter.format(
+          (linesTotal + deliveryFeeWithTax - unusedVoucher.amount) / 100
+        ),
+        blockers: [],
+        canSubmit: true
+      }
+      expect(
+        orderCreateSummaryVM(
+          validFormState(),
+          expressChoice,
+          NOW,
+          unusedVoucher.amount
+        )
+      ).toStrictEqual(expectedVM)
+    })
+  })
+
+  describe('Given a voucher greater than the order, when getting summary, then the total is zero', () => {
+    it('should never display a negative total', () => {
+      const linesTotal =
+        2 *
+        Math.round(
+          addTaxToPrice(dolodent.priceWithoutTax, dolodent.percentTaxRate)
+        )
+      const deliveryFeeWithTax = Math.round(
+        addTaxToPrice(expressChoice.fee!, 20)
+      )
+      const expectedVM: OrderCreateSummaryVM = {
+        linesCount: 2,
+        formattedLinesTotal: formatter.format(linesTotal / 100),
+        formattedDeliveryFee: formatter.format(deliveryFeeWithTax / 100),
+        formattedTotal: formatter.format(0),
+        blockers: [],
+        canSubmit: true
+      }
+      expect(
+        orderCreateSummaryVM(
+          validFormState(),
+          expressChoice,
+          NOW,
+          linesTotal + deliveryFeeWithTax + unusedVoucher.amount
+        )
+      ).toStrictEqual(expectedVM)
     })
   })
 })

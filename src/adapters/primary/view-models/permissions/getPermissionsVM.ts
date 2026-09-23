@@ -10,6 +10,7 @@ export interface GetPermissionsVM {
   canAccessCategories: boolean
   canAccessPromotions: boolean
   canAccessPromotionCodes: boolean
+  canAccessVouchers: boolean
   canAccessCustomers: boolean
   canAccessNewsletter: boolean
   canAccessSupport: boolean
@@ -51,6 +52,9 @@ export const getPermissionsVM = (): GetPermissionsVM => {
     ),
     canAccessPromotionCodes: userProfileStore.hasPermission(
       PermissionResource.PROMOTION_CODES
+    ),
+    canAccessVouchers: userProfileStore.hasPermission(
+      PermissionResource.VOUCHERS
     ),
     canAccessCustomers: userProfileStore.hasPermission(
       PermissionResource.CUSTOMERS

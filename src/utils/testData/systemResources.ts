@@ -7,6 +7,7 @@ export const systemResources = [
   PermissionResource.CATEGORIES,
   PermissionResource.PROMOTIONS,
   PermissionResource.PROMOTION_CODES,
+  PermissionResource.VOUCHERS,
   PermissionResource.CUSTOMERS,
   PermissionResource.NEWSLETTER,
   PermissionResource.SUPPORT,

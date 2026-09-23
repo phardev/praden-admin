@@ -60,6 +60,10 @@ div.hidden.printme.mx-2
       div.flex.items-center.justify-around.m-2
         div(class="w-1/2") Code promotion: {{ order.promotionCode.code }}
         div.text-right(class="w-1/2") {{ order.promotionCode.discount }}
+    div(v-if="order.voucher" class="w-1/3").ml-auto.border-b.border-light.ml-8
+      div.flex.items-center.justify-around.m-2
+        div(class="w-1/2") {{ $t('voucher.printLine', { code: order.voucher.code }) }}
+        div.text-right(class="w-1/2") {{ order.voucher.discount }}
     div(class="w-1/3").ml-auto.border-b.border-light.ml-8
       div.flex.items-center.justify-around.m-2
         div(class="w-1/2") Total TTC

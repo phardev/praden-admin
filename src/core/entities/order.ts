@@ -94,6 +94,12 @@ export interface PromotionCode {
   discount: number
 }
 
+export interface OrderVoucher {
+  uuid: string
+  code: string
+  discount: number
+}
+
 export interface BaseOrder {
   uuid: string
   lines: Array<OrderLine>
@@ -106,6 +112,7 @@ export interface BaseOrder {
   invoiceNumber?: string
   customerMessage?: string
   promotionCode?: PromotionCode
+  voucher?: OrderVoucher
   timeline?: Array<TimelineEntry>
 }
 
@@ -131,13 +138,15 @@ export const getTotalWithTax = (order: Order): number => {
   const delivery = order.deliveries[0]
   const deliveryPrice = addTaxToPrice(delivery.price, 20) / 100
 
-  let total = totalLine + deliveryPrice
+  const promotionDiscount = order.promotionCode
+    ? order.promotionCode.discount / 100
+    : 0
+  const voucherDiscount = order.voucher ? order.voucher.discount / 100 : 0
 
-  if (order.promotionCode) {
-    total = Math.max(0, total - order.promotionCode.discount / 100)
-  }
-
-  return total
+  return Math.max(
+    0,
+    totalLine + deliveryPrice - promotionDiscount - voucherDiscount
+  )
 }
 
 export const getDeliveryStatus = (order: Order): DeliveryStatus => {

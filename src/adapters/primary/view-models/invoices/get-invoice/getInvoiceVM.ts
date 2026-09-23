@@ -57,6 +57,7 @@ interface TotalsVM {
   totalRefund?: string
   deliveryPrice: string
   promotionCode?: { code: string; discount: string }
+  voucher?: { code: string; discount: string }
   totalWithTax: string
 }
 
@@ -355,7 +356,8 @@ const getTotals = (
   preparedInvoiceLines: Array<InvoiceLine>,
   refoundedInvoiceLines: Array<InvoiceLine>,
   delivery: Delivery,
-  promotionCode?: { code: string; discount: number }
+  promotionCode?: { code: string; discount: number },
+  voucher?: { code: string; discount: number }
 ) => {
   const formatter = priceFormatter('fr-FR', 'EUR')
   const linesTotal = preparedInvoiceLines.reduce(
@@ -402,18 +404,31 @@ const getTotals = (
       (linesTotalWithTax + deliveryPriceWithTax) / 100
     )
   }
+  const promotionDiscount = promotionCode ? promotionCode.discount : 0
+  const voucherDiscount = voucher ? voucher.discount : 0
   if (promotionCode) {
     res.promotionCode = {
       code: promotionCode.code,
       discount: formatter.format((promotionCode.discount / 100) * -1)
     }
+  }
+  if (voucher) {
+    res.voucher = {
+      code: voucher.code,
+      discount: formatter.format((voucher.discount / 100) * -1)
+    }
+  }
+  if (promotionCode || voucher) {
     if (totalWithoutTax === 0) {
-      totalRefund += promotionCode.discount
+      totalRefund += promotionDiscount + voucherDiscount
     }
     res.totalRefund = formatter.format(totalRefund / 100)
     res.totalWithTax = formatter.format(
       Math.max(
-        linesTotalWithTax + deliveryPriceWithTax - promotionCode.discount,
+        linesTotalWithTax +
+          deliveryPriceWithTax -
+          promotionDiscount -
+          voucherDiscount,
         0
       ) / 100
     )
@@ -467,7 +482,8 @@ export const getInvoiceVM = (): GetInvoiceVM => {
       preparedInvoiceLines,
       refoundedInvoiceLines,
       invoice.data.deliveries[0],
-      invoice.data.promotionCode
+      invoice.data.promotionCode,
+      invoice.data.voucher
     ),
     payment: {
       type: 'e-Transaction',

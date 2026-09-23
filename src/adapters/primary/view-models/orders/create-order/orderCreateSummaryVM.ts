@@ -143,7 +143,8 @@ const getLineUnitPriceWithTax = (
 export const orderCreateSummaryVM = (
   formState: OrderCreateFormState,
   selectedChoice: DeliveryMethodChoiceVM | undefined,
-  now: Timestamp
+  now: Timestamp,
+  voucherDiscount = 0
 ): OrderCreateSummaryVM => {
   const formatter = priceFormatter('fr-FR', 'EUR')
   const linesTotal = formState.lines.reduce((acc, line) => {
@@ -165,7 +166,8 @@ export const orderCreateSummaryVM = (
         ? formatter.format(deliveryFeeWithTax / 100)
         : undefined,
     formattedTotal: formatter.format(
-      (linesTotal + (deliveryFeeWithTax ?? 0)) / 100
+      Math.max(0, linesTotal + (deliveryFeeWithTax ?? 0) - voucherDiscount) /
+        100
     ),
     blockers,
     canSubmit: blockers.length === 0
