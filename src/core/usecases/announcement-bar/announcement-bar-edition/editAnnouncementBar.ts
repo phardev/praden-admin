@@ -3,7 +3,7 @@ import type {
   EditAnnouncementBarDTO
 } from '@core/gateways/announcementBarGateway'
 import { UUID } from '@core/types/types'
-import { useAnnouncementBarStore } from '@store/announcementBarStore'
+import { listAnnouncementBars } from '@core/usecases/announcement-bar/list-announcement-bars/listAnnouncementBars'
 
 export type { EditAnnouncementBarDTO }
 
@@ -12,7 +12,6 @@ export const editAnnouncementBar = async (
   dto: EditAnnouncementBarDTO,
   announcementBarGateway: AnnouncementBarGateway
 ) => {
-  const edited = await announcementBarGateway.edit(uuid, dto)
-  const announcementBarStore = useAnnouncementBarStore()
-  announcementBarStore.edit(edited)
+  await announcementBarGateway.edit(uuid, dto)
+  await listAnnouncementBars(announcementBarGateway)
 }

@@ -1,6 +1,9 @@
 import { InMemoryAnnouncementBarGateway } from '@adapters/secondary/announcement-bar-gateways/inMemoryAnnouncementBarGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { AnnouncementBar } from '@core/entities/announcementBar'
+import {
+  AnnouncementBar,
+  EMPTY_ANNOUNCEMENT_BAR_SCHEDULE
+} from '@core/entities/announcementBar'
 import {
   CreateAnnouncementBarDTO,
   createAnnouncementBar
@@ -8,7 +11,9 @@ import {
 import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import {
   announcementBar1,
-  announcementBar2
+  announcementBar2,
+  longFreeDeliveryBar,
+  weekendPromoBar
 } from '@utils/testData/announcementBars'
 import { createPinia, setActivePinia } from 'pinia'
 
@@ -35,16 +40,17 @@ describe('Create announcement bar', () => {
       expectedAnnouncementBar = {
         uuid,
         text: 'New announcement bar text',
-        order: 0,
         isActive: true
       }
       uuidGenerator.setNext(uuid)
       await whenAddAnnouncementBar(dto)
     })
     it('should add the announcement bar in the gateway', async () => {
-      expect(await announcementBarGateway.list()).toStrictEqual([
-        expectedAnnouncementBar
-      ])
+      expect(await announcementBarGateway.list()).toStrictEqual({
+        items: [expectedAnnouncementBar],
+        displayedUuid: undefined,
+        schedule: EMPTY_ANNOUNCEMENT_BAR_SCHEDULE
+      })
     })
     it('should add the announcement bar in the store', () => {
       expect(announcementBarStore.items).toStrictEqual([
@@ -64,18 +70,17 @@ describe('Create announcement bar', () => {
       expectedAnnouncementBar = {
         uuid,
         text: 'Another announcement bar text',
-        order: 2,
         isActive: false
       }
       uuidGenerator.setNext(uuid)
       await whenAddAnnouncementBar(dto)
     })
     it('should add the announcement bar in the gateway', async () => {
-      expect(await announcementBarGateway.list()).toStrictEqual([
-        announcementBar1,
-        announcementBar2,
-        expectedAnnouncementBar
-      ])
+      expect(await announcementBarGateway.list()).toStrictEqual({
+        items: [announcementBar1, announcementBar2, expectedAnnouncementBar],
+        displayedUuid: undefined,
+        schedule: EMPTY_ANNOUNCEMENT_BAR_SCHEDULE
+      })
     })
     it('should add the announcement bar in the store', () => {
       expect(announcementBarStore.items).toStrictEqual([
@@ -98,7 +103,6 @@ describe('Create announcement bar', () => {
       expectedAnnouncementBar = {
         uuid,
         text: 'Announcement with dates',
-        order: 0,
         isActive: true,
         startDate: 1705276800000,
         endDate: 1735689599999
@@ -107,14 +111,35 @@ describe('Create announcement bar', () => {
       await whenAddAnnouncementBar(dto)
     })
     it('should add the announcement bar in the gateway', async () => {
-      expect(await announcementBarGateway.list()).toStrictEqual([
-        expectedAnnouncementBar
-      ])
+      expect(await announcementBarGateway.list()).toStrictEqual({
+        items: [expectedAnnouncementBar],
+        displayedUuid: undefined,
+        schedule: EMPTY_ANNOUNCEMENT_BAR_SCHEDULE
+      })
     })
     it('should add the announcement bar in the store', () => {
       expect(announcementBarStore.items).toStrictEqual([
         expectedAnnouncementBar
       ])
+    })
+  })
+
+  describe('The new announcement bar becomes the displayed one', () => {
+    beforeEach(async () => {
+      givenExistingAnnouncementBars(longFreeDeliveryBar)
+      uuid = weekendPromoBar.uuid
+      dto = {
+        text: weekendPromoBar.text,
+        isActive: weekendPromoBar.isActive,
+        startDate: new Date(weekendPromoBar.startDate!).toISOString(),
+        endDate: new Date(weekendPromoBar.endDate!).toISOString()
+      }
+      uuidGenerator.setNext(uuid)
+      announcementBarGateway.feedDisplayedWith(uuid)
+      await whenAddAnnouncementBar(dto)
+    })
+    it('should refresh the displayed announcement bar in the store', () => {
+      expect(announcementBarStore.displayedUuid).toStrictEqual(uuid)
     })
   })
 

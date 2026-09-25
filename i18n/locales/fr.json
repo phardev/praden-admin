@@ -711,8 +711,41 @@
       "title": "Barres d'annonce",
       "text": "Texte de l'annonce",
       "isActive": "Annonce active",
-      "active": "Active",
-      "inactive": "Inactive",
+      "displayedNow": "Affichée maintenant sur le site",
+      "noneDisplayed": "Aucune barre n'est affichée sur le site en ce moment",
+      "upcoming": "Programmées",
+      "noUpcoming": "Aucune barre programmée",
+      "ended": "Terminées ({count})",
+      "maskedBy": "Masquée par « {text} »",
+      "maskedByUntil": "Masquée par « {text} » jusqu'au {endDate}",
+      "timeline": {
+        "title": "Planning des 3 prochains mois",
+        "description": "Ce que verront les clients jour après jour. Cliquez sur une période pour modifier la barre.",
+        "site": "Sur le site",
+        "today": "Aujourd'hui",
+        "gap": "Aucune barre",
+        "gapTitle": "Aucune barre sur le site du {startLabel} au {endLabel}",
+        "gapLegend": "Aucune barre sur le site",
+        "segmentTitle": "{text} : {state} du {start} au {end}",
+        "changesTitle": "Prochains changements sur le site",
+        "noChanges": "Aucun changement prévu d'ici 3 mois",
+        "state": {
+          "DISPLAYED": "Affichée",
+          "MASKED": "Masquée",
+          "PAUSED": "En pause"
+        }
+      },
+      "impact": {
+        "replaces": "Du {startLabel} au {endLabel}, cette barre remplacera « {text} ».",
+        "maskedBy": "Du {startLabel} au {endLabel}, elle sera masquée par « {text} »."
+      },
+      "status": {
+        "DISPLAYED": "Affichée",
+        "MASKED": "Masquée",
+        "SCHEDULED": "Programmée",
+        "PAUSED": "En pause",
+        "ENDED": "Terminée"
+      },
       "startDate": "Date de début",
       "endDate": "Date de fin",
       "from": "Du",

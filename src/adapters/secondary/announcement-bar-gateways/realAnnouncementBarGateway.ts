@@ -1,7 +1,13 @@
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import { AnnouncementBar } from '@core/entities/announcementBar'
 import {
+  AnnouncementBar,
+  AnnouncementBarImpact,
+  AnnouncementBarImpactPeriod,
+  AnnouncementBarsListing
+} from '@core/entities/announcementBar'
+import {
+  AnnouncementBarDraft,
   AnnouncementBarGateway,
   CreateAnnouncementBarDTO,
   EditAnnouncementBarDTO
@@ -16,9 +22,13 @@ export class RealAnnouncementBarGateway
     super(url)
   }
 
-  async list(): Promise<Array<AnnouncementBar>> {
+  async list(): Promise<AnnouncementBarsListing> {
     const res = await axiosWithBearer.get(`${this.baseUrl}/announcements`)
-    return res.data.items.map(this.convertToAnnouncementBar)
+    return {
+      items: res.data.items.map(this.convertToAnnouncementBar),
+      displayedUuid: res.data.displayedUuid,
+      schedule: res.data.schedule
+    }
   }
 
   async create(dto: CreateAnnouncementBarDTO): Promise<AnnouncementBar> {
@@ -54,14 +64,35 @@ export class RealAnnouncementBarGateway
     return this.convertToAnnouncementBar(res.data.item)
   }
 
+  async previewSchedule(
+    draft: AnnouncementBarDraft
+  ): Promise<AnnouncementBarImpact> {
+    const res = await axiosWithBearer.get(
+      `${this.baseUrl}/announcements/schedule-preview`,
+      { params: { ...draft, isActive: String(draft.isActive) } }
+    )
+    return {
+      replaces: res.data.replaces.map(this.convertToImpactPeriod),
+      maskedBy: res.data.maskedBy.map(this.convertToImpactPeriod)
+    }
+  }
+
+  private convertToImpactPeriod(data: any): AnnouncementBarImpactPeriod {
+    return {
+      from: data.from,
+      to: data.to,
+      uuid: data.uuid,
+      text: data.content
+    }
+  }
+
   private convertToAnnouncementBar(data: any): AnnouncementBar {
     return {
       uuid: data.uuid,
       text: data.content,
       isActive: data.isActive,
       startDate: data.startDate,
-      endDate: data.endDate,
-      order: data.order
+      endDate: data.endDate
     }
   }
 }

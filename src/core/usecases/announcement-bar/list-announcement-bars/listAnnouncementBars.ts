@@ -4,7 +4,7 @@ import { useAnnouncementBarStore } from '@store/announcementBarStore'
 export const listAnnouncementBars = async (
   announcementBarGateway: AnnouncementBarGateway
 ) => {
-  const announcementBars = await announcementBarGateway.list()
+  const listing = await announcementBarGateway.list()
   const announcementBarStore = useAnnouncementBarStore()
-  announcementBarStore.list(announcementBars)
+  announcementBarStore.list(listing)
 }

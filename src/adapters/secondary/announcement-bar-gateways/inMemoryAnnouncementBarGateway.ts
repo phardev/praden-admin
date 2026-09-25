@@ -1,6 +1,14 @@
-import { AnnouncementBar, sortByOrder } from '@core/entities/announcementBar'
+import {
+  AnnouncementBar,
+  AnnouncementBarImpact,
+  AnnouncementBarSchedule,
+  AnnouncementBarsListing,
+  EMPTY_ANNOUNCEMENT_BAR_SCHEDULE,
+  NO_ANNOUNCEMENT_BAR_IMPACT
+} from '@core/entities/announcementBar'
 import { AnnouncementBarDoesNotExistsError } from '@core/errors/AnnouncementBarDoesNotExistsError'
 import {
+  AnnouncementBarDraft,
   AnnouncementBarGateway,
   CreateAnnouncementBarDTO,
   EditAnnouncementBarDTO
@@ -10,21 +18,30 @@ import { UUID } from '@core/types/types'
 
 export class InMemoryAnnouncementBarGateway implements AnnouncementBarGateway {
   private announcementBars: Array<AnnouncementBar> = []
+  private displayedUuid: UUID | undefined
+  private schedule: AnnouncementBarSchedule = EMPTY_ANNOUNCEMENT_BAR_SCHEDULE
+  private impacts: Array<{
+    draft: AnnouncementBarDraft
+    impact: AnnouncementBarImpact
+  }> = []
   private uuidGenerator: UuidGenerator
 
   constructor(uuidGenerator: UuidGenerator) {
     this.uuidGenerator = uuidGenerator
   }
 
-  async list(): Promise<Array<AnnouncementBar>> {
-    return Promise.resolve(JSON.parse(JSON.stringify(this.announcementBars)))
+  async list(): Promise<AnnouncementBarsListing> {
+    return Promise.resolve({
+      items: JSON.parse(JSON.stringify(this.announcementBars)),
+      displayedUuid: this.displayedUuid,
+      schedule: JSON.parse(JSON.stringify(this.schedule))
+    })
   }
 
   async create(dto: CreateAnnouncementBarDTO): Promise<AnnouncementBar> {
     const newAnnouncementBar: AnnouncementBar = {
       uuid: this.uuidGenerator.generate(),
       text: dto.text,
-      order: this.announcementBars.length,
       isActive: dto.isActive,
       startDate: dto.startDate ? new Date(dto.startDate).getTime() : undefined,
       endDate: dto.endDate ? new Date(dto.endDate).getTime() : undefined
@@ -58,14 +75,10 @@ export class InMemoryAnnouncementBarGateway implements AnnouncementBarGateway {
   }
 
   async delete(uuid: UUID): Promise<void> {
-    this.announcementBars.sort(sortByOrder)
     const index = this.announcementBars.findIndex((ab) => ab.uuid === uuid)
     if (index === -1) throw new AnnouncementBarDoesNotExistsError(uuid)
 
     this.announcementBars.splice(index, 1)
-    this.announcementBars.forEach((ab, i) => {
-      ab.order = i
-    })
     return Promise.resolve()
   }
 
@@ -77,5 +90,26 @@ export class InMemoryAnnouncementBarGateway implements AnnouncementBarGateway {
 
   feedWith(...announcementBars: Array<AnnouncementBar>) {
     this.announcementBars = JSON.parse(JSON.stringify(announcementBars))
+  }
+
+  async previewSchedule(
+    draft: AnnouncementBarDraft
+  ): Promise<AnnouncementBarImpact> {
+    const found = this.impacts.find(
+      (candidate) => JSON.stringify(candidate.draft) === JSON.stringify(draft)
+    )
+    return Promise.resolve(found?.impact ?? NO_ANNOUNCEMENT_BAR_IMPACT)
+  }
+
+  feedDisplayedWith(uuid: UUID) {
+    this.displayedUuid = uuid
+  }
+
+  feedScheduleWith(schedule: AnnouncementBarSchedule) {
+    this.schedule = schedule
+  }
+
+  feedImpactWith(draft: AnnouncementBarDraft, impact: AnnouncementBarImpact) {
+    this.impacts.push({ draft, impact })
   }
 }

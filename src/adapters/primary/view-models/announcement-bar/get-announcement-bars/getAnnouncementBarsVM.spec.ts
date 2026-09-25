@@ -1,8 +1,18 @@
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import {
+  AnnouncementBar,
+  EMPTY_ANNOUNCEMENT_BAR_SCHEDULE
+} from '@core/entities/announcementBar'
+import { UUID } from '@core/types/types'
 import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import {
   announcementBar1,
-  announcementBar4
+  announcementBar3,
+  announcementBar4,
+  blackFridayBar,
+  longFreeDeliveryBar,
+  pausedSeptemberBar,
+  weekendPromoBar
 } from '@utils/testData/announcementBars'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it } from 'vitest'
@@ -14,113 +24,160 @@ describe('getAnnouncementBarsVM', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     dateProvider = new FakeDateProvider()
+    dateProvider.feedWith(weekendPromoBar.startDate! + 1)
   })
 
-  it('Given no announcement bars, when getting announcement bars, then returns three empty groups', () => {
-    const announcementBarStore = useAnnouncementBarStore()
-    announcementBarStore.list([])
-    dateProvider.feedWith(1735689600000)
-
-    const result = getAnnouncementBarsVM(dateProvider)
-
-    expect(result).toStrictEqual({
-      'En cours': {
-        items: []
-      },
-      Terminées: {
-        items: []
-      },
-      Tous: {
-        items: []
-      }
+  describe('There is no announcement bar', () => {
+    it('should return empty groups', () => {
+      givenAnnouncementBars([])
+      expect(getAnnouncementBarsVM(dateProvider)).toStrictEqual({
+        displayed: undefined,
+        upcoming: [],
+        ended: []
+      })
     })
   })
 
-  it('Given one announcement bar without dates, when getting announcement bars, then returns it in all tabs', () => {
-    const announcementBarStore = useAnnouncementBarStore()
-    announcementBarStore.list([announcementBar1])
-    dateProvider.feedWith(1735689600000)
+  describe('A short promo overlaps a long announcement bar', () => {
+    beforeEach(() => {
+      givenAnnouncementBars(
+        [
+          pausedSeptemberBar,
+          blackFridayBar,
+          longFreeDeliveryBar,
+          weekendPromoBar,
+          announcementBar4
+        ],
+        weekendPromoBar.uuid
+      )
+    })
 
-    const result = getAnnouncementBarsVM(dateProvider)
+    it('should show the short promo as displayed', () => {
+      expect(getAnnouncementBarsVM(dateProvider).displayed).toStrictEqual({
+        uuid: weekendPromoBar.uuid,
+        text: weekendPromoBar.text,
+        startDate: '24 sept. 2026',
+        endDate: '26 sept. 2026',
+        status: 'DISPLAYED'
+      })
+    })
 
-    expect(result).toStrictEqual({
-      'En cours': {
-        items: [
-          {
-            uuid: 'announcement-winter-promo-2024',
-            text: '🎄 Offre de Noël : -20% sur tous les compléments alimentaires',
-            isActive: true,
-            startDate: '',
-            startDatetime: new Date(''),
-            endDate: '',
-            endDatetime: new Date(''),
-            isInProgress: true,
-            isFuture: false
+    it('should list masked, then scheduled, then paused bars as upcoming', () => {
+      expect(getAnnouncementBarsVM(dateProvider).upcoming).toStrictEqual([
+        {
+          uuid: longFreeDeliveryBar.uuid,
+          text: longFreeDeliveryBar.text,
+          startDate: '31 mars 2026',
+          endDate: '31 janv. 2027',
+          status: 'MASKED',
+          maskedBy: {
+            text: weekendPromoBar.text,
+            endDate: '26 sept. 2026'
           }
-        ]
-      },
-      Terminées: {
-        items: []
-      },
-      Tous: {
-        items: [
-          {
-            uuid: 'announcement-winter-promo-2024',
-            text: '🎄 Offre de Noël : -20% sur tous les compléments alimentaires',
-            isActive: true,
-            startDate: '',
-            startDatetime: new Date(''),
-            endDate: '',
-            endDatetime: new Date(''),
-            isInProgress: true,
-            isFuture: false
-          }
-        ]
-      }
+        },
+        {
+          uuid: blackFridayBar.uuid,
+          text: blackFridayBar.text,
+          startDate: '26 nov. 2026',
+          endDate: '1 déc. 2026',
+          status: 'SCHEDULED'
+        },
+        {
+          uuid: pausedSeptemberBar.uuid,
+          text: pausedSeptemberBar.text,
+          startDate: '1 sept. 2026',
+          endDate: '30 sept. 2026',
+          status: 'PAUSED'
+        }
+      ])
+    })
+
+    it('should list ended bars', () => {
+      expect(getAnnouncementBarsVM(dateProvider).ended).toStrictEqual([
+        {
+          uuid: announcementBar4.uuid,
+          text: announcementBar4.text,
+          startDate: '1 juil. 2024',
+          endDate: '1 août 2024',
+          status: 'ENDED'
+        }
+      ])
     })
   })
 
-  it('Given announcement bar with end date in the past, when getting announcement bars, then returns it in Terminées and Tous tabs', () => {
-    const announcementBarStore = useAnnouncementBarStore()
-    announcementBarStore.list([announcementBar4])
-    dateProvider.feedWith(1735689600000)
+  describe('A bar without end date is masked by a bar without end date', () => {
+    beforeEach(() => {
+      givenAnnouncementBars(
+        [announcementBar1, { ...longFreeDeliveryBar, endDate: undefined }],
+        announcementBar1.uuid
+      )
+    })
 
-    const result = getAnnouncementBarsVM(dateProvider)
-
-    expect(result).toStrictEqual({
-      'En cours': {
-        items: []
-      },
-      Terminées: {
-        items: [
-          {
-            uuid: 'announcement-summer-sales-2024',
-            text: "☀️ Soldes d'été : jusqu'à -50% sur une sélection de produits",
-            isActive: true,
-            startDate: '1 juil. 2024',
-            startDatetime: new Date(1719792000000),
-            endDate: '1 août 2024',
-            endDatetime: new Date(1722470400000),
-            isInProgress: false,
-            isFuture: false
+    it('should show the masking bar without end date', () => {
+      expect(getAnnouncementBarsVM(dateProvider).upcoming).toStrictEqual([
+        {
+          uuid: longFreeDeliveryBar.uuid,
+          text: longFreeDeliveryBar.text,
+          startDate: '31 mars 2026',
+          endDate: '',
+          status: 'MASKED',
+          maskedBy: {
+            text: announcementBar1.text,
+            endDate: ''
           }
-        ]
-      },
-      Tous: {
-        items: [
-          {
-            uuid: 'announcement-summer-sales-2024',
-            text: "☀️ Soldes d'été : jusqu'à -50% sur une sélection de produits",
-            isActive: true,
-            startDate: '1 juil. 2024',
-            startDatetime: new Date(1719792000000),
-            endDate: '1 août 2024',
-            endDatetime: new Date(1722470400000),
-            isInProgress: false,
-            isFuture: false
-          }
-        ]
-      }
+        }
+      ])
     })
   })
+
+  describe('Several bars have ended', () => {
+    beforeEach(() => {
+      givenAnnouncementBars([announcementBar4, announcementBar3])
+    })
+
+    it('should list the most recently ended first', () => {
+      expect(getAnnouncementBarsVM(dateProvider).ended).toStrictEqual([
+        {
+          uuid: announcementBar3.uuid,
+          text: announcementBar3.text,
+          startDate: '',
+          endDate: '2 févr. 2025',
+          status: 'ENDED'
+        },
+        {
+          uuid: announcementBar4.uuid,
+          text: announcementBar4.text,
+          startDate: '1 juil. 2024',
+          endDate: '1 août 2024',
+          status: 'ENDED'
+        }
+      ])
+    })
+  })
+
+  describe('Several bars are scheduled', () => {
+    beforeEach(() => {
+      givenAnnouncementBars([
+        blackFridayBar,
+        { ...weekendPromoBar, startDate: weekendPromoBar.startDate! + 2 }
+      ])
+    })
+
+    it('should list the next one to start first', () => {
+      expect(
+        getAnnouncementBarsVM(dateProvider).upcoming.map((bar) => bar.uuid)
+      ).toStrictEqual([weekendPromoBar.uuid, blackFridayBar.uuid])
+    })
+  })
+
+  const givenAnnouncementBars = (
+    items: Array<AnnouncementBar>,
+    displayedUuid?: UUID
+  ) => {
+    useAnnouncementBarStore().list({
+      items,
+      displayedUuid,
+      schedule: EMPTY_ANNOUNCEMENT_BAR_SCHEDULE
+    })
+  }
 })

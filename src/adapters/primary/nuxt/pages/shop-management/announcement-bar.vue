@@ -16,6 +16,7 @@
 
   AnnouncementBarsList(
     :announcement-bars-vm="announcementBarsVM"
+    :timeline-vm="timelineVM"
     @edit="handleEdit"
     @delete="handleDelete"
   )
@@ -32,6 +33,7 @@
 import AnnouncementBarFormModal from '@adapters/primary/nuxt/components/organisms/AnnouncementBarFormModal.vue'
 import AnnouncementBarsList from '@adapters/primary/nuxt/components/organisms/AnnouncementBarsList.vue'
 import { getAnnouncementBarsVM } from '@adapters/primary/view-models/announcement-bar/get-announcement-bars/getAnnouncementBarsVM'
+import { getAnnouncementBarsTimelineVM } from '@adapters/primary/view-models/announcement-bar/get-announcement-bars-timeline/getAnnouncementBarsTimelineVM'
 import { deleteAnnouncementBar } from '@core/usecases/announcement-bar/announcement-bar-deletion/deleteAnnouncementBar'
 import { listAnnouncementBars } from '@core/usecases/announcement-bar/list-announcement-bars/listAnnouncementBars'
 import { useAnnouncementBarGateway } from '../../../../../../gateways/announcementBarGateway'
@@ -56,6 +58,8 @@ onMounted(() => {
 const announcementBarsVM = computed(() => {
   return getAnnouncementBarsVM(useDateProvider())
 })
+
+const timelineVM = computed(() => getAnnouncementBarsTimelineVM())
 
 const openCreateModal = () => {
   modalState.mode = 'create'

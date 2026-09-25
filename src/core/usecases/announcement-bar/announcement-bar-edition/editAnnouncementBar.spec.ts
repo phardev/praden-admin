@@ -1,6 +1,9 @@
 import { InMemoryAnnouncementBarGateway } from '@adapters/secondary/announcement-bar-gateways/inMemoryAnnouncementBarGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { AnnouncementBar } from '@core/entities/announcementBar'
+import {
+  AnnouncementBar,
+  EMPTY_ANNOUNCEMENT_BAR_SCHEDULE
+} from '@core/entities/announcementBar'
 import { UUID } from '@core/types/types'
 import {
   EditAnnouncementBarDTO,
@@ -10,7 +13,9 @@ import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import {
   announcementBar1,
   announcementBar2,
-  announcementBar3
+  announcementBar3,
+  longFreeDeliveryBar,
+  weekendPromoBar
 } from '@utils/testData/announcementBars'
 import { createPinia, setActivePinia } from 'pinia'
 
@@ -53,9 +58,11 @@ describe('AnnouncementBar Edition', () => {
         await whenEditAnnouncementBar(uuid, dto)
       })
       it('should update field in gateway', async () => {
-        expect(await announcementBarGateway.list()).toStrictEqual(
-          expectedAnnouncementBars
-        )
+        expect(await announcementBarGateway.list()).toStrictEqual({
+          items: expectedAnnouncementBars,
+          displayedUuid: undefined,
+          schedule: EMPTY_ANNOUNCEMENT_BAR_SCHEDULE
+        })
       })
       it('should update field in store', () => {
         expect(announcementBarStore.items).toStrictEqual(
@@ -81,15 +88,33 @@ describe('AnnouncementBar Edition', () => {
         await whenEditAnnouncementBar(uuid, dto)
       })
       it('should update field in gateway', async () => {
-        expect(await announcementBarGateway.list()).toStrictEqual(
-          expectedAnnouncementBars
-        )
+        expect(await announcementBarGateway.list()).toStrictEqual({
+          items: expectedAnnouncementBars,
+          displayedUuid: undefined,
+          schedule: EMPTY_ANNOUNCEMENT_BAR_SCHEDULE
+        })
       })
       it('should update field in store', () => {
         expect(announcementBarStore.items).toStrictEqual(
           expectedAnnouncementBars
         )
       })
+    })
+  })
+
+  describe('Pausing the displayed announcement bar', () => {
+    beforeEach(async () => {
+      givenExistingAnnouncementBars(longFreeDeliveryBar, weekendPromoBar)
+      announcementBarGateway.feedDisplayedWith(longFreeDeliveryBar.uuid)
+      await whenEditAnnouncementBar(weekendPromoBar.uuid, {
+        text: weekendPromoBar.text,
+        isActive: false
+      })
+    })
+    it('should refresh the displayed announcement bar in the store', () => {
+      expect(announcementBarStore.displayedUuid).toStrictEqual(
+        longFreeDeliveryBar.uuid
+      )
     })
   })
 

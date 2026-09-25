@@ -1,13 +1,18 @@
 import { InMemoryAnnouncementBarGateway } from '@adapters/secondary/announcement-bar-gateways/inMemoryAnnouncementBarGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { AnnouncementBar } from '@core/entities/announcementBar'
+import {
+  AnnouncementBar,
+  EMPTY_ANNOUNCEMENT_BAR_SCHEDULE
+} from '@core/entities/announcementBar'
 import { UUID } from '@core/types/types'
 import { deleteAnnouncementBar } from '@core/usecases/announcement-bar/announcement-bar-deletion/deleteAnnouncementBar'
 import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import {
   announcementBar1,
   announcementBar2,
-  announcementBar3
+  announcementBar3,
+  longFreeDeliveryBar,
+  weekendPromoBar
 } from '@utils/testData/announcementBars'
 import { createPinia, setActivePinia } from 'pinia'
 
@@ -35,21 +40,14 @@ describe('AnnouncementBar deletion', () => {
     describe('For an announcement bar', () => {
       beforeEach(async () => {
         await whenDeleteAnnouncementBar(announcementBar1.uuid)
-        expectedAnnouncementBars = [
-          {
-            ...announcementBar2,
-            order: 0
-          },
-          {
-            ...announcementBar3,
-            order: 1
-          }
-        ]
+        expectedAnnouncementBars = [announcementBar2, announcementBar3]
       })
       it('should delete the announcement bar from the gateway', async () => {
-        expect(await announcementBarGateway.list()).toStrictEqual(
-          expectedAnnouncementBars
-        )
+        expect(await announcementBarGateway.list()).toStrictEqual({
+          items: expectedAnnouncementBars,
+          displayedUuid: undefined,
+          schedule: EMPTY_ANNOUNCEMENT_BAR_SCHEDULE
+        })
       })
       it('should delete the announcement bar from the store', () => {
         expect(announcementBarStore.items).toStrictEqual(
@@ -60,26 +58,33 @@ describe('AnnouncementBar deletion', () => {
     describe('For another announcement bar', () => {
       beforeEach(async () => {
         await whenDeleteAnnouncementBar(announcementBar2.uuid)
-        expectedAnnouncementBars = [
-          {
-            ...announcementBar1
-          },
-          {
-            ...announcementBar3,
-            order: 1
-          }
-        ]
+        expectedAnnouncementBars = [announcementBar1, announcementBar3]
       })
       it('should delete the announcement bar from the gateway', async () => {
-        expect(await announcementBarGateway.list()).toStrictEqual(
-          expectedAnnouncementBars
-        )
+        expect(await announcementBarGateway.list()).toStrictEqual({
+          items: expectedAnnouncementBars,
+          displayedUuid: undefined,
+          schedule: EMPTY_ANNOUNCEMENT_BAR_SCHEDULE
+        })
       })
       it('should delete the announcement bar from the store', () => {
         expect(announcementBarStore.items).toStrictEqual(
           expectedAnnouncementBars
         )
       })
+    })
+  })
+
+  describe('Deleting the displayed announcement bar', () => {
+    beforeEach(async () => {
+      givenExistingAnnouncementBars(longFreeDeliveryBar, weekendPromoBar)
+      announcementBarGateway.feedDisplayedWith(longFreeDeliveryBar.uuid)
+      await whenDeleteAnnouncementBar(weekendPromoBar.uuid)
+    })
+    it('should refresh the displayed announcement bar in the store', () => {
+      expect(announcementBarStore.displayedUuid).toStrictEqual(
+        longFreeDeliveryBar.uuid
+      )
     })
   })
 

@@ -104,6 +104,20 @@ FtModal(v-model="isOpen" @close="handleClose")
                 @close="close"
               )
 
+      .space-y-2.pb-6(aria-live="polite")
+        .flex.items-start.gap-2.rounded-md.border.border-blue-200.bg-blue-50.p-3.text-sm.text-blue-900(
+          v-for="period in impactVM.replaces"
+          :key="`replaces-${period.startLabel}-${period.text}`"
+        )
+          icon.icon-md.shrink-0(name="material-symbols:swap-horiz")
+          span {{ $t('shopManagement.announcementBar.impact.replaces', period) }}
+        .flex.items-start.gap-2.rounded-md.border.border-orange-200.bg-orange-50.p-3.text-sm.text-orange-900(
+          v-for="period in impactVM.maskedBy"
+          :key="`masked-${period.startLabel}-${period.text}`"
+        )
+          icon.icon-md.shrink-0(name="material-symbols:visibility-off-outline")
+          span {{ $t('shopManagement.announcementBar.impact.maskedBy', period) }}
+
       div(class="flex justify-end space-x-4 pt-6 border-t border-gray-200")
         ft-button(
           type="button"
@@ -127,9 +141,12 @@ import {
   type AnnouncementBarFormEditVM,
   announcementBarFormEditVM
 } from '@adapters/primary/view-models/announcement-bar/announcement-bar-form/announcementBarFormEditVM'
+import { getAnnouncementBarImpactVM } from '@adapters/primary/view-models/announcement-bar/get-announcement-bar-impact/getAnnouncementBarImpactVM'
+import type { AnnouncementBarDraft } from '@core/gateways/announcementBarGateway'
 import { createAnnouncementBar } from '@core/usecases/announcement-bar/announcement-bar-creation/createAnnouncementBar'
 import { editAnnouncementBar } from '@core/usecases/announcement-bar/announcement-bar-edition/editAnnouncementBar'
 import { getAnnouncementBar } from '@core/usecases/announcement-bar/announcement-bar-get/getAnnouncementBar'
+import { previewAnnouncementBarSchedule } from '@core/usecases/announcement-bar/announcement-bar-schedule-preview/previewAnnouncementBarSchedule'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { useAnnouncementBarGateway } from '~/gateways/announcementBarGateway'
@@ -216,6 +233,33 @@ watch(
     }
   },
   { immediate: true }
+)
+
+const PREVIEW_DEBOUNCE_IN_MS = 300
+
+const impactVM = computed(() => getAnnouncementBarImpactVM())
+
+const editedUuid = computed(() =>
+  props.mode === 'edit' ? props.announcementBarUuid : undefined
+)
+
+const draft = computed((): AnnouncementBarDraft | undefined => {
+  if (!currentFormVM.value) return undefined
+  const { isActive, startDate, endDate } = currentFormVM.value.getDto()
+  return { uuid: editedUuid.value, isActive, startDate, endDate }
+})
+
+watchDebounced(
+  () => JSON.stringify(draft.value),
+  async () => {
+    if (!draft.value) return
+    try {
+      await previewAnnouncementBarSchedule(draft.value, announcementBarGateway)
+    } catch {
+      return
+    }
+  },
+  { debounce: PREVIEW_DEBOUNCE_IN_MS, immediate: true }
 )
 
 const textChanged = (value: string) => {

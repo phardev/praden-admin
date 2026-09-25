@@ -6,7 +6,10 @@ import { useAnnouncementBarStore } from '@store/announcementBarStore'
 import {
   announcementBar1,
   announcementBar2,
-  announcementBar3
+  announcementBar3,
+  longFreeDeliveryBar,
+  weekendPromoBar,
+  weekendThenLongSchedule
 } from '@utils/testData/announcementBars'
 import { createPinia, setActivePinia } from 'pinia'
 
@@ -43,6 +46,38 @@ describe('List announcement bars', () => {
       )
     })
   })
+
+  describe('One announcement bar is displayed on the shop', () => {
+    beforeEach(async () => {
+      givenExistingAnnouncementBars(announcementBar1, announcementBar3)
+      givenDisplayedAnnouncementBarIs(announcementBar3.uuid)
+      await whenListAnnouncementBars()
+    })
+
+    it('should store the displayed announcement bar', () => {
+      expect(announcementBarStore.displayedUuid).toStrictEqual(
+        announcementBar3.uuid
+      )
+    })
+  })
+
+  describe('The shop has a schedule for the coming months', () => {
+    beforeEach(async () => {
+      givenExistingAnnouncementBars(longFreeDeliveryBar, weekendPromoBar)
+      announcementBarGateway.feedScheduleWith(weekendThenLongSchedule)
+      await whenListAnnouncementBars()
+    })
+
+    it('should store the schedule', () => {
+      expect(announcementBarStore.schedule).toStrictEqual(
+        weekendThenLongSchedule
+      )
+    })
+  })
+
+  const givenDisplayedAnnouncementBarIs = (uuid: string) => {
+    announcementBarGateway.feedDisplayedWith(uuid)
+  }
 
   const givenExistingAnnouncementBars = (
     ...announcementBars: Array<AnnouncementBar>

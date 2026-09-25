@@ -1,4 +1,8 @@
-import { AnnouncementBar } from '@core/entities/announcementBar'
+import {
+  AnnouncementBar,
+  AnnouncementBarImpact,
+  AnnouncementBarsListing
+} from '@core/entities/announcementBar'
 import { UUID } from '@core/types/types'
 
 export interface CreateAnnouncementBarDTO {
@@ -15,10 +19,18 @@ export interface EditAnnouncementBarDTO {
   endDate?: string
 }
 
+export interface AnnouncementBarDraft {
+  uuid?: UUID
+  isActive: boolean
+  startDate?: string
+  endDate?: string
+}
+
 export interface AnnouncementBarGateway {
-  list(): Promise<Array<AnnouncementBar>>
+  list(): Promise<AnnouncementBarsListing>
   create(dto: CreateAnnouncementBarDTO): Promise<AnnouncementBar>
   edit(uuid: UUID, dto: EditAnnouncementBarDTO): Promise<AnnouncementBar>
   delete(uuid: UUID): Promise<void>
   getByUuid(uuid: UUID): Promise<AnnouncementBar>
+  previewSchedule(draft: AnnouncementBarDraft): Promise<AnnouncementBarImpact>
 }
