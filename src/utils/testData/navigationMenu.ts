@@ -58,6 +58,11 @@ export const fullMenu: NavigationMenu = {
           href: '/customers'
         },
         {
+          name: 'Paniers',
+          icon: 'mdi:cart-outline',
+          href: '/customers/carts'
+        },
+        {
           name: 'Newsletter',
           icon: 'mdi:email-newsletter',
           href: '/newsletter-subscriptions'

@@ -1,6 +1,10 @@
 import { CarrierType } from '@core/entities/carrier'
 import type { DeliveryPriceRule } from '@core/entities/deliveryPriceRule'
-import { DeliveryMethod, DeliveryType } from '@core/entities/order'
+import {
+  CollectionPlace,
+  DeliveryMethod,
+  isCollectedAtPharmacyCounter
+} from '@core/entities/order'
 import type { Timestamp } from '@core/types/types'
 import { priceFormatter } from '@utils/formatters'
 import { addTaxToPrice } from '@utils/price'
@@ -52,7 +56,7 @@ const buildPricingContext = (
 }
 
 const isRelayMethod = (method: DeliveryMethod): boolean => {
-  return /relai/i.test(method.name)
+  return method.collectionPlace === CollectionPlace.PickupPoint
 }
 
 const RELAY_CARRIERS_WITH_PICKUP_SELECTION = [
@@ -97,7 +101,7 @@ const computeDefaultPrice = (
   const priceRangesForCountry =
     method.priceRanges[context.country.toUpperCase()]
   if (!priceRangesForCountry) {
-    if (method.type === DeliveryType.ClickAndCollect) {
+    if (isCollectedAtPharmacyCounter(method)) {
       return 0
     }
     return undefined
@@ -137,7 +141,7 @@ const disabledChoice = (
     name: method.name,
     description: method.description,
     delay: method.delay,
-    isClickAndCollect: method.type === DeliveryType.ClickAndCollect,
+    isClickAndCollect: isCollectedAtPharmacyCounter(method),
     fee: undefined,
     formattedFee: undefined,
     isFree: false,
@@ -175,7 +179,7 @@ export const deliveryMethodChoicesVM = (
       name: method.name,
       description: method.description,
       delay: method.delay,
-      isClickAndCollect: method.type === DeliveryType.ClickAndCollect,
+      isClickAndCollect: isCollectedAtPharmacyCounter(method),
       fee,
       formattedFee: formatter.format(feeWithTax / 100),
       isFree: feeWithTax === 0,

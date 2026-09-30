@@ -9,6 +9,10 @@ export class InMemoryRemindersGateway implements RemindersGateway {
       paymentReminders: {
         messagesSentCount: 0,
         orderCreatedCount: 0
+      },
+      abandonedCartReminders: {
+        remindedCartsCount: 0,
+        orderedCartsCount: 0
       }
     }
   }

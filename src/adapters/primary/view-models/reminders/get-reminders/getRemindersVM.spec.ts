@@ -3,6 +3,16 @@ import { useStatsStore } from '@store/statsStore'
 import { createPinia, setActivePinia } from 'pinia'
 import { getRemindersVM } from './getRemindersVM'
 
+const noAbandonedCartReminders = {
+  remindedCartsCount: 0,
+  orderedCartsCount: 0
+}
+
+const noAbandonedCartRemindersVM = {
+  ...noAbandonedCartReminders,
+  conversionRate: 0
+}
+
 describe('getRemindersVM', () => {
   let statsStore: any
 
@@ -19,7 +29,8 @@ describe('getRemindersVM', () => {
         messagesSentCount: 0,
         orderCreatedCount: 0,
         conversionRate: 0
-      }
+      },
+      abandonedCartReminders: noAbandonedCartRemindersVM
     })
   })
 
@@ -28,7 +39,8 @@ describe('getRemindersVM', () => {
       paymentReminders: {
         messagesSentCount: 0,
         orderCreatedCount: 5
-      }
+      },
+      abandonedCartReminders: noAbandonedCartReminders
     }
     statsStore.reminders = mockReminders
     const result = getRemindersVM()
@@ -37,7 +49,8 @@ describe('getRemindersVM', () => {
         messagesSentCount: 0,
         orderCreatedCount: 5,
         conversionRate: 0
-      }
+      },
+      abandonedCartReminders: noAbandonedCartRemindersVM
     })
   })
 
@@ -46,7 +59,8 @@ describe('getRemindersVM', () => {
       paymentReminders: {
         messagesSentCount: 10,
         orderCreatedCount: 4
-      }
+      },
+      abandonedCartReminders: noAbandonedCartReminders
     }
     statsStore.reminders = mockReminders
     const result = getRemindersVM()
@@ -55,7 +69,8 @@ describe('getRemindersVM', () => {
         messagesSentCount: 10,
         orderCreatedCount: 4,
         conversionRate: 40
-      }
+      },
+      abandonedCartReminders: noAbandonedCartRemindersVM
     })
   })
 
@@ -64,7 +79,8 @@ describe('getRemindersVM', () => {
       paymentReminders: {
         messagesSentCount: 9,
         orderCreatedCount: 2
-      }
+      },
+      abandonedCartReminders: noAbandonedCartReminders
     }
     statsStore.reminders = mockReminders
     const result = getRemindersVM()
@@ -73,7 +89,25 @@ describe('getRemindersVM', () => {
         messagesSentCount: 9,
         orderCreatedCount: 2,
         conversionRate: 22
+      },
+      abandonedCartReminders: noAbandonedCartRemindersVM
+    })
+  })
+
+  it('should calculate the conversion rate of the abandoned cart reminders', () => {
+    const reminded = 8
+    const ordered = 2
+    statsStore.reminders = {
+      paymentReminders: { messagesSentCount: 0, orderCreatedCount: 0 },
+      abandonedCartReminders: {
+        remindedCartsCount: reminded,
+        orderedCartsCount: ordered
       }
+    }
+    expect(getRemindersVM().abandonedCartReminders).toStrictEqual({
+      remindedCartsCount: reminded,
+      orderedCartsCount: ordered,
+      conversionRate: Math.round((ordered / reminded) * 100)
     })
   })
 })

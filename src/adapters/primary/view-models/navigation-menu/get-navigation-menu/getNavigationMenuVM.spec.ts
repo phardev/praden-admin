@@ -70,6 +70,11 @@ describe('Get navigation menu VM', () => {
                 href: '/customers'
               },
               {
+                name: 'Paniers',
+                icon: 'mdi:cart-outline',
+                href: '/customers/carts'
+              },
+              {
                 name: 'Newsletter',
                 icon: 'mdi:email-newsletter',
                 href: '/newsletter-subscriptions'
@@ -166,6 +171,11 @@ describe('Get navigation menu VM', () => {
                 name: 'Clients',
                 icon: 'material-symbols:person-outline-rounded',
                 href: '/customers'
+              },
+              {
+                name: 'Paniers',
+                icon: 'mdi:cart-outline',
+                href: '/customers/carts'
               },
               {
                 name: 'Newsletter',

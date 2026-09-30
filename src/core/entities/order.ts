@@ -53,10 +53,19 @@ export interface Contact {
   phone: string
 }
 
-export enum DeliveryType {
-  ClickAndCollect = 'CLICKANDCOLLECT',
-  Delivery = 'DELIVERY'
+export enum CollectionPlace {
+  Home = 'HOME',
+  PickupPoint = 'PICKUP_POINT',
+  PharmacyCounter = 'PHARMACY_COUNTER'
 }
+
+export const isCollectedAtPharmacyCounter = (method: {
+  collectionPlace: CollectionPlace
+}): boolean => method.collectionPlace === CollectionPlace.PharmacyCounter
+
+export const isShippedByCarrier = (method: {
+  collectionPlace: CollectionPlace
+}): boolean => !isCollectedAtPharmacyCounter(method)
 
 export interface PriceWeightRange {
   minWeight: number
@@ -71,7 +80,7 @@ export interface DeliveryMethod {
   name: string
   description: string
   delay?: string
-  type: DeliveryType
+  collectionPlace: CollectionPlace
   carrier: Carrier
   priceRanges: PriceRangesByCountry
 }

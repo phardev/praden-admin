@@ -16,6 +16,7 @@ import type { OrderCreateFormState } from './orderCreateFormState'
 import { emptyOrderCreateFormState } from './orderCreateFormState'
 import type { OrderCreateSummaryVM } from './orderCreateSummaryVM'
 import { orderCreateSummaryVM } from './orderCreateSummaryVM'
+import { promotionCodeBasisOf } from './promotionCodeBasis'
 
 describe('Order create summary VM', () => {
   const NOW = productPromotionPercentage.startDate! + 1
@@ -130,6 +131,109 @@ describe('Order create summary VM', () => {
       expect(
         orderCreateSummaryVM(validFormState(), expressChoice, NOW)
       ).toStrictEqual(expectedVM)
+    })
+  })
+
+  describe('Given a promotion code carried from the cart, when getting summary, then the total deducts its discount', () => {
+    it('should deduct the discount of the promotion code', () => {
+      const promotionCode = {
+        code: 'BIENVENUE',
+        discount: 200,
+        basis: promotionCodeBasisOf(validFormState())
+      }
+      const totalBeforeCode =
+        2 *
+          Math.round(
+            addTaxToPrice(dolodent.priceWithoutTax, dolodent.percentTaxRate)
+          ) +
+        Math.round(addTaxToPrice(expressChoice.fee!, 20))
+      expect(
+        orderCreateSummaryVM(
+          { ...validFormState(), promotionCode },
+          expressChoice,
+          NOW
+        ).formattedTotal
+      ).toStrictEqual(
+        formatter.format((totalBeforeCode - promotionCode.discount) / 100)
+      )
+    })
+  })
+
+  describe('Given a promotion code carried from the cart, when getting summary, then its discount is shown', () => {
+    it('should format the discount of the promotion code', () => {
+      const promotionCode = {
+        code: 'BIENVENUE',
+        discount: 200,
+        basis: promotionCodeBasisOf(validFormState())
+      }
+      expect(
+        orderCreateSummaryVM(
+          { ...validFormState(), promotionCode },
+          expressChoice,
+          NOW
+        ).formattedPromotionCodeDiscount
+      ).toStrictEqual(formatter.format(promotionCode.discount / 100))
+    })
+  })
+
+  describe('Given a promotion code carried from the cart and lines changed since, when getting summary, then its discount is left to the validation', () => {
+    const promotionCode = {
+      code: 'BIENVENUE',
+      discount: 200,
+      basis: promotionCodeBasisOf(validFormState())
+    }
+    const changedFormState = (): OrderCreateFormState => ({
+      ...validFormState(),
+      lines: [{ product: dolodent, quantity: 3 }],
+      promotionCode
+    })
+
+    it('should not deduct a discount computed for other lines', () => {
+      expect(
+        orderCreateSummaryVM(changedFormState(), expressChoice, NOW)
+          .formattedTotal
+      ).toStrictEqual(
+        orderCreateSummaryVM(
+          { ...changedFormState(), promotionCode: undefined },
+          expressChoice,
+          NOW
+        ).formattedTotal
+      )
+    })
+
+    it('should not deduct a discount computed for another delivery method', () => {
+      expect(
+        orderCreateSummaryVM(
+          {
+            ...validFormState(),
+            deliveryMethod: deliveryInRelayPointDPD,
+            promotionCode
+          },
+          dpdChoice,
+          NOW
+        ).formattedPromotionCodeDiscount
+      ).toBeUndefined()
+    })
+
+    it('should not deduct a discount computed for another country', () => {
+      expect(
+        orderCreateSummaryVM(
+          {
+            ...validFormState(),
+            deliveryAddress: { ...address, country: 'Belgique' },
+            promotionCode
+          },
+          expressChoice,
+          NOW
+        ).formattedPromotionCodeDiscount
+      ).toBeUndefined()
+    })
+
+    it('should tell that the discount will be computed at validation', () => {
+      expect(
+        orderCreateSummaryVM(changedFormState(), expressChoice, NOW)
+          .promotionCodeNoteKey
+      ).toStrictEqual('orders.create.promotionCode.recalculated')
     })
   })
 

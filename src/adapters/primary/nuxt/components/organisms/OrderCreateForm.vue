@@ -113,8 +113,8 @@
         )
           .text-sm.font-medium.text-primary-700 {{ $t('orders.create.delivery.relaySearch.selected') }}
           .font-medium {{ formState.selectedRelayPoint.name }}
-          .text-sm.text-gray-600 {{ formState.selectedRelayPoint.address }}
-          .text-sm.text-gray-600 {{ formState.selectedRelayPoint.zipCode }} {{ formState.selectedRelayPoint.city }}
+          .text-sm.text-gray-600(v-if="formState.selectedRelayPoint.address") {{ formState.selectedRelayPoint.address }}
+          .text-sm.text-gray-600(v-if="formState.selectedRelayPoint.city") {{ formState.selectedRelayPoint.zipCode }} {{ formState.selectedRelayPoint.city }}
         template(v-if="isDpdRelay")
           .flex.flex-wrap.items-end.gap-3.mt-3
             UFormGroup(:label="$t('orders.create.delivery.relaySearch.zip')")
@@ -267,6 +267,22 @@
           .flex.justify-between(v-if="summaryVM.formattedDeliveryFee !== undefined")
             span {{ $t('orders.create.summary.delivery') }} — {{ formState.deliveryMethod?.name }}
             span {{ summaryVM.formattedDeliveryFee }}
+          .flex.justify-between.items-center.text-green-700(v-if="formState.promotionCode")
+            span {{ $t('orders.create.promotionCode.title') }} {{ formState.promotionCode.code }}
+            .flex.items-center.gap-1
+              span(v-if="summaryVM.formattedPromotionCodeDiscount") - {{ summaryVM.formattedPromotionCodeDiscount }}
+              span.text-xs.text-gray-500(v-if="summaryVM.promotionCodeNoteKey") {{ $t(summaryVM.promotionCodeNoteKey) }}
+              UButton(
+                color="gray"
+                variant="ghost"
+                size="xs"
+                icon="i-heroicons-x-mark-20-solid"
+                :aria-label="$t('orders.create.promotionCode.remove')"
+                @click="promotionCodeRemoved"
+              )
+          div(v-if="formState.customerMessage")
+            p.text-sm.font-medium {{ $t('orders.create.customerMessage') }}
+            p.text-sm.text-gray-700.whitespace-pre-line {{ formState.customerMessage }}
           .flex.justify-between.items-center.text-green-700(v-if="voucherVM.applied")
             span {{ $t('orders.create.summary.voucher', { code: voucherVM.applied.code }) }}
             .flex.items-center.gap-1
@@ -377,7 +393,7 @@ import {
 import { dpdRelayPointSearchVM } from '@adapters/primary/view-models/orders/create-order/dpdRelayPointSearchVM'
 import type { OrderCreateFormState } from '@adapters/primary/view-models/orders/create-order/orderCreateFormState'
 import {
-  emptyAddress,
+  customerPrefilledAddress,
   emptyOrderCreateFormState
 } from '@adapters/primary/view-models/orders/create-order/orderCreateFormState'
 import type { MaxQuantityViolation } from '@adapters/primary/view-models/orders/create-order/orderCreateLinesVM'
@@ -393,7 +409,7 @@ import { availablePickingHours } from '@adapters/primary/view-models/orders/crea
 import type { ProductWithPromotions } from '@adapters/primary/view-models/orders/create-order/productPromotionPricing'
 import { parseProductSearchInput } from '@adapters/primary/view-models/orders/create-order/productSearchInputVM'
 import { CarrierType } from '@core/entities/carrier'
-import { DeliveryType } from '@core/entities/order'
+import { CollectionPlace } from '@core/entities/order'
 import type { RelayPoint } from '@core/entities/relayPoint'
 import { getCustomer } from '@core/usecases/customers/customer-get/getCustomer'
 import { searchDpdRelayPoints } from '@core/usecases/dpd/dpd-relay-point-search/searchDpdRelayPoints'
@@ -419,6 +435,7 @@ import { useVoucherErrorToast } from '../../composables/useVoucherErrorToast'
 const props = defineProps<{
   isSaving: boolean
   maxQuantityViolations?: Array<MaxQuantityViolation>
+  initialState?: OrderCreateFormState
 }>()
 
 const emit = defineEmits<{
@@ -431,7 +448,11 @@ const scanNamespace = 'order-create-scan'
 const minimumQueryLength = 3
 const defaultCountry = 'FRANCE'
 
-const formState = reactive<OrderCreateFormState>(emptyOrderCreateFormState())
+const formState = reactive<OrderCreateFormState>(
+  props.initialState
+    ? JSON.parse(JSON.stringify(props.initialState))
+    : emptyOrderCreateFormState()
+)
 const productSearch = ref('')
 
 const customerStore = useCustomerStore()
@@ -508,8 +529,11 @@ const summaryVM = computed(() => {
 
 const { showVoucherError } = useVoucherErrorToast()
 
-onMounted(() => {
+onMounted(async () => {
   removeAppliedVoucher()
+  if (formState.voucherCode) {
+    await voucherCodeApplied()
+  }
 })
 
 const voucherCodeApplied = async () => {
@@ -529,7 +553,10 @@ const appliedVoucherRemoved = () => {
 }
 
 const isClickAndCollect = computed(() => {
-  return formState.deliveryMethod?.type === DeliveryType.ClickAndCollect
+  return (
+    formState.deliveryMethod?.collectionPlace ===
+    CollectionPlace.PharmacyCounter
+  )
 })
 
 const requiresSelectedRelayPoint = computed(() => {
@@ -561,17 +588,21 @@ const colissimoPointSelected = (point: RelayPoint) => {
 
 const relaySearchVM = computed(() => dpdRelayPointSearchVM())
 
-watch(isDpdRelay, (needsRelay) => {
-  if (!needsRelay) {
-    return
-  }
-  if (!relaySearchZip.value) {
-    relaySearchZip.value = formState.deliveryAddress.zip
-  }
-  if (!relaySearchCity.value) {
-    relaySearchCity.value = formState.deliveryAddress.city
-  }
-})
+watch(
+  isDpdRelay,
+  (needsRelay) => {
+    if (!needsRelay) {
+      return
+    }
+    if (!relaySearchZip.value) {
+      relaySearchZip.value = formState.deliveryAddress.zip
+    }
+    if (!relaySearchCity.value) {
+      relaySearchCity.value = formState.deliveryAddress.city
+    }
+  },
+  { immediate: true }
+)
 
 const totalRelayWeight = () => {
   return formState.lines.reduce((acc, { product, quantity }) => {
@@ -620,27 +651,35 @@ const linesHeaders = computed(() => {
   ]
 })
 
+const forgetCart = () => {
+  formState.cartUuid = undefined
+  formState.promotionCode = undefined
+  formState.customerMessage = undefined
+}
+
 const customerSelected = async (customerUuid: string) => {
   await getCustomer(customerUuid, useCustomerGateway())
   const customer = customerStore.current
   if (!customer) {
     return
   }
+  if (formState.customer?.uuid !== customer.uuid) {
+    forgetCart()
+  }
   formState.customer = customer
   formState.contact = { email: customer.email, phone: customer.phone ?? '' }
-  const prefilledAddress = customer.address
-    ? { ...emptyAddress(), ...customer.address }
-    : {
-        ...emptyAddress(),
-        firstname: customer.firstname,
-        lastname: customer.lastname
-      }
+  const prefilledAddress = customerPrefilledAddress(customer)
   formState.deliveryAddress = { ...prefilledAddress }
   formState.billingAddress = { ...prefilledAddress }
 }
 
 const customerCleared = () => {
   formState.customer = undefined
+  forgetCart()
+}
+
+const promotionCodeRemoved = () => {
+  formState.promotionCode = undefined
 }
 
 let debounceTimer: ReturnType<typeof setTimeout> | null = null

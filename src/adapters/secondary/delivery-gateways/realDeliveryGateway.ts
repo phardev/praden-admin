@@ -1,6 +1,7 @@
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
 import { Delivery, DeliveryStatus } from '@core/entities/delivery'
+import { CollectionPlace } from '@core/entities/order'
 import {
   CarrierErrorDetail,
   CarrierLabelError
@@ -20,7 +21,7 @@ export class RealDeliveryGateway
   async list(): Promise<Array<Delivery>> {
     const filters = {
       status: 'PREPARED',
-      type: 'DELIVERY'
+      collectionPlaces: [CollectionPlace.Home, CollectionPlace.PickupPoint]
     }
     const res = await axiosWithBearer.post(
       `${this.baseUrl}/deliveries`,

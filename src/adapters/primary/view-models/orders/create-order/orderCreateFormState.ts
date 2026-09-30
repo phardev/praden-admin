@@ -3,13 +3,19 @@ import type { Address, Contact, DeliveryMethod } from '@core/entities/order'
 import type { Product } from '@core/entities/product'
 import type { ProductPromotion } from '@core/entities/promotion'
 import type { RelayPoint } from '@core/entities/relayPoint'
-import type { Timestamp } from '@core/types/types'
+import type { Timestamp, UUID } from '@core/types/types'
 import { ManualOrderPaymentMode } from '@core/usecases/order/manual-order-creation/createManualOrder'
 
 export interface OrderCreateFormLine {
   product: Product
   quantity: number
   promotions?: Array<ProductPromotion>
+}
+
+export interface OrderCreateFormPromotionCode {
+  code: string
+  discount: number
+  basis: string
 }
 
 export interface OrderCreateFormState {
@@ -26,6 +32,9 @@ export interface OrderCreateFormState {
   sendConfirmationEmail: boolean
   paymentMode: ManualOrderPaymentMode
   voucherCode: string
+  promotionCode?: OrderCreateFormPromotionCode
+  customerMessage?: string
+  cartUuid?: UUID
 }
 
 export const emptyAddress = (): Address => {
@@ -37,6 +46,16 @@ export const emptyAddress = (): Address => {
     zip: '',
     country: ''
   }
+}
+
+export const customerPrefilledAddress = (customer: Customer): Address => {
+  return customer.address
+    ? { ...emptyAddress(), ...customer.address }
+    : {
+        ...emptyAddress(),
+        firstname: customer.firstname,
+        lastname: customer.lastname
+      }
 }
 
 export const emptyOrderCreateFormState = (): OrderCreateFormState => {

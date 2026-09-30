@@ -19,16 +19,41 @@
     :title="$t('orders.create.maxQuantityAlert')"
   )
 
+  UAlert.mb-4(
+    v-if="initialState"
+    color="primary"
+    variant="soft"
+    icon="i-heroicons-shopping-cart"
+    :title="$t('orders.create.fromCart')"
+  )
+
+  UAlert.mb-4(
+    v-if="unavailableProducts"
+    color="amber"
+    variant="soft"
+    icon="i-heroicons-exclamation-triangle"
+    :title="$t('orders.create.unavailableProducts', { names: unavailableProducts })"
+  )
+
+  USkeleton.h-96.w-full(v-if="!isReady")
   OrderCreateForm(
+    v-else
     :is-saving="isSaving"
     :max-quantity-violations="maxQuantityViolations"
+    :initial-state="initialState"
     @submit="onSubmit"
   )
 </template>
 
 <script lang="ts" setup>
 import OrderCreateForm from '@adapters/primary/nuxt/components/organisms/OrderCreateForm.vue'
+import type { OrderCreateFormState } from '@adapters/primary/view-models/orders/create-order/orderCreateFormState'
+import {
+  orderCreateFormStateFromCart,
+  unavailableCartProductNames
+} from '@adapters/primary/view-models/orders/create-order/orderCreateFormStateFromCart'
 import type { MaxQuantityViolation } from '@adapters/primary/view-models/orders/create-order/orderCreateLinesVM'
+import { manualOrderErrorMessageVM } from '@adapters/primary/view-models/orders/manual-order-error/manualOrderErrorMessageVM'
 import { listDeliveryMethods } from '@core/usecases/delivery-methods/delivery-method-listing/listDeliveryMethods'
 import { listDeliveryPriceRules } from '@core/usecases/delivery-price-rules/list-delivery-price-rules/listDeliveryPriceRules'
 import type { CreateManualOrderDTO } from '@core/usecases/order/manual-order-creation/createManualOrder'
@@ -36,28 +61,70 @@ import {
   createManualOrder,
   ManualOrderPaymentMode
 } from '@core/usecases/order/manual-order-creation/createManualOrder'
+import { prepareManualOrderFromCart } from '@core/usecases/order/manual-order-from-cart/prepareManualOrderFromCart'
+import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
+import { useManualOrderDraftStore } from '@store/manualOrderDraftStore'
 import { useOrderStore } from '@store/orderStore'
+import { useCustomerGateway } from '../../../../../../gateways/customerGateway'
+import { useDateProvider } from '../../../../../../gateways/dateProvider'
 import { useDeliveryMethodGateway } from '../../../../../../gateways/deliveryMethodGateway'
 import { useDeliveryPriceRuleGateway } from '../../../../../../gateways/deliveryPriceRuleGateway'
 import { useOrderGateway } from '../../../../../../gateways/orderGateway'
-import { useVoucherErrorToast } from '../../composables/useVoucherErrorToast'
+import { useProductGateway } from '../../../../../../gateways/productGateway'
 
 definePageMeta({ layout: 'main' })
 
 const { t } = useI18n()
-const { showVoucherError } = useVoucherErrorToast()
+const route = useRoute()
 const isSaving = ref(false)
+const isReady = ref(false)
+const initialState = ref<OrderCreateFormState | undefined>(undefined)
+const unavailableProducts = ref('')
 const maxQuantityViolations = ref<Array<MaxQuantityViolation>>([])
 
 const hasMaxQuantityViolations = computed(() => {
   return maxQuantityViolations.value.length > 0
 })
 
+const customerOfCart = route.query.customer as string | undefined
+
+const prepareFromCart = async (customerUuid: string) => {
+  await prepareManualOrderFromCart(
+    customerUuid,
+    useCustomerGateway(),
+    useProductGateway()
+  )
+  const draft = useManualOrderDraftStore().draft
+  if (!draft?.customer.currentCart) {
+    return
+  }
+  unavailableProducts.value = unavailableCartProductNames(
+    draft.customer.currentCart,
+    draft.products
+  )
+  initialState.value = orderCreateFormStateFromCart(
+    draft.customer,
+    draft.customer.currentCart,
+    draft.products,
+    useDeliveryMethodStore().items,
+    useDateProvider().now()
+  )
+}
+
 onMounted(async () => {
-  await Promise.all([
-    listDeliveryMethods(useDeliveryMethodGateway()),
-    listDeliveryPriceRules(useDeliveryPriceRuleGateway())
-  ])
+  try {
+    await Promise.all([
+      listDeliveryMethods(useDeliveryMethodGateway()),
+      listDeliveryPriceRules(useDeliveryPriceRuleGateway())
+    ])
+    if (customerOfCart) {
+      await prepareFromCart(customerOfCart)
+    }
+  } catch {
+    useToast().add({ title: t('error.unknown'), color: 'red' })
+  } finally {
+    isReady.value = true
+  }
 })
 
 const extractMaxQuantityViolations = (
@@ -105,7 +172,8 @@ const onSubmit = async (dto: CreateManualOrderDTO) => {
   } catch (error) {
     maxQuantityViolations.value = extractMaxQuantityViolations(error)
     if (!hasMaxQuantityViolations.value) {
-      showVoucherError(error)
+      const message = manualOrderErrorMessageVM(error)
+      useToast().add({ title: t(message.key, message.params), color: 'red' })
     }
   } finally {
     isSaving.value = false

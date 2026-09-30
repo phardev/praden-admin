@@ -8,7 +8,8 @@ import { Customer } from '@core/entities/customer'
 import { Delivery, DeliveryStatus } from '@core/entities/delivery'
 import {
   AnonymousOrder,
-  DeliveryType,
+  isCollectedAtPharmacyCounter,
+  isShippedByCarrier,
   Order,
   OrderLineStatus,
   PaymentStatus
@@ -445,13 +446,13 @@ describe('Get order VM', () => {
       trackingNumber: delivery.trackingNumber ?? '',
       weight: delivery.weight / 1000,
       status: delivery.status,
-      canMarkAsDelivered: delivery.method.type === DeliveryType.ClickAndCollect,
+      canMarkAsDelivered: isCollectedAtPharmacyCounter(delivery.method),
       canGenerateLabel:
-        delivery.method.type === DeliveryType.Delivery &&
+        isShippedByCarrier(delivery.method) &&
         delivery.status === DeliveryStatus.Prepared &&
         !delivery.trackingNumber,
       canAddTrackingNumber:
-        delivery.method.type === DeliveryType.Delivery &&
+        isShippedByCarrier(delivery.method) &&
         delivery.status === DeliveryStatus.Prepared &&
         !delivery.trackingNumber
     }

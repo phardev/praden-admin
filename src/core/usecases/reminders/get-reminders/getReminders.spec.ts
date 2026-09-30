@@ -17,6 +17,10 @@ describe('GetReminders', () => {
       paymentReminders: {
         messagesSentCount: 9,
         orderCreatedCount: 6
+      },
+      abandonedCartReminders: {
+        remindedCartsCount: 8,
+        orderedCartsCount: 2
       }
     }
     remindersGateway.feedWith(mockData)

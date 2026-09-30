@@ -1,4 +1,5 @@
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { CollectionPlace } from '@core/entities/order'
 import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
 import { useDeliveryPriceRuleStore } from '@store/deliveryPriceRuleStore'
 import {
@@ -22,7 +23,7 @@ describe('deliveryPriceRuleListVM', () => {
         uuid: 'delivery-colissimo',
         name: 'Colissimo',
         description: 'Livraison Colissimo',
-        type: 'DELIVERY' as any,
+        collectionPlace: CollectionPlace.Home,
         carrier: {
           uuid: 'carrier-colissimo',
           name: 'Colissimo',
@@ -34,7 +35,7 @@ describe('deliveryPriceRuleListVM', () => {
         uuid: 'delivery-mondial-relay',
         name: 'Mondial Relay',
         description: 'Livraison Mondial Relay',
-        type: 'DELIVERY' as any,
+        collectionPlace: CollectionPlace.PickupPoint,
         carrier: {
           uuid: 'carrier-mondial-relay',
           name: 'Mondial Relay',

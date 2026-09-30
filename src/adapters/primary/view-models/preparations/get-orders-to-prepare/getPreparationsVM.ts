@@ -1,6 +1,7 @@
 import { TableVM } from '@adapters/primary/view-models/invoices/get-invoice/getInvoiceVM'
 import {
-  DeliveryType,
+  isCollectedAtPharmacyCounter,
+  isShippedByCarrier,
   MessageContent,
   Order,
   OrderLine,
@@ -71,7 +72,7 @@ const clickAndCollectFilter = (o: Order) => {
     return false
   }
   return (
-    delivery.method.type === DeliveryType.ClickAndCollect &&
+    isCollectedAtPharmacyCounter(delivery.method) &&
     o.lines.every((l: OrderLine) => l.status === OrderLineStatus.Created)
   )
 }
@@ -82,7 +83,7 @@ const deliveryFilter = (o: Order) => {
     return false
   }
   return (
-    delivery.method.type === DeliveryType.Delivery &&
+    isShippedByCarrier(delivery.method) &&
     o.lines.every((l: OrderLine) => l.status === OrderLineStatus.Created)
   )
 }
@@ -188,7 +189,7 @@ export const filterPreparationsByGroup = (
         total: formatter.format(total / 100)
       }
       if (
-        delivery.method.type === DeliveryType.ClickAndCollect &&
+        isCollectedAtPharmacyCounter(delivery.method) &&
         delivery.pickingDate
       ) {
         const options = {

@@ -262,4 +262,36 @@ describe('Build create manual order DTO', () => {
       ).toStrictEqual(expectedDTO)
     })
   })
+
+  describe('Given an order prepared from the cart of the customer, when building the DTO, then what the customer prepared is kept', () => {
+    it('should carry the promotion code, the customer message and the cart', () => {
+      const formState: OrderCreateFormState = {
+        ...baseFormState(),
+        billingSameAsDelivery: true,
+        paymentMode: ManualOrderPaymentMode.PaymentLink,
+        promotionCode: { code: 'BIENVENUE', discount: 200, basis: '' },
+        customerMessage: 'Merci de bien emballer',
+        cartUuid: 'elodie-cart'
+      }
+      expect(buildCreateManualOrderDto(formState)).toStrictEqual({
+        customerUuid: elodieDurand.uuid,
+        lines: [
+          { productUuid: dolodent.uuid, quantity: 2 },
+          {
+            productUuid: ultraLevure.uuid,
+            quantity: ultraLevure.maxQuantityForOrder!
+          }
+        ],
+        deliveryMethodUuid: express.uuid,
+        deliveryAddress,
+        billingAddress: deliveryAddress,
+        contact,
+        sendConfirmationEmail: false,
+        paymentMode: ManualOrderPaymentMode.PaymentLink,
+        promotionCode: 'BIENVENUE',
+        customerMessage: 'Merci de bien emballer',
+        cartUuid: 'elodie-cart'
+      })
+    })
+  })
 })

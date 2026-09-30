@@ -1,4 +1,4 @@
-import { DeliveryMethod, DeliveryType } from '@core/entities/order'
+import { CollectionPlace, DeliveryMethod } from '@core/entities/order'
 import { colissimo, dpd, pharmacy } from './carriers'
 
 export const clickAndCollect: DeliveryMethod = {
@@ -7,7 +7,7 @@ export const clickAndCollect: DeliveryMethod = {
   description: '198 avenue des Frères Lumières 30100 Alès',
   priceRanges: {},
   carrier: pharmacy,
-  type: DeliveryType.ClickAndCollect
+  collectionPlace: CollectionPlace.PharmacyCounter
 }
 
 export const deliveryInRelayPoint: DeliveryMethod = {
@@ -35,7 +35,7 @@ export const deliveryInRelayPoint: DeliveryMethod = {
     ]
   },
   carrier: colissimo,
-  type: DeliveryType.Delivery
+  collectionPlace: CollectionPlace.PickupPoint
 }
 
 export const deliveryInRelayPointDPD: DeliveryMethod = {
@@ -63,7 +63,7 @@ export const deliveryInRelayPointDPD: DeliveryMethod = {
     ]
   },
   carrier: dpd,
-  type: DeliveryType.Delivery
+  collectionPlace: CollectionPlace.PickupPoint
 }
 
 export const express: DeliveryMethod = {
@@ -108,5 +108,5 @@ export const express: DeliveryMethod = {
     ]
   },
   carrier: colissimo,
-  type: DeliveryType.Delivery
+  collectionPlace: CollectionPlace.Home
 }

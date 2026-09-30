@@ -6,7 +6,15 @@ export interface RemindersVM {
     orderCreatedCount: number
     conversionRate: number
   }
+  abandonedCartReminders: {
+    remindedCartsCount: number
+    orderedCartsCount: number
+    conversionRate: number
+  }
 }
+
+const conversionRateOf = (sent: number, converted: number): number =>
+  sent === 0 ? 0 : Math.round((converted / sent) * 100)
 
 export const getRemindersVM = (): RemindersVM => {
   const statsStore = useStatsStore()
@@ -18,18 +26,25 @@ export const getRemindersVM = (): RemindersVM => {
         messagesSentCount: 0,
         orderCreatedCount: 0,
         conversionRate: 0
+      },
+      abandonedCartReminders: {
+        remindedCartsCount: 0,
+        orderedCartsCount: 0,
+        conversionRate: 0
       }
     }
   }
   const { messagesSentCount, orderCreatedCount } = reminders.paymentReminders
-  const conversionRate =
-    messagesSentCount === 0
-      ? 0
-      : Math.round((orderCreatedCount / messagesSentCount) * 100)
+  const { remindedCartsCount, orderedCartsCount } =
+    reminders.abandonedCartReminders
   return {
     paymentReminders: {
       ...reminders.paymentReminders,
-      conversionRate
+      conversionRate: conversionRateOf(messagesSentCount, orderCreatedCount)
+    },
+    abandonedCartReminders: {
+      ...reminders.abandonedCartReminders,
+      conversionRate: conversionRateOf(remindedCartsCount, orderedCartsCount)
     }
   }
 }

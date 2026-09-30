@@ -3,7 +3,7 @@ import { Delivery, DeliveryStatus } from '@core/entities/delivery'
 import {
   CustomerOrder,
   DeliveryMethod,
-  DeliveryType,
+  isCollectedAtPharmacyCounter,
   Message,
   MessageContent,
   Order,
@@ -240,7 +240,7 @@ export class InMemoryOrderGateway implements OrderGateway {
     country: string,
     weight: number
   ): number {
-    if (method.type === DeliveryType.ClickAndCollect) {
+    if (isCollectedAtPharmacyCounter(method)) {
       return 0
     }
     const ranges = method.priceRanges[country.toUpperCase()] ?? []

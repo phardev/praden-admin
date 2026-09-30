@@ -5,10 +5,11 @@ import {
 import { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import { DeliveryStatus } from '@core/entities/delivery'
 import {
-  DeliveryType,
   getDeliveryStatus,
   getOrderStatus,
   isAnonymousOrder,
+  isCollectedAtPharmacyCounter,
+  isShippedByCarrier,
   Order,
   OrderLineStatus,
   PaymentStatus
@@ -112,14 +113,13 @@ export const getOrderVM = (): GetOrderVM => {
         trackingNumber: delivery.trackingNumber ?? '',
         weight: delivery.weight / 1000,
         status: delivery.status,
-        canMarkAsDelivered:
-          delivery.method.type === DeliveryType.ClickAndCollect,
+        canMarkAsDelivered: isCollectedAtPharmacyCounter(delivery.method),
         canGenerateLabel:
-          delivery.method.type === DeliveryType.Delivery &&
+          isShippedByCarrier(delivery.method) &&
           delivery.status === DeliveryStatus.Prepared &&
           !delivery.trackingNumber,
         canAddTrackingNumber:
-          delivery.method.type === DeliveryType.Delivery &&
+          isShippedByCarrier(delivery.method) &&
           delivery.status === DeliveryStatus.Prepared &&
           !delivery.trackingNumber
       }

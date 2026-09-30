@@ -1,4 +1,4 @@
-import { Address, DeliveryType } from '@core/entities/order'
+import { Address, CollectionPlace } from '@core/entities/order'
 import type { Timestamp } from '@core/types/types'
 import { priceFormatter } from '@utils/formatters'
 import { addTaxToPrice } from '@utils/price'
@@ -12,11 +12,14 @@ import {
   promotionalUnitPriceWithTax,
   selectApplicablePromotion
 } from './productPromotionPricing'
+import { isPromotionCodeDiscountCurrent } from './promotionCodeBasis'
 
 export interface OrderCreateSummaryVM {
   linesCount: number
   formattedLinesTotal: string
   formattedDeliveryFee?: string
+  formattedPromotionCodeDiscount?: string
+  promotionCodeNoteKey?: string
   formattedTotal: string
   blockers: Array<string>
   canSubmit: boolean
@@ -38,7 +41,8 @@ const isAddressComplete = (address: Address): boolean => {
 
 const areAddressesComplete = (formState: OrderCreateFormState): boolean => {
   const isClickAndCollect =
-    formState.deliveryMethod?.type === DeliveryType.ClickAndCollect
+    formState.deliveryMethod?.collectionPlace ===
+    CollectionPlace.PharmacyCounter
   if (isClickAndCollect) {
     return isAddressComplete(formState.billingAddress)
   }
@@ -90,7 +94,8 @@ const isRelayPointMissing = (formState: OrderCreateFormState): boolean => {
 
 const isPickingSlotMissing = (formState: OrderCreateFormState): boolean => {
   return (
-    formState.deliveryMethod?.type === DeliveryType.ClickAndCollect &&
+    formState.deliveryMethod?.collectionPlace ===
+      CollectionPlace.PharmacyCounter &&
     (formState.pickingDate === undefined || formState.pickingHour === undefined)
   )
 }
@@ -156,6 +161,9 @@ export const orderCreateSummaryVM = (
       ? Math.round(addTaxToPrice(deliveryFee, DELIVERY_TAX_RATE))
       : undefined
   const blockers = computeBlockers(formState, selectedChoice)
+  const promotionCodeDiscount = isPromotionCodeDiscountCurrent(formState)
+    ? formState.promotionCode!.discount
+    : 0
   return {
     linesCount: formState.lines.reduce((acc, { quantity }) => {
       return acc + quantity
@@ -165,9 +173,23 @@ export const orderCreateSummaryVM = (
       deliveryFeeWithTax !== undefined
         ? formatter.format(deliveryFeeWithTax / 100)
         : undefined,
+    ...(promotionCodeDiscount > 0 && {
+      formattedPromotionCodeDiscount: formatter.format(
+        promotionCodeDiscount / 100
+      )
+    }),
+    ...(formState.promotionCode &&
+      !isPromotionCodeDiscountCurrent(formState) && {
+        promotionCodeNoteKey: 'orders.create.promotionCode.recalculated'
+      }),
     formattedTotal: formatter.format(
-      Math.max(0, linesTotal + (deliveryFeeWithTax ?? 0) - voucherDiscount) /
-        100
+      Math.max(
+        0,
+        linesTotal +
+          (deliveryFeeWithTax ?? 0) -
+          voucherDiscount -
+          promotionCodeDiscount
+      ) / 100
     ),
     blockers,
     canSubmit: blockers.length === 0

@@ -28,6 +28,7 @@ export const ROUTE_PERMISSION_MAP: Record<string, PermissionResource> = {
   '/vouchers/edit': PermissionResource.VOUCHERS,
   '/vouchers/get': PermissionResource.VOUCHERS,
   '/customers': PermissionResource.CUSTOMERS,
+  '/customers/carts': PermissionResource.CUSTOMERS,
   '/customers/new': PermissionResource.CUSTOMERS,
   '/customers/edit': PermissionResource.CUSTOMERS,
   '/customers/get': PermissionResource.CUSTOMERS,

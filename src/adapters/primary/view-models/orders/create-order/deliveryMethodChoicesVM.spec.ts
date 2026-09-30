@@ -166,6 +166,40 @@ describe('Delivery method choices VM', () => {
     })
   })
 
+  describe('Given lines, when getting choices, then a pickup point method is recognised whatever its name', () => {
+    it('should keep a pickup point method of an unsupported carrier disabled', () => {
+      const lockerMethod = {
+        ...deliveryInRelayPoint,
+        uuid: 'locker',
+        name: 'Casier automatique',
+        carrier: pharmacy
+      }
+      const expectedVM: Array<DeliveryMethodChoiceVM> = [
+        {
+          uuid: lockerMethod.uuid,
+          name: lockerMethod.name,
+          description: lockerMethod.description,
+          delay: lockerMethod.delay,
+          isClickAndCollect: false,
+          fee: undefined,
+          formattedFee: undefined,
+          isFree: false,
+          disabled: true,
+          disabledReason: 'orders.create.delivery.relayNotAvailable'
+        }
+      ]
+      expect(
+        deliveryMethodChoicesVM(
+          [lockerMethod],
+          [],
+          [{ product: anaca3Minceur, quantity: 1 }],
+          'France',
+          NOW
+        )
+      ).toStrictEqual(expectedVM)
+    })
+  })
+
   describe('Given lines, when getting choices, then the DPD relay method is available', () => {
     it('should enable and price the DPD relay method', () => {
       const expectedVM: Array<DeliveryMethodChoiceVM> = [

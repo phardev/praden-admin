@@ -27,6 +27,9 @@ export interface CreateManualOrderDTO {
   sendConfirmationEmail?: boolean
   paymentMode?: ManualOrderPaymentMode
   voucherCode?: string
+  promotionCode?: string
+  customerMessage?: string
+  cartUuid?: UUID
 }
 
 export const createManualOrder = async (

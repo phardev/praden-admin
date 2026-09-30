@@ -141,7 +141,100 @@
       "title": "Supprimer le compte",
       "description": "Cette action est irréversible"
     },
-    "notFound": "Client introuvable"
+    "notFound": "Client introuvable",
+    "cart": {
+      "title": "Panier en cours",
+      "summary": "{count} article(s) · dernière activité le {date}",
+      "empty": "Panier vide",
+      "convert": "Transformer en commande",
+      "lineQuantity": "{quantity} × {price}",
+      "totals": {
+        "products": "Produits",
+        "delivery": "Livraison",
+        "promotionCodeDiscount": "Code promo",
+        "voucherDiscount": "Bon d'achat",
+        "total": "Total"
+      },
+      "promotionCode": {
+        "title": "Code promo",
+        "placeholder": "Saisir un code promo"
+      },
+      "voucher": {
+        "title": "Bon d'achat",
+        "placeholder": "Saisir un bon d'achat"
+      },
+      "apply": "Appliquer",
+      "remove": "Retirer",
+      "error": "Impossible de modifier le panier pour le moment.",
+      "codeApplied": "Appliqué : -{discount}",
+      "customerMessage": "Message du client",
+      "missingTitle": "Informations manquantes pour commander",
+      "activityTitle": "Activité",
+      "alerts": {
+        "PRODUCT_UNAVAILABLE": "Produit plus disponible",
+        "OUT_OF_STOCK": "Rupture de stock",
+        "NOT_ENOUGH_STOCK": "Stock insuffisant pour cette quantité",
+        "EXCEEDS_MAX_QUANTITY_FOR_ORDER": "Quantité maximale par commande dépassée",
+        "EXCEEDS_MEDICINE_LIMIT": "Limite de 5 unités par médicament dépassée"
+      },
+      "missing": {
+        "LINES": "Aucun produit",
+        "DELIVERY_METHOD": "Mode de livraison non choisi",
+        "PICKUP_POINT": "Point relais non choisi",
+        "PICKING_DATE": "Créneau de retrait non choisi",
+        "CONTACT": "Email et téléphone non renseignés",
+        "ADDRESSES": "Adresse non renseignée",
+        "BLOCKING_ALERTS": "Des produits signalés bloquent la commande"
+      },
+      "promotionCodeRejections": {
+        "NOT_FOUND": "Ce code promo n'existe pas.",
+        "NOT_STARTED": "Ce code promo n'est pas encore actif.",
+        "ENDED": "Ce code promo a expiré.",
+        "MAX_USAGE_REACHED": "Ce code promo a atteint son nombre maximal d'utilisations.",
+        "MAX_USAGE_PER_CUSTOMER_REACHED": "Le client a déjà utilisé ce code promo.",
+        "MINIMUM_AMOUNT_NOT_REACHED": "Il manque {missingAmount} pour atteindre le minimum de {minimumAmount} (hors médicaments et produits exclus des offres).",
+        "NO_ELIGIBLE_PRODUCT": "Aucun produit du panier n'est concerné par ce code.",
+        "DELIVERY_METHOD_REQUIRED": "Un mode de livraison doit être choisi pour ce code.",
+        "DELIVERY_METHOD_NOT_ALLOWED": "Ce code n'est pas valable pour le mode de livraison choisi.",
+        "PRODUCTS_NOT_ELIGIBLE_FOR_DELIVERY": "Le panier contient des produits exclus de cette offre de livraison (médicaments…).",
+        "MAX_WEIGHT_EXCEEDED": "Le panier dépasse le poids maximum de {maxWeight} kg pour ce code.",
+        "NO_AMOUNT_TO_DISCOUNT": "Ce code ne donne aucune réduction sur ce panier.",
+        "UNKNOWN": "Ce code promo ne peut pas être appliqué."
+      },
+      "voucherRejections": {
+        "NOT_FOUND": "Ce bon d'achat n'existe pas.",
+        "CUSTOMER_NOT_IDENTIFIED": "Le client doit être identifié pour utiliser ce bon.",
+        "BELONGS_TO_ANOTHER_CUSTOMER": "Ce bon d'achat appartient à un autre client.",
+        "ALREADY_USED": "Ce bon d'achat a déjà été utilisé.",
+        "EXPIRED": "Ce bon d'achat a expiré.",
+        "INSUFFICIENT_ELIGIBLE_AMOUNT": "Le montant éligible du panier est insuffisant pour ce bon.",
+        "UNKNOWN": "Ce bon d'achat ne peut pas être appliqué."
+      },
+      "actors": {
+        "customer": "Client",
+        "staff": "Pharmacie",
+        "system": "Système",
+        "guest": "Visiteur"
+      },
+      "events": {
+        "PRODUCT_ADDED": "Produit ajouté",
+        "QUANTITY_CHANGED": "Quantité modifiée",
+        "PRODUCT_REMOVED": "Produit retiré",
+        "CART_EMPTIED": "Panier vidé",
+        "DELIVERY_CHOSEN": "Mode de livraison choisi",
+        "CONTACT_AND_ADDRESSES_PROVIDED": "Coordonnées renseignées",
+        "PROMOTION_CODE_APPLIED": "Code promo {code} appliqué",
+        "PROMOTION_CODE_REJECTED": "Code promo {code} refusé",
+        "PROMOTION_CODE_REMOVED": "Code promo {code} retiré",
+        "VOUCHER_APPLIED": "Bon d'achat {code} appliqué",
+        "VOUCHER_REJECTED": "Bon d'achat {code} refusé",
+        "VOUCHER_REMOVED": "Bon d'achat {code} retiré",
+        "GUEST_CART_MERGED": "Panier de visiteur fusionné",
+        "ORDER_PLACED": "Commande passée",
+        "CART_CLOSED": "Panier fermé",
+        "REMINDER_SENT": "Relance envoyée"
+      }
+    }
   },
   "orders": {
     "supportTickets": "Tickets de support",
@@ -258,7 +351,20 @@
         "apply": "Appliquer",
         "remove": "Retirer",
         "disabledHint": "Choisissez un client, des produits et un mode de livraison pour appliquer un bon d'achat."
-      }
+      },
+      "promotionCode": {
+        "title": "Code promo du panier",
+        "remove": "Retirer",
+        "recalculated": "remise recalculée à la validation"
+      },
+      "customerMessage": "Message du client",
+      "fromCart": "Commande pré-remplie depuis le panier du client : vérifiez puis validez.",
+      "errors": {
+        "cartClosed": "Le client a commandé ce panier entre-temps. Rechargez sa fiche avant de recommencer.",
+        "cartNotOfCustomer": "Ce panier n'appartient pas au client choisi.",
+        "cartNotFound": "Le panier de ce client n'existe plus."
+      },
+      "unavailableProducts": "Produits du panier retirés car plus au catalogue : {names}"
     },
     "deliveries": {
       "pickupPoint": "Point relais",
@@ -377,6 +483,12 @@
       "title": "Relances de paiement",
       "messagesSent": "messages envoyés",
       "ordersCreated": "commandes créées",
+      "conversionRate": "taux de conversion"
+    },
+    "abandonedCart": {
+      "title": "Relances de panier abandonné",
+      "remindedCarts": "paniers relancés",
+      "orderedCarts": "commandes obtenues",
       "conversionRate": "taux de conversion"
     }
   },
@@ -1204,5 +1316,29 @@
         "unknown": "Ce bon d'achat ne peut pas être appliqué."
       }
     }
+  },
+  "carts": {
+    "title": "Paniers",
+    "tabs": {
+      "ALL": "Tous",
+      "OPEN": "Ouverts",
+      "ABANDONED": "Abandonnés",
+      "CLOSED": "Fermés"
+    },
+    "headers": {
+      "customer": "Client",
+      "total": "Total",
+      "quantity": "Articles",
+      "lastActivity": "Dernière activité",
+      "status": "Statut",
+      "rejectedCode": "Dernier code refusé"
+    },
+    "guest": "Visiteur",
+    "status": {
+      "OPEN": "Ouvert",
+      "ABANDONED": "Abandonné",
+      "CLOSED": "Fermé"
+    },
+    "loadError": "Impossible de charger les paniers."
   }
 }

@@ -1,4 +1,4 @@
-import { Address, DeliveryType } from '@core/entities/order'
+import { Address, CollectionPlace } from '@core/entities/order'
 import type { CreateManualOrderDTO } from '@core/usecases/order/manual-order-creation/createManualOrder'
 import type { AppliedVoucher } from '@store/voucherStore'
 import { requiresPickupPoint } from './deliveryMethodChoicesVM'
@@ -29,7 +29,8 @@ export const buildCreateManualOrderDto = (
   appliedVoucher?: AppliedVoucher
 ): CreateManualOrderDTO => {
   const isClickAndCollect =
-    formState.deliveryMethod?.type === DeliveryType.ClickAndCollect
+    formState.deliveryMethod?.collectionPlace ===
+    CollectionPlace.PharmacyCounter
   const dto: CreateManualOrderDTO = {
     customerUuid: formState.customer!.uuid,
     lines: formState.lines.map(({ product, quantity }) => {
@@ -64,6 +65,15 @@ export const buildCreateManualOrderDto = (
   }
   if (appliedVoucher !== undefined) {
     dto.voucherCode = appliedVoucher.request.code
+  }
+  if (formState.promotionCode !== undefined) {
+    dto.promotionCode = formState.promotionCode.code
+  }
+  if (formState.customerMessage !== undefined) {
+    dto.customerMessage = formState.customerMessage
+  }
+  if (formState.cartUuid !== undefined) {
+    dto.cartUuid = formState.cartUuid
   }
   return dto
 }

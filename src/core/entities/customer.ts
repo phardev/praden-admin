@@ -1,4 +1,5 @@
 import { Mail, UUID } from '@core/types/types'
+import type { Cart } from './cart'
 import type { CustomerLoyalty } from './loyaltyPointsTransaction'
 import { NewsletterSubscription } from './newsletterSubscription'
 import type { Address } from './order'
@@ -15,4 +16,5 @@ export interface Customer {
   newsletterSubscription?: NewsletterSubscription
   loyalty?: CustomerLoyalty
   address?: Address
+  currentCart?: Cart
 }

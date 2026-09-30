@@ -35,6 +35,24 @@
                 .text-center
                   p.text-3xl.font-bold {{ reminders.paymentReminders.conversionRate }}%
                   p.text-sm.text-gray-500 {{ $t('reminders.payment.conversionRate') }}
+      UCard
+        template(#header)
+          h3.text-lg.font-medium {{ $t('reminders.abandonedCart.title') }}
+        template(#default)
+          .p-4
+            .grid.grid-cols-1.gap-4(class="md:grid-cols-2")
+              .stat-card.p-4.rounded-lg.bg-gray-50
+                .text-center
+                  p.text-3xl.font-bold {{ reminders.abandonedCartReminders.remindedCartsCount }}
+                  p.text-sm.text-gray-500 {{ $t('reminders.abandonedCart.remindedCarts') }}
+              .stat-card.p-4.rounded-lg.bg-gray-50
+                .text-center
+                  p.text-3xl.font-bold {{ reminders.abandonedCartReminders.orderedCartsCount }}
+                  p.text-sm.text-gray-500 {{ $t('reminders.abandonedCart.orderedCarts') }}
+              .stat-card.p-4.rounded-lg.bg-gray-50.col-span-2(v-if="reminders.abandonedCartReminders.orderedCartsCount > 0")
+                .text-center
+                  p.text-3xl.font-bold {{ reminders.abandonedCartReminders.conversionRate }}%
+                  p.text-sm.text-gray-500 {{ $t('reminders.abandonedCart.conversionRate') }}
 </template>
 
 <script lang="ts" setup>

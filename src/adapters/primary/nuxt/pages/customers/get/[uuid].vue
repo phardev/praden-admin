@@ -8,6 +8,8 @@
     :vm="vm"
   )
   .mt-8
+    customer-cart-card(:customer-uuid="customerUuid")
+  .mt-8
     customer-loyalty-points(:customer-uuid="customerUuid")
 
   h2.text-subtitle.mt-8 {{ $t('customers.ordersHistory') }}
