@@ -147,6 +147,8 @@
       "summary": "{count} article(s) · dernière activité le {date}",
       "empty": "Panier vide",
       "convert": "Transformer en commande",
+      "open": "Ouvrir le panier",
+      "noCode": "Aucun code",
       "lineQuantity": "{quantity} × {price}",
       "totals": {
         "products": "Produits",
@@ -166,6 +168,11 @@
       "apply": "Appliquer",
       "remove": "Retirer",
       "error": "Impossible de modifier le panier pour le moment.",
+      "errors": {
+        "notFound": "Le client n'a plus de panier",
+        "empty": "Le panier du client est vide",
+        "closed": "Le panier a déjà été commandé"
+      },
       "codeApplied": "Appliqué : -{discount}",
       "customerMessage": "Message du client",
       "missingTitle": "Informations manquantes pour commander",
@@ -184,7 +191,9 @@
         "PICKING_DATE": "Créneau de retrait non choisi",
         "CONTACT": "Email et téléphone non renseignés",
         "ADDRESSES": "Adresse non renseignée",
-        "BLOCKING_ALERTS": "Des produits signalés bloquent la commande"
+        "BLOCKING_ALERTS": "Des produits signalés bloquent la commande",
+        "DELIVERY_METHOD_NOT_AVAILABLE_FOR_COUNTRY": "Mode de livraison non disponible pour le pays de l'adresse",
+        "NOTHING_TO_PAY": "Les réductions couvrent tout le panier : rien à payer"
       },
       "promotionCodeRejections": {
         "NOT_FOUND": "Ce code promo n'existe pas.",
@@ -456,6 +465,26 @@
       "adoptionRate": "Taux d'adoption newsletter",
       "subscribers": "Abonnés",
       "nonSubscribers": "Non-abonnés"
+    },
+    "cartStatistics": {
+      "title": "Paniers",
+      "created": "Paniers créés",
+      "guestShare": "dont {count} de visiteurs",
+      "abandonmentRate": "Taux d'abandon",
+      "breakdown": "{abandoned} abandonnés · {converted} convertis · {inProgress} en cours",
+      "conversionRate": "Taux de conversion",
+      "conversionHint": "paniers devenus commandes payées",
+      "abandonedValue": "CA à risque",
+      "averageAbandoned": "panier abandonné moyen : {amount}",
+      "monthlyAbandoned": "Paniers abandonnés par mois",
+      "monthlyAbandonmentRate": "Taux d'abandon mensuel",
+      "abandonedCarts": "Paniers abandonnés",
+      "topAbandonedProducts": "Produits les plus abandonnés",
+      "headers": {
+        "product": "Produit",
+        "ean13": "EAN13",
+        "carts": "Paniers"
+      }
     }
   },
   "preparations": {
@@ -1339,6 +1368,31 @@
       "ABANDONED": "Abandonné",
       "CLOSED": "Fermé"
     },
-    "loadError": "Impossible de charger les paniers."
+    "loadError": "Impossible de charger les paniers.",
+    "detail": {
+      "back": "Retour aux paniers",
+      "customerTitle": "Panier de {name}",
+      "guestTitle": "Panier visiteur",
+      "lastActivity": "Dernière activité le {date}",
+      "customerLink": "Voir la fiche client",
+      "anonymous": "Aucune coordonnée · panier anonyme",
+      "viewOrder": "Voir la commande",
+      "readinessTitle": "Pour commander",
+      "readiness": {
+        "DELIVERY_METHOD": "Mode de livraison",
+        "PICKUP_POINT": "Point relais",
+        "PICKING_DATE": "Créneau de retrait",
+        "CONTACT": "Coordonnées",
+        "ADDRESSES": "Adresse",
+        "BLOCKING_ALERTS": "Produits signalés à régler",
+        "DELIVERY_METHOD_NOT_AVAILABLE_FOR_COUNTRY": "Livraison disponible pour le pays",
+        "NOTHING_TO_PAY": "Montant à payer"
+      },
+      "codesTitle": "Codes",
+      "deliveryTitle": "Livraison",
+      "pickupPoint": "Point relais : {name}",
+      "notFound": "Ce panier n'existe pas.",
+      "loadError": "Impossible de charger le panier."
+    }
   }
 }

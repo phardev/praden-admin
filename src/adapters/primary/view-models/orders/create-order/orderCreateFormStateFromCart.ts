@@ -5,13 +5,14 @@ import {
   type CartLine
 } from '@core/entities/cart'
 import type { Customer } from '@core/entities/customer'
-import type { Address, DeliveryMethod } from '@core/entities/order'
+import type { Address, Contact, DeliveryMethod } from '@core/entities/order'
 import type { Product } from '@core/entities/product'
 import type { RelayPoint } from '@core/entities/relayPoint'
 import type { Timestamp } from '@core/types/types'
 import { ManualOrderPaymentMode } from '@core/usecases/order/manual-order-creation/createManualOrder'
 import {
   customerPrefilledAddress,
+  emptyAddress,
   emptyOrderCreateFormState,
   type OrderCreateFormLine,
   type OrderCreateFormState
@@ -56,9 +57,9 @@ const relayPointOf = (cart: Cart): RelayPoint | undefined => {
   return {
     id: cart.delivery.pickupId,
     name: cart.delivery.pickupName ?? '',
-    address: '',
-    zipCode: '',
-    city: ''
+    address: cart.deliveryAddress?.address ?? '',
+    zipCode: cart.deliveryAddress?.zip ?? '',
+    city: cart.deliveryAddress?.city ?? ''
   }
 }
 
@@ -91,15 +92,22 @@ const isSameAddress = (a: Address, b: Address): boolean =>
 const appliedCodeOf = (code?: CartCode): CartCode | undefined =>
   code?.status === CartCodeStatus.Applied ? code : undefined
 
+const fallbackAddress = (customer?: Customer): Address =>
+  customer ? customerPrefilledAddress(customer) : emptyAddress()
+
+const fallbackContact = (customer?: Customer): Contact =>
+  customer
+    ? { email: customer.email, phone: customer.phone ?? '' }
+    : { email: '', phone: '' }
+
 export const orderCreateFormStateFromCart = (
-  customer: Customer,
+  customer: Customer | undefined,
   cart: Cart,
   products: Array<Product>,
   deliveryMethods: Array<DeliveryMethod>,
   now: Timestamp
 ): OrderCreateFormState => {
-  const customerAddress = customerPrefilledAddress(customer)
-  const deliveryAddress = cart.deliveryAddress ?? customerAddress
+  const deliveryAddress = cart.deliveryAddress ?? fallbackAddress(customer)
   const billingAddress = cart.billingAddress ?? deliveryAddress
   const deliveryMethod = deliveryMethods.find(
     (method) => method.uuid === cart.delivery?.methodUuid
@@ -108,21 +116,22 @@ export const orderCreateFormStateFromCart = (
   const promotionCode = appliedCodeOf(cart.promotionCode)
   const state: OrderCreateFormState = {
     ...emptyOrderCreateFormState(),
-    customer,
+    ...(customer && { customer }),
     lines: cart.lines.flatMap((line) => lineOf(line, products)),
     ...(deliveryMethod && { deliveryMethod }),
     ...(relayPoint && { selectedRelayPoint: relayPoint }),
     deliveryAddress: { ...deliveryAddress },
     billingAddress: { ...billingAddress },
     billingSameAsDelivery: isSameAddress(deliveryAddress, billingAddress),
-    contact: cart.contact
-      ? { ...cart.contact }
-      : { email: customer.email, phone: customer.phone ?? '' },
+    contact: cart.contact ? { ...cart.contact } : fallbackContact(customer),
     ...pickingSlotOf(cart, now),
     paymentMode: ManualOrderPaymentMode.PaymentLink,
     voucherCode: appliedCodeOf(cart.voucher)?.code ?? '',
-    ...(cart.customerMessage && { customerMessage: cart.customerMessage }),
-    ...(cart.uuid && { cartUuid: cart.uuid })
+    ...(cart.customerMessage?.trim() && {
+      customerMessage: cart.customerMessage
+    }),
+    ...(cart.uuid && { cartUuid: cart.uuid }),
+    ...(cart.uuid && cart.customerUuid && { cartOwnedBy: cart.customerUuid })
   }
   if (!promotionCode) {
     return state

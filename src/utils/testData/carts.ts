@@ -1,6 +1,7 @@
 import {
   type Cart,
   CartCodeStatus,
+  type CartDetail,
   CartEventType,
   CartLineAlert,
   type CartListItem,
@@ -191,4 +192,44 @@ export const elodieClosedCartItem: CartListItem = {
   status: CartListStatus.Closed,
   orderUuid: 'elodie-paid-order',
   evaluatedAt: cartUpdate - 5 * 24 * 60 * 60 * 1000
+}
+
+export const elodieCartDetail: CartDetail = {
+  ...elodieCartReadyToOrder,
+  status: CartListStatus.Open,
+  customer: {
+    uuid: elodieDurand.uuid,
+    firstname: elodieDurand.firstname,
+    lastname: elodieDurand.lastname,
+    email: elodieDurand.email
+  }
+}
+
+export const guestCartDetail: CartDetail = {
+  uuid: 'guest-cart',
+  lines: [elodieCart.lines[0]],
+  totalQuantity: elodieCart.lines[0].quantity,
+  containsMedicine: true,
+  contact: { email: 'visiteur@example.com', phone: '0612345678' },
+  totals: {
+    productsWithTax: elodieCart.lines[0].totalWithTax,
+    deliveryWithTax: null,
+    promotionCodeDiscount: 0,
+    voucherDiscount: 0,
+    total: elodieCart.lines[0].totalWithTax
+  },
+  missingForOrder: [
+    CartMissingInformation.DeliveryMethod,
+    CartMissingInformation.Addresses
+  ],
+  updatedAt: cartUpdate - 2 * 24 * 60 * 60 * 1000,
+  activity: [
+    {
+      type: CartEventType.ProductAdded,
+      data: { productUuid: dolodent.uuid, quantity: 2 },
+      createdAt: cartUpdate - 2 * 24 * 60 * 60 * 1000,
+      createdBy: 'guest'
+    }
+  ],
+  status: CartListStatus.Abandoned
 }

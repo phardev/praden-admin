@@ -13,7 +13,7 @@ export const useCartListStore = defineStore('CartListStore', {
     return {
       items: byTab<Array<CartListItem>>(() => []),
       hasMore: byTab<boolean>(() => false),
-      isLoading: false
+      isLoading: byTab<boolean>(() => false)
     }
   },
   actions: {
@@ -21,16 +21,18 @@ export const useCartListStore = defineStore('CartListStore', {
       this.items[tab] = items
     },
     append(tab: CartListTab, items: Array<CartListItem>) {
-      this.items[tab] = [...this.items[tab], ...items]
+      const listedUuids = new Set(this.items[tab].map((item) => item.uuid))
+      const unlisted = items.filter((item) => !listedUuids.has(item.uuid))
+      this.items[tab] = [...this.items[tab], ...unlisted]
     },
     setHasMore(tab: CartListTab, hasMore: boolean) {
       this.hasMore[tab] = hasMore
     },
-    startLoading() {
-      this.isLoading = true
+    startLoading(tab: CartListTab) {
+      this.isLoading[tab] = true
     },
-    stopLoading() {
-      this.isLoading = false
+    stopLoading(tab: CartListTab) {
+      this.isLoading[tab] = false
     }
   }
 })

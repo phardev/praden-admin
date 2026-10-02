@@ -1,7 +1,13 @@
 import { type Cart, CartCodeStatus, type CartLine } from '@core/entities/cart'
 import { ReductionType } from '@core/entities/promotion'
 import { ManualOrderPaymentMode } from '@core/usecases/order/manual-order-creation/createManualOrder'
-import { elodieCart, elodieCartReadyToOrder } from '@utils/testData/carts'
+import { priceFormatter } from '@utils/formatters'
+import { addTaxToPrice } from '@utils/price'
+import {
+  elodieCart,
+  elodieCartReadyToOrder,
+  guestCartDetail
+} from '@utils/testData/carts'
 import { elodieDurand } from '@utils/testData/customers'
 import {
   clickAndCollect,
@@ -17,11 +23,37 @@ import {
   orderCreateFormStateFromCart,
   unavailableCartProductNames
 } from './orderCreateFormStateFromCart'
+import {
+  type OrderCreateSummaryVM,
+  orderCreateSummaryVM
+} from './orderCreateSummaryVM'
 import { promotionCodeBasisOf } from './promotionCodeBasis'
 
 describe('Order create form state from cart', () => {
   const now = new Date('2026-09-26T08:00:00.000Z').getTime()
   const deliveryMethods = [clickAndCollect, deliveryInRelayPointDPD]
+  const preparedRelayState = (): OrderCreateFormState => ({
+    ...emptyOrderCreateFormState(),
+    customer: elodieDurand,
+    lines: [{ product: dolodent, quantity: 2 }],
+    deliveryMethod: deliveryInRelayPointDPD,
+    selectedRelayPoint: {
+      id: elodieCartReadyToOrder.delivery!.pickupId!,
+      name: elodieCartReadyToOrder.delivery!.pickupName!,
+      address: elodieCartReadyToOrder.deliveryAddress!.address,
+      zipCode: elodieCartReadyToOrder.deliveryAddress!.zip,
+      city: elodieCartReadyToOrder.deliveryAddress!.city
+    },
+    deliveryAddress: elodieCartReadyToOrder.deliveryAddress!,
+    billingAddress: elodieCartReadyToOrder.billingAddress!,
+    billingSameAsDelivery: false,
+    contact: elodieCartReadyToOrder.contact!,
+    paymentMode: ManualOrderPaymentMode.PaymentLink,
+    voucherCode: elodieCartReadyToOrder.voucher!.code,
+    customerMessage: elodieCartReadyToOrder.customerMessage,
+    cartUuid: elodieCartReadyToOrder.uuid,
+    cartOwnedBy: elodieDurand.uuid
+  })
 
   it('should prefill everything the customer prepared for a relay delivery', () => {
     expect(
@@ -40,9 +72,9 @@ describe('Order create form state from cart', () => {
       selectedRelayPoint: {
         id: elodieCartReadyToOrder.delivery!.pickupId!,
         name: elodieCartReadyToOrder.delivery!.pickupName!,
-        address: '',
-        zipCode: '',
-        city: ''
+        address: elodieCartReadyToOrder.deliveryAddress!.address,
+        zipCode: elodieCartReadyToOrder.deliveryAddress!.zip,
+        city: elodieCartReadyToOrder.deliveryAddress!.city
       },
       deliveryAddress: elodieCartReadyToOrder.deliveryAddress!,
       billingAddress: elodieCartReadyToOrder.billingAddress!,
@@ -51,8 +83,59 @@ describe('Order create form state from cart', () => {
       paymentMode: ManualOrderPaymentMode.PaymentLink,
       voucherCode: elodieCartReadyToOrder.voucher!.code,
       customerMessage: elodieCartReadyToOrder.customerMessage,
-      cartUuid: elodieCartReadyToOrder.uuid
+      cartUuid: elodieCartReadyToOrder.uuid,
+      cartOwnedBy: elodieDurand.uuid
     })
+  })
+
+  it('should prefill what a visitor left, leaving the customer to choose', () => {
+    expect(
+      orderCreateFormStateFromCart(
+        undefined,
+        guestCartDetail,
+        [dolodent],
+        deliveryMethods,
+        now
+      )
+    ).toStrictEqual<OrderCreateFormState>({
+      ...emptyOrderCreateFormState(),
+      lines: [
+        { product: dolodent, quantity: guestCartDetail.lines[0].quantity }
+      ],
+      contact: guestCartDetail.contact!,
+      paymentMode: ManualOrderPaymentMode.PaymentLink,
+      cartUuid: guestCartDetail.uuid
+    })
+  })
+
+  it('should rebuild the relay point with the address kept in the cart', () => {
+    const state = orderCreateFormStateFromCart(
+      elodieDurand,
+      elodieCartReadyToOrder,
+      [dolodent],
+      deliveryMethods,
+      now
+    )
+    expect(state.selectedRelayPoint).toStrictEqual({
+      id: elodieCartReadyToOrder.delivery!.pickupId!,
+      name: elodieCartReadyToOrder.delivery!.pickupName!,
+      address: elodieCartReadyToOrder.deliveryAddress!.address,
+      zipCode: elodieCartReadyToOrder.deliveryAddress!.zip,
+      city: elodieCartReadyToOrder.deliveryAddress!.city
+    })
+  })
+
+  it('should keep the relay address of the cart for a relay cart', () => {
+    const state = orderCreateFormStateFromCart(
+      elodieDurand,
+      elodieCartReadyToOrder,
+      [dolodent],
+      deliveryMethods,
+      now
+    )
+    expect(state.deliveryAddress).toStrictEqual(
+      elodieCartReadyToOrder.deliveryAddress
+    )
   })
 
   it('should fall back on the customer details when the cart has none', () => {
@@ -184,6 +267,115 @@ describe('Order create form state from cart', () => {
       pickingDate: state.pickingDate,
       pickingHour: state.pickingHour
     }).toStrictEqual({ pickingDate: undefined, pickingHour: undefined })
+  })
+
+  describe('The delivery method of the cart is no longer offered', () => {
+    const offeredDeliveryMethods = [clickAndCollect]
+
+    it('should leave the delivery method to choose again', () => {
+      expect(
+        orderCreateFormStateFromCart(
+          elodieDurand,
+          elodieCartReadyToOrder,
+          [dolodent],
+          offeredDeliveryMethods,
+          now
+        )
+      ).toStrictEqual<OrderCreateFormState>({
+        ...preparedRelayState(),
+        deliveryMethod: undefined
+      })
+    })
+
+    it('should block the order until a delivery method is chosen', () => {
+      const state = orderCreateFormStateFromCart(
+        elodieDurand,
+        elodieCartReadyToOrder,
+        [dolodent],
+        offeredDeliveryMethods,
+        now
+      )
+      const formattedLinesTotal = priceFormatter('fr-FR', 'EUR').format(
+        (addTaxToPrice(dolodent.priceWithoutTax, dolodent.percentTaxRate) *
+          elodieCartReadyToOrder.lines[0].quantity) /
+          100
+      )
+      expect(
+        orderCreateSummaryVM(state, undefined, now)
+      ).toStrictEqual<OrderCreateSummaryVM>({
+        linesCount: elodieCartReadyToOrder.lines[0].quantity,
+        formattedLinesTotal,
+        formattedDeliveryFee: undefined,
+        formattedTotal: formattedLinesTotal,
+        blockers: ['orders.create.blockers.selectDeliveryMethod'],
+        canSubmit: false
+      })
+    })
+  })
+
+  it('should not carry a rejected promotion code', () => {
+    expect(
+      orderCreateFormStateFromCart(
+        elodieDurand,
+        elodieCartReadyToOrder,
+        [dolodent],
+        deliveryMethods,
+        now
+      )
+    ).toStrictEqual<OrderCreateFormState>(preparedRelayState())
+  })
+
+  it('should not carry a rejected voucher', () => {
+    const cart: Cart = {
+      ...elodieCartReadyToOrder,
+      voucher: {
+        code: elodieCartReadyToOrder.voucher!.code,
+        status: CartCodeStatus.Rejected,
+        discount: 0,
+        rejection: { reason: 'EXPIRED' }
+      }
+    }
+    expect(
+      orderCreateFormStateFromCart(
+        elodieDurand,
+        cart,
+        [dolodent],
+        deliveryMethods,
+        now
+      )
+    ).toStrictEqual<OrderCreateFormState>({
+      ...preparedRelayState(),
+      voucherCode: ''
+    })
+  })
+
+  it('should not link the order to a cart that was never saved', () => {
+    const { uuid: _neverSaved, ...unsavedCart } = elodieCartReadyToOrder
+    const {
+      cartUuid: _noCart,
+      cartOwnedBy: _noOwner,
+      ...expected
+    } = preparedRelayState()
+    expect(
+      orderCreateFormStateFromCart(
+        elodieDurand,
+        unsavedCart,
+        [dolodent],
+        deliveryMethods,
+        now
+      )
+    ).toStrictEqual<OrderCreateFormState>(expected)
+  })
+
+  it('should not carry a customer message made only of blank characters', () => {
+    const state = orderCreateFormStateFromCart(
+      elodieDurand,
+      { ...elodieCartReadyToOrder, customerMessage: '  \n\t ' },
+      [dolodent],
+      deliveryMethods,
+      now
+    )
+    expect(state.customerMessage).toStrictEqual(undefined)
   })
 
   it('should name the products of the cart no longer in the catalog', () => {

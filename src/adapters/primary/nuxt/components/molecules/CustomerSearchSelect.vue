@@ -36,6 +36,7 @@ div
         .text-sm.text-gray-600 {{ vm.selected.contact }}
         .text-sm.text-colored.mt-1(v-if="vm.selected.loyaltyBalance !== undefined") {{ $t('orders.create.customer.loyaltyPoints', { count: vm.selected.loyaltyBalance }) }}
       UButton(
+        v-if="canChange"
         color="gray"
         variant="ghost"
         :label="$t('orders.create.customer.change')"
@@ -54,8 +55,13 @@ const props = withDefaults(
   defineProps<{
     selectedCustomer?: SearchableCustomer
     namespace?: string
+    canChange?: boolean
   }>(),
-  { selectedCustomer: undefined, namespace: 'order-create-customer' }
+  {
+    selectedCustomer: undefined,
+    namespace: 'order-create-customer',
+    canChange: true
+  }
 )
 
 defineEmits<{

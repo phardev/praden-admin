@@ -87,6 +87,56 @@ export interface ProductByCategory {
   parentUuid?: UUID | null
 }
 
+export interface MonthlyCarts {
+  month: string
+  created: number
+  guestCreated: number
+  converted: number
+  abandoned: number
+  abandonedWithValue: number
+  inProgress: number
+  abandonedValue: number
+}
+
+export interface CartTotals {
+  created: number
+  guestCreated: number
+  converted: number
+  abandoned: number
+  abandonedWithValue: number
+  inProgress: number
+  abandonedValue: number
+}
+
+export interface AbandonedProduct {
+  productUuid: string
+  name: string
+  ean13: string
+  count: number
+}
+
+export interface CartStatistics {
+  totals: CartTotals
+  monthly: MonthlyCarts[]
+  previousYearMonthly: MonthlyCarts[]
+  topAbandonedProducts: AbandonedProduct[]
+}
+
+export const emptyCartStatistics = (): CartStatistics => ({
+  totals: {
+    created: 0,
+    guestCreated: 0,
+    converted: 0,
+    abandoned: 0,
+    abandonedWithValue: 0,
+    inProgress: 0,
+    abandonedValue: 0
+  },
+  monthly: [],
+  previousYearMonthly: [],
+  topAbandonedProducts: []
+})
+
 export interface Dashboard {
   monthlySales: MonthlySales[]
   previousYearMonthlySales: MonthlySales[]
@@ -99,4 +149,5 @@ export interface Dashboard {
   productStockStats: ProductStockStats
   userStatistics: UserStatistics
   revenueByTaxRate: RevenueByTaxRate[]
+  cartStatistics: CartStatistics
 }

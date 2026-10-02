@@ -3,14 +3,17 @@ import { RealCartGateway } from '@adapters/secondary/cart-gateways/RealCartGatew
 import { isLocalEnv } from '@utils/env'
 import {
   elodieCart,
+  elodieCartDetail,
   elodieClosedCartItem,
   elodieOpenCartItem,
+  guestCartDetail,
   guestOpenCartItem,
   lucasAbandonedCartItem
 } from '@utils/testData/carts'
 
 const cartGateway = new InMemoryCartGateway()
 cartGateway.feedWithCustomerCarts(elodieCart)
+cartGateway.feedWithCartDetails(elodieCartDetail, guestCartDetail)
 cartGateway.feedWithListItems(
   elodieOpenCartItem,
   guestOpenCartItem,

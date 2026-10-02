@@ -178,7 +178,53 @@ gateway.feedWith({
     { percentTaxRate: 10, revenueTTC: 650000, kind: 'PRODUCT' },
     { percentTaxRate: 20, revenueTTC: 700000, kind: 'PRODUCT' },
     { percentTaxRate: 20, revenueTTC: 120000, kind: 'DELIVERY' }
-  ]
+  ],
+  cartStatistics: {
+    totals: {
+      created: 90,
+      guestCreated: 35,
+      converted: 55,
+      abandoned: 30,
+      abandonedWithValue: 30,
+      inProgress: 5,
+      abandonedValue: 90000
+    },
+    monthly: [
+      {
+        month: '2026-01',
+        created: 40,
+        guestCreated: 15,
+        converted: 25,
+        abandoned: 12,
+        abandonedWithValue: 12,
+        inProgress: 3,
+        abandonedValue: 36000
+      },
+      {
+        month: '2026-02',
+        created: 50,
+        guestCreated: 20,
+        converted: 30,
+        abandoned: 18,
+        abandonedWithValue: 18,
+        inProgress: 2,
+        abandonedValue: 54000
+      }
+    ],
+    previousYearMonthly: [
+      {
+        month: '2025-01',
+        created: 30,
+        guestCreated: 10,
+        converted: 20,
+        abandoned: 10,
+        abandonedWithValue: 10,
+        inProgress: 0,
+        abandonedValue: 27000
+      }
+    ],
+    topAbandonedProducts: []
+  }
 })
 
 export const useDashboardGateway = (): DashboardGateway => {

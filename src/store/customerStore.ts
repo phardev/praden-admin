@@ -1,4 +1,3 @@
-import type { Cart, CustomerCartAction } from '@core/entities/cart'
 import { Customer } from '@core/entities/customer'
 import { UUID } from '@core/types/types'
 import { defineStore } from 'pinia'
@@ -8,8 +7,7 @@ export const useCustomerStore = defineStore('CustomerStore', {
     return {
       items: [] as Array<Customer>,
       current: undefined as Customer | undefined,
-      hasMore: false as boolean,
-      pendingCartAction: undefined as CustomerCartAction | undefined
+      hasMore: false as boolean
     }
   },
   getters: {
@@ -49,18 +47,6 @@ export const useCustomerStore = defineStore('CustomerStore', {
     },
     setCurrent(customer: Customer) {
       this.current = JSON.parse(JSON.stringify(customer))
-    },
-    startCartAction(action: CustomerCartAction) {
-      this.pendingCartAction = action
-    },
-    stopCartAction() {
-      this.pendingCartAction = undefined
-    },
-    setCurrentCart(cart: Cart) {
-      if (!this.current) {
-        return
-      }
-      this.current = { ...this.current, currentCart: cart }
     },
     remove(uuid: UUID) {
       this.items = this.items.filter((c) => c.uuid !== uuid)

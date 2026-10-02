@@ -17,7 +17,9 @@ export enum CartMissingInformation {
   PickingDate = 'PICKING_DATE',
   Contact = 'CONTACT',
   Addresses = 'ADDRESSES',
-  BlockingAlerts = 'BLOCKING_ALERTS'
+  BlockingAlerts = 'BLOCKING_ALERTS',
+  DeliveryMethodNotAvailableForCountry = 'DELIVERY_METHOD_NOT_AVAILABLE_FOR_COUNTRY',
+  NothingToPay = 'NOTHING_TO_PAY'
 }
 
 export enum CartCodeStatus {
@@ -137,6 +139,7 @@ export interface CartListCustomer {
 export interface CartListItem {
   uuid: UUID
   customer?: CartListCustomer
+  contactEmail?: string
   totalWithTax?: number
   totalQuantity: number
   lastActivityAt: Timestamp
@@ -144,6 +147,11 @@ export interface CartListItem {
   orderUuid?: UUID
   lastRejectedCode?: string
   evaluatedAt?: Timestamp
+}
+
+export interface CartDetail extends Cart {
+  status?: CartListStatus
+  customer?: CartListCustomer
 }
 
 export interface CartListPagination {
@@ -168,7 +176,7 @@ const STATUS_OF_TAB: Record<CartListTab, CartListStatus | undefined> = {
 export const statusOfTab = (tab: CartListTab): CartListStatus | undefined =>
   STATUS_OF_TAB[tab]
 
-export enum CustomerCartAction {
+export enum CartAction {
   ApplyPromotionCode = 'APPLY_PROMOTION_CODE',
   RemovePromotionCode = 'REMOVE_PROMOTION_CODE',
   ApplyVoucher = 'APPLY_VOUCHER',

@@ -1,4 +1,4 @@
-import type { Dashboard } from '@core/entities/dashboard'
+import { type Dashboard, emptyCartStatistics } from '@core/entities/dashboard'
 import type {
   DashboardGateway,
   DashboardParams
@@ -46,7 +46,8 @@ export class InMemoryDashboardGateway implements DashboardGateway {
           nonSubscribers: 0
         }
       },
-      revenueByTaxRate: []
+      revenueByTaxRate: [],
+      cartStatistics: emptyCartStatistics()
     }
   }
 
@@ -113,7 +114,8 @@ export class InMemoryDashboardGateway implements DashboardGateway {
       productQuantitiesByCategory: this.mockData.productQuantitiesByCategory,
       productStockStats: this.mockData.productStockStats,
       userStatistics: this.mockData.userStatistics,
-      revenueByTaxRate: this.mockData.revenueByTaxRate
+      revenueByTaxRate: this.mockData.revenueByTaxRate,
+      cartStatistics: this.mockData.cartStatistics
     }
   }
 

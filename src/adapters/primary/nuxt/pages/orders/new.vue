@@ -65,6 +65,7 @@ import { prepareManualOrderFromCart } from '@core/usecases/order/manual-order-fr
 import { useDeliveryMethodStore } from '@store/deliveryMethodStore'
 import { useManualOrderDraftStore } from '@store/manualOrderDraftStore'
 import { useOrderStore } from '@store/orderStore'
+import { useCartGateway } from '../../../../../../gateways/cartGateway'
 import { useCustomerGateway } from '../../../../../../gateways/customerGateway'
 import { useDateProvider } from '../../../../../../gateways/dateProvider'
 import { useDeliveryMethodGateway } from '../../../../../../gateways/deliveryMethodGateway'
@@ -86,25 +87,26 @@ const hasMaxQuantityViolations = computed(() => {
   return maxQuantityViolations.value.length > 0
 })
 
-const customerOfCart = route.query.customer as string | undefined
+const cartToOrder = route.query.cart as string | undefined
 
-const prepareFromCart = async (customerUuid: string) => {
+const prepareFromCart = async (cartUuid: string) => {
   await prepareManualOrderFromCart(
-    customerUuid,
+    cartUuid,
+    useCartGateway(),
     useCustomerGateway(),
     useProductGateway()
   )
   const draft = useManualOrderDraftStore().draft
-  if (!draft?.customer.currentCart) {
+  if (!draft) {
     return
   }
   unavailableProducts.value = unavailableCartProductNames(
-    draft.customer.currentCart,
+    draft.cart,
     draft.products
   )
   initialState.value = orderCreateFormStateFromCart(
     draft.customer,
-    draft.customer.currentCart,
+    draft.cart,
     draft.products,
     useDeliveryMethodStore().items,
     useDateProvider().now()
@@ -117,8 +119,8 @@ onMounted(async () => {
       listDeliveryMethods(useDeliveryMethodGateway()),
       listDeliveryPriceRules(useDeliveryPriceRuleGateway())
     ])
-    if (customerOfCart) {
-      await prepareFromCart(customerOfCart)
+    if (cartToOrder) {
+      await prepareFromCart(cartToOrder)
     }
   } catch {
     useToast().add({ title: t('error.unknown'), color: 'red' })

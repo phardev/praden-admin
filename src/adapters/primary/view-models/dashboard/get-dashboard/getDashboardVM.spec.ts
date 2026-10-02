@@ -1,9 +1,14 @@
-import type { Dashboard } from '@core/entities/dashboard'
+import {
+  type CartStatistics,
+  type Dashboard,
+  emptyCartStatistics
+} from '@core/entities/dashboard'
 import { useStatsStore } from '@store/statsStore'
 import { createPinia, setActivePinia } from 'pinia'
 import {
   calculateEvolution,
   DashboardVM,
+  emptyCartStatisticsVM,
   getDashboardVM
 } from './getDashboardVM'
 
@@ -131,7 +136,8 @@ describe('getDashboardVM', () => {
         { percentTaxRate: 2.1, revenueTTC: 500000, kind: 'PRODUCT' },
         { percentTaxRate: 20, revenueTTC: 1200000, kind: 'PRODUCT' },
         { percentTaxRate: 20, revenueTTC: 80000, kind: 'DELIVERY' }
-      ]
+      ],
+      cartStatistics: emptyCartStatistics()
     }
 
     statsStore.dashboard = mockDashboard
@@ -179,7 +185,88 @@ describe('getDashboardVM', () => {
         percentTaxRate: entry.percentTaxRate,
         revenueTTC: entry.revenueTTC / 100,
         kind: entry.kind
-      }))
+      })),
+      cartStatistics: emptyCartStatisticsVM()
+    })
+  })
+
+  it('should derive the cart rates and amounts in euros from the cart statistics', () => {
+    const cartStatistics: CartStatistics = {
+      totals: {
+        created: 90,
+        guestCreated: 35,
+        converted: 55,
+        abandoned: 30,
+        abandonedWithValue: 25,
+        inProgress: 5,
+        abandonedValue: 90000
+      },
+      monthly: [
+        {
+          month: '2026-01',
+          created: 40,
+          guestCreated: 15,
+          converted: 25,
+          abandoned: 12,
+          abandonedWithValue: 12,
+          inProgress: 3,
+          abandonedValue: 36000
+        },
+        {
+          month: '2026-02',
+          created: 50,
+          guestCreated: 20,
+          converted: 30,
+          abandoned: 18,
+          abandonedWithValue: 18,
+          inProgress: 2,
+          abandonedValue: 54000
+        }
+      ],
+      previousYearMonthly: [
+        {
+          month: '2025-01',
+          created: 30,
+          guestCreated: 10,
+          converted: 20,
+          abandoned: 10,
+          abandonedWithValue: 10,
+          inProgress: 0,
+          abandonedValue: 27000
+        }
+      ],
+      topAbandonedProducts: [
+        {
+          productUuid: '123',
+          name: 'Product A',
+          ean13: '3401598753214',
+          count: 7
+        }
+      ]
+    }
+    statsStore.dashboard = { ...emptyDashboard(), cartStatistics }
+
+    expect(getDashboardVM().cartStatistics).toStrictEqual({
+      created: 90,
+      guestCreated: 35,
+      converted: 55,
+      abandoned: 30,
+      inProgress: 5,
+      abandonmentRate: 35.3,
+      conversionRate: 64.7,
+      abandonedValue: 900,
+      averageAbandonedValue: 36,
+      monthlyAbandoned: [
+        { month: '2026-01', value: 12 },
+        { month: '2026-02', value: 18 }
+      ],
+      previousYearMonthlyAbandoned: [{ month: '2025-01', value: 10 }],
+      monthlyAbandonmentRate: [
+        { month: '2026-01', value: 32.4 },
+        { month: '2026-02', value: 37.5 }
+      ],
+      previousYearMonthlyAbandonmentRate: [{ month: '2025-01', value: 33.3 }],
+      topAbandonedProducts: cartStatistics.topAbandonedProducts
     })
   })
 
@@ -223,8 +310,44 @@ describe('getDashboardVM', () => {
           nonSubscribers: 0
         }
       },
-      revenueByTaxRate: []
+      revenueByTaxRate: [],
+      cartStatistics: emptyCartStatisticsVM()
     })
+  })
+
+  const emptyDashboard = (): Dashboard => ({
+    monthlySales: [],
+    previousYearMonthlySales: [],
+    totalSales: {
+      count: 0,
+      turnover: 0,
+      turnoverHT: 0,
+      canceledTurnover: 0,
+      averageBasketValue: 0,
+      deliveryPrice: 0
+    },
+    previousYearTotalSales: {
+      count: 0,
+      turnover: 0,
+      turnoverHT: 0,
+      canceledTurnover: 0,
+      averageBasketValue: 0,
+      deliveryPrice: 0
+    },
+    topProducts: [],
+    ordersByDeliveryMethod: [],
+    ordersByLaboratory: [],
+    productQuantitiesByCategory: [],
+    productStockStats: { inStockCount: 0, outOfStockCount: 0 },
+    userStatistics: {
+      totalCustomers: 0,
+      customersWithOrders: 0,
+      newsletterSubscribers: 0,
+      monthlyNewsletterSubscriptions: [],
+      newsletterAdoptionRate: { subscribers: 0, nonSubscribers: 0 }
+    },
+    revenueByTaxRate: [],
+    cartStatistics: emptyCartStatistics()
   })
 })
 

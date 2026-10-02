@@ -17,7 +17,7 @@ const keysByCartCode: Record<string, string> = {
 
 type ErrorBody = Partial<CartCodeRejection> & { code?: unknown }
 
-const errorBodyOf = (error: unknown): ErrorBody => {
+export const errorBodyOf = (error: unknown): ErrorBody => {
   const data = (error as { response?: { data?: unknown } })?.response?.data
   return typeof data === 'object' && data !== null ? (data as ErrorBody) : {}
 }

@@ -12,7 +12,7 @@ export const listCarts = async (
   cartGateway: CartGateway
 ): Promise<void> => {
   const cartListStore = useCartListStore()
-  cartListStore.startLoading()
+  cartListStore.startLoading(tab)
   try {
     const items = await cartGateway.list(statusOfTab(tab), pagination)
     if (pagination.offset === 0) {
@@ -22,6 +22,6 @@ export const listCarts = async (
     }
     cartListStore.setHasMore(tab, items.length === pagination.limit)
   } finally {
-    cartListStore.stopLoading()
+    cartListStore.stopLoading(tab)
   }
 }

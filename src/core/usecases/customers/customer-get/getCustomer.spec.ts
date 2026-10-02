@@ -7,9 +7,11 @@ import type { Order } from '@core/entities/order'
 import { CustomerDoesNotExistsError } from '@core/errors/CustomerDoesNotExistsError'
 import type { UUID } from '@core/types/types'
 import { getCustomer } from '@core/usecases/customers/customer-get/getCustomer'
+import { useCartDetailStore } from '@store/cartDetailStore'
 import { useCustomerStore } from '@store/customerStore'
 import { useLoyaltyStore } from '@store/loyaltyStore'
 import { useOrderStore } from '@store/orderStore'
+import { elodieCart } from '@utils/testData/carts'
 import {
   elodieDurand,
   lucasLefevre,
@@ -47,6 +49,15 @@ describe('Get customer', () => {
     })
     it('should store it in customer store', () => {
       expect(customerStore.current).toStrictEqual(lucasLefevre)
+    })
+  })
+  describe('The customer has a cart in progress', () => {
+    beforeEach(async () => {
+      givenExistingCustomers({ ...elodieDurand, currentCart: elodieCart })
+      await whenGetCustomer(elodieDurand.uuid)
+    })
+    it('should show the cart of the customer', () => {
+      expect(useCartDetailStore().current).toStrictEqual(elodieCart)
     })
   })
   describe('The customer has loyalty data', () => {

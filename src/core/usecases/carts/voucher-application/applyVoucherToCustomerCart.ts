@@ -1,19 +1,18 @@
-import { CustomerCartAction } from '@core/entities/cart'
+import { CartAction } from '@core/entities/cart'
 import type { CartGateway } from '@core/gateways/cartGateway'
 import { UUID } from '@core/types/types'
-import { useCustomerStore } from '@store/customerStore'
+import { useCartDetailStore } from '@store/cartDetailStore'
 
 export const applyVoucherToCustomerCart = async (
   customerUuid: UUID,
   code: string,
   cartGateway: CartGateway
 ): Promise<void> => {
-  const customerStore = useCustomerStore()
-  customerStore.startCartAction(CustomerCartAction.ApplyVoucher)
+  const cartDetailStore = useCartDetailStore()
+  cartDetailStore.startAction(CartAction.ApplyVoucher)
   try {
-    const cart = await cartGateway.applyVoucher(customerUuid, code)
-    customerStore.setCurrentCart(cart)
+    cartDetailStore.replace(await cartGateway.applyVoucher(customerUuid, code))
   } finally {
-    customerStore.stopCartAction()
+    cartDetailStore.stopAction()
   }
 }

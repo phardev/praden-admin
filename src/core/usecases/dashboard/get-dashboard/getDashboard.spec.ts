@@ -1,4 +1,4 @@
-import type { Dashboard } from '@core/entities/dashboard'
+import { type Dashboard, emptyCartStatistics } from '@core/entities/dashboard'
 import type { DashboardParams } from '@core/gateways/dashboardGateway'
 import { InMemoryDashboardGateway } from '@core/usecases/dashboard/get-dashboard/inMemoryDashboardGateway'
 import { useStatsStore } from '@store/statsStore'
@@ -201,7 +201,8 @@ describe('GetDashboard', () => {
         { percentTaxRate: 5.5, revenueTTC: 950000, kind: 'PRODUCT' },
         { percentTaxRate: 20, revenueTTC: 1350000, kind: 'PRODUCT' },
         { percentTaxRate: 20, revenueTTC: 80000, kind: 'DELIVERY' }
-      ]
+      ],
+      cartStatistics: emptyCartStatistics()
     }
     dashboardGateway.feedWith(mockData)
   })
@@ -241,7 +242,8 @@ describe('GetDashboard', () => {
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
       productStockStats: mockData.productStockStats,
       userStatistics: mockData.userStatistics,
-      revenueByTaxRate: mockData.revenueByTaxRate
+      revenueByTaxRate: mockData.revenueByTaxRate,
+      cartStatistics: mockData.cartStatistics
     })
   })
 
@@ -269,7 +271,8 @@ describe('GetDashboard', () => {
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
       productStockStats: mockData.productStockStats,
       userStatistics: mockData.userStatistics,
-      revenueByTaxRate: mockData.revenueByTaxRate
+      revenueByTaxRate: mockData.revenueByTaxRate,
+      cartStatistics: mockData.cartStatistics
     })
   })
 
@@ -289,7 +292,8 @@ describe('GetDashboard', () => {
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
       productStockStats: mockData.productStockStats,
       userStatistics: mockData.userStatistics,
-      revenueByTaxRate: mockData.revenueByTaxRate
+      revenueByTaxRate: mockData.revenueByTaxRate,
+      cartStatistics: mockData.cartStatistics
     })
   })
 
@@ -309,7 +313,8 @@ describe('GetDashboard', () => {
       productQuantitiesByCategory: mockData.productQuantitiesByCategory,
       productStockStats: mockData.productStockStats,
       userStatistics: mockData.userStatistics,
-      revenueByTaxRate: mockData.revenueByTaxRate
+      revenueByTaxRate: mockData.revenueByTaxRate,
+      cartStatistics: mockData.cartStatistics
     })
   })
 

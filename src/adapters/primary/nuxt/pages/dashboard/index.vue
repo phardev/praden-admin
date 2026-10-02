@@ -235,6 +235,78 @@ div(v-if="permissions.canAccessDashboard")
           .h-80
             NewsletterAdoptionPieChart(:data="dashboard.userStatistics.newsletterAdoptionRate")
 
+    h3.text-lg.font-bold.text-primary-700.mb-4.mt-8(v-if="!areProductFiltersApplied") {{ $t('dashboard.cartStatistics.title') }}
+    .grid.grid-cols-1.gap-4.mb-8(v-if="!areProductFiltersApplied" class="md:grid-cols-2 xl:grid-cols-4")
+      UCard
+        template(#header)
+          .text-center
+            h3.text-lg.font-medium {{ $t('dashboard.cartStatistics.created') }}
+        template(#default)
+          .text-center
+            p.text-2xl.font-bold {{ dashboard.cartStatistics.created.toLocaleString() }}
+            p.text-sm.text-gray-500 {{ $t('dashboard.cartStatistics.guestShare', { count: dashboard.cartStatistics.guestCreated.toLocaleString() }) }}
+      UCard
+        template(#header)
+          .text-center
+            h3.text-lg.font-medium {{ $t('dashboard.cartStatistics.abandonmentRate') }}
+        template(#default)
+          .text-center
+            p.text-2xl.font-bold {{ formatPercent(dashboard.cartStatistics.abandonmentRate) }}
+            p.text-sm.text-gray-500 {{ $t('dashboard.cartStatistics.breakdown', { abandoned: dashboard.cartStatistics.abandoned.toLocaleString(), converted: dashboard.cartStatistics.converted.toLocaleString(), inProgress: dashboard.cartStatistics.inProgress.toLocaleString() }) }}
+      UCard
+        template(#header)
+          .text-center
+            h3.text-lg.font-medium {{ $t('dashboard.cartStatistics.conversionRate') }}
+        template(#default)
+          .text-center
+            p.text-2xl.font-bold {{ formatPercent(dashboard.cartStatistics.conversionRate) }}
+            p.text-sm.text-gray-500 {{ $t('dashboard.cartStatistics.conversionHint') }}
+      UCard
+        template(#header)
+          .text-center
+            h3.text-lg.font-medium {{ $t('dashboard.cartStatistics.abandonedValue') }}
+        template(#default)
+          .text-center
+            p.text-2xl.font-bold {{ formatCurrency(dashboard.cartStatistics.abandonedValue) }}
+            p.text-sm.text-gray-500 {{ $t('dashboard.cartStatistics.averageAbandoned', { amount: formatCurrency(dashboard.cartStatistics.averageAbandonedValue) }) }}
+    .grid.grid-cols-1.gap-6.mb-8(v-if="!areProductFiltersApplied" class="lg:grid-cols-2")
+      UCard
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.cartStatistics.monthlyAbandoned') }}
+        template(#default)
+          .h-80
+            MonthlyCartsChart(
+              :data="dashboard.cartStatistics.monthlyAbandoned"
+              :previous-year-data="dashboard.cartStatistics.previousYearMonthlyAbandoned"
+              :value-label="$t('dashboard.cartStatistics.abandonedCarts')"
+            )
+      UCard
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.cartStatistics.monthlyAbandonmentRate') }}
+        template(#default)
+          .h-80
+            MonthlyCartsChart(
+              :data="dashboard.cartStatistics.monthlyAbandonmentRate"
+              :previous-year-data="dashboard.cartStatistics.previousYearMonthlyAbandonmentRate"
+              :value-label="$t('dashboard.cartStatistics.abandonmentRate')"
+              unit=" %"
+            )
+    UCard.mb-8(v-if="!areProductFiltersApplied && dashboard.cartStatistics.topAbandonedProducts.length > 0")
+      template(#header)
+        h3.text-lg.font-medium {{ $t('dashboard.cartStatistics.topAbandonedProducts') }}
+      template(#default)
+        table.min-w-full.divide-y.divide-gray-200
+          thead
+            tr
+              th.px-4.py-2.text-left.text-sm.font-semibold {{ $t('dashboard.cartStatistics.headers.product') }}
+              th.px-4.py-2.text-left.text-sm.font-semibold {{ $t('dashboard.cartStatistics.headers.ean13') }}
+              th.px-4.py-2.text-right.text-sm.font-semibold {{ $t('dashboard.cartStatistics.headers.carts') }}
+          tbody.divide-y.divide-gray-100
+            tr(v-for="product in dashboard.cartStatistics.topAbandonedProducts" :key="product.productUuid")
+              td.px-4.py-2.text-sm {{ product.name }}
+              td.px-4.py-2.text-sm.text-gray-500 {{ product.ean13 }}
+              td.px-4.py-2.text-sm.text-right {{ product.count }}
+
     UCard.mt-16
       template(#header)
         .flex.justify-between.items-center
@@ -330,6 +402,9 @@ const categoriesVM = computed(() => {
 })
 
 const areProductFiltersApplied = ref(false)
+
+const formatPercent = (value: number): string =>
+  `${value.toLocaleString('fr-FR', { maximumFractionDigits: 1 })} %`
 const areDateFiltersApplied = ref(false)
 
 const currentYear = computed(() => {

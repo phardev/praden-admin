@@ -1,9 +1,11 @@
+import type { CartDetail } from '@core/entities/cart'
 import type { Customer } from '@core/entities/customer'
 import type { Product } from '@core/entities/product'
 import { defineStore } from 'pinia'
 
 export interface ManualOrderDraft {
-  customer: Customer
+  cart: CartDetail
+  customer?: Customer
   products: Array<Product>
 }
 

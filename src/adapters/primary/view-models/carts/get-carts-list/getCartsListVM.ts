@@ -16,7 +16,7 @@ export interface CartListItemVM {
   lastActivity: string
   statusKey: string
   rejectedCode: string
-  link?: string
+  link: string
 }
 
 export interface CartListTabVM {
@@ -25,11 +25,11 @@ export interface CartListTabVM {
   headers: Array<Header>
   items: Array<CartListItemVM>
   hasMore: boolean
+  isLoading: boolean
 }
 
 export interface GetCartsListVM {
   tabs: Array<CartListTabVM>
-  isLoading: boolean
 }
 
 const TABS: Array<CartListTab> = [
@@ -60,34 +60,29 @@ const dateTime = (timestamp: number): string =>
     minute: '2-digit'
   })
 
-const linkOf = (item: CartListItem): string | undefined => {
-  if (item.status === CartListStatus.Closed && item.orderUuid) {
-    return `/orders/${item.orderUuid}`
-  }
-  return item.customer ? `/customers/get/${item.customer.uuid}` : undefined
-}
+const linkOf = (item: CartListItem): string =>
+  item.status === CartListStatus.Closed && item.orderUuid
+    ? `/orders/${item.orderUuid}`
+    : `/customers/carts/${item.uuid}`
 
 const customerNameOf = (item: CartListItem): string =>
   item.customer
     ? [item.customer.firstname, item.customer.lastname]
         .filter(Boolean)
         .join(' ') || item.customer.email
-    : ''
+    : (item.contactEmail ?? '')
 
-const itemVM = (item: CartListItem): CartListItemVM => {
-  const link = linkOf(item)
-  return {
-    uuid: item.uuid,
-    customer: customerNameOf(item),
-    ...(!item.customer && { isGuest: true }),
-    total: item.totalWithTax !== undefined ? euros(item.totalWithTax) : '',
-    quantity: item.totalQuantity,
-    lastActivity: dateTime(item.lastActivityAt),
-    statusKey: `carts.status.${item.status}`,
-    rejectedCode: item.lastRejectedCode ?? '',
-    ...(link && { link })
-  }
-}
+const itemVM = (item: CartListItem): CartListItemVM => ({
+  uuid: item.uuid,
+  customer: customerNameOf(item),
+  ...(!item.customer && { isGuest: true }),
+  total: item.totalWithTax !== undefined ? euros(item.totalWithTax) : '',
+  quantity: item.totalQuantity,
+  lastActivity: dateTime(item.lastActivityAt),
+  statusKey: `carts.status.${item.status}`,
+  rejectedCode: item.lastRejectedCode ?? '',
+  link: linkOf(item)
+})
 
 export const getCartsListVM = (): GetCartsListVM => {
   const cartListStore = useCartListStore()
@@ -97,8 +92,8 @@ export const getCartsListVM = (): GetCartsListVM => {
       labelKey: `carts.tabs.${tab}`,
       headers,
       items: cartListStore.items[tab].map(itemVM),
-      hasMore: cartListStore.hasMore[tab]
-    })),
-    isLoading: cartListStore.isLoading
+      hasMore: cartListStore.hasMore[tab],
+      isLoading: cartListStore.isLoading[tab]
+    }))
   }
 }

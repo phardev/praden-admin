@@ -1,5 +1,10 @@
 import type { Customer } from '@core/entities/customer'
-import type { Address, Contact, DeliveryMethod } from '@core/entities/order'
+import {
+  type Address,
+  CollectionPlace,
+  type Contact,
+  type DeliveryMethod
+} from '@core/entities/order'
 import type { Product } from '@core/entities/product'
 import type { ProductPromotion } from '@core/entities/promotion'
 import type { RelayPoint } from '@core/entities/relayPoint'
@@ -35,6 +40,7 @@ export interface OrderCreateFormState {
   promotionCode?: OrderCreateFormPromotionCode
   customerMessage?: string
   cartUuid?: UUID
+  cartOwnedBy?: UUID
 }
 
 export const emptyAddress = (): Address => {
@@ -76,5 +82,87 @@ export const emptyOrderCreateFormState = (): OrderCreateFormState => {
     sendConfirmationEmail: false,
     paymentMode: ManualOrderPaymentMode.AlreadyPaid,
     voucherCode: ''
+  }
+}
+
+export const canChangeCustomer = (formState: OrderCreateFormState): boolean => {
+  return !formState.cartOwnedBy
+}
+
+const isBlankAddress = (address: Address): boolean =>
+  JSON.stringify(address) === JSON.stringify(emptyAddress())
+
+const keepsCartDetails = (formState: OrderCreateFormState): boolean =>
+  formState.cartUuid !== undefined
+
+const addressWithCustomer = (
+  formState: OrderCreateFormState,
+  address: Address,
+  customer: Customer
+): Address =>
+  keepsCartDetails(formState) && !isBlankAddress(address)
+    ? { ...address }
+    : customerPrefilledAddress(customer)
+
+const contactWithCustomer = (
+  formState: OrderCreateFormState,
+  customer: Customer
+): Contact =>
+  keepsCartDetails(formState) && formState.contact.email
+    ? { ...formState.contact }
+    : { email: customer.email, phone: customer.phone ?? '' }
+
+export const withCustomer = (
+  formState: OrderCreateFormState,
+  customer: Customer
+): OrderCreateFormState => ({
+  ...formState,
+  customer,
+  contact: contactWithCustomer(formState, customer),
+  deliveryAddress: addressWithCustomer(
+    formState,
+    formState.deliveryAddress,
+    customer
+  ),
+  billingAddress: addressWithCustomer(
+    formState,
+    formState.billingAddress,
+    customer
+  )
+})
+
+const isRelayAddress = (address: Address, relayPoint: RelayPoint): boolean =>
+  address.address === relayPoint.address &&
+  address.zip === relayPoint.zipCode &&
+  address.city === relayPoint.city
+
+const deliveryAddressLeavingRelay = (
+  formState: OrderCreateFormState,
+  deliveryMethod?: DeliveryMethod
+): Address => {
+  const relayPoint = formState.selectedRelayPoint
+  if (
+    !formState.customer ||
+    !relayPoint ||
+    deliveryMethod?.collectionPlace === CollectionPlace.PickupPoint ||
+    !isRelayAddress(formState.deliveryAddress, relayPoint)
+  ) {
+    return formState.deliveryAddress
+  }
+  return customerPrefilledAddress(formState.customer)
+}
+
+export const withDeliveryMethod = (
+  formState: OrderCreateFormState,
+  deliveryMethod?: DeliveryMethod
+): OrderCreateFormState => {
+  if (deliveryMethod?.uuid === formState.deliveryMethod?.uuid) {
+    return { ...formState, deliveryMethod }
+  }
+  return {
+    ...formState,
+    deliveryMethod,
+    selectedRelayPoint: undefined,
+    deliveryAddress: deliveryAddressLeavingRelay(formState, deliveryMethod)
   }
 }

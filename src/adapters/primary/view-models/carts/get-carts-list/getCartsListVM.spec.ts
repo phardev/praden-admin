@@ -4,7 +4,8 @@ import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 import {
   elodieClosedCartItem,
   elodieOpenCartItem,
-  guestOpenCartItem
+  guestOpenCartItem,
+  lucasAbandonedCartItem
 } from '@utils/testData/carts'
 import { createPinia, setActivePinia } from 'pinia'
 import { type CartListItemVM, getCartsListVM } from './getCartsListVM'
@@ -37,7 +38,7 @@ describe('Get carts list VM', () => {
     ])
   })
 
-  it('should show a customer cart with its refused code, linking to the customer', () => {
+  it('should show a customer cart with its refused code, linking to the cart', () => {
     cartListStore.list(CartListTab.All, [elodieOpenCartItem])
     expect(getCartsListVM().tabs[0].items).toStrictEqual<Array<CartListItemVM>>(
       [
@@ -49,13 +50,13 @@ describe('Get carts list VM', () => {
           lastActivity: dateTime(elodieOpenCartItem.lastActivityAt),
           statusKey: 'carts.status.OPEN',
           rejectedCode: 'BIENVENUE',
-          link: `/customers/get/${elodieOpenCartItem.customer!.uuid}`
+          link: `/customers/carts/${elodieOpenCartItem.uuid}`
         }
       ]
     )
   })
 
-  it('should show a guest cart without total nor link', () => {
+  it('should show an anonymous guest cart without total, linking to the cart', () => {
     cartListStore.list(CartListTab.All, [guestOpenCartItem])
     expect(getCartsListVM().tabs[0].items).toStrictEqual<Array<CartListItemVM>>(
       [
@@ -67,7 +68,73 @@ describe('Get carts list VM', () => {
           quantity: guestOpenCartItem.totalQuantity,
           lastActivity: dateTime(guestOpenCartItem.lastActivityAt),
           statusKey: 'carts.status.OPEN',
-          rejectedCode: ''
+          rejectedCode: '',
+          link: `/customers/carts/${guestOpenCartItem.uuid}`
+        }
+      ]
+    )
+  })
+
+  it('should show the email a visitor left on their cart', () => {
+    const contactEmail = 'visiteur@example.com'
+    cartListStore.list(CartListTab.All, [
+      { ...guestOpenCartItem, contactEmail }
+    ])
+    expect(getCartsListVM().tabs[0].items).toStrictEqual<Array<CartListItemVM>>(
+      [
+        {
+          uuid: guestOpenCartItem.uuid,
+          customer: contactEmail,
+          isGuest: true,
+          total: '',
+          quantity: guestOpenCartItem.totalQuantity,
+          lastActivity: dateTime(guestOpenCartItem.lastActivityAt),
+          statusKey: 'carts.status.OPEN',
+          rejectedCode: '',
+          link: `/customers/carts/${guestOpenCartItem.uuid}`
+        }
+      ]
+    )
+  })
+
+  it('should show the email of a customer who gave no name', () => {
+    const namelessCustomerCart = {
+      ...elodieOpenCartItem,
+      customer: {
+        uuid: elodieOpenCartItem.customer!.uuid,
+        email: elodieOpenCartItem.customer!.email
+      }
+    }
+    cartListStore.list(CartListTab.All, [namelessCustomerCart])
+    expect(getCartsListVM().tabs[0].items).toStrictEqual<Array<CartListItemVM>>(
+      [
+        {
+          uuid: elodieOpenCartItem.uuid,
+          customer: elodieOpenCartItem.customer!.email,
+          total: euros(elodieOpenCartItem.totalWithTax!),
+          quantity: elodieOpenCartItem.totalQuantity,
+          lastActivity: dateTime(elodieOpenCartItem.lastActivityAt),
+          statusKey: 'carts.status.OPEN',
+          rejectedCode: elodieOpenCartItem.lastRejectedCode!,
+          link: `/customers/carts/${elodieOpenCartItem.uuid}`
+        }
+      ]
+    )
+  })
+
+  it('should label an abandoned cart as abandoned', () => {
+    cartListStore.list(CartListTab.Abandoned, [lucasAbandonedCartItem])
+    expect(getCartsListVM().tabs[2].items).toStrictEqual<Array<CartListItemVM>>(
+      [
+        {
+          uuid: lucasAbandonedCartItem.uuid,
+          customer: `${lucasAbandonedCartItem.customer!.firstname} ${lucasAbandonedCartItem.customer!.lastname}`,
+          total: euros(lucasAbandonedCartItem.totalWithTax!),
+          quantity: lucasAbandonedCartItem.totalQuantity,
+          lastActivity: dateTime(lucasAbandonedCartItem.lastActivityAt),
+          statusKey: 'carts.status.ABANDONED',
+          rejectedCode: '',
+          link: `/customers/carts/${lucasAbandonedCartItem.uuid}`
         }
       ]
     )

@@ -15,12 +15,14 @@ tab-group.border-b.border-gray-200(as="div")
       ft-table(
         :headers="translatedHeaders(tab.headers)"
         :items="tab.items"
-        :is-loading="cartsVm.isLoading"
+        :is-loading="tab.isLoading"
         item-key="uuid"
         @clicked="clicked(tab.items, $event)"
       )
         template(#customer="{ item }")
-          span.text-gray-500(v-if="item.isGuest") {{ $t('carts.guest') }}
+          span.text-gray-500(v-if="item.isGuest")
+            | {{ $t('carts.guest') }}
+            span.ml-1(v-if="item.customer") · {{ item.customer }}
           span(v-else) {{ item.customer }}
         template(#status="{ item }")
           span {{ $t(item.statusKey) }}

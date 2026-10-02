@@ -1,4 +1,7 @@
 import type {
+  AbandonedProduct,
+  CartStatistics,
+  MonthlyCarts,
   MonthlySales,
   OrderByDeliveryMethod,
   OrderByLaboratory,
@@ -55,6 +58,94 @@ export interface RevenueByTaxRateVM {
   kind: RevenueByTaxRateKind
 }
 
+export interface MonthlyValueVM {
+  month: string
+  value: number
+}
+
+export interface CartStatisticsVM {
+  created: number
+  guestCreated: number
+  converted: number
+  abandoned: number
+  inProgress: number
+  abandonmentRate: number
+  conversionRate: number
+  abandonedValue: number
+  averageAbandonedValue: number
+  monthlyAbandoned: MonthlyValueVM[]
+  previousYearMonthlyAbandoned: MonthlyValueVM[]
+  monthlyAbandonmentRate: MonthlyValueVM[]
+  previousYearMonthlyAbandonmentRate: MonthlyValueVM[]
+  topAbandonedProducts: AbandonedProduct[]
+}
+
+const roundToOneDecimal = (value: number): number => Math.round(value * 10) / 10
+
+const percentage = (part: number, total: number): number =>
+  total === 0 ? 0 : roundToOneDecimal((part / total) * 100)
+
+const abandonmentRateOf = (month: {
+  abandoned: number
+  converted: number
+}): number => percentage(month.abandoned, month.abandoned + month.converted)
+
+const monthlyAbandonedOf = (months: MonthlyCarts[]): MonthlyValueVM[] =>
+  months.map(({ month, abandoned }) => ({ month, value: abandoned }))
+
+const monthlyAbandonmentRateOf = (months: MonthlyCarts[]): MonthlyValueVM[] =>
+  months.map((month) => ({
+    month: month.month,
+    value: abandonmentRateOf(month)
+  }))
+
+export const emptyCartStatisticsVM = (): CartStatisticsVM => ({
+  created: 0,
+  guestCreated: 0,
+  converted: 0,
+  abandoned: 0,
+  inProgress: 0,
+  abandonmentRate: 0,
+  conversionRate: 0,
+  abandonedValue: 0,
+  averageAbandonedValue: 0,
+  monthlyAbandoned: [],
+  previousYearMonthlyAbandoned: [],
+  monthlyAbandonmentRate: [],
+  previousYearMonthlyAbandonmentRate: [],
+  topAbandonedProducts: []
+})
+
+const cartStatisticsVMOf = ({
+  totals,
+  monthly,
+  previousYearMonthly,
+  topAbandonedProducts
+}: CartStatistics): CartStatisticsVM => {
+  const decided = totals.abandoned + totals.converted
+  const abandonedValue = totals.abandonedValue / 100
+  return {
+    created: totals.created,
+    guestCreated: totals.guestCreated,
+    converted: totals.converted,
+    abandoned: totals.abandoned,
+    inProgress: totals.inProgress,
+    abandonmentRate: percentage(totals.abandoned, decided),
+    conversionRate: percentage(totals.converted, decided),
+    abandonedValue,
+    averageAbandonedValue:
+      totals.abandonedWithValue === 0
+        ? 0
+        : Math.round((abandonedValue / totals.abandonedWithValue) * 100) / 100,
+    monthlyAbandoned: monthlyAbandonedOf(monthly),
+    previousYearMonthlyAbandoned: monthlyAbandonedOf(previousYearMonthly),
+    monthlyAbandonmentRate: monthlyAbandonmentRateOf(monthly),
+    previousYearMonthlyAbandonmentRate:
+      monthlyAbandonmentRateOf(previousYearMonthly),
+    topAbandonedProducts
+  }
+}
+
 export interface DashboardVM {
   monthlySales: MonthlySalesVM[]
   previousYearMonthlySales: MonthlySalesVM[]
@@ -67,6 +158,7 @@ export interface DashboardVM {
   productStockStats: ProductStockStats
   userStatistics: UserStatistics
   revenueByTaxRate: RevenueByTaxRateVM[]
+  cartStatistics: CartStatisticsVM
 }
 
 export const getDashboardVM = (): DashboardVM => {
@@ -110,7 +202,8 @@ export const getDashboardVM = (): DashboardVM => {
           nonSubscribers: 0
         }
       },
-      revenueByTaxRate: []
+      revenueByTaxRate: [],
+      cartStatistics: emptyCartStatisticsVM()
     }
   }
 
@@ -153,6 +246,7 @@ export const getDashboardVM = (): DashboardVM => {
       percentTaxRate: entry.percentTaxRate,
       revenueTTC: entry.revenueTTC / 100,
       kind: entry.kind
-    }))
+    })),
+    cartStatistics: cartStatisticsVMOf(dashboard.cartStatistics)
   }
 }

@@ -1,16 +1,16 @@
 import { promotionCodeRejectionMessage } from '@adapters/primary/view-models/carts/promotion-code-rejection/promotionCodeRejectionMessage'
 import {
+  type Cart,
   type CartActivity,
   type CartCode,
   CartCodeStatus,
   CartEventType,
   type CartLine,
-  type CustomerCartAction
+  type CartTotals
 } from '@core/entities/cart'
-import { useCustomerStore } from '@store/customerStore'
 import { priceFormatter, timestampToLocaleString } from '@utils/formatters'
 
-export interface CustomerCartLineVM {
+export interface CartLineVM {
   productUuid: string
   name: string
   quantity: number
@@ -20,7 +20,7 @@ export interface CustomerCartLineVM {
   alertKeys: Array<string>
 }
 
-export interface CustomerCartCodeVM {
+export interface CartCodeVM {
   code: string
   status: CartCodeStatus
   badgeColor: string
@@ -29,14 +29,14 @@ export interface CustomerCartCodeVM {
   messageParams: Record<string, string>
 }
 
-export interface CustomerCartActivityVM {
+export interface CartActivityVM {
   labelKey: string
   labelParams: Record<string, string>
   actorKey: string
   date: string
 }
 
-export interface CustomerCartTotalsVM {
+export interface CartTotalsVM {
   products: string
   delivery?: string
   promotionCodeDiscount?: string
@@ -44,21 +44,17 @@ export interface CustomerCartTotalsVM {
   total: string
 }
 
-export interface CustomerCartVM {
+export interface CartContentVM {
   hasLines: boolean
-  lines: Array<CustomerCartLineVM>
+  lines: Array<CartLineVM>
   totalQuantity: number
-  totals: CustomerCartTotalsVM
-  promotionCode?: CustomerCartCodeVM
-  voucher?: CustomerCartCodeVM
+  totals: CartTotalsVM
+  promotionCode?: CartCodeVM
+  voucher?: CartCodeVM
   customerMessage?: string
   missingKeys: Array<string>
-  activity: Array<CustomerCartActivityVM>
+  activity: Array<CartActivityVM>
   lastActivity: string
-  canConvert: boolean
-  canEditCodes: boolean
-  isUpdating: boolean
-  pendingAction?: CustomerCartAction
 }
 
 const SYSTEM_ACTOR = 'system'
@@ -80,7 +76,7 @@ const dateTime = (timestamp: number): string =>
     minute: '2-digit'
   })
 
-const lineVM = (line: CartLine): CustomerCartLineVM => ({
+const lineVM = (line: CartLine): CartLineVM => ({
   productUuid: line.productUuid,
   name: line.name,
   quantity: line.quantity,
@@ -95,7 +91,7 @@ const lineVM = (line: CartLine): CustomerCartLineVM => ({
 const APPLIED_STYLE = { badgeColor: 'green', messageClass: 'text-green-700' }
 const REJECTED_STYLE = { badgeColor: 'red', messageClass: 'text-red-600' }
 
-const appliedCodeVM = (code: CartCode): CustomerCartCodeVM => ({
+const appliedCodeVM = (code: CartCode): CartCodeVM => ({
   code: code.code,
   status: code.status,
   ...APPLIED_STYLE,
@@ -103,7 +99,7 @@ const appliedCodeVM = (code: CartCode): CustomerCartCodeVM => ({
   messageParams: { discount: euros(code.discount) }
 })
 
-const promotionCodeVM = (code: CartCode): CustomerCartCodeVM => {
+const promotionCodeVM = (code: CartCode): CartCodeVM => {
   if (code.status === CartCodeStatus.Applied) {
     return appliedCodeVM(code)
   }
@@ -117,7 +113,7 @@ const promotionCodeVM = (code: CartCode): CustomerCartCodeVM => {
   }
 }
 
-const voucherVM = (code: CartCode): CustomerCartCodeVM => {
+const voucherVM = (code: CartCode): CartCodeVM => {
   if (code.status === CartCodeStatus.Applied) {
     return appliedCodeVM(code)
   }
@@ -149,7 +145,7 @@ const eventLabelKey = (activity: CartActivity): string => {
 const activityVM = (
   activity: CartActivity,
   customerUuid?: string
-): CustomerCartActivityVM => ({
+): CartActivityVM => ({
   labelKey: eventLabelKey(activity),
   labelParams:
     typeof activity.data.code === 'string' ? { code: activity.data.code } : {},
@@ -157,57 +153,33 @@ const activityVM = (
   date: dateTime(activity.createdAt)
 })
 
-const totalsVM = (cart: {
-  totals: {
-    productsWithTax: number
-    deliveryWithTax: number | null
-    promotionCodeDiscount: number
-    voucherDiscount: number
-    total: number
-  }
-}): CustomerCartTotalsVM => ({
-  products: euros(cart.totals.productsWithTax),
-  ...(cart.totals.deliveryWithTax !== null && {
-    delivery: euros(cart.totals.deliveryWithTax)
+const totalsVM = (totals: CartTotals): CartTotalsVM => ({
+  products: euros(totals.productsWithTax),
+  ...(totals.deliveryWithTax !== null && {
+    delivery: euros(totals.deliveryWithTax)
   }),
-  ...(cart.totals.promotionCodeDiscount > 0 && {
-    promotionCodeDiscount: euros(cart.totals.promotionCodeDiscount)
+  ...(totals.promotionCodeDiscount > 0 && {
+    promotionCodeDiscount: euros(totals.promotionCodeDiscount)
   }),
-  ...(cart.totals.voucherDiscount > 0 && {
-    voucherDiscount: euros(cart.totals.voucherDiscount)
+  ...(totals.voucherDiscount > 0 && {
+    voucherDiscount: euros(totals.voucherDiscount)
   }),
-  total: euros(cart.totals.total)
+  total: euros(totals.total)
 })
 
-export const getCustomerCartVM = (): CustomerCartVM | undefined => {
-  const customerStore = useCustomerStore()
-  const cart = customerStore.current?.currentCart
-  if (!cart) {
-    return undefined
-  }
-  return {
-    hasLines: cart.lines.length > 0,
-    lines: cart.lines.map(lineVM),
-    totalQuantity: cart.totalQuantity,
-    totals: totalsVM(cart),
-    ...(cart.promotionCode && {
-      promotionCode: promotionCodeVM(cart.promotionCode)
-    }),
-    ...(cart.voucher && {
-      voucher: voucherVM(cart.voucher)
-    }),
-    ...(cart.customerMessage && { customerMessage: cart.customerMessage }),
-    missingKeys: cart.missingForOrder.map(
-      (missing) => `customers.cart.missing.${missing}`
-    ),
-    activity: cart.activity.map((a) => activityVM(a, cart.customerUuid)),
-    lastActivity: dateTime(cart.updatedAt),
-    canConvert: cart.lines.length > 0,
-    canEditCodes:
-      cart.lines.length > 0 && customerStore.pendingCartAction === undefined,
-    isUpdating: customerStore.pendingCartAction !== undefined,
-    ...(customerStore.pendingCartAction && {
-      pendingAction: customerStore.pendingCartAction
-    })
-  }
-}
+export const cartContentVM = (cart: Cart): CartContentVM => ({
+  hasLines: cart.lines.length > 0,
+  lines: cart.lines.map(lineVM),
+  totalQuantity: cart.totalQuantity,
+  totals: totalsVM(cart.totals),
+  ...(cart.promotionCode && {
+    promotionCode: promotionCodeVM(cart.promotionCode)
+  }),
+  ...(cart.voucher && { voucher: voucherVM(cart.voucher) }),
+  ...(cart.customerMessage && { customerMessage: cart.customerMessage }),
+  missingKeys: cart.missingForOrder.map(
+    (missing) => `customers.cart.missing.${missing}`
+  ),
+  activity: cart.activity.map((a) => activityVM(a, cart.customerUuid)),
+  lastActivity: dateTime(cart.updatedAt)
+})

@@ -6,6 +6,7 @@
         h2.text-lg.font-semibold {{ $t('orders.create.customer.title') }}
       customer-search-select(
         :selected-customer="formState.customer"
+        :can-change="canChangeCustomer(formState)"
         @selected="customerSelected"
         @change="customerCleared"
       )
@@ -393,8 +394,10 @@ import {
 import { dpdRelayPointSearchVM } from '@adapters/primary/view-models/orders/create-order/dpdRelayPointSearchVM'
 import type { OrderCreateFormState } from '@adapters/primary/view-models/orders/create-order/orderCreateFormState'
 import {
-  customerPrefilledAddress,
-  emptyOrderCreateFormState
+  canChangeCustomer,
+  emptyOrderCreateFormState,
+  withCustomer,
+  withDeliveryMethod
 } from '@adapters/primary/view-models/orders/create-order/orderCreateFormState'
 import type { MaxQuantityViolation } from '@adapters/primary/view-models/orders/create-order/orderCreateLinesVM'
 import { orderCreateLinesVM } from '@adapters/primary/view-models/orders/create-order/orderCreateLinesVM'
@@ -651,31 +654,17 @@ const linesHeaders = computed(() => {
   ]
 })
 
-const forgetCart = () => {
-  formState.cartUuid = undefined
-  formState.promotionCode = undefined
-  formState.customerMessage = undefined
-}
-
 const customerSelected = async (customerUuid: string) => {
   await getCustomer(customerUuid, useCustomerGateway())
   const customer = customerStore.current
   if (!customer) {
     return
   }
-  if (formState.customer?.uuid !== customer.uuid) {
-    forgetCart()
-  }
-  formState.customer = customer
-  formState.contact = { email: customer.email, phone: customer.phone ?? '' }
-  const prefilledAddress = customerPrefilledAddress(customer)
-  formState.deliveryAddress = { ...prefilledAddress }
-  formState.billingAddress = { ...prefilledAddress }
+  Object.assign(formState, withCustomer(formState, customer))
 }
 
 const customerCleared = () => {
   formState.customer = undefined
-  forgetCart()
 }
 
 const promotionCodeRemoved = () => {
@@ -774,13 +763,13 @@ const deliveryMethodSelected = (choice: DeliveryMethodChoiceVM) => {
   if (choice.disabled) {
     return
   }
-  const previousMethodUuid = formState.deliveryMethod?.uuid
-  formState.deliveryMethod = deliveryMethodStore.items.find(
-    (method) => method.uuid === choice.uuid
+  Object.assign(
+    formState,
+    withDeliveryMethod(
+      formState,
+      deliveryMethodStore.items.find((method) => method.uuid === choice.uuid)
+    )
   )
-  if (formState.deliveryMethod?.uuid !== previousMethodUuid) {
-    formState.selectedRelayPoint = undefined
-  }
 }
 
 const deliveryChoiceClasses = (choice: DeliveryMethodChoiceVM) => {

@@ -47,6 +47,32 @@ describe('List carts', () => {
     ])
   })
 
+  it('should not duplicate a cart already listed when appending a page', async () => {
+    await listCarts(CartListTab.All, firstPage, cartGateway)
+    cartGateway.feedWithListItems(
+      lucasAbandonedCartItem,
+      elodieOpenCartItem,
+      guestOpenCartItem,
+      elodieClosedCartItem
+    )
+    await listCarts(CartListTab.All, secondPage, cartGateway)
+    expect(cartListStore.items[CartListTab.All]).toStrictEqual([
+      elodieOpenCartItem,
+      guestOpenCartItem,
+      elodieClosedCartItem
+    ])
+  })
+
+  it('should replace the items when loading the first page', async () => {
+    await listCarts(CartListTab.All, firstPage, cartGateway)
+    cartGateway.feedWithListItems(lucasAbandonedCartItem, elodieClosedCartItem)
+    await listCarts(CartListTab.All, firstPage, cartGateway)
+    expect(cartListStore.items[CartListTab.All]).toStrictEqual([
+      lucasAbandonedCartItem,
+      elodieClosedCartItem
+    ])
+  })
+
   it('should show only the carts of the chosen tab', async () => {
     await listCarts(CartListTab.Abandoned, firstPage, cartGateway)
     expect(cartListStore.items[CartListTab.Abandoned]).toStrictEqual([
@@ -60,15 +86,29 @@ describe('List carts', () => {
   })
 
   it('should be aware during loading', async () => {
-    const unsubscribe = cartListStore.$subscribe((_mutation, state) => {
-      expect(state.isLoading).toBe(true)
-      unsubscribe()
-    })
-    await listCarts(CartListTab.All, firstPage, cartGateway)
+    const loadingStates = await loadingStatesWhileListing(CartListTab.All)
+    expect(loadingStates[0][CartListTab.All]).toBe(true)
+  })
+
+  it('should not consider the other tabs as loading', async () => {
+    const loadingStates = await loadingStatesWhileListing(CartListTab.All)
+    expect(loadingStates[0][CartListTab.Open]).toBe(false)
   })
 
   it('should be aware that loading is over', async () => {
     await listCarts(CartListTab.All, firstPage, cartGateway)
-    expect(cartListStore.isLoading).toBe(false)
+    expect(cartListStore.isLoading[CartListTab.All]).toBe(false)
   })
+
+  const loadingStatesWhileListing = async (tab: CartListTab) => {
+    const loadingStates: Array<Record<CartListTab, boolean>> = []
+    cartListStore.$subscribe(
+      (_mutation, state) => {
+        loadingStates.push({ ...state.isLoading })
+      },
+      { flush: 'sync' }
+    )
+    await listCarts(tab, firstPage, cartGateway)
+    return loadingStates
+  }
 })

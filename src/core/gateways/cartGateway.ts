@@ -1,5 +1,6 @@
 import type {
   Cart,
+  CartDetail,
   CartListItem,
   CartListPagination,
   CartListStatus
@@ -11,6 +12,7 @@ export interface CartGateway {
     status: CartListStatus | undefined,
     pagination: CartListPagination
   ): Promise<Array<CartListItem>>
+  getByUuid(uuid: UUID): Promise<CartDetail>
   applyPromotionCode(customerUuid: UUID, code: string): Promise<Cart>
   removePromotionCode(customerUuid: UUID): Promise<Cart>
   applyVoucher(customerUuid: UUID, code: string): Promise<Cart>

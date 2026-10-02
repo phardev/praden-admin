@@ -1,17 +1,16 @@
-import { CartAction } from '@core/entities/cart'
 import type { CartGateway } from '@core/gateways/cartGateway'
 import { UUID } from '@core/types/types'
 import { useCartDetailStore } from '@store/cartDetailStore'
 
-export const removeVoucherFromCustomerCart = async (
-  customerUuid: UUID,
+export const getCartDetail = async (
+  uuid: UUID,
   cartGateway: CartGateway
 ): Promise<void> => {
   const cartDetailStore = useCartDetailStore()
-  cartDetailStore.startAction(CartAction.RemoveVoucher)
+  cartDetailStore.startLoading()
   try {
-    cartDetailStore.replace(await cartGateway.removeVoucher(customerUuid))
+    cartDetailStore.setCurrent(await cartGateway.getByUuid(uuid))
   } finally {
-    cartDetailStore.stopAction()
+    cartDetailStore.stopLoading()
   }
 }

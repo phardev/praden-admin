@@ -1,10 +1,12 @@
 import {
   type Cart,
   CartCodeStatus,
+  type CartDetail,
   type CartListItem,
   type CartListPagination,
   type CartListStatus
 } from '@core/entities/cart'
+import { CartDoesNotExistsError } from '@core/errors/CartDoesNotExistsError'
 import { CartGateway } from '@core/gateways/cartGateway'
 import { UUID } from '@core/types/types'
 
@@ -13,6 +15,7 @@ const copy = <T>(value: T): T => JSON.parse(JSON.stringify(value))
 export class InMemoryCartGateway implements CartGateway {
   private customerCarts: Array<Cart> = []
   private listItems: Array<CartListItem> = []
+  private cartDetails: Array<CartDetail> = []
 
   list(
     status: CartListStatus | undefined,
@@ -22,6 +25,14 @@ export class InMemoryCartGateway implements CartGateway {
       .filter((item) => !status || item.status === status)
       .slice(offset, offset + limit)
     return Promise.resolve(copy(items))
+  }
+
+  getByUuid(uuid: UUID): Promise<CartDetail> {
+    const cart = this.cartDetails.find((c) => c.uuid === uuid)
+    if (!cart) {
+      return Promise.reject(new CartDoesNotExistsError(uuid))
+    }
+    return Promise.resolve(copy(cart))
   }
 
   applyPromotionCode(customerUuid: UUID, code: string): Promise<Cart> {
@@ -55,6 +66,10 @@ export class InMemoryCartGateway implements CartGateway {
 
   feedWithListItems(...items: Array<CartListItem>) {
     this.listItems = copy(items)
+  }
+
+  feedWithCartDetails(...carts: Array<CartDetail>) {
+    this.cartDetails = copy(carts)
   }
 
   private change(

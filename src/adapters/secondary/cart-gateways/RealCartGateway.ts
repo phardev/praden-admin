@@ -1,12 +1,15 @@
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import type {
   Cart,
+  CartDetail,
   CartListItem,
   CartListPagination,
   CartListStatus
 } from '@core/entities/cart'
+import { CartDoesNotExistsError } from '@core/errors/CartDoesNotExistsError'
 import { CartGateway } from '@core/gateways/cartGateway'
 import { UUID } from '@core/types/types'
+import { isAxiosError } from 'axios'
 import { RealGateway } from '../order-gateways/RealOrderGateway'
 
 export class RealCartGateway extends RealGateway implements CartGateway {
@@ -22,6 +25,18 @@ export class RealCartGateway extends RealGateway implements CartGateway {
       params: { status, limit, offset }
     })
     return res.data
+  }
+
+  async getByUuid(uuid: UUID): Promise<CartDetail> {
+    try {
+      const res = await axiosWithBearer.get(`${this.baseUrl}/carts/${uuid}`)
+      return res.data
+    } catch (error: unknown) {
+      if (isAxiosError(error) && error.response?.status === 404) {
+        throw new CartDoesNotExistsError(uuid)
+      }
+      throw error
+    }
   }
 
   async applyPromotionCode(customerUuid: UUID, code: string): Promise<Cart> {
