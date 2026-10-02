@@ -52,6 +52,7 @@ export const ROUTE_PERMISSION_MAP: Record<string, PermissionResource> = {
   '/shop-management/blog-posts/new': PermissionResource.SHOP_MANAGEMENT,
   '/shop-management/blog-posts/edit': PermissionResource.SHOP_MANAGEMENT,
   '/shop-management/content-pages': PermissionResource.SHOP_MANAGEMENT,
+  '/shop-management/content-pages/new': PermissionResource.SHOP_MANAGEMENT,
   '/shop-management/content-pages/edit': PermissionResource.SHOP_MANAGEMENT,
   '/shop-management/emergency-pharmacies': PermissionResource.SHOP_MANAGEMENT,
   '/shop-management/emergency-pharmacies/new':

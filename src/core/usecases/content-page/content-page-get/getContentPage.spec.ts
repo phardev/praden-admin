@@ -1,5 +1,6 @@
 import { InMemoryContentPageGateway } from '@adapters/secondary/content-page-gateways/inMemoryContentPageGateway'
-import { ContentPage, ContentPageSlug } from '@core/entities/contentPage'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { ContentPage } from '@core/entities/contentPage'
 import { getContentPage } from '@core/usecases/content-page/content-page-get/getContentPage'
 import { useContentPageStore } from '@store/contentPageStore'
 import {
@@ -14,14 +15,14 @@ describe('Content page get', () => {
 
   beforeEach(() => {
     setActivePinia(createPinia())
-    contentPageGateway = new InMemoryContentPageGateway()
+    contentPageGateway = new InMemoryContentPageGateway(new FakeDateProvider())
     contentPageStore = useContentPageStore()
   })
 
   describe('The content page exists', () => {
     beforeEach(async () => {
       givenExistingContentPages(cgvContentPage, pharmacieContentPage)
-      await whenGetContentPage(ContentPageSlug.PHARMACIE)
+      await whenGetContentPage(pharmacieContentPage.slug)
     })
 
     it('should set it as the current content page', () => {
@@ -33,7 +34,7 @@ describe('Content page get', () => {
     it('should throw ContentPageDoesNotExistsError', async () => {
       givenExistingContentPages(cgvContentPage)
       await expect(
-        whenGetContentPage(ContentPageSlug.PHARMACIE)
+        whenGetContentPage(pharmacieContentPage.slug)
       ).rejects.toThrow('Content page pharmacie does not exists')
     })
   })
@@ -42,7 +43,7 @@ describe('Content page get', () => {
     contentPageGateway.feedWith(...contentPages)
   }
 
-  const whenGetContentPage = async (slug: ContentPageSlug) => {
+  const whenGetContentPage = async (slug: string) => {
     await getContentPage(slug, contentPageGateway)
   }
 })

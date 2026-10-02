@@ -1,16 +1,16 @@
 import type { ContentPageGateway } from '@core/gateways/contentPageGateway'
 import { useContentPageStore } from '@store/contentPageStore'
 
-export const getContentPage = async (
+export const deleteContentPage = async (
   slug: string,
   contentPageGateway: ContentPageGateway
 ) => {
   const contentPageStore = useContentPageStore()
-  contentPageStore.startLoading()
+  contentPageStore.startDeleting()
   try {
-    const contentPage = await contentPageGateway.getBySlug(slug)
-    contentPageStore.setCurrent(contentPage)
+    await contentPageGateway.delete(slug)
+    contentPageStore.remove(slug)
   } finally {
-    contentPageStore.stopLoading()
+    contentPageStore.stopDeleting()
   }
 }

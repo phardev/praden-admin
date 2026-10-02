@@ -1,21 +1,18 @@
 import type {
   ContentPageGateway,
-  EditContentPageDTO
+  CreateContentPageDTO
 } from '@core/gateways/contentPageGateway'
 import { useContentPageStore } from '@store/contentPageStore'
 
-export type { EditContentPageDTO }
-
-export const editContentPage = async (
-  slug: string,
-  dto: EditContentPageDTO,
+export const createContentPage = async (
+  dto: CreateContentPageDTO,
   contentPageGateway: ContentPageGateway
 ) => {
   const contentPageStore = useContentPageStore()
   contentPageStore.startSaving()
   try {
-    const edited = await contentPageGateway.edit(slug, dto)
-    contentPageStore.edit(edited)
+    const created = await contentPageGateway.create(dto)
+    contentPageStore.setCurrent(created)
   } finally {
     contentPageStore.stopSaving()
   }

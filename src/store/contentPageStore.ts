@@ -1,4 +1,9 @@
-import { ContentPage, ContentPageListItem } from '@core/entities/contentPage'
+import {
+  ContentPage,
+  ContentPageListItem,
+  ContentPageStatus
+} from '@core/entities/contentPage'
+import { FooterSection } from '@core/entities/footer'
 import { defineStore } from 'pinia'
 
 export const useContentPageStore = defineStore('ContentPageStore', {
@@ -7,7 +12,8 @@ export const useContentPageStore = defineStore('ContentPageStore', {
       items: [] as Array<ContentPageListItem>,
       current: undefined as ContentPage | undefined,
       isLoading: false,
-      isSaving: false
+      isSaving: false,
+      isDeleting: false
     }
   },
   getters: {
@@ -23,6 +29,19 @@ export const useContentPageStore = defineStore('ContentPageStore', {
     edit(contentPage: ContentPage) {
       this.setCurrent(contentPage)
     },
+    remove(slug: string) {
+      this.items = this.items.filter((item) => item.slug !== slug)
+    },
+    applyStatus(slug: string, status: ContentPageStatus) {
+      if (this.current?.slug !== slug) return
+      this.current = { ...this.current, status }
+    },
+    applyFooterSection(slug: string, footerSection?: FooterSection) {
+      if (this.current?.slug !== slug) return
+      this.current = JSON.parse(
+        JSON.stringify({ ...this.current, footerSection })
+      )
+    },
     startLoading() {
       this.isLoading = true
     },
@@ -34,6 +53,12 @@ export const useContentPageStore = defineStore('ContentPageStore', {
     },
     stopSaving() {
       this.isSaving = false
+    },
+    startDeleting() {
+      this.isDeleting = true
+    },
+    stopDeleting() {
+      this.isDeleting = false
     }
   }
 })

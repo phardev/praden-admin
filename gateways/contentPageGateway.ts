@@ -1,5 +1,6 @@
 import { InMemoryContentPageGateway } from '@adapters/secondary/content-page-gateways/inMemoryContentPageGateway'
 import { RealContentPageGateway } from '@adapters/secondary/content-page-gateways/realContentPageGateway'
+import { RealDateProvider } from '@adapters/secondary/date-providers/RealDateProvider'
 import { isLocalEnv } from '@utils/env'
 import {
   articleContentPage,
@@ -12,7 +13,9 @@ import {
   recrutementContentPage
 } from '@utils/testData/contentPages'
 
-const contentPageGateway = new InMemoryContentPageGateway()
+const contentPageGateway = new InMemoryContentPageGateway(
+  new RealDateProvider()
+)
 contentPageGateway.feedWith(
   cgvContentPage,
   mentionsLegalesContentPage,

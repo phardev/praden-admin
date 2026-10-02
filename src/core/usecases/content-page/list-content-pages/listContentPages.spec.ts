@@ -1,4 +1,5 @@
 import { InMemoryContentPageGateway } from '@adapters/secondary/content-page-gateways/inMemoryContentPageGateway'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
 import { ContentPage } from '@core/entities/contentPage'
 import { listContentPages } from '@core/usecases/content-page/list-content-pages/listContentPages'
 import { useContentPageStore } from '@store/contentPageStore'
@@ -14,7 +15,7 @@ describe('Content pages listing', () => {
 
   beforeEach(() => {
     setActivePinia(createPinia())
-    contentPageGateway = new InMemoryContentPageGateway()
+    contentPageGateway = new InMemoryContentPageGateway(new FakeDateProvider())
     contentPageStore = useContentPageStore()
   })
 

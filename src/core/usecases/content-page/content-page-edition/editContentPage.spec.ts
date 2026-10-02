@@ -1,5 +1,6 @@
 import { InMemoryContentPageGateway } from '@adapters/secondary/content-page-gateways/inMemoryContentPageGateway'
-import { ContentPage, ContentPageSlug } from '@core/entities/contentPage'
+import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
+import { ContentPage } from '@core/entities/contentPage'
 import { EditContentPageDTO } from '@core/gateways/contentPageGateway'
 import { editContentPage } from '@core/usecases/content-page/content-page-edition/editContentPage'
 import { useContentPageStore } from '@store/contentPageStore'
@@ -17,7 +18,7 @@ describe('Content page edition', () => {
 
   beforeEach(() => {
     setActivePinia(createPinia())
-    contentPageGateway = new InMemoryContentPageGateway()
+    contentPageGateway = new InMemoryContentPageGateway(new FakeDateProvider())
     contentPageStore = useContentPageStore()
   })
 
@@ -25,6 +26,7 @@ describe('Content page edition', () => {
     beforeEach(async () => {
       givenExistingContentPages(cgvContentPage, pharmacieContentPage)
       dto = {
+        name: 'Conditions de vente',
         title: 'Conditions Générales de Vente 2026',
         metaDescription: 'Les CGV mises à jour.',
         html: '<h2>Article 1</h2><p>Contenu mis à jour.</p>'
@@ -33,12 +35,12 @@ describe('Content page edition', () => {
         ...cgvContentPage,
         ...dto
       }
-      await whenEditContentPage(ContentPageSlug.CGV)
+      await whenEditContentPage(cgvContentPage.slug)
     })
 
     it('should update it in the gateway', async () => {
       expect(
-        await contentPageGateway.getBySlug(ContentPageSlug.CGV)
+        await contentPageGateway.getBySlug(cgvContentPage.slug)
       ).toStrictEqual(expectedContentPage)
     })
 
@@ -57,11 +59,12 @@ describe('Content page edition', () => {
       const html =
         '<section data-tracking="cgv"><iframe src="https://maps.example/embed"></iframe></section>'
       dto = {
+        name: 'Nom',
         title: 'Titre',
         metaDescription: 'Description',
         html
       }
-      await whenEditContentPage(ContentPageSlug.CGV)
+      await whenEditContentPage(cgvContentPage.slug)
       expect(contentPageStore.current.html).toStrictEqual(html)
     })
   })
@@ -70,7 +73,7 @@ describe('Content page edition', () => {
     contentPageGateway.feedWith(...contentPages)
   }
 
-  const whenEditContentPage = async (slug: ContentPageSlug) => {
+  const whenEditContentPage = async (slug: string) => {
     await editContentPage(slug, dto, contentPageGateway)
   }
 })

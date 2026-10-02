@@ -38,11 +38,11 @@
 <script lang="ts" setup>
 import type { ContentPageFormVM } from '@adapters/primary/view-models/content-page/content-page-form/contentPageFormVM'
 import { contentPageFormVM } from '@adapters/primary/view-models/content-page/content-page-form/contentPageFormVM'
-import { CONTENT_PAGE_SLUGS, ContentPageSlug } from '@core/entities/contentPage'
 import { editContentPage } from '@core/usecases/content-page/content-page-edition/editContentPage'
 import { getContentPage } from '@core/usecases/content-page/content-page-get/getContentPage'
 import { useContentPageStore } from '@store/contentPageStore'
 import { useContentPageGateway } from '../../../../../../../../gateways/contentPageGateway'
+import { useContentPageTransitions } from '../../../../composables/useContentPageTransitions'
 
 definePageMeta({ layout: 'main' })
 
@@ -51,12 +51,13 @@ const toast = useToast()
 const route = useRoute()
 const contentPageGateway = useContentPageGateway()
 const contentPageStore = useContentPageStore()
+const { applyTransitions } = useContentPageTransitions(contentPageGateway)
 
-const slug = route.params.slug as ContentPageSlug
+const slug = route.params.slug as string
 const formVM = ref<ContentPageFormVM | null>(null)
 
 const isSaving = computed(() => contentPageStore.isSaving)
-const label = computed(() => t(`shopManagement.contentPages.pages.${slug}`))
+const label = computed(() => contentPageStore.current?.name ?? '')
 const config = useRuntimeConfig()
 const onlineUrl = computed(() => `${config.public.SHOP_URL}/${slug}`)
 
@@ -65,10 +66,6 @@ const buildFormVM = () => {
 }
 
 onMounted(async () => {
-  if (!CONTENT_PAGE_SLUGS.includes(slug)) {
-    await navigateTo('/shop-management/content-pages')
-    return
-  }
   try {
     await getContentPage(slug, contentPageGateway)
     buildFormVM()
@@ -80,7 +77,9 @@ onMounted(async () => {
 
 const save = async () => {
   try {
-    await editContentPage(slug, formVM.value!.getDto(), contentPageGateway)
+    await editContentPage(slug, formVM.value!.getEditDto(), contentPageGateway)
+    await applyTransitions(slug, formVM.value!)
+    await getContentPage(slug, contentPageGateway)
     buildFormVM()
     toast.add({
       title: t('shopManagement.contentPages.updateSuccess'),
@@ -96,13 +95,16 @@ const save = async () => {
 
 onBeforeRouteLeave((to, from, next) => {
   if (formVM.value?.hasChanges) {
-    if (confirm(t('shopManagement.contentPages.leavePageConfirm'))) {
-      next()
-    } else {
-      next(false)
-    }
-  } else {
-    next()
+    next(confirm(t('shopManagement.contentPages.leavePageConfirm')))
+    return
   }
+  next()
 })
 </script>
+
+<style scoped>
+.content-page-form-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+</style>

@@ -1,4 +1,5 @@
 import { Author } from '@core/entities/author'
+import { isKebabCase, slugFromText } from '@core/entities/slug'
 import { Timestamp, UUID } from '@core/types/types'
 
 export enum BlogPostStatus {
@@ -38,15 +39,9 @@ export interface BlogPostListItem {
 }
 
 export const isValidBlogPostSlug = (slug: string): boolean => {
-  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)
+  return isKebabCase(slug)
 }
 
 export const blogPostSlugFromTitle = (title: string): string => {
-  return title
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
-    .slice(0, BLOG_POST_MAX_SLUG_LENGTH)
+  return slugFromText(title, BLOG_POST_MAX_SLUG_LENGTH)
 }

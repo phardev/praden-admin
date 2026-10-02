@@ -1010,7 +1010,7 @@
     },
     "contentPages": {
       "title": "Pages éditoriales",
-      "description": "Modifiez le contenu et le référencement des pages du site",
+      "description": "Créez, modifiez et ordonnez les pages du site",
       "lastUpdated": {
         "staff": "Modifiée le {date} par {author}",
         "system": "Modifiée le {date} lors de l'installation",
@@ -1023,7 +1023,20 @@
         "metaDescription": "Description SEO",
         "metaDescriptionHelp": "{count}/320 caractères. Affichée dans les résultats Google.",
         "html": "Contenu HTML",
-        "htmlHelp": "Code HTML brut, titre h1 inclus. Les balises courantes (h1, h2, h3, p, ul, li, a, strong, table) sont mises en forme automatiquement par le site. La mise en page propre à cette page est définie dans le bloc « style » en tête du contenu : modifiez-la ici."
+        "htmlHelp": "Code HTML brut, titre h1 inclus. Les balises courantes (h1, h2, h3, p, ul, li, a, strong, table) sont mises en forme automatiquement par le site. La mise en page propre à cette page est définie dans le bloc « style » en tête du contenu : modifiez-la ici.",
+        "name": "Nom de la page",
+        "nameHelp": "Nom court affiché dans le pied de page du site et dans cette liste.",
+        "slug": "Adresse de la page",
+        "slugHelp": "La page sera publiée à l'adresse {url} — elle ne pourra plus être modifiée ensuite, car la changer casserait les liens et le référencement.",
+        "slugLocked": "Adresse de la page : {url}. Elle ne se modifie pas, car la changer casserait les liens et le référencement.",
+        "slugInvalid": "Uniquement des minuscules, des chiffres et des tirets.",
+        "slugPlaceholder": "livraison-et-retours",
+        "status": "Statut",
+        "statusHelp": "Un brouillon n'est visible ni à son adresse ni dans le pied de page du site.",
+        "statusMandatoryHelp": "Une page obligatoire reste toujours publiée.",
+        "footerSection": "Colonne du pied de page",
+        "footerSectionHelp": "La page est ajoutée en fin de colonne. Sa position se règle dans l'onglet « Ordre du pied de page ».",
+        "footerSectionMandatoryHelp": "Une page obligatoire reste toujours dans le pied de page. Vous pouvez la changer de colonne."
       },
       "preview": {
         "title": "Aperçu",
@@ -1033,24 +1046,56 @@
       },
       "updateSuccess": "Page mise à jour avec succès",
       "updateError": "Erreur lors de la mise à jour de la page",
-      "pages": {
-        "cgv": "Conditions Générales de Vente",
-        "mentions-legales": "Mentions légales",
-        "confidentialite": "Politique de confidentialité",
-        "paiement": "Paiement sécurisé",
-        "pharmacie": "Présentation de la pharmacie",
-        "engagement": "Nos engagements",
-        "recrutement": "Recrutement",
-        "article": "On parle de nous"
-      },
       "list": {
         "page": "Page",
         "lastUpdate": "Dernière modification",
         "edit": "Éditer",
-        "empty": "Aucune page éditoriale"
+        "empty": "Aucune page éditoriale",
+        "status": "Statut",
+        "delete": "Supprimer"
       },
       "viewOnline": "Voir la page en ligne",
-      "leavePageConfirm": "Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ?"
+      "leavePageConfirm": "Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ?",
+      "create": "Nouvelle page",
+      "createTitle": "Nouvelle page",
+      "tabs": {
+        "pages": "Pages",
+        "footer": "Ordre du pied de page"
+      },
+      "status": {
+        "DRAFT": "Brouillon",
+        "PUBLISHED": "Publiée"
+      },
+      "mandatory": "Obligatoire",
+      "mandatoryHelp": "Page obligatoire : elle ne peut être ni supprimée, ni dépubliée, ni retirée du pied de page.",
+      "footer": {
+        "help": "Glissez les liens pour régler leur ordre dans chaque colonne du pied de page. Pour changer une page de colonne, modifiez la page.",
+        "sections": {
+          "NONE": "Aucune (hors pied de page)",
+          "PHARMACY": "La pharmacie",
+          "LEGAL": "Informations légales"
+        },
+        "system": {
+          "pharmacie-de-garde": "Pharmacie de garde",
+          "materiel-medical": "Matériel médical",
+          "contact": "Contactez-nous",
+          "cookie-settings": "Gérer mes cookies"
+        },
+        "systemLocked": "Lien du site : il peut être déplacé mais pas retiré.",
+        "draft": "Brouillon : absent du site tant que la page n'est pas publiée.",
+        "empty": "Aucun lien dans cette colonne",
+        "reorderError": "L'ordre n'a pas pu être enregistré"
+      },
+      "delete": {
+        "title": "Supprimer la page",
+        "confirm": "La page sera définitivement supprimée et retirée du pied de page. Son adresse renverra une erreur 404 aux visiteurs et à Google.",
+        "success": "La page a été supprimée",
+        "error": "La page n'a pas pu être supprimée"
+      },
+      "createSuccess": "La page a été créée",
+      "createError": "La page n'a pas pu être créée",
+      "slugAlreadyUsed": "Une page utilise déjà cette adresse",
+      "slugReserved": "Cette adresse est réservée par le site, choisissez-en une autre"
     },
     "blogPosts": {
       "title": "Blog",
