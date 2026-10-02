@@ -1,7 +1,8 @@
 <template lang="pug">
 .section
-  .flex.items-center.justify-between.mb-4
+  .mb-4
     h1.text-title {{ $t('carts.title') }}
+    p.text-sm.text-gray-500.mt-1 {{ $t('carts.abandonmentRule') }}
   ft-customer-period-filters.mb-4(
     :placeholder="$t('carts.filters.customerPlaceholder')"
     :current-filters="cartsVM.currentFilters"

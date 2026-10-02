@@ -235,7 +235,8 @@ div(v-if="permissions.canAccessDashboard")
           .h-80
             NewsletterAdoptionPieChart(:data="dashboard.userStatistics.newsletterAdoptionRate")
 
-    h3.text-lg.font-bold.text-primary-700.mb-4.mt-8(v-if="!areProductFiltersApplied") {{ $t('dashboard.cartStatistics.title') }}
+    h3.text-lg.font-bold.text-primary-700.mb-1.mt-8(v-if="!areProductFiltersApplied") {{ $t('dashboard.cartStatistics.title') }}
+    p.text-sm.text-gray-500.mb-4(v-if="!areProductFiltersApplied") {{ $t('carts.abandonmentRule') }}
     .grid.grid-cols-1.gap-4.mb-8(v-if="!areProductFiltersApplied" class="md:grid-cols-2 xl:grid-cols-4")
       UCard
         template(#header)

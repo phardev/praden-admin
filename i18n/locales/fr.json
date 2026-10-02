@@ -491,7 +491,7 @@
       "breakdown": "{abandoned} abandonnés · {converted} convertis · {inProgress} en cours",
       "conversionRate": "Taux de conversion",
       "conversionHint": "paniers devenus commandes payées",
-      "abandonedValue": "CA à risque",
+      "abandonedValue": "CA non converti",
       "averageAbandoned": "panier abandonné moyen : {amount}",
       "monthlyAbandoned": "Paniers abandonnés par mois",
       "monthlyAbandonmentRate": "Taux d'abandon mensuel",
@@ -1458,6 +1458,7 @@
   },
   "carts": {
     "title": "Paniers",
+    "abandonmentRule": "Un panier est abandonné après 24 h sans activité.",
     "tabs": {
       "ALL": "Tous",
       "OPEN": "Ouverts",
