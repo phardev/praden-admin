@@ -158,6 +158,11 @@ describe('Get navigation menu VM', () => {
                 href: '/promotion-codes'
               },
               {
+                name: 'Codes de bienvenue',
+                icon: 'mdi:hand-wave-outline',
+                href: '/welcome-codes'
+              },
+              {
                 name: "Bons d'achat",
                 icon: 'mdi:gift-outline',
                 href: '/vouchers'

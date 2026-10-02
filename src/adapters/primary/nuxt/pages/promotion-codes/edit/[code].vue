@@ -8,6 +8,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useDiscountCodeErrorToast } from '@adapters/primary/nuxt/composables/useDiscountCodeErrorToast'
 import { promotionCodeFormEditVM } from '@adapters/primary/view-models/promotion-codes/promotion-code-form/promotionCodeFormEditVM'
 import { getPromotionCode } from '@core/usecases/promotion-codes/get-promotion-code/getPromotionCode'
 import { editPromotionCode } from '@core/usecases/promotion-codes/promotion-code-edition/editPromotionCode'
@@ -26,8 +27,14 @@ onMounted(async () => {
   vm.value = promotionCodeFormEditVM(routeName)
 })
 
+const { showDiscountCodeError } = useDiscountCodeErrorToast()
+
 const edit = async () => {
-  await editPromotionCode(code, vm.value.getDto(), usePromotionCodeGateway())
-  router.push('/promotion-codes')
+  try {
+    await editPromotionCode(code, vm.value.getDto(), usePromotionCodeGateway())
+    router.push('/promotion-codes')
+  } catch (error) {
+    showDiscountCodeError(error)
+  }
 }
 </script>

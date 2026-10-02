@@ -7,6 +7,7 @@ export enum PermissionResource {
   PROMOTIONS = 'promotions',
   PROMOTION_CODES = 'promotion-codes',
   VOUCHERS = 'vouchers',
+  WELCOME_CODES = 'welcome-codes',
   CUSTOMERS = 'customers',
   NEWSLETTER = 'newsletter',
   SUPPORT = 'support',

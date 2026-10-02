@@ -221,6 +221,8 @@
         "PRODUCTS_NOT_ELIGIBLE_FOR_DELIVERY": "Le panier contient des produits exclus de cette offre de livraison (médicaments…).",
         "MAX_WEIGHT_EXCEEDED": "Le panier dépasse le poids maximum de {maxWeight} kg pour ce code.",
         "NO_AMOUNT_TO_DISCOUNT": "Ce code ne donne aucune réduction sur ce panier.",
+        "CUSTOMER_NOT_IDENTIFIED": "Le client doit être identifié pour utiliser ce code de bienvenue.",
+        "NOT_FIRST_ORDER": "Ce code de bienvenue est réservé à la première commande : le client a déjà payé une commande.",
         "UNKNOWN": "Ce code promo ne peut pas être appliqué."
       },
       "voucherRejections": {
@@ -838,7 +840,8 @@
       "roles": "Rôles et permissions",
       "shop-management": "Gestion boutique",
       "loyalty": "Fidélité",
-      "vouchers": "Bons d'achat"
+      "vouchers": "Bons d'achat",
+      "welcome-codes": "Codes de bienvenue"
     }
   },
   "promotionCode": {
@@ -1481,6 +1484,92 @@
       "pickupPoint": "Point relais : {name}",
       "notFound": "Ce panier n'existe pas.",
       "loadError": "Impossible de charger le panier."
+    }
+  },
+  "discountCode": {
+    "errors": {
+      "takenByWelcomeCode": "Ce code est déjà utilisé par un code de bienvenue. Choisissez un autre code.",
+      "takenByPromotionCode": "Ce code est déjà utilisé par un code promotion. Choisissez un autre code."
+    }
+  },
+  "welcomeCode": {
+    "listTitle": "Codes de bienvenue",
+    "listDescription": "Le code de bienvenue est envoyé dans le mail d'inscription. Il est réservé aux clients connectés qui n'ont encore payé aucune commande.",
+    "createButton": "Créer un code de bienvenue",
+    "createTitle": "Créer un code de bienvenue",
+    "editTitle": "Modifier le code de bienvenue",
+    "formDescription": "Le code démarré le plus récemment est celui envoyé dans le mail d'inscription. Un code remplacé reste utilisable jusqu'à sa date de fin.",
+    "sentNow": "Code envoyé dans le mail d'inscription",
+    "noneSent": "Aucun code n'est envoyé en ce moment : le mail d'inscription part sans code.",
+    "allCodes": "Tous les codes",
+    "fromMinimumAmount": "dès {amount} d'achat",
+    "noConversionRate": "—",
+    "edit": "Modifier",
+    "enable": "Activer",
+    "disable": "Désactiver",
+    "validate": "Valider",
+    "selectDate": "Choisir une date",
+    "clearDate": "Retirer la date",
+    "allDeliveryMethods": "Tous les modes de livraison",
+    "createSuccess": "Code de bienvenue créé",
+    "editSuccess": "Code de bienvenue modifié",
+    "enableSuccess": "Code de bienvenue activé",
+    "disableSuccess": "Code de bienvenue désactivé",
+    "headers": {
+      "code": "Code",
+      "discount": "Remise",
+      "minimumAmount": "Minimum d'achat",
+      "period": "Période",
+      "status": "Statut",
+      "sentCount": "Envoyés",
+      "usedCount": "Utilisés",
+      "conversionRate": "Conversion",
+      "actions": "Actions"
+    },
+    "fields": {
+      "code": "Code",
+      "amount": "Valeur de la remise",
+      "minimumAmount": "Montant minimum de la commande, hors médicaments et produits non éligibles aux promotions (€)",
+      "deliveryMethods": "Modes de livraison",
+      "maxWeight": "Poids maximum de la commande (kg)",
+      "startDate": "Date de début",
+      "endDate": "Date de fin"
+    },
+    "types": {
+      "FIXED": "Euros",
+      "PERCENTAGE": "Pourcentage"
+    },
+    "scopes": {
+      "PRODUCTS": "Produits",
+      "DELIVERY": "Livraison"
+    },
+    "discount": {
+      "products": "{reduction} sur les produits",
+      "delivery": "{reduction} sur la livraison",
+      "freeDelivery": "Livraison offerte"
+    },
+    "period": {
+      "between": "Du {start} au {end}",
+      "from": "À partir du {start}",
+      "until": "Jusqu'au {end}",
+      "unlimited": "Sans limite"
+    },
+    "status": {
+      "SENT": "Envoyé dans le mail",
+      "USABLE": "Utilisable",
+      "SCHEDULED": "Programmé",
+      "ENDED": "Terminé",
+      "DISABLED": "Désactivé"
+    },
+    "hints": {
+      "codeRequired": "Saisissez un code.",
+      "amountMustBePositive": "La remise doit être supérieure à 0.",
+      "percentageTooHigh": "Le pourcentage ne peut pas dépasser 100 %.",
+      "endDateMustFollowStartDate": "La date de fin doit être après la date de début."
+    },
+    "errors": {
+      "invalid": "Ce code de bienvenue n'est pas valide. Vérifiez le code, la remise et les dates.",
+      "notFound": "Ce code de bienvenue n'existe pas."
     }
   }
 }
