@@ -142,6 +142,19 @@
       "description": "Cette action est irréversible"
     },
     "notFound": "Client introuvable",
+    "filters": {
+      "button": "Filtres",
+      "lastOrderStartDate": "Dernière commande depuis le",
+      "lastOrderEndDate": "Dernière commande jusqu'au",
+      "clearLastOrderStartDate": "Effacer la date de début",
+      "clearLastOrderEndDate": "Effacer la date de fin",
+      "minOrdersCount": "Nombre de commandes minimum",
+      "maxOrdersCount": "Nombre de commandes maximum",
+      "newsletter": "Newsletter",
+      "newsletterAll": "Tous",
+      "newsletterSubscribed": "Abonnés",
+      "newsletterNotSubscribed": "Non abonnés"
+    },
     "cart": {
       "title": "Panier en cours",
       "summary": "{count} article(s) · dernière activité le {date}",

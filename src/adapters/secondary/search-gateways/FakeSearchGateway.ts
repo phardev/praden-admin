@@ -212,15 +212,54 @@ export class FakeSearchGateway implements SearchGateway {
   }
 
   searchCustomers(dto: SearchCustomersDTO): Promise<Array<Customer>> {
-    const customers = this.customerStore.items
-    if (!dto.query) {
-      return Promise.resolve(customers)
-    }
-    const res = customers.filter((c: Customer) => {
-      return this.customerQueryMatch(c, dto.query!)
-    })
-    return Promise.resolve(res)
+    const customers: Array<Customer> = this.customerStore.items
+    const res = customers.filter(
+      (c: Customer) =>
+        (!dto.query || this.customerQueryMatch(c, dto.query)) &&
+        this.customerLastOrderMatch(c, dto) &&
+        this.customerOrdersCountMatch(c, dto) &&
+        this.customerNewsletterMatch(c, dto)
+    )
+    const from = dto.from ?? 0
+    const size = dto.size ?? res.length
+    return Promise.resolve(res.slice(from, from + size))
   }
+
+  private customerLastOrderMatch = (
+    customer: Customer,
+    dto: SearchCustomersDTO
+  ): boolean => {
+    if (
+      dto.lastOrderStartDate === undefined &&
+      dto.lastOrderEndDate === undefined
+    ) {
+      return true
+    }
+    if (!customer.lastOrderDate) return false
+    const lastOrderTimestamp = new Date(customer.lastOrderDate).getTime()
+    return (
+      (dto.lastOrderStartDate === undefined ||
+        lastOrderTimestamp >= dto.lastOrderStartDate) &&
+      (dto.lastOrderEndDate === undefined ||
+        lastOrderTimestamp <= dto.lastOrderEndDate)
+    )
+  }
+
+  private customerOrdersCountMatch = (
+    customer: Customer,
+    dto: SearchCustomersDTO
+  ): boolean =>
+    (dto.minOrdersCount === undefined ||
+      customer.ordersCount >= dto.minOrdersCount) &&
+    (dto.maxOrdersCount === undefined ||
+      customer.ordersCount <= dto.maxOrdersCount)
+
+  private customerNewsletterMatch = (
+    customer: Customer,
+    dto: SearchCustomersDTO
+  ): boolean =>
+    dto.newsletterSubscribed === undefined ||
+    !!customer.newsletterSubscription === dto.newsletterSubscribed
 
   private customerQueryMatch = (customer: Customer, query: string): boolean => {
     const isFirstNameMatching = customer.firstname

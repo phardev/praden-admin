@@ -99,9 +99,19 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
   }
 
   async searchCustomers(dto: SearchCustomersDTO): Promise<Array<Customer>> {
+    const body = {
+      query: dto.query && dto.query.length ? dto.query : undefined,
+      lastOrderStartDate: dto.lastOrderStartDate,
+      lastOrderEndDate: dto.lastOrderEndDate,
+      minOrdersCount: dto.minOrdersCount,
+      maxOrdersCount: dto.maxOrdersCount,
+      newsletterSubscribed: dto.newsletterSubscribed,
+      limit: dto.size,
+      offset: dto.from
+    }
     const res = await axiosWithBearer.post(
       `${this.baseUrl}/search/customers`,
-      dto
+      body
     )
     return res.data
   }

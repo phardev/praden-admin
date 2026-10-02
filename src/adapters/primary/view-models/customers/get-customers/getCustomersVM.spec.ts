@@ -116,10 +116,105 @@ describe('Get customers VM', () => {
         const expectedVM: Partial<GetCustomersVM> = {
           currentSearch: {
             query: 'test'
-          }
+          },
+          activeFilters: [{ key: 'query', label: 'Recherche : "test"' }]
         }
         expectVMToMatch(expectedVM)
       })
+    })
+  })
+  describe('Active filters', () => {
+    it('should have no active filter without any search', () => {
+      expectVMToMatch({ activeFilters: [] })
+    })
+    it('should describe the query', () => {
+      const filter = { query: 'durand' }
+      searchStore.setFilter(key, filter)
+      expectVMToMatch({
+        currentSearch: filter,
+        activeFilters: [{ key: 'query', label: 'Recherche : "durand"' }]
+      })
+    })
+    it('should describe the last order start date', () => {
+      const filter = {
+        lastOrderStartDate: new Date('2024-03-15T10:30:00.000Z').getTime()
+      }
+      searchStore.setFilter(key, filter)
+      expectVMToMatch({
+        currentSearch: filter,
+        activeFilters: [
+          {
+            key: 'lastOrderStartDate',
+            label: 'Dernière commande depuis le 15 mars 2024'
+          }
+        ]
+      })
+    })
+    it('should describe the last order end date', () => {
+      const filter = {
+        lastOrderEndDate: new Date('2024-02-20T14:15:00.000Z').getTime()
+      }
+      searchStore.setFilter(key, filter)
+      expectVMToMatch({
+        currentSearch: filter,
+        activeFilters: [
+          {
+            key: 'lastOrderEndDate',
+            label: "Dernière commande jusqu'au 20 févr. 2024"
+          }
+        ]
+      })
+    })
+    it('should describe the minimum orders count', () => {
+      const filter = { minOrdersCount: elodieDurand.ordersCount }
+      searchStore.setFilter(key, filter)
+      expectVMToMatch({
+        currentSearch: filter,
+        activeFilters: [
+          {
+            key: 'minOrdersCount',
+            label: `Commandes ≥ ${elodieDurand.ordersCount}`
+          }
+        ]
+      })
+    })
+    it('should describe a maximum orders count of zero', () => {
+      const filter = { maxOrdersCount: 0 }
+      searchStore.setFilter(key, filter)
+      expectVMToMatch({
+        currentSearch: filter,
+        activeFilters: [{ key: 'maxOrdersCount', label: 'Commandes ≤ 0' }]
+      })
+    })
+    it('should describe the subscribed newsletter filter', () => {
+      const filter = { newsletterSubscribed: true }
+      searchStore.setFilter(key, filter)
+      expectVMToMatch({
+        currentSearch: filter,
+        activeFilters: [
+          { key: 'newsletterSubscribed', label: 'Newsletter : abonnés' }
+        ]
+      })
+    })
+    it('should describe the not subscribed newsletter filter', () => {
+      const filter = { newsletterSubscribed: false }
+      searchStore.setFilter(key, filter)
+      expectVMToMatch({
+        currentSearch: filter,
+        activeFilters: [
+          { key: 'newsletterSubscribed', label: 'Newsletter : non abonnés' }
+        ]
+      })
+    })
+  })
+  describe('Search pagination', () => {
+    it('should have more search results', () => {
+      searchStore.setPagination(key, { total: 2, from: 0, hasMore: true })
+      expectVMToMatch({ hasMoreSearch: true })
+    })
+    it('should be loading the search', () => {
+      searchStore.startLoading(key)
+      expectVMToMatch({ isSearchLoading: true })
     })
   })
   describe('There is an error in search', () => {
@@ -145,6 +240,9 @@ describe('Get customers VM', () => {
       items: [],
       isLoading: false,
       hasMore: false,
+      hasMoreSearch: false,
+      isSearchLoading: false,
+      activeFilters: [],
       currentSearch: undefined,
       searchError: undefined
     }

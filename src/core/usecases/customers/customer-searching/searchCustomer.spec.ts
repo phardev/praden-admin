@@ -5,7 +5,7 @@ import {
   searchCustomers
 } from '@core/usecases/customers/customer-searching/searchCustomer'
 import { useCustomerStore } from '@store/customerStore'
-import { useSearchStore } from '@store/searchStore'
+import { SearchPagination, useSearchStore } from '@store/searchStore'
 import {
   elodieDurand,
   lucasLefevre,
@@ -126,6 +126,112 @@ describe('Customer searching', () => {
       expectSearchResultToEqual()
     })
   })
+  describe('Filter last order date', () => {
+    beforeEach(() => {
+      givenExistingCustomers(elodieDurand, lucasLefevre, sophieMartinez)
+    })
+    it('should get customers whose last order is on or after the start date', async () => {
+      dto.lastOrderStartDate = lastOrderTimestampOf(elodieDurand)
+      await whenSearchForCustomers(dto)
+      expectSearchResultToEqual(elodieDurand)
+    })
+    it('should get customers whose last order is on or before the end date', async () => {
+      dto.lastOrderEndDate = lastOrderTimestampOf(lucasLefevre)
+      await whenSearchForCustomers(dto)
+      expectSearchResultToEqual(lucasLefevre)
+    })
+    it('should not get customers without any order', async () => {
+      dto.lastOrderStartDate = lastOrderTimestampOf(lucasLefevre)
+      dto.lastOrderEndDate = lastOrderTimestampOf(elodieDurand)
+      await whenSearchForCustomers(dto)
+      expectSearchResultToEqual(elodieDurand, lucasLefevre)
+    })
+  })
+
+  describe('Filter orders count', () => {
+    beforeEach(() => {
+      givenExistingCustomers(elodieDurand, lucasLefevre, sophieMartinez)
+    })
+    it('should get customers with at least the minimum orders count', async () => {
+      dto.minOrdersCount = elodieDurand.ordersCount
+      await whenSearchForCustomers(dto)
+      expectSearchResultToEqual(elodieDurand)
+    })
+    it('should get customers with at most the maximum orders count', async () => {
+      dto.maxOrdersCount = lucasLefevre.ordersCount
+      await whenSearchForCustomers(dto)
+      expectSearchResultToEqual(lucasLefevre, sophieMartinez)
+    })
+    it('should get customers who never ordered', async () => {
+      dto.maxOrdersCount = 0
+      await whenSearchForCustomers(dto)
+      expectSearchResultToEqual(sophieMartinez)
+    })
+  })
+
+  describe('Filter newsletter subscription', () => {
+    beforeEach(() => {
+      givenExistingCustomers(elodieDurand, lucasLefevre, sophieMartinez)
+    })
+    it('should get subscribed customers', async () => {
+      dto.newsletterSubscribed = true
+      await whenSearchForCustomers(dto)
+      expectSearchResultToEqual(elodieDurand)
+    })
+    it('should get not subscribed customers', async () => {
+      dto.newsletterSubscribed = false
+      await whenSearchForCustomers(dto)
+      expectSearchResultToEqual(lucasLefevre, sophieMartinez)
+    })
+  })
+
+  describe('Filters combined with a query', () => {
+    beforeEach(async () => {
+      givenExistingCustomers(elodieDurand, lucasLefevre, sophieMartinez)
+      dto.query = '@exampl'
+      dto.newsletterSubscribed = false
+      dto.minOrdersCount = lucasLefevre.ordersCount
+      await whenSearchForCustomers(dto)
+    })
+    it('should get customers matching every filter', () => {
+      expectSearchResultToEqual(lucasLefevre)
+    })
+  })
+
+  describe('Pagination', () => {
+    const size = 2
+    beforeEach(() => {
+      givenExistingCustomers(elodieDurand, lucasLefevre, sophieMartinez)
+      dto.newsletterSubscribed = undefined
+      dto.size = size
+    })
+    describe('First page is full', () => {
+      beforeEach(async () => {
+        dto.from = 0
+        await whenSearchForCustomers(dto)
+      })
+      it('should get the first page', () => {
+        expectSearchResultToEqual(elodieDurand, lucasLefevre)
+      })
+      it('should have more results', () => {
+        expectPaginationToBe({ total: size, from: 0, hasMore: true })
+      })
+    })
+    describe('Next page is not full', () => {
+      beforeEach(async () => {
+        dto.from = 0
+        await whenSearchForCustomers(dto)
+        await whenSearchForCustomers({ ...dto, from: size })
+      })
+      it('should append the next page', () => {
+        expectSearchResultToEqual(elodieDurand, lucasLefevre, sophieMartinez)
+      })
+      it('should not have more results', () => {
+        expectPaginationToBe({ total: size + 1, from: size, hasMore: false })
+      })
+    })
+  })
+
   describe('Query length', () => {
     describe('The query is not long enough', () => {
       beforeEach(async () => {
@@ -188,6 +294,9 @@ describe('Customer searching', () => {
     customerStore.items = customers
   }
 
+  const lastOrderTimestampOf = (customer: Customer): number =>
+    new Date(customer.lastOrderDate!).getTime()
+
   const whenSearchForCustomers = async (dto: Partial<SearchCustomersDTO>) => {
     await searchCustomers(url, dto, searchGateway)
   }
@@ -200,6 +309,10 @@ describe('Customer searching', () => {
     currentFilter: Partial<SearchCustomersDTO>
   ) => {
     expect(searchStore.getFilter(url)).toStrictEqual(currentFilter)
+  }
+
+  const expectPaginationToBe = (expected: SearchPagination) => {
+    expect(searchStore.getPagination(url)).toStrictEqual(expected)
   }
 
   const expectSearchResultToBeEmpty = () => {
