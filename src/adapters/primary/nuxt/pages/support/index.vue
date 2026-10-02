@@ -13,7 +13,8 @@
         to="/support/new"
       )
 
-    ft-support-tickets-filters(
+    ft-customer-period-filters(
+      :placeholder="$t('support.filters.customerPlaceholder')"
       :current-filters="supportTicketsVM.currentFilters"
       :active-filters="supportTicketsVM.activeFilters"
       @change="applyFilters"

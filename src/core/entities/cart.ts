@@ -154,6 +154,12 @@ export interface CartDetail extends Cart {
   customer?: CartListCustomer
 }
 
+export interface CartListFilters {
+  customerQuery?: string
+  startDate?: Timestamp
+  endDate?: Timestamp
+}
+
 export interface CartListPagination {
   limit: number
   offset: number

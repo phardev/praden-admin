@@ -61,6 +61,8 @@
       "startDate": "Date de début",
       "endDate": "Date de fin",
       "selectDate": "Choisir une date",
+      "today": "Aujourd'hui",
+      "yesterday": "Hier",
       "last7Days": "7 jours",
       "last30Days": "30 jours",
       "currentMonth": "Mois en cours"
@@ -1477,6 +1479,9 @@
       "CLOSED": "Fermé"
     },
     "loadError": "Impossible de charger les paniers.",
+    "filters": {
+      "customerPlaceholder": "Rechercher un client (nom, email)"
+    },
     "detail": {
       "back": "Retour aux paniers",
       "customerTitle": "Panier de {name}",

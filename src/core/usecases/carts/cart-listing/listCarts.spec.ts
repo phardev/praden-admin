@@ -1,5 +1,6 @@
 import { InMemoryCartGateway } from '@adapters/secondary/cart-gateways/InMemoryCartGateway'
 import { CartListTab } from '@core/entities/cart'
+import { filterCarts } from '@core/usecases/carts/cart-listing/filterCarts'
 import { listCarts } from '@core/usecases/carts/cart-listing/listCarts'
 import { useCartListStore } from '@store/cartListStore'
 import {
@@ -98,6 +99,58 @@ describe('List carts', () => {
   it('should be aware that loading is over', async () => {
     await listCarts(CartListTab.All, firstPage, cartGateway)
     expect(cartListStore.isLoading[CartListTab.All]).toBe(false)
+  })
+
+  describe('Given filters are applied', () => {
+    const everyCart = { limit: 10, offset: 0 }
+
+    it('should show only the carts of the searched customer', async () => {
+      filterCarts({
+        customerQuery: lucasAbandonedCartItem.customer!.lastname!.toUpperCase()
+      })
+      await listCarts(CartListTab.All, everyCart, cartGateway)
+      expect(cartListStore.items[CartListTab.All]).toStrictEqual([
+        lucasAbandonedCartItem
+      ])
+    })
+
+    it('should show only the carts of the searched email', async () => {
+      filterCarts({ customerQuery: elodieOpenCartItem.customer!.email })
+      await listCarts(CartListTab.All, everyCart, cartGateway)
+      expect(cartListStore.items[CartListTab.All]).toStrictEqual([
+        elodieOpenCartItem,
+        elodieClosedCartItem
+      ])
+    })
+
+    it('should show only the carts active within the period', async () => {
+      filterCarts({
+        startDate: lucasAbandonedCartItem.lastActivityAt,
+        endDate: guestOpenCartItem.lastActivityAt
+      })
+      await listCarts(CartListTab.All, everyCart, cartGateway)
+      expect(cartListStore.items[CartListTab.All]).toStrictEqual([
+        guestOpenCartItem,
+        lucasAbandonedCartItem
+      ])
+    })
+
+    it('should combine the filters with the chosen tab', async () => {
+      filterCarts({ customerQuery: elodieOpenCartItem.customer!.email })
+      await listCarts(CartListTab.Closed, everyCart, cartGateway)
+      expect(cartListStore.items[CartListTab.Closed]).toStrictEqual([
+        elodieClosedCartItem
+      ])
+    })
+
+    it('should ignore the carts received after the filters changed', async () => {
+      const listing = listCarts(CartListTab.All, everyCart, cartGateway)
+      filterCarts({
+        customerQuery: lucasAbandonedCartItem.customer!.lastname
+      })
+      await listing
+      expect(cartListStore.items[CartListTab.All]).toStrictEqual([])
+    })
   })
 
   const loadingStatesWhileListing = async (tab: CartListTab) => {

@@ -1,6 +1,7 @@
 import type {
   Cart,
   CartDetail,
+  CartListFilters,
   CartListItem,
   CartListPagination,
   CartListStatus
@@ -10,6 +11,7 @@ import { UUID } from '@core/types/types'
 export interface CartGateway {
   list(
     status: CartListStatus | undefined,
+    filters: CartListFilters,
     pagination: CartListPagination
   ): Promise<Array<CartListItem>>
   getByUuid(uuid: UUID): Promise<CartDetail>

@@ -140,6 +140,40 @@ describe('Get carts list VM', () => {
     )
   })
 
+  it('should expose no active filter when none is applied', () => {
+    expect(getCartsListVM().activeFilters).toStrictEqual([])
+  })
+
+  describe('Given filters are applied', () => {
+    const filters = {
+      customerQuery: 'durand',
+      startDate: lucasAbandonedCartItem.lastActivityAt,
+      endDate: elodieOpenCartItem.lastActivityAt
+    }
+
+    beforeEach(() => {
+      cartListStore.setFilters(filters)
+    })
+
+    it('should expose the applied filters', () => {
+      expect(getCartsListVM().currentFilters).toStrictEqual(filters)
+    })
+
+    it('should expose one removable chip per filter', () => {
+      expect(getCartsListVM().activeFilters).toStrictEqual([
+        { key: 'customerQuery', label: 'Client : "durand"' },
+        {
+          key: 'startDate',
+          label: `Depuis le ${timestampToLocaleString(filters.startDate, 'fr-FR')}`
+        },
+        {
+          key: 'endDate',
+          label: `Jusqu'au ${timestampToLocaleString(filters.endDate, 'fr-FR')}`
+        }
+      ])
+    })
+  })
+
   it('should link a closed cart to its order', () => {
     cartListStore.list(CartListTab.Closed, [elodieClosedCartItem])
     expect(getCartsListVM().tabs[3].items[0].link).toStrictEqual(

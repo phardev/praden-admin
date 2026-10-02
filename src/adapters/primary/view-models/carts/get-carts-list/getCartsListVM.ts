@@ -1,5 +1,10 @@
 import type { Header } from '@adapters/primary/view-models/preparations/get-orders-to-prepare/getPreparationsVM'
 import {
+  type ActiveFilterVM,
+  customerPeriodActiveFilters
+} from '@adapters/primary/view-models/shared/filters'
+import {
+  type CartListFilters,
   type CartListItem,
   CartListStatus,
   CartListTab
@@ -30,6 +35,8 @@ export interface CartListTabVM {
 
 export interface GetCartsListVM {
   tabs: Array<CartListTabVM>
+  currentFilters: CartListFilters
+  activeFilters: Array<ActiveFilterVM>
 }
 
 const TABS: Array<CartListTab> = [
@@ -94,6 +101,8 @@ export const getCartsListVM = (): GetCartsListVM => {
       items: cartListStore.items[tab].map(itemVM),
       hasMore: cartListStore.hasMore[tab],
       isLoading: cartListStore.isLoading[tab]
-    }))
+    })),
+    currentFilters: cartListStore.filters,
+    activeFilters: customerPeriodActiveFilters(cartListStore.filters)
   }
 }

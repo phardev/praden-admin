@@ -2,6 +2,7 @@ import {
   type Cart,
   CartCodeStatus,
   type CartDetail,
+  type CartListFilters,
   type CartListItem,
   type CartListPagination,
   type CartListStatus
@@ -12,6 +13,15 @@ import { UUID } from '@core/types/types'
 
 const copy = <T>(value: T): T => JSON.parse(JSON.stringify(value))
 
+const isOwnedBy = (item: CartListItem, customerQuery: string): boolean =>
+  [
+    item.customer?.firstname,
+    item.customer?.lastname,
+    item.customer?.email,
+    `${item.customer?.firstname ?? ''} ${item.customer?.lastname ?? ''}`,
+    item.contactEmail
+  ].some((owner) => owner?.toLowerCase().includes(customerQuery.toLowerCase()))
+
 export class InMemoryCartGateway implements CartGateway {
   private customerCarts: Array<Cart> = []
   private listItems: Array<CartListItem> = []
@@ -19,10 +29,14 @@ export class InMemoryCartGateway implements CartGateway {
 
   list(
     status: CartListStatus | undefined,
+    { customerQuery, startDate, endDate }: CartListFilters,
     { limit, offset }: CartListPagination
   ): Promise<Array<CartListItem>> {
     const items = this.listItems
       .filter((item) => !status || item.status === status)
+      .filter((item) => !customerQuery || isOwnedBy(item, customerQuery))
+      .filter((item) => !startDate || item.lastActivityAt >= startDate)
+      .filter((item) => !endDate || item.lastActivityAt <= endDate)
       .slice(offset, offset + limit)
     return Promise.resolve(copy(items))
   }

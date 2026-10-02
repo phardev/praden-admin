@@ -2,6 +2,7 @@ import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import type {
   Cart,
   CartDetail,
+  CartListFilters,
   CartListItem,
   CartListPagination,
   CartListStatus
@@ -19,10 +20,11 @@ export class RealCartGateway extends RealGateway implements CartGateway {
 
   async list(
     status: CartListStatus | undefined,
+    filters: CartListFilters,
     { limit, offset }: CartListPagination
   ): Promise<Array<CartListItem>> {
     const res = await axiosWithBearer.get(`${this.baseUrl}/carts`, {
-      params: { status, limit, offset }
+      params: { status, ...filters, limit, offset }
     })
     return res.data
   }

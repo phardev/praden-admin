@@ -1,4 +1,7 @@
-import { ActiveFilterVM } from '@adapters/primary/view-models/shared/filters'
+import {
+  ActiveFilterVM,
+  customerPeriodActiveFilters
+} from '@adapters/primary/view-models/shared/filters'
 import {
   Ticket,
   TicketMessageType,
@@ -63,31 +66,6 @@ const mapTicketToVM = (ticket: Ticket): TicketItemVM => ({
     ticket.messages.length > 0 ? ticket.messages[0].content : ticket.description
 })
 
-const buildActiveFilters = (
-  filters: SupportTicketsFilters
-): Array<ActiveFilterVM> => {
-  const activeFilters: Array<ActiveFilterVM> = []
-  if (filters.customerQuery) {
-    activeFilters.push({
-      key: 'customerQuery',
-      label: `Client : "${filters.customerQuery}"`
-    })
-  }
-  if (filters.startDate) {
-    activeFilters.push({
-      key: 'startDate',
-      label: `Depuis le ${timestampToLocaleString(filters.startDate, 'fr-FR')}`
-    })
-  }
-  if (filters.endDate) {
-    activeFilters.push({
-      key: 'endDate',
-      label: `Jusqu'au ${timestampToLocaleString(filters.endDate, 'fr-FR')}`
-    })
-  }
-  return activeFilters
-}
-
 const isWaitingForAnswer = (ticket: Ticket): boolean => {
   if (ticket.status !== TicketStatus.STARTED || ticket.messages.length === 0) {
     return false
@@ -145,7 +123,7 @@ export const getSupportTicketsVM = (): GetSupportTicketsVM => {
   return {
     columns,
     currentFilters: ticketStore.filters,
-    activeFilters: buildActiveFilters(ticketStore.filters),
+    activeFilters: customerPeriodActiveFilters(ticketStore.filters),
     isLoading: ticketStore.isLoading
   }
 }

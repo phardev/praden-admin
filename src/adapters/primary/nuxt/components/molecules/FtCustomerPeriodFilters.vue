@@ -4,7 +4,7 @@
     ft-text-field.w-full(
       class="sm:w-80"
       :model-value="customerQuery"
-      :placeholder="$t('support.filters.customerPlaceholder')"
+      :placeholder="placeholder"
       icon="i-lucide-search"
       @update:model-value="onCustomerQueryChange"
     )
@@ -24,16 +24,19 @@
 </template>
 
 <script lang="ts" setup>
-import type { ActiveFilterVM } from '@adapters/primary/view-models/shared/filters'
-import type { SupportTicketsFilters } from '@core/usecases/support/getSupportTickets'
+import type {
+  ActiveFilterVM,
+  CustomerPeriodFilters
+} from '@adapters/primary/view-models/shared/filters'
 
 const props = defineProps<{
-  currentFilters: SupportTicketsFilters
+  currentFilters: CustomerPeriodFilters
   activeFilters: Array<ActiveFilterVM>
+  placeholder: string
 }>()
 
 const emit = defineEmits<{
-  (e: 'change', filters: SupportTicketsFilters): void
+  (e: 'change', filters: CustomerPeriodFilters): void
 }>()
 
 const debounceDelay = 300
@@ -53,7 +56,7 @@ watch(
   { deep: true }
 )
 
-const buildFilters = (): SupportTicketsFilters => ({
+const buildFilters = (): CustomerPeriodFilters => ({
   ...(customerQuery.value ? { customerQuery: customerQuery.value } : {}),
   ...(startDate.value ? { startDate: startDate.value } : {}),
   ...(endDate.value ? { endDate: endDate.value } : {})

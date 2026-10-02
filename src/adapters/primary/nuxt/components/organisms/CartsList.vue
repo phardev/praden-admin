@@ -29,7 +29,10 @@ tab-group.border-b.border-gray-200(as="div")
         template(#rejectedCode="{ item }")
           UBadge(v-if="item.rejectedCode" color="red" variant="soft") {{ item.rejectedCode }}
         template(#infinite)
-          InfiniteLoading(@infinite="loadMore(tab.tab, $event)")
+          InfiniteLoading(
+            :identifier="reloadKey"
+            @infinite="loadMore(tab.tab, $event)"
+          )
             template(#complete)
               div
 </template>
@@ -48,6 +51,7 @@ import 'v3-infinite-loading/lib/style.css'
 
 defineProps<{
   cartsVm: GetCartsListVM
+  reloadKey: number
 }>()
 
 const emit = defineEmits<{

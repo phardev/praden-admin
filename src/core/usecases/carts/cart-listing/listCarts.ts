@@ -1,4 +1,5 @@
 import {
+  type CartListItem,
   type CartListPagination,
   type CartListTab,
   statusOfTab
@@ -12,16 +13,28 @@ export const listCarts = async (
   cartGateway: CartGateway
 ): Promise<void> => {
   const cartListStore = useCartListStore()
+  const filters = cartListStore.filters
   cartListStore.startLoading(tab)
   try {
-    const items = await cartGateway.list(statusOfTab(tab), pagination)
-    if (pagination.offset === 0) {
-      cartListStore.list(tab, items)
-    } else {
-      cartListStore.append(tab, items)
+    const items = await cartGateway.list(statusOfTab(tab), filters, pagination)
+    if (cartListStore.filters === filters) {
+      showPage(tab, pagination, items)
     }
-    cartListStore.setHasMore(tab, items.length === pagination.limit)
   } finally {
     cartListStore.stopLoading(tab)
   }
+}
+
+const showPage = (
+  tab: CartListTab,
+  pagination: CartListPagination,
+  items: Array<CartListItem>
+): void => {
+  const cartListStore = useCartListStore()
+  if (pagination.offset === 0) {
+    cartListStore.list(tab, items)
+  } else {
+    cartListStore.append(tab, items)
+  }
+  cartListStore.setHasMore(tab, items.length === pagination.limit)
 }

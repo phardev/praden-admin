@@ -51,7 +51,12 @@
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
-type PresetKey = 'last7Days' | 'last30Days' | 'currentMonth'
+type PresetKey =
+  | 'today'
+  | 'yesterday'
+  | 'last7Days'
+  | 'last30Days'
+  | 'currentMonth'
 
 const props = defineProps<{
   start: number | null
@@ -65,6 +70,8 @@ const emit = defineEmits<{
 }>()
 
 const presets: Array<{ key: PresetKey; labelKey: string }> = [
+  { key: 'today', labelKey: 'common.period.today' },
+  { key: 'yesterday', labelKey: 'common.period.yesterday' },
   { key: 'last7Days', labelKey: 'common.period.last7Days' },
   { key: 'last30Days', labelKey: 'common.period.last30Days' },
   { key: 'currentMonth', labelKey: 'common.period.currentMonth' }
@@ -80,6 +87,18 @@ const endOfDay = (date: Date): number => {
   return date.getTime()
 }
 
+const daysCoveredBy: Record<'today' | 'last7Days' | 'last30Days', number> = {
+  today: 1,
+  last7Days: 7,
+  last30Days: 30
+}
+
+const daysBefore = (date: Date, days: number): Date => {
+  const before = new Date(date)
+  before.setDate(before.getDate() - days)
+  return before
+}
+
 const buildPresetRange = (key: PresetKey): [number, number] => {
   const today = new Date()
   if (key === 'currentMonth') {
@@ -88,10 +107,13 @@ const buildPresetRange = (key: PresetKey): [number, number] => {
       endOfDay(new Date(today))
     ]
   }
-  const days = key === 'last7Days' ? 7 : 30
-  const from = new Date(today)
-  from.setDate(from.getDate() - (days - 1))
-  return [startOfDay(from), endOfDay(new Date(today))]
+  if (key === 'yesterday') {
+    return [startOfDay(daysBefore(today, 1)), endOfDay(daysBefore(today, 1))]
+  }
+  return [
+    startOfDay(daysBefore(today, daysCoveredBy[key] - 1)),
+    endOfDay(new Date(today))
+  ]
 }
 
 const activePreset = computed<PresetKey | null>(() => {

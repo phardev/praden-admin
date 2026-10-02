@@ -1,4 +1,8 @@
-import { type CartListItem, CartListTab } from '@core/entities/cart'
+import {
+  type CartListFilters,
+  type CartListItem,
+  CartListTab
+} from '@core/entities/cart'
 import { defineStore } from 'pinia'
 
 const byTab = <T>(value: () => T): Record<CartListTab, T> => ({
@@ -13,7 +17,8 @@ export const useCartListStore = defineStore('CartListStore', {
     return {
       items: byTab<Array<CartListItem>>(() => []),
       hasMore: byTab<boolean>(() => false),
-      isLoading: byTab<boolean>(() => false)
+      isLoading: byTab<boolean>(() => false),
+      filters: {} as CartListFilters
     }
   },
   actions: {
@@ -24,6 +29,11 @@ export const useCartListStore = defineStore('CartListStore', {
       const listedUuids = new Set(this.items[tab].map((item) => item.uuid))
       const unlisted = items.filter((item) => !listedUuids.has(item.uuid))
       this.items[tab] = [...this.items[tab], ...unlisted]
+    },
+    setFilters(filters: CartListFilters) {
+      this.filters = filters
+      this.items = byTab<Array<CartListItem>>(() => [])
+      this.hasMore = byTab<boolean>(() => false)
     },
     setHasMore(tab: CartListTab, hasMore: boolean) {
       this.hasMore[tab] = hasMore
