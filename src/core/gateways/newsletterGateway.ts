@@ -5,4 +5,5 @@ export interface NewsletterGateway {
   list(): Promise<Array<NewsletterSubscription>>
   subscribe(dto: SubscribeToNewsletterDTO): Promise<NewsletterSubscription>
   unsubscribe(email: string): Promise<NewsletterSubscription>
+  unsubscribeMany(emails: Array<string>): Promise<number>
 }

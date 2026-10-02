@@ -1,7 +1,9 @@
 <template lang="pug">
 .section
-  a.flex.flex-row-reverse(href="https://ecommerce-backend-production.admin-a5f.workers.dev/api/newsletters" target="_blank" rel="noopener noreferrer")
-    ft-button.button-solid.text-xl.px-6 {{ $t('newsletter.exportButton') }}
+  .flex.justify-end.items-center.gap-4
+    newsletter-unsubscription-import
+    a(href="https://ecommerce-backend-production.admin-a5f.workers.dev/api/newsletters" target="_blank" rel="noopener noreferrer")
+      ft-button.button-solid.text-xl.px-6 {{ $t('newsletter.exportButton') }}
   ft-table(
     :headers="newsletterSubscriptionsVM.headers"
     :items="newsletterSubscriptionsVM.items"

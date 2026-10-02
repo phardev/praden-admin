@@ -40,6 +40,14 @@ export class InMemoryNewsletterGateway implements NewsletterGateway {
     return Promise.resolve(subscription)
   }
 
+  unsubscribeMany(emails: Array<string>): Promise<number> {
+    const subscribedCount = this.subscriptions.length
+    this.subscriptions = this.subscriptions.filter(
+      (s) => !emails.includes(s.email.toLowerCase())
+    )
+    return Promise.resolve(subscribedCount - this.subscriptions.length)
+  }
+
   feedWith(...subscriptions: Array<NewsletterSubscription>) {
     this.subscriptions = subscriptions
   }

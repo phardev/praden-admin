@@ -804,7 +804,24 @@
     }
   },
   "newsletter": {
-    "exportButton": "Exporter la newsletter"
+    "exportButton": "Exporter la newsletter",
+    "unsubscriptionImport": {
+      "button": "Désabonner depuis un fichier",
+      "title": "Désabonner depuis un fichier",
+      "found": "adresse trouvée dans {fileName} | adresses trouvées dans {fileName}",
+      "others": "et {count} autre | et {count} autres",
+      "noEmail": "Ce fichier ne contient aucune adresse e-mail.",
+      "columnLabel": "Colonne utilisée",
+      "columnOption": "{name} ({count})",
+      "columnWithoutName": "Colonne {position}",
+      "confirm": "Désabonner {count} adresse | Désabonner {count} adresses",
+      "cancel": "Annuler",
+      "done": "Terminer",
+      "progress": "{processed} sur {total}",
+      "unsubscribed": "Aucune personne désabonnée | personne désabonnée | personnes désabonnées",
+      "notSubscribed": "{count} adresse n’était pas abonnée | {count} adresses n’étaient pas abonnées",
+      "error": "Le désabonnement s’est arrêté en cours de route. Relancez-le pour le terminer."
+    }
   },
   "permissions": {
     "permission": "Permission",

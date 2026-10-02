@@ -34,4 +34,12 @@ export class RealNewsletterGateway
     )
     return res.data
   }
+
+  async unsubscribeMany(emails: Array<string>): Promise<number> {
+    const res = await axiosWithBearer.post(
+      `${this.baseUrl}/newsletters/unsubscribe-many`,
+      { emails }
+    )
+    return res.data.unsubscribedCount
+  }
 }
