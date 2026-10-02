@@ -34,6 +34,8 @@ const CURRENT_FILL = 'rgba(59, 130, 246, 0.7)'
 const CURRENT_HOVER = 'rgba(59, 130, 246, 0.9)'
 const PREVIOUS_FILL = 'rgba(251, 146, 60, 0.7)'
 const PREVIOUS_HOVER = 'rgba(251, 146, 60, 0.9)'
+const EMPTY_CHART_MAX = 1
+const MAX_TICKS = 10
 
 const monthOf = (month: string) => month.split('-')[1]
 const yearOf = (data: MonthlyValueVM[]) =>
@@ -89,13 +91,18 @@ const createChart = async () => {
     d3.max(current, (d) => d.value) || 0,
     hasPrevious ? d3.max(previous, (d) => d.value) || 0 : 0
   )
-  const y = d3.scaleLinear().domain([0, maxValue]).nice().range([height, 0])
+  const y = d3
+    .scaleLinear()
+    .domain([0, maxValue || EMPTY_CHART_MAX])
+    .nice()
+    .range([height, 0])
+  const tickCount = Math.min(MAX_TICKS, y.domain()[1])
 
   svg
     .append('g')
     .attr('transform', `translate(0,${height})`)
     .call(d3.axisBottom(x0))
-  svg.append('g').call(d3.axisLeft(y))
+  svg.append('g').call(d3.axisLeft(y).ticks(tickCount))
   svg
     .append('text')
     .attr('text-anchor', 'middle')
@@ -126,6 +133,7 @@ const createChart = async () => {
     fill: string,
     hover: string
   ) => {
+    if (value === 0) return
     svg
       .append('rect')
       .attr('x', (x0(month) || 0) + (x1(series) || 0))
