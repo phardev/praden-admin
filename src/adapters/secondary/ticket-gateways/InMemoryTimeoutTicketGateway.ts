@@ -1,7 +1,9 @@
 import { Ticket, TicketPriority } from '@core/entities/ticket'
 import { DateProvider } from '@core/gateways/dateProvider'
 import { TicketGateway } from '@core/gateways/ticketGateway'
+import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { UUID } from '@core/types/types'
+import { CreateTicketDTO } from '@core/usecases/support/createTicket'
 import { SupportTicketsFilters } from '@core/usecases/support/getSupportTickets'
 import { InMemoryTicketGateway } from './InMemoryTicketGateway'
 
@@ -11,8 +13,12 @@ export class InMemoryTimeoutTicketGateway
 {
   private readonly timeoutInMs: number
 
-  constructor(timeoutInMs: number, dateProvider: DateProvider) {
-    super(dateProvider)
+  constructor(
+    timeoutInMs: number,
+    dateProvider: DateProvider,
+    uuidGenerator?: UuidGenerator
+  ) {
+    super(dateProvider, uuidGenerator)
     this.timeoutInMs = timeoutInMs
   }
 
@@ -44,6 +50,14 @@ export class InMemoryTimeoutTicketGateway
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(super.getByOrderUuid(orderUuid))
+      }, this.timeoutInMs)
+    })
+  }
+
+  override create(dto: CreateTicketDTO): Promise<Ticket> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(super.create(dto))
       }, this.timeoutInMs)
     })
   }

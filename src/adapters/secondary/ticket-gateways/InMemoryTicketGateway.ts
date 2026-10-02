@@ -1,4 +1,5 @@
 import {
+  PHARMACY_AUTHOR_UUID,
   Ticket,
   TicketMessage,
   TicketMessageAttachment,
@@ -11,6 +12,7 @@ import { DateProvider } from '@core/gateways/dateProvider'
 import { TicketGateway } from '@core/gateways/ticketGateway'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
 import { UUID } from '@core/types/types'
+import { CreateTicketDTO } from '@core/usecases/support/createTicket'
 import { SupportTicketsFilters } from '@core/usecases/support/getSupportTickets'
 import { getFileContent } from '@utils/file'
 
@@ -44,6 +46,33 @@ export class InMemoryTicketGateway implements TicketGateway {
     return Promise.resolve(JSON.parse(JSON.stringify(res)))
   }
 
+  async create(dto: CreateTicketDTO): Promise<Ticket> {
+    const now = this.dateProvider.now()
+    const message: TicketMessage = {
+      uuid: this.uuidGenerator?.generate() || '',
+      content: dto.description,
+      type: TicketMessageType.PUBLIC,
+      sentAt: now,
+      authorUuid: PHARMACY_AUTHOR_UUID,
+      attachments: await toMessageAttachments(dto.attachments)
+    }
+    const ticket: Ticket = {
+      uuid: this.uuidGenerator?.generate() || '',
+      ticketNumber: this.generateTicketNumber(),
+      subject: dto.subject,
+      description: dto.description,
+      status: TicketStatus.NEW,
+      priority: dto.priority,
+      customer: dto.customer,
+      messages: [message],
+      createdAt: now,
+      updatedAt: now,
+      ...(dto.orderUuid && { orderUuid: dto.orderUuid })
+    }
+    this.tickets.push(ticket)
+    return Promise.resolve(JSON.parse(JSON.stringify(ticket)))
+  }
+
   async addReply(
     ticketUuid: UUID,
     content: string,
@@ -53,16 +82,7 @@ export class InMemoryTicketGateway implements TicketGateway {
     const ticketIndex = this.tickets.findIndex((t) => t.uuid === ticketUuid)
     if (ticketIndex < 0) throw new TicketDoesNotExistsError(ticketUuid)
 
-    const messageAttachments: Array<TicketMessageAttachment> = []
-    for (const file of attachments) {
-      const fileContent = await getFileContent(file)
-      messageAttachments.push({
-        filename: file.name,
-        url: fileContent,
-        size: file.size,
-        mimeType: file.type
-      })
-    }
+    const messageAttachments = await toMessageAttachments(attachments)
 
     const message: TicketMessage = {
       uuid: this.uuidGenerator?.generate() || '',
@@ -97,16 +117,7 @@ export class InMemoryTicketGateway implements TicketGateway {
     const ticketIndex = this.tickets.findIndex((t) => t.uuid === ticketUuid)
     if (ticketIndex < 0) throw new TicketDoesNotExistsError(ticketUuid)
 
-    const messageAttachments: Array<TicketMessageAttachment> = []
-    for (const file of attachments) {
-      const fileContent = await getFileContent(file)
-      messageAttachments.push({
-        filename: file.name,
-        url: fileContent,
-        size: file.size,
-        mimeType: file.type
-      })
-    }
+    const messageAttachments = await toMessageAttachments(attachments)
 
     const note: TicketMessage = {
       uuid: this.uuidGenerator?.generate() || '',
@@ -187,11 +198,26 @@ export class InMemoryTicketGateway implements TicketGateway {
   }
 
   generateTicketNumber(): string {
-    const year = new Date().getFullYear()
+    const year = new Date(this.dateProvider.now()).getFullYear()
     const number = this.ticketCounter.toString().padStart(4, '0')
     this.ticketCounter++
     return `TICKET_${year}_${number}`
   }
+}
+
+const toMessageAttachments = async (
+  files: Array<File>
+): Promise<Array<TicketMessageAttachment>> => {
+  const attachments: Array<TicketMessageAttachment> = []
+  for (const file of files) {
+    attachments.push({
+      filename: file.name,
+      url: await getFileContent(file),
+      size: file.size,
+      mimeType: file.type
+    })
+  }
+  return attachments
 }
 
 const matchesFilters = (

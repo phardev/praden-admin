@@ -1,9 +1,17 @@
 <template lang="pug">
 .section(class="space-y-8")
   .mb-10
-    .flex.items-center.gap-4.mb-6
-      .w-1.h-8.bg-customPrimary-500.rounded-full
-      h1.text-page-title.text-gray-900 {{ $t('support.title') }}
+    .flex.items-center.justify-between.gap-4.mb-6
+      .flex.items-center.gap-4
+        .w-1.h-8.bg-customPrimary-500.rounded-full
+        h1.text-page-title.text-gray-900 {{ $t('support.title') }}
+      UButton(
+        icon="i-heroicons-plus"
+        color="primary"
+        size="lg"
+        :label="$t('support.create.button')"
+        to="/support/new"
+      )
 
     ft-support-tickets-filters(
       :current-filters="supportTicketsVM.currentFilters"

@@ -11,7 +11,8 @@ export const useTicketStore = defineStore('TicketStore', {
       customerTickets: {} as Record<UUID, Array<Ticket>>,
       orderTickets: {} as Record<UUID, Array<Ticket>>,
       filters: {} as SupportTicketsFilters,
-      isLoading: false
+      isLoading: false,
+      isSaving: false
     }
   },
   getters: {
@@ -64,6 +65,12 @@ export const useTicketStore = defineStore('TicketStore', {
     },
     stopLoading() {
       this.isLoading = false
+    },
+    startSaving() {
+      this.isSaving = true
+    },
+    stopSaving() {
+      this.isSaving = false
     }
   }
 })

@@ -574,6 +574,36 @@
       "files": "Fichiers joints",
       "label": "Pièces jointes"
     },
+    "create": {
+      "button": "Créer un ticket",
+      "title": "Créer un ticket pour un client",
+      "description": "Le client recevra un e-mail de confirmation et retrouvera ce ticket dans son espace SAV.",
+      "back": "Retour au support",
+      "optional": "Facultatif",
+      "fields": {
+        "customer": "Client",
+        "order": "Commande concernée",
+        "subject": "Sujet",
+        "description": "Description du problème"
+      },
+      "orderPlaceholder": "Choisir une commande",
+      "clearOrder": "Retirer la commande",
+      "noOrders": "Ce client n'a aucune commande",
+      "subjectPlaceholder": "Ex : Produit manquant dans le colis",
+      "descriptionPlaceholder": "Décrivez le problème signalé par le client...",
+      "removeAttachment": "Retirer la pièce jointe",
+      "validate": "Créer le ticket",
+      "success": "Ticket créé",
+      "error": "Le ticket n'a pas pu être créé. Veuillez réessayer.",
+      "ordersError": "Les commandes du client n'ont pas pu être chargées",
+      "hints": {
+        "selectCustomer": "Sélectionnez un client",
+        "subjectRequired": "Saisissez un sujet",
+        "subjectTooLong": "Le sujet ne doit pas dépasser 200 caractères",
+        "descriptionRequired": "Décrivez le problème",
+        "descriptionTooLong": "La description ne doit pas dépasser 2000 caractères"
+      }
+    },
     "modal": {
       "reply": {
         "title": "Répondre au ticket",

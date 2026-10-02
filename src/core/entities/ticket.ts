@@ -1,5 +1,7 @@
 import { Mail, Timestamp, UUID } from '@core/types/types'
 
+export const PHARMACY_AUTHOR_UUID = 'admin'
+
 export enum TicketStatus {
   NEW = 'NEW',
   STARTED = 'STARTED',

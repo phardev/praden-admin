@@ -1,6 +1,7 @@
 import { RealDateProvider } from '@adapters/secondary/date-providers/RealDateProvider'
 import { InMemoryTimeoutTicketGateway } from '@adapters/secondary/ticket-gateways/InMemoryTimeoutTicketGateway'
 import { RealTicketGateway } from '@adapters/secondary/ticket-gateways/RealTicketGateway'
+import { RealUuidGenerator } from '@adapters/secondary/uuid-generators/RealUuidGenerator'
 import { isLocalEnv } from '@utils/env'
 import * as tickets from '@utils/testData/tickets'
 
@@ -18,7 +19,8 @@ const inMemory = (() => {
   const createInstance = () => {
     const gateway = new InMemoryTimeoutTicketGateway(
       500,
-      new RealDateProvider()
+      new RealDateProvider(),
+      new RealUuidGenerator()
     )
     gateway.feedWith(...Object.values(tickets))
     return gateway
