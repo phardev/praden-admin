@@ -305,7 +305,17 @@ div(v-if="permissions.canAccessDashboard")
             )
     UCard.mb-8(v-if="!isPromotionFilterApplied")
       template(#header)
-        h3.text-lg.font-medium {{ $t('dashboard.cartStatistics.topAbandonedProducts') }}
+        .flex.justify-between.items-center
+          h3.text-lg.font-medium {{ $t('dashboard.cartStatistics.topAbandonedProducts') }}
+          UButton(
+            color="primary"
+            variant="soft"
+            icon="i-heroicons-arrow-down-tray"
+            size="sm"
+            :disabled="dashboard.cartStatistics.topAbandonedProducts.length === 0"
+            @click="downloadTopAbandonedProductsCsv"
+          )
+            | {{ $t('dashboard.topProducts.downloadCsv') }}
       template(#default)
         p.text-sm.text-gray-500(v-if="dashboard.cartStatistics.topAbandonedProducts.length === 0") {{ $t('dashboard.cartStatistics.noAbandonedProducts') }}
         table.min-w-full.divide-y.divide-gray-200(v-else)
@@ -361,6 +371,10 @@ import { useDateProvider } from '../../../../../../gateways/dateProvider'
 import { useFileDownloadService } from '../../../../../../gateways/fileDownloadService'
 import { useLaboratoryGateway } from '../../../../../../gateways/laboratoryGateway'
 import { listCategories } from '../../../../../core/usecases/categories/list-categories/listCategories'
+import {
+  type ExportTopAbandonedProductsLabels,
+  exportTopAbandonedProductsCSV
+} from '../../../../../core/usecases/dashboard/export-top-abandoned-products-csv/exportTopAbandonedProductsCSV'
 import {
   type ExportTopProductsLabels,
   exportTopProductsCSV
@@ -689,6 +703,21 @@ const downloadTopProductsCsv = () => {
   }
   exportTopProductsCSV(
     dashboard.value.topProducts,
+    useFileDownloadService(),
+    useDateProvider(),
+    labels
+  )
+}
+
+const downloadTopAbandonedProductsCsv = () => {
+  const labels: ExportTopAbandonedProductsLabels = {
+    filenamePrefix: t('dashboard.cartStatistics.filenamePrefix'),
+    productName: t('dashboard.cartStatistics.headers.product'),
+    ean13: t('dashboard.cartStatistics.headers.ean13'),
+    unitPriceWithTax: t('dashboard.cartStatistics.headers.unitPriceWithTax'),
+    cartCount: t('dashboard.cartStatistics.headers.carts')
+  }
+  exportTopAbandonedProductsCSV(
     useFileDownloadService(),
     useDateProvider(),
     labels

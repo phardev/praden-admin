@@ -500,6 +500,7 @@
       "abandonedCarts": "Paniers abandonnés",
       "topAbandonedProducts": "Produits les plus abandonnés",
       "noAbandonedProducts": "Aucun produit abandonné sur cette sélection",
+      "filenamePrefix": "produits-plus-abandonnes",
       "headers": {
         "product": "Produit",
         "ean13": "EAN13",

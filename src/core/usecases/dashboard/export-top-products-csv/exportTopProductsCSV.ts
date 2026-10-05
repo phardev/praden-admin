@@ -1,19 +1,13 @@
 import type { TopProduct } from '@core/entities/dashboard'
 import type { DateProvider } from '@core/gateways/dateProvider'
 import type { FileDownloadService } from '@core/gateways/fileDownloadService'
+import { escapeCSVField } from '@utils/csv'
 
 export interface ExportTopProductsLabels {
   filenamePrefix: string
   productName: string
   ean13: string
   orderCount: string
-}
-
-const escapeCSVField = (field: string): string => {
-  if (field.includes(';') || field.includes('"') || field.includes('\n')) {
-    return `"${field.replace(/"/g, '""')}"`
-  }
-  return field
 }
 
 export const generateCSVContent = (

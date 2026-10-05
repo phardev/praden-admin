@@ -152,3 +152,33 @@ export interface Dashboard {
   revenueByTaxRate: RevenueByTaxRate[]
   cartStatistics: CartStatistics
 }
+
+const emptyTotalSales = (): TotalSales => ({
+  count: 0,
+  turnover: 0,
+  turnoverHT: 0,
+  canceledTurnover: 0,
+  averageBasketValue: 0,
+  deliveryPrice: 0
+})
+
+export const emptyDashboard = (): Dashboard => ({
+  monthlySales: [],
+  previousYearMonthlySales: [],
+  totalSales: emptyTotalSales(),
+  previousYearTotalSales: emptyTotalSales(),
+  topProducts: [],
+  ordersByDeliveryMethod: [],
+  ordersByLaboratory: [],
+  productQuantitiesByCategory: [],
+  productStockStats: { inStockCount: 0, outOfStockCount: 0 },
+  userStatistics: {
+    totalCustomers: 0,
+    customersWithOrders: 0,
+    newsletterSubscribers: 0,
+    monthlyNewsletterSubscriptions: [],
+    newsletterAdoptionRate: { subscribers: 0, nonSubscribers: 0 }
+  },
+  revenueByTaxRate: [],
+  cartStatistics: emptyCartStatistics()
+})

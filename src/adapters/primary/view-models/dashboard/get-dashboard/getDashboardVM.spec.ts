@@ -1,7 +1,8 @@
 import {
   type CartStatistics,
   type Dashboard,
-  emptyCartStatistics
+  emptyCartStatistics,
+  emptyDashboard
 } from '@core/entities/dashboard'
 import { useStatsStore } from '@store/statsStore'
 import { createPinia, setActivePinia } from 'pinia'
@@ -326,41 +327,6 @@ describe('getDashboardVM', () => {
       revenueByTaxRate: [],
       cartStatistics: emptyCartStatisticsVM()
     })
-  })
-
-  const emptyDashboard = (): Dashboard => ({
-    monthlySales: [],
-    previousYearMonthlySales: [],
-    totalSales: {
-      count: 0,
-      turnover: 0,
-      turnoverHT: 0,
-      canceledTurnover: 0,
-      averageBasketValue: 0,
-      deliveryPrice: 0
-    },
-    previousYearTotalSales: {
-      count: 0,
-      turnover: 0,
-      turnoverHT: 0,
-      canceledTurnover: 0,
-      averageBasketValue: 0,
-      deliveryPrice: 0
-    },
-    topProducts: [],
-    ordersByDeliveryMethod: [],
-    ordersByLaboratory: [],
-    productQuantitiesByCategory: [],
-    productStockStats: { inStockCount: 0, outOfStockCount: 0 },
-    userStatistics: {
-      totalCustomers: 0,
-      customersWithOrders: 0,
-      newsletterSubscribers: 0,
-      monthlyNewsletterSubscriptions: [],
-      newsletterAdoptionRate: { subscribers: 0, nonSubscribers: 0 }
-    },
-    revenueByTaxRate: [],
-    cartStatistics: emptyCartStatistics()
   })
 })
 
