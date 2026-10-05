@@ -240,6 +240,7 @@ describe('getDashboardVM', () => {
           productUuid: '123',
           name: 'Product A',
           ean13: '3401598753214',
+          priceWithTax: 1290,
           count: 7
         }
       ]
@@ -270,7 +271,15 @@ describe('getDashboardVM', () => {
         { month: '2026-02', value: 540 }
       ],
       previousYearMonthlyAbandonedValue: [{ month: '2025-01', value: 270 }],
-      topAbandonedProducts: cartStatistics.topAbandonedProducts
+      topAbandonedProducts: [
+        {
+          productUuid: '123',
+          name: 'Product A',
+          ean13: '3401598753214',
+          priceWithTax: 12.9,
+          count: 7
+        }
+      ]
     })
   })
 

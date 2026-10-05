@@ -112,6 +112,7 @@ export interface AbandonedProduct {
   productUuid: string
   name: string
   ean13: string
+  priceWithTax: number
   count: number
 }
 

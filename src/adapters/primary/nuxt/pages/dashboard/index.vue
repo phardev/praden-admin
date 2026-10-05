@@ -313,11 +313,13 @@ div(v-if="permissions.canAccessDashboard")
             tr
               th.px-4.py-2.text-left.text-sm.font-semibold {{ $t('dashboard.cartStatistics.headers.product') }}
               th.px-4.py-2.text-left.text-sm.font-semibold {{ $t('dashboard.cartStatistics.headers.ean13') }}
+              th.px-4.py-2.text-right.text-sm.font-semibold {{ $t('dashboard.cartStatistics.headers.unitPriceWithTax') }}
               th.px-4.py-2.text-right.text-sm.font-semibold {{ $t('dashboard.cartStatistics.headers.carts') }}
           tbody.divide-y.divide-gray-100
             tr(v-for="product in dashboard.cartStatistics.topAbandonedProducts" :key="product.productUuid")
               td.px-4.py-2.text-sm {{ product.name }}
               td.px-4.py-2.text-sm.text-gray-500 {{ product.ean13 }}
+              td.px-4.py-2.text-sm.text-right {{ formatCurrency(product.priceWithTax) }}
               td.px-4.py-2.text-sm.text-right {{ product.count }}
 
     UCard.mt-16

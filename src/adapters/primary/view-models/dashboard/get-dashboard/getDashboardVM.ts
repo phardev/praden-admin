@@ -100,6 +100,11 @@ const monthlyAbandonedValueOf = (months: MonthlyCarts[]): MonthlyValueVM[] =>
     value: abandonedValue / 100
   }))
 
+const abandonedProductVMOf = (product: AbandonedProduct): AbandonedProduct => ({
+  ...product,
+  priceWithTax: product.priceWithTax / 100
+})
+
 const monthlyAbandonmentRateOf = (months: MonthlyCarts[]): MonthlyValueVM[] =>
   months.map((month) => ({
     month: month.month,
@@ -152,7 +157,7 @@ const cartStatisticsVMOf = ({
     monthlyAbandonedValue: monthlyAbandonedValueOf(monthly),
     previousYearMonthlyAbandonedValue:
       monthlyAbandonedValueOf(previousYearMonthly),
-    topAbandonedProducts
+    topAbandonedProducts: topAbandonedProducts.map(abandonedProductVMOf)
   }
 }
 

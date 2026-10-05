@@ -503,6 +503,7 @@
       "headers": {
         "product": "Produit",
         "ean13": "EAN13",
+        "unitPriceWithTax": "Prix unitaire TTC",
         "carts": "Paniers"
       }
     }
