@@ -499,6 +499,7 @@
       "monthlyAbandonmentRate": "Taux d'abandon mensuel",
       "abandonedCarts": "Paniers abandonnés",
       "topAbandonedProducts": "Produits les plus abandonnés",
+      "noAbandonedProducts": "Aucun produit abandonné sur cette sélection",
       "headers": {
         "product": "Produit",
         "ean13": "EAN13",

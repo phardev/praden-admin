@@ -303,11 +303,12 @@ div(v-if="permissions.canAccessDashboard")
               :value-label="$t('dashboard.cartStatistics.abandonedValue')"
               unit=" €"
             )
-    UCard.mb-8(v-if="!areProductFiltersApplied && dashboard.cartStatistics.topAbandonedProducts.length > 0")
+    UCard.mb-8(v-if="!isPromotionFilterApplied")
       template(#header)
         h3.text-lg.font-medium {{ $t('dashboard.cartStatistics.topAbandonedProducts') }}
       template(#default)
-        table.min-w-full.divide-y.divide-gray-200
+        p.text-sm.text-gray-500(v-if="dashboard.cartStatistics.topAbandonedProducts.length === 0") {{ $t('dashboard.cartStatistics.noAbandonedProducts') }}
+        table.min-w-full.divide-y.divide-gray-200(v-else)
           thead
             tr
               th.px-4.py-2.text-left.text-sm.font-semibold {{ $t('dashboard.cartStatistics.headers.product') }}
@@ -414,6 +415,7 @@ const categoriesVM = computed(() => {
 })
 
 const areProductFiltersApplied = ref(false)
+const isPromotionFilterApplied = ref(false)
 
 const formatPercent = (value: number): string =>
   `${value.toLocaleString('fr-FR', { maximumFractionDigits: 1 })} %`
@@ -553,6 +555,7 @@ const fetchFilteredDashboardData = async () => {
 
   areProductFiltersApplied.value =
     !!laboratory.value || !!category.value || promotionOnly.value
+  isPromotionFilterApplied.value = promotionOnly.value
   areDateFiltersApplied.value = !!startDate.value || !!endDate.value
 }
 
