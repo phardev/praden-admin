@@ -265,11 +265,11 @@ div(v-if="permissions.canAccessDashboard")
       UCard
         template(#header)
           .text-center
-            h3.text-lg.font-medium {{ $t('dashboard.cartStatistics.abandonedValue') }}
+            h3.text-lg.font-medium {{ $t('dashboard.cartStatistics.averageAbandoned') }}
         template(#default)
           .text-center
-            p.text-2xl.font-bold {{ formatCurrency(dashboard.cartStatistics.abandonedValue) }}
-            p.text-sm.text-gray-500 {{ $t('dashboard.cartStatistics.averageAbandoned', { amount: formatCurrency(dashboard.cartStatistics.averageAbandonedValue) }) }}
+            p.text-2xl.font-bold {{ formatCurrency(dashboard.cartStatistics.averageAbandonedValue) }}
+            p.text-sm.text-gray-500 {{ $t('dashboard.cartStatistics.averageAbandonedHint') }}
     .grid.grid-cols-1.gap-6.mb-8(v-if="!areProductFiltersApplied" class="lg:grid-cols-2")
       UCard
         template(#header)
@@ -291,6 +291,17 @@ div(v-if="permissions.canAccessDashboard")
               :previous-year-data="dashboard.cartStatistics.previousYearMonthlyAbandonmentRate"
               :value-label="$t('dashboard.cartStatistics.abandonmentRate')"
               unit=" %"
+            )
+      UCard
+        template(#header)
+          h3.text-lg.font-medium {{ $t('dashboard.cartStatistics.monthlyAbandonedValue') }}
+        template(#default)
+          .h-80
+            MonthlyCartsChart(
+              :data="dashboard.cartStatistics.monthlyAbandonedValue"
+              :previous-year-data="dashboard.cartStatistics.previousYearMonthlyAbandonedValue"
+              :value-label="$t('dashboard.cartStatistics.abandonedValue')"
+              unit=" €"
             )
     UCard.mb-8(v-if="!areProductFiltersApplied && dashboard.cartStatistics.topAbandonedProducts.length > 0")
       template(#header)

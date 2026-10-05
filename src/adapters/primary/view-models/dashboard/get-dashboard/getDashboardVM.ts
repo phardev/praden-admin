@@ -71,12 +71,13 @@ export interface CartStatisticsVM {
   inProgress: number
   abandonmentRate: number
   conversionRate: number
-  abandonedValue: number
   averageAbandonedValue: number
   monthlyAbandoned: MonthlyValueVM[]
   previousYearMonthlyAbandoned: MonthlyValueVM[]
   monthlyAbandonmentRate: MonthlyValueVM[]
   previousYearMonthlyAbandonmentRate: MonthlyValueVM[]
+  monthlyAbandonedValue: MonthlyValueVM[]
+  previousYearMonthlyAbandonedValue: MonthlyValueVM[]
   topAbandonedProducts: AbandonedProduct[]
 }
 
@@ -93,6 +94,12 @@ const abandonmentRateOf = (month: {
 const monthlyAbandonedOf = (months: MonthlyCarts[]): MonthlyValueVM[] =>
   months.map(({ month, abandoned }) => ({ month, value: abandoned }))
 
+const monthlyAbandonedValueOf = (months: MonthlyCarts[]): MonthlyValueVM[] =>
+  months.map(({ month, abandonedValue }) => ({
+    month,
+    value: abandonedValue / 100
+  }))
+
 const monthlyAbandonmentRateOf = (months: MonthlyCarts[]): MonthlyValueVM[] =>
   months.map((month) => ({
     month: month.month,
@@ -107,12 +114,13 @@ export const emptyCartStatisticsVM = (): CartStatisticsVM => ({
   inProgress: 0,
   abandonmentRate: 0,
   conversionRate: 0,
-  abandonedValue: 0,
   averageAbandonedValue: 0,
   monthlyAbandoned: [],
   previousYearMonthlyAbandoned: [],
   monthlyAbandonmentRate: [],
   previousYearMonthlyAbandonmentRate: [],
+  monthlyAbandonedValue: [],
+  previousYearMonthlyAbandonedValue: [],
   topAbandonedProducts: []
 })
 
@@ -132,7 +140,6 @@ const cartStatisticsVMOf = ({
     inProgress: totals.inProgress,
     abandonmentRate: percentage(totals.abandoned, decided),
     conversionRate: percentage(totals.converted, decided),
-    abandonedValue,
     averageAbandonedValue:
       totals.abandonedWithValue === 0
         ? 0
@@ -142,6 +149,9 @@ const cartStatisticsVMOf = ({
     monthlyAbandonmentRate: monthlyAbandonmentRateOf(monthly),
     previousYearMonthlyAbandonmentRate:
       monthlyAbandonmentRateOf(previousYearMonthly),
+    monthlyAbandonedValue: monthlyAbandonedValueOf(monthly),
+    previousYearMonthlyAbandonedValue:
+      monthlyAbandonedValueOf(previousYearMonthly),
     topAbandonedProducts
   }
 }

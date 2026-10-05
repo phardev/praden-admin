@@ -254,7 +254,6 @@ describe('getDashboardVM', () => {
       inProgress: 5,
       abandonmentRate: 35.3,
       conversionRate: 64.7,
-      abandonedValue: 900,
       averageAbandonedValue: 36,
       monthlyAbandoned: [
         { month: '2026-01', value: 12 },
@@ -266,6 +265,11 @@ describe('getDashboardVM', () => {
         { month: '2026-02', value: 37.5 }
       ],
       previousYearMonthlyAbandonmentRate: [{ month: '2025-01', value: 33.3 }],
+      monthlyAbandonedValue: [
+        { month: '2026-01', value: 360 },
+        { month: '2026-02', value: 540 }
+      ],
+      previousYearMonthlyAbandonedValue: [{ month: '2025-01', value: 270 }],
       topAbandonedProducts: cartStatistics.topAbandonedProducts
     })
   })
