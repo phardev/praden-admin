@@ -6,7 +6,8 @@
     },
     "ean13": {
       "required": "Le code EAN-13 est requis.",
-      "unique": "Le code EAN-13 existe déjà."
+      "unique": "Le code EAN-13 existe déjà.",
+      "incomplete": "13 chiffres attendus"
     },
     "priceWithoutTax": {
       "required": "Le prix HT est requis.",
@@ -1486,7 +1487,8 @@
     },
     "loadError": "Impossible de charger les paniers.",
     "filters": {
-      "customerPlaceholder": "Rechercher un client (nom, email)"
+      "customerPlaceholder": "Rechercher un client (nom, email)",
+      "ean13Placeholder": "Rechercher un article (EAN13)"
     },
     "detail": {
       "back": "Retour aux paniers",

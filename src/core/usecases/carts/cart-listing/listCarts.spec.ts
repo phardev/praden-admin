@@ -9,6 +9,7 @@ import {
   guestOpenCartItem,
   lucasAbandonedCartItem
 } from '@utils/testData/carts'
+import { chamomilla, dolodent } from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
 
 describe('List carts', () => {
@@ -104,6 +105,18 @@ describe('List carts', () => {
   describe('Given filters are applied', () => {
     const everyCart = { limit: 10, offset: 0 }
 
+    beforeEach(() => {
+      cartGateway.feedWithCartEan13s(
+        elodieOpenCartItem.uuid,
+        dolodent.ean13,
+        chamomilla.ean13
+      )
+      cartGateway.feedWithCartEan13s(
+        lucasAbandonedCartItem.uuid,
+        dolodent.ean13
+      )
+    })
+
     it('should show only the carts of the searched customer', async () => {
       filterCarts({
         customerQuery: lucasAbandonedCartItem.customer!.lastname!.toUpperCase()
@@ -131,6 +144,22 @@ describe('List carts', () => {
       await listCarts(CartListTab.All, everyCart, cartGateway)
       expect(cartListStore.items[CartListTab.All]).toStrictEqual([
         guestOpenCartItem,
+        lucasAbandonedCartItem
+      ])
+    })
+
+    it('should show only the carts holding the searched product', async () => {
+      filterCarts({ ean13: chamomilla.ean13 })
+      await listCarts(CartListTab.All, everyCart, cartGateway)
+      expect(cartListStore.items[CartListTab.All]).toStrictEqual([
+        elodieOpenCartItem
+      ])
+    })
+
+    it('should combine the searched product with the chosen tab', async () => {
+      filterCarts({ ean13: dolodent.ean13 })
+      await listCarts(CartListTab.Abandoned, everyCart, cartGateway)
+      expect(cartListStore.items[CartListTab.Abandoned]).toStrictEqual([
         lucasAbandonedCartItem
       ])
     })

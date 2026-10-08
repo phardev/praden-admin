@@ -7,6 +7,7 @@ import {
   guestOpenCartItem,
   lucasAbandonedCartItem
 } from '@utils/testData/carts'
+import { dolodent } from '@utils/testData/products'
 import { createPinia, setActivePinia } from 'pinia'
 import { type CartListItemVM, getCartsListVM } from './getCartsListVM'
 
@@ -147,6 +148,7 @@ describe('Get carts list VM', () => {
   describe('Given filters are applied', () => {
     const filters = {
       customerQuery: 'durand',
+      ean13: dolodent.ean13,
       startDate: lucasAbandonedCartItem.lastActivityAt,
       endDate: elodieOpenCartItem.lastActivityAt
     }
@@ -162,6 +164,7 @@ describe('Get carts list VM', () => {
     it('should expose one removable chip per filter', () => {
       expect(getCartsListVM().activeFilters).toStrictEqual([
         { key: 'customerQuery', label: 'Client : "durand"' },
+        { key: 'ean13', label: `EAN : ${filters.ean13}` },
         {
           key: 'startDate',
           label: `Depuis le ${timestampToLocaleString(filters.startDate, 'fr-FR')}`

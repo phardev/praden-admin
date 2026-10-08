@@ -26,15 +26,17 @@ export class InMemoryCartGateway implements CartGateway {
   private customerCarts: Array<Cart> = []
   private listItems: Array<CartListItem> = []
   private cartDetails: Array<CartDetail> = []
+  private cartEan13s = new Map<UUID, Array<string>>()
 
   list(
     status: CartListStatus | undefined,
-    { customerQuery, startDate, endDate }: CartListFilters,
+    { customerQuery, ean13, startDate, endDate }: CartListFilters,
     { limit, offset }: CartListPagination
   ): Promise<Array<CartListItem>> {
     const items = this.listItems
       .filter((item) => !status || item.status === status)
       .filter((item) => !customerQuery || isOwnedBy(item, customerQuery))
+      .filter((item) => !ean13 || this.ean13sOf(item.uuid).includes(ean13))
       .filter((item) => !startDate || item.lastActivityAt >= startDate)
       .filter((item) => !endDate || item.lastActivityAt <= endDate)
       .slice(offset, offset + limit)
@@ -84,6 +86,14 @@ export class InMemoryCartGateway implements CartGateway {
 
   feedWithCartDetails(...carts: Array<CartDetail>) {
     this.cartDetails = copy(carts)
+  }
+
+  feedWithCartEan13s(cartUuid: UUID, ...ean13s: Array<string>) {
+    this.cartEan13s.set(cartUuid, ean13s)
+  }
+
+  private ean13sOf(cartUuid: UUID): Array<string> {
+    return this.cartEan13s.get(cartUuid) ?? []
   }
 
   private change(

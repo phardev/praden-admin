@@ -5,6 +5,7 @@
     p.text-sm.text-gray-500.mt-1 {{ $t('carts.abandonmentRule') }}
   ft-customer-period-filters.mb-4(
     :placeholder="$t('carts.filters.customerPlaceholder')"
+    :ean13-placeholder="$t('carts.filters.ean13Placeholder')"
     :current-filters="cartsVM.currentFilters"
     :active-filters="cartsVM.activeFilters"
     @change="applyFilters"

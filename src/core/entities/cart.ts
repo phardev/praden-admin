@@ -156,6 +156,7 @@ export interface CartDetail extends Cart {
 
 export interface CartListFilters {
   customerQuery?: string
+  ean13?: string
   startDate?: Timestamp
   endDate?: Timestamp
 }
