@@ -56,12 +56,22 @@ form(v-else)
       :disabled="!currentVM.get('name').canEdit"
       @update:model-value="nameChanged"
     )
-  UFormGroup.pb-4(label="Description" name="description")
-    FtRichTextInput(
+  UFormGroup.pb-4(
+    label="Description"
+    :help="$t('categories.fields.descriptionHelp')"
+    name="description"
+  )
+    UTextarea(
       :model-value="currentVM.get('description').value"
       :disabled="!currentVM.get('description').canEdit"
+      :rows="24"
+      :ui="{ base: 'font-mono text-xs leading-relaxed' }"
+      spellcheck="false"
+      autocapitalize="off"
+      autocorrect="off"
       @update:model-value="descriptionChanged"
     )
+    content-page-html-preview.mt-2(:html="currentVM.get('description').value || ''")
   UFormGroup.pb-4(label="Catégorie parent" name="category")
     ft-autocomplete(
       :model-value="currentVM.get('parentUuid').value"

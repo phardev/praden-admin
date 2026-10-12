@@ -74,6 +74,9 @@
       "label": "Statut",
       "active": "Activée",
       "inactive": "Désactivée"
+    },
+    "fields": {
+      "descriptionHelp": "Code HTML brut. Le nom de la catégorie est déjà le titre h1 de la page : commencez vos titres au h2. Les deux premières lignes de texte s'affichent en haut de la page, le texte complet sous les produits."
     }
   },
   "deliveryPriceRules": {
