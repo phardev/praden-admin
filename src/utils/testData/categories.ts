@@ -24,6 +24,8 @@ export const baby: Category = {
   uuid: 'category-baby',
   name: 'Bébé',
   description: 'La categorie des bébés',
+  metaTitle: 'Bébé : soins, hygiène et alimentation',
+  metaDescription: 'Tout pour le soin, l’hygiène et l’alimentation de bébé.',
   parentUuid: mum.uuid,
   miniature: 'https://fakeimg.pl/50/0000ff',
   image: 'https://fakeimg.pl/300x100/0000ff',

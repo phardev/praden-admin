@@ -28,6 +28,8 @@ export class InMemoryCategoryGateway implements CategoryGateway {
       uuid: this.uuidGenerator.generate(),
       name: dto.name,
       description: dto.description,
+      metaTitle: dto.metaTitle,
+      metaDescription: dto.metaDescription,
       order: this.categories.length,
       status: CategoryStatus.Active
     }

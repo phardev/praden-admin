@@ -143,6 +143,8 @@ describe('Category form create VM', () => {
     describe.each([
       { field: 'name', expected: '' },
       { field: 'description', expected: '' },
+      { field: 'metaTitle', expected: '' },
+      { field: 'metaDescription', expected: '' },
       { field: 'miniature', expected: undefined },
       { field: 'img', expected: undefined },
       { field: 'parentUuid', expected: undefined }
@@ -213,6 +215,16 @@ describe('Category form create VM', () => {
         field: 'description',
         value: 'the new description',
         expected: 'the new description'
+      },
+      {
+        field: 'metaTitle',
+        value: 'the new SEO title',
+        expected: 'the new SEO title'
+      },
+      {
+        field: 'metaDescription',
+        value: 'the new SEO description',
+        expected: 'the new SEO description'
       },
       {
         field: 'miniature',
@@ -398,6 +410,8 @@ describe('Category form create VM', () => {
           name: 'test',
           parentUuid: 'abc123',
           description: 'description',
+          metaTitle: 'SEO title',
+          metaDescription: 'SEO description',
           miniature: undefined,
           image: undefined,
           productsAdded: []
@@ -405,6 +419,8 @@ describe('Category form create VM', () => {
         vm.set('name', expectedDTO.name)
         vm.set('parentUuid', expectedDTO.parentUuid)
         vm.set('description', expectedDTO.description)
+        vm.set('metaTitle', expectedDTO.metaTitle)
+        vm.set('metaDescription', expectedDTO.metaDescription)
         expect(vm.getDto()).toStrictEqual(expectedDTO)
       })
     })
@@ -414,6 +430,8 @@ describe('Category form create VM', () => {
           name: '',
           parentUuid: undefined,
           description: '',
+          metaTitle: '',
+          metaDescription: '',
           miniature: undefined,
           image: undefined,
           productsAdded: [chamomilla.uuid]
@@ -427,6 +445,8 @@ describe('Category form create VM', () => {
           name: '',
           parentUuid: undefined,
           description: '',
+          metaTitle: '',
+          metaDescription: '',
           miniature: undefined,
           image: undefined,
           productsAdded: [ultraLevure.uuid, chamomilla.uuid]
@@ -440,6 +460,8 @@ describe('Category form create VM', () => {
           name: '',
           parentUuid: undefined,
           description: '',
+          metaTitle: '',
+          metaDescription: '',
           miniature: undefined,
           image: undefined,
           productsAdded: [dolodent.uuid]
@@ -457,6 +479,8 @@ describe('Category form create VM', () => {
           name: baby.name,
           parentUuid: baby.parentUuid,
           description: baby.description,
+          metaTitle: '',
+          metaDescription: '',
           miniature: undefined,
           image: undefined,
           productsAdded: [ultraLevure.uuid, chamomilla.uuid, anaca3Minceur.uuid]
@@ -482,6 +506,8 @@ describe('Category form create VM', () => {
           name: '',
           parentUuid: undefined,
           description: '',
+          metaTitle: '',
+          metaDescription: '',
           miniature: undefined,
           image: newImage,
           productsAdded: []

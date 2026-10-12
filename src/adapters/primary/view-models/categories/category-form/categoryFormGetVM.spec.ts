@@ -102,6 +102,8 @@ describe('Category form get VM', () => {
     describe.each([
       { field: 'name', expected: category.name },
       { field: 'description', expected: category.description },
+      { field: 'metaTitle', expected: category.metaTitle ?? '' },
+      { field: 'metaDescription', expected: category.metaDescription ?? '' },
       { field: 'miniature', expected: category.miniature },
       { field: 'image', expected: category.image },
       { field: 'parentUuid', expected: category.parentUuid }

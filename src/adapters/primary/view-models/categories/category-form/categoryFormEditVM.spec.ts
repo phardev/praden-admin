@@ -169,6 +169,11 @@ describe('Category form edit VM', () => {
       describe.each([
         { field: 'name', expected: category.name },
         { field: 'description', expected: category.description },
+        { field: 'metaTitle', expected: category.metaTitle ?? '' },
+        {
+          field: 'metaDescription',
+          expected: category.metaDescription ?? ''
+        },
         { field: 'miniature', expected: category.miniature },
         { field: 'image', expected: category.image },
         { field: 'parentUuid', expected: category.parentUuid }
@@ -236,6 +241,16 @@ describe('Category form edit VM', () => {
         field: 'description',
         value: 'the new description',
         expected: 'the new description'
+      },
+      {
+        field: 'metaTitle',
+        value: 'the new SEO title',
+        expected: 'the new SEO title'
+      },
+      {
+        field: 'metaDescription',
+        value: 'the new SEO description',
+        expected: 'the new SEO description'
       },
       {
         field: 'miniature',
@@ -448,6 +463,8 @@ describe('Category form edit VM', () => {
           name: 'test',
           parentUuid: 'abc123',
           description: 'description',
+          metaTitle: 'SEO title',
+          metaDescription: 'SEO description',
           miniature: currentCategory.miniature,
           newMiniature: undefined,
           image: currentCategory.image,
@@ -458,6 +475,8 @@ describe('Category form edit VM', () => {
         vm.set('name', expectedDTO.name)
         vm.set('parentUuid', expectedDTO.parentUuid)
         vm.set('description', expectedDTO.description)
+        vm.set('metaTitle', expectedDTO.metaTitle)
+        vm.set('metaDescription', expectedDTO.metaDescription)
         expect(vm.getDto()).toStrictEqual(expectedDTO)
       })
     })
@@ -468,6 +487,8 @@ describe('Category form edit VM', () => {
           name: currentCategory.name,
           parentUuid: currentCategory.parentUuid,
           description: currentCategory.description,
+          metaTitle: currentCategory.metaTitle,
+          metaDescription: currentCategory.metaDescription,
           miniature: currentCategory.miniature,
           newMiniature: undefined,
           image: currentCategory.image,
@@ -483,6 +504,8 @@ describe('Category form edit VM', () => {
           name: currentCategory.name,
           parentUuid: currentCategory.parentUuid,
           description: currentCategory.description,
+          metaTitle: currentCategory.metaTitle,
+          metaDescription: currentCategory.metaDescription,
           miniature: currentCategory.miniature,
           newMiniature: undefined,
           image: currentCategory.image,
@@ -499,6 +522,8 @@ describe('Category form edit VM', () => {
           name: currentCategory.name,
           parentUuid: currentCategory.parentUuid,
           description: currentCategory.description,
+          metaTitle: currentCategory.metaTitle,
+          metaDescription: currentCategory.metaDescription,
           miniature: currentCategory.miniature,
           newMiniature: undefined,
           image: currentCategory.image,
@@ -516,6 +541,8 @@ describe('Category form edit VM', () => {
           name: currentCategory.name,
           parentUuid: currentCategory.parentUuid,
           description: currentCategory.description,
+          metaTitle: currentCategory.metaTitle,
+          metaDescription: currentCategory.metaDescription,
           miniature: currentCategory.miniature,
           newMiniature: undefined,
           image: currentCategory.image,
@@ -536,6 +563,8 @@ describe('Category form edit VM', () => {
           name: baby.name,
           parentUuid: baby.parentUuid,
           description: baby.description,
+          metaTitle: baby.metaTitle,
+          metaDescription: baby.metaDescription,
           miniature: baby.miniature,
           newMiniature: undefined,
           image: baby.image,
@@ -556,6 +585,8 @@ describe('Category form edit VM', () => {
           name: currentCategory.name,
           parentUuid: currentCategory.parentUuid,
           description: currentCategory.description,
+          metaTitle: currentCategory.metaTitle,
+          metaDescription: currentCategory.metaDescription,
           miniature: currentCategory.miniature,
           newMiniature: undefined,
           image: currentCategory.image,
@@ -578,6 +609,8 @@ describe('Category form edit VM', () => {
           name: currentCategory.name,
           parentUuid: currentCategory.parentUuid,
           description: currentCategory.description,
+          metaTitle: currentCategory.metaTitle,
+          metaDescription: currentCategory.metaDescription,
           miniature: currentCategory.miniature,
           newMiniature: undefined,
           image: 'data:image/png;base64,aW1hZ2U=',
@@ -598,6 +631,8 @@ describe('Category form edit VM', () => {
           name: currentCategory.name,
           parentUuid: currentCategory.parentUuid,
           description: currentCategory.description,
+          metaTitle: currentCategory.metaTitle,
+          metaDescription: currentCategory.metaDescription,
           miniature: 'data:image/png;base64,bWluaWF0dXJl',
           newMiniature,
           image: currentCategory.image,
@@ -620,6 +655,8 @@ describe('Category form edit VM', () => {
           name: currentCategory.name,
           parentUuid: currentCategory.parentUuid,
           description: currentCategory.description,
+          metaTitle: currentCategory.metaTitle,
+          metaDescription: currentCategory.metaDescription,
           miniature: currentCategory.miniature,
           newMiniature: undefined,
           image: currentCategory.image,

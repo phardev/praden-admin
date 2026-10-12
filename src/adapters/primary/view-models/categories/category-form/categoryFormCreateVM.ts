@@ -87,6 +87,8 @@ export class NewCategoryFormInitializer implements FormInitializer {
     this.formStore.set(this.key, {
       name: '',
       description: '',
+      metaTitle: '',
+      metaDescription: '',
       parentUuid: undefined,
       miniature: undefined,
       image: undefined,
@@ -150,6 +152,8 @@ export class CategoryFormCreateVM extends CategoryFormVM {
       name: this.fieldsReader.get('name'),
       parentUuid: this.fieldsReader.get('parentUuid'),
       description: this.fieldsReader.get('description'),
+      metaTitle: this.fieldsReader.get('metaTitle'),
+      metaDescription: this.fieldsReader.get('metaDescription'),
       productsAdded,
       miniature: this.fieldsReader.get('miniature'),
       image: this.fieldsReader.get('newImage')

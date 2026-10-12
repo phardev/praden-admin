@@ -31,6 +31,8 @@ export class ExistingCategoryFormInitializer implements FormInitializer {
     this.formStore.set(this.key, {
       name: category.name,
       description: category.description,
+      metaTitle: category.metaTitle ?? '',
+      metaDescription: category.metaDescription ?? '',
       parentUuid: category.parentUuid,
       miniature: category.miniature,
       newMiniature: undefined,

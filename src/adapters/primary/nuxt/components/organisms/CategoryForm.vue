@@ -57,6 +57,27 @@ form(v-else)
       @update:model-value="nameChanged"
     )
   UFormGroup.pb-4(
+    :label="$t('categories.fields.metaTitle')"
+    :help="$t('categories.fields.metaTitleHelp')"
+    name="metaTitle"
+  )
+    UInput(
+      :model-value="currentVM.get('metaTitle').value"
+      :disabled="!currentVM.get('metaTitle').canEdit"
+      @update:model-value="metaTitleChanged"
+    )
+  UFormGroup.pb-4(
+    :label="$t('categories.fields.metaDescription')"
+    :help="$t('categories.fields.metaDescriptionHelp')"
+    name="metaDescription"
+  )
+    UTextarea(
+      :model-value="currentVM.get('metaDescription').value"
+      :disabled="!currentVM.get('metaDescription').canEdit"
+      :rows="3"
+      @update:model-value="metaDescriptionChanged"
+    )
+  UFormGroup.pb-4(
     label="Description"
     :help="$t('categories.fields.descriptionHelp')"
     name="description"
@@ -208,6 +229,14 @@ const clearParentCategory = () => {
 
 const descriptionChanged = (description: string) => {
   currentVM?.value?.set('description', description)
+}
+
+const metaTitleChanged = (metaTitle: string) => {
+  currentVM?.value?.set('metaTitle', metaTitle)
+}
+
+const metaDescriptionChanged = (metaDescription: string) => {
+  currentVM?.value?.set('metaDescription', metaDescription)
 }
 
 let debounceTimer: ReturnType<typeof setTimeout> | null = null

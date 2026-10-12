@@ -12,6 +12,8 @@ export interface Category {
   uuid: UUID
   name: string
   description: string
+  metaTitle?: string
+  metaDescription?: string
   parentUuid?: UUID
   miniature?: string
   image?: string

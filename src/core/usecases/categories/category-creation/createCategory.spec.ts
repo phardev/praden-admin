@@ -39,11 +39,15 @@ describe('Create category', () => {
     const categoryDTO: CreateCategoryDTO = {
       name: 'Created',
       description: 'The description',
+      metaTitle: 'Created SEO title',
+      metaDescription: 'Created SEO description',
       productsAdded: []
     }
     const expectedCategory: Category = {
       name: 'Created',
       description: 'The description',
+      metaTitle: categoryDTO.metaTitle,
+      metaDescription: categoryDTO.metaDescription,
       uuid,
       order: 0,
       status: CategoryStatus.Active
@@ -63,6 +67,8 @@ describe('Create category', () => {
     const categoryDTO: CreateCategoryDTO = {
       name: 'Child category',
       description: 'The child description',
+      metaTitle: 'Child category SEO title',
+      metaDescription: 'Child category SEO description',
       productsAdded: []
     }
     describe('The parent category exists', () => {
@@ -71,6 +77,8 @@ describe('Create category', () => {
       const expectedCategory: Category = {
         name: 'Child category',
         description: 'The child description',
+        metaTitle: categoryDTO.metaTitle,
+        metaDescription: categoryDTO.metaDescription,
         uuid,
         order: 1,
         status: CategoryStatus.Active

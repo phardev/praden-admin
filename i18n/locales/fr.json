@@ -76,6 +76,10 @@
       "inactive": "Désactivée"
     },
     "fields": {
+      "metaTitle": "Titre SEO",
+      "metaTitleHelp": "Titre affiché par Google, 200 caractères maximum. Laissé vide : « Nom de la catégorie - Catégorie ».",
+      "metaDescription": "Description SEO",
+      "metaDescriptionHelp": "Résumé affiché par Google, 320 caractères maximum. Laissé vide : le début de la description.",
       "descriptionHelp": "Code HTML brut. Le nom de la catégorie est déjà le titre h1 de la page : commencez vos titres au h2. Les deux premières lignes de texte s'affichent en haut de la page, le texte complet sous les produits."
     }
   },
