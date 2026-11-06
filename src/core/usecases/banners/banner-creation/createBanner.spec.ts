@@ -1,6 +1,6 @@
 import { InMemoryBannerGateway } from '@adapters/secondary/banner-gateways/inMemoryBannerGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { Banner } from '@core/entities/banner'
+import { BannerListItem } from '@core/entities/banner'
 import {
   CreateBannerDTO,
   createBanner
@@ -13,7 +13,7 @@ describe('Create banner', () => {
   let bannerGateway: InMemoryBannerGateway
   let bannerStore: any
   const uuidGenerator = new FakeUuidGenerator()
-  let expectedBanner: Banner
+  let expectedBanner: BannerListItem
   let uuid
   let dto: CreateBannerDTO
 
@@ -34,6 +34,7 @@ describe('Create banner', () => {
         img: 'data:image/png;base64,ZGF0YTE=',
         order: 0,
         isActive: true,
+        clickCount: 0,
         href: 'https://new-link.com'
       }
       uuidGenerator.setNext(uuid)
@@ -60,7 +61,8 @@ describe('Create banner', () => {
         img: 'data:image/png;base64,ZGF0YTE=',
         href: 'https://another-link.com',
         order: 2,
-        isActive: true
+        isActive: true,
+        clickCount: 0
       }
       uuidGenerator.setNext(uuid)
       await whenAddBanner(dto)
@@ -82,7 +84,7 @@ describe('Create banner', () => {
   })
 
   describe('For a banner with a specific order', () => {
-    let expectedBanners: Array<Banner>
+    let expectedBanners: Array<BannerListItem>
     beforeEach(async () => {
       givenExistingBanners(banner1, banner2)
       uuid = 'another-new-uuid'
@@ -96,7 +98,8 @@ describe('Create banner', () => {
         img: 'data:image/png;base64,ZGF0YTE=',
         href: 'https://another-link.com',
         order: 1,
-        isActive: true
+        isActive: true,
+        clickCount: 0
       }
       expectedBanners = [
         banner1,
@@ -131,7 +134,8 @@ describe('Create banner', () => {
         img: 'data:image/png;base64,ZGF0YTE=',
         href: 'https://another-link.com',
         order: 2,
-        isActive: false
+        isActive: false,
+        clickCount: 0
       }
       uuidGenerator.setNext(uuid)
       await whenAddBanner(dto)
@@ -167,6 +171,7 @@ describe('Create banner', () => {
         href: 'https://another-link.com',
         order: 0,
         isActive: true,
+        clickCount: 0,
         startDate: 1234567890,
         endDate: 2345678901
       }
@@ -181,7 +186,7 @@ describe('Create banner', () => {
     })
   })
 
-  const givenExistingBanners = (...banners: Array<Banner>) => {
+  const givenExistingBanners = (...banners: Array<BannerListItem>) => {
     bannerGateway.feedWith(...banners)
     bannerStore.items = banners
   }

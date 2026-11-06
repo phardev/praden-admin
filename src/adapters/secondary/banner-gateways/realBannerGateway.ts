@@ -1,6 +1,6 @@
 import { axiosWithBearer } from '@adapters/primary/nuxt/utils/axios'
 import { RealGateway } from '@adapters/secondary/order-gateways/RealOrderGateway'
-import { Banner } from '@core/entities/banner'
+import { Banner, BannerListItem } from '@core/entities/banner'
 import { BannerGateway } from '@core/gateways/bannerGateway'
 import { UUID } from '@core/types/types'
 import { CreateBannerDTO } from '@core/usecases/banners/banner-creation/createBanner'
@@ -11,16 +11,16 @@ export class RealBannerGateway extends RealGateway implements BannerGateway {
     super(url)
   }
 
-  async list(): Promise<Array<Banner>> {
+  async list(): Promise<Array<BannerListItem>> {
     const res = await axiosWithBearer.get(`${this.baseUrl}/banners`)
-    return res.data.items.map(this.convertToBanner)
+    return res.data.items.map(this.convertToBannerListItem)
   }
 
-  async reorder(bannerUuids: Array<UUID>): Promise<Array<Banner>> {
+  async reorder(bannerUuids: Array<UUID>): Promise<Array<BannerListItem>> {
     const res = await axiosWithBearer.post(`${this.baseUrl}/banners/reorder`, {
       uuids: bannerUuids
     })
-    return res.data.items.map(this.convertToBanner)
+    return res.data.items.map(this.convertToBannerListItem)
   }
 
   async delete(uuid: UUID): Promise<Banner> {
@@ -28,7 +28,7 @@ export class RealBannerGateway extends RealGateway implements BannerGateway {
     return this.convertToBanner(res.data.item)
   }
 
-  async create(dto: CreateBannerDTO): Promise<Array<Banner>> {
+  async create(dto: CreateBannerDTO): Promise<Array<BannerListItem>> {
     const formData = this.createFormData(dto)
     formData.append('image', dto.img)
     const res = await axiosWithBearer.post(
@@ -40,7 +40,7 @@ export class RealBannerGateway extends RealGateway implements BannerGateway {
         }
       }
     )
-    return [this.convertToBanner(res.data.item)]
+    return [{ ...this.convertToBanner(res.data.item), clickCount: 0 }]
   }
 
   async edit(uuid: UUID, dto: EditBannerDTO): Promise<Banner> {
@@ -66,6 +66,11 @@ export class RealBannerGateway extends RealGateway implements BannerGateway {
     const res = await axiosWithBearer.get(`${this.baseUrl}/banners/${uuid}`)
     return this.convertToBanner(res.data.item)
   }
+
+  private convertToBannerListItem = (banner: any): BannerListItem => ({
+    ...this.convertToBanner(banner),
+    clickCount: banner.clickCount
+  })
 
   private convertToBanner(banner: any): Banner {
     return {

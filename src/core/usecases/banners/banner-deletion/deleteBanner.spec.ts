@@ -1,6 +1,6 @@
 import { InMemoryBannerGateway } from '@adapters/secondary/banner-gateways/inMemoryBannerGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { Banner } from '@core/entities/banner'
+import { BannerListItem } from '@core/entities/banner'
 import { UUID } from '@core/types/types'
 import { deleteBanner } from '@core/usecases/banners/banner-deletion/deleteBanner'
 import { useBannerStore } from '@store/bannerStore'
@@ -10,7 +10,7 @@ import { createPinia, setActivePinia } from 'pinia'
 describe('Banner deletion', () => {
   let bannerGateway: InMemoryBannerGateway
   let bannerStore: any
-  let expectedBanners: Array<Banner>
+  let expectedBanners: Array<BannerListItem>
 
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -65,7 +65,7 @@ describe('Banner deletion', () => {
     })
   })
 
-  const givenExistingBanners = (...banners: Array<Banner>) => {
+  const givenExistingBanners = (...banners: Array<BannerListItem>) => {
     bannerGateway.feedWith(...banners)
     bannerStore.items = JSON.parse(JSON.stringify(banners))
   }

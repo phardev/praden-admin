@@ -1,6 +1,6 @@
 import { InMemoryBannerGateway } from '@adapters/secondary/banner-gateways/inMemoryBannerGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { Banner } from '@core/entities/banner'
+import { BannerListItem } from '@core/entities/banner'
 import { UUID } from '@core/types/types'
 import {
   EditBannerDTO,
@@ -21,7 +21,7 @@ describe('Banner Edition', () => {
   })
 
   describe('The banner exists', () => {
-    let expectedBanners: Array<Banner>
+    let expectedBanners: Array<BannerListItem>
     beforeEach(() => {
       givenExistingBanners(banner1, banner2, banner3)
     })
@@ -75,7 +75,7 @@ describe('Banner Edition', () => {
     })
   })
 
-  const givenExistingBanners = (...banners: Array<Banner>) => {
+  const givenExistingBanners = (...banners: Array<BannerListItem>) => {
     bannerGateway.feedWith(...banners)
     bannerStore.items = banners
   }

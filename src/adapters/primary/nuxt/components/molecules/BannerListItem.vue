@@ -59,6 +59,13 @@ div.flex.items-center.justify-stretch.space-x-4.space-y-2
             @update:model-value="(date) => endDateChanged(banner.uuid, date)"
             @close="close"
           )
+  div.flex.w-36.shrink-0.items-center.gap-2.text-sm.text-contrast.whitespace-nowrap(data-testid="banner-click-count")
+    template(v-if="banner.hasLink")
+      icon.icon-md(name="material-symbols:ads-click" aria-hidden="true")
+      span.font-medium.tabular-nums {{ $t('banners.clickCount', { count: banner.formattedClickCount }, banner.clickCount) }}
+    template(v-else)
+      icon.icon-md(name="material-symbols:link-off" aria-hidden="true")
+      span {{ $t('banners.noLink') }}
   ft-toggle(
     :model-value="banner.isActive"
     @update:model-value="(value) => updateIsActive(banner.uuid, value)"

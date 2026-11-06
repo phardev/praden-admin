@@ -1,5 +1,5 @@
 import {
-  Banner,
+  BannerListItem,
   isBannerInProgress,
   isBannerStarted,
   sortByOrder
@@ -7,12 +7,15 @@ import {
 import { DateProvider } from '@core/gateways/dateProvider'
 import { HashTable, Timestamp } from '@core/types/types'
 import { useBannerStore } from '@store/bannerStore'
-import { timestampToLocaleString } from '@utils/formatters'
+import { formatCount, timestampToLocaleString } from '@utils/formatters'
 
 export interface GetBannersItemVM {
   uuid: string
   img: string
   isActive: boolean
+  clickCount: number
+  formattedClickCount: string
+  hasLink: boolean
   startDate?: string
   startDatetime?: Date
   endDate?: string
@@ -51,11 +54,14 @@ export const getBannersVM = (dateProvider: DateProvider): GetBannersVM => {
   }
 }
 
-const getBannerGroupItemVM = (b: Banner, date: Timestamp) => {
+const getBannerGroupItemVM = (b: BannerListItem, date: Timestamp) => {
   return {
     uuid: b.uuid,
     img: b.img,
     isActive: b.isActive,
+    clickCount: b.clickCount,
+    formattedClickCount: formatCount(b.clickCount),
+    hasLink: Boolean(b.href),
     startDate: b.startDate ? timestampToLocaleString(b.startDate, 'fr-FR') : '',
     startDatetime: new Date(b.startDate || ''),
     endDate: b.endDate ? timestampToLocaleString(b.endDate, 'fr-FR') : '',

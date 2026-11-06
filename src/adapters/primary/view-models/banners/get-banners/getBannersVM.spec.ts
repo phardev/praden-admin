@@ -4,7 +4,7 @@ import {
   getBannersVM
 } from '@adapters/primary/view-models/banners/get-banners/getBannersVM'
 import { FakeDateProvider } from '@adapters/secondary/date-providers/FakeDateProvider'
-import { Banner } from '@core/entities/banner'
+import { BannerListItem } from '@core/entities/banner'
 import { useBannerStore } from '@store/bannerStore'
 import {
   banner1,
@@ -50,6 +50,9 @@ describe('Get banners VM', () => {
             uuid: banner1.uuid,
             img: banner1.img,
             isActive: true,
+            clickCount: banner1.clickCount,
+            formattedClickCount: String(banner1.clickCount),
+            hasLink: true,
             startDate: '',
             startDatetime: new Date(''),
             endDate: '',
@@ -61,6 +64,9 @@ describe('Get banners VM', () => {
             uuid: banner2.uuid,
             img: banner2.img,
             isActive: false,
+            clickCount: banner2.clickCount,
+            formattedClickCount: String(banner2.clickCount),
+            hasLink: true,
             startDate: '10 juin 2024',
             startDatetime: new Date('2024-06-10T16:24:36.000Z'),
             endDate: '',
@@ -72,6 +78,9 @@ describe('Get banners VM', () => {
             uuid: banner3.uuid,
             img: banner3.img,
             isActive: true,
+            clickCount: banner3.clickCount,
+            formattedClickCount: String(banner3.clickCount),
+            hasLink: true,
             startDate: '',
             startDatetime: new Date(''),
             endDate: '10 oct. 2024',
@@ -83,6 +92,9 @@ describe('Get banners VM', () => {
             uuid: banner4.uuid,
             img: banner4.img,
             isActive: true,
+            clickCount: banner4.clickCount,
+            formattedClickCount: String(banner4.clickCount),
+            hasLink: true,
             startDate: '18 août 2024',
             startDatetime: new Date('2024-08-18T16:24:36.000Z'),
             endDate: '18 sept. 2024',
@@ -94,6 +106,9 @@ describe('Get banners VM', () => {
             uuid: banner5.uuid,
             img: banner5.img,
             isActive: true,
+            clickCount: banner5.clickCount,
+            formattedClickCount: String(banner5.clickCount),
+            hasLink: true,
             startDate: '20 juil. 2024',
             startDatetime: new Date('2024-07-20T16:24:36.000Z'),
             endDate: '20 août 2024',
@@ -105,6 +120,9 @@ describe('Get banners VM', () => {
             uuid: banner6.uuid,
             img: banner6.img,
             isActive: true,
+            clickCount: banner6.clickCount,
+            formattedClickCount: String(banner6.clickCount),
+            hasLink: true,
             startDate: '10 juil. 2024',
             startDatetime: new Date('2024-07-10T16:24:36.000Z'),
             endDate: '20 juil. 2024',
@@ -126,7 +144,30 @@ describe('Get banners VM', () => {
     })
   })
 
-  const givenExistingBanners = (...banners: Array<Banner>) => {
+  describe('Click count display', () => {
+    beforeEach(() => {
+      dateProvider.feedWith(1721319876000)
+    })
+    it('should flag a banner without link as not clickable', () => {
+      const bannerWithoutLink: BannerListItem = { ...banner1, href: '' }
+      givenExistingBanners(bannerWithoutLink)
+      expectFirstItemToMatch({ uuid: banner1.uuid, hasLink: false })
+    })
+    it('should format a large click count with a thousands separator', () => {
+      const popularBanner: BannerListItem = { ...banner1, clickCount: 1234 }
+      givenExistingBanners(popularBanner)
+      expectFirstItemToMatch({
+        uuid: banner1.uuid,
+        formattedClickCount: '1\u202f234'
+      })
+    })
+  })
+
+  const expectFirstItemToMatch = (item: Partial<GetBannersItemVM>) => {
+    expect(getBannersVM(dateProvider).Tous.items[0]).toMatchObject(item)
+  }
+
+  const givenExistingBanners = (...banners: Array<BannerListItem>) => {
     bannerStore.items = banners
   }
 

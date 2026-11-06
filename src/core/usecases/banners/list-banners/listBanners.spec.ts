@@ -1,6 +1,6 @@
 import { InMemoryBannerGateway } from '@adapters/secondary/banner-gateways/inMemoryBannerGateway'
 import { FakeUuidGenerator } from '@adapters/secondary/uuid-generators/FakeUuidGenerator'
-import { Banner } from '@core/entities/banner'
+import { BannerListItem } from '@core/entities/banner'
 import { listBanners } from '@core/usecases/banners/list-banners/listBanners'
 import { useBannerStore } from '@store/bannerStore'
 import { banner1, banner2, banner3 } from '@utils/testData/banners'
@@ -30,7 +30,7 @@ describe('List banners', () => {
     })
   })
 
-  const givenExistingBanners = (...banners: Array<Banner>) => {
+  const givenExistingBanners = (...banners: Array<BannerListItem>) => {
     bannerGateway.feedWith(...banners)
   }
 
@@ -38,7 +38,7 @@ describe('List banners', () => {
     await listBanners(bannerGateway)
   }
 
-  const expectBannerStoreToContains = (...banners: Array<Banner>) => {
+  const expectBannerStoreToContains = (...banners: Array<BannerListItem>) => {
     expect(bannerStore.items).toStrictEqual(banners)
   }
 })

@@ -1,4 +1,9 @@
-import { Banner, sortByOrder } from '@core/entities/banner'
+import {
+  Banner,
+  BannerListItem,
+  sortByOrder,
+  toBanner
+} from '@core/entities/banner'
 import { BannerDoesNotExistsError } from '@core/errors/BannerDoesNotExistsError'
 import { BannerGateway } from '@core/gateways/bannerGateway'
 import { UuidGenerator } from '@core/gateways/uuidGenerator'
@@ -8,18 +13,18 @@ import { EditBannerDTO } from '@core/usecases/banners/banner-edition/editBanner'
 import { getFileContent } from '@utils/file'
 
 export class InMemoryBannerGateway implements BannerGateway {
-  private banners: Array<Banner> = []
+  private banners: Array<BannerListItem> = []
   private uuidGenerator: UuidGenerator
 
   constructor(uuidGenerator: UuidGenerator) {
     this.uuidGenerator = uuidGenerator
   }
 
-  async list(): Promise<Array<Banner>> {
+  async list(): Promise<Array<BannerListItem>> {
     return Promise.resolve(JSON.parse(JSON.stringify(this.banners)))
   }
 
-  async reorder(bannerUuids: Array<UUID>): Promise<Array<Banner>> {
+  async reorder(bannerUuids: Array<UUID>): Promise<Array<BannerListItem>> {
     for (const uuid of bannerUuids) {
       const i = bannerUuids.indexOf(uuid)
       await this.edit(uuid, { order: i })
@@ -35,15 +40,16 @@ export class InMemoryBannerGateway implements BannerGateway {
     this.banners.forEach((b, i) => {
       b.order = i
     })
-    return Promise.resolve(deleted[0])
+    return Promise.resolve(toBanner(deleted[0]))
   }
 
-  async create(dto: CreateBannerDTO): Promise<Array<Banner>> {
-    const newBanner: Banner = {
+  async create(dto: CreateBannerDTO): Promise<Array<BannerListItem>> {
+    const newBanner: BannerListItem = {
       uuid: this.uuidGenerator.generate(),
       img: await getFileContent(dto.img),
       order: dto.order !== undefined ? dto.order : this.banners.length,
       isActive: dto.isActive !== undefined ? dto.isActive : true,
+      clickCount: 0,
       href: dto.href,
       startDate: dto.startDate,
       endDate: dto.endDate
@@ -55,22 +61,22 @@ export class InMemoryBannerGateway implements BannerGateway {
 
   async edit(uuid: UUID, dto: EditBannerDTO): Promise<Banner> {
     const index = this.banners.findIndex((c) => c.uuid === uuid)
-    const updated: Banner = Object.assign(this.banners[index], dto)
+    const updated: BannerListItem = Object.assign(this.banners[index], dto)
     this.banners.splice(index, 1)
     this.banners.splice(updated.order, 0, updated)
     this.banners.forEach((b, i) => {
       b.order = i
     })
-    return Promise.resolve(JSON.parse(JSON.stringify(updated)))
+    return Promise.resolve(toBanner(updated))
   }
 
   get(uuid: UUID): Promise<Banner> {
     const banner = this.banners.find((c) => c.uuid === uuid)
     if (!banner) throw new BannerDoesNotExistsError(uuid)
-    return Promise.resolve(JSON.parse(JSON.stringify(banner)))
+    return Promise.resolve(toBanner(banner))
   }
 
-  feedWith(...banners: Array<Banner>) {
+  feedWith(...banners: Array<BannerListItem>) {
     this.banners = JSON.parse(JSON.stringify(banners))
   }
 }

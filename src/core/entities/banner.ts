@@ -10,6 +10,15 @@ export interface Banner {
   endDate?: Timestamp
 }
 
+export interface BannerListItem extends Banner {
+  clickCount: number
+}
+
+export const toBanner = (item: BannerListItem): Banner => {
+  const { clickCount: _clickCount, ...banner } = structuredClone(item)
+  return banner
+}
+
 export const sortByOrder = (a: any, b: any): number => {
   return a.order - b.order
 }

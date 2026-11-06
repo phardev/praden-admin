@@ -1608,5 +1608,9 @@
       "invalid": "Ce code de bienvenue n'est pas valide. Vérifiez le code, la remise et les dates.",
       "notFound": "Ce code de bienvenue n'existe pas."
     }
+  },
+  "banners": {
+    "clickCount": "{count} clic | {count} clic | {count} clics",
+    "noLink": "Sans lien"
   }
 }
