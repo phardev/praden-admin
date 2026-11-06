@@ -924,7 +924,8 @@
       "pharmacistSelectionCard": "Sélection du pharmacien",
       "emergencyPharmaciesCard": "Pharmacies de garde",
       "contentPagesCard": "Pages éditoriales",
-      "blogPostsCard": "Blog"
+      "blogPostsCard": "Blog",
+      "homepagePromotionsCard": "Promotions de l’accueil"
     },
     "announcementBar": {
       "title": "Barres d'annonce",
@@ -997,33 +998,55 @@
       "cancelChangesConfirm": "Êtes-vous sûr de vouloir abandonner vos modifications ?",
       "leavePageConfirm": "Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ?"
     },
-    "pharmacistSelection": {
-      "title": "Sélection du pharmacien",
-      "description": "Gérez les produits mis en avant sur la page d'accueil",
-      "addProducts": "Ajouter des produits",
+    "homepageShowcase": {
       "addProduct": "Ajouter un produit",
-      "removeProduct": "Retirer",
-      "reorder": "Réorganiser",
-      "searchPlaceholder": "Rechercher un produit...",
       "searchProducts": "Rechercher des produits...",
-      "selectedProducts": "Produits sélectionnés",
       "searchResults": "Résultats de recherche",
-      "noProducts": "Aucun produit sélectionné",
       "noResults": "Aucun produit trouvé",
-      "alreadySelected": "Déjà sélectionné",
+      "alreadySelected": "Dans la liste",
       "minimumSearch": "Saisissez au moins 3 caractères pour rechercher",
-      "updateSuccess": "Sélection mise à jour",
       "updateError": "Erreur lors de la mise à jour",
       "save": "Enregistrer",
       "unsavedChanges": "Modifications non enregistrées",
       "unsavedChangesDescription": "Vos modifications ne seront pas sauvegardées si vous quittez cette page sans enregistrer.",
-      "productsSelected": "produits sélectionnés",
-      "emptyTitle": "Mettez en avant vos meilleurs produits",
-      "emptyDescription": "Sélectionnez les produits que vous souhaitez afficher en priorité sur la page d'accueil de votre boutique.",
-      "addFirstProduct": "Ajouter votre premier produit",
       "cancelChanges": "Abandonner les modifications ?",
       "cancelChangesConfirm": "Êtes-vous sûr de vouloir abandonner vos modifications ?",
-      "leavePageConfirm": "Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ?"
+      "leavePageConfirm": "Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ?",
+      "updateSuccess": "Liste mise à jour",
+      "selectedCount": "{count} produit choisi | {count} produits choisis",
+      "visibleCount": "{count} affiché sur l’accueil | {count} affichés sur l’accueil",
+      "promotionsOnly": "Produits en promotion uniquement",
+      "promotion": {
+        "inProgress": "{discount} jusqu’au {date}",
+        "inProgressWithoutEnd": "{discount} en cours",
+        "upcoming": "{discount} à partir du {date}"
+      },
+      "visibility": {
+        "beyondLimit": "Au-delà des {count} premiers, non visible sur l’accueil",
+        "notInPromotion": "Pas en promotion, non affiché",
+        "notStartedYet": "Pas encore affiché"
+      },
+      "hiddenOnShop": {
+        "title": "Le bloc Promotions est masqué sur l’accueil",
+        "description": "Il réapparaîtra dès qu’un produit choisi sera en promotion."
+      },
+      "kinds": {
+        "pharmacist-selection": {
+          "title": "Sélection du pharmacien",
+          "description": "Gérez les produits mis en avant sur la page d'accueil",
+          "emptyTitle": "Mettez en avant vos meilleurs produits",
+          "emptyDescription": "Sélectionnez les produits que vous souhaitez afficher en priorité sur la page d'accueil de votre boutique.",
+          "addFirstProduct": "Ajouter votre premier produit"
+        },
+        "homepage-promotions": {
+          "title": "Promotions de l’accueil",
+          "description": "Choisissez les produits en promotion affichés sur la page d’accueil",
+          "emptyTitle": "Choisissez les promotions à mettre en avant",
+          "emptyDescription": "Seuls les produits dont la promotion est en cours s’affichent sur l’accueil, dans l’ordre de la liste.",
+          "addFirstProduct": "Ajouter un produit en promotion"
+        }
+      },
+      "done": "Terminer"
     },
     "emergencyPharmacies": {
       "title": "Pharmacies de garde",

@@ -25,10 +25,11 @@ export class RealSearchGateway extends RealGateway implements SearchGateway {
   async searchProducts(
     filters: SearchProductsFilters
   ): Promise<SearchProductsResult> {
-    const res = await axiosWithBearer.post(
-      `${this.baseUrl}/search/products`,
-      filters
-    )
+    const { isInPromotion, ...otherFilters } = filters
+    const res = await axiosWithBearer.post(`${this.baseUrl}/search/products`, {
+      ...otherFilters,
+      ...(isInPromotion && { isInPromotion: 'true' })
+    })
     const items = res.data.items
     const pagination = res.data.pagination
     const size = filters.size ?? 25

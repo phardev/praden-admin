@@ -8,6 +8,7 @@ import {
 import { useSearchStore } from '@store/searchStore'
 import { addTaxToPrice } from '@utils/price'
 import { baby, dents } from '@utils/testData/categories'
+import { twentyPercentUntilEndOfNovember } from '@utils/testData/homepageShowcases'
 import {
   calmosine,
   chamomilla,
@@ -325,6 +326,19 @@ describe('Search products', () => {
         })
       })
     })
+    describe('Promotion filter', () => {
+      it('should list the products in promotion without any query', async () => {
+        const dolodentInPromotion = {
+          ...dolodent,
+          promotions: [twentyPercentUntilEndOfNovember]
+        }
+        searchGateway.feedWith(dolodentInPromotion as any, chamomilla)
+        filters.isInPromotion = true
+        await whenSearchForProducts()
+        expectSearchResultToEqual(dolodentInPromotion)
+      })
+    })
+
     describe('Price TTC conditions filter', () => {
       beforeEach(() => {
         searchGateway.feedWith(dolodent, chamomilla, calmosine)

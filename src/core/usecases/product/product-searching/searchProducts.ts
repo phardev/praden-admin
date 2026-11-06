@@ -21,6 +21,7 @@ export interface SearchProductsFilters {
   size?: number
   from?: number
   sort?: ProductsSort
+  isInPromotion?: boolean
 }
 
 export const searchProducts = async (
@@ -43,7 +44,8 @@ export const searchProducts = async (
     !filters.query &&
     !filters.status &&
     !filters.sort &&
-    !filters.priceTtcConditions?.length
+    !filters.priceTtcConditions?.length &&
+    !filters.isInPromotion
   ) {
     searchStore.clear(key)
     searchStore.setError(key, undefined)

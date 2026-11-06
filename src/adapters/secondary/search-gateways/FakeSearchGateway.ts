@@ -48,7 +48,10 @@ export class FakeSearchGateway implements SearchGateway {
       const priceTtcMatch = filters.priceTtcConditions?.length
         ? this.productPriceTtcMatch(p, filters.priceTtcConditions)
         : true
-      return queryMatch && statusMatch && priceTtcMatch
+      const promotionMatch = filters.isInPromotion
+        ? ((p as any).promotions ?? []).length > 0
+        : true
+      return queryMatch && statusMatch && priceTtcMatch && promotionMatch
     })
     const sorted = this.sortProducts(filtered, filters)
     const total = sorted.length

@@ -55,7 +55,7 @@
           h2.text-lg.font-semibold {{ $t('shopManagement.overview.pharmacistSelectionCard') }}
           icon(name="i-heroicons-star" class="text-2xl text-primary")
       template(#default)
-        p.text-sm.text-gray-600.mb-4 {{ $t('shopManagement.pharmacistSelection.title') }}
+        p.text-sm.text-gray-600.mb-4 {{ $t('shopManagement.homepageShowcase.kinds.pharmacist-selection.title') }}
         UButton(
           color="primary"
           variant="soft"
@@ -63,6 +63,25 @@
           icon="i-heroicons-arrow-right"
           :label="$t('common.edit')"
           @click.stop="navigateTo('/shop-management/pharmacist-selection')"
+        )
+
+    UCard.settings-card.transition-all.duration-300(
+      class="hover:shadow-lg hover:scale-105 cursor-pointer"
+      @click="navigateTo('/shop-management/homepage-promotions')"
+    )
+      template(#header)
+        .flex.items-center.justify-between
+          h2.text-lg.font-semibold {{ $t('shopManagement.overview.homepagePromotionsCard') }}
+          icon(name="i-heroicons-receipt-percent" class="text-2xl text-primary")
+      template(#default)
+        p.text-sm.text-gray-600.mb-4 {{ $t('shopManagement.homepageShowcase.kinds.homepage-promotions.description') }}
+        UButton(
+          color="primary"
+          variant="soft"
+          block
+          icon="i-heroicons-arrow-right"
+          :label="$t('common.edit')"
+          @click.stop="navigateTo('/shop-management/homepage-promotions')"
         )
 
     UCard.settings-card.transition-all.duration-300(
